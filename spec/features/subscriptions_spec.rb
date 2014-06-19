@@ -28,4 +28,16 @@ feature 'User signs up' do
     click_on 'Sign up'
     expect(page).to have_content 'Add bank account'
   end
+
+  scenario 'with invalid information' do
+    visit new_user_registration_path
+    fill_in 'First name', with: 'Jeremiah'
+    fill_in 'Last name', with: 'Johann'
+    fill_in 'Password', with: 'password'
+    fill_in 'Password confirmation', with: 'password'
+    click_on 'Sign up'
+    expect(page).to have_content 'error'
+  end
 end
+
+
