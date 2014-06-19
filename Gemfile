@@ -20,3 +20,7 @@ end
 group :test, :development do
   gem 'rspec-rails'
 end
+
+group :test do
+  gem 'capybara'
+end
