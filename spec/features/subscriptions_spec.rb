@@ -20,23 +20,53 @@ end
 feature 'User signs up' do
   scenario 'with valid information' do
     visit new_user_registration_path
-    fill_in 'First name', with: 'Jeremiah'
-    fill_in 'Last name', with: 'Johann'
     fill_in 'Email', with: 'user@example.com'
     fill_in 'Password', with: 'password'
     fill_in 'Password confirmation', with: 'password'
+    fill_in 'Name', with: 'Jeremiah Johann'
+    fill_in 'Bank account number', with: '123456789'
+    fill_in 'Routing number', with: '321174851'
     click_on 'Sign up'
-    expect(page).to have_content 'Add bank account'
+    expect(page).to have_content 'verify your account'
   end
 
-  scenario 'with invalid information' do
+  scenario 'with missing account number', js: true do
     visit new_user_registration_path
-    fill_in 'First name', with: 'Jeremiah'
-    fill_in 'Last name', with: 'Johann'
+    fill_in 'Email', with: 'user@example.com'
     fill_in 'Password', with: 'password'
     fill_in 'Password confirmation', with: 'password'
+    fill_in 'Name', with: 'Jeremiah Johann'
+    fill_in 'Routing number', with: '321174851'
     click_on 'Sign up'
-    expect(page).to have_content 'error'
+    within 'div.error' do
+      expect(page).to have_content 'Bank account number'
+    end
+  end
+
+  scenario 'with invalid routing number', js: true do
+    visit new_user_registration_path
+    fill_in 'Email', with: 'user@example.com'
+    fill_in 'Password', with: 'password'
+    fill_in 'Password confirmation', with: 'password'
+    fill_in 'Name', with: 'Jeremiah Johann'
+    fill_in 'Bank account number', with: '123456789'
+    fill_in 'Routing number', with: '1234568'
+    click_on 'Sign up'
+    within 'div.error' do
+      expect(page).to have_content 'Routing number'
+    end
+  end
+
+  scenario 'with invalid bank account information', js: true do
+    visit new_user_registration_path
+    fill_in 'Email', with: 'user@example.com'
+    fill_in 'Password', with: 'password'
+    fill_in 'Password confirmation', with: 'password'
+    fill_in 'Name', with: 'Jeremiah Johann'
+    fill_in 'Bank account number', with: '123456789'
+    fill_in 'Routing number', with: '321174851'
+    click_on 'Sign up'
+    expect(page).to have_content 'Invalid account number'
   end
 end
 
