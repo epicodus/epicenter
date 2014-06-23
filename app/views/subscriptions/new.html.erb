@@ -1,2 +1,12 @@
-<h1>Add bank account</h1>
+<h1>Please verify your bank account</h1>
 
+
+<%= form_tag subscriptions_path do %>
+  <div><%= label_tag :first_deposit, "First deposit amount" %><br />
+  <%= text_field_tag :first_deposit, nil, autofocus: true %></div>
+
+  <div><%= label_tag :second_deposit, "Second deposit amount" %><br />
+    <%= text_field_tag :second_deposit %></div>
+
+  <div><%= submit_tag "Verify & Start Payments" %></div>
+<% end %>
