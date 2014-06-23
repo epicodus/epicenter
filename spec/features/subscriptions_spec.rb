@@ -16,14 +16,14 @@ describe 'Start making payments link' do
   end
 end
 
-
 feature 'User signs up' do
   scenario 'with valid information' do
+    user = build(:user)
     visit new_user_registration_path
-    fill_in 'Email', with: 'user@example.com'
-    fill_in 'Password', with: 'password'
-    fill_in 'Password confirmation', with: 'password'
-    fill_in 'Name', with: 'Jeremiah Johann'
+    fill_in 'Email', with: user.email
+    fill_in 'Password', with: user.password
+    fill_in 'Password confirmation', with: user.password_confirmation
+    fill_in 'Name', with: user.name
     fill_in 'Bank account number', with: '123456789'
     fill_in 'Routing number', with: '321174851'
     click_on 'Sign up'
@@ -57,6 +57,8 @@ feature 'User signs up' do
     end
   end
 
+
+  # no longer neccassary?
   scenario 'with invalid bank account information', js: true do
     visit new_user_registration_path
     fill_in 'Email', with: 'user@example.com'

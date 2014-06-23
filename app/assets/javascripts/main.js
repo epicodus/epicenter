@@ -1,5 +1,9 @@
 $(function() {
 
+  var validPasswords = function(password, passwordConfirmation) {
+    return password.length >= 8 && password === passwordConfirmation;
+  }
+
   var submitAccountInfo = function(event) {
     alert('form is being submitted')
     event.preventDefault();
@@ -23,7 +27,7 @@ $(function() {
       formHasErrors = true;
     }
 
-    if (!$password.val()) {
+    if (!validPasswords($password.val(), $passwordConfirmation.val())) {
       addErrorToField($password);
       formHasErrors = true;
     }
@@ -59,12 +63,13 @@ $(function() {
     alert('handling response!')
     if (response.status_code === 201) {
       var $form = $('form#new_user')
-      var uri = response.bank_accounts[0].href
-      console.log(uri)
+      var uri = response.bank_accounts[0].href;
+
+      $("input#user_subscription_account_uri").val(uri);
       $("input#bank_account_number").val('');
       $("input#routing_number").val('');
 
-      $form.append('<input id="user_uri" name="user[uri]" type="hidden" value="' + uri + '">');
+      $form.append();
       alert('about to submit the form!!')
       $form.unbind('submit').submit();
 

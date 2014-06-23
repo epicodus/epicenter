@@ -3,7 +3,7 @@
 
 <%= form_for @subscription do |f| %>
   <div><%= f.label :first_deposit, "First deposit amount" %><br />
-  <%= f.text_field :first_deposit, nil, autofocus: true %></div>
+  <%= f.text_field :first_deposit, autofocus: true %></div>
 
   <div><%= f.label :second_deposit, "Second deposit amount" %><br />
     <%= f.text_field :second_deposit %></div>

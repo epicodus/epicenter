@@ -7,6 +7,9 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'
 gem 'devise'
+gem 'balanced'
+gem 'awesome_print'
+gem 'dotenv'
 
 group :development do
   gem 'spring'
