@@ -56,20 +56,6 @@ feature 'User signs up' do
       expect(page).to have_content 'Routing number'
     end
   end
-
-
-  # no longer neccassary?
-  scenario 'with invalid bank account information', js: true do
-    visit new_user_registration_path
-    fill_in 'Email', with: 'user@example.com'
-    fill_in 'Password', with: 'password'
-    fill_in 'Password confirmation', with: 'password'
-    fill_in 'Name', with: 'Jeremiah Johann'
-    fill_in 'Bank account number', with: '123456789'
-    fill_in 'Routing number', with: '321174851'
-    click_on 'Sign up'
-    expect(page).to have_content 'Invalid account number'
-  end
 end
 
 
