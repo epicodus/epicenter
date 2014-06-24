@@ -9,7 +9,7 @@ class SubscriptionsController < ApplicationController
       redirect_to :back, notice: "Please enter both amounts"
     end
 
-    if @subscription.verify_account(current_user)
+    if @subscription.create_verification
       # @subscription.start_recurring_payments
       redirect_to user_path notice: "Your payment has been verified"
     else

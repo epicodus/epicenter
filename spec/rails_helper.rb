@@ -63,4 +63,6 @@ RSpec.configure do |config|
   config.before(:suite) do
     FactoryGirl.lint
   end
+
+  config.include Devise::TestHelpers, type: :controller
 end

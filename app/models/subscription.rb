@@ -15,11 +15,11 @@ private
     self.verification_uri = verification.href
   end
 
-  def verify_account(current_user)
-    verification = Balanced::BankAccountVerification.fetch(current_user.verification_uri)
-    verification_response = verification.confirm(amount_1 = first_deposit, amount_2 = second_deposit)
-    verification_response.verification_status == "succeeded"
-  end
+  # def verify_account(current_user)
+  #   verification = Balanced::BankAccountVerification.fetch(current_user.verification_uri)
+  #   verification_response = verification.confirm(amount_1 = first_deposit, amount_2 = second_deposit)
+  #   verification_response.verification_status == "succeeded"
+  # end
 
   def start_recurring_payments
   end

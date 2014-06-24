@@ -7,5 +7,10 @@ FactoryGirl.define do
     email
     password "password"
     password_confirmation "password"
+    subscription
+
+    factory :user_with_verified_subscription do
+      verified_subscription
+    end
   end
 end

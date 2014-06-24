@@ -66,3 +66,25 @@ feature 'User signs up' do
     end
   end
 end
+
+feature "User signs in" do
+  subject { page }
+
+  context "with unverified account" do
+    before do
+      user = create(:user)
+      sign_in user
+    end
+
+    it { should have_content "First deposit amount" }
+  end
+
+  context "with verified account" do
+    before do
+      user = create(:user_with_verified_subscription)
+      sign_in user
+    end
+
+    it { should have_content "last payment" }
+  end
+end
