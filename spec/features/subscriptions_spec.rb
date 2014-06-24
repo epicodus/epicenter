@@ -17,17 +17,26 @@ describe 'Start making payments link' do
 end
 
 feature 'User signs up' do
-  scenario 'with valid information', js: true do
-    user = build(:user)
-    visit new_user_registration_path
-    fill_in 'Email', with: user.email
-    fill_in 'Password', with: user.password
-    fill_in 'Password confirmation', with: user.password_confirmation
-    fill_in 'Name', with: user.name
-    fill_in 'Bank account number', with: '123456789'
-    fill_in 'Routing number', with: '321174851'
-    click_on 'Sign up'
-    expect(page).to have_content 'verify your account'
+  context 'with valid information', js: true do
+    before do
+      visit new_user_registration_path
+      fill_in 'Email', with: 'example_user@example.com'
+      fill_in 'Password', with: 'password'
+      fill_in 'Password confirmation', with: 'password'
+      fill_in 'Name', with: 'Ryan Larson'
+      fill_in 'Bank account number', with: '123456789'
+      fill_in 'Routing number', with: '321174851'
+      click_on 'Sign up'
+    end
+
+    it "shows a loading page" do
+      expect(page).to have_submit_button("loading")
+    end
+
+    it "redirects to success page successful loading" do
+      sleep 8
+      expect(page).to have_content 'verify your account'
+    end
   end
 
   scenario 'with missing account number', js: true do

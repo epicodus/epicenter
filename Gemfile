@@ -30,4 +30,5 @@ group :test do
   gem 'shoulda-matchers'
   gem 'launchy'
   gem 'poltergeist'
+  gem 'database_cleaner', git: 'https://github.com/DatabaseCleaner/database_cleaner'
 end

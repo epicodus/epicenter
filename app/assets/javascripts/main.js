@@ -49,6 +49,7 @@ $(function() {
 
     if (!formHasErrors) {
       alert('form does not have any errors')
+      $('#sign-up-button').val('loading').attr('disabled', 'disabled')
       var payload = {
         name: $name.val(),
         routing_number: $routingNumber.val(),
