@@ -17,7 +17,7 @@ describe 'Start making payments link' do
 end
 
 feature 'User signs up' do
-  scenario 'with valid information' do
+  scenario 'with valid information', js: true do
     user = build(:user)
     visit new_user_registration_path
     fill_in 'Email', with: user.email
