@@ -39,6 +39,6 @@ feature "User signs in" do
       sign_in user
     end
 
-    it { should have_content "last payment" }
+    it { should have_content "Your payments" }
   end
 end
