@@ -12,6 +12,10 @@ protected
   def after_sign_in_path_for(resource)
     if resource.subscription.nil?
       new_subscription_path
+    elsif !resource.subscription.verified
+      edit_subscription_path(resource.subscription)
+    else
+      user_path(resource)
     end
   end
 end

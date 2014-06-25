@@ -14,6 +14,10 @@ class SubscriptionsController < ApplicationController
     end
   end
 
+  def edit
+    @subscription = params[:id]
+  end
+
 private
 
   def subscription_params
