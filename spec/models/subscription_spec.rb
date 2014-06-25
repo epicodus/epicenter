@@ -33,6 +33,10 @@ describe Subscription do
       @subscription.second_deposit = 1
       expect(@subscription.confirm_verification).to be true
     end
+
+    it "sets 'verfied' to true after verification is confirmed" do
+      expect(@subscription.verified).to be true
+    end
   end
 end
 
