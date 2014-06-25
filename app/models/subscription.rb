@@ -9,7 +9,7 @@ class Subscription < ActiveRecord::Base
   def create_verification
     bank_account = Balanced::BankAccount.fetch(account_uri)
     verification = bank_account.verify
-    self.verification_uri = verification.href
+    set_verification_uri(verification)
   end
 
   def confirm_verification
@@ -26,7 +26,11 @@ class Subscription < ActiveRecord::Base
   end
 
 private
+  def set_verification_uri(verification)
+    update(verification_uri: verification.href)
+  end
+
   def set_verified
-    self.verified = true
+    update(verified: true)
   end
 end

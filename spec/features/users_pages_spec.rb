@@ -26,7 +26,7 @@ feature "User signs in" do
 
   context "with unverified account" do
     before do
-      user = create(:user)
+      user = create(:user_with_subscription)
       sign_in user
     end
 

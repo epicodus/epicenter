@@ -4,7 +4,6 @@ describe Subscription do
   it { should validate_presence_of :account_uri }
   it { should belong_to :user }
 
-
   describe "verify bank account" do
     before :all do
       Balanced.configure('ak-test-2q80HU8DISm2atgm0iRKRVIePzDb34qYp')
@@ -19,6 +18,7 @@ describe Subscription do
 
     it "creates a verification" do
       @subscription.create_verification
+      @subscription.reload
       expect(@subscription.verification_uri).to_not be_nil
     end
 
@@ -35,6 +35,7 @@ describe Subscription do
     end
 
     it "sets 'verfied' to true after verification is confirmed" do
+      @subscription.reload
       expect(@subscription.verified).to be true
     end
   end

@@ -1,12 +1,13 @@
 require 'rails_helper'
 
 feature 'User creates a subscription' do
-  let(:user) { create(:user) }
-  before { sign_in(user) }
+
   context 'with valid information', js: true do
-    before do
+    before :each do
+      @user = create(:user)
+      sign_in @user
       visit new_subscription_path
-      fill_in 'Name on account', with: user.name
+      fill_in 'Name on account', with: @user.name
       fill_in 'Bank account number', with: '123456789'
       fill_in 'Routing number', with: '321174851'
       click_on 'Add bank account'
@@ -17,12 +18,14 @@ feature 'User creates a subscription' do
     end
 
     it "redirects to success page successful loading" do
-      sleep 10
+      # sleep 10
       expect(page).to have_content 'verify the deposits'
     end
   end
 
   scenario 'with missing account number', js: true do
+    user = create(:user)
+    sign_in user
     visit new_subscription_path
     fill_in 'Name', with: user.name
     fill_in 'Routing number', with: '321174851'
@@ -33,6 +36,8 @@ feature 'User creates a subscription' do
   end
 
   scenario 'with invalid routing number', js: true do
+    user = create(:user)
+    sign_in user
     visit new_subscription_path
     fill_in 'Name', with: user.name
     fill_in 'Bank account number', with: '123456789'
