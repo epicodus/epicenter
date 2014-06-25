@@ -8,8 +8,5 @@ FactoryGirl.define do
       :routing_number => '021000021'
     ).save
     account_uri(bank_account.href)
-    factory :verified_subscription do
-      verified true
-    end
   end
 end

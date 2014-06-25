@@ -4,7 +4,7 @@ describe Subscription do
   it { should validate_presence_of :account_uri }
   it { should belong_to :user }
 
-  it "creates a verification after creation" do
+  it "creates a verification" do
     Balanced.configure('ak-test-2q80HU8DISm2atgm0iRKRVIePzDb34qYp')
     bank_account = Balanced::BankAccount.new(
       :account_number => '9900000002',
@@ -13,6 +13,7 @@ describe Subscription do
       :routing_number => '021000021'
     ).save
     subscription = Subscription.create(account_uri: bank_account.href)
+    subscription.create_verification
     expect(subscription.verification_uri).to_not be_nil
   end
 end

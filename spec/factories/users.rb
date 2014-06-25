@@ -10,7 +10,7 @@ FactoryGirl.define do
     subscription
 
     factory :user_with_verified_subscription do
-      verified_subscription
+      association :subscription, factory: :subscription, verified: true
     end
   end
 end

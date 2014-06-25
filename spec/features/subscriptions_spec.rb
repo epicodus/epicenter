@@ -13,12 +13,12 @@ feature 'User creates a subscription' do
     end
 
     it "shows loading indicator" do
-      expect(page).to have_submit_button("loading")
+      expect(page).to have_submit_button("loading...")
     end
 
     it "redirects to success page successful loading" do
-      sleep 8
-      expect(page).to have_content 'verify your account'
+      sleep 10
+      expect(page).to have_content 'verify the deposits'
     end
   end
 
