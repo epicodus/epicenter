@@ -6,9 +6,6 @@ class Subscription < ActiveRecord::Base
 
   belongs_to :user
 
-  after_create :create_verification
-
-private
   def create_verification
     bank_account = Balanced::BankAccount.fetch(account_uri)
     verification = bank_account.verify

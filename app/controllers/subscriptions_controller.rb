@@ -4,16 +4,19 @@ class SubscriptionsController < ApplicationController
   end
 
   def create
-    @subscription = Subscription.new(params[:subscription])
-    if !subscription.valid?
-      redirect_to :back, notice: "Please enter both amounts"
+    @subscription = Subscription.new(subscription_params)
+    if @subscription.save
+      if @subscription.create_verification
+        render 'sign_up_message'
+      else
+        redirect_to :back, notice: 'Something went wrong. Please try again.'
+      end
     end
+  end
 
-    if @subscription.create_verification
-      # @subscription.start_recurring_payments
-      redirect_to user_path notice: "Your payment has been verified"
-    else
-      # redirect_to :back, notice: "Those deposit amounts are not correct"
-    end
+private
+
+  def subscription_params
+    params.require(:subscription).permit(:account_uri, :verification_uri)
   end
 end

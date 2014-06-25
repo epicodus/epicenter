@@ -6,10 +6,12 @@ class ApplicationController < ActionController::Base
 
 protected
   def configure_permitted_params
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:name, :email, :password, :password_confirmation, subscription_attributes: [:account_uri]) }
+    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:name, :email, :password, :password_confirmation) }
   end
 
   def after_sign_in_path_for(resource)
-    new_subscription_path
+    if resource.subscription.nil?
+      new_subscription_path
+    end
   end
 end
