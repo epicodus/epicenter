@@ -9,6 +9,8 @@ $(function() {
       $("input#routing_number").val('*********');
       $form.unbind('submit').submit();
 
+      $('#account-submit-button').val('loading...').attr('disabled', 'disabled')
+
     } else {
       return;
     }
@@ -39,7 +41,6 @@ $(function() {
     }
 
     if (!formHasErrors) {
-      $('#account-submit-button').val('loading...').attr('disabled', 'disabled')
       var payload = {
         name: $name.val(),
         routing_number: $routingNumber.val(),
