@@ -13,9 +13,13 @@ class Subscription < ActiveRecord::Base
   end
 
   def confirm_verification
-    verification = Balanced::BankAccountVerification.fetch(verification_uri)
-    verification_response = verification.confirm(amount_1 = first_deposit, amount_2 = second_deposit)
-    verification_response.verification_status == "succeeded"
+    begin
+      verification = Balanced::BankAccountVerification.fetch(verification_uri)
+      verification_response = verification.confirm(amount_1 = first_deposit, amount_2 = second_deposit)
+      verification_response.verification_status == "succeeded"
+    rescue
+      false
+    end
   end
 
   def start_recurring_payments

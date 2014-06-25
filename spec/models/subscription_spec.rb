@@ -22,7 +22,13 @@ describe Subscription do
       expect(@subscription.verification_uri).to_not be_nil
     end
 
-    it "confirms a verification correctly" do
+    it "does not confirm a verification when incorrect deposits are entered" do
+      @subscription.first_deposit = 2
+      @subscription.second_deposit = 1
+      expect(@subscription.confirm_verification).to be false
+    end
+
+    it "confirms a verification when correct deposits are entered" do
       @subscription.first_deposit = 1
       @subscription.second_deposit = 1
       expect(@subscription.confirm_verification).to be true
