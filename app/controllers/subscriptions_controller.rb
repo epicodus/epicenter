@@ -8,7 +8,7 @@ class SubscriptionsController < ApplicationController
     if @subscription.save
       render 'sign_up_message'
     else
-      flash[:notice] = 'Something went wrong. Please try again.'
+      flash[:alert] = 'Something went wrong. Please try again.'
       render :new
     end
   end
@@ -22,7 +22,7 @@ class SubscriptionsController < ApplicationController
     if @subscription.update(subscription_params)
       redirect_to current_user, notice: 'Thank you! Your account has been confirmed.'
     else
-      flash[:notice] = "Your account could not be confirmed."
+      flash[:alert] = "Your account could not be confirmed."
       render :edit
     end
   end
