@@ -6,7 +6,7 @@ describe Subscription do
 
   describe "verify bank account" do
     before :all do
-      Balanced.configure('ak-test-2q80HU8DISm2atgm0iRKRVIePzDb34qYp')
+      Balanced.configure(ENV['BALANCED_API_KEY'])
       bank_account = Balanced::BankAccount.new(
         :account_number => '9900000002',
         :account_type => 'checking',

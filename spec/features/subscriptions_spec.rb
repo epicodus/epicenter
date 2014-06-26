@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 feature 'User creates a subscription' do
-
   context 'with valid information', js: true do
     before :each do
       @user = create(:user)
@@ -45,6 +44,28 @@ feature 'User creates a subscription' do
     click_on 'Add bank account'
     within 'div.error' do
       expect(page).to have_content 'Routing number'
+    end
+  end
+end
+
+feature "user confirms bank account" do
+  feature "with correct desposit amounts" do
+    scenario "it says that the payment is confirmed" do
+      user = create(:user)
+      Balanced.configure('ak-test-2q80HU8DISm2atgm0iRKRVIePzDb34qYp')
+      bank_account = Balanced::BankAccount.new(
+        :account_number => '9900000002',
+        :account_type => 'checking',
+        :name => 'Johann Bernoulli',
+        :routing_number => '021000021'
+      ).save
+      @subscription = Subscription.create(account_uri: bank_account.href)
+      sign_in user
+      fill_in 'First deposit amount', with: "1"
+      fill_in 'Second deposit amount', with: "1"
+      click_button "Confirm"
+      expect(page).to have_content "Your payment"
+      expect(page).to have_content "confirmed"
     end
   end
 end
