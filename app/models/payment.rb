@@ -15,7 +15,7 @@ private
         :appears_on_statement_as => 'Epicodus Tuition',
         :description => 'Some descriptive text for the debit in the dashboard'
       )
-      self.payment_uri = debit.href
+      self.payment_uri = debit.href if !debit.failure_reason
     rescue
       false
     end
