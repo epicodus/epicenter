@@ -3,6 +3,7 @@ require 'rails_helper'
 describe Subscription do
   it { should validate_presence_of :account_uri }
   it { should belong_to :user }
+  it { should have_many :payments }
 
   describe "verify bank account" do
     before :all do

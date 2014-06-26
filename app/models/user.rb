@@ -6,5 +6,6 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_one :subscription
+  has_many :payments, through: :subscription
   accepts_nested_attributes_for :subscription
 end
