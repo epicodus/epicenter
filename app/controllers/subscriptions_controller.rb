@@ -4,9 +4,9 @@ class SubscriptionsController < ApplicationController
   end
 
   def create
-    @subscription = Subscription.new(subscription_params)
-    current_user.subscription = @subscription
-    if @subscription.save && @subscription.create_verification
+    @subscription = Subscription.create(subscription_params)
+    if @subscription.save
+      current_user.subscription = @subscription
       render 'sign_up_message'
     else
       redirect_to :back, notice: 'Something went wrong. Please try again.'
