@@ -4,21 +4,21 @@ class SubscriptionsController < ApplicationController
   end
 
   def create
-    @subscription = Subscription.create(subscription_params)
+    @subscription = Subscription.create(subscription_params.merge(user: current_user))
     if @subscription.save
-      current_user.subscription = @subscription
       render 'sign_up_message'
     else
-      redirect_to :back, notice: 'Something went wrong. Please try again.'
+      flash[:notice] = 'Something went wrong. Please try again.'
+      render :new
     end
   end
 
   def edit
-    @subscription = Subscription.find(params[:id])
+    @subscription = current_user.subscription
   end
 
   def update
-    @subscription = Subscription.find(params[:id])
+    @subscription = current_user.subscription
     if @subscription.update(subscription_params)
       redirect_to current_user, notice: 'Thank you! Your account has been confirmed.'
     else

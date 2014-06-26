@@ -5,6 +5,7 @@ class Subscription < ActiveRecord::Base
   validates_presence_of :account_uri
 
   belongs_to :user
+  has_many :payments
 
   before_create :create_verification
 
