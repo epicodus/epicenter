@@ -18,14 +18,10 @@ class Subscription < ActiveRecord::Base
 
   def confirm_verification
     begin
-      puts "#{verification_uri}"
       verification = Balanced::BankAccountVerification.fetch(verification_uri)
-      puts "made it past fetch"
       verification_response = verification.confirm(first_deposit, second_deposit)
-      puts "made it past response"
       self.verified = true if verification_response.verification_status == "succeeded"
     rescue
-      puts "in rescue"
       false
     end
   end

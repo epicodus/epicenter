@@ -22,6 +22,7 @@ class SubscriptionsController < ApplicationController
     if @subscription.update(subscription_params)
       redirect_to current_user, notice: 'Thank you! Your account has been confirmed.'
     else
+      flash[:notice] = "Your account could not be confirmed."
       render :edit
     end
   end

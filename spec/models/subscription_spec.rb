@@ -6,19 +6,10 @@ describe Subscription do
 
   describe "verify bank account" do
     before :all do
-      Balanced.configure(ENV['BALANCED_API_KEY'])
-      bank_account = Balanced::BankAccount.new(
-        :account_number => '9900000002',
-        :account_type => 'checking',
-        :name => 'Johann Bernoulli',
-        :routing_number => '021000021'
-      ).save
-      @subscription = Subscription.create(account_uri: bank_account.href)
+      @subscription = create_subscription
     end
 
-    it "creates a verification" do
-      @subscription.create_verification
-      @subscription.reload
+    it "creates a verification before_create" do
       expect(@subscription.verification_uri).to_not be_nil
     end
 
@@ -32,10 +23,6 @@ describe Subscription do
       @subscription.first_deposit = 1
       @subscription.second_deposit = 1
       expect(@subscription.confirm_verification).to be true
-    end
-
-    it "sets 'verfied' to true after verification is confirmed" do
-      @subscription.reload
       expect(@subscription.verified).to be true
     end
   end
