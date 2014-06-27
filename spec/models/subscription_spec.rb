@@ -5,9 +5,13 @@ describe Subscription do
   it { should belong_to :user }
   it { should have_many :payments }
 
-  describe "verify bank account" do
+  describe "create bank account" do
     before :all do
       @subscription = create_subscription
+    end
+
+    it "sets status to 'active' before_create" do
+      expect(@subscription.status).to eq "active"
     end
 
     it "creates a verification before_create" do

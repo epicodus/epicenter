@@ -8,6 +8,7 @@ class Subscription < ActiveRecord::Base
   has_many :payments
 
   before_create :create_verification
+  before_create :activate_subscription
 
   after_update :create_payment, if: :confirming_account?
 
@@ -30,6 +31,10 @@ class Subscription < ActiveRecord::Base
   end
 
 private
+
+  def activate_subscription
+    self.status = "active"
+  end
 
   def create_payment
     self.payments.create(amount: 65000)
