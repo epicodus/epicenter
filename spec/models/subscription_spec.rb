@@ -33,11 +33,34 @@ describe Subscription do
   end
 
   describe "#create_payment" do
-    it 'should be called when the model is updated with first and second deposits' do
+    it 'is called when the model is updated with first and second deposits' do
       subscription = create_subscription
       subscription.update(first_deposit: 1, second_deposit: 1)
       expect(subscription.payments.length).to eq 1
       expect(subscription.payments.first.amount).to eq 65000
+    end
+  end
+
+  describe ".billable_today" do
+    use_vcr_cassette
+    it "returns all subscriptions that are due for payment" do
+      subscription1 = create_subscription
+      subscription1.update(first_deposit: 1, second_deposit: 1)
+      subscription1.payments.first.update(created_at: 1.month.ago)
+
+      subscription2 = create_subscription
+      subscription2.update(first_deposit: 1, second_deposit: 1)
+      subscription2.payments.first.update(created_at: 1.month.ago)
+
+      subscription3 = create_subscription
+      subscription3.update(first_deposit: 1, second_deposit: 1)
+      subscription3.payments.first.update(created_at: 2.weeks.ago)
+
+      subscription4 = create_subscription
+      subscription4.update(first_deposit: 1, second_deposit: 1, status: 'inactive')
+      subscription4.payments.first.update(created_at: 1.month.ago)
+
+      expect(Subscription.billable_today).to eq [subscription1, subscription2]
     end
   end
 end

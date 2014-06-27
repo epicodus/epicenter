@@ -1,6 +1,8 @@
 class Subscription < ActiveRecord::Base
   Balanced.configure(ENV['BALANCED_API_KEY'])
 
+  scope :active, -> { where(status: 'active') }
+
   attr_accessor :first_deposit, :second_deposit
   validates_presence_of :account_uri
 
@@ -27,6 +29,12 @@ class Subscription < ActiveRecord::Base
       self.verified = true if verification_response.verification_status == "succeeded"
     rescue
       false
+    end
+  end
+
+  def self.billable_today
+    active.select do |subscription|
+      subscription.payments.last.created_at < 1.month.ago
     end
   end
 

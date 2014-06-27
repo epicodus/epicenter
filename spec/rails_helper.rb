@@ -7,6 +7,7 @@ require 'rspec/rails'
 require 'capybara/rails'
 require 'shoulda/matchers'
 require 'capybara/poltergeist'
+require 'vcr'
 
 Capybara.javascript_driver = :poltergeist
 
@@ -24,6 +25,8 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
+  config.extend VCR::RSpec::Macros
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
@@ -60,9 +63,11 @@ RSpec.configure do |config|
 
   # Factory Girl configs
   config.include FactoryGirl::Syntax::Methods
-  config.before(:suite) do
-    FactoryGirl.lint
-  end
 
   config.include Devise::TestHelpers, type: :controller
+end
+
+VCR.configure do |config|
+  config.cassette_library_dir = 'fixtures/vcr_cassettes'
+  config.hook_into :fakeweb
 end
