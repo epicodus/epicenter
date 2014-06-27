@@ -8,6 +8,7 @@ feature 'User creates a subscription' do
     fill_in 'Name on account', with: @user.name
   end
   context 'with valid information', js: true do
+
     before do
       fill_in 'Bank account number', with: '123456789'
       fill_in 'Routing number', with: '321174851'
@@ -25,6 +26,7 @@ feature 'User creates a subscription' do
   end
 
   scenario 'with missing account number', js: true do
+
     fill_in 'Routing number', with: '321174851'
     click_on 'Add bank account'
     within 'div.error' do
@@ -33,6 +35,7 @@ feature 'User creates a subscription' do
   end
 
   scenario 'with invalid routing number', js: true do
+
     fill_in 'Bank account number', with: '123456789'
     fill_in 'Routing number', with: '1234568'
     click_on 'Add bank account'
@@ -43,6 +46,7 @@ feature 'User creates a subscription' do
 end
 
 feature "user confirms bank account" do
+
   before do
     user = create(:user)
     subscription = create_subscription

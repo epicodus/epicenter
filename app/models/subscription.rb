@@ -28,13 +28,21 @@ class Subscription < ActiveRecord::Base
       verification_response = verification.confirm(first_deposit, second_deposit)
       self.verified = true if verification_response.verification_status == "succeeded"
     rescue
+
       false
     end
   end
 
   def self.billable_today
     active.select do |subscription|
+
       subscription.payments.last.created_at < 1.month.ago
+    end
+  end
+
+  def self.bill_subscriptions
+    billable_today.each do |subscription|
+      subscription.send(:create_payment)
     end
   end
 

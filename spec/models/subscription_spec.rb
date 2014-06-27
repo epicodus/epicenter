@@ -6,29 +6,30 @@ describe Subscription do
   it { should have_many :payments }
 
   describe "create bank account" do
-    before :all do
-      @subscription = create_subscription
-    end
+    let(:subscription) { create_subscription }
+    # before :each do
+    #   @subscription = create_subscription
+    # end
 
     it "sets status to 'active' before_create" do
-      expect(@subscription.status).to eq "active"
+      expect(subscription.status).to eq "active"
     end
 
     it "creates a verification before_create" do
-      expect(@subscription.verification_uri).to_not be_nil
+      expect(subscription.verification_uri).to_not be_nil
     end
 
     it "does not confirm a verification when incorrect deposits are entered" do
-      @subscription.first_deposit = 2
-      @subscription.second_deposit = 1
-      expect(@subscription.confirm_verification).to be false
+      subscription.first_deposit = 2
+      subscription.second_deposit = 1
+      expect(subscription.confirm_verification).to be false
     end
 
     it "confirms a verification when correct deposits are entered" do
-      @subscription.first_deposit = 1
-      @subscription.second_deposit = 1
-      expect(@subscription.confirm_verification).to be true
-      expect(@subscription.verified).to be true
+      subscription.first_deposit = 1
+      subscription.second_deposit = 1
+      expect(subscription.confirm_verification).to be true
+      expect(subscription.verified).to be true
     end
   end
 
@@ -61,6 +62,34 @@ describe Subscription do
       subscription4.payments.first.update(created_at: 1.month.ago)
 
       expect(Subscription.billable_today).to eq [subscription1, subscription2]
+    end
+
+    # it "handles months with different amounts of days" do
+    #   today = Date.new(2014, 3, 1).to_time
+    #   Time.stub(now: today)
+    #   subscription = create_subscription
+    #   subscription.update(first_deposit: 1, second_deposit: 1)
+    #   subscription.payments.first.update(created_at: Date.new(2014, 1, 31))
+    #   binding.pry
+    #   expect(Subscription.billable_today).to eq [subscription]
+    # end
+  end
+
+  describe ".bill_subscriptions" do
+    use_vcr_cassette
+    it "bills all subscriptions that are due today" do
+      subscription1 = create_subscription
+      subscription1.update(first_deposit: 1, second_deposit: 1)
+      subscription1.payments.first.update(created_at: 1.month.ago)
+
+      subscription2 = create_subscription
+      subscription2.update(first_deposit: 1, second_deposit: 1)
+      subscription2.payments.first.update(created_at: 1.weeks.ago)
+
+      Subscription.bill_subscriptions
+
+      expect(subscription1.payments.length).to eq 2
+      expect(subscription2.payments.length).to eq 1
     end
   end
 end

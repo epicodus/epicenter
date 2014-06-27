@@ -10,6 +10,7 @@ private
   def make_payment
     begin
       bank_account = Balanced::BankAccount.fetch(subscription.account_uri)
+
       debit = bank_account.debit(
         :amount => amount,
         :appears_on_statement_as => 'Epicodus Tuition',
