@@ -27,5 +27,14 @@ describe Subscription do
       expect(@subscription.verified).to be true
     end
   end
+
+  describe "#create_payment" do
+    it 'should be called when the model is updated with first and second deposits' do
+      subscription = create_subscription
+      subscription.update(first_deposit: 1, second_deposit: 1)
+      expect(subscription.payments.length).to eq 1
+      expect(subscription.payments.first.amount).to eq 65000
+    end
+  end
 end
 

@@ -9,6 +9,8 @@ class Subscription < ActiveRecord::Base
 
   before_create :create_verification
 
+  after_update :create_payment, if: :confirming_account?
+
   before_update :confirm_verification, if: :confirming_account?
 
   def create_verification
@@ -28,6 +30,11 @@ class Subscription < ActiveRecord::Base
   end
 
 private
+
+  def create_payment
+    self.payments.create(amount: 65000)
+  end
+
   def confirming_account?
     first_deposit && second_deposit
   end
