@@ -35,8 +35,7 @@ class Subscription < ActiveRecord::Base
 
   def self.billable_today
     active.select do |subscription|
-
-      subscription.payments.last.created_at < 1.month.ago
+      subscription.payments.last.created_at < 1.month.ago if !subscription.payments.empty?
     end
   end
 
