@@ -63,7 +63,7 @@ feature "user confirms bank account", :vcr do
     expect(page).to have_content "confirmed"
   end
 
-  scenario "with correct desposit amounts" do
+  scenario "with incorrect desposit amounts" do
     fill_in 'Second deposit amount', with: "2"
     click_button "Confirm"
     expect(page).to have_content "could not be confirmed"
