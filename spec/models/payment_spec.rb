@@ -7,7 +7,7 @@ describe Payment do
   it { should validate_presence_of :subscription_id }
 
   describe "make a payment" do
-    it "makes a successful payment" do
+    it "makes a successful payment", :vcr do
       subscription = create_subscription
       subscription.first_deposit = 1
       subscription.second_deposit = 1

@@ -21,8 +21,6 @@ end
 group :test, :development do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
-  gem 'vcr'
-  gem 'fakeweb'
 end
 
 group :test do
@@ -31,4 +29,6 @@ group :test do
   gem 'launchy'
   gem 'poltergeist'
   gem 'database_cleaner', git: 'https://github.com/DatabaseCleaner/database_cleaner'
+  gem 'webmock', require: false
+  gem 'vcr'
 end

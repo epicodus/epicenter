@@ -1,0 +1,252 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://ak-test-2q80HU8DISm2atgm0iRKRVIePzDb34qYp:@api.balancedpayments.com/bank_accounts
+    body:
+      encoding: UTF-8
+      string: '{"account_number":"9900000002","account_type":"checking","name":"Johann
+        Bernoulli","routing_number":"021000021"}'
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.0
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 01 Jul 2014 23:52:26 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHMc0dc9a8e017a11e4ba9202a1fe52a36c
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-4-8
+      X-Balanced-Marketplace:
+      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
+      X-Balanced-Merchant:
+      - TEST-MR1lb6D220PWeBKNmZs46597
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.2.74
+      X-Midlr-Version:
+      - '2'
+      X-Newrelic-App-Data:
+      - PxQFWFNXCQYTVVhWAwQDVUYdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKBQJYUVoPAwBUWVoCAQdfUwYaE1BUVU4QQAAHDFkCUANXWAVQU1BTAgQVTUYFWV9DATw=
+      Content-Length:
+      - '1291'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_accounts": [
+            {
+              "routing_number": "021000021",
+              "bank_name": "JPMORGAN CHASE BANK",
+              "account_type": "checking",
+              "name": "Johann Bernoulli",
+              "links": {
+                "customer": null,
+                "bank_account_verification": null
+              },
+              "can_credit": true,
+              "created_at": "2014-07-01T23:52:26.443575Z",
+              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
+              "updated_at": "2014-07-01T23:52:26.443578Z",
+              "href": "/bank_accounts/BA5SgWH69EzXSeKicLMrZfal",
+              "meta": {},
+              "account_number": "xxxxxx0002",
+              "address": {
+                "city": null,
+                "line2": null,
+                "line1": null,
+                "state": null,
+                "postal_code": null,
+                "country_code": null
+              },
+              "can_debit": false,
+              "id": "BA5SgWH69EzXSeKicLMrZfal"
+            }
+          ],
+          "links": {
+            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
+            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications",
+            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
+            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
+            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 01 Jul 2014 23:52:26 GMT
+- request:
+    method: get
+    uri: https://ak-test-2q80HU8DISm2atgm0iRKRVIePzDb34qYp:@api.balancedpayments.com/bank_accounts/BA5SgWH69EzXSeKicLMrZfal
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.0
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 01 Jul 2014 23:52:26 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHMc14c351a017a11e4b7da06429171ffad
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-5-201
+      X-Balanced-Marketplace:
+      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
+      X-Balanced-Merchant:
+      - TEST-MR1lb6D220PWeBKNmZs46597
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.2.74
+      Content-Length:
+      - '499'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_accounts": [
+            {
+              "routing_number": "021000021",
+              "bank_name": "JPMORGAN CHASE BANK",
+              "account_type": "checking",
+              "name": "Johann Bernoulli",
+              "links": {
+                "customer": null,
+                "bank_account_verification": null
+              },
+              "can_credit": true,
+              "created_at": "2014-07-01T23:52:26.443575Z",
+              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
+              "updated_at": "2014-07-01T23:52:26.443578Z",
+              "href": "/bank_accounts/BA5SgWH69EzXSeKicLMrZfal",
+              "meta": {},
+              "account_number": "xxxxxx0002",
+              "address": {
+                "city": null,
+                "line2": null,
+                "line1": null,
+                "state": null,
+                "postal_code": null,
+                "country_code": null
+              },
+              "can_debit": false,
+              "id": "BA5SgWH69EzXSeKicLMrZfal"
+            }
+          ],
+          "links": {
+            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
+            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications",
+            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
+            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
+            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 01 Jul 2014 23:52:26 GMT
+- request:
+    method: post
+    uri: https://ak-test-2q80HU8DISm2atgm0iRKRVIePzDb34qYp:@api.balancedpayments.com/bank_accounts/BA5SgWH69EzXSeKicLMrZfal/verifications
+    body:
+      encoding: UTF-8
+      string: '{}'
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.0
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 01 Jul 2014 23:52:34 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHMc1818364017a11e48ad106429171ffad
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-4-8
+      X-Balanced-Marketplace:
+      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
+      X-Balanced-Merchant:
+      - TEST-MR1lb6D220PWeBKNmZs46597
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.2.74
+      Content-Length:
+      - '599'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_account_verifications": [
+            {
+              "verification_status": "pending",
+              "links": {
+                "bank_account": "BA5SgWH69EzXSeKicLMrZfal"
+              },
+              "href": "/verifications/BZ60G3EpNMI4oCD2GIWGe6tT",
+              "created_at": "2014-07-01T23:52:33.914715Z",
+              "attempts_remaining": 3,
+              "updated_at": "2014-07-01T23:52:34.320755Z",
+              "deposit_status": "succeeded",
+              "attempts": 0,
+              "meta": {},
+              "id": "BZ60G3EpNMI4oCD2GIWGe6tT"
+            }
+          ],
+          "links": {
+            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 01 Jul 2014 23:52:39 GMT
+recorded_with: VCR 2.9.2

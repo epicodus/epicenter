@@ -5,7 +5,7 @@ describe Subscription do
   it { should belong_to :user }
   it { should have_many :payments }
 
-  describe "create bank account" do
+  describe "create bank account", :vcr do
     let(:subscription) { create_subscription }
     # before :each do
     #   @subscription = create_subscription
@@ -33,7 +33,7 @@ describe Subscription do
     end
   end
 
-  describe "#create_payment" do
+  describe "#create_payment", :vcr do
     it 'is called when the model is updated with first and second deposits' do
       subscription = create_subscription
       subscription.update(first_deposit: 1, second_deposit: 1)
@@ -42,8 +42,7 @@ describe Subscription do
     end
   end
 
-  describe ".billable_today" do
-    use_vcr_cassette
+  describe ".billable_today", :vcr do
     it "returns all subscriptions that are due for payment" do
       subscription1 = create_subscription
       subscription1.update(first_deposit: 1, second_deposit: 1)
@@ -75,8 +74,7 @@ describe Subscription do
     # end
   end
 
-  describe ".bill_subscriptions" do
-    use_vcr_cassette
+  describe ".bill_subscriptions", :vcr do
     it "bills all subscriptions that are due today" do
       subscription1 = create_subscription
       subscription1.update(first_deposit: 1, second_deposit: 1)
@@ -93,4 +91,3 @@ describe Subscription do
     end
   end
 end
-

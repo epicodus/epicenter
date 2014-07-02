@@ -23,7 +23,7 @@ end
 feature "User signs in" do
   subject { page }
 
-  context "with unverified account" do
+  context "with unverified account", :vcr do
     before do
       user = create(:user)
       subscription = create_subscription
@@ -34,7 +34,7 @@ feature "User signs in" do
     it { should have_content "First deposit amount" }
   end
 
-  context "with verified account" do
+  context "with verified account", :vcr do
     before do
       user = create(:user)
       subscription = create_verified_subscription

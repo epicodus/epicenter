@@ -25,8 +25,6 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
-  config.extend VCR::RSpec::Macros
-
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
@@ -68,7 +66,8 @@ RSpec.configure do |config|
 end
 
 VCR.configure do |config|
-  config.cassette_library_dir = 'fixtures/vcr_cassettes'
-  config.hook_into :fakeweb
+  config.cassette_library_dir = 'spec/cassettes'
+  config.hook_into :webmock
+  config.configure_rspec_metadata!
   config.allow_http_connections_when_no_cassette = true
 end

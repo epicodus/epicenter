@@ -7,6 +7,7 @@ feature 'User creates a subscription' do
     visit new_subscription_path
     fill_in 'Name on account', with: @user.name
   end
+
   context 'with valid information', js: true do
 
     before do
@@ -45,7 +46,7 @@ feature 'User creates a subscription' do
   end
 end
 
-feature "user confirms bank account" do
+feature "user confirms bank account", :vcr do
 
   before do
     user = create(:user)
