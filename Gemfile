@@ -8,9 +8,6 @@ gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'
 gem 'devise'
 gem 'balanced'
-gem 'awesome_print'
-gem 'dotenv-rails'
-gem 'pry'
 
 group :development do
   gem 'spring'
@@ -21,6 +18,9 @@ end
 group :test, :development do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
+  gem 'awesome_print'
+  gem 'dotenv-rails'
+  gem 'pry'
 end
 
 group :test do
