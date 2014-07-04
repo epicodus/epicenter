@@ -1,6 +1,4 @@
 class Payment < ActiveRecord::Base
-  Balanced.configure(ENV['BALANCED_API_KEY'])
-
   belongs_to :subscription
   validates_presence_of :amount, :subscription_id
 

@@ -1,6 +1,4 @@
 class Subscription < ActiveRecord::Base
-  Balanced.configure(ENV['BALANCED_API_KEY'])
-
   scope :active, -> { where(status: 'active') }
 
   attr_accessor :first_deposit, :second_deposit
