@@ -6,7 +6,6 @@ def sign_in(user)
 end
 
 def create_subscription
-  Balanced.configure(ENV['BALANCED_API_KEY'])
   bank_account = Balanced::BankAccount.new(
     :account_number => '9900000002',
     :account_type => 'checking',
