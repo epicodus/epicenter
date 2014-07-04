@@ -7,5 +7,4 @@ class User < ActiveRecord::Base
 
   has_one :subscription
   has_many :payments, through: :subscription
-  accepts_nested_attributes_for :subscription
 end
