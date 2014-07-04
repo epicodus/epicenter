@@ -7,10 +7,7 @@ describe Subscription do
 
   describe "create bank account", :vcr do
     let(:subscription) { create_subscription }
-    # before :each do
-    #   @subscription = create_subscription
-    # end
-
+    
     it "sets status to 'active' before_create" do
       expect(subscription.status).to eq "active"
     end
