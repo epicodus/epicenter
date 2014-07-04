@@ -31,4 +31,5 @@ group :test do
   gem 'database_cleaner', git: 'https://github.com/DatabaseCleaner/database_cleaner'
   gem 'webmock', require: false
   gem 'vcr'
+  gem 'puffing-billy'
 end
