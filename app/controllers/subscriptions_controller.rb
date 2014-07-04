@@ -5,9 +5,7 @@ class SubscriptionsController < ApplicationController
 
   def create
     @subscription = Subscription.create(subscription_params.merge(user: current_user))
-    if @subscription.save
-      render 'new_subscription_message'
-    else
+    unless @subscription.save
       flash[:alert] = 'Something went wrong. Please try again.'
       render :new
     end

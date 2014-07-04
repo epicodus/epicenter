@@ -30,7 +30,7 @@ feature 'User creates a subscription' do
   scenario 'with missing account number', js: true do
 
     fill_in 'Routing number', with: '321174851'
-    click_on 'Add bank account'
+    click_on 'Verify bank account'
     within 'div.error' do
       expect(page).to have_content 'Bank account number'
     end
@@ -40,7 +40,7 @@ feature 'User creates a subscription' do
 
     fill_in 'Bank account number', with: '123456789'
     fill_in 'Routing number', with: '1234568'
-    click_on 'Add bank account'
+    click_on 'Verify bank account'
     within 'div.error' do
       expect(page).to have_content 'Routing number'
     end

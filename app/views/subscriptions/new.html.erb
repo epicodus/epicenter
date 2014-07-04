@@ -1,4 +1,10 @@
-<h1>Please enter your bank account information</h1>
+<h1>Bank account information</h1>
+
+<p>
+  After entering your bank account information, two small test deposits will be
+  made in your account to confirm that it is yours. When you receive those
+  deposits, you can return to this site to start your payments.
+</p>
 
 <%= form_for @subscription do |f| %>
   <div>
@@ -18,5 +24,5 @@
 
   <input id="subscription_account_uri" name="subscription[account_uri]" type="hidden">
 
-  <div><%= f.submit "Add bank account", id: "account-submit-button", class: "btn" %></div>
+  <div><%= f.submit "Verify bank account", id: "account-submit-button", class: "btn" %></div>
 <% end %>
