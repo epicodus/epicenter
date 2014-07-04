@@ -63,15 +63,17 @@ describe Subscription do
       expect(Subscription.billable_today).to eq [subscription1, subscription2]
     end
 
-    # it "handles months with different amounts of days" do
-    #   today = Date.new(2014, 3, 1).to_time
-    #   Time.stub(now: today)
-    #   subscription = create_subscription
-    #   subscription.update(first_deposit: 1, second_deposit: 1)
-    #   subscription.payments.first.update(created_at: Date.new(2014, 1, 31))
-    #   binding.pry
-    #   expect(Subscription.billable_today).to eq [subscription]
-    # end
+    include ActiveSupport::Testing::TimeHelpers
+
+    it "handles months with different amounts of days" do
+      subscription = create_subscription
+      travel_to(Date.parse("January 31, 2014")) do
+        subscription.update(first_deposit: 1, second_deposit: 1)
+      end
+      travel_to(Date.parse("March 1, 2014")) do
+        expect(Subscription.billable_today).to eq [subscription]
+      end
+    end
   end
 
   describe ".bill_subscriptions", :vcr do
