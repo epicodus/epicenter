@@ -42,6 +42,27 @@ describe Subscription do
   end
 
   describe ".billable_today", :vcr do
+    it "includes subscriptions that have not been billed in the last month" do
+      subscription = FactoryGirl.create(:subscription)
+      subscription.update(first_deposit: 1, second_deposit: 1)
+      subscription.payments.first.update(created_at: 1.month.ago)
+      expect(Subscription.billable_today).to eq [subscription]
+    end
+
+    it "does not include subscriptions that have been billed in the last month" do
+      subscription = FactoryGirl.create(:subscription)
+      subscription.update(first_deposit: 1, second_deposit: 1)
+      subscription.payments.first.update(created_at: 2.weeks.ago)
+      expect(Subscription.billable_today).to eq []
+    end
+
+    it "does not include subscriptions that are inactive" do
+      subscription = FactoryGirl.create(:subscription)
+      subscription.update(first_deposit: 1, second_deposit: 1, status: 'inactive')
+      subscription.payments.first.update(created_at: 1.month.ago)
+      expect(Subscription.billable_today).to eq []
+    end
+
     it "returns all subscriptions that are due for payment" do
       subscription1 = FactoryGirl.create(:subscription)
       subscription1.update(first_deposit: 1, second_deposit: 1)
