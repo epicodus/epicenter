@@ -8,7 +8,7 @@ describe Payment do
 
   describe "make a payment" do
     it "makes a successful payment", :vcr do
-      subscription = create_subscription
+      subscription = FactoryGirl.create(:subscription)
       subscription.first_deposit = 1
       subscription.second_deposit = 1
       subscription.confirm_verification

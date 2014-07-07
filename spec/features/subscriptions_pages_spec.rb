@@ -51,7 +51,7 @@ feature "user confirms bank account", :vcr do
 
   before do
     user = create(:user)
-    subscription = create_subscription
+    subscription = FactoryGirl.create(:subscription)
     user.subscription = subscription
     sign_in user
     fill_in 'First deposit amount', with: "1"
