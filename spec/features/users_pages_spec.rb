@@ -36,9 +36,8 @@ feature "User signs in" do
 
   context "with verified account", :vcr do
     before do
-      user = create(:user)
       subscription = FactoryGirl.create(:subscription, verified: true)
-      user.subscription = subscription
+      user = create(:user, subscription: subscription)
       sign_in user
     end
 
