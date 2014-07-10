@@ -16,4 +16,12 @@ describe Verification do
       expect(subscription.verification_uri).not_to be_nil
     end
   end
+
+  describe ".fetch" do
+    it "fetches a balanced verification using a verification uri" do
+      subscription = create_subscription
+      verification = Verification.fetch(subscription.verification_uri)
+      expect(verification.class).to eq Balanced::BankAccountVerification
+    end
+  end
 end
