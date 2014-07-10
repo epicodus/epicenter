@@ -29,6 +29,14 @@ class Subscription < ActiveRecord::Base
     end
   end
 
+  def verification
+    begin
+      Balanced::BankAccountVerification.fetch(verification_uri)
+    rescue
+      nil
+    end
+  end
+
   def self.billable_today
     active.select do |subscription|
       subscription.payments.last.created_at < 1.month.ago if !subscription.payments.empty?

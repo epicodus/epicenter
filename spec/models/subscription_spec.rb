@@ -7,7 +7,7 @@ describe Subscription do
 
   describe "create bank account", :vcr do
     let(:subscription) { create_subscription }
-    
+
     it "sets status to 'active' before_create" do
       expect(subscription.status).to eq "active"
     end
@@ -87,6 +87,18 @@ describe Subscription do
 
       expect(subscription1.payments.length).to eq 2
       expect(subscription2.payments.length).to eq 1
+    end
+  end
+
+  describe '#verification' do
+    it 'fetches the the verification via balanced api' do
+      subscription = create_subscription
+      expect(subscription.verification).not_to be_nil
+    end
+    it 'returns nil if there is no verification for this account' do
+      invalid_verification_uri = '/bank_account_verification/abc123'
+      subscription = Subscription.new(verification_uri: invalid_verification_uri)
+      expect(subscription.verification).to be_nil
     end
   end
 end
