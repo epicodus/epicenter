@@ -15,9 +15,7 @@ class Subscription < ActiveRecord::Base
   before_update :confirm_verification, if: :confirming_account?
 
   def create_verification
-    bank_account = Balanced::BankAccount.fetch(account_uri)
-    verification = bank_account.verify
-    self.verification_uri = verification.href
+    Verification.new(self)
   end
 
   def confirm_verification
