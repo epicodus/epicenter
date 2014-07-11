@@ -16,17 +16,6 @@ class Subscription < ActiveRecord::Base
     Verification.new(self)
   end
 
-  # def confirm_verification
-  #   begin
-  #     verification = Balanced::BankAccountVerification.fetch(verification_uri)
-  #     verification_response = verification.confirm(first_deposit, second_deposit)
-  #     self.verified = true if verification_response.verification_status == "succeeded"
-  #   rescue
-  #
-  #     false
-  #   end
-  # end
-
   def self.billable_today
     active.select do |subscription|
       subscription.payments.last.created_at < 1.month.ago if !subscription.payments.empty?
