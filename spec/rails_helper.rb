@@ -16,7 +16,7 @@ ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = false
-  config.before(:suite) do
+  config.before(:each) do
     DatabaseCleaner.clean_with(:truncation)
   end
   config.infer_spec_type_from_file_location!
