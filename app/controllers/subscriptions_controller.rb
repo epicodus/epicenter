@@ -12,13 +12,9 @@ class SubscriptionsController < ApplicationController
     end
   end
 
-  def edit
-    @subscription = current_user.subscription
-  end
-
 private
 
   def subscription_params
-    params.require(:subscription).permit(:account_uri, :verification_uri, :first_deposit, :second_deposit)
+    params.require(:subscription).permit(:account_uri, :verification_uri)
   end
 end
