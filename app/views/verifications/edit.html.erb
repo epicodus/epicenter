@@ -1,7 +1,6 @@
 <h1>Please enter your bank account information</h1>
 
 <%= form_tag '/verification', method: :patch do %>
-
   <div>
     <%= label_tag :first_deposit, "First deposit amount" %>
     <%= text_field_tag :first_deposit, autofocus: true %>

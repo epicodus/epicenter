@@ -30,3 +30,13 @@ def create_bank_account
   ).save
   bank_account
 end
+
+def create_subscription_with_user(user)
+  bank_account = Balanced::BankAccount.new(
+    :account_number => '9900000002',
+    :account_type => 'checking',
+    :name => 'Johann Bernoulli',
+    :routing_number => '021000021'
+  ).save
+  subscription = Subscription.create(account_uri: bank_account.href, user: user)
+end

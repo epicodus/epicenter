@@ -46,27 +46,3 @@ feature 'User creates a subscription' do
     end
   end
 end
-
-feature "user confirms bank account", :vcr do
-
-  before do
-    user = create(:user)
-    subscription = create_subscription
-    user.subscription = subscription
-    sign_in user
-    fill_in 'First deposit amount', with: "1"
-  end
-
-  scenario "with correct desposit amounts" do
-    fill_in 'Second deposit amount', with: "1"
-    click_button "Confirm"
-    expect(page).to have_content "Your payment"
-    expect(page).to have_content "confirmed"
-  end
-
-  scenario "with incorrect desposit amounts" do
-    fill_in 'Second deposit amount', with: "2"
-    click_button "Confirm"
-    expect(page).to have_content "could not be confirmed"
-  end
-end

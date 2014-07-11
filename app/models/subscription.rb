@@ -12,22 +12,20 @@ class Subscription < ActiveRecord::Base
 
   after_update :create_payment, if: :confirming_account?
 
-  before_update :confirm_verification, if: :confirming_account?
-
   def create_verification
     Verification.new(self)
   end
 
-  def confirm_verification
-    begin
-      verification = Balanced::BankAccountVerification.fetch(verification_uri)
-      verification_response = verification.confirm(first_deposit, second_deposit)
-      self.verified = true if verification_response.verification_status == "succeeded"
-    rescue
-
-      false
-    end
-  end
+  # def confirm_verification
+  #   begin
+  #     verification = Balanced::BankAccountVerification.fetch(verification_uri)
+  #     verification_response = verification.confirm(first_deposit, second_deposit)
+  #     self.verified = true if verification_response.verification_status == "succeeded"
+  #   rescue
+  #
+  #     false
+  #   end
+  # end
 
   def self.billable_today
     active.select do |subscription|

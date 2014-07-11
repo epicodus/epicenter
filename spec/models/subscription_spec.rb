@@ -15,19 +15,6 @@ describe Subscription do
     it "creates a verification before_create" do
       expect(subscription.verification_uri).to_not be_nil
     end
-
-    it "does not confirm a verification when incorrect deposits are entered" do
-      subscription.first_deposit = 2
-      subscription.second_deposit = 1
-      expect(subscription.confirm_verification).to be false
-    end
-
-    it "confirms a verification when correct deposits are entered" do
-      subscription.first_deposit = 1
-      subscription.second_deposit = 1
-      expect(subscription.confirm_verification).to be true
-      expect(subscription.verified).to be true
-    end
   end
 
   describe "#create_payment", :vcr do

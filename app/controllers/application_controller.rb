@@ -13,7 +13,7 @@ protected
     if resource.subscription.nil?
       new_subscription_path
     elsif !resource.subscription.verified
-      edit_subscription_path(resource.subscription)
+      edit_verification_path
     else
       user_path(resource)
     end

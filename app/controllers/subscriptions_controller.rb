@@ -15,16 +15,6 @@ class SubscriptionsController < ApplicationController
     @subscription = current_user.subscription
   end
 
-  def update
-    @subscription = current_user.subscription
-    if @subscription.update(subscription_params)
-      redirect_to current_user, notice: 'Thank you! Your account has been confirmed.'
-    else
-      flash[:alert] = "Your account could not be confirmed."
-      render :edit
-    end
-  end
-
 private
 
   def subscription_params
