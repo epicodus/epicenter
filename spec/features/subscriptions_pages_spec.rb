@@ -15,16 +15,6 @@ feature 'User creates a subscription' do
       fill_in 'Routing number', with: '321174851'
       click_on 'Add bank account'
     end
-
-    # it "shows loading indicator" do
-    #   #fixme this test fails weirdly when using puffing billy.
-    #   expect(page).to have_submit_button("loading...")
-    # end
-
-    # it "redirects to success page successful loading" do
-    #   sleep 12
-    #   expect(page).to have_content 'verify the deposits'
-    # end
   end
 
   scenario 'with missing account number', js: true do
