@@ -15,3 +15,22 @@ describe 'Start making payments link' do
     expect(page).to have_content 'Sign up'
   end
 end
+
+describe 'Guest not signed in' do
+  subject { page }
+  context 'visits new subscrition path' do
+    before { visit new_subscription_path }
+    it { should have_content 'You need to sign in'}
+  end
+
+  context 'visits edit verification path' do
+    before { visit edit_verification_path }
+    it { should have_content 'You need to sign in' }
+  end
+
+  context 'visits user show path' do
+    let(:user) { create(:user) }
+    before { visit user_path(user) }
+    it { should have_content 'You need to sign in' }
+  end
+end
