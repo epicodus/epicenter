@@ -6,7 +6,7 @@ describe Subscription do
   it { should have_many :payments }
 
   describe "create bank account", :vcr do
-    let(:subscription) { create_subscription }
+    let(:subscription) { FactoryGirl.create :subscription }
 
     it "sets status to 'active' before_create" do
       subscription = FactoryGirl.create(:subscription)

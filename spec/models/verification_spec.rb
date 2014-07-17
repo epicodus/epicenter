@@ -19,7 +19,7 @@ describe Verification do
 
   describe ".fetch" do
     it "fetches a balanced verification using a verification uri" do
-      subscription = create_subscription
+      subscription = FactoryGirl.create :subscription
       verification = Verification.fetch(subscription.verification_uri)
       expect(verification.class).to eq Balanced::BankAccountVerification
     end

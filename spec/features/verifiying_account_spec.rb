@@ -1,11 +1,12 @@
 require 'rails_helper'
 
 describe 'verifying bank account', vcr: true do
-  let(:user) { create(:user) }
+  let(:user) { FactoryGirl.create :user_with_unverified_subscription }
+
   before do
-    @subscription = create_subscription_with_user(user)
     sign_in(user)
   end
+
   context 'with correct deposit amounts' do
     it 'gives the user a confirmation notice' do
       fill_in 'First deposit amount', with: '1'

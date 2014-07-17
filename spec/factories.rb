@@ -1,12 +1,7 @@
 FactoryGirl.define do
   factory :subscription do
     before(:create) do |subscription|
-      bank_account = Balanced::BankAccount.new(
-        :account_number => '9900000002',
-        :account_type => 'checking',
-        :name => 'Johann Bernoulli',
-        :routing_number => '021000021'
-      ).save
+      bank_account = create_bank_account
       subscription.account_uri = bank_account.href
     end
 
@@ -21,7 +16,11 @@ FactoryGirl.define do
     password "password"
     password_confirmation "password"
 
-    factory :user_with_subscription do
+    factory :user_with_unverified_subscription do
+      association :subscription
+    end
+
+    factory :user_with_verified_subscription do
       association :subscription, factory: :verified_subscription
     end
   end
