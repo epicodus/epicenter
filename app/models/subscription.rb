@@ -13,7 +13,8 @@ class Subscription < ActiveRecord::Base
   after_update :create_payment, if: :confirming_account?
 
   def create_verification
-    Verification.new(self)
+    verification = Verification.new(subscription: self)
+    verification.create_test_deposits
   end
 
   def self.billable_today
