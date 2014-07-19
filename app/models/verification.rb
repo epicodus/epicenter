@@ -1,5 +1,5 @@
 class Verification
-  extend ActiveModel::Naming
+  include ActiveModel::Model
 
   def initialize(params)
     @subscription = params[:subscription] || @subscription = params[:user].subscription
@@ -21,7 +21,6 @@ class Verification
       @subscription.update!(verified: true)
       true
     rescue Balanced::BankAccountVerificationFailure => exception
-      errors = ActiveModel::Errors.new(self)
       errors.add(:base, exception.description)
       false
     end

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe Verification do
-  describe "#create_test_deposits", :vcr do
+describe Verification, :vcr do
+  describe "#create_test_deposits" do
     it "creates a verification for the balanced account of the given subscription" do
       subscription = FactoryGirl.build(:subscription)
       verification = Verification.new(subscription: subscription)
@@ -45,7 +45,7 @@ describe Verification do
         user = FactoryGirl.create(:user_with_unverified_subscription)
         verification = Verification.new(user: user, first_deposit: 1, second_deposit: 2)
         verification.confirm
-        expect(verification.errors.full_messages).to eq ["Authentication amounts do not match."]
+        expect(verification.errors.full_messages).to eq ["Authentication amounts do not match. Your request id is OHMa59ded900eea11e4a4e806429171ffad."]
       end
     end
   end
