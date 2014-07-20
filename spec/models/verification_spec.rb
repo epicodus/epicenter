@@ -22,14 +22,14 @@ describe Verification, :vcr do
     context "with correct amounts" do
       it "sets the user's subscription verified status to true" do
         user = FactoryGirl.create(:user_with_unverified_subscription)
-        verification = Verification.new(user: user, first_deposit: 1, second_deposit: 1)
+        verification = Verification.new(subscription: user.subscription, first_deposit: 1, second_deposit: 1)
         verification.confirm
         expect(user.subscription.verified).to be true
       end
 
       it "returns true" do
         user = FactoryGirl.create(:user_with_unverified_subscription)
-        verification = Verification.new(user: user, first_deposit: 1, second_deposit: 1)
+        verification = Verification.new(subscription: user.subscription, first_deposit: 1, second_deposit: 1)
         expect(verification.confirm).to be true
       end
     end
@@ -37,13 +37,13 @@ describe Verification, :vcr do
     context "with incorrect amounts" do
       it "returns false" do
         user = FactoryGirl.create(:user_with_unverified_subscription)
-        verification = Verification.new(user: user, first_deposit: 1, second_deposit: 2)
+        verification = Verification.new(subscription: user.subscription, first_deposit: 1, second_deposit: 2)
         expect(verification.confirm).to be false
       end
 
       it "adds errors to the object" do
         user = FactoryGirl.create(:user_with_unverified_subscription)
-        verification = Verification.new(user: user, first_deposit: 1, second_deposit: 2)
+        verification = Verification.new(subscription: user.subscription, first_deposit: 1, second_deposit: 2)
         verification.confirm
         expect(verification.errors.full_messages).to eq ["Authentication amounts do not match. Your request id is OHMa59ded900eea11e4a4e806429171ffad."]
       end

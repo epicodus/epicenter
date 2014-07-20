@@ -1,9 +1,12 @@
 class Verification
   include ActiveModel::Model
+  attr_accessor :first_deposit, :second_deposit
 
-  def initialize(params)
-    @subscription = params[:subscription] || @subscription = params[:user].subscription
-    @bank_account = Balanced::BankAccount.fetch(@subscription.account_uri)
+  def initialize(params={})
+    @subscription = params[:subscription]
+    unless @subscription.nil?
+      @bank_account = Balanced::BankAccount.fetch(@subscription.account_uri)
+    end
     @first_deposit = params[:first_deposit]
     @second_deposit = params[:second_deposit]
   end
