@@ -1,58 +1,39 @@
 $(function() {
-  var handleResponse = function(response) {
-    if (response.status_code === 201) {
-      var $form = $('form#new_subscription');
-      var uri = response.bank_accounts[0].href;
-
-      $("input#subscription_account_uri").val(uri);
-      $("input#bank_account_number").val('*********');
-      $("input#routing_number").val('*********');
-      $form.unbind('submit').submit();
-
-      $('#account-submit-button').val('loading...').attr('disabled', 'disabled')
-
-    } else {
-      return;
-    }
-  }
-
-  var submitAccountInfo = function(event) {
+  $('form#new_subscription').submit(function(event) {
     event.preventDefault();
 
-    var $name = $("input#name"),
-    $bankAccountNumber = $("input#bank_account_number"),
-    $routingNumber = $("input#routing_number");
+    var formData = {
+      routing_number: $("input#routing_number").val(),
+      account_number:$("input#bank_account_number").val(),
+      name:$("input#name").val()
+    };
 
-    var formHasErrors = false;
-
-    if (!$name.val()) {
-      addErrorToField($name);
-      formHasErrors = true;
-    }
-
-    if (!$bankAccountNumber.val()) {
-      addErrorToField($bankAccountNumber);
-      formHasErrors = true;
-    }
-
-    if (!balanced.bankAccount.isRoutingNumberValid($routingNumber.val())) {
-      addErrorToField($routingNumber);
-      formHasErrors = true;
-    }
-
-    if (!formHasErrors) {
-      var payload = {
-        name: $name.val(),
-        routing_number: $routingNumber.val(),
-        account_number: $bankAccountNumber.val()
-      };
-      balanced.bankAccount.create(payload, handleResponse);
-    }
-  };
-
-  var addErrorToField = function ($field) {
-    $field.parent('div').addClass('error');
-  };
-
-  $('form#new_subscription').submit(submitAccountInfo);
+    balanced.bankAccount.create(formData, handleResponse);
+  });
 });
+
+var handleResponse = function(response) {
+  if (response.status_code === 201) {
+    var uri = response.bank_accounts[0].href;
+    $("input#subscription_account_uri").val(uri);
+
+    $("input#bank_account_number").val('*********');
+    $("input#routing_number").val('*********');
+
+    $('form#new_subscription').unbind('submit').submit();
+    $('#account-submit-button').val('loading...').attr('disabled', 'disabled');
+  } else {
+    $('div.alert-error').remove();
+    $('form#new_subscription').prepend(
+      '<div class="alert alert-error">' +
+        '<h3>Please correct these problems:</h3>' +
+        '<ul>' +
+        '</ul>' +
+      '</div>'
+    );
+
+    response.errors.forEach(function(error) {
+      $('.alert-error ul').append('<li>' + error.description + '</li>');
+    });
+  }
+};
