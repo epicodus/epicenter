@@ -22,7 +22,6 @@ class Verification
     begin
       verification.confirm(@first_deposit, @second_deposit)
       @subscription.update!(verified: true)
-      true
     rescue Balanced::BankAccountVerificationFailure => exception
       errors.add(:base, exception.description)
       false
