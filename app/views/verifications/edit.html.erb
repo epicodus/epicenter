@@ -1,17 +1,19 @@
 <h1>Please enter your bank account information</h1>
 
-<%= form_tag '/verification', method: :patch do %>
+<%= render '/layouts/errors', :object => @verification %>
+
+<%= form_for @verification, url: '/verification', method: :patch do |f| %>
   <div>
-    <%= label_tag :first_deposit, "First deposit amount" %>
-    <%= text_field_tag :first_deposit, autofocus: true %>
+    <%= f.label :first_deposit, "First deposit amount" %>
+    <%= f.text_field :first_deposit, autofocus: true %>
   </div>
 
   <div>
-    <%= label_tag :second_deposit, "Second deposit amount" %>
-    <%= text_field_tag :second_deposit %>
+    <%= f.label :second_deposit, "Second deposit amount" %>
+    <%= f.text_field :second_deposit %>
   </div>
 
   <div>
-    <%= submit_tag "Confirm account & start payments", id: "account-verify-button", class: 'btn' %>
+    <%= f.submit "Confirm account & start payments", id: "account-verify-button", class: 'btn' %>
   </div>
 <% end %>

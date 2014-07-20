@@ -2,14 +2,14 @@ class VerificationsController < ApplicationController
   before_action :authenticate_user!
 
   def edit
+    @verification = Verification.new
   end
 
   def update
-    verification = Verification.new(params.merge(user: current_user))
-    if verification.confirm
+    @verification = Verification.new(params[:verification].merge(subscription: current_user.subscription))
+    if @verification.confirm
       redirect_to current_user, notice: 'Thank you! Your account has been confirmed.'
     else
-      flash[:alert] = 'Authentication amounts do not match. Please try again.'
       render :edit
     end
   end
