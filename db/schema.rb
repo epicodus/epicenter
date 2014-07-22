@@ -11,21 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140627162608) do
+ActiveRecord::Schema.define(version: 20140722054141) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "payments", force: true do |t|
-    t.integer  "amount"
-    t.string   "method"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "subscription_id"
-    t.string   "payment_uri"
-  end
-
-  create_table "subscriptions", force: true do |t|
+  create_table "bank_accounts", force: true do |t|
     t.string   "account_uri"
     t.string   "verification_uri"
     t.datetime "created_at"
@@ -33,6 +24,15 @@ ActiveRecord::Schema.define(version: 20140627162608) do
     t.integer  "user_id"
     t.boolean  "verified"
     t.string   "status"
+  end
+
+  create_table "payments", force: true do |t|
+    t.integer  "amount"
+    t.string   "method"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "bank_account_id"
+    t.string   "payment_uri"
   end
 
   create_table "users", force: true do |t|

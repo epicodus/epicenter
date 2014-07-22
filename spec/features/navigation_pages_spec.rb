@@ -19,7 +19,7 @@ end
 describe 'Guest not signed in' do
   subject { page }
   context 'visits new subscrition path' do
-    before { visit new_subscription_path }
+    before { visit new_bank_account_path }
     it { should have_content 'You need to sign in'}
   end
 

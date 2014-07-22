@@ -1,13 +1,13 @@
 FactoryGirl.define do
-  factory :subscription do
-    after(:build) do |subscription|
-      bank_account = create_bank_account
-      subscription.account_uri = bank_account.href
+  factory :bank_account do
+    after(:build) do |bank_account|
+      balanced_bank_account = create_balanced_bank_account
+      bank_account.account_uri = balanced_bank_account.href
     end
 
-    factory :verified_subscription do
-      after(:create) do |verified_subscription|
-        verification = Verification.new(subscription: verified_subscription,
+    factory :verified_bank_account do
+      after(:create) do |verified_bank_account|
+        verification = Verification.new(bank_account: verified_bank_account,
                                         first_deposit: 1,
                                         second_deposit: 1)
         verification.confirm
@@ -22,12 +22,12 @@ FactoryGirl.define do
     password "password"
     password_confirmation "password"
 
-    factory :user_with_unverified_subscription do
-      association :subscription
+    factory :user_with_unverified_bank_account do
+      association :bank_account
     end
 
-    factory :user_with_verified_subscription do
-      association :subscription, factory: :verified_subscription
+    factory :user_with_verified_bank_account do
+      association :bank_account, factory: :verified_bank_account
     end
   end
 end

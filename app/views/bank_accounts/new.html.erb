@@ -6,15 +6,12 @@
   deposits, you can return to this site to start your payments.
 </p>
 
-<%= form_for @subscription do |f| %>
+<p><%= image_tag "check.png" %></p>
+
+<%= form_for @bank_account do |f| %>
   <div>
     <%= label_tag :name, "Name on account" %>
     <%= text_field_tag :name, nil, autofocus: true %>
-  </div>
-
-  <div>
-    <%= label_tag :bank_account_number, "Bank account number" %>
-    <%= text_field_tag :bank_account_number %>
   </div>
 
   <div>
@@ -22,7 +19,12 @@
     <%= text_field_tag :routing_number %>
   </div>
 
-  <input id="subscription_account_uri" name="subscription[account_uri]" type="hidden">
+  <div>
+    <%= label_tag :bank_account_number, "Bank account number" %>
+    <%= text_field_tag :bank_account_number %>
+  </div>
 
-  <div><%= f.submit "Verify bank account", id: "account-submit-button", class: "btn" %></div>
+  <%= f.hidden_field :account_uri %>
+
+  <div><%= f.submit "Verify bank account", class: "btn" %></div>
 <% end %>
