@@ -6,7 +6,6 @@ It's used to manage payments for Epicodus graduates.
 
 To do
 ==
-- Rename Subscription to something more meaningful.
 - Validate presence of `user_id` on `Subscription`.
 - Add rake task for billing subscriptions
 - Add method to check for upcoming payments (and rake task)

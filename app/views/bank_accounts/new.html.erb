@@ -8,7 +8,7 @@
 
 <p><%= image_tag "check.png" %></p>
 
-<%= form_for @subscription do |f| %>
+<%= form_for @bank_account do |f| %>
   <div>
     <%= label_tag :name, "Name on account" %>
     <%= text_field_tag :name, nil, autofocus: true %>
@@ -24,7 +24,7 @@
     <%= text_field_tag :bank_account_number %>
   </div>
 
-  <input id="subscription_account_uri" name="subscription[account_uri]" type="hidden">
+  <%= f.hidden_field :account_uri %>
 
-  <div><%= f.submit "Verify bank account", id: "account-submit-button", class: "btn" %></div>
+  <div><%= f.submit "Verify bank account", class: "btn" %></div>
 <% end %>

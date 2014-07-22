@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'verifying bank account', vcr: true do
-  let(:user) { FactoryGirl.create :user_with_unverified_subscription }
+  let(:user) { FactoryGirl.create :user_with_unverified_bank_account }
 
   before do
     sign_in(user)

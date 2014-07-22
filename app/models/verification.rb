@@ -3,25 +3,25 @@ class Verification
   attr_accessor :first_deposit, :second_deposit
 
   def initialize(params={})
-    @subscription = params[:subscription]
-    unless @subscription.nil?
-      @bank_account = Balanced::BankAccount.fetch(@subscription.account_uri)
+    @bank_account = params[:bank_account]
+    unless @bank_account.nil?
+      @balanced_bank_account = Balanced::BankAccount.fetch(@bank_account.account_uri)
     end
     @first_deposit = params[:first_deposit]
     @second_deposit = params[:second_deposit]
   end
 
   def create_test_deposits
-    verification = @bank_account.verify
-    @subscription.verification_uri = verification.href
+    verification = @balanced_bank_account.verify
+    @bank_account.verification_uri = verification.href
   end
 
   def confirm
-    verification_uri = @subscription.verification_uri
+    verification_uri = @bank_account.verification_uri
     verification = Balanced::BankAccountVerification.fetch(verification_uri)
     begin
       verification.confirm(@first_deposit, @second_deposit)
-      @subscription.update!(verified: true)
+      @bank_account.update!(verified: true)
     rescue Balanced::BankAccountVerificationFailure => exception
       errors.add(:base, exception.description)
       false

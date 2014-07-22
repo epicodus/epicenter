@@ -10,9 +10,9 @@ protected
   end
 
   def after_sign_in_path_for(resource)
-    if resource.subscription.nil?
-      new_subscription_path
-    elsif !resource.subscription.verified
+    if resource.bank_account.nil?
+      new_bank_account_path
+    elsif !resource.bank_account.verified
       edit_verification_path
     else
       user_path(resource)

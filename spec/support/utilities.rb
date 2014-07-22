@@ -5,12 +5,12 @@ def sign_in(user)
   click_button 'Sign in'
 end
 
-def create_bank_account
-  bank_account = Balanced::BankAccount.new(
+def create_balanced_bank_account
+  balanced_bank_account = Balanced::BankAccount.new(
     :account_number => '9900000002',
     :account_type => 'checking',
     :name => 'Johann Bernoulli',
     :routing_number => '021000021'
   ).save
-  bank_account
+  balanced_bank_account
 end
