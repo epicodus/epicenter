@@ -9,10 +9,10 @@ protected
     devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:name, :email, :password, :password_confirmation) }
   end
 
-  def after_sign_in_path_for(resource)
-    if resource.bank_account.nil?
+  def after_sign_in_path_for(user)
+    if user.bank_account.nil?
       new_bank_account_path
-    elsif !resource.bank_account.verified
+    elsif !user.bank_account.verified
       edit_verification_path
     else
       payments_path
