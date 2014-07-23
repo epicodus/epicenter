@@ -32,6 +32,20 @@ describe Verification, :vcr do
         verification = Verification.new(bank_account: user.bank_account, first_deposit: 1, second_deposit: 1)
         expect(verification.confirm).to be true
       end
+
+      it "sets the user's bank account active status to true" do
+        bank_account = FactoryGirl.create(:bank_account)
+        verification = Verification.new(bank_account: bank_account, first_deposit: 1, second_deposit: 1)
+        verification.confirm
+        expect(bank_account.active).to be true
+      end
+
+      it "create the first payment for the user" do
+        bank_account = FactoryGirl.create(:bank_account)
+        verification = Verification.new(bank_account: bank_account, first_deposit: 1, second_deposit: 1)
+        verification.confirm
+        expect(Payment.count).to equal 1
+      end
     end
 
     context "with incorrect amounts" do

@@ -16,6 +16,11 @@ FactoryGirl.define do
     end
   end
 
+  factory :payment do
+    association :bank_account, factory: :verified_bank_account
+    amount 1
+  end
+
   factory :user do
     name "Jane Doe"
     sequence(:email) { |n| "user#{n}@example.com" }
