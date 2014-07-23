@@ -15,7 +15,7 @@ protected
     elsif !resource.bank_account.verified
       edit_verification_path
     else
-      user_path(resource)
+      payments_path
     end
   end
 end

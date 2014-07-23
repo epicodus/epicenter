@@ -7,7 +7,10 @@ class VerificationsController < ApplicationController
 
   def update
     @verification = Verification.new(params[:verification].merge(bank_account: current_user.bank_account))
-    unless @verification.confirm
+    if @verification.confirm
+      flash[:notice] = "Your account has been confirmed and your first payment made."
+      redirect_to payments_path
+    else
       render :edit
     end
   end

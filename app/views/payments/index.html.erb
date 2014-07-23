@@ -1,0 +1,15 @@
+<h1>Your payments</h1>
+
+<ul>
+  <% @payments.each do |payment| %>
+    <li>
+      <%= number_to_currency(payment.amount / 100) %>
+      paid on
+      <%= payment.created_at.strftime("%F") %>
+    </li>
+  <% end %>
+</ul>
+
+<p>
+  If you have any questions or need to stop your payments, contact Michael.
+</p>
