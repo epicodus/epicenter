@@ -41,4 +41,5 @@ group :production do
   gem 'rails_12factor'
   gem 'unicorn'
   gem 'newrelic_rpm'
+  gem 'bugsnag'
 end

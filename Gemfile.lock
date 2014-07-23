@@ -46,6 +46,9 @@ GEM
       erubis (>= 2.6.6)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bugsnag (2.1.0)
+      httparty (>= 0.6, < 1.0)
+      multi_json (~> 1.0)
     builder (3.2.2)
     capybara (2.3.0)
       mime-types (>= 1.16)
@@ -101,6 +104,9 @@ GEM
       faraday (>= 0.7.4, < 0.10)
     hike (1.2.3)
     http_parser.rb (0.6.0)
+    httparty (0.13.1)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     i18n (0.6.9)
     jbuilder (2.1.1)
       activesupport (>= 3.0.0, < 5)
@@ -120,6 +126,7 @@ GEM
     mini_portile (0.6.0)
     minitest (5.3.5)
     multi_json (1.10.1)
+    multi_xml (0.5.5)
     multipart-post (2.0.0)
     newrelic_rpm (3.9.0.229)
     nokogiri (1.6.2.1)
@@ -233,6 +240,7 @@ DEPENDENCIES
   balanced
   better_errors
   binding_of_caller
+  bugsnag
   capybara
   coffee-rails (~> 4.0.0)
   database_cleaner!
