@@ -7,9 +7,7 @@ class VerificationsController < ApplicationController
 
   def update
     @verification = Verification.new(params[:verification].merge(bank_account: current_user.bank_account))
-    if @verification.confirm
-      redirect_to current_user, notice: 'Thank you! Your account has been confirmed.'
-    else
+    unless @verification.confirm
       render :edit
     end
   end
