@@ -1,7 +1,6 @@
 class BankAccount < ActiveRecord::Base
   scope :active, -> { where(active: true) }
 
-  attr_accessor :first_deposit, :second_deposit
   validates :account_uri, presence: true
   validates :user_id, presence: true
 

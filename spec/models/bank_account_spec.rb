@@ -18,40 +18,35 @@ describe BankAccount do
   describe ".billable_today", :vcr do
     it "includes bank_accounts that have not been billed in the last month" do
       bank_account = FactoryGirl.create(:verified_bank_account)
-      bank_account.update(first_deposit: 1, second_deposit: 1)
       bank_account.payments.first.update(created_at: 1.month.ago)
       expect(BankAccount.billable_today).to eq [bank_account]
     end
 
     it "does not include bank_accounts that have been billed in the last month" do
       bank_account = FactoryGirl.create(:verified_bank_account)
-      bank_account.update(first_deposit: 1, second_deposit: 1)
       bank_account.payments.first.update(created_at: 2.weeks.ago)
       expect(BankAccount.billable_today).to eq []
     end
 
     it "does not include bank_accounts that are inactive" do
       bank_account = FactoryGirl.create(:verified_bank_account)
-      bank_account.update(first_deposit: 1, second_deposit: 1, active: false)
+      bank_account.update(active: false)
       bank_account.payments.first.update(created_at: 1.month.ago)
       expect(BankAccount.billable_today).to eq []
     end
 
     it "returns all bank_accounts that are due for payment" do
       bank_account1 = FactoryGirl.create(:verified_bank_account)
-      bank_account1.update(first_deposit: 1, second_deposit: 1)
       bank_account1.payments.first.update(created_at: 1.month.ago)
 
       bank_account2 = FactoryGirl.create(:verified_bank_account)
-      bank_account2.update(first_deposit: 1, second_deposit: 1)
       bank_account2.payments.first.update(created_at: 1.month.ago)
 
       bank_account3 = FactoryGirl.create(:verified_bank_account)
-      bank_account3.update(first_deposit: 1, second_deposit: 1)
       bank_account3.payments.first.update(created_at: 2.weeks.ago)
 
-      bank_account4 = FactoryGirl.create(:verified_bank_account)
-      bank_account4.update(first_deposit: 1, second_deposit: 1, active: false)
+      bank_account4 = FactoryGirl.create(:verified_bank_account, active: false)
+      bank_account4.update(active: false)
       bank_account4.payments.first.update(created_at: 1.month.ago)
 
       expect(BankAccount.billable_today).to eq [bank_account1, bank_account2]
@@ -73,11 +68,9 @@ describe BankAccount do
   describe ".bill_bank_accounts", :vcr do
     it "bills all bank_accounts that are due today" do
       bank_account1 = FactoryGirl.create(:verified_bank_account)
-      bank_account1.update(first_deposit: 1, second_deposit: 1)
       bank_account1.payments.first.update(created_at: 1.month.ago)
 
       bank_account2 = FactoryGirl.create(:verified_bank_account)
-      bank_account2.update(first_deposit: 1, second_deposit: 1)
       bank_account2.payments.first.update(created_at: 1.weeks.ago)
 
       BankAccount.bill_bank_accounts
