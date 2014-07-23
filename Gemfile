@@ -34,3 +34,7 @@ group :test do
   gem 'vcr'
   gem 'puffing-billy'
 end
+
+group :production do
+  gem 'rails_12factor'
+end
