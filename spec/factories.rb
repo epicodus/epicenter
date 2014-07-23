@@ -1,5 +1,7 @@
 FactoryGirl.define do
   factory :bank_account do
+    user
+
     after(:build) do |bank_account|
       balanced_bank_account = create_balanced_bank_account
       bank_account.account_uri = balanced_bank_account.href
