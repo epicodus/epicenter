@@ -42,4 +42,5 @@ group :production do
   gem 'unicorn'
   gem 'newrelic_rpm'
   gem 'bugsnag'
+  gem 'lograge'
 end
