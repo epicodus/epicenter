@@ -49,7 +49,7 @@ end
 
 feature 'Guest not signed in' do
   subject { page }
-  
+
   context 'visits new subscrition path' do
     before { visit new_bank_account_path }
     it { should have_content 'You need to sign in'}
@@ -61,7 +61,7 @@ feature 'Guest not signed in' do
   end
 
   context 'visits user show path' do
-    let(:user) { create(:user) }
+    let(:user) { FactoryGirl.create(:user) }
     before { visit user_path(user) }
     it { should have_content 'You need to sign in' }
   end

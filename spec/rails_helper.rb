@@ -20,8 +20,6 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation)
   end
   config.infer_spec_type_from_file_location!
-  config.include FactoryGirl::Syntax::Methods
-  config.include Devise::TestHelpers, type: :controller
 end
 
 VCR.configure do |config|

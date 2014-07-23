@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'User creates a bank account' do
   before do
-    user = create(:user)
+    user = FactoryGirl.create(:user)
     sign_in user
     visit new_bank_account_path
     fill_in 'Name on account', with: user.name
