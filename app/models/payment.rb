@@ -9,8 +9,7 @@ private
     balanced_bank_account = Balanced::BankAccount.fetch(bank_account.account_uri)
     debit = balanced_bank_account.debit(
       :amount => amount,
-      :appears_on_statement_as => 'Epicodus Tuition',
-      :description => 'Some descriptive text for the debit in the dashboard'
+      :appears_on_statement_as => 'Epicodus tuition repayment'
     )
     self.payment_uri = debit.href if !debit.failure_reason
   end
