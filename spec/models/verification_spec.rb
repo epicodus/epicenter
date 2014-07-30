@@ -33,6 +33,12 @@ describe Verification, :vcr do
         expect(verification.confirm).to be true
       end
 
+      it "cleans the input" do
+        user = FactoryGirl.create(:user_with_unverified_bank_account)
+        verification = Verification.new(bank_account: user.bank_account, first_deposit: "$0.01", second_deposit: 1)
+        expect(verification.confirm).to be true
+      end
+
       it "sets the user's bank account active status to true" do
         bank_account = FactoryGirl.create(:bank_account)
         verification = Verification.new(bank_account: bank_account, first_deposit: 1, second_deposit: 1)

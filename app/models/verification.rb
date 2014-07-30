@@ -7,8 +7,8 @@ class Verification
     unless @bank_account.nil?
       @balanced_bank_account = Balanced::BankAccount.fetch(@bank_account.account_uri)
     end
-    @first_deposit = params[:first_deposit]
-    @second_deposit = params[:second_deposit]
+    @first_deposit = clean_deposit_input(params[:first_deposit])
+    @second_deposit = clean_deposit_input(params[:second_deposit])
   end
 
   def create_test_deposits
@@ -28,5 +28,11 @@ class Verification
       errors.add(:base, exception.description)
       false
     end
+  end
+
+private
+
+  def clean_deposit_input(input)
+    input.to_s.split(".").last
   end
 end
