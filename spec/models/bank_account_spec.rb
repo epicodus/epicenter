@@ -52,15 +52,50 @@ describe BankAccount do
       expect(BankAccount.billable_today).to eq [bank_account1, bank_account2]
     end
 
-    include ActiveSupport::Testing::TimeHelpers
-
     it "handles months with different amounts of days" do
+      include ActiveSupport::Testing::TimeHelpers
       bank_account = FactoryGirl.create(:verified_bank_account)
       travel_to(Date.parse("January 31, 2014")) do
         FactoryGirl.create(:payment, bank_account: bank_account)
       end
       travel_to(Date.parse("March 1, 2014")) do
         expect(BankAccount.billable_today).to eq [bank_account]
+      end
+    end
+  end
+
+  describe ".billable_in_three_days", :vcr do
+    include ActiveSupport::Testing::TimeHelpers
+    it 'tells you which accounts are billable in three days' do
+      payment = nil
+      travel_to(Date.parse("January 5, 2014")) do
+        payment = FactoryGirl.create(:payment)
+      end
+      bank_account = payment.bank_account
+      travel_to(Date.parse("February 2, 2014")) do
+        expect(BankAccount.billable_in_three_days).to eq [bank_account]
+      end
+    end
+
+    it 'does not include accounts that are billable in more than three days' do
+      payment = nil
+      travel_to(Date.parse("January 6, 2014")) do
+        payment = FactoryGirl.create(:payment)
+      end
+      bank_account = payment.bank_account
+      travel_to(Date.parse("February 2, 2014")) do
+        expect(BankAccount.billable_in_three_days).to eq []
+      end
+    end
+
+    it 'does not include accounts that are billable in less than three days' do
+      payment = nil
+      travel_to(Date.parse("January 4, 2014")) do
+        payment = FactoryGirl.create(:payment)
+      end
+      bank_account = payment.bank_account
+      travel_to(Date.parse("February 2, 2014")) do
+        expect(BankAccount.billable_in_three_days).to eq []
       end
     end
   end

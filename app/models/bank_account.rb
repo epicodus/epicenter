@@ -15,6 +15,12 @@ class BankAccount < ActiveRecord::Base
     end
   end
 
+  def self.billable_in_three_days
+    active.select do |bank_account|
+      (bank_account.payments.last.created_at - 3.days) == 1.month.ago if !bank_account.payments.empty?
+    end
+  end
+
   def self.bill_bank_accounts
     billable_today.each do |bank_account|
       bank_account.payments.create(amount: 625_00)
