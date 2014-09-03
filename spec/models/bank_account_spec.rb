@@ -23,6 +23,14 @@ describe BankAccount do
     end
   end
 
+  describe ".with_payments" do
+    it "only includes bank accounts that have payments", :vcr do
+      account_without_payments = FactoryGirl.create(:bank_account)
+      account_with_payment = FactoryGirl.create(:payment).bank_account
+      expect(BankAccount.with_payments).to eq [account_with_payment]
+    end
+  end
+
   describe ".billable_today", :vcr do
     it "includes bank_accounts that have not been billed in the last month" do
       bank_account = FactoryGirl.create(:verified_bank_account)
@@ -60,8 +68,8 @@ describe BankAccount do
       expect(BankAccount.billable_today).to eq [bank_account1, bank_account2]
     end
 
+    include ActiveSupport::Testing::TimeHelpers
     it "handles months with different amounts of days" do
-      include ActiveSupport::Testing::TimeHelpers
       bank_account = FactoryGirl.create(:verified_bank_account)
       travel_to(Date.parse("January 31, 2014")) do
         FactoryGirl.create(:payment, bank_account: bank_account)

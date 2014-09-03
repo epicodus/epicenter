@@ -1,5 +1,6 @@
 class BankAccount < ActiveRecord::Base
   scope :active, -> { where(active: true) }
+  scope :with_payments, -> { select { |bank_account| bank_account.payments.any? } }
 
   validates :account_uri, presence: true
   validates :user_id, presence: true
@@ -10,14 +11,14 @@ class BankAccount < ActiveRecord::Base
   before_create :create_verification
 
   def self.billable_today
-    active.select do |bank_account|
-      bank_account.payments.last.created_at < 1.month.ago if !bank_account.payments.empty?
+    active.with_payments.select do |bank_account|
+      bank_account.payments.last.created_at < 1.month.ago
     end
   end
 
   def self.billable_in_three_days
-    active.select do |bank_account|
-      (bank_account.payments.last.created_at - 3.days) == 1.month.ago if !bank_account.payments.empty?
+    active.with_payments.select do |bank_account|
+      (bank_account.payments.last.created_at - 3.days) == 1.month.ago
     end
   end
 
