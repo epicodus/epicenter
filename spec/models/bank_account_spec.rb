@@ -15,6 +15,14 @@ describe BankAccount do
     end
   end
 
+  describe ".active" do
+    it "only includes active bank accounts", :vcr do
+      active_bank_account = FactoryGirl.create(:bank_account, active: true)
+      inactive_bank_account = FactoryGirl.create(:bank_account, active: false)
+      expect(BankAccount.active).to eq [active_bank_account]
+    end
+  end
+
   describe ".billable_today", :vcr do
     it "includes bank_accounts that have not been billed in the last month" do
       bank_account = FactoryGirl.create(:verified_bank_account)
