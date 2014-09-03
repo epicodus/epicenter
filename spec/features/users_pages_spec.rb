@@ -30,7 +30,7 @@ feature "User signs in" do
   end
 
   context "after entering bank account info but before verifying" do
-    it "takes them to the page to verify their account" do
+    it "takes them to the page to verify their account", :vcr do
       user = FactoryGirl.create(:user)
       bank_account = FactoryGirl.create(:bank_account, user: user)
       sign_in user
