@@ -8,3 +8,4 @@ deploy:
   app: epicodus-payments
   on:
     repo: epicodus/payments
+  run: "rake db:migrate"
