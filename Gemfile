@@ -29,7 +29,7 @@ group :test do
   gem 'shoulda-matchers'
   gem 'launchy'
   gem 'poltergeist'
-  gem 'database_cleaner', git: 'https://github.com/DatabaseCleaner/database_cleaner'
+  gem 'database_cleaner'
   gem 'webmock', require: false
   gem 'vcr'
   gem 'puffing-billy'
