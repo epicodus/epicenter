@@ -116,6 +116,31 @@ describe BankAccount do
     end
   end
 
+  describe ".email_upcoming_payees" do
+    include ActiveSupport::Testing::TimeHelpers
+
+    it "emails users who are due in 3 days", :vcr do
+      payment = nil
+      travel_to(Date.parse("January 5, 2014")) do
+        payment = FactoryGirl.create(:payment)
+      end
+      bank_account = payment.bank_account
+
+      expect(RestClient).to receive(:post).with(
+        "https://api:#{ENV['MAILGUN_API_KEY']}@api.mailgun.net/v2/epicodus.com/messages",
+        :from => "michael@epicodus.com",
+        :to => bank_account.user.email,
+        :bcc => "michael@epicodus.com",
+        :subject => "Upcoming Epicodus tuition payment",
+        :text => "Hi #{bank_account.user.name}. This is just a reminder that your next Epicodus tuition payment will be withdrawn from your bank account in 3 days. If you need anything, reply to this email. Thanks!"
+      )
+
+      travel_to(Date.parse("February 2, 2014")) do
+        BankAccount.email_upcoming_payees
+      end
+    end
+  end
+
   describe ".bill_bank_accounts", :vcr do
     it "bills all bank_accounts that are due today" do
       bank_account1 = FactoryGirl.create(:verified_bank_account)

@@ -22,6 +22,19 @@ class BankAccount < ActiveRecord::Base
     end
   end
 
+  def self.email_upcoming_payees
+    billable_in_three_days.each do |bank_account|
+      RestClient.post(
+        "https://api:#{ENV['MAILGUN_API_KEY']}@api.mailgun.net/v2/epicodus.com/messages",
+        :from => "michael@epicodus.com",
+        :to => bank_account.user.email,
+        :bcc => "michael@epicodus.com",
+        :subject => "Upcoming Epicodus tuition payment",
+        :text => "Hi #{bank_account.user.name}. This is just a reminder that your next Epicodus tuition payment will be withdrawn from your bank account in 3 days. If you need anything, reply to this email. Thanks!"
+      )
+    end
+  end
+
   def self.bill_bank_accounts
     billable_today.each do |bank_account|
       bank_account.payments.create(amount: 625_00)
