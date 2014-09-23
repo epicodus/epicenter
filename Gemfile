@@ -11,6 +11,7 @@ gem 'balanced'
 gem 'rest_client'
 gem 'bootstrap-sass'
 gem 'autoprefixer-rails'
+gem 'chartkick'
 
 
 group :development do
