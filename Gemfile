@@ -9,7 +9,8 @@ gem 'jquery-rails'
 gem 'devise'
 gem 'balanced'
 gem 'rest_client'
-gem 'oauth2'
+gem 'omniauth'
+gem 'omniauth-github'
 
 group :development do
   gem 'spring'
