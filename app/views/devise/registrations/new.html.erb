@@ -14,15 +14,17 @@
       <%= f.email_field :email %>
     </div>
 
-    <div>
-      <%= f.label :password %>
-      <%= f.password_field :password, autocomplete: "off" %>
-    </div>
+    <% if f.object.password_required? %>
+      <div>
+        <%= f.label :password %>
+        <%= f.password_field :password, autocomplete: "off" %>
+      </div>
 
-    <div>
-      <%= f.label :password_confirmation %>
-      <%= f.password_field :password_confirmation, autocomplete: "off" %>
-    </div>
+      <div>
+        <%= f.label :password_confirmation %>
+        <%= f.password_field :password_confirmation, autocomplete: "off" %>
+      </div>
+    <% end %>
 
     <div>
       <%= f.submit "Sign up", class: "btn" %>

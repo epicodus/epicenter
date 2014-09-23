@@ -20,6 +20,7 @@ RSpec.configure do |config|
     DatabaseCleaner.clean_with(:truncation)
   end
   config.infer_spec_type_from_file_location!
+  config.include(OmniauthMacros)
 end
 
 VCR.configure do |config|
@@ -38,3 +39,5 @@ Billy.configure do |c|
   c.cache_path = 'spec/cassettes/javascript/'
   c.non_successful_error_level = :warn
 end
+
+OmniAuth.config.test_mode = true
