@@ -29,6 +29,8 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.3.6)
     arel (5.0.1.20140414130214)
+    autoprefixer-rails (3.1.0.20140911)
+      execjs
     awesome_print (1.2.0)
     balanced (1.1.1)
       addressable (~> 2.3.5)
@@ -41,6 +43,8 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bootstrap-sass (3.2.0.2)
+      sass (~> 3.2)
     bugsnag (2.5.0)
       httparty (>= 0.6, < 1.0)
       multi_json (~> 1.0)
@@ -187,6 +191,7 @@ GEM
       rspec-support (~> 3.1.0)
     rspec-support (3.1.0)
     safe_yaml (1.0.3)
+    sass (3.4.5)
     shoulda-matchers (2.7.0)
       activesupport (>= 3.0.0)
     slop (3.6.0)
@@ -229,10 +234,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  autoprefixer-rails
   awesome_print
   balanced
   better_errors
   binding_of_caller
+  bootstrap-sass
   bugsnag
   capybara
   database_cleaner

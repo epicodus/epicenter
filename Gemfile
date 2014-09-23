@@ -9,6 +9,9 @@ gem 'jquery-rails'
 gem 'devise'
 gem 'balanced'
 gem 'rest_client'
+gem 'bootstrap-sass'
+gem 'autoprefixer-rails'
+
 
 group :development do
   gem 'spring'

@@ -4,4 +4,7 @@ Rails.application.routes.draw do
   resource :bank_account, only: [:new, :create]
   resource :verification, only: [:edit, :update]
   resources :payments, only: [:index]
+
+  # Frontend test routes ------------------------------------
+  resources :teachers
 end
