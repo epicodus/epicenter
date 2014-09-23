@@ -5,9 +5,16 @@ class AssessmentsController < ApplicationController
   end
 
   def new
+    @assessment = Assessment.new
   end
 
   def create
+    @assessment = Assessment.new(assessment_params)
+    if @assessment.save
+      redirect_to assessments_url, notice: "Assessment added!"
+    else
+      render 'new'
+    end
   end
 
   def edit
