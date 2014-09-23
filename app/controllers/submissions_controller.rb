@@ -36,7 +36,7 @@ class SubmissionsController < ApplicationController
   def update
     @submission = Submission.find(params[:id])
     if @submission.update(submission_params)
-      redirect_to submissions_url, notice: "Submission updated!"
+      redirect_to assessment_submission_url, notice: "Submission updated!"
     else
       render 'new'
     end

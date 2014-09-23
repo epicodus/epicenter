@@ -1,7 +1,7 @@
-<h1><%= @assessment.title %></h1>
-<h2><%= @assessment.section %></h2>
-<h3><%= link_to "View Lesson", @assessment.url %></h3>
+<h1><%= @submission.assessment.title %></h1>
+<h2><%= @submission.assessment.section %></h2>
+<h3><%= @submission.link %></h3>
 
-<% if can? :update, @assessment %>
-  <%= link_to "Edit Assessment", edit_assessment_path(@assessment) %>
+<% if can? :update, @submission %>
+  <%= link_to "Edit Submission", edit_assessment_submission_path(@submission.assessment, @submission) %>
 <% end %>
