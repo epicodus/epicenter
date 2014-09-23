@@ -4,4 +4,5 @@ Rails.application.routes.draw do
   resource :bank_account, only: [:new, :create]
   resource :verification, only: [:edit, :update]
   resources :payments, only: [:index]
+  get "/landing", to: "static_pages#landing", as: :landing_page
 end
