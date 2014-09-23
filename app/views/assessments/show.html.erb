@@ -6,3 +6,7 @@
   <li><%= link_to "Edit Assessment", edit_assessment_path(@assessment), class: "btn btn-info" %></li>
   <li><%= link_to "Delete Assessment", assessment_path(@assessment), data: {confirm: "You sure?", method: "delete"}, class: "btn btn-danger" %></li>
 </ul>
+<%= link_to "New Requirement", new_assessment_requirement_path(@assessment), class: "btn btn-info" %>
+<div id="requirements_list">
+<%= render @assessment.requirements %>
+</div>

@@ -4,9 +4,20 @@ class RequirementsController < ApplicationController
   end
 
   def new
+    @assessment = Assessment.find(params[:assessment_id])
+    @requirement = @assessment.requirements.new
   end
 
   def create
+    @assessment = Assessment.find(params[:assessment_id])
+    @requirement = @assessment.requirements.new(requirement_params)
+    if @requirement.save
+      flash[:notice] = "Requirement added!"
+      respond_to do |format|
+        format.html { redirect_to @assessment }
+        format.js
+      end
+    end
   end
 
   def edit

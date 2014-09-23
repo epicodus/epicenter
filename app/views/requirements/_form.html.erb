@@ -1,0 +1,12 @@
+<%= form_for @requirement, html: {class: "form"}, remote: true do |f| %>
+<h2>Add a Requirement</h2>
+  <%= render 'layouts/errors', :object => @requirement %>
+
+  <div class="form-group">
+    <%= f.label :content %>
+    <%= f.text_field :content, class: "form-control" %>
+    <%= f.hidden_field :assessment_id, :value => @assessment.id %>
+  </div>
+
+  <%= f.submit "Submit", class: "btn btn-lg btn-primary" %>
+<% end %>
