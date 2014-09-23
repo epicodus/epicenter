@@ -1,0 +1,3 @@
+<% @students.each do |student| %>
+  <p class="box front_line"><%= link_to "#{student[:name]}", student_path(student) %><span class="end_line"><%= student[:completion] %>%</span></p>
+<% end %>
