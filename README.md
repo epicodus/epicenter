@@ -1,13 +1,6 @@
-Payments
---
+# Epissessments :snake: ssssss
 
-This is a recurring payments app built with the Balanced API.
-It's used to manage payments for Epicodus graduates.
+## Schema
 
-To do
-==
-- Add rake task for billing subscriptions
-- Add method to check for upcoming payments (and rake task)
-- Email notifications
-  - when payment has been made
-  - 2 days before payment is scheduled
+* Assessment -> title | section | url
+* Requirement -> content | assessment_id
