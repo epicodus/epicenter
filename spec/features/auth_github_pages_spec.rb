@@ -8,7 +8,7 @@ feature 'User signs up with Github' do
   scenario 'with valid github account', js: true do
     mock_auth_hash
     click_link 'Sign in with Github'
-    expect(page).to have_content 'Welcome!'
+    expect(page).to have_content 'Welcome'
   end
 
   scenario 'with invalid github credentials', js: true do

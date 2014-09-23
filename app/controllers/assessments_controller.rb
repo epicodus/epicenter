@@ -4,10 +4,6 @@ class AssessmentsController < ApplicationController
     @assessments = Assessment.all
   end
 
-  def show
-    @assessment = Assessment.find(params[:id])
-  end
-
   def new
     @assessment = Assessment.new
   end
@@ -21,10 +17,21 @@ class AssessmentsController < ApplicationController
     end
   end
 
+  def show
+    @assessment = Assessment.find(params[:id])
+  end
+
   def edit
+    @assessment = Assessment.find(params[:id])
   end
 
   def update
+    @assessment = Assessment.find(params[:id])
+    if @assessment.update(assessment_params)
+      redirect_to assessments_url, notice: "Assessment updated!"
+    else
+      render 'new'
+    end
   end
 
   def destroy

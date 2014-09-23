@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
       user.provider = auth.provider
       user.uid = auth.uid
       user.name = auth.info.nickname
+      user.email = auth.info.email
     end
   end
 
@@ -28,10 +29,6 @@ class User < ActiveRecord::Base
   end
 
   def password_required?
-    super && provider.blank?
-  end
-
-  def email_required?
     super && provider.blank?
   end
 end
