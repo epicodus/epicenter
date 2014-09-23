@@ -1,19 +1,14 @@
-<%= form_for @assessment, html: {class: "form"} do |f| %>
-  <%= render 'layouts/errors', :object => @assessment %>
+<%= form_for [@submission.assessment, @submission], html: {class: "form"} do |f| %>
+  <%= render 'layouts/errors', :object => @submission %>
 
   <div class="form-group">
-    <%= f.label :title %>
-    <%= f.text_field :title, class: "form-control" %>
+    <%= f.label :link %>
+    <%= f.text_field :link, class: "form-control" %>
   </div>
 
   <div class="form-group">
-    <%= f.label :section %>
-    <%= f.text_field :section, class: "form-control" %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :url %>
-    <%= f.text_field :url, class: "form-control" %>
+    <%= f.label :note %>
+    <%= f.text_area :note, class: "form-control" %>
   </div>
 
   <%= f.submit "Submit", class: "btn btn-lg btn-primary" %>

@@ -1,4 +1,5 @@
 <%= link_to assessment_submission_path(submission.assessment, submission), class: "list-group-item" do %>
   <h2 class="list-group-item-heading"><%= submission.link %></h2>
 <% end %>
+  <p class="list-group-item-text"><%= submission.user.name %></p>
   <p class="list-group-item-text"><%= submission.note %></p>

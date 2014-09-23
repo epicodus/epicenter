@@ -5,14 +5,18 @@ class SubmissionsController < ApplicationController
   end
 
   def new
-    @submission = Submission.new
+    @assessment = Assessment.find(params[:assessment_id])
+    @submission = @assessment.submissions.new
     authorize! :create, @submission
   end
 
   def create
-    @submission = Submission.new(submission_params)
+    @assessment = Assessment.find(params[:assessment_id])
+    @submission = @assessment.submissions.new(submission_params)
+    @submission.user_id = current_user.id
     if @submission.save
-      redirect_to submissions_url, notice: "Submission added!"
+      @submission.assessment_id = @assessment.id
+      redirect_to assessment_submissions_url, notice: "Submission added!"
     else
       render 'new'
     end
@@ -46,7 +50,7 @@ class SubmissionsController < ApplicationController
 private
 
   def submission_params
-    params.require(:submission).permit(:title, :section, :url)
+    params.require(:submission).permit(:link, :note)
   end
 
 end

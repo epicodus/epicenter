@@ -6,7 +6,7 @@ class Ability
       can :manage, :all
     else
       can :read, :all
-      # can [:create, :update, :destroy], Submission
+      can [:create, :update, :destroy], Submission
     end
   end
 end
