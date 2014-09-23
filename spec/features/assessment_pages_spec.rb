@@ -41,3 +41,15 @@ feature 'User edits assessment' do
     expect(page).to have_content 'Please correct these problems:'
   end
 end
+
+feature 'User deletes assessment' do
+  before do
+    assessment = FactoryGirl.create(:assessment)
+    visit assessment_path(assessment)
+  end
+
+  scenario 'with a delete confirmation', js: true do
+    click_link "Delete Assessment"
+    expect(page).to have_content 'Assessment deleted.'
+  end
+end
