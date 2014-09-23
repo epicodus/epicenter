@@ -2,4 +2,6 @@
 <h2><%= @assessment.section %></h2>
 <h3><%= link_to "View Lesson", @assessment.url %></h3>
 
-<%= link_to "Edit Assessment", edit_assessment_path(@assessment) %>
+<% if can? :update, @assessment %>
+  <%= link_to "Edit Assessment", edit_assessment_path(@assessment) %>
+<% end %>

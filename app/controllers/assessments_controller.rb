@@ -2,10 +2,12 @@ class AssessmentsController < ApplicationController
 
   def index
     @assessments = Assessment.all
+    authorize! :read, @assessments
   end
 
   def new
     @assessment = Assessment.new
+    authorize! :create, @assessment
   end
 
   def create
@@ -15,14 +17,17 @@ class AssessmentsController < ApplicationController
     else
       render 'new'
     end
+    authorize! :create, @assessment
   end
 
   def show
     @assessment = Assessment.find(params[:id])
+    authorize! :read, @assessment
   end
 
   def edit
     @assessment = Assessment.find(params[:id])
+    authorize! :update, @assessment
   end
 
   def update
@@ -32,9 +37,11 @@ class AssessmentsController < ApplicationController
     else
       render 'new'
     end
+    authorize! :update, @assessment
   end
 
   def destroy
+    authorize! :destroy, @assessment
   end
 
 private
