@@ -12,7 +12,6 @@ class RequirementsController < ApplicationController
     @assessment = Assessment.find(params[:assessment_id])
     @requirement = @assessment.requirements.new(requirement_params)
     if @requirement.save
-      flash[:notice] = "Requirement added!"
       respond_to do |format|
         format.html { redirect_to @assessment }
         format.js
