@@ -9,6 +9,7 @@ gem 'jquery-rails'
 gem 'devise'
 gem 'balanced'
 gem 'rest_client'
+gem 'oauth2'
 
 group :development do
   gem 'spring'
