@@ -2,5 +2,8 @@
 
 FactoryGirl.define do
   factory :assessment do
+    title "Some Title"
+    section "Some Section"
+    url "http://www.someurl.com"
   end
 end
