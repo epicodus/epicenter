@@ -4,6 +4,10 @@ class AssessmentsController < ApplicationController
     @assessments = Assessment.all
   end
 
+  def show
+    @assessment = Assessment.find(params[:id])
+  end
+
   def new
     @assessment = Assessment.new
   end
