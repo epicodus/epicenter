@@ -94,6 +94,13 @@ ActiveRecord::Schema.define(version: 20141030175701) do
     t.datetime "updated_at"
   end
 
+  create_table "submissions", force: true do |t|
+    t.integer "user_id"
+    t.string  "link"
+    t.text    "note"
+    t.integer "assessment_id"
+  end
+
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false

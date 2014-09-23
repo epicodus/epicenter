@@ -16,6 +16,9 @@ Rails.application.routes.draw do
     resource :attendance_statistics, only: [:show]
   end
 
-  get "/landing", to: "static_pages#landing", as: :landing_page
+  resources :assessments do
+    resources :submissions
+  end
+
   resources :assessments
 end
