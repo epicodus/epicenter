@@ -1,7 +1,16 @@
-<h1><%= @submission.assessment.title %></h1>
-<h2><%= @submission.assessment.section %></h2>
-<h3><%= @submission.link %></h3>
+<h1><%= @submission.user.name %>'s assessment</h1>
+<h2><%= @submission.assessment.title %> (<%= @submission.assessment.section %>)</h2>
+<h3><%= link_to "View Repo", @submission.link %></h3>
+<h3>created at</h3>
 
 <% if can? :update, @submission %>
   <%= link_to "Edit Submission", edit_assessment_submission_path(@submission.assessment, @submission) %>
 <% end %>
+
+<% if can? :create , Grade %>
+  <%= render 'grades/form' %>
+<% end %>
+
+<div id="grade-list">
+<%= render @grades %>
+</div>
