@@ -16,7 +16,7 @@ class SubmissionsController < ApplicationController
     @submission.user_id = current_user.id
     if @submission.save
       @submission.assessment_id = @assessment.id
-      redirect_to assessment_submissions_url, notice: "Submission added!"
+      redirect_to assessments_path, notice: "Thanks for your submission!"
     else
       render 'new'
     end
