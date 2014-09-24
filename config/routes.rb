@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :payments, only: [:index]
   resources :assessments do
     resources :submissions
+    resources :requirements
   end
   get "/landing", to: "static_pages#landing", as: :landing_page
 
