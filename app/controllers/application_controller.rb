@@ -15,7 +15,7 @@ protected
   end
 
   def after_sign_in_path_for(user)
-    landing_page_path
+    root_path
     # if user.bank_account.nil?
     #   new_bank_account_path
     # elsif !user.bank_account.verified

@@ -1,8 +1,9 @@
-<h1>Epicodus Payments</h1>
+<% if current_user == nil %>
+  <%= render 'login_home' %>
+<% elsif current_user.admin == true %>
+  <%= render 'teacher_home' %>
+<% else %>
+  <%= render 'student_home' %>
+<% end %>
 
-<p class="lead">Manage your tuition repayment for Epicodus.</p>
 
-<div class="action-buttons">
-  <%= link_to "Create an account", new_user_registration_path, class: 'btn btn-large btn-primary' %>
-  <%= link_to "Sign in", new_user_session_path, class: 'btn btn-large btn-info' %>
-</div>
