@@ -1,5 +1,13 @@
+
 <ul class="nav nav-tabs" role="tablist">
   <li class="active"><%= assessment.title %></li>
   <li><a href="#">Requirements</a></li>
   <li><a href="#">Submit</a></li>
 </ul>
+
+<% if false %>
+  <%= link_to assessment_url(assessment), class: "list-group-item" do %>
+    <h2 class="list-group-item-heading"><%= assessment.title %></h2>
+  <% end %>
+    <p class="list-group-item-text"><%= assessment.section %></p>
+<% end %>
