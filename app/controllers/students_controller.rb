@@ -7,5 +7,10 @@ class StudentsController < ApplicationController
   def show
     # @student = {id: 1, name: "Billy Bob", session: "Fall", completion: 35}
     @student = User.find(params[:id])
+    @submissions = Submission.all
+    respond_to do |format|
+      format.html
+      format.js { render "show", :locals => {submission: params[:submission_id]} }
+    end
   end
 end
