@@ -2,6 +2,7 @@ class AssessmentsController < ApplicationController
 
   def index
     @assessments = Assessment.all
+    @submission = Submission.new
     authorize! :read, @assessments
   end
 

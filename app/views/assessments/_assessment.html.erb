@@ -1,9 +1,22 @@
-
 <ul class="nav nav-tabs" role="tablist">
-  <li class="active"><%= assessment.title %></li>
-  <li><a href="#">Requirements</a></li>
-  <li><a href="#">Submit</a></li>
+  <li class="active"><a href="#" role="tab" data-toggle="tab"><%= assessment.title %></a></li>
+  <li><a href="#requirements" role="tab" data-toggle="tab">Requirements</a></li>
+  <li><a href="#submit" role="tab" data-toggle="tab">Submit</a></li>
 </ul>
+
+<div class="tab-content">
+  <div class="tab-pane active" id="home"></div>
+  <div class="tab-pane" id="requirements">
+    <ul>
+      <li>Did you do something?</li>
+      <li>Did you do something else?</li>
+    </ul>
+  </div>
+  <div class="tab-pane" id="submit">
+    <%= render 'submissions/form', :assessment => assessment %>
+  </div>
+</div>
+
 
 <% if false %>
   <%= link_to assessment_url(assessment), class: "list-group-item" do %>
@@ -11,3 +24,4 @@
   <% end %>
     <p class="list-group-item-text"><%= assessment.section %></p>
 <% end %>
+<hr>
