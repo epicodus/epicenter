@@ -36,6 +36,14 @@ class RequirementsController < ApplicationController
   end
 
   def destroy
+    @assessment = Assessment.find(params[:assessment_id])
+    @requirement = @assessment.requirements.find(params[:id])
+    if @requirement.destroy
+      respond_to do |format|
+        format.html { redirect_to @assessment }
+        format.js
+      end
+    end
   end
 
 private
