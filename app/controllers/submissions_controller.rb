@@ -17,7 +17,7 @@ class SubmissionsController < ApplicationController
     @submission.user_id = current_user.id
     if @submission.save
       @submission.assessment_id = @assessment.id
-      redirect_to assessment_submission_url(@submission), notice: "Submission added!"
+      redirect_to assessment_submission_url(@assessment, @submission), notice: "Submission added!"
     else
       flash[:alert] = "Sorry, try again!"
       render 'assessments/index'

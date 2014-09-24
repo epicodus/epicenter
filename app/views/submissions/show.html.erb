@@ -1,7 +1,3 @@
 <h1><%= @submission.assessment.title %></h1>
 <h2><%= @submission.assessment.section %></h2>
 <h3><%= @submission.link %></h3>
-
-<% if can? :update, @submission %>
-  <%= link_to "Edit Submission", edit_assessment_submission_path(@submission.assessment, @submission) %>
-<% end %>
