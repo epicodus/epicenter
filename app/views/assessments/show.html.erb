@@ -3,5 +3,8 @@
 <h3><%= link_to "View Lesson", @assessment.url %></h3>
 
 <% if can? :update, @assessment %>
-  <%= link_to "Edit Assessment", edit_assessment_path(@assessment) %>
+  <ul>
+    <li><%= link_to "Edit Assessment", edit_assessment_path(@assessment), class: "btn btn-info" %></li>
+    <li><%= link_to "Delete Assessment", assessment_path(@assessment), data: {confirm: "You sure?", method: "delete"}, class: "btn btn-danger" %></li>
+  </ul>
 <% end %>

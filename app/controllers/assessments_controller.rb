@@ -42,6 +42,10 @@ class AssessmentsController < ApplicationController
 
   def destroy
     authorize! :destroy, @assessment
+    @assessment = Assessment.find(params[:id])
+    @assessment.destroy
+    flash[:notice] = "Assessment deleted."
+    redirect_to assessments_path
   end
 
 private
