@@ -1,5 +1,7 @@
 <h1>Assessments</h1>
-<%= link_to "New Assessment", new_assessment_path, class: "btn btn-large btn-info" %>
-<div class="list-group">
-  <%= render @assessments %>
-</div>
+<% if can? :create, @assessment %>
+  <%= link_to "New Assessment", new_assessment_path, class: "btn btn-large btn-info" %>
+<% end %>
+  <div class="list-group">
+    <%= render @assessments %>
+  </div>

@@ -137,6 +137,7 @@
   height: 50px;
   padding: 15px 15px;
   font-size: 18px;
+  text-decoration: none;
   // line-height: 20px;
 }
 .navbar-brand:hover,
@@ -1304,6 +1305,15 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 
 .dropdown {
   list-style-type: none;
+  text-decoration: none;
+}
+
+.dropdown-toggle {
+  text-decoration: none;
+}
+
+ul .dropdown-menu li a {
+  text-decoration: none;
 }
 
 .box {

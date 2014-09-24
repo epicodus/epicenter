@@ -10,7 +10,14 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <%= render 'layouts/navbar' %>
+  <%= if !current_user
+
+    elsif current_user.admin
+      render 'layouts/navbar_teacher'
+    else
+      render 'layouts/navbar_student'
+    end
+    %>
   <div class="container">
     <div class="row">
       <% if current_user %>
