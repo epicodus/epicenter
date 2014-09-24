@@ -124,3 +124,18 @@ a.employer {
     width: 50%;
   }
 }
+
+
+.col-group > div {
+  padding: 1em 1em 0;
+}
+
+@media screen and (min-width: 50em) {
+  .col-group {
+    overflow: hidden;
+  }
+  .col-group > div {
+    float: left;
+    width: 33.3333333%;
+  }
+}
