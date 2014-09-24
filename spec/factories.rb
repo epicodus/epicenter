@@ -36,5 +36,9 @@ FactoryGirl.define do
     factory :user_with_verified_bank_account do
       association :bank_account, factory: :verified_bank_account
     end
+
+    factory :user_with_admin do
+      admin true
+    end
   end
 end
