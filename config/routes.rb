@@ -12,6 +12,7 @@ Rails.application.routes.draw do
 
   # Frontend test routes ------------------------------------
   resources :teachers
+
   resources :students
 end
 
