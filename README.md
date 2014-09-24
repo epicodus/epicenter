@@ -1,26 +1,24 @@
-# Epissessments :snake: ssssss
+# Epissessments
 
-## Schema
+**Epissessments** is an assessment management app for Epicodus teachers & students.
 
-* Assessment -> title | section | url
-* Requirement -> content | assessment_id
-
-## User Stories
-
-### Students
-
-* Create account
-* Create account with Github
-* Submit assessment
-* Receive feedback / grade on assessment
-* See where in curriculum
-* See grades
-* See grade averages
-* View submitted but not graded assessments
-
-### Teachers
-
-* Create account
-* CRUD grades/feedback
-* CRUD assessment templates
-* View stats on submitted assessments: grades per student + requirement + term + averages, etc.
+## To do
+- Add Github sign-up/login.
+- Students
+  - CRUD for assessment submissions
+  - Grades per assessment
+  - Grades overall
+  - View feedback for each assessment requirement
+  - Integrate with Github user repos, select repo to submit from drop-down
+  - Use Github profile picture
+- Teachers
+  - CRUD for assessment templates
+  - CRUD for assessment grades/feedback
+  - View assessments awaiting review
+  - Navbar count of unreviewed assessments
+  - Grades per assessment
+  - Grades per student
+  - Grades per term
+- Email notifications
+  - when an assessment has been graded
+  - when a new assessment has been posted
