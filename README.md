@@ -1,13 +1,24 @@
-Payments
---
+# Epissessments
 
-This is a recurring payments app built with the Balanced API.
-It's used to manage payments for Epicodus graduates.
+**Epissessments** is an assessment management app for Epicodus teachers & students.
 
-To do
-==
-- Add rake task for billing subscriptions
-- Add method to check for upcoming payments (and rake task)
+## To do
+- Add Github sign-up/login.
+- Students
+  - CRUD for assessment submissions
+  - Grades per assessment
+  - Grades overall
+  - View feedback for each assessment requirement
+  - Integrate with Github user repos, select repo to submit from drop-down
+  - Use Github profile picture
+- Teachers
+  - CRUD for assessment templates
+  - CRUD for assessment grades/feedback
+  - View assessments awaiting review
+  - Navbar count of unreviewed assessments
+  - Grades per assessment
+  - Grades per student
+  - Grades per term
 - Email notifications
-  - when payment has been made
-  - 2 days before payment is scheduled
+  - when an assessment has been graded
+  - when a new assessment has been posted
