@@ -12,6 +12,9 @@ gem 'rest_client'
 gem 'omniauth'
 gem 'omniauth-github'
 gem 'cancancan', '~> 1.9'
+gem 'bootstrap-sass'
+gem 'autoprefixer-rails'
+gem 'chartkick'
 
 group :development do
   gem 'spring'

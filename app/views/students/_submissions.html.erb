@@ -1,0 +1,9 @@
+<!-- Delete if false line to make it work -->
+<% if false %>
+  <ol>
+    <% @student.assessments.each do |assessment| %>
+      <p class="box student-reqs"><%= link_to assessment.title, assessment.url %> <span class="end_line"><%= image_tag("checkmark.png", alt:"check mark") %></span></p>
+      <div class="reqs-container"><%= render 'requirements' %></div>
+    <% end %>
+  </ol>
+<% end %>

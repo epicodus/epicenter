@@ -8,4 +8,9 @@ Rails.application.routes.draw do
     resources :submissions
   end
   get "/landing", to: "static_pages#landing", as: :landing_page
+
+  # Frontend test routes ------------------------------------
+  resources :teachers
+  resources :students
 end
+

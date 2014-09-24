@@ -6,9 +6,11 @@
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700" rel="stylesheet" type="text/css">
   <%= javascript_include_tag 'application' %>
+  <%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <%= render 'layouts/navbar' %>
   <div class="container">
     <div class="row">
       <% if current_user %>

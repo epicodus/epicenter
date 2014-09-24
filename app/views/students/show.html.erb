@@ -1,0 +1,24 @@
+<h1><%= @student[:name] %></h1>
+<h4><%= @student[:completion] %>% Complete</h4>
+
+<hr>
+
+<h2 class="larger_h2">Submissions</h2>
+<%= render 'submissions' %>
+
+
+<!--
+- Teacher & Student render pages
+- Student avatar from github
+- See individual Requirement Grades for each submission
+-
+
+ -->
+
+<%= link_to "COLLAPSIBLE STUFF", root_path, class: "box student-reqs" %>
+<div class="reqs-container">
+  <h1 class="box">THIS IS SO AWESOME!!!!</h1>
+</div>
+
+
+<%= pie_chart({"Football" => 10, "Basketball" => 5}) %>
