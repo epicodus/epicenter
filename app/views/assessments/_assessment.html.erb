@@ -1,18 +1,18 @@
 <ul class="nav nav-tabs" role="tablist">
-  <li class="active"><a href="#home" role="tab" data-toggle="tab"><%= assessment.title %></a></li>
-  <li><a href="#requirements" role="tab" data-toggle="tab">Requirements</a></li>
-  <li><a href="#submit" role="tab" data-toggle="tab">Submit</a></li>
+  <li class="active"><a href="#<%= assessment.id %>home" role="tab" data-toggle="tab"><%= assessment.title %></a></li>
+  <li><a href="#<%= assessment.id %>requirements" role="tab" data-toggle="tab">Requirements</a></li>
+  <li><a href="#<%= assessment.id %>submit" role="tab" data-toggle="tab">Submit</a></li>
 </ul>
 
 <div class="tab-content">
-  <div class="tab-pane active" id="home"></div>
-  <div class="tab-pane" id="requirements">
+  <div class="tab-pane active" id="<%= assessment.id %>home"></div>
+  <div class="tab-pane" id="<%= assessment.id %>requirements">
     <ul>
       <li>Did you do something?</li>
       <li>Did you do something else?</li>
     </ul>
   </div>
-  <div class="tab-pane" id="submit">
+  <div class="tab-pane" id="<%= assessment.id %>submit">
     <%= render 'submissions/form', :assessment => assessment %>
   </div>
 </div>

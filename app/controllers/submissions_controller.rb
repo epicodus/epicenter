@@ -11,14 +11,16 @@ class SubmissionsController < ApplicationController
   end
 
   def create
+    @assessments = Assessment.all
     @assessment = Assessment.find(params[:assessment_id])
     @submission = @assessment.submissions.new(submission_params)
     @submission.user_id = current_user.id
     if @submission.save
       @submission.assessment_id = @assessment.id
-      redirect_to assessment_submissions_url, notice: "Submission added!"
+      redirect_to assessment_submission_url(@submission), notice: "Submission added!"
     else
-      render 'new'
+      flash[:alert] = "Sorry, try again!"
+      render 'assessments/index'
     end
     authorize! :create, @submission
   end
