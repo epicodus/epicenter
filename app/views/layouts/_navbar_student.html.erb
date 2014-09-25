@@ -9,10 +9,13 @@
           <span class="icon-bar"></span>
         </button>
         <%= link_to "Epicenter", student_path(current_user), class:"navbar-brand" %>
+
       </div>
+      <div class="navbar-brand">|</div>
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <%= link_to "#{current_user.name}", student_path(current_user.id), class:"navbar-brand" %>
         <%= link_to "Assessments", assessments_path, class:"navbar-brand" %>
         <ul class="navbar-brand">
           <li class="dropdown">
@@ -23,9 +26,6 @@
               <li><%= link_to "Assessment Analytics", root_url %></li>
             </ul>
           </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li><%= link_to "#{current_user.name}", student_path(current_user.id) %></li>
         </ul>
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
