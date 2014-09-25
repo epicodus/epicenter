@@ -1,11 +1,13 @@
-<% @assessment.requirements.each do |req| %>
-
-  <%= form_for @grade, html: {class: "form"} do |f| %>
-      <%= f.text_field :score %>
-      <%= f.hidden_field :requirement_id, :value => req.id %>
-      <%= f.hidden_field :submission_id, :value => @submission.id %>
-    <%= f.submit "Submit", class: "btn btn-primary" %>
-  <% end %>
+<%= form_for @grade, html: {class: "form"} do |f| %>
+  <p><%= f.check_box :score, :value => 4, :checked => false %> The code exceeds this standard.</p>
+  <p><%= f.check_box :score, :value => 3, :checked => false %> The code meets this standard all of the time.</p>
+  <p><%= f.check_box :score, :value => 2, :checked => false %> The code meets this standard most of the time.</p>
+  <p><%= f.check_box :score, :value => 1, :checked => false %> The code does not meet this standard.</p>
+  <%= f.hidden_field :submission_id, :value => @submission.id %>
+  <%= f.label :feedback %>
+  <%= f.text_area :comment %>
+  <br>
+  <%= f.submit "Submit", class: "btn btn-primary" %>
 <% end %>
 
 

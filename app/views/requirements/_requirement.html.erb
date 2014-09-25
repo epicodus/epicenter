@@ -1,6 +1,9 @@
-<p><span id="<%= requirement.id %>"><%= requirement.content %></span><br>
-  <% if current_user.admin? %>
+<p><strong><span id="<%= requirement.id %>"><%= requirement.content %></span></strong><br>
+  <% if current_user.admin? && @edit_assessment_page %>
     <span id="<%= requirement.id %>-controls"><%= link_to "Edit", edit_assessment_requirement_path(@assessment, requirement.id), remote: true %> &nbsp;&nbsp;&nbsp;&nbsp;<%= link_to "Delete", assessment_requirement_path(@assessment, requirement), remote: true, data: {confirm: "You sure?", method: "delete"} %></span>
-<% end %>
+  <% end %>
+  <% if current_user.admin? && @grade_page %>
+    <%= render 'grades/form' %>
+  <% end %>
 </p>
 
