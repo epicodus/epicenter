@@ -1,5 +1,5 @@
 <h1>HELLO ANALYSIS</h1>
-<%= column_chart Assessment.analysis_by_assessment %>
+<%= column_chart @assessments.analysis_by_assessment %>
 <% if false %>
 <%= line_chart @goals.map{|goal|
     {name: goal.name, data: goal.feats.group_by_week(:created_at).count}
