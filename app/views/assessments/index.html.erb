@@ -1,7 +1,7 @@
 <h1>Assessments</h1>
-<% if can? :create, @assessment %>
-  <%= link_to "New Assessment", new_assessment_path, class: "btn btn-large btn-info" %>
+
+<% if current_user.admin? %>
+  <%= render 'teacher_index' %>
+<% else %>
+  <%= render 'student_index' %>
 <% end %>
-  <div class="list-group">
-    <%= render @assessments %>
-  </div>

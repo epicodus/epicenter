@@ -1,27 +1,26 @@
-<ul class="nav nav-tabs" role="tablist">
-  <li class="active"><a href="#<%= assessment.id %>home" role="tab" data-toggle="tab"><%= assessment.title %></a></li>
-  <li><a href="#<%= assessment.id %>requirements" role="tab" data-toggle="tab">Requirements</a></li>
-  <li><a href="#<%= assessment.id %>submit" role="tab" data-toggle="tab">Submit</a></li>
-</ul>
+<% if current_user.admin? %>
+  <dl>
+    <dt><%= link_to "#{assessment.title}", assessment %> | <%= link_to "Edit", edit_assessment_path(assessment) %></dt>
+    <dd>Ungraded: <%= assessment.submissions.count %></dd>
+    <dd>Graded: <%= assessment.submissions.count %></dd>
+  </dl>
+<% else %>
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="active"><a href="#<%= assessment.id %>home" role="tab" data-toggle="tab"><%= assessment.title %></a></li>
+    <li><a href="#<%= assessment.id %>requirements" role="tab" data-toggle="tab">Requirements</a></li>
+    <li><a href="#<%= assessment.id %>submit" role="tab" data-toggle="tab">Submit</a></li>
+  </ul>
 
-<div class="tab-content">
-  <div class="tab-pane active" id="<%= assessment.id %>home"></div>
-  <div class="tab-pane" id="<%= assessment.id %>requirements">
-    <ul>
-      <li>Did you do something?</li>
-      <li>Did you do something else?</li>
-    </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="<%= assessment.id %>home"></div>
+    <div class="tab-pane" id="<%= assessment.id %>requirements">
+      <ul>
+        <li>Did you do something?</li>
+        <li>Did you do something else?</li>
+      </ul>
+    </div>
+    <div class="tab-pane" id="<%= assessment.id %>submit">
+      <%= render 'submissions/form', :assessment => assessment %>
+    </div>
   </div>
-  <div class="tab-pane" id="<%= assessment.id %>submit">
-    <%= render 'submissions/form', :assessment => assessment %>
-  </div>
-</div>
-
-
-<% if false %>
-  <%= link_to assessment_url(assessment), class: "list-group-item" do %>
-    <h2 class="list-group-item-heading"><%= assessment.title %></h2>
-  <% end %>
-    <p class="list-group-item-text"><%= assessment.section %></p>
 <% end %>
-<hr>
