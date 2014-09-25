@@ -1,6 +1,15 @@
 <ol>
   <% @student.submissions.each do |submission| %>
-    <div class="student-reqs"><div class="box larger_h2"><%= submission.assessment.title %> <span class="end_line"><%= submission.grades.first ? image_tag("checkmark.png", alt:"check mark") : image_tag("wait.png", alt:"waiting smiley face") %></span></div><div class="reqs-container"><%= render 'requirements', submission: submission %></div></div>
+    <div class="student-reqs">
+      <div class="box larger_h2"><%= submission.assessment.title %>
+        <span class="end_line"><%= submission.grades.first ? image_tag("checkmark.png", alt:"check mark") : image_tag("wait.png", alt:"waiting smiley face") %></span>
+      </div>
+      <% if submission.graded %>
+        <div class="reqs-container">
+          <%= render 'requirements', submission: submission %>
+        </div>
+      <% end %>
+  </div>
 
   <% end %>
 </ol>
