@@ -15,12 +15,13 @@
     <div class="tab-pane active" id="<%= assessment.id %>home"></div>
     <div class="tab-pane" id="<%= assessment.id %>requirements">
       <ul>
-        <li>Did you do something?</li>
-        <li>Did you do something else?</li>
+        <% assessment.requirements.each do |requirement| %>
+          <li><%= requirement.content %></li>
+        <% end %>
       </ul>
     </div>
     <div class="tab-pane" id="<%= assessment.id %>submit">
-      <%= render 'submissions/form', :assessment => assessment %>
+        <%= render 'submissions/form', :assessment => assessment %>
     </div>
   </div>
 <% end %>
