@@ -11,6 +11,7 @@
 </head>
 <body>
   <%= if !current_user
+      render 'layouts/navbar'
     elsif current_user.admin
       render 'layouts/navbar_teacher'
     else

@@ -1,12 +1,27 @@
-<% @assessment.requirements.each do |req| %>
-
-  <%= form_for @grade, html: {class: "form"} do |f| %>
-      <%= f.text_field :score %>
-      <%= f.hidden_field :requirement_id, :value => req.id %>
-      <%= f.hidden_field :submission_id, :value => @submission.id %>
-    <%= f.submit "Submit", class: "btn btn-primary" %>
-  <% end %>
+<%= form_for @grade, remote: true, html: {class: "form"} do |f| %>
+  <table>
+    <tr>
+      <th>&nbsp;&nbsp;&nbsp;</th>
+      <th>1</th>
+      <th>&nbsp;&nbsp;&nbsp;</th>
+      <th>2</th>
+      <th>&nbsp;&nbsp;&nbsp;</th>
+      <th>3</th>
+      <th>&nbsp;&nbsp;&nbsp;</th>
+      <th>4</th>
+    </tr>
+    <tr>
+      <td><%= f.radio_button :score, 4 %></td>
+      <td>&nbsp;&nbsp;&nbsp;</td>
+      <td><%= f.radio_button :score, 3 %></td>
+      <td>&nbsp;&nbsp;&nbsp;</td>
+      <td><%= f.radio_button :score, 2 %></td>
+      <td>&nbsp;&nbsp;&nbsp;</td>
+      <td><%= f.radio_button :score, 1 %></td>
+    </tr>
+  </table>
+  <%= f.hidden_field :submission_id, :value => @submission.id %>
+  <%= f.hidden_field :requirement_id, :value => requirement.id %>
+  <br>
+  <%= f.submit "Submit", class: "btn btn-primary" %>
 <% end %>
-
-
-

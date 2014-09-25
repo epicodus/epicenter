@@ -1,7 +1,3 @@
 <h1>Assessments</h1>
 
-<% if current_user.admin? %>
-  <%= render 'teacher_index' %>
-<% else %>
-  <%= render 'student_index' %>
-<% end %>
+<%= render @assessments %>

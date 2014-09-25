@@ -22,6 +22,7 @@ class AssessmentsController < ApplicationController
   end
 
   def show
+    @grade = Grade.new
     @assessment = Assessment.find(params[:id])
     authorize! :read, @assessment
   end

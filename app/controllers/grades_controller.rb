@@ -7,6 +7,7 @@ class GradesController < ApplicationController
     @grade = Grade.new(grade_params)
     @submission = Submission.find(params[:grade][:submission_id])
     @assessment = Assessment.find(@submission.assessment_id)
+    binding.pry
       if @grade.save
         respond_to do |format|
           format.html { redirect_to assessment_submission_path(@assessment, @submission) }
