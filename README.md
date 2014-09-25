@@ -11,3 +11,7 @@ To do
 - Email notifications
   - when payment has been made
   - 2 days before payment is scheduled
+
+License
+==
+GPL2
