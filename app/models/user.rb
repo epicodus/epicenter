@@ -61,7 +61,11 @@ class User < ActiveRecord::Base
   end
 
   def last_assessment
-    self.submissions.map { |submission| submission.assessment }.sort_by {|assessment| assessment.section_number }.last
+    if self.submissions.empty?
+      Assessment.sort_by(:section_number).first
+    else
+      self.submissions.map { |submission| submission.assessment }.sort_by {|assessment| assessment.section_number }.last
+    end
   end
 
   def password_required?
