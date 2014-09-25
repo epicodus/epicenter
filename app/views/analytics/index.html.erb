@@ -1,2 +1,10 @@
 <h1>HELLO ANALYSIS</h1>
 <%= column_chart Assessment.submissions_by_assessment %>
+<%= column_chart Assessment.graded_by_assessment %>
+
+<% if false %>
+<%= line_chart @goals.map{|goal|
+    {name: goal.name, data: goal.feats.group_by_week(:created_at).count}
+} %>
+[{name: goal.name, data: {date1 => count, date2 => count}}]
+<% end %>

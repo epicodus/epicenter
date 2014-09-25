@@ -10,4 +10,17 @@ class Assessment < ActiveRecord::Base
     end
     result
   end
+
+  def self.graded_by_assessment
+    result = {}
+    self.all.each do |assessment|
+      counter = 0
+      assessment.submissions.each do |submission|
+        counter += 1 if submission.grades.first
+      end
+      result[assessment.title] = counter
+    end
+    result
+  end
 end
+
