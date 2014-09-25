@@ -1,3 +1,3 @@
 <% submission.assessment.requirements.each do |req| %>
-      <span class="box student-reqs"><%= req.content %><span class="larger_h2 end_line"><%= Grade.find_by(submission_id: submission.id, requirement_id: req.id) ? Grade.find_by(submission_id: submission.id, requirement_id: req.id).score.to_s + " points" : "keep waiting..." %></span></span>
+      <div class="box student-reqs"><%= req.content %><span class="larger_h2 end_line"><%= Grade.find_by(submission_id: submission.id, requirement_id: req.id) ? Grade.find_by(submission_id: submission.id, requirement_id: req.id).score.to_s + " points" : "keep waiting..." %></span></div>
 <% end %>
