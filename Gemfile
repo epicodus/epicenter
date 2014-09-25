@@ -15,6 +15,7 @@ gem 'cancancan', '~> 1.9'
 gem 'bootstrap-sass'
 gem 'autoprefixer-rails'
 gem 'chartkick'
+gem 'jquery-ui-rails'
 
 group :development do
   gem 'spring'
