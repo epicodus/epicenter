@@ -45,17 +45,8 @@
             </ul>
           </li>
         </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <form role="search" class="navbar-form navbar-left" action="/search">
-              <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Search" name="search_term" id="search-term">
-                  <div class="input-group-btn">
-                      <button class="btn btn-default" id="search-btn" type="submit"><i class="glyphicon-search"></i></button>
-                  </div>
-              </div>
-          </form>
-        </ul>
       </div><!-- /.navbar-collapse -->
+      <%= link_to "Log out", destroy_user_session_path, data: { method: :delete }, class:"navbar-brand navbar-right" %>
     </div><!-- /.container-fluid -->
   </nav>
 </div>
