@@ -1,1 +1,4 @@
-<li><%= requirement.content %></li>
+<dt><%= requirement.content %></dt>
+  <% if current_user.admin? %>
+    <dd><%= link_to "Edit", edit_assessment_requirement_path(@assessment, requirement.id), remote: true %> &nbsp;&nbsp;&nbsp;&nbsp;<%= link_to "Delete", assessment_requirement_path(@assessment, requirement), remote: true, data: {confirm: "You sure?", method: "delete"} %></dd>
+  <% end %>
