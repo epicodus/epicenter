@@ -29,7 +29,6 @@ class SubmissionsController < ApplicationController
     @submission = Submission.find(params[:id])
     @assessment = Assessment.find(params[:assessment_id])
     @grade = Grade.new
-    @grades = @submission.grades
     authorize! :read, @submission
   end
 

@@ -1,14 +1,27 @@
-<%= form_for @grade, html: {class: "form"} do |f| %>
-  <p><%= f.check_box :score, :value => 4, :checked => false %> The code exceeds this standard.</p>
-  <p><%= f.check_box :score, :value => 3, :checked => false %> The code meets this standard all of the time.</p>
-  <p><%= f.check_box :score, :value => 2, :checked => false %> The code meets this standard most of the time.</p>
-  <p><%= f.check_box :score, :value => 1, :checked => false %> The code does not meet this standard.</p>
+<%= form_for @grade, remote: true, html: {class: "form"} do |f| %>
+  <table>
+    <tr>
+      <th>&nbsp;&nbsp;&nbsp;</th>
+      <th>1</th>
+      <th>&nbsp;&nbsp;&nbsp;</th>
+      <th>2</th>
+      <th>&nbsp;&nbsp;&nbsp;</th>
+      <th>3</th>
+      <th>&nbsp;&nbsp;&nbsp;</th>
+      <th>4</th>
+    </tr>
+    <tr>
+      <td><%= f.radio_button :score, 4 %></td>
+      <td>&nbsp;&nbsp;&nbsp;</td>
+      <td><%= f.radio_button :score, 3 %></td>
+      <td>&nbsp;&nbsp;&nbsp;</td>
+      <td><%= f.radio_button :score, 2 %></td>
+      <td>&nbsp;&nbsp;&nbsp;</td>
+      <td><%= f.radio_button :score, 1 %></td>
+    </tr>
+  </table>
   <%= f.hidden_field :submission_id, :value => @submission.id %>
-  <%= f.label :feedback %>
-  <%= f.text_area :comment %>
+  <%= f.hidden_field :requirement_id, :value => requirement.id %>
   <br>
   <%= f.submit "Submit", class: "btn btn-primary" %>
 <% end %>
-
-
-

@@ -4,5 +4,5 @@ class Submission < ActiveRecord::Base
   belongs_to :user
   belongs_to :assessment
   has_many :grades
-  accepts_nested_attributes_for :grades
+  # accepts_nested_attributes_for :grades
 end

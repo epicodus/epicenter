@@ -1,9 +1,19 @@
-<p><strong><span id="<%= requirement.id %>"><%= requirement.content %></span></strong><br>
-  <% if current_user.admin? && @edit_assessment_page %>
-    <span id="<%= requirement.id %>-controls"><%= link_to "Edit", edit_assessment_requirement_path(@assessment, requirement.id), remote: true %> &nbsp;&nbsp;&nbsp;&nbsp;<%= link_to "Delete", assessment_requirement_path(@assessment, requirement), remote: true, data: {confirm: "You sure?", method: "delete"} %></span>
-  <% end %>
-  <% if current_user.admin? && @grade_page %>
-    <%= render 'grades/form' %>
-  <% end %>
-</p>
+<% if current_user.admin? && @grade_page %>
+  <tr>
+    <td><%= requirement.content %></td>
+    <%= form_for @grade, remote: true, html: {class: "form"} do |f| %>
+    <td><%= f.radio_button :score, 4 %></td>
+    <td>&nbsp;&nbsp;&nbsp;</td>
+    <td><%= f.radio_button :score, 3 %></td>
+    <td>&nbsp;&nbsp;&nbsp;</td>
+    <td><%= f.radio_button :score, 2 %></td>
+    <td>&nbsp;&nbsp;&nbsp;</td>
+    <td><%= f.radio_button :score, 1 %></td>
+    <% end %>
+  </tr>
 
+<% elsif current_user.admin? && @edit_assessment_page %>
+    <span id="<%= requirement.id %>-controls"><%= link_to "Edit", edit_assessment_requirement_path(@assessment, requirement.id), remote: true %> &nbsp;&nbsp;&nbsp;&nbsp;<%= link_to "Delete", assessment_requirement_path(@assessment, requirement), remote: true, data: {confirm: "You sure?", method: "delete"} %></span>
+<% else %>
+  <p><strong><span id="<%= requirement.id %>"><%= requirement.content %></span></strong><br>
+<% end %>
