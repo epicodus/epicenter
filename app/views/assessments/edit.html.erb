@@ -6,6 +6,6 @@
 
 <%= link_to "New Requirement", new_assessment_requirement_path(@assessment), remote: true, id: "new_requirement_link", class: "btn btn-info" %>
 
-<ul id="requirements_list">
+<div id="requirements_list">
   <%= render @assessment.requirements %>
-</ul>
+</div>

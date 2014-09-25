@@ -2,14 +2,15 @@
 <hr>
 <% if current_user.admin? %>
 <%= link_to "Edit Assessment", edit_assessment_path(@assessment), class: "btn btn-info" %>
+<%= link_to "Delete", assessment_path(@assessment), class: "btn btn-danger", data: {confirm: "You sure?", method: "delete"} %>
 <% end %>
 <h3>Description</h3>
 <p>Crucifix kale chips quinoa, master cleanse 90's roof party street art four loko messenger bag trust fund photo booth.</p>
 <h3>Requirements</h3>
 
-<ul>
+<div>
   <%= render @assessment.requirements %>
-</ul>
+</div>
 
 <% if current_user.admin? %>
   <h3>Ungraded</h3>
