@@ -7,4 +7,5 @@ class Submission < ActiveRecord::Base
 
   scope :assessed, -> { where(graded: true) }
   scope :unassessed, -> { where(graded: false) }
+
 end
