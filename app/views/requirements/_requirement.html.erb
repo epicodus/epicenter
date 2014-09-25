@@ -1,5 +1,1 @@
-<div class="col-group">
-<div id="<%= requirement.id %>"><%= requirement.content %></div>
-<div><%= link_to "Edit", edit_assessment_requirement_path(@assessment, requirement.id), remote: true %></div>
-<div><%= link_to "Delete", assessment_requirement_path(@assessment, requirement), remote: true, data: {confirm: "You sure?", method: "delete"}, class: "btn btn-danger" %></div>
-</div>
+<li><%= requirement.content %></li>

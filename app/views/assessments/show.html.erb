@@ -1,17 +1,19 @@
-<h1><%= @assessment.title %></h1>
-<h2><%= @assessment.section %></h2>
-<h3><%= link_to "View LHTP Page", @assessment.url %></h3>
+<h2><%= @assessment.title %> (<%= @assessment.section %>)</h2>
+<hr>
+<% if current_user.admin? %>
+<%= link_to "Edit Assessment", edit_assessment_path(@assessment), class: "btn btn-info" %>
+<% end %>
+<h3>Description</h3>
+<p>Crucifix kale chips quinoa, master cleanse 90's roof party street art four loko messenger bag trust fund photo booth.</p>
 <h3>Requirements</h3>
 
-<div id="requirements_list">
+<ul id="requirements_list">
   <%= render @assessment.requirements %>
-</div>
+</ul>
 
-<%= link_to "New Requirement", new_assessment_requirement_path(@assessment), remote: true, id: "new_requirement_link", class: "btn btn-info" %>
-
-<% if can? :update, @assessment %>
+<% if current_user.admin? %>
+  <h3>Ungraded</h3>
   <ul>
-    <li><%= link_to "Edit Assessment", edit_assessment_path(@assessment), class: "btn btn-info" %></li>
-    <li><%= link_to "Delete Assessment", assessment_path(@assessment), data: {confirm: "You sure?", method: "delete"}, class: "btn btn-danger" %></li>
+    <%= render @assessment.submissions %>
   </ul>
 <% end %>

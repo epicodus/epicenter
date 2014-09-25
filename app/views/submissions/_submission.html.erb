@@ -1,1 +1,1 @@
-<li><%= submission.user.name %>: <%= link_to "#{submission.assessment.title}", assessment_submission_path(submission.assessment, submission) %></li>
+<li><%= link_to "#{submission.user.name}, submitted #{submission.created_at}", assessment_submission_path(submission.assessment, submission) %></li>
