@@ -18,6 +18,7 @@ class User < ActiveRecord::Base
       user.uid = auth.uid
       user.name = auth.info.nickname
       user.email = auth.info.email
+      user.avatar_url = auth.info.avatar_url
     end
   end
 
@@ -30,6 +31,9 @@ class User < ActiveRecord::Base
     else
       super
     end
+  end
+
+  def self.completion_order
   end
 
   def assessment_completion

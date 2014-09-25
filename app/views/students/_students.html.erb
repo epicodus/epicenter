@@ -1,3 +1,5 @@
-<% @students.each do |student| %>
-  <p class="box front_line"><%= link_to "#{student[:name]}", student_path(student) %><span class="end_line"><%= student[:completion] %>%</span></p>
+<% @students.sort_by{|s| s.assessment_completion}.each do |student| %>
+  <p class="box front_line"><%= link_to "#{student[:name]}", student_path(student) %><span class="end_line"><%= student.assessment_completion %>%</span></p>
 <% end %>
+
+
