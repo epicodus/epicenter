@@ -1,0 +1,12 @@
+<% @assessment.requirements.each do |req| %>
+
+  <%= form_for @grade, html: {class: "form"} do |f| %>
+      <%= f.text_field :score %>
+      <%= f.hidden_field :requirement_id, :value => req.id %>
+      <%= f.hidden_field :submission_id, :value => @submission.id %>
+    <%= f.submit "Submit", class: "btn btn-primary" %>
+  <% end %>
+<% end %>
+
+
+
