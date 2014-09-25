@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
   end
 
   def assessment_completion
-    self.submissions.uniq { |s| s.assessment_id }
+     (self.submissions.assessed.select(:assessment_id).distinct.count.to_f / Assessment.all.count.to_f * 100).floor
   end
 
   def grade_four
