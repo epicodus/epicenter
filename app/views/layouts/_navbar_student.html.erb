@@ -4,7 +4,6 @@
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-          <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
@@ -12,9 +11,12 @@
         <%= link_to "Epicenter", student_path(current_user), class:"navbar-brand" %>
       </div>
 
+      <div class="navbar-brand">|</div>
+
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <%= link_to "Assessments", assessments_path, class:"navbar-brand" %>
+        <%= link_to "#{current_user.name}", student_path(current_user.id), class:"navbar-brand unbold" %>
+        <%= link_to "Assessments", assessments_path, class:"navbar-brand unbold" %>
         <ul class="navbar-brand">
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Analytics <span class="caret"></span></a>
@@ -25,17 +27,8 @@
             </ul>
           </li>
         </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <form role="search" class="navbar-form navbar-left" action="/search">
-              <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Search" name="search_term" id="search-term">
-                  <div class="input-group-btn">
-                      <button class="btn btn-default" id="search-btn" type="submit"><i class="glyphicon-search"></i></button>
-                  </div>
-              </div>
-          </form>
-        </ul>
       </div><!-- /.navbar-collapse -->
+      <%= link_to "Log out", destroy_user_session_path, data: { method: :delete }, class:"navbar-brand navbar-right" %>
     </div><!-- /.container-fluid -->
   </nav>
 </div>

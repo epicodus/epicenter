@@ -10,11 +10,12 @@ Rails.application.routes.draw do
     resources :submissions
     resources :requirements
   end
+
+  resources :grades
   resources :analytics, only: [:index]
 
   # Frontend test routes ------------------------------------
   resources :teachers
-
   resources :students
 end
 

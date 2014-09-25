@@ -1,3 +1,5 @@
-<h1><%= @submission.assessment.title %></h1>
-<h2><%= @submission.assessment.section %></h2>
-<h3><%= @submission.link %></h3>
+<h2><%= @submission.user.name %>'s <%= link_to "#{@submission.assessment.title}", assessment_path(@submission.assessment) %> Assessment</h2>
+<a>View Repo</a>
+<hr>
+<h3>Assessment Requirements</h3>
+<%= render @submission.assessment.requirements %>
