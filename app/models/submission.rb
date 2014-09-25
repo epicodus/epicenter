@@ -4,5 +4,7 @@ class Submission < ActiveRecord::Base
   belongs_to :user
   belongs_to :assessment
   has_many :grades
-  # accepts_nested_attributes_for :grades
+
+  scope :assessed, -> { where(graded: true) }
+  scope :unassessed, -> { where(graded: false) }
 end

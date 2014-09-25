@@ -6,21 +6,26 @@
   </dl>
 <% else %>
   <ul class="nav nav-tabs" role="tablist">
-    <li class="active"><a href="#<%= assessment.id %>home" role="tab" data-toggle="tab"><%= assessment.title %></a></li>
+    <li class="active"><a href="#<%= assessment.id %>home" class="home" role="tab" data-toggle="tab"><%= assessment.title %></a></li>
     <li><a href="#<%= assessment.id %>requirements" role="tab" data-toggle="tab">Requirements</a></li>
     <li><a href="#<%= assessment.id %>submit" role="tab" data-toggle="tab">Submit</a></li>
+    <% if Submission.find_by(user_id: current_user.id, assessment_id: assessment.id) %>
+    <span class="end_line"><%= image_tag("checkmark.png", alt:"check mark") %></span>
+    <% end %>
   </ul>
 
   <div class="tab-content">
     <div class="tab-pane active" id="<%= assessment.id %>home"></div>
     <div class="tab-pane" id="<%= assessment.id %>requirements">
       <ul>
-        <li>Did you do something?</li>
-        <li>Did you do something else?</li>
+        <% assessment.requirements.each do |requirement| %>
+          <li><%= requirement.content %></li>
+        <% end %>
       </ul>
     </div>
     <div class="tab-pane" id="<%= assessment.id %>submit">
-      <%= render 'submissions/form', :assessment => assessment %>
+        <%= render 'submissions/form', :assessment => assessment %>
     </div>
+    <hr>
   </div>
 <% end %>
