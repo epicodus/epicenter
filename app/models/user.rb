@@ -32,6 +32,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def assessment_completion
+    self.submissions.uniq { |s| s.assessment_id }
+  end
+
   def grade_four
     grade = 0
     self.submissions.each { |sub| grade += sub.grades.where(score: 4).count }
