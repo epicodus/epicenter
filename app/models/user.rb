@@ -60,6 +60,10 @@ class User < ActiveRecord::Base
     grade
   end
 
+  def last_assessment
+    self.submissions.map { |submission| submission.assessment }.sort_by {|assessment| assessment.section_number }.last
+  end
+
   def password_required?
     super && provider.blank?
   end
