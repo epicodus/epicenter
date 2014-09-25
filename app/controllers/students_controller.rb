@@ -8,9 +8,6 @@ class StudentsController < ApplicationController
     # @student = {id: 1, name: "Billy Bob", session: "Fall", completion: 35}
     @student = User.find(params[:id])
     @submissions = Submission.all
-    respond_to do |format|
-      format.html
-      format.js { render "show", :locals => {submission: params[:submission_id]} }
-    end
+    @student_submission = Submission.where(user_id: params[:id])
   end
 end

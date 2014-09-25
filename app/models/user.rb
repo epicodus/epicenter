@@ -32,6 +32,30 @@ class User < ActiveRecord::Base
     end
   end
 
+  def grade_four
+    grade = 0
+    self.submissions.each { |sub| grade += sub.grades.where(score: 4).count }
+    grade
+  end
+
+  def grade_three
+    grade = 0
+    self.submissions.each { |sub| grade += sub.grades.where(score: 3).count }
+    grade
+  end
+
+  def grade_two
+    grade = 0
+    self.submissions.each { |sub| grade += sub.grades.where(score: 2).count }
+    grade
+  end
+
+  def grade_one
+    grade = 0
+    self.submissions.each { |sub| grade += sub.grades.where(score: 1).count }
+    grade
+  end
+
   def password_required?
     super && provider.blank?
   end
