@@ -22,5 +22,8 @@ class Assessment < ActiveRecord::Base
     end
     result
   end
-end
 
+  def self.analysis_by_assessment
+    [{"name" => "submitted", "data" => self.submissions_by_assessment}, {"name" => "graded", "data" => self.graded_by_assessment}]
+  end
+end
