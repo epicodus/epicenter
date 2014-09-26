@@ -4,7 +4,7 @@
     <dd>Ungraded: <%= assessment.submissions.unassessed.count %> | Graded: <%= assessment.submissions.assessed.count %>
       <% if assessment.submissions.unassessed.count >= 1 %>
         <span class="end_line light-text-divider"> | <span class="important" title="Ungraded Submissions" data-icon="&#xe600;"></span></span><% end %>
-       <span class="serene-blue end_line" title="Analytics" data-icon="&#xe604;"></span>
+       <a class="serene-blue end_line" title="Analytics" href="/analytics" data-icon="&#xe604;"></a>
     </dd>
   </dl>
 <% else %>
