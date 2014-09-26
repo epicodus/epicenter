@@ -1,10 +1,27 @@
 <h1>HELLO ANALYSIS</h1>
-<%= column_chart @assessments.analysis_by_assessment %>
 
-<%= bar_chart @students.students_by_assessment %>
+
+
 <% if false %>
 <%= line_chart @goals.map{|goal|
     {name: goal.name, data: goal.feats.group_by_week(:created_at).count}
 } %>
 [{name: goal.name, data: {date1 => count, date2 => count}}]
+
 <% end %>
+
+
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="active"><a href="#home" class="home" role="tab" data-toggle="tab">Submitted Assessments</a></li>
+    <li><a href="#requirements" role="tab" data-toggle="tab">Student Assessments</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div class="tab-pane active" id="home">
+      <%= column_chart @assessments.analysis_by_assessment %>
+    </div>
+    <div class="tab-pane" id="requirements">
+      <%= bar_chart @students.students_by_assessment %>
+    </div>
+    <hr>
+  </div>
