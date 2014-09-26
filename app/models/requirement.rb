@@ -11,4 +11,12 @@ class Requirement < ActiveRecord::Base
     end
     result
   end
+
+  def sum_scores
+    self.grades.count
+  end
+
+  def percent_scores(score)
+    self.scores[score-1] / self.sum_scores.to_f * 100
+  end
 end
