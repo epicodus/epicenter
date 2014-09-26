@@ -3,7 +3,9 @@
     <dt><%= link_to "#{assessment.title}", assessment, class:"larger_h2 front_line" %></dt>
     <dd>Ungraded: <%= assessment.submissions.unassessed.count %> | Graded: <%= assessment.submissions.assessed.count %>
       <% if assessment.submissions.unassessed.count >= 1 %>
-        <span class="fs1 end_line" aria-hidden="true" data-icon="&#xe600;"></span><% end %></dd>
+        <span class="end_line light-text-divider"> | <span class="important" title="Ungraded Submissions" data-icon="&#xe600;"></span></span><% end %>
+       <span class="serene-blue end_line" title="Analytics" data-icon="&#xe604;"></span>
+    </dd>
   </dl>
 <% else %>
   <ul class="nav nav-tabs" role="tablist">

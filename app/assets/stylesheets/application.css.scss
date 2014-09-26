@@ -768,15 +768,37 @@ a.home {
   font-weight: 100;
 }
 
+.light-text-divider {
+  color: #BABABA;
+}
+
+.important {
+  color: #DB5E5E;
+}
+
+.serene-blue {
+  color: #6FACDE;
+}
+
 @font-face {
   font-family: 'icomoon';
-  src:url('fonts/icomoon.eot?i8zahf');
-  src:url('fonts/icomoon.eot?#iefixi8zahf') format('embedded-opentype'),
-    url('fonts/icomoon.woff?i8zahf') format('woff'),
-    url('fonts/icomoon.ttf?i8zahf') format('truetype'),
-    url('fonts/icomoon.svg?i8zahf#icomoon') format('svg');
+  src:font-url('icomoon.eot');
+  src:font-url('icomoon.eot?#iefix') format('embedded-opentype'),
+    font-url('icomoon.woff') format('woff'),
+    font-url('icomoon.ttf') format('truetype'),
+    font-url('icomoon.svg#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
-[data-icon]:before { font-family: 'icomoon'; content: attr(data-icon); speak: none; color: #D64F4F; font-weight: normal; font-size: 16px; line-height: 16px; line-height: 1; -webkit-font-smoothing: antialiased; }
+
+[data-icon]::before {
+  font-family: 'icomoon';
+  content: attr(data-icon);
+  speak: none;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 16px;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
