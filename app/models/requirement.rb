@@ -3,4 +3,12 @@ class Requirement < ActiveRecord::Base
 
   belongs_to :assessment
   has_many :grades
+
+  def scores
+    result = []
+    [1, 2, 3, 4].each do |score|
+      result << self.grades.where(score: score).count
+    end
+    result
+  end
 end

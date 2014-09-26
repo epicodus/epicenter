@@ -1,6 +1,6 @@
 <h1><%= @assessment.title %></h1>
 <h3><%= @assessment.section_number %>. <%= @assessment.section %></h3>
-
+<h4>Submissions: <%= @assessment.submissions.count %></h4>
 <table class="table table-hover">
   <thead>
     <tr>
@@ -14,11 +14,11 @@
   <tbody>
     <% @assessment.requirements.each do |requirement| %>
       <tr>
-        <td><%= requirement.content %></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td><%= requirement.content %> (<%= Grade.where(requirement_id: requirement.id).average(:score) %>)</td>
+        <td><%= requirement.scores[0] %></td>
+        <td><%= requirement.scores[1] %></td>
+        <td><%= requirement.scores[2] %></td>
+        <td><%= requirement.scores[3] %></td>
       </tr>
     <% end %>
   </tbody>
