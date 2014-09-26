@@ -30,5 +30,16 @@ describe User do
       expect(student.assessment_completion).to eq 50
     end
   end
+
+  describe 'grade_four' do
+    it 'returns the count of four point grades for all submissions' do
+      student = FactoryGirl.create(:user, admin: false)
+      assessment = FactoryGirl.create(:assessment)
+      submission = FactoryGirl.create(:submission, assessment_id: assessment.id, graded: true, user_id: student.id)
+      grade = FactoryGirl.create(:grade, submission_id: submission.id, score: 4)
+      grade2 = FactoryGirl.create(:grade, submission_id: submission.id, score: 4)
+      expect(student.grade_four).to eq 2
+    end
+  end
 end
 
