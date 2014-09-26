@@ -21,6 +21,8 @@ class Assessment < ActiveRecord::Base
 
   def self.students_by_assessment
     last_assessments = User.students.map { |student| student.last_assessment }
+    last_assessments.each_with_object(Hash.new(0)) { |assessment,counts| counts[assessment] += 1 }
+    binding.pry
   end
 
   def self.analysis_by_assessment
