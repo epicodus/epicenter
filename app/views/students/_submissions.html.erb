@@ -1,7 +1,7 @@
 <ol>
-  <% @student.submissions.each do |submission| %>
+  <% @student.submissions.order(:assessment_id).each do |submission| %>
     <div class="student-reqs">
-      <div class="box larger_h2"><%= submission.assessment.title %>
+      <div class="box larger_h2"><%= submission.assessment.title %> <span class="small-text"><%= submission.created_at.strftime("Submitted on %m/%d/%Y") %></span>
         <span class="end_line"><%= submission.grades.first ? image_tag("checkmark.png", alt:"check mark") : image_tag("clock.png", alt:"waiting smiley face", class:"clock") %></span>
       </div>
       <% if submission.graded %>
