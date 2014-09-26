@@ -756,3 +756,16 @@ a.home {
   color: #9E9E9E;
   font-weight: 100;
 }
+
+@font-face {
+  font-family: 'icomoon';
+  src:url('fonts/icomoon.eot?i8zahf');
+  src:url('fonts/icomoon.eot?#iefixi8zahf') format('embedded-opentype'),
+    url('fonts/icomoon.woff?i8zahf') format('woff'),
+    url('fonts/icomoon.ttf?i8zahf') format('truetype'),
+    url('fonts/icomoon.svg?i8zahf#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[data-icon]:before { font-family: 'icomoon'; content: attr(data-icon); speak: none; color: red; font-weight: normal; font-size: 16px; line-height: 16px; line-height: 1; -webkit-font-smoothing: antialiased; }

@@ -1,7 +1,9 @@
 <% if current_user.admin? %>
   <dl class="box">
     <dt><%= link_to "#{assessment.title}", assessment, class:"larger_h2 front_line" %></dt>
-    <dd>Ungraded: <%= assessment.submissions.unassessed.count %> | Graded: <%= assessment.submissions.assessed.count %></dd>
+    <dd>Ungraded: <%= assessment.submissions.unassessed.count %> | Graded: <%= assessment.submissions.assessed.count %>
+      <% if assessment.submissions.unassessed.count >= 1 %>
+        <span class="fs1 end_line" aria-hidden="true" data-icon="&#xe600;"></span><% end %></dd>
   </dl>
 <% else %>
   <ul class="nav nav-tabs" role="tablist">
