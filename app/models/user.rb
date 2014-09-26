@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   has_many :payments
   has_many :attendance_records
   has_many :submissions
+  has_many :grades
 
   def self.billable_today
     recurring_active.select do |user|
