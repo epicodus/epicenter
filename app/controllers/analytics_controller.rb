@@ -3,4 +3,8 @@ class AnalyticsController < ApplicationController
     @assessments = Assessment.all
     @students = User.students
   end
+
+  def show
+    @assessment = Assessment.find(params[:assessment_id])
+  end
 end

@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
   resources :grades
   resources :analytics, only: [:index]
+  match('/analytics/:assessment_id', {:via => :get, :to => 'analytics#show'})
+
 
   # Frontend test routes ------------------------------------
   resources :teachers
