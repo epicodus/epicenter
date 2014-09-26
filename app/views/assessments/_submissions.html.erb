@@ -1,0 +1,3 @@
+<% @submissions.order(:created_at).each do |sub| %>
+  <p> <%= sub.assessment.title %> | <%= link_to sub.user.name, assessment_submission_path(sub.assessment, sub) %> | <%= sub.created_at.strftime("%m/%d/%y") %></p>
+<% end %>
