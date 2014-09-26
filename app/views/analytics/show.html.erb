@@ -1,14 +1,16 @@
 <h1><%= @assessment.title %></h1>
-<h3><%= @assessment.section_number %>. <%= @assessment.section %></h3>
+<% if @assessment.section_number %>
+  <h3><%= @assessment.section_number %>. <%= @assessment.section %></h3>
+<% end %>
 <h4>Submissions: <%= @assessment.submissions.count %> Average Score: <%= @assessment.grades.average(:score) %></h4>
 <table class="table table-hover">
   <thead>
     <tr>
       <th>Requirement</th>
-      <th>1</th>
-      <th>2</th>
-      <th>3</th>
-      <th>4</th>
+      <th title="The code does not meet this standard.">1</th>
+      <th title="The code meets this standard most of the time.">2</th>
+      <th title="The code meets this standard all of the time.">3</th>
+      <th title="The code exceeds this standard.">4</th>
     </tr>
   </thead>
   <tbody>
