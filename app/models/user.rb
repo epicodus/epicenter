@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_one :bank_account
   has_many :payments, through: :bank_account
   has_many :submissions
+  has_many :grades
 
   scope :teachers, -> { where(admin: true) }
   scope :students, -> { where(admin: false) }
