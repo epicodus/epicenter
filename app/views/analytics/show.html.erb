@@ -1,6 +1,6 @@
 <h1><%= @assessment.title %></h1>
 <h3><%= @assessment.section_number %>. <%= @assessment.section %></h3>
-<h4>Submissions: <%= @assessment.submissions.count %></h4>
+<h4>Submissions: <%= @assessment.submissions.count %> Average Score: <%= @assessment.grades.average(:score) %></h4>
 <table class="table table-hover">
   <thead>
     <tr>
