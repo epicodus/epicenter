@@ -33,9 +33,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  def self.completion_order
-  end
-
   def assessment_completion
      (self.submissions.assessed.select(:assessment_id).distinct.count.to_f / Assessment.all.count.to_f * 100).floor
   end
