@@ -20,5 +20,15 @@ describe User do
       expect(User.students.count).to eql 1
     end
   end
+
+  describe 'assessment_completion' do
+    it 'returns the percentage of assessments completed' do
+      student = FactoryGirl.create(:user, admin: false)
+      assessment = FactoryGirl.create(:assessment)
+      assessment2 = FactoryGirl.create(:assessment, title: "Ajax")
+      submission = FactoryGirl.create(:submission, assessment_id: assessment2.id, graded: true, user_id: student.id)
+      expect(student.assessment_completion).to eq 50
+    end
+  end
 end
 
