@@ -2,6 +2,7 @@ class Assessment < ActiveRecord::Base
   validates_presence_of :title, :section, :url
   has_many :submissions
   has_many :requirements
+  has_many :grades, through: :requirements
 
   def self.submissions_by_assessment
     result = {}
