@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
   has_one :bank_account
   has_many :payments, through: :bank_account
   has_many :submissions
+  has_many :grades
 
   scope :teachers, -> { where(admin: true) }
   scope :students, -> { where(admin: false) }
@@ -59,6 +60,19 @@ class User < ActiveRecord::Base
     grade = 0
     self.submissions.each { |sub| grade += sub.grades.where(score: 1).count }
     grade
+  end
+
+  def last_assessment
+    if self.submissions.includes(:assessment).empty?
+      Assessment.all.sort_by {|assessment| assessment.section_number }.first
+    else
+      self.submissions.includes(:assessment).sort_by {|submission| submission.assessment.section_number }.last.assessment
+    end
+  end
+
+  def self.students_by_assessment
+    last_assessments = self.students.each_with_object({}) { |student, hsh| hsh[student.name] = student.last_assessment.section_number }
+    last_assessments.sort_by { |name, section_number| section_number}
   end
 
   def password_required?

@@ -53,6 +53,6 @@ class AssessmentsController < ApplicationController
 private
 
   def assessment_params
-    params.require(:assessment).permit(:title, :section, :url)
+    params.require(:assessment).permit(:title, :section, :section_number, :url)
   end
 end
