@@ -18,7 +18,7 @@
 
   <div class="tab-content">
     <div class="tab-pane active" id="home">
-      <%= column_chart @assessments.analysis_by_assessment %>
+      <%= line_chart @assessments.analysis_by_assessment, discrete: true %>
     </div>
     <div class="tab-pane" id="requirements">
       <%= bar_chart @students.students_by_assessment %>
