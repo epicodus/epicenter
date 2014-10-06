@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 20141006184629) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "attendances", force: true do |t|
+  create_table "attendance_records", force: true do |t|
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"

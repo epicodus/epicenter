@@ -1,6 +1,6 @@
 class CreateAttendance < ActiveRecord::Migration
   def change
-    create_table :attendances do |t|
+    create_table :attendance_records do |t|
       t.belongs_to :user
 
       t.timestamps
