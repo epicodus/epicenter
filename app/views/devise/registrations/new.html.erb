@@ -15,6 +15,11 @@
     </div>
 
     <div>
+      <%= f.label :plan_id, "Choose payment plan" %>
+      <%= f.select(:plan_id, Plan.all.collect {|p| [ p.name, p.id ] }) %>
+    </div>
+
+    <div>
       <%= f.label :password %>
       <%= f.password_field :password, autocomplete: "off" %>
     </div>
