@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141006182314) do
+ActiveRecord::Schema.define(version: 20141006214329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,8 +37,8 @@ ActiveRecord::Schema.define(version: 20141006182314) do
 
   create_table "plans", force: true do |t|
     t.string   "name"
-    t.integer  "recurring_amt"
-    t.integer  "upfront_amt"
+    t.integer  "recurring_amount"
+    t.integer  "upfront_amount"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

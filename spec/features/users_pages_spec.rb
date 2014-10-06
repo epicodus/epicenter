@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'User signs up' do
   before do
-    plan = Plan.create(name: "summer 2014, recurring", upfront_amt: 20000, recurring_amt: 60000)
+    plan = Plan.create(name: "summer 2014, recurring", upfront_amount: 20000, recurring_amount: 60000)
     visit new_user_registration_path
     fill_in 'Email', with: 'example_user@example.com'
     fill_in 'Password', with: 'password'
