@@ -7,4 +7,5 @@ class User < ActiveRecord::Base
 
   has_one :bank_account
   has_many :payments, through: :bank_account
+  has_many :attendance_records
 end
