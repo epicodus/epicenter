@@ -1,21 +1,29 @@
 require 'rails_helper'
 
 feature 'creating an attencance record' do
-  before do
-    5.times { FactoryGirl.create(:user) }
-  end
+  before { @user = FactoryGirl.create(:user) }
 
   scenario 'correctly' do
     visit '/attendance'
-    first('form').click_button("I'm here")
+    click_button("I'm here")
     expect(page).to have_content "Welcome"
   end
 
   scenario 'after having already created one today' do
-    user = User.first
-    AttendanceRecord.create(user: user)
+    AttendanceRecord.create(user: @user)
     visit '/attendance'
-    first('form').click_button("I'm here")
+    click_button("I'm here")
     expect(page).to have_content "You have already signed in today"
+  end
+end
+
+feature 'destroying an attendance record' do
+  before { @user = FactoryGirl.create(:user) }
+
+  scenario 'after accidentally creating one' do
+    visit '/attendance'
+    click_button("I'm here")
+    click_link("Not you?")
+    expect(page).to have_content 'Attendance record has been deleted'
   end
 end

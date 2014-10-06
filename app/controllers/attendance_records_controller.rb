@@ -6,12 +6,23 @@ class AttendanceRecordsController < ApplicationController
   def create
     @attendance_record = AttendanceRecord.new(attendance_record_params)
     if @attendance_record.save
-      redirect_to attendance_path, notice: "Welcome #{@attendance_record.user.name}. Glad you're here!"
+      flash[:notice] = "Welcome #{@attendance_record.user.name}
+                        #{view_context.link_to("Not you?",
+                        attendance_record_path(@attendance_record),
+                        data: {method: :delete})}"
+      redirect_to attendance_path
     else
       @students = User.all
       flash[:alert] = "You have already signed in today, #{@attendance_record.user.name}"
       render :index
     end
+  end
+
+  def destroy
+    @attendance_record = AttendanceRecord.find(params[:id])
+    @attendance_record.destroy
+    flash[:alert] = "Attendance record has been deleted."
+    redirect_to attendance_path
   end
 
   private
