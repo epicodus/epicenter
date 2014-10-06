@@ -22,13 +22,14 @@ class Verification
     begin
       verification.confirm(@first_deposit, @second_deposit)
       @bank_account.update!(verified: true, active: true)
-      @bank_account.payments.create!(amount: 625_00)
+      @bank_account.make_upfront_payment
       true
     rescue Balanced::BankAccountVerificationFailure => exception
       errors.add(:base, exception.description)
       false
     end
   end
+
 
 private
 
