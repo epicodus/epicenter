@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_one :plan
+  belongs_to :plan
   has_one :bank_account
   has_many :payments, through: :bank_account
 end
