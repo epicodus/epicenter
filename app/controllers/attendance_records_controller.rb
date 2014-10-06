@@ -7,6 +7,10 @@ class AttendanceRecordsController < ApplicationController
     @attendance_record = AttendanceRecord.new(attendance_record_params)
     if @attendance_record.save
       redirect_to attendance_path, notice: "Welcome #{@attendance_record.user.name}. Glad you're here!"
+    else
+      @students = User.all
+      flash[:alert] = "You have already signed in today, #{@attendance_record.user.name}"
+      render :index
     end
   end
 
