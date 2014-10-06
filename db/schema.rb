@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141006184629) do
+ActiveRecord::Schema.define(version: 20141006214329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,14 @@ ActiveRecord::Schema.define(version: 20141006184629) do
     t.string   "payment_uri"
   end
 
+  create_table "plans", force: true do |t|
+    t.string   "name"
+    t.integer  "recurring_amount"
+    t.integer  "upfront_amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -55,6 +63,7 @@ ActiveRecord::Schema.define(version: 20141006184629) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
+    t.integer  "plan_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
