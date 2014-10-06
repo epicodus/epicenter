@@ -12,8 +12,7 @@ feature 'creating an attencance record' do
   scenario 'after having already created one today' do
     AttendanceRecord.create(user: @user)
     visit '/attendance'
-    click_button("I'm here")
-    expect(page).to have_content "You have already signed in today"
+    expect(page).not_to have_content "I'm here"
   end
 end
 

@@ -1,7 +1,11 @@
 <%= div_for @students, class: 'student' do |student| %>
   <%= student.name %>
-  <%= form_for AttendanceRecord.new do |f| %>
-    <%= f.hidden_field :user_id, value: student.id %>
-    <%= f.submit "I'm here" %>
+  <% if student.attendance_records.today.exists? %>
+    <span>Signed in</span>
+  <% else %>
+    <%= form_for AttendanceRecord.new do |f| %>
+      <%= f.hidden_field :user_id, value: student.id %>
+      <%= f.submit "I'm here" %>
+    <% end %>
   <% end %>
 <% end %>

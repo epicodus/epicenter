@@ -11,10 +11,6 @@ class AttendanceRecordsController < ApplicationController
                         attendance_record_path(@attendance_record),
                         data: {method: :delete})}"
       redirect_to attendance_path
-    else
-      @students = User.all
-      flash[:alert] = "You have already signed in today, #{@attendance_record.user.name}"
-      render :index
     end
   end
 
