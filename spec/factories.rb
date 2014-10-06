@@ -23,10 +23,15 @@ FactoryGirl.define do
     amount 1
   end
 
+  factory :plan do
+    name "summer 2014, recurring"
+    upfront_amount 20000
+    recurring_amount 60000
+  end
+
   factory :user do
-    plan = Plan.create(name: "summer 2014, recurring", upfront_amount: 20000, recurring_amount: 60000)
+    plan
     name "Jane Doe"
-    plan_id plan.id
     sequence(:email) { |n| "user#{n}@example.com" }
     password "password"
     password_confirmation "password"
