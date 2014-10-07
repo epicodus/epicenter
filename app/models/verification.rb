@@ -21,8 +21,7 @@ class Verification
     verification = Balanced::BankAccountVerification.fetch(verification_uri)
     begin
       verification.confirm(@first_deposit, @second_deposit)
-      @bank_account.update!(verified: true, active: true)
-      @bank_account.make_upfront_payment
+      @bank_account.update!(verified: true)
       true
     rescue Balanced::BankAccountVerificationFailure => exception
       errors.add(:base, exception.description)
