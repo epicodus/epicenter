@@ -46,6 +46,11 @@ class BankAccount < ActiveRecord::Base
     payments.create!(amount: plan.upfront_amount)
   end
 
+  def start_recurring_payments
+    update!(recurring: true)
+    payments.create!(amount: plan.recurring_amount)
+  end
+
 private
 
   def create_verification
