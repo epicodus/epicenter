@@ -6,6 +6,7 @@ class BankAccount < ActiveRecord::Base
   validates :user_id, presence: true
 
   belongs_to :user
+  has_one :plan, through: :user
   has_many :payments
 
   before_create :create_verification
@@ -39,6 +40,10 @@ class BankAccount < ActiveRecord::Base
     billable_today.each do |bank_account|
       bank_account.payments.create(amount: 625_00)
     end
+  end
+
+  def make_upfront_payment
+    payments.create!(amount: plan.upfront_amount)
   end
 
 private

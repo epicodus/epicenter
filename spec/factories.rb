@@ -25,8 +25,8 @@ FactoryGirl.define do
 
   factory :plan do
     name "summer 2014, recurring"
-    upfront_amount 20000
-    recurring_amount 60000
+    upfront_amount 200_00
+    recurring_amount 600_00
   end
 
   factory :user do
