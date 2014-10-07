@@ -24,14 +24,6 @@ describe BankAccount do
     end
   end
 
-  describe ".with_payments" do
-    it "only includes bank accounts that have payments", :vcr do
-      account_without_payments = FactoryGirl.create(:bank_account)
-      account_with_payment = FactoryGirl.create(:payment).bank_account
-      expect(BankAccount.with_payments).to eq [account_with_payment]
-    end
-  end
-
   describe ".billable_today", :vcr do
     it "includes bank_accounts that have not been billed in the last month" do
       bank_account = FactoryGirl.create(:recurring_bank_account_due)
