@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'creating an attencance record' do
+feature 'creating an attendance record' do
   before { @user = FactoryGirl.create(:user) }
 
   scenario 'correctly' do
