@@ -4,7 +4,7 @@
       <p class="lead"><%= student.name %></p>
     </div>
     <div class="span3">
-      <% if student.attendance_records.today.exists? %>
+      <% if student.signed_in_today? %>
         <span class="pull-right text-success">Signed in</span>
       <% else %>
         <%= form_for AttendanceRecord.new, html: {class: "pull-right"} do |f| %>

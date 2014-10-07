@@ -10,4 +10,8 @@ class User < ActiveRecord::Base
   has_one :bank_account
   has_many :payments, through: :bank_account
   has_many :attendance_records
+
+  def signed_in_today?
+    attendance_records.today.exists?
+  end
 end
