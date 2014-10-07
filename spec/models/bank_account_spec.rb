@@ -16,8 +16,8 @@ describe BankAccount do
     end
   end
 
-  describe ".active" do
-    it "only includes active bank accounts", :vcr do
+  describe ".recurring" do
+    it "only includes recurring bank accounts", :vcr do
       recurring_bank_account = FactoryGirl.create(:bank_account, recurring: true)
       non_recurring_bank_account = FactoryGirl.create(:bank_account, recurring: false)
       expect(BankAccount.recurring).to eq [recurring_bank_account]
@@ -34,54 +34,35 @@ describe BankAccount do
 
   describe ".billable_today", :vcr do
     it "includes bank_accounts that have not been billed in the last month" do
-      bank_account = FactoryGirl.create(:verified_bank_account)
-      bank_account.start_recurring_payments
-      bank_account.payments.first.update(created_at: 1.month.ago)
+      bank_account = FactoryGirl.create(:recurring_bank_account_due)
       expect(BankAccount.billable_today).to eq [bank_account]
     end
 
     it "does not include bank_accounts that have been billed in the last month" do
-      bank_account = FactoryGirl.create(:verified_bank_account)
-      bank_account.start_recurring_payments
-      bank_account.payments.first.update(created_at: 2.weeks.ago)
+      bank_account = FactoryGirl.create(:recurring_bank_account_not_due)
       expect(BankAccount.billable_today).to eq []
     end
 
     it "only includes bank accounts that are recurring" do
-      bank_account = FactoryGirl.create(:verified_bank_account)
-      bank_account.start_recurring_payments
+      bank_account = FactoryGirl.create(:recurring_bank_account_due)
       bank_account.update(recurring: false)
-      bank_account.payments.first.update(created_at: 1.month.ago)
       expect(BankAccount.billable_today).to eq []
     end
 
     it "returns all bank_accounts that are due for payment" do
-      bank_account1 = FactoryGirl.create(:verified_bank_account)
-      bank_account1.start_recurring_payments
-      bank_account1.payments.first.update(created_at: 1.month.ago)
-
-      bank_account2 = FactoryGirl.create(:verified_bank_account)
-      bank_account2.start_recurring_payments
-      bank_account2.payments.first.update(created_at: 1.month.ago)
-
-      bank_account3 = FactoryGirl.create(:verified_bank_account)
-      bank_account3.start_recurring_payments
-      bank_account3.payments.first.update(created_at: 2.weeks.ago)
-
-      bank_account4 = FactoryGirl.create(:verified_bank_account)
-      bank_account4.start_recurring_payments
+      bank_account1 = FactoryGirl.create(:recurring_bank_account_due)
+      bank_account2 = FactoryGirl.create(:recurring_bank_account_due)
+      bank_account3 = FactoryGirl.create(:recurring_bank_account_not_due)
+      bank_account4 = FactoryGirl.create(:recurring_bank_account_due)
       bank_account4.update(recurring: false)
-      bank_account4.payments.first.update(created_at: 1.month.ago)
-
       expect(BankAccount.billable_today).to eq [bank_account1, bank_account2]
     end
 
     include ActiveSupport::Testing::TimeHelpers
     it "handles months with different amounts of days" do
-      bank_account = FactoryGirl.create(:verified_bank_account)
-      bank_account.start_recurring_payments
+      bank_account = nil
       travel_to(Date.parse("January 31, 2014")) do
-        FactoryGirl.create(:payment, bank_account: bank_account)
+        bank_account = FactoryGirl.create(:new_recurring_bank_account)
       end
       travel_to(Date.parse("March 1, 2014")) do
         expect(BankAccount.billable_today).to eq [bank_account]
@@ -94,8 +75,7 @@ describe BankAccount do
     it 'tells you which accounts are billable in three days' do
       bank_account = nil
       travel_to(Date.parse("January 5, 2014")) do
-        bank_account = FactoryGirl.create(:verified_bank_account)
-        bank_account.start_recurring_payments
+        bank_account = FactoryGirl.create(:new_recurring_bank_account)
       end
       travel_to(Date.parse("February 2, 2014")) do
         expect(BankAccount.billable_in_three_days).to eq [bank_account]
@@ -131,8 +111,7 @@ describe BankAccount do
     it "emails users who are due in 3 days", :vcr do
       bank_account = nil
       travel_to(Date.parse("January 5, 2014")) do
-        bank_account = FactoryGirl.create(:verified_bank_account)
-        bank_account.start_recurring_payments
+        bank_account = FactoryGirl.create(:new_recurring_bank_account)
       end
 
       expect(RestClient).to receive(:post).with(
@@ -152,13 +131,8 @@ describe BankAccount do
 
   describe ".bill_bank_accounts", :vcr do
     it "bills all bank_accounts that are due today" do
-      bank_account1 = FactoryGirl.create(:verified_bank_account)
-      bank_account1.start_recurring_payments
-      bank_account1.payments.first.update(created_at: 1.month.ago)
-
-      bank_account2 = FactoryGirl.create(:verified_bank_account)
-      bank_account2.start_recurring_payments
-      bank_account2.payments.first.update(created_at: 1.weeks.ago)
+      bank_account1 = FactoryGirl.create(:recurring_bank_account_due)
+      bank_account2 = FactoryGirl.create(:recurring_bank_account_not_due)
 
       BankAccount.bill_bank_accounts
 
