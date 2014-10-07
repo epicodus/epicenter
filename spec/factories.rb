@@ -44,4 +44,8 @@ FactoryGirl.define do
       association :bank_account, factory: :verified_bank_account
     end
   end
+
+  factory :attendance_record do
+    user
+  end
 end
