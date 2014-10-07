@@ -140,4 +140,26 @@ describe BankAccount do
       expect(bank_account2.payments.length).to eq 1
     end
   end
+
+  describe "#make_upfront_payment", :vcr do
+    it "makes a payment for the upfront amount of the bank account's plan" do
+      bank_account = FactoryGirl.create(:verified_bank_account)
+      bank_account.plan.upfront_amount = 500_00
+      bank_account.make_upfront_payment
+      expect(bank_account.payments.first.amount).to eq 500_00
+    end
+  end
+
+  describe "#start_recurring_payments", :vcr do
+    it "makes a payment for the recurring amount of the bank account's plan" do
+      bank_account = FactoryGirl.create(:new_recurring_bank_account)
+      bank_account.plan.upfront_amount = 600_00
+      expect(bank_account.payments.first.amount).to eq 600_00
+    end
+
+    it 'sets the bank account to be recurring' do
+      bank_account = FactoryGirl.create(:new_recurring_bank_account)
+      expect(bank_account.recurring).to eq true
+    end
+  end
 end
