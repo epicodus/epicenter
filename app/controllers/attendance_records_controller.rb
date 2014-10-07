@@ -6,10 +6,10 @@ class AttendanceRecordsController < ApplicationController
   def create
     @attendance_record = AttendanceRecord.new(attendance_record_params)
     if @attendance_record.save
-      flash[:notice] = "Welcome #{@attendance_record.user.name}
-                        #{view_context.link_to("Not you?",
+      flash[:notice] = "Welcome #{@attendance_record.user.name}"
+      flash[:secure] =  view_context.link_to("Not you?",
                         attendance_record_path(@attendance_record),
-                        data: {method: :delete})}"
+                        data: {method: :delete})
       redirect_to attendance_path
     end
   end
