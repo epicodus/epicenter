@@ -16,11 +16,11 @@ describe BankAccount do
     end
   end
 
-  describe ".recurring" do
-    it "only includes recurring bank accounts", :vcr do
-      recurring_bank_account = FactoryGirl.create(:bank_account, recurring: true)
-      non_recurring_bank_account = FactoryGirl.create(:bank_account, recurring: false)
-      expect(BankAccount.recurring).to eq [recurring_bank_account]
+  describe ".recurring_active" do
+    it "only includes bank accounts that are recurring_active", :vcr do
+      recurring_active_bank_account = FactoryGirl.create(:bank_account, recurring_active: true)
+      non_recurring_active_bank_account = FactoryGirl.create(:bank_account, recurring_active: false)
+      expect(BankAccount.recurring_active).to eq [recurring_active_bank_account]
     end
   end
 
@@ -35,9 +35,9 @@ describe BankAccount do
       expect(BankAccount.billable_today).to eq []
     end
 
-    it "only includes bank accounts that are recurring" do
+    it "only includes bank accounts that are recurring_active" do
       bank_account = FactoryGirl.create(:recurring_bank_account_due)
-      bank_account.update(recurring: false)
+      bank_account.update(recurring_active: false)
       expect(BankAccount.billable_today).to eq []
     end
 
@@ -46,7 +46,7 @@ describe BankAccount do
       bank_account2 = FactoryGirl.create(:recurring_bank_account_due)
       bank_account3 = FactoryGirl.create(:recurring_bank_account_not_due)
       bank_account4 = FactoryGirl.create(:recurring_bank_account_due)
-      bank_account4.update(recurring: false)
+      bank_account4.update(recurring_active: false)
       expect(BankAccount.billable_today).to eq [bank_account1, bank_account2]
     end
 
@@ -145,9 +145,9 @@ describe BankAccount do
       expect(bank_account.payments.first.amount).to eq bank_account.plan.recurring_amount
     end
 
-    it 'sets the bank account to be recurring' do
+    it 'sets the bank account to be recurring_active' do
       bank_account = FactoryGirl.create(:new_recurring_bank_account)
-      expect(bank_account.recurring).to eq true
+      expect(bank_account.recurring_active).to eq true
     end
   end
 end

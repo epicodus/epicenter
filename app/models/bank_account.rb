@@ -1,5 +1,5 @@
 class BankAccount < ActiveRecord::Base
-  scope :recurring, -> { where(recurring: true) }
+  scope :recurring_active, -> { where(recurring_active: true) }
 
   validates :account_uri, presence: true
   validates :user_id, presence: true
@@ -11,13 +11,13 @@ class BankAccount < ActiveRecord::Base
   before_create :create_verification
 
   def self.billable_today
-    recurring.select do |bank_account|
+    recurring_active.select do |bank_account|
       bank_account.payments.last.created_at < 1.month.ago
     end
   end
 
   def self.billable_in_three_days
-    recurring.select do |bank_account|
+    recurring_active.select do |bank_account|
       (bank_account.payments.last.created_at - 3.days) == 1.month.ago
     end
   end
@@ -46,7 +46,7 @@ class BankAccount < ActiveRecord::Base
   end
 
   def start_recurring_payments
-    update!(recurring: true)
+    update!(recurring_active: true)
     payments.create!(amount: plan.recurring_amount)
   end
 
