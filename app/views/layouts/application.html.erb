@@ -19,7 +19,11 @@
     </div>
     <div class="row">
       <div class="span8 offset2 text-center">
-        <%= flash_notice flash %>
+        <%= flash_notice(flash) do %>
+          <%= flash[:notice] %>
+          <%= flash[:alert] %>
+          <%= flash[:secure].html_safe if flash[:secure] %>
+        <% end %>
         <%= yield %>
       </div>
     </div>
