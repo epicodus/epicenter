@@ -83,22 +83,20 @@ describe BankAccount do
     end
 
     it 'does not include accounts that are billable in more than three days' do
-      payment = nil
+      bank_account = nil
       travel_to(Date.parse("January 6, 2014")) do
-        payment = FactoryGirl.create(:payment)
+        bank_account = FactoryGirl.create(:new_recurring_bank_account)
       end
-      bank_account = payment.bank_account
       travel_to(Date.parse("February 2, 2014")) do
         expect(BankAccount.billable_in_three_days).to eq []
       end
     end
 
     it 'does not include accounts that are billable in less than three days' do
-      payment = nil
+      bank_account = nil
       travel_to(Date.parse("January 4, 2014")) do
-        payment = FactoryGirl.create(:payment)
+        bank_account = FactoryGirl.create(:new_recurring_bank_account)
       end
-      bank_account = payment.bank_account
       travel_to(Date.parse("February 2, 2014")) do
         expect(BankAccount.billable_in_three_days).to eq []
       end
@@ -131,30 +129,28 @@ describe BankAccount do
 
   describe ".bill_bank_accounts", :vcr do
     it "bills all bank_accounts that are due today" do
-      bank_account1 = FactoryGirl.create(:recurring_bank_account_due)
-      bank_account2 = FactoryGirl.create(:recurring_bank_account_not_due)
+      bank_account = FactoryGirl.create(:recurring_bank_account_due)
+      expect { BankAccount.bill_bank_accounts }.to change { bank_account.payments.count }.by 1
+    end
 
-      BankAccount.bill_bank_accounts
-
-      expect(bank_account1.payments.length).to eq 2
-      expect(bank_account2.payments.length).to eq 1
+    it "does not bill bank accounts that are not due today" do
+      bank_account = FactoryGirl.create(:recurring_bank_account_not_due)
+      expect { BankAccount.bill_bank_accounts }.to change { bank_account.payments.count }.by 0
     end
   end
 
   describe "#make_upfront_payment", :vcr do
     it "makes a payment for the upfront amount of the bank account's plan" do
       bank_account = FactoryGirl.create(:verified_bank_account)
-      bank_account.plan.upfront_amount = 500_00
       bank_account.make_upfront_payment
-      expect(bank_account.payments.first.amount).to eq 500_00
+      expect(bank_account.payments.first.amount).to eq bank_account.plan.upfront_amount
     end
   end
 
   describe "#start_recurring_payments", :vcr do
     it "makes a payment for the recurring amount of the bank account's plan" do
       bank_account = FactoryGirl.create(:new_recurring_bank_account)
-      bank_account.plan.upfront_amount = 600_00
-      expect(bank_account.payments.first.amount).to eq 600_00
+      expect(bank_account.payments.first.amount).to eq bank_account.plan.recurring_amount
     end
 
     it 'sets the bank account to be recurring' do
