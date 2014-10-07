@@ -18,9 +18,9 @@ describe BankAccount do
 
   describe ".active" do
     it "only includes active bank accounts", :vcr do
-      active_bank_account = FactoryGirl.create(:bank_account, active: true)
-      inactive_bank_account = FactoryGirl.create(:bank_account, active: false)
-      expect(BankAccount.active).to eq [active_bank_account]
+      recurring_bank_account = FactoryGirl.create(:bank_account, recurring: true)
+      non_recurring_bank_account = FactoryGirl.create(:bank_account, recurring: false)
+      expect(BankAccount.recurring).to eq [recurring_bank_account]
     end
   end
 
