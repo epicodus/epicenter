@@ -9,4 +9,8 @@ class User < ActiveRecord::Base
   belongs_to :plan
   has_one :bank_account
   has_many :payments, through: :bank_account
+
+  def upfront_payment_due?
+    plan.upfront_amount > 0 && payments.count == 0
+  end
 end
