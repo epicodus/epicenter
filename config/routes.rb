@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   resource :verification, only: [:edit, :update]
   resources :payments, only: [:index]
   resources :upfront_payments, only: [:new, :create]
+  resources :recurring_payments, only: [:new, :create]
 end
