@@ -16,6 +16,12 @@ ActiveRecord::Schema.define(version: 20141007221803) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "attendance_records", force: true do |t|
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "bank_accounts", force: true do |t|
     t.string   "account_uri"
     t.string   "verification_uri"
