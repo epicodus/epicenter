@@ -37,7 +37,7 @@ class BankAccount < ActiveRecord::Base
 
   def self.bill_bank_accounts
     billable_today.each do |bank_account|
-      bank_account.payments.create(amount: 625_00)
+      bank_account.payments.create(amount: bank_account.plan.recurring_amount)
     end
   end
 
