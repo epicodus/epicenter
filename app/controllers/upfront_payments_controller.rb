@@ -14,6 +14,9 @@ class UpfrontPaymentsController < ApplicationController
 
 private
   def ensure_upfront_payment_is_due
-    redirect_to root_path if !current_user.upfront_payment_due?
+    if !current_user.upfront_payment_due?
+      flash[:alert] = "There are no upfront payments due on this account."
+      redirect_to root_path
+    end
   end
 end

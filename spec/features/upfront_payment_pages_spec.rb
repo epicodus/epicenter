@@ -13,6 +13,7 @@ feature 'User makes an upfront payment' do
     user = FactoryGirl.create(:user_with_a_payment)
     sign_in user
     visit new_upfront_payment_path
+    expect(page).to have_content "There are no upfront payments due on this account."
     expect(current_path).to eq root_path
   end
 end

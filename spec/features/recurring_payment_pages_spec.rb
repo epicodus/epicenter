@@ -20,7 +20,7 @@ feature 'User starts recurring payments' do
     user = FactoryGirl.create(:user_with_recurring_active)
     sign_in user
     visit new_recurring_payment_path
-    expect(page).to have_content "It looks like recurring payments have already started for this account."
+    expect(page).to have_content "Recurring payments have already started for this account."
     expect(current_path).to eq root_path
   end
 end
