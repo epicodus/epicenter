@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe Submission, :type => :model do
+describe Submission do
   it { should validate_presence_of :link }
   it { should belong_to :assessment }
-  it { should have_many :grades }
+  it { should have_many :reviews }
 end

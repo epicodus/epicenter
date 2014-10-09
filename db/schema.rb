@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 20141030175701) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
+    t.integer  "review_id"
   end
 
   create_table "payments", force: true do |t|
@@ -100,6 +101,14 @@ ActiveRecord::Schema.define(version: 20141030175701) do
   create_table "requirements", force: true do |t|
     t.string   "content"
     t.integer  "assessment_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "reviews", force: true do |t|
+    t.integer  "submission_id"
+    t.integer  "user_id"
+    t.text     "note"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
