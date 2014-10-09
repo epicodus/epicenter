@@ -42,16 +42,26 @@ FactoryGirl.define do
   end
 
   factory :plan do
-    name "summer 2014, recurring"
-    recurring_amount 600_00
+    name "summer 2014"
 
-    factory :plan_with_upfront_payment do
+    factory :recurring_plan_with_upfront_payment do
       upfront_amount 200_00
+      recurring_amount 600_00
+    end
+
+    factory :upfront_payment_only_plan do
+      upfront_amount 3400_00
+      recurring_amount 0
+    end
+
+    factory :recurring_plan_with_no_upfront_payment do
+      upfront_amount 0
+      recurring_amount 625_00
     end
   end
 
   factory :user do
-    association :plan, factory: :plan_with_upfront_payment
+    association :plan, factory: :recurring_plan_with_upfront_payment
     name "Jane Doe"
     sequence(:email) { |n| "user#{n}@example.com" }
     password "password"
