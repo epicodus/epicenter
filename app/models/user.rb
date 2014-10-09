@@ -12,6 +12,10 @@ class User < ActiveRecord::Base
   has_many :payments, through: :bank_account
   has_many :attendance_records
 
+  def upfront_payment_due?
+    plan.upfront_amount > 0 && payments.count == 0
+  end
+
   def signed_in_today?
     attendance_records.today.exists?
   end

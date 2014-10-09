@@ -14,3 +14,9 @@ def create_balanced_bank_account
   ).save
   balanced_bank_account
 end
+
+def correctly_verify_bank_account(user)
+  fill_in 'First deposit amount', with: '1'
+  fill_in 'Second deposit amount', with: '1'
+  click_on 'Confirm account & start payments'
+end
