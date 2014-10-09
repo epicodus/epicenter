@@ -78,4 +78,8 @@ FactoryGirl.define do
 
     end
   end
+
+  factory :attendance_record do
+    user
+  end
 end

@@ -1,0 +1,17 @@
+<div class="div-list">
+  <%= div_for @students, class: 'div-list-item row-fluid' do |student| %>
+    <div class="span9">
+      <p class="lead"><%= student.name %></p>
+    </div>
+    <div class="span3">
+      <% if student.signed_in_today? %>
+        <span class="pull-right text-success">Signed in</span>
+      <% else %>
+        <%= form_for AttendanceRecord.new, html: {class: "pull-right"} do |f| %>
+          <%= f.hidden_field :user_id, value: student.id %>
+          <%= f.submit "I'm here", class: 'btn btn-primary' %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
