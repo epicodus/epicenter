@@ -82,7 +82,7 @@ FactoryGirl.define do
 
       factory :user_with_a_payment do
         after(:create) do |user|
-          user.bank_account.make_upfront_payment
+          user.make_upfront_payment
         end
       end
 

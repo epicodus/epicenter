@@ -41,10 +41,6 @@ class BankAccount < ActiveRecord::Base
     end
   end
 
-  def make_upfront_payment
-    payments.create!(amount: plan.upfront_amount)
-  end
-
   def start_recurring_payments
     update!(recurring_active: true)
     payments.create!(amount: plan.recurring_amount)

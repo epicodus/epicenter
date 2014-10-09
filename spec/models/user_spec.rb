@@ -26,6 +26,14 @@ describe User do
     end
   end
 
+  describe "#make_upfront_payment", :vcr do
+    it "makes a payment for the upfront amount of the user's plan" do
+      user = FactoryGirl.create(:user_with_verified_bank_account)
+      user.make_upfront_payment
+      expect(user.payments.first.amount).to eq user.plan.upfront_amount
+    end
+  end
+
   describe '#signed_in_today?' do
     let(:user) { FactoryGirl.create(:user) }
 

@@ -19,4 +19,8 @@ class User < ActiveRecord::Base
   def signed_in_today?
     attendance_records.today.exists?
   end
+
+  def make_upfront_payment
+    bank_account.payments.create!(amount: plan.upfront_amount)
+  end
 end
