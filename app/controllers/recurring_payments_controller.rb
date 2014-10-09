@@ -8,7 +8,7 @@ class RecurringPaymentsController < ApplicationController
   end
 
   def create
-    current_user.bank_account.start_recurring_payments
+    current_user.start_recurring_payments
     flash[:notice] = "Thank You! Your first recurring payment has been made."
     redirect_to payments_path
   end

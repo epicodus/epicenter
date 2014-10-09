@@ -130,16 +130,4 @@ describe BankAccount do
       expect { BankAccount.bill_bank_accounts }.to change { bank_account.payments.count }.by 0
     end
   end
-
-  describe "#start_recurring_payments", :vcr do
-    it "makes a payment for the recurring amount of the bank account's plan" do
-      bank_account = FactoryGirl.create(:new_recurring_bank_account)
-      expect(bank_account.payments.first.amount).to eq bank_account.plan.recurring_amount
-    end
-
-    it 'sets the bank account to be recurring_active' do
-      bank_account = FactoryGirl.create(:new_recurring_bank_account)
-      expect(bank_account.recurring_active).to eq true
-    end
-  end
 end

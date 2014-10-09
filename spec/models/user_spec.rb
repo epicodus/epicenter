@@ -34,6 +34,20 @@ describe User do
     end
   end
 
+  describe "#start_recurring_payments", :vcr do
+    it "makes a payment for the recurring amount of the users's plan" do
+      user = FactoryGirl.create(:user_with_verified_bank_account)
+      user.start_recurring_payments
+      expect(user.payments.first.amount).to eq user.plan.recurring_amount
+    end
+
+    it 'sets the bank account to be recurring_active' do
+      user = FactoryGirl.create(:user_with_verified_bank_account)
+      user.start_recurring_payments
+      expect(user.bank_account.recurring_active).to eq true
+    end
+  end
+
   describe '#signed_in_today?' do
     let(:user) { FactoryGirl.create(:user) }
 

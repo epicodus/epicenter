@@ -18,7 +18,7 @@ FactoryGirl.define do
 
       factory :new_recurring_bank_account do
         after(:create) do |bank_account|
-          bank_account.start_recurring_payments
+          bank_account.user.start_recurring_payments
         end
 
         factory :recurring_bank_account_not_due do
@@ -76,7 +76,7 @@ FactoryGirl.define do
 
       factory :user_with_recurring_active do
         after(:create) do |user|
-          user.bank_account.start_recurring_payments
+          user.start_recurring_payments
         end
       end
 

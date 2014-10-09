@@ -41,11 +41,6 @@ class BankAccount < ActiveRecord::Base
     end
   end
 
-  def start_recurring_payments
-    update!(recurring_active: true)
-    payments.create!(amount: plan.recurring_amount)
-  end
-
 private
 
   def create_verification
