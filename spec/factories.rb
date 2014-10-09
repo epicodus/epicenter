@@ -64,6 +64,12 @@ FactoryGirl.define do
     factory :user_with_verified_bank_account do
       association :bank_account, factory: :verified_bank_account
 
+      factory :user_with_recurring_active do
+        after(:create) do |user|
+          user.bank_account.start_recurring_payments
+        end
+      end
+
       factory :user_with_a_payment do
         after(:create) do |user|
           user.bank_account.make_upfront_payment
