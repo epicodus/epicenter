@@ -15,24 +15,6 @@ FactoryGirl.define do
         verification.confirm
       end
       verified true
-
-      factory :new_recurring_bank_account do
-        after(:create) do |bank_account|
-          bank_account.start_recurring_payments
-        end
-
-        factory :recurring_bank_account_not_due do
-          after(:create) do |bank_account|
-            bank_account.payments.first.update(created_at: 2.weeks.ago)
-          end
-        end
-
-        factory :recurring_bank_account_due do
-          after(:create) do |bank_account|
-            bank_account.payments.first.update(created_at: 1.month.ago)
-          end
-        end
-      end
     end
   end
 
@@ -75,14 +57,29 @@ FactoryGirl.define do
       association :bank_account, factory: :verified_bank_account
 
       factory :user_with_recurring_active do
+        recurring_active true
         after(:create) do |user|
-          user.bank_account.start_recurring_payments
+          create(:payment, bank_account: user.bank_account)
         end
       end
 
-      factory :user_with_a_payment do
+      factory :user_with_recurring_not_due do
+        recurring_active true
         after(:create) do |user|
-          user.bank_account.make_upfront_payment
+          create(:payment, bank_account: user.bank_account, created_at: 2.weeks.ago)
+        end
+      end
+
+      factory :user_with_recurring_due do
+        recurring_active true
+        after(:create) do |user|
+          create(:payment, bank_account: user.bank_account, created_at: 1.month.ago)
+        end
+      end
+
+      factory :user_with_upfront_payment do
+        after(:create) do |user|
+          user.make_upfront_payment
         end
       end
 

@@ -7,7 +7,7 @@ class UpfrontPaymentsController < ApplicationController
   end
 
   def create
-    current_user.bank_account.make_upfront_payment
+    current_user.make_upfront_payment
     flash[:notice] = "Thank You! Your upfront payment has been made."
     redirect_to payments_path
   end
