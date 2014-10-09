@@ -20,7 +20,7 @@ private
   end
 
   def ensure_account_is_not_recurring_active
-    if current_user.bank_account.recurring_active
+    if current_user.recurring_active
       flash[:alert] = "Recurring payments have already started for this account."
       redirect_to root_path
     end
