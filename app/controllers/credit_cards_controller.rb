@@ -1,0 +1,23 @@
+class CreditCardsController < ApplicationController
+  before_action :authenticate_user!
+
+  def new
+    @credit_card = CreditCard.new
+  end
+
+  def create
+    @credit_card = CreditCard.create(credit_card_params.merge(user: current_user))
+    if @credit_card.save
+      redirect_to (current_user.upfront_payment_due? ? new_upfront_payment_path : new_recurring_payment_path)
+    else
+      flash[:alert] = 'Something went wrong. Please try again.'
+      render :new
+    end
+  end
+
+private
+
+  def credit_card_params
+    params.require(:credit_card).permit(:credit_card_uri)
+  end
+end

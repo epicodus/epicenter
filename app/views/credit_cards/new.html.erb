@@ -1,0 +1,43 @@
+<h1>Credit card information</h1>
+
+<p>
+  After entering your credit card information, you can start making payments.
+</p>
+
+<%= form_for @credit_card, url: credit_card_path do |f| %>
+  <div>
+    <%= label_tag :name, "Name on card" %>
+    <%= text_field_tag :name, nil, autofocus: true %>
+  </div>
+
+  <div>
+    <%= label_tag :card_number %>
+    <%= text_field_tag :card_number %>
+  </div>
+
+  <div class='row'>
+    <div class='span2 cc-form'>
+      <%= label_tag :expiration_month %>
+      <%= text_field_tag :expiration_month %>
+    </div>
+
+    <div class='span2 cc-form'>
+      <%= label_tag :expiration_year %>
+      <%= text_field_tag :expiration_year %>
+    </div>
+
+    <div class='span2 cc-form'>
+      <%= label_tag :cvv_code, "CVV code" %>
+      <%= text_field_tag :cvv_code %>
+    </div>
+  </div>
+
+  <div>
+    <%= label_tag :zip_code %>
+    <%= text_field_tag :zip_code %>
+  </div>
+
+  <%= f.hidden_field :credit_card_uri %>
+
+  <div><%= f.submit "Add credit card", class: "btn", id: "card-submit-button" %></div>
+<% end %>
