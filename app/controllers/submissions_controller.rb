@@ -1,11 +1,4 @@
 class SubmissionsController < ApplicationController
-  def index
-    @submissions = Submission.all
-  end
-
-  def new
-    @submission = Submission.new
-  end
 
   def create
     @assessment = Assessment.find(params[:assessment_id])
@@ -21,10 +14,6 @@ class SubmissionsController < ApplicationController
     @submission = Submission.find(params[:id])
   end
 
-  def edit
-    @submission = Submission.find(params[:id])
-  end
-
   def update
     @submission = Submission.find(params[:id])
     if @submission.update(submission_params)
@@ -32,9 +21,6 @@ class SubmissionsController < ApplicationController
     else
       render 'new'
     end
-  end
-
-  def destroy
   end
 
 private
