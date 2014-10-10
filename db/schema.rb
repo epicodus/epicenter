@@ -40,6 +40,13 @@ ActiveRecord::Schema.define(version: 20141013234512) do
     t.datetime "updated_at"
   end
 
+  create_table "credit_cards", force: true do |t|
+    t.string   "credit_card_uri"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "payments", force: true do |t|
     t.integer  "amount"
     t.string   "method"
