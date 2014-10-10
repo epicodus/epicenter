@@ -10,6 +10,11 @@ class AssessmentsController < ApplicationController
   def create
   end
 
+  def show
+    @assessment = Assessment.find(params[:id])
+    @submission = Submission.new(assessment: @assessment)
+  end
+
   def edit
   end
 

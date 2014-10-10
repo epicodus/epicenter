@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   end
 
   resources :assessments do
-    resources :submissions
+    resource :submission
   end
 
   resources :assessments
