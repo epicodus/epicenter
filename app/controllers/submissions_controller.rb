@@ -1,32 +1,28 @@
 class SubmissionsController < ApplicationController
   def index
     @submissions = Submission.all
-    authorize! :read, @submissions
   end
 
   def new
     @submission = Submission.new
-    authorize! :create, @submission
   end
 
   def create
-    @submission = Submission.new(submission_params)
+    @assessment = Assessment.find(params[:assessment_id])
+    @submission = @assessment.submissions.new(submission_params)
     if @submission.save
-      redirect_to submissions_url, notice: "Submission added!"
+      redirect_to @assessment, notice: "Thank you for submitting."
     else
-      render 'new'
+      render 'assessments/show'
     end
-    authorize! :create, @submission
   end
 
   def show
     @submission = Submission.find(params[:id])
-    authorize! :read, @submission
   end
 
   def edit
     @submission = Submission.find(params[:id])
-    authorize! :update, @submission
   end
 
   def update
@@ -36,17 +32,15 @@ class SubmissionsController < ApplicationController
     else
       render 'new'
     end
-    authorize! :update, @submission
   end
 
   def destroy
-    authorize! :destroy, @submission
   end
 
 private
 
   def submission_params
-    params.require(:submission).permit(:title, :section, :url)
+    params.require(:submission).permit(:link)
   end
 
 end
