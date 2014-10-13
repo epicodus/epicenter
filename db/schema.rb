@@ -11,10 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141007221803) do
+ActiveRecord::Schema.define(version: 20141013223159) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "assessments", force: true do |t|
+    t.string   "title"
+    t.string   "section"
+    t.string   "url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "attendance_records", force: true do |t|
     t.integer  "user_id"
@@ -30,6 +38,25 @@ ActiveRecord::Schema.define(version: 20141007221803) do
     t.integer  "user_id"
     t.boolean  "verified"
     t.boolean  "recurring_active"
+  end
+
+  create_table "cohorts", force: true do |t|
+    t.string   "description"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "grades", force: true do |t|
+    t.integer  "submission_id"
+    t.integer  "requirement_id"
+    t.string   "comment"
+    t.integer  "score"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id"
+    t.integer  "review_id"
   end
 
   create_table "payments", force: true do |t|
@@ -49,6 +76,28 @@ ActiveRecord::Schema.define(version: 20141007221803) do
     t.datetime "updated_at"
   end
 
+  create_table "requirements", force: true do |t|
+    t.string   "content"
+    t.integer  "assessment_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "reviews", force: true do |t|
+    t.integer  "submission_id"
+    t.integer  "user_id"
+    t.text     "note"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "submissions", force: true do |t|
+    t.integer "user_id"
+    t.string  "link"
+    t.text    "note"
+    t.integer "assessment_id"
+  end
+
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -64,6 +113,7 @@ ActiveRecord::Schema.define(version: 20141007221803) do
     t.datetime "updated_at"
     t.string   "name"
     t.integer  "plan_id"
+    t.integer  "cohort_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
