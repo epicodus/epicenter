@@ -7,6 +7,7 @@ describe User do
   it { should have_many :payments }
   it { should belong_to :plan }
   it { should have_many :attendance_records }
+  it { should belong_to :cohort }
 
   describe ".recurring_active" do
     it "only includes users that are recurring_active", :vcr do

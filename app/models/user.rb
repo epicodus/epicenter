@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   validates :plan_id, presence: true
 
   belongs_to :plan
+  belongs_to :cohort
   has_one :bank_account
   has_many :payments, through: :bank_account
   has_many :attendance_records
