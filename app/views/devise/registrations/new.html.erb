@@ -15,7 +15,7 @@
     </div>
 
     <div>
-      <%= f.label :cohort_id, "Choose your cohort" %>
+      <%= f.label :cohort_id, "Choose class" %>
       <%= f.select(:cohort_id, Cohort.all.collect {|c| [ c.description, c.id ] }) %>
     </div>
 
