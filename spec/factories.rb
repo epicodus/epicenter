@@ -43,6 +43,7 @@ FactoryGirl.define do
   end
 
   factory :user do
+    cohort
     association :plan, factory: :recurring_plan_with_upfront_payment
     name "Jane Doe"
     sequence(:email) { |n| "user#{n}@example.com" }

@@ -8,6 +8,7 @@ class User < ActiveRecord::Base
 
   validates :name, presence: true
   validates :plan_id, presence: true
+  validates :cohort_id, presence: true
 
   belongs_to :plan
   belongs_to :cohort
