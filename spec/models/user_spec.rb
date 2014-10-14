@@ -3,10 +3,12 @@ require 'rails_helper'
 describe User do
   it { should validate_presence_of :name }
   it { should validate_presence_of :plan_id }
+  it { should validate_presence_of :cohort_id }
   it { should have_one :bank_account }
   it { should have_many :payments }
   it { should belong_to :plan }
   it { should have_many :attendance_records }
+  it { should belong_to :cohort }
 
   describe ".recurring_active" do
     it "only includes users that are recurring_active", :vcr do
