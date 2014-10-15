@@ -100,5 +100,10 @@ FactoryGirl.define do
       start_date Date.parse('January 5, 2015')
       end_date Date.parse('April 17, 2015')
     end
+
+    factory :cohort_starting_july_seventh do
+      start_date Date.parse('July 7, 2014')
+      end_date Date.parse('October 17, 2014')
+    end
   end
 end

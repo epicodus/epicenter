@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe Cohort do
   it { should have_many :users }
+  it { should have_many(:attendance_records).through(:users) }
   it { should validate_presence_of :description }
   it { should validate_presence_of :start_date }
   it { should validate_presence_of :end_date }
@@ -32,6 +33,18 @@ describe Cohort do
     it 'does not count days after the class has ended' do
       travel_to cohort.end_date + 60.days do
         expect(cohort.number_of_days_since_start).to eq 75
+      end
+    end
+  end
+
+  describe '.current' do
+    include ActiveSupport::Testing::TimeHelpers
+
+    it 'is the current cohort' do
+      travel_to Date.parse('January 10, 2015') do
+        current_cohort = FactoryGirl.create(:cohort_starting_january_fifth)
+        past_cohort = FactoryGirl.create(:cohort_starting_july_seventh)
+        expect(Cohort.current).to eq current_cohort
       end
     end
   end
