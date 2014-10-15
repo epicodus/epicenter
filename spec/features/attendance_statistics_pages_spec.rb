@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 feature 'attendance statistics page' do
+  let!(:cohort) { FactoryGirl.create(:cohort) }
+  
   scenario 'is navigable through "attendance/statistics"' do
     visit attendance_statistics_path
     expect(page).to have_content 'Attendance statistics'

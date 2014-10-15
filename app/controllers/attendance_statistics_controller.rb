@@ -1,5 +1,6 @@
 class AttendanceStatisticsController < ApplicationController
   def index
-    @attendance_record_data_points = AttendanceRecord.group_by_day(:created_at).count
+    @cohort = Cohort.current
+    @attendance_statistic = CohortAttendanceStatistics.new(@cohort)
   end
 end
