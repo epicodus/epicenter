@@ -95,5 +95,10 @@ FactoryGirl.define do
     description 'Current cohort'
     start_date Date.today
     end_date Date.today + 15.weeks
+
+    factory :cohort_starting_january_fifth do
+      start_date Date.parse('January 5, 2015')
+      end_date Date.parse('April 17, 2015')
+    end
   end
 end

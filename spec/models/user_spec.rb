@@ -187,4 +187,42 @@ describe User do
       expect(user.signed_in_today?).to eq true
     end
   end
+
+  describe 'attendance methods' do
+    include ActiveSupport::Testing::TimeHelpers
+
+    let(:cohort) { FactoryGirl.create(:cohort,
+                   start_date: Date.parse('January 5, 2015'),
+                   end_date: Date.parse('April 22, 2015')) }
+    let(:user) { FactoryGirl.create(:user, cohort: cohort) }
+
+    before do
+      travel_to Time.new(2015, 01, 05, 8, 55, 00)
+      FactoryGirl.create(:attendance_record, user: user)
+      travel 1.day
+      FactoryGirl.create(:attendance_record, user: user)
+      travel 1.day + 10.minutes
+      FactoryGirl.create(:attendance_record, user: user)
+      travel 1.day
+      FactoryGirl.create(:attendance_record, user: user)
+      travel 1.day
+    end
+
+    after { travel_back }
+
+    describe '#on_time_attendances' do
+      subject { user.on_time_attendances }
+      it { is_expected.to eq 2 }
+    end
+
+    describe '#tardies' do
+      subject { user.tardies }
+      it { is_expected.to eq 2}
+    end
+
+    describe '#absences' do
+      subject { user.absences }
+      it { is_expected.to eq 1 }
+    end
+  end
 end
