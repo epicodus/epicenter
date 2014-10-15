@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
 
   def self.billable_in_three_days
     recurring_active.select do |user|
-      (user.payments.last.created_at - 3.days) == 1.month.ago
+      (user.payments.last.created_at - 3.days).to_date == 1.month.ago.to_date
     end
   end
 

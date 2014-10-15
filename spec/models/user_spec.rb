@@ -68,6 +68,16 @@ describe User do
       end
     end
 
+    it 'works even if the payment is made at a different time than the method is run' do
+      user = nil
+      travel_to(Time.new(2014, 1, 5, 12, 0, 0, 0)) do
+        user = FactoryGirl.create(:user_with_recurring_active)
+      end
+      travel_to(Time.new(2014, 2, 2, 15, 0, 0, 0)) do
+        expect(User.billable_in_three_days).to eq [user]
+      end
+    end
+
     it 'does not include users that are billable in more than three days' do
       user = nil
       travel_to(Date.parse("January 6, 2014")) do
