@@ -1,0 +1,18 @@
+---
+:scope: 
+:url: https://api.balancedpayments.com/jsonp/cards?callback=balanced_jsonp_6959913442842662&data=%7B%22name%22%3A%22Example%20Brown%208%22%2C%22number%22%3A%224111111111111111%22%2C%22expiration_month%22%3A%2212%22%2C%22expiration_year%22%3A%222020%22%2C%22cvv%22%3A%22123%22%2C%22address%22%3A%7B%22postal_code%22%3A%2211211%22%7D%2C%22meta%22%3A%7B%22capabilities_system_timezone%22%3A-7%2C%22capabilities_user_agent%22%3A%22Mozilla%2F5.0%20(Macintosh%3B%20PPC%20Mac%20OS%20X)%20AppleWebKit%2F534.34%20(KHTML%2C%20like%20Gecko)%20PhantomJS%2F1.9.7%20Safari%2F534.34%22%2C%22capabilities_language%22%3A%22en-US%22%2C%22capabilities_kp%22%3A45%2C%22capabilities_cli%22%3A1%2C%22capabilities_loaded%22%3A1413933464353%2C%22capabilities_screen_width%22%3A2560%2C%22capabilities_screen_length%22%3A1440%2C%22capabilities_hist%22%3A3%2C%22capabilities_cookie%22%3A%221413933464353.20113788754679263.1!0%22%2C%22capabilities_cl%22%3Afalse%2C%22capabilities_submitted%22%3A1413933464401%2C%22capabilities_scrollX%22%3A0%2C%22capabilities_scrollY%22%3A0%7D%7D
+:body: ''
+:status: 200
+:method: get
+:headers:
+  Content-Type:
+  - text/plain
+  - application/javascript
+  Date: Tue, 21 Oct 2014 23:17:42 GMT
+  Server: ngx_openresty/1.2.6.3
+  Content-Length: '828'
+  Connection: close
+:content: |
+  /**/ balanced_jsonp_6959913442842662(
+  {"status":201,"header":{"X-Balanced-Guru":"OHM74e80874597811e4952f02a1fe52a36c","Content-Type":"application\/json","x-balanced-host":"bapi-live-prod-7nf6hx-10-3-4-170","x-balanced-software-build":"1.8.31","Content-Length":154,"access-control-allow-origin":"*","access-control-allow-headers":"Content-Type","x-balanced-revision":"1.1","access-control-allow-methods":"POST, OPTIONS","X-Midlr-Version":"2","x-newrelic-app-data":"PxQFWFNXCQYTVVhWAwQDVUYdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVUJWQFZA1tRDwRTVlMOCwNSTUIGAQRUSBEUCgAFAFoDUABSDApWU1ZVD0MdQVUDCEVSPA=="},"body":"{\n  \"cards\": [\n    {\n      \"href\": \"\/cards\/CC3yBOxm0A9RIEtb5dPXS3tl\",\n      \"id\": \"CC3yBOxm0A9RIEtb5dPXS3tl\",\n      \"links\": {}\n    }\n  ],\n  \"links\": {}\n}"}
+  );

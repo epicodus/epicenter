@@ -227,4 +227,26 @@ describe User do
       end
     end
   end
+
+  describe "#has_payment_method", :vcr do
+    it "returns true if user has a credit card" do
+      user = FactoryGirl.create(:user_with_credit_card)
+      expect(user.has_payment_method).to eq true
+    end
+
+    it "returns true if user has a verified bank account" do
+      user = FactoryGirl.create(:user_with_verified_bank_account)
+      expect(user.has_payment_method).to eq true
+    end
+
+    it "returns false if user has no credit card and unverified bank account" do
+      user = FactoryGirl.create(:user_with_unverified_bank_account)
+      expect(user.has_payment_method).to eq false
+    end
+
+    it "returns false if user doesn't have a credit card or bank account" do
+      user = FactoryGirl.create(:user)
+      expect(user.has_payment_method).to eq false
+    end
+  end
 end

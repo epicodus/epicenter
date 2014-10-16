@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   belongs_to :plan
   belongs_to :cohort
   has_one :bank_account
+  has_one :credit_card
   has_many :payments
   has_many :attendance_records
 
@@ -45,6 +46,10 @@ class User < ActiveRecord::Base
     billable_today.each do |user|
       user.payments.create(amount: user.plan.recurring_amount)
     end
+  end
+
+  def has_payment_method
+    credit_card.present? || (bank_account.present? && bank_account.verified == true)
   end
 
   def upfront_payment_due?
