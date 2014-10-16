@@ -7,7 +7,7 @@ class Cohort < ActiveRecord::Base
   has_many :attendance_records, through: :users
 
   def number_of_days_since_start
-    last_date = Date.today < end_date ? Date.today : end_date
+    last_date = Date.today <= end_date ? Date.today : end_date
     (start_date..last_date).select do |date|
       !date.saturday? && !date.sunday?
     end.count

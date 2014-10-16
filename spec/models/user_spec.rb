@@ -191,38 +191,37 @@ describe User do
   describe 'attendance methods' do
     include ActiveSupport::Testing::TimeHelpers
 
-    let(:cohort) { FactoryGirl.create(:cohort,
-                   start_date: Date.parse('January 5, 2015'),
-                   end_date: Date.parse('April 22, 2015')) }
+    let(:cohort) { FactoryGirl.create(:cohort_starting_january_fifth) }
     let(:user) { FactoryGirl.create(:user, cohort: cohort) }
 
-    before do
-      travel_to Time.new(2015, 01, 05, 8, 55, 00)
-      FactoryGirl.create(:attendance_record, user: user)
-      travel 1.day
-      FactoryGirl.create(:attendance_record, user: user)
-      travel 1.day + 10.minutes
-      FactoryGirl.create(:attendance_record, user: user)
-      travel 1.day
-      FactoryGirl.create(:attendance_record, user: user)
-      travel 1.day
-    end
-
-    after { travel_back }
-
     describe '#on_time_attendances' do
-      subject { user.on_time_attendances }
-      it { is_expected.to eq 2 }
+      it 'counts the number of days the student has been on time to class' do
+        travel_to Time.new(2015, 01, 05, 8, 55, 00) do
+          FactoryGirl.create(:attendance_record, user: user)
+          expect(user.on_time_attendances).to eq 1
+        end
+      end
     end
 
     describe '#tardies' do
-      subject { user.tardies }
-      it { is_expected.to eq 2}
+      it 'counts the number of days the student has been tardy' do
+        travel_to Time.new(2015, 01, 05, 9, 10, 00) do
+          FactoryGirl.create(:attendance_record, user: user)
+          travel 1.day
+          FactoryGirl.create(:attendance_record, user: user)
+          expect(user.tardies).to eq 2
+        end
+      end
     end
 
     describe '#absences' do
-      subject { user.absences }
-      it { is_expected.to eq 1 }
+      it 'counts the number of days the student has been absent' do
+        travel_to Time.new(2015, 01, 05, 9, 00, 00) do
+          travel 1.day
+          FactoryGirl.create(:attendance_record, user: user)
+          expect(user.absences).to eq 1
+        end
+      end
     end
   end
 end

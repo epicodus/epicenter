@@ -18,14 +18,8 @@ describe Cohort do
       end
     end
 
-    it 'only counts days that have passed' do
-      travel_to cohort.start_date do
-        expect(cohort.number_of_days_since_start).to eq 0
-      end
-    end
-
     it 'does not count weekends' do
-      travel_to cohort.start_date + 14.days do
+      travel_to cohort.start_date + 13.days do
         expect(cohort.number_of_days_since_start).to eq 10
       end
     end
