@@ -1,5 +1,6 @@
 class Payment < ActiveRecord::Base
   belongs_to :user
+
   validates_presence_of :amount, :user_id
 
   before_create :make_payment
@@ -14,3 +15,4 @@ private
     self.payment_uri = debit.href if !debit.failure_reason
   end
 end
+
