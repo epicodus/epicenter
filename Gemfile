@@ -9,6 +9,8 @@ gem 'jquery-rails'
 gem 'devise'
 gem 'balanced'
 gem 'rest_client'
+gem 'chartkick'
+gem 'groupdate'
 
 group :development do
   gem 'spring'

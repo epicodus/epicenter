@@ -63,4 +63,16 @@ class User < ActiveRecord::Base
     update!(recurring_active: true)
     bank_account.payments.create!(amount: plan.recurring_amount)
   end
+
+  def on_time_attendances
+    attendance_records.where(tardy: false).count
+  end
+
+  def tardies
+    attendance_records.where(tardy: true).count
+  end
+
+  def absences
+    cohort.number_of_days_since_start - attendance_records.count
+  end
 end
