@@ -10,14 +10,21 @@ describe AttendanceRecord do
     expect(second_attendance_record.valid?).to eq false
   end
 
-  include ActiveSupport::Testing::TimeHelpers
-  it 'is counted as tardy if the student checks in more than 2 minutes after the start of class' do
-    travel_to Time.new(2015, 01, 05, 8, 55, 00) do
-      on_time_record = FactoryGirl.create(:attendance_record)
-      travel 7.minutes
-      tardy_record = FactoryGirl.create(:attendance_record)
-      expect(on_time_record.tardy).to eq false
-      expect(tardy_record.tardy).to eq true
+  describe '#tardy' do
+    include ActiveSupport::Testing::TimeHelpers
+
+    it 'is true if the student checks in after the start of class' do
+      travel_to Time.new(2015, 01, 05, 9, 30, 00) do
+        tardy_attendance_record = FactoryGirl.create(:attendance_record)
+        expect(tardy_attendance_record.tardy).to eq true
+      end
+    end
+
+    it 'is true if the student checks in after the start of class' do
+      travel_to Time.new(2015, 01, 05, 8, 55, 00) do
+        on_time_attendance_record = FactoryGirl.create(:attendance_record)
+        expect(on_time_attendance_record.tardy).to eq false
+      end
     end
   end
 end

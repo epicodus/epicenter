@@ -12,24 +12,31 @@ describe CohortAttendanceStatistics do
 
     it 'returns data for the line chart' do
       cohort = FactoryGirl.create(:cohort)
-      5.times { FactoryGirl.create(:user, cohort: cohort) }
-      travel_to cohort.start_date.to_time do
+      2.times { FactoryGirl.create(:user, cohort: cohort) }
+
+      day_one = cohort.start_date
+      day_two = cohort.start_date + 1.day
+
+      travel_to day_one do
         cohort.users.each { |user| FactoryGirl.create(:attendance_record, user: user) }
-        travel 1.day
-        cohort.users.first(3).each { |user| FactoryGirl.create(:attendance_record, user: user) }
-        cohort_attendance_statistics = CohortAttendanceStatistics.new(cohort)
-        expect(cohort_attendance_statistics.daily_presence).to eq({
-          cohort.start_date         => 5,
-          cohort.start_date + 1.day => 3
-        })
       end
+
+      travel_to day_two do
+        FactoryGirl.create(:attendance_record, user: cohort.users.first)
+      end
+
+      cohort_attendance_statistics = CohortAttendanceStatistics.new(cohort)
+      expect(cohort_attendance_statistics.daily_presence).to eq({
+        day_one => 2,
+        day_two => 1
+      })
     end
   end
 
   describe '#student_breakdown' do
     include ActiveSupport::Testing::TimeHelpers
 
-    let(:cohort) { FactoryGirl.create(:cohort_starting_january_fifth) }
+    let(:cohort) { FactoryGirl.create(:cohort) }
     let(:cohort_attendance_statistics) { CohortAttendanceStatistics.new(cohort) }
     let!(:first_student) { FactoryGirl.create(:user, name: 'Amo', cohort: cohort) }
     let!(:second_student) { FactoryGirl.create(:user, name: 'Catherine', cohort: cohort) }
@@ -39,7 +46,7 @@ describe CohortAttendanceStatistics do
         cohort.users.each { |user| FactoryGirl.create(:attendance_record, user: user) }
         on_time_data = cohort_attendance_statistics.student_breakdown[0]
         expect(on_time_data[:name]).to eq 'On time'
-        expect(on_time_data[:data]).to eq [{ second_student.name => 1 }, { first_student.name => 1 }]
+        expect(on_time_data[:data]).to eq [[second_student.name, 1], [first_student.name, 1]]
       end
     end
 

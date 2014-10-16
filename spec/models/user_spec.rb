@@ -191,12 +191,12 @@ describe User do
   describe 'attendance methods' do
     include ActiveSupport::Testing::TimeHelpers
 
-    let(:cohort) { FactoryGirl.create(:cohort_starting_january_fifth) }
+    let(:cohort) { FactoryGirl.create(:cohort) }
     let(:user) { FactoryGirl.create(:user, cohort: cohort) }
 
     describe '#on_time_attendances' do
       it 'counts the number of days the student has been on time to class' do
-        travel_to Time.new(2015, 01, 05, 8, 55, 00) do
+        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 8, 55, 00) do
           FactoryGirl.create(:attendance_record, user: user)
           expect(user.on_time_attendances).to eq 1
         end
@@ -205,7 +205,7 @@ describe User do
 
     describe '#tardies' do
       it 'counts the number of days the student has been tardy' do
-        travel_to Time.new(2015, 01, 05, 9, 10, 00) do
+        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 9, 10, 00) do
           FactoryGirl.create(:attendance_record, user: user)
           travel 1.day
           FactoryGirl.create(:attendance_record, user: user)
@@ -216,7 +216,7 @@ describe User do
 
     describe '#absences' do
       it 'counts the number of days the student has been absent' do
-        travel_to Time.new(2015, 01, 05, 9, 00, 00) do
+        travel_to cohort.start_date do
           travel 1.day
           FactoryGirl.create(:attendance_record, user: user)
           expect(user.absences).to eq 1
