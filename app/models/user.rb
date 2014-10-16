@@ -13,7 +13,7 @@ class User < ActiveRecord::Base
   belongs_to :plan
   belongs_to :cohort
   has_one :bank_account
-  has_many :payments, through: :bank_account
+  has_many :payments
   has_many :attendance_records
 
   def self.billable_today
@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
 
   def self.bill_bank_accounts
     billable_today.each do |user|
-      user.bank_account.payments.create(amount: user.plan.recurring_amount)
+      user.payments.create(amount: user.plan.recurring_amount)
     end
   end
 
@@ -56,12 +56,12 @@ class User < ActiveRecord::Base
   end
 
   def make_upfront_payment
-    bank_account.payments.create!(amount: plan.upfront_amount)
+    payments.create!(amount: plan.upfront_amount)
   end
 
   def start_recurring_payments
     update!(recurring_active: true)
-    bank_account.payments.create!(amount: plan.recurring_amount)
+    payments.create!(amount: plan.recurring_amount)
   end
 
   def on_time_attendances
