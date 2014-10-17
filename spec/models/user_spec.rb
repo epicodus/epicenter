@@ -156,6 +156,33 @@ describe User do
     end
   end
 
+  describe "#ready_to_start_recurring_payments?", :vcr do
+    let(:user) { FactoryGirl.create :user_with_verified_bank_account }
+
+    it "is true if user has a recurring plan, recurring is not active and no upfront payment is due" do
+      plan = FactoryGirl.create(:recurring_plan_with_no_upfront_payment)
+      user = FactoryGirl.create(:user, plan: plan)
+      expect(user.ready_to_start_recurring_payments?).to be true
+    end
+
+    it "is false if user has upfront payment due" do
+      plan = FactoryGirl.create(:recurring_plan_with_upfront_payment)
+      user = FactoryGirl.create(:user, plan: plan)
+      expect(user.ready_to_start_recurring_payments?).to be false
+    end
+
+    it "is false if user does not have a plan with recurring payments" do
+      plan = FactoryGirl.create(:upfront_payment_only_plan)
+      user = FactoryGirl.create(:user_with_upfront_payment, plan: plan)
+      expect(user.ready_to_start_recurring_payments?).to be false
+    end
+
+    it "is false if recurring is active" do
+      user = FactoryGirl.create(:user_with_recurring_active)
+      expect(user.ready_to_start_recurring_payments?).to be false
+    end
+  end
+
   describe "#make_upfront_payment", :vcr do
     it "makes a payment for the upfront amount of the user's plan" do
       user = FactoryGirl.create(:user_with_verified_bank_account)
