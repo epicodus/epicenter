@@ -50,6 +50,14 @@ class User < ActiveRecord::Base
     credit_card.present? || (bank_account.present? && bank_account.verified == true)
   end
 
+  def primary_payment_method
+    if credit_card.present?
+      Balanced::Card.fetch(credit_card.credit_card_uri)
+    else
+      Balanced::BankAccount.fetch(bank_account.account_uri)
+    end
+  end
+
   def upfront_payment_due?
     plan.upfront_amount > 0 && payments.count == 0
   end
