@@ -10,12 +10,12 @@ protected
   end
 
   def after_sign_in_path_for(user)
-    if user.bank_account.nil?
-      new_bank_account_path
-    elsif !user.bank_account.verified
+    if user.has_payment_method
+      payments_path
+    elsif user.bank_account.present?
       edit_verification_path
     else
-      payments_path
+      payment_method_path
     end
   end
 end

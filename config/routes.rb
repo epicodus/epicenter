@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   root 'static_pages#index'
   get 'attendance', to: 'attendance_records#index', as: 'attendance'
+  get 'payment_method', to: 'static_pages#payment_method', as: 'payment_method'
+
 
   devise_for :users
 
