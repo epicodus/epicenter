@@ -15,7 +15,7 @@ feature 'User signs up' do
     select @plan.name, from: 'user_plan_id'
     select @cohort.description, from: 'user_cohort_id'
     click_on 'Sign up'
-    expect(page).to have_content 'bank account information'
+    expect(page).to have_content 'How would you like to make payments'
   end
 
   scenario 'with missing information', js: true do
@@ -25,11 +25,11 @@ feature 'User signs up' do
 end
 
 feature "User signs in" do
-  context "before entering bank account info" do
-    it "takes them to the page to enter their bank account info" do
+  context "before adding a payment method" do
+    it "takes them to the page to choose payment method" do
       user = FactoryGirl.create(:user)
       sign_in user
-      expect(page).to have_content "Bank account information"
+      expect(page).to have_content "How would you like to make payments"
     end
   end
 
@@ -42,9 +42,17 @@ feature "User signs in" do
     end
   end
 
-  context "after verifying their account", :vcr do
+  context "after verifying their bank account", :vcr do
     it "shows them their payment history" do
       user = FactoryGirl.create(:user_with_verified_bank_account)
+      sign_in user
+      expect(page).to have_content "Your payments"
+    end
+  end
+
+  context "after adding a credit card", :vcr do
+    it "shows them their payment history" do
+      user = FactoryGirl.create(:user_with_credit_card)
       sign_in user
       expect(page).to have_content "Your payments"
     end
