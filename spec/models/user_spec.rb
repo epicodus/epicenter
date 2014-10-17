@@ -249,4 +249,16 @@ describe User do
       expect(user.has_payment_method).to eq false
     end
   end
+
+  describe "#primary_payment_method", :vcr do
+    it "returns a balanced Card if user has a credit card" do
+      user = FactoryGirl.create(:user_with_credit_card)
+      expect(user.primary_payment_method.href).to eq user.credit_card.credit_card_uri
+    end
+
+    it "returns a balanced BankAccount if user has a verified bank account" do
+      user = FactoryGirl.create(:user_with_verified_bank_account)
+      expect(user.primary_payment_method.href).to eq user.bank_account.account_uri
+    end
+  end
 end

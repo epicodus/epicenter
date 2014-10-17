@@ -7,8 +7,8 @@ class Payment < ActiveRecord::Base
 
 private
   def make_payment
-    balanced_bank_account = Balanced::BankAccount.fetch(user.bank_account.account_uri)
-    debit = balanced_bank_account.debit(
+    payment_method = user.primary_payment_method
+    debit = payment_method.debit(
       :amount => amount,
       :appears_on_statement_as => 'Epicodus tuition'
     )
