@@ -62,6 +62,10 @@ class User < ActiveRecord::Base
     plan.upfront_amount > 0 && payments.count == 0
   end
 
+  def ready_to_start_recurring_payments?
+    plan.recurring_amount > 0 && recurring_active != true && !upfront_payment_due?
+  end
+
   def signed_in_today?
     attendance_records.today.exists?
   end
