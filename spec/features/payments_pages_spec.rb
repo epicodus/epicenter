@@ -10,13 +10,23 @@ feature 'User views payment index page' do
     end
   end
 
-  context 'after at least 1 payment has been made', :vcr do
-    it 'shows payment history' do
-      payment = FactoryGirl.create(:payment)
+  context 'after a payment has been made with bank account', :vcr do
+    it 'shows payment history with correct charge' do
+      payment = FactoryGirl.create(:payment, amount: 600_00)
       user = payment.user
       sign_in user
       visit payments_path
-      expect(page).to have_content (payment.amount / 100)
+      expect(page).to have_content 600.00
+    end
+  end
+
+  context 'after a payment has been made with credit card', :vcr do
+    it 'shows payment history with correct charge' do
+      payment = FactoryGirl.create(:payment_with_credit_card, amount: 600_00)
+      user = payment.user
+      sign_in user
+      visit payments_path
+      expect(page).to have_content 617.92
     end
   end
 

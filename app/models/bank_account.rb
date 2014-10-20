@@ -15,4 +15,8 @@ class BankAccount < ActiveRecord::Base
     verification = Verification.new(bank_account: self)
     verification.create_test_deposits
   end
+
+  def calculate_charge(amount)
+    amount
+  end
 end

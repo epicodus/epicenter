@@ -4,7 +4,7 @@
   <ul>
     <% @payments.each do |payment| %>
       <li>
-        <%= number_to_currency(payment.amount / 100) %>
+        <%= number_to_currency(payment.payment_method.calculate_charge(payment.amount) / 100.00) %>
         paid on
         <%= payment.created_at.strftime("%F") %>
       </li>

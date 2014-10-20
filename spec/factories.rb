@@ -32,6 +32,12 @@ FactoryGirl.define do
     association :payment_method, factory: :verified_bank_account
   end
 
+  factory :payment_with_credit_card, parent: :payment do
+    association :user, factory: :user_with_credit_card
+    amount 1
+    association :payment_method, factory: :credit_card
+  end
+
   factory :plan do
     name "summer 2014"
 

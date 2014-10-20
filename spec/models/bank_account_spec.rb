@@ -21,5 +21,12 @@ describe BankAccount do
       expect(bank_account.fetch_balanced_account.href).to eq bank_account.account_uri
     end
   end
+
+  describe "#calculate_charge" do
+    it "returns the amount given", :vcr do
+      bank_account = FactoryGirl.create :verified_bank_account
+      expect(bank_account.calculate_charge(60000)).to eq 60000
+    end
+  end
 end
 

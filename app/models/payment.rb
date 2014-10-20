@@ -11,7 +11,7 @@ private
   def make_payment
     payment_method = user.primary_payment_method
     debit = payment_method.fetch_balanced_account.debit(
-      :amount => amount,
+      :amount => payment_method.calculate_charge(amount),
       :appears_on_statement_as => 'Epicodus tuition'
     )
     self.payment_uri = debit.href if !debit.failure_reason
