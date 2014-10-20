@@ -8,6 +8,8 @@
 
 <p><%= image_tag "check.png" %></p>
 
+<%= render '/layouts/errors', :object => @bank_account%>
+
 <%= form_for @bank_account, url: bank_account_path do |f| %>
   <div>
     <%= label_tag :name, "Name on account" %>

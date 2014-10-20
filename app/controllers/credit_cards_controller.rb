@@ -11,7 +11,6 @@ class CreditCardsController < ApplicationController
       flash[:notice] = "Your credit card has been added."
       redirect_to payments_path
     else
-      flash[:alert] = 'Something went wrong. Please try again.'
       render :new
     end
   end
