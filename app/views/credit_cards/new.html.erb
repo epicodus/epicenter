@@ -4,6 +4,8 @@
   After entering your credit card information, you can start making payments.
 </p>
 
+<%= render '/layouts/errors', :object => @credit_card %>
+
 <%= form_for @credit_card, url: credit_card_path do |f| %>
   <div>
     <%= label_tag :name, "Name on card" %>

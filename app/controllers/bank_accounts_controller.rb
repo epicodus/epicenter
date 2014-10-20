@@ -7,7 +7,6 @@ class BankAccountsController < ApplicationController
   def create
     @bank_account = BankAccount.create(bank_account_params.merge(user: current_user))
     unless @bank_account.save
-      flash[:alert] = 'Something went wrong. Please try again.'
       render :new
     end
   end
