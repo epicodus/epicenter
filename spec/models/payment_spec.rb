@@ -3,6 +3,7 @@ require 'rails_helper'
 describe Payment do
 
   it { should belong_to :user }
+  it { should belong_to :payment_method }
   it { should validate_presence_of :amount }
   it { should validate_presence_of :user_id }
 

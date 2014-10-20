@@ -3,6 +3,7 @@ class BankAccount < ActiveRecord::Base
   validates :user_id, presence: true
 
   belongs_to :user
+  has_many :payments, :as => :payment_method
 
   before_create :create_verification
 
