@@ -64,23 +64,23 @@ feature 'show page' do
       end
     end
 
-    # these two tests will require some extra model methods to determine the
-    # if the student has submitted an assessment or not.
-    xscenario 'shows if the student has submitted an assessment' do
-      assessment = FactoryGirl.create(:assessment)
-      FactoryGirl.create(:submission, assessment: assessment, user: student)
-      visit assessment_path(assessment)
-      expect(page).to have_content 'Submitted'
-      expect(page).to_not have_content 'Not submitted'
-    end
+    context 'after having submitted for this assessment' do
+      scenario 'allows student to resubmit' do
+        assessment = FactoryGirl.create(:assessment)
+        FactoryGirl.create(:submission, assessment: assessment, user: student)
+        visit assessment_path(assessment)
+        expect(page).to have_button 'Resubmit'
+      end
 
-    xscenario 'shows if the assessment has been graded' do
-      assessment = FactoryGirl.create(:assessment)
-      submission = FactoryGirl.create(:submission, assessment: assessment, user: student)
-      FactoryGirl.create(:review, submission: submission)
-      visit assessment_path(assessment)
-      expect(page).to have_content 'Graded'
-      expect(page).to_not have_content 'Submitted'
+      context 'and submission has been reviewed' do
+        scenario 'links to submission page' do
+          assessment = FactoryGirl.create(:assessment)
+          submission = FactoryGirl.create(:submission, assessment: assessment, user: student)
+          FactoryGirl.create(:review, submission: submission)
+          visit assessment_path(assessment)
+          expect(page).to have_link 'has been reviewed'
+        end
+      end
     end
   end
 end

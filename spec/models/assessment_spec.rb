@@ -21,4 +21,13 @@ describe Assessment do
       expect(assessment.has_been_submitted_by(student)).to eq false
     end
   end
+
+  describe '#submission_for' do
+    it 'returns submission of given user for this assessment' do
+      student = FactoryGirl.create(:user)
+      assessment = FactoryGirl.create(:assessment)
+      submission = FactoryGirl.create(:submission, user: student, assessment: assessment)
+      expect(assessment.submission_for(student)).to eq submission
+    end
+  end
 end

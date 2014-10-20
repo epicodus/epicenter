@@ -4,4 +4,8 @@ class Submission < ActiveRecord::Base
   belongs_to :user
   belongs_to :assessment
   has_many :reviews
+
+  def has_been_reviewed?
+    !reviews.empty?
+  end
 end

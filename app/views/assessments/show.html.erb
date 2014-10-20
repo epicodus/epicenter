@@ -1,11 +1,12 @@
-<h1><%= @assessment.title %></h1>
+<h1 class="page-header"><%= @assessment.title %></h1>
+
+<h3>Requirements</h3>
 <ul>
   <%= render @assessment.requirements %>
 </ul>
-<%= form_for @submission, url: assessment_submission_path(@assessment) do |f| %>
-  <%= render 'layouts/errors', object: @submission %>
-  <div class="input-append">
-    <%= f.text_field :link, class: 'span6' %>
-    <%= f.submit 'Submit', class: 'btn btn-default span2' %>
-  </div>
+
+<%= render 'submissions/form' %>
+
+<% if @submission.has_been_reviewed? %>
+  <%= link_to "Your assessment has been reviewed!", assessment_submission_path(@assessment) %>
 <% end %>

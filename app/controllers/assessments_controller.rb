@@ -12,7 +12,7 @@ class AssessmentsController < ApplicationController
 
   def show
     @assessment = Assessment.find(params[:id])
-    @submission = Submission.new(assessment: @assessment)
+    @submission = @assessment.submission_for(current_user) || Submission.new(assessment: @assessment)
   end
 
   def edit
