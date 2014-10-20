@@ -93,12 +93,12 @@ FactoryGirl.define do
 
   factory :cohort do
     description 'Current cohort'
-    start_date Date.today
-    end_date Date.today + 15.weeks - 1.day
+    start_date Date.today.beginning_of_week
+    end_date (Date.today + 14.weeks).end_of_week - 2.days
 
     factory :past_cohort do
-      start_date 100.days.ago
-      end_date 30.days.ago
+      start_date 125.days.ago.beginning_of_week
+      end_date 20.days.ago.end_of_week - 2.days
     end
   end
 end

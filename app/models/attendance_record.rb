@@ -1,6 +1,6 @@
 class AttendanceRecord < ActiveRecord::Base
-  scope :today, -> { where('DATE(created_at) = ?', Date.today) }
-  validates :user_id, presence: true, uniqueness: { conditions: -> { where('DATE(created_at) = ?', Date.today) } }
+  scope :today, -> { where(created_at: (Date.today.beginning_of_day..Date.today.end_of_day)) }
+  validates :user_id, presence: true, uniqueness: { conditions: -> { today } }
 
   after_validation :set_tardiness
 
