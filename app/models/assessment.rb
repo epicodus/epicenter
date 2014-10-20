@@ -3,4 +3,8 @@ class Assessment < ActiveRecord::Base
 
   has_many :requirements
   has_many :submissions
+
+  def has_been_submitted_by(user)
+    submissions.exists?(user: user)
+  end
 end
