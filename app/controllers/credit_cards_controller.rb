@@ -8,7 +8,8 @@ class CreditCardsController < ApplicationController
   def create
     @credit_card = CreditCard.create(credit_card_params.merge(user: current_user))
     if @credit_card.save
-      redirect_to (current_user.upfront_payment_due? ? new_upfront_payment_path : new_recurring_payment_path)
+      flash[:notice] = "Your credit card has been added."
+      redirect_to payments_path
     else
       flash[:alert] = 'Something went wrong. Please try again.'
       render :new

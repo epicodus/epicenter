@@ -15,7 +15,7 @@ feature 'User creates a credit card' do
     fill_in 'CVV code', with: '123'
     fill_in 'Zip code', with: '11211'
     click_on 'Add credit card'
-    expect(page).to have_content 'Payment will be withdrawn'
+    expect(page).to have_content 'Your credit card has been added.'
   end
 
   scenario 'with missing account number', js: true do
