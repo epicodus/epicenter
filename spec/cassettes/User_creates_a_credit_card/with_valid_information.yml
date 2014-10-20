@@ -616,4 +616,224 @@ http_interactions:
         );
     http_version: 
   recorded_at: Fri, 17 Oct 2014 22:52:00 GMT
+- request:
+    method: get
+    uri: https://api.balancedpayments.com/jsonp/cards?callback=balanced_jsonp_8107596791815013&data=%7B%22name%22:%22Jane%20Doe%22,%22number%22:%224111111111111111%22,%22expiration_month%22:%2212%22,%22expiration_year%22:%222020%22,%22cvv%22:%22123%22,%22address%22:%7B%22postal_code%22:%2211211%22%7D,%22meta%22:%7B%22capabilities_system_timezone%22:-7,%22capabilities_user_agent%22:%22Mozilla/5.0%20(Macintosh%3B%20PPC%20Mac%20OS%20X)%20AppleWebKit/534.34%20(KHTML,%20like%20Gecko)%20PhantomJS/1.9.7%20Safari/534.34%22,%22capabilities_language%22:%22en-US%22,%22capabilities_kp%22:38,%22capabilities_cli%22:1,%22capabilities_loaded%22:1413822160094,%22capabilities_screen_width%22:2560,%22capabilities_screen_length%22:1440,%22capabilities_hist%22:3,%22capabilities_cookie%22:%221413822160048.886065655387938.2!0%22,%22capabilities_cl%22:false,%22capabilities_submitted%22:1413822160141,%22capabilities_scrollX%22:0,%22capabilities_scrollY%22:0%7D%7D
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; PPC Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko)
+        PhantomJS/1.9.7 Safari/534.34
+      Accept:
+      - "*/*"
+      Referer:
+      - http://127.0.0.1:53128/credit_card/new
+      Connection:
+      - Keep-Alive
+      Accept-Language:
+      - en-US,*
+      Host:
+      - api.balancedpayments.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/javascript
+      - text/plain
+      Date:
+      - Mon, 20 Oct 2014 16:22:38 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      Content-Length:
+      - '828'
+      Connection:
+      - Close
+    body:
+      encoding: UTF-8
+      string: |
+        /**/ balanced_jsonp_8107596791815013(
+        {"status":201,"header":{"X-Balanced-Guru":"OHM4ee9924a587511e4a96802a1fe53e539","Content-Type":"application\/json","x-balanced-host":"bapi-live-prod-7nf6hx-10-3-4-170","x-balanced-software-build":"1.8.28","Content-Length":154,"access-control-allow-origin":"*","access-control-allow-headers":"Content-Type","x-balanced-revision":"1.1","access-control-allow-methods":"POST, OPTIONS","X-Midlr-Version":"2","x-newrelic-app-data":"PxQFWFNXCQYTVVhWAwQDVUYdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVUJWQRTBFJQBgNZV1YOBANcUk4XAAdUVx0WEQcFV1YCVQ4AW14HVgNcX1ATTRMEBVpEBDs="},"body":"{\n  \"cards\": [\n    {\n      \"href\": \"\/cards\/CC2oVfYHKwWlZuMXnZbm3CCj\",\n      \"id\": \"CC2oVfYHKwWlZuMXnZbm3CCj\",\n      \"links\": {}\n    }\n  ],\n  \"links\": {}\n}"}
+        );
+    http_version: 
+  recorded_at: Mon, 20 Oct 2014 16:22:40 GMT
+- request:
+    method: get
+    uri: https://api.balancedpayments.com/jsonp/cards?callback=balanced_jsonp_7580897118896246&data=%7B%22name%22:%22Jane%20Doe%22,%22number%22:%224111111111111111%22,%22expiration_month%22:%2212%22,%22expiration_year%22:%222020%22,%22cvv%22:%22123%22,%22address%22:%7B%22postal_code%22:%2211211%22%7D,%22meta%22:%7B%22capabilities_system_timezone%22:-7,%22capabilities_user_agent%22:%22Mozilla/5.0%20(Macintosh%3B%20PPC%20Mac%20OS%20X)%20AppleWebKit/534.34%20(KHTML,%20like%20Gecko)%20PhantomJS/1.9.7%20Safari/534.34%22,%22capabilities_language%22:%22en-US%22,%22capabilities_kp%22:38,%22capabilities_cli%22:1,%22capabilities_loaded%22:1413823700819,%22capabilities_screen_width%22:2560,%22capabilities_screen_length%22:1440,%22capabilities_hist%22:3,%22capabilities_cookie%22:%221413823700771.784066193504259.2!0%22,%22capabilities_cl%22:false,%22capabilities_submitted%22:1413823700866,%22capabilities_scrollX%22:0,%22capabilities_scrollY%22:0%7D%7D
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; PPC Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko)
+        PhantomJS/1.9.7 Safari/534.34
+      Accept:
+      - "*/*"
+      Referer:
+      - http://127.0.0.1:53549/credit_card/new
+      Connection:
+      - Keep-Alive
+      Accept-Language:
+      - en-US,*
+      Host:
+      - api.balancedpayments.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/javascript
+      - text/plain
+      Date:
+      - Mon, 20 Oct 2014 16:48:19 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      Content-Length:
+      - '827'
+      Connection:
+      - Close
+    body:
+      encoding: UTF-8
+      string: |
+        /**/ balanced_jsonp_7580897118896246(
+        {"status":201,"header":{"X-Balanced-Guru":"OHMe53e97f6587811e4a96802a1fe53e539","Content-Type":"application\/json","x-balanced-host":"bapi-live-prod-7nf6hx-10-3-5-34","x-balanced-software-build":"1.8.28","Content-Length":154,"access-control-allow-origin":"*","access-control-allow-headers":"Content-Type","x-balanced-revision":"1.1","access-control-allow-methods":"POST, OPTIONS","X-Midlr-Version":"2","x-newrelic-app-data":"PxQFWFNXCQYTVVhWAwQDVUYdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVUIVwFTAFpTAgVZVFsLBQlVVU4XAAdUVx0WEVRTB1BSU1oDAV0MUVdcXAQTTRMEBVpEBDs="},"body":"{\n  \"cards\": [\n    {\n      \"href\": \"\/cards\/CC6YBrDItv0IIxYxvQEQSxhU\",\n      \"id\": \"CC6YBrDItv0IIxYxvQEQSxhU\",\n      \"links\": {}\n    }\n  ],\n  \"links\": {}\n}"}
+        );
+    http_version: 
+  recorded_at: Mon, 20 Oct 2014 16:48:21 GMT
+- request:
+    method: get
+    uri: https://api.balancedpayments.com/jsonp/cards?callback=balanced_jsonp_10654539568349719&data=%7B%22name%22:%22Jane%20Doe%22,%22number%22:%224111111111111111%22,%22expiration_month%22:%2212%22,%22expiration_year%22:%222020%22,%22cvv%22:%22123%22,%22address%22:%7B%22postal_code%22:%2211211%22%7D,%22meta%22:%7B%22capabilities_system_timezone%22:-7,%22capabilities_user_agent%22:%22Mozilla/5.0%20(Macintosh%3B%20PPC%20Mac%20OS%20X)%20AppleWebKit/534.34%20(KHTML,%20like%20Gecko)%20PhantomJS/1.9.7%20Safari/534.34%22,%22capabilities_language%22:%22en-US%22,%22capabilities_kp%22:38,%22capabilities_cli%22:1,%22capabilities_loaded%22:1413823813254,%22capabilities_screen_width%22:2560,%22capabilities_screen_length%22:1440,%22capabilities_hist%22:3,%22capabilities_cookie%22:%221413823813206.6389811206609011.2!0%22,%22capabilities_cl%22:false,%22capabilities_submitted%22:1413823813302,%22capabilities_scrollX%22:0,%22capabilities_scrollY%22:0%7D%7D
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; PPC Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko)
+        PhantomJS/1.9.7 Safari/534.34
+      Accept:
+      - "*/*"
+      Referer:
+      - http://127.0.0.1:53586/credit_card/new
+      Connection:
+      - Keep-Alive
+      Accept-Language:
+      - en-US,*
+      Host:
+      - api.balancedpayments.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/javascript
+      - text/plain
+      Date:
+      - Mon, 20 Oct 2014 16:50:11 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      Content-Length:
+      - '829'
+      Connection:
+      - Close
+    body:
+      encoding: UTF-8
+      string: |
+        /**/ balanced_jsonp_10654539568349719(
+        {"status":201,"header":{"X-Balanced-Guru":"OHM283d2540587911e4a45b02a1fe52a36c","Content-Type":"application\/json","x-balanced-host":"bapi-live-prod-7nf6hx-10-3-4-170","x-balanced-software-build":"1.8.28","Content-Length":154,"access-control-allow-origin":"*","access-control-allow-headers":"Content-Type","x-balanced-revision":"1.1","access-control-allow-methods":"POST, OPTIONS","X-Midlr-Version":"2","x-newrelic-app-data":"PxQFWFNXCQYTVVhWAwQDVUYdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVUJVglXBFJdAQ9UUlUJBwJRWU4XAAdUUB0WEVdeVwMFUAEBXVtRA1cAD1YTTRMEBVpEBDs="},"body":"{\n  \"cards\": [\n    {\n      \"href\": \"\/cards\/CC1dW94eZL7Z4CaWaxwXdH9B\",\n      \"id\": \"CC1dW94eZL7Z4CaWaxwXdH9B\",\n      \"links\": {}\n    }\n  ],\n  \"links\": {}\n}"}
+        );
+    http_version: 
+  recorded_at: Mon, 20 Oct 2014 16:50:13 GMT
+- request:
+    method: get
+    uri: https://api.balancedpayments.com/jsonp/cards?callback=balanced_jsonp_30501373135484755&data=%7B%22name%22:%22Jane%20Doe%22,%22number%22:%224111111111111111%22,%22expiration_month%22:%2212%22,%22expiration_year%22:%222020%22,%22cvv%22:%22123%22,%22address%22:%7B%22postal_code%22:%2211211%22%7D,%22meta%22:%7B%22capabilities_system_timezone%22:-7,%22capabilities_user_agent%22:%22Mozilla/5.0%20(Macintosh%3B%20PPC%20Mac%20OS%20X)%20AppleWebKit/534.34%20(KHTML,%20like%20Gecko)%20PhantomJS/1.9.7%20Safari/534.34%22,%22capabilities_language%22:%22en-US%22,%22capabilities_kp%22:38,%22capabilities_cli%22:1,%22capabilities_loaded%22:1413823863318,%22capabilities_screen_width%22:2560,%22capabilities_screen_length%22:1440,%22capabilities_hist%22:3,%22capabilities_cookie%22:%221413823863269.5812627936247736.2!0%22,%22capabilities_cl%22:false,%22capabilities_submitted%22:1413823863367,%22capabilities_scrollX%22:0,%22capabilities_scrollY%22:0%7D%7D
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; PPC Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko)
+        PhantomJS/1.9.7 Safari/534.34
+      Accept:
+      - "*/*"
+      Referer:
+      - http://127.0.0.1:53631/credit_card/new
+      Connection:
+      - Keep-Alive
+      Accept-Language:
+      - en-US,*
+      Host:
+      - api.balancedpayments.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/javascript
+      - text/plain
+      Date:
+      - Mon, 20 Oct 2014 16:51:01 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      Content-Length:
+      - '828'
+      Connection:
+      - Close
+    body:
+      encoding: UTF-8
+      string: |
+        /**/ balanced_jsonp_30501373135484755(
+        {"status":201,"header":{"X-Balanced-Guru":"OHM46163c0a587911e49b9902a1fe53e539","Content-Type":"application\/json","x-balanced-host":"bapi-live-prod-7nf6hx-10-3-5-34","x-balanced-software-build":"1.8.28","Content-Length":154,"access-control-allow-origin":"*","access-control-allow-headers":"Content-Type","x-balanced-revision":"1.1","access-control-allow-methods":"POST, OPTIONS","X-Midlr-Version":"2","x-newrelic-app-data":"PxQFWFNXCQYTVVhWAwQDVUYdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVUIUAhVBVtVAAJZVlEIAwFdVE4XAAdUUB0WEQFeUFJUUAxaCwsHA1JRXwUTTRMEBVpEBDs="},"body":"{\n  \"cards\": [\n    {\n      \"href\": \"\/cards\/CC28hasGe8YczFcqXCn6x6T8\",\n      \"id\": \"CC28hasGe8YczFcqXCn6x6T8\",\n      \"links\": {}\n    }\n  ],\n  \"links\": {}\n}"}
+        );
+    http_version: 
+  recorded_at: Mon, 20 Oct 2014 16:51:03 GMT
+- request:
+    method: get
+    uri: https://api.balancedpayments.com/jsonp/cards?callback=balanced_jsonp_37076149857603014&data=%7B%22name%22:%22Jane%20Doe%22,%22number%22:%224111111111111111%22,%22expiration_month%22:%2212%22,%22expiration_year%22:%222020%22,%22cvv%22:%22123%22,%22address%22:%7B%22postal_code%22:%2211211%22%7D,%22meta%22:%7B%22capabilities_system_timezone%22:-7,%22capabilities_user_agent%22:%22Mozilla/5.0%20(Macintosh%3B%20PPC%20Mac%20OS%20X)%20AppleWebKit/534.34%20(KHTML,%20like%20Gecko)%20PhantomJS/1.9.7%20Safari/534.34%22,%22capabilities_language%22:%22en-US%22,%22capabilities_kp%22:38,%22capabilities_cli%22:1,%22capabilities_loaded%22:1413824005761,%22capabilities_screen_width%22:2560,%22capabilities_screen_length%22:1440,%22capabilities_hist%22:3,%22capabilities_cookie%22:%221413824005715.07158954697661102.2!0%22,%22capabilities_cl%22:false,%22capabilities_submitted%22:1413824005809,%22capabilities_scrollX%22:0,%22capabilities_scrollY%22:0%7D%7D
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; PPC Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko)
+        PhantomJS/1.9.7 Safari/534.34
+      Accept:
+      - "*/*"
+      Referer:
+      - http://127.0.0.1:53689/credit_card/new
+      Connection:
+      - Keep-Alive
+      Accept-Language:
+      - en-US,*
+      Host:
+      - api.balancedpayments.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/javascript
+      - text/plain
+      Date:
+      - Mon, 20 Oct 2014 16:53:24 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      Content-Length:
+      - '828'
+      Connection:
+      - Close
+    body:
+      encoding: UTF-8
+      string: |
+        /**/ balanced_jsonp_37076149857603014(
+        {"status":201,"header":{"X-Balanced-Guru":"OHM9afa25d8587911e4a96802a1fe53e539","Content-Type":"application\/json","x-balanced-host":"bapi-live-prod-7nf6hx-10-3-5-34","x-balanced-software-build":"1.8.28","Content-Length":154,"access-control-allow-origin":"*","access-control-allow-headers":"Content-Type","x-balanced-revision":"1.1","access-control-allow-methods":"POST, OPTIONS","X-Midlr-Version":"2","x-newrelic-app-data":"PxQFWFNXCQYTVVhWAwQDVUYdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVUIUQFSAVNTAA5WV1cLBgVQVk4XAAdUUR0WEQEHUlsDUgoDXFtQBgNTCFkTTRMEBVpEBDs="},"body":"{\n  \"cards\": [\n    {\n      \"href\": \"\/cards\/CC4IvR7xDUKav9QbB7XUaBSO\",\n      \"id\": \"CC4IvR7xDUKav9QbB7XUaBSO\",\n      \"links\": {}\n    }\n  ],\n  \"links\": {}\n}"}
+        );
+    http_version: 
+  recorded_at: Mon, 20 Oct 2014 16:53:26 GMT
 recorded_with: VCR 2.9.3
