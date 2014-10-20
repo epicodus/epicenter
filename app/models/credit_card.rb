@@ -4,4 +4,8 @@ class CreditCard < ActiveRecord::Base
 
   validates :credit_card_uri, presence: true
   validates :user_id, presence: true
+
+  def fetch_balanced_account
+    Balanced::Card.fetch(credit_card_uri)
+  end
 end
