@@ -1,5 +1,6 @@
 class Payment < ActiveRecord::Base
   belongs_to :user
+  belongs_to :payment_method, polymorphic: true
 
   validates_presence_of :amount, :user_id
 
