@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/epicodus/payments.svg?branch=master)](https://travis-ci.org/epicodus/payments)
 # Payments
 
 This is a recurring payments app built with the Balanced API.
