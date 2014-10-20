@@ -53,11 +53,7 @@ class User < ActiveRecord::Base
   end
 
   def primary_payment_method
-    if credit_card.present?
-      Balanced::Card.fetch(credit_card.credit_card_uri)
-    else
-      Balanced::BankAccount.fetch(bank_account.account_uri)
-    end
+    credit_card.present? ? credit_card : bank_account
   end
 
   def upfront_payment_due?
