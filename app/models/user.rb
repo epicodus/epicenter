@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
 
   def self.bill_bank_accounts
     billable_today.each do |user|
-      user.payments.create(amount: user.plan.recurring_amount)
+      user.payments.create(amount: user.plan.recurring_amount, payment_method: user.primary_payment_method)
     end
   end
 
@@ -67,11 +67,11 @@ class User < ActiveRecord::Base
   end
 
   def make_upfront_payment
-    payments.create!(amount: plan.upfront_amount)
+    payments.create!(amount: plan.upfront_amount, payment_method: primary_payment_method)
   end
 
   def start_recurring_payments
     update!(recurring_active: true)
-    payments.create!(amount: plan.recurring_amount)
+    payments.create!(amount: plan.recurring_amount, payment_method: primary_payment_method)
   end
 end

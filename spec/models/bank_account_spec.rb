@@ -14,4 +14,12 @@ describe BankAccount do
       expect(bank_account.verification_uri).to_not be_nil
     end
   end
+
+  describe "#fetch_balanced_account" do
+    it "returns the balanced bank account object", :vcr do
+      bank_account = FactoryGirl.create :verified_bank_account
+      expect(bank_account.fetch_balanced_account.href).to eq bank_account.account_uri
+    end
+  end
 end
+

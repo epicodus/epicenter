@@ -29,6 +29,7 @@ FactoryGirl.define do
   factory :payment do
     association :user, factory: :user_with_verified_bank_account
     amount 1
+    association :payment_method, factory: :verified_bank_account
   end
 
   factory :plan do

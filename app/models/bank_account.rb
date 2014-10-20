@@ -7,7 +7,9 @@ class BankAccount < ActiveRecord::Base
 
   before_create :create_verification
 
-private
+  def fetch_balanced_account
+    Balanced::BankAccount.fetch(account_uri)
+  end
 
   def create_verification
     verification = Verification.new(bank_account: self)
