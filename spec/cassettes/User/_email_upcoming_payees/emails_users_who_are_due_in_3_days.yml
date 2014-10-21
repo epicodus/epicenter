@@ -637,4 +637,43 @@ http_interactions:
         }
     http_version: 
   recorded_at: Sun, 05 Jan 2014 00:00:00 GMT
+- request:
+    method: post
+    uri: https://api:@api.mailgun.net/v2/epicodus.com/messages
+    body:
+      encoding: US-ASCII
+      string: from=michael%40epicodus.com&to=user76%40example.com&bcc=michael%40epicodus.com&subject=Upcoming%20Epicodus%20tuition%20payment&text=Hi%20Example%20Brown%2068.%20This%20is%20just%20a%20reminder%20that%20your%20next%20Epicodus%20tuition%20payment%20will%20be%20withdrawn%20from%20your%20bank%20account%20in%203%20days.%20If%20you%20need%20anything%2C%20reply%20to%20this%20email.%20Thanks!
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Length:
+      - '387'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 401
+      message: UNAUTHORIZED
+    headers:
+      Server:
+      - nginx/1.4.7
+      Date:
+      - Tue, 21 Oct 2014 22:29:41 GMT
+      Content-Type:
+      - text/html; charset=utf-8
+      Content-Length:
+      - '9'
+      Connection:
+      - keep-alive
+      Www-Authenticate:
+      - Basic realm="MG API"
+    body:
+      encoding: UTF-8
+      string: Forbidden
+    http_version: 
+  recorded_at: Sun, 02 Feb 2014 08:00:00 GMT
 recorded_with: VCR 2.9.3

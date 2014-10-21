@@ -30,13 +30,13 @@ class User < ActiveRecord::Base
 
   def self.email_upcoming_payees
     billable_in_three_days.each do |user|
-      RestClient.post(
-        "https://api:#{ENV['MAILGUN_API_KEY']}@api.mailgun.net/v2/epicodus.com/messages",
-        :from => "michael@epicodus.com",
-        :to => user.email,
-        :bcc => "michael@epicodus.com",
-        :subject => "Upcoming Epicodus tuition payment",
-        :text => "Hi #{user.name}. This is just a reminder that your next Epicodus tuition payment will be withdrawn from your bank account in 3 days. If you need anything, reply to this email. Thanks!"
+      Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message(
+        "epicodus.com",
+        { :from => "michael@epicodus.com",
+          :to => user.email,
+          :bcc => "michael@epicodus.com",
+          :subject => "Upcoming Epicodus tuition payment",
+          :text => "Hi #{user.name}. This is just a reminder that your next Epicodus tuition payment will be withdrawn from your bank account in 3 days. If you need anything, reply to this email. Thanks!" }
       )
     end
   end

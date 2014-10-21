@@ -108,18 +108,21 @@ describe User do
         user = FactoryGirl.create(:user_with_recurring_active)
       end
 
-      expect(RestClient).to receive(:post).with(
-        "https://api:#{ENV['MAILGUN_API_KEY']}@api.mailgun.net/v2/epicodus.com/messages",
-        :from => "michael@epicodus.com",
-        :to => user.email,
-        :bcc => "michael@epicodus.com",
-        :subject => "Upcoming Epicodus tuition payment",
-        :text => "Hi #{user.name}. This is just a reminder that your next Epicodus tuition payment will be withdrawn from your bank account in 3 days. If you need anything, reply to this email. Thanks!"
-      )
+      mailgun_client = spy("mailgun client")
+      allow(Mailgun::Client).to receive(:new) { mailgun_client }
 
       travel_to(Date.parse("February 2, 2014")) do
         User.email_upcoming_payees
       end
+
+      expect(mailgun_client).to have_received(:send_message).with(
+        "epicodus.com",
+        { :from => "michael@epicodus.com",
+          :to => user.email,
+          :bcc => "michael@epicodus.com",
+          :subject => "Upcoming Epicodus tuition payment",
+          :text => "Hi #{user.name}. This is just a reminder that your next Epicodus tuition payment will be withdrawn from your bank account in 3 days. If you need anything, reply to this email. Thanks!" }
+      )
     end
   end
 

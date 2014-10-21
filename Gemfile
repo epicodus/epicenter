@@ -8,9 +8,9 @@ gem 'uglifier'
 gem 'jquery-rails'
 gem 'devise'
 gem 'balanced'
-gem 'rest_client'
 gem 'chartkick'
 gem 'groupdate'
+gem 'mailgun-ruby', require: 'mailgun'
 
 group :development do
   gem 'spring'
