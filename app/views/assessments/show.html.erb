@@ -1,9 +1,11 @@
 <h1 class="page-header"><%= @assessment.title %></h1>
 
 <h3>Requirements</h3>
-<ul>
+<ul class="unstyled requirements">
   <%= render @assessment.requirements %>
 </ul>
+
+<hr>
 
 <%= render 'submissions/form' %>
 

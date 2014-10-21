@@ -1,7 +1,6 @@
 <%= form_for @submission, url: assessment_submission_path(@assessment) do |f| %>
   <%= render 'layouts/errors', object: @submission %>
-  <div class="input-append">
-    <%= f.text_field :link, class: 'span6' %>
-    <%= f.submit @submission.new_record? ? 'Submit' : 'Resubmit', class: 'btn btn-default span2' %>
-  </div>
+  <%= f.label :link, 'Link to Github repository' %>
+  <%= f.text_field :link, class: 'full-width', placeholder: 'http://github.com/your-username/your-repository' %>
+  <%= f.submit @submission.new_record? ? 'Submit' : 'Resubmit', class: 'btn btn-primary pull-right' %>
 <% end %>
