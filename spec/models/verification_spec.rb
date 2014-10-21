@@ -51,7 +51,7 @@ describe Verification, :vcr do
         user = FactoryGirl.create(:user_with_unverified_bank_account)
         verification = Verification.new(bank_account: user.bank_account, first_deposit: 1, second_deposit: 2)
         verification.confirm
-        expect(verification.errors.full_messages).to eq ["Authentication amounts do not match. Your request id is OHM18ced656594d11e4b7f006429171ffad."]
+        expect(verification.errors.full_messages).to eq ["Authentication amounts do not match. Your request id is OHMdfc41062597c11e4910006429171ffad."]
       end
     end
   end

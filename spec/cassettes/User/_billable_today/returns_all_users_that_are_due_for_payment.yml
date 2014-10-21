@@ -30,13 +30,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:55:23 GMT
+      - Tue, 21 Oct 2014 23:38:41 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM6df48baa594b11e48a6802a1fe53e539
+      - OHM6386d0ee597b11e48b3202a1fe53e539
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
+      - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -44,11 +44,11 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       X-Midlr-Version:
       - '2'
       X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKBQZQX1IAAwJUU1YPBQZVVR0WAVBQT0ISU11bXQ9QB1YHWFQFAAJWVBQbQQACVEBVOQ==
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKBA9WUVYIAwBRVlAFAQNTXR0WAVBQT0ISUA8AXlsNAwIGCQAHUQBVVBQbQQACVEBVOQ==
       Content-Length:
       - '1291'
       Connection:
@@ -68,10 +68,10 @@ http_interactions:
                 "bank_account_verification": null
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:55:23.285289Z",
+              "created_at": "2014-10-21T23:38:41.629292Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:55:23.285291Z",
-              "href": "/bank_accounts/BA3lMXVfZ9iVbxSTVvjuRCHH",
+              "updated_at": "2014-10-21T23:38:41.629295Z",
+              "href": "/bank_accounts/BA326hPo45n22ArkAdk5qok8",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -83,7 +83,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA3lMXVfZ9iVbxSTVvjuRCHH"
+              "id": "BA326hPo45n22ArkAdk5qok8"
             }
           ],
           "links": {
@@ -95,10 +95,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:55:26 GMT
+  recorded_at: Tue, 21 Oct 2014 23:38:44 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA3lMXVfZ9iVbxSTVvjuRCHH
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA326hPo45n22ArkAdk5qok8
     body:
       encoding: US-ASCII
       string: ''
@@ -119,11 +119,164 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:55:24 GMT
+      - Tue, 21 Oct 2014 23:38:42 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM6ea471aa594b11e4b7f006429171ffad
+      - OHM63f901a0597b11e4bc0006429171ffad
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-5-17
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.31
+      Content-Length:
+      - '495'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_accounts": [
+            {
+              "routing_number": "021000021",
+              "bank_name": "JPMORGAN CHASE BANK",
+              "account_type": "checking",
+              "name": "Johann Bernoulli",
+              "links": {
+                "customer": null,
+                "bank_account_verification": null
+              },
+              "can_credit": true,
+              "created_at": "2014-10-21T23:38:41.629292Z",
+              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
+              "updated_at": "2014-10-21T23:38:41.629295Z",
+              "href": "/bank_accounts/BA326hPo45n22ArkAdk5qok8",
+              "meta": {},
+              "account_number": "xxxxxx0002",
+              "address": {
+                "city": null,
+                "line2": null,
+                "line1": null,
+                "state": null,
+                "postal_code": null,
+                "country_code": null
+              },
+              "can_debit": false,
+              "id": "BA326hPo45n22ArkAdk5qok8"
+            }
+          ],
+          "links": {
+            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
+            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications",
+            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
+            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
+            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 21 Oct 2014 23:38:44 GMT
+- request:
+    method: post
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA326hPo45n22ArkAdk5qok8/verifications
+    body:
+      encoding: UTF-8
+      string: "{}"
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 21 Oct 2014 23:38:53 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHM64241d04597b11e495990230f00c9248
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-5-17
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.31
+      Content-Length:
+      - '599'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_account_verifications": [
+            {
+              "verification_status": "pending",
+              "links": {
+                "bank_account": "BA326hPo45n22ArkAdk5qok8"
+              },
+              "href": "/verifications/BZ3eRxKS9fc6uqzJXiwBTDq0",
+              "created_at": "2014-10-21T23:38:52.974971Z",
+              "attempts_remaining": 3,
+              "updated_at": "2014-10-21T23:38:53.511763Z",
+              "deposit_status": "succeeded",
+              "attempts": 0,
+              "meta": {},
+              "id": "BZ3eRxKS9fc6uqzJXiwBTDq0"
+            }
+          ],
+          "links": {
+            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 21 Oct 2014 23:38:56 GMT
+- request:
+    method: get
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA326hPo45n22ArkAdk5qok8
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 21 Oct 2014 23:38:54 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHM6b589eba597b11e49ead06429171ffad
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
@@ -133,7 +286,961 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
+      Content-Length:
+      - '520'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_accounts": [
+            {
+              "routing_number": "021000021",
+              "bank_name": "JPMORGAN CHASE BANK",
+              "account_type": "checking",
+              "name": "Johann Bernoulli",
+              "links": {
+                "customer": null,
+                "bank_account_verification": "BZ3eRxKS9fc6uqzJXiwBTDq0"
+              },
+              "can_credit": true,
+              "created_at": "2014-10-21T23:38:41.629292Z",
+              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
+              "updated_at": "2014-10-21T23:38:41.629295Z",
+              "href": "/bank_accounts/BA326hPo45n22ArkAdk5qok8",
+              "meta": {},
+              "account_number": "xxxxxx0002",
+              "address": {
+                "city": null,
+                "line2": null,
+                "line1": null,
+                "state": null,
+                "postal_code": null,
+                "country_code": null
+              },
+              "can_debit": false,
+              "id": "BA326hPo45n22ArkAdk5qok8"
+            }
+          ],
+          "links": {
+            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
+            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications",
+            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
+            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
+            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 21 Oct 2014 23:38:57 GMT
+- request:
+    method: get
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ3eRxKS9fc6uqzJXiwBTDq0
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 21 Oct 2014 23:38:54 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHM6b843c8c597b11e49ead06429171ffad
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-5-17
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.31
+      Content-Length:
+      - '599'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_account_verifications": [
+            {
+              "verification_status": "pending",
+              "links": {
+                "bank_account": "BA326hPo45n22ArkAdk5qok8"
+              },
+              "href": "/verifications/BZ3eRxKS9fc6uqzJXiwBTDq0",
+              "created_at": "2014-10-21T23:38:52.974971Z",
+              "attempts_remaining": 3,
+              "updated_at": "2014-10-21T23:38:53.511763Z",
+              "deposit_status": "succeeded",
+              "attempts": 0,
+              "meta": {},
+              "id": "BZ3eRxKS9fc6uqzJXiwBTDq0"
+            }
+          ],
+          "links": {
+            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 21 Oct 2014 23:38:57 GMT
+- request:
+    method: put
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ3eRxKS9fc6uqzJXiwBTDq0
+    body:
+      encoding: UTF-8
+      string: '{"verification_status":"pending","links":{"bank_account":"BA326hPo45n22ArkAdk5qok8"},"created_at":"2014-10-21T23:38:52.974971Z","attempts_remaining":3,"updated_at":"2014-10-21T23:38:53.511763Z","deposit_status":"succeeded","attempts":0,"meta":{},"id":"BZ3eRxKS9fc6uqzJXiwBTDq0","amount_1":"1","amount_2":"1"}'
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 21 Oct 2014 23:38:55 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHM6baefbca597b11e495990230f00c9248
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-5-17
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.31
+      Content-Length:
+      - '601'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_account_verifications": [
+            {
+              "verification_status": "succeeded",
+              "links": {
+                "bank_account": "BA326hPo45n22ArkAdk5qok8"
+              },
+              "href": "/verifications/BZ3eRxKS9fc6uqzJXiwBTDq0",
+              "created_at": "2014-10-21T23:38:52.974971Z",
+              "attempts_remaining": 2,
+              "updated_at": "2014-10-21T23:38:55.082418Z",
+              "deposit_status": "succeeded",
+              "attempts": 1,
+              "meta": {},
+              "id": "BZ3eRxKS9fc6uqzJXiwBTDq0"
+            }
+          ],
+          "links": {
+            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 21 Oct 2014 23:38:57 GMT
+- request:
+    method: post
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts
+    body:
+      encoding: UTF-8
+      string: '{"account_number":"9900000002","account_type":"checking","name":"Johann
+        Bernoulli","routing_number":"021000021"}'
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 21 Oct 2014 23:38:55 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHM6bd97724597b11e4a66302a1fe53e539
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-5-17
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.31
+      X-Midlr-Version:
+      - '2'
+      X-Newrelic-App-Data:
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKBw9UUlQACgJRVlIDCAJQVAQaE1BUVU4QQAsECQxSCwsEWAcGUAIHBwcVTUYFWV9DATw=
+      Content-Length:
+      - '1291'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_accounts": [
+            {
+              "routing_number": "021000021",
+              "bank_name": "JPMORGAN CHASE BANK",
+              "account_type": "checking",
+              "name": "Johann Bernoulli",
+              "links": {
+                "customer": null,
+                "bank_account_verification": null
+              },
+              "can_credit": true,
+              "created_at": "2014-10-21T23:38:55.491670Z",
+              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
+              "updated_at": "2014-10-21T23:38:55.491673Z",
+              "href": "/bank_accounts/BA3hGVShlASA6w5HO6g2xBGE",
+              "meta": {},
+              "account_number": "xxxxxx0002",
+              "address": {
+                "city": null,
+                "line2": null,
+                "line1": null,
+                "state": null,
+                "postal_code": null,
+                "country_code": null
+              },
+              "can_debit": false,
+              "id": "BA3hGVShlASA6w5HO6g2xBGE"
+            }
+          ],
+          "links": {
+            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
+            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications",
+            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
+            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
+            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 21 Oct 2014 23:38:58 GMT
+- request:
+    method: get
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA3hGVShlASA6w5HO6g2xBGE
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 21 Oct 2014 23:38:55 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHM6c20fc52597b11e4bc0006429171ffad
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-5-17
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.31
+      Content-Length:
+      - '499'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_accounts": [
+            {
+              "routing_number": "021000021",
+              "bank_name": "JPMORGAN CHASE BANK",
+              "account_type": "checking",
+              "name": "Johann Bernoulli",
+              "links": {
+                "customer": null,
+                "bank_account_verification": null
+              },
+              "can_credit": true,
+              "created_at": "2014-10-21T23:38:55.491670Z",
+              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
+              "updated_at": "2014-10-21T23:38:55.491673Z",
+              "href": "/bank_accounts/BA3hGVShlASA6w5HO6g2xBGE",
+              "meta": {},
+              "account_number": "xxxxxx0002",
+              "address": {
+                "city": null,
+                "line2": null,
+                "line1": null,
+                "state": null,
+                "postal_code": null,
+                "country_code": null
+              },
+              "can_debit": false,
+              "id": "BA3hGVShlASA6w5HO6g2xBGE"
+            }
+          ],
+          "links": {
+            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
+            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications",
+            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
+            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
+            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 21 Oct 2014 23:38:58 GMT
+- request:
+    method: post
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA3hGVShlASA6w5HO6g2xBGE/verifications
+    body:
+      encoding: UTF-8
+      string: "{}"
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 21 Oct 2014 23:39:06 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHM6c4e26b4597b11e49ead06429171ffad
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-5-17
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.31
+      Content-Length:
+      - '599'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_account_verifications": [
+            {
+              "verification_status": "pending",
+              "links": {
+                "bank_account": "BA3hGVShlASA6w5HO6g2xBGE"
+              },
+              "href": "/verifications/BZ3sV91nZ6t7npBFRThqGibu",
+              "created_at": "2014-10-21T23:39:05.474068Z",
+              "attempts_remaining": 3,
+              "updated_at": "2014-10-21T23:39:05.840173Z",
+              "deposit_status": "succeeded",
+              "attempts": 0,
+              "meta": {},
+              "id": "BZ3sV91nZ6t7npBFRThqGibu"
+            }
+          ],
+          "links": {
+            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 21 Oct 2014 23:39:09 GMT
+- request:
+    method: get
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA3hGVShlASA6w5HO6g2xBGE
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 21 Oct 2014 23:39:07 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHM72d75e74597b11e4bc6302b12035401b
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-5-17
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.31
+      Content-Length:
+      - '522'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_accounts": [
+            {
+              "routing_number": "021000021",
+              "bank_name": "JPMORGAN CHASE BANK",
+              "account_type": "checking",
+              "name": "Johann Bernoulli",
+              "links": {
+                "customer": null,
+                "bank_account_verification": "BZ3sV91nZ6t7npBFRThqGibu"
+              },
+              "can_credit": true,
+              "created_at": "2014-10-21T23:38:55.491670Z",
+              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
+              "updated_at": "2014-10-21T23:38:55.491673Z",
+              "href": "/bank_accounts/BA3hGVShlASA6w5HO6g2xBGE",
+              "meta": {},
+              "account_number": "xxxxxx0002",
+              "address": {
+                "city": null,
+                "line2": null,
+                "line1": null,
+                "state": null,
+                "postal_code": null,
+                "country_code": null
+              },
+              "can_debit": false,
+              "id": "BA3hGVShlASA6w5HO6g2xBGE"
+            }
+          ],
+          "links": {
+            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
+            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications",
+            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
+            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
+            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 21 Oct 2014 23:39:09 GMT
+- request:
+    method: get
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ3sV91nZ6t7npBFRThqGibu
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 21 Oct 2014 23:39:07 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHM730bec66597b11e4bd6f02b12035401b
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-5-17
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.31
+      Content-Length:
+      - '599'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_account_verifications": [
+            {
+              "verification_status": "pending",
+              "links": {
+                "bank_account": "BA3hGVShlASA6w5HO6g2xBGE"
+              },
+              "href": "/verifications/BZ3sV91nZ6t7npBFRThqGibu",
+              "created_at": "2014-10-21T23:39:05.474068Z",
+              "attempts_remaining": 3,
+              "updated_at": "2014-10-21T23:39:05.840173Z",
+              "deposit_status": "succeeded",
+              "attempts": 0,
+              "meta": {},
+              "id": "BZ3sV91nZ6t7npBFRThqGibu"
+            }
+          ],
+          "links": {
+            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 21 Oct 2014 23:39:10 GMT
+- request:
+    method: put
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ3sV91nZ6t7npBFRThqGibu
+    body:
+      encoding: UTF-8
+      string: '{"verification_status":"pending","links":{"bank_account":"BA3hGVShlASA6w5HO6g2xBGE"},"created_at":"2014-10-21T23:39:05.474068Z","attempts_remaining":3,"updated_at":"2014-10-21T23:39:05.840173Z","deposit_status":"succeeded","attempts":0,"meta":{},"id":"BZ3sV91nZ6t7npBFRThqGibu","amount_1":"1","amount_2":"1"}'
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 21 Oct 2014 23:39:07 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHM7338774a597b11e4bc0006429171ffad
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-4-8
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.31
+      Content-Length:
+      - '601'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_account_verifications": [
+            {
+              "verification_status": "succeeded",
+              "links": {
+                "bank_account": "BA3hGVShlASA6w5HO6g2xBGE"
+              },
+              "href": "/verifications/BZ3sV91nZ6t7npBFRThqGibu",
+              "created_at": "2014-10-21T23:39:05.474068Z",
+              "attempts_remaining": 2,
+              "updated_at": "2014-10-21T23:39:07.741043Z",
+              "deposit_status": "succeeded",
+              "attempts": 1,
+              "meta": {},
+              "id": "BZ3sV91nZ6t7npBFRThqGibu"
+            }
+          ],
+          "links": {
+            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 21 Oct 2014 23:39:10 GMT
+- request:
+    method: get
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA326hPo45n22ArkAdk5qok8
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 21 Oct 2014 23:39:08 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHM736f5440597b11e49ead06429171ffad
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-4-8
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.31
+      Content-Length:
+      - '521'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_accounts": [
+            {
+              "routing_number": "021000021",
+              "bank_name": "JPMORGAN CHASE BANK",
+              "account_type": "checking",
+              "name": "Johann Bernoulli",
+              "links": {
+                "customer": null,
+                "bank_account_verification": "BZ3eRxKS9fc6uqzJXiwBTDq0"
+              },
+              "can_credit": true,
+              "created_at": "2014-10-21T23:38:41.629292Z",
+              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
+              "updated_at": "2014-10-21T23:38:55.081445Z",
+              "href": "/bank_accounts/BA326hPo45n22ArkAdk5qok8",
+              "meta": {},
+              "account_number": "xxxxxx0002",
+              "address": {
+                "city": null,
+                "line2": null,
+                "line1": null,
+                "state": null,
+                "postal_code": null,
+                "country_code": null
+              },
+              "can_debit": true,
+              "id": "BA326hPo45n22ArkAdk5qok8"
+            }
+          ],
+          "links": {
+            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
+            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications",
+            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
+            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
+            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 21 Oct 2014 23:39:10 GMT
+- request:
+    method: post
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA326hPo45n22ArkAdk5qok8/debits
+    body:
+      encoding: UTF-8
+      string: '{"amount":1,"appears_on_statement_as":"Epicodus tuition"}'
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 21 Oct 2014 23:39:08 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHM73ad040c597b11e4bc0006429171ffad
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-5-17
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.31
+      Content-Length:
+      - '1059'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "debits": [
+            {
+              "status": "succeeded",
+              "description": null,
+              "links": {
+                "customer": null,
+                "source": "BA326hPo45n22ArkAdk5qok8",
+                "card_hold": null,
+                "order": null,
+                "dispute": null
+              },
+              "updated_at": "2014-10-21T23:39:08.731684Z",
+              "created_at": "2014-10-21T23:39:08.505017Z",
+              "transaction_number": "W7M7-IFT-20O6",
+              "failure_reason": null,
+              "currency": "USD",
+              "amount": 1,
+              "failure_reason_code": null,
+              "meta": {},
+              "href": "/debits/WD3wko0quems0eBEWzJxLD0I",
+              "appears_on_statement_as": "BAL*Epicodus tuition",
+              "id": "WD3wko0quems0eBEWzJxLD0I"
+            }
+          ],
+          "links": {
+            "debits.customer": "/customers/{debits.customer}",
+            "debits.order": "/orders/{debits.order}",
+            "debits.dispute": "/disputes/{debits.dispute}",
+            "debits.source": "/resources/{debits.source}",
+            "debits.events": "/debits/{debits.id}/events",
+            "debits.refunds": "/debits/{debits.id}/refunds",
+            "debits.card_hold": "/holds/{debits.card_hold}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 21 Oct 2014 23:39:11 GMT
+- request:
+    method: post
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts
+    body:
+      encoding: UTF-8
+      string: '{"account_number":"9900000002","account_type":"checking","name":"Johann
+        Bernoulli","routing_number":"021000021"}'
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 21 Oct 2014 23:39:09 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHM7400676e597b11e480c602a1fe52a36c
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-5-17
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.31
+      X-Midlr-Version:
+      - '2'
+      X-Newrelic-App-Data:
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKBABQX1MLCglVV1sOAwZeUwQaE1BUVU4QQA0AAAFSVFVUDVNUBQcGUgUVTUYFWV9DATw=
+      Content-Length:
+      - '1291'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_accounts": [
+            {
+              "routing_number": "021000021",
+              "bank_name": "JPMORGAN CHASE BANK",
+              "account_type": "checking",
+              "name": "Johann Bernoulli",
+              "links": {
+                "customer": null,
+                "bank_account_verification": null
+              },
+              "can_credit": true,
+              "created_at": "2014-10-21T23:39:09.254919Z",
+              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
+              "updated_at": "2014-10-21T23:39:09.254922Z",
+              "href": "/bank_accounts/BA3xaHQgERlAHXQVzg99G9A4",
+              "meta": {},
+              "account_number": "xxxxxx0002",
+              "address": {
+                "city": null,
+                "line2": null,
+                "line1": null,
+                "state": null,
+                "postal_code": null,
+                "country_code": null
+              },
+              "can_debit": false,
+              "id": "BA3xaHQgERlAHXQVzg99G9A4"
+            }
+          ],
+          "links": {
+            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
+            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications",
+            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
+            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
+            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 21 Oct 2014 23:39:12 GMT
+- request:
+    method: get
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA3xaHQgERlAHXQVzg99G9A4
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 21 Oct 2014 23:39:09 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHM747582ec597b11e4a3de02b12035401b
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-4-8
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.31
       Content-Length:
       - '501'
       Connection:
@@ -153,10 +1260,10 @@ http_interactions:
                 "bank_account_verification": null
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:55:23.285289Z",
+              "created_at": "2014-10-21T23:39:09.254919Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:55:23.285291Z",
-              "href": "/bank_accounts/BA3lMXVfZ9iVbxSTVvjuRCHH",
+              "updated_at": "2014-10-21T23:39:09.254922Z",
+              "href": "/bank_accounts/BA3xaHQgERlAHXQVzg99G9A4",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -168,7 +1275,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA3lMXVfZ9iVbxSTVvjuRCHH"
+              "id": "BA3xaHQgERlAHXQVzg99G9A4"
             }
           ],
           "links": {
@@ -180,10 +1287,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:55:26 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:12 GMT
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA3lMXVfZ9iVbxSTVvjuRCHH/verifications
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA3xaHQgERlAHXQVzg99G9A4/verifications
     body:
       encoding: UTF-8
       string: "{}"
@@ -204,11 +1311,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:55:35 GMT
+      - Tue, 21 Oct 2014 23:39:23 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM701b00c6594b11e4b1cd06429171ffad
+      - OHM74b3c71e597b11e4910006429171ffad
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
@@ -218,7 +1325,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '599'
       Connection:
@@ -231,16 +1338,16 @@ http_interactions:
             {
               "verification_status": "pending",
               "links": {
-                "bank_account": "BA3lMXVfZ9iVbxSTVvjuRCHH"
+                "bank_account": "BA3xaHQgERlAHXQVzg99G9A4"
               },
-              "href": "/verifications/BZ3ytFuZSMcV9NmjRK0GhjEN",
-              "created_at": "2014-10-21T17:55:34.565313Z",
+              "href": "/verifications/BZ3LMS7cPB81h9m3PF0EeAg5",
+              "created_at": "2014-10-21T23:39:22.247693Z",
               "attempts_remaining": 3,
-              "updated_at": "2014-10-21T17:55:34.839107Z",
+              "updated_at": "2014-10-21T23:39:22.614495Z",
               "deposit_status": "succeeded",
               "attempts": 0,
               "meta": {},
-              "id": "BZ3ytFuZSMcV9NmjRK0GhjEN"
+              "id": "BZ3LMS7cPB81h9m3PF0EeAg5"
             }
           ],
           "links": {
@@ -248,10 +1355,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:55:37 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:26 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA3lMXVfZ9iVbxSTVvjuRCHH
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA3xaHQgERlAHXQVzg99G9A4
     body:
       encoding: US-ASCII
       string: ''
@@ -272,13 +1379,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:55:37 GMT
+      - Tue, 21 Oct 2014 23:39:23 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM768fb410594b11e4bdff02b12035401b
+      - OHM7cb25dea597b11e495990230f00c9248
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
+      - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -286,7 +1393,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '524'
       Connection:
@@ -303,13 +1410,13 @@ http_interactions:
               "name": "Johann Bernoulli",
               "links": {
                 "customer": null,
-                "bank_account_verification": "BZ3ytFuZSMcV9NmjRK0GhjEN"
+                "bank_account_verification": "BZ3LMS7cPB81h9m3PF0EeAg5"
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:55:23.285289Z",
+              "created_at": "2014-10-21T23:39:09.254919Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:55:23.285291Z",
-              "href": "/bank_accounts/BA3lMXVfZ9iVbxSTVvjuRCHH",
+              "updated_at": "2014-10-21T23:39:09.254922Z",
+              "href": "/bank_accounts/BA3xaHQgERlAHXQVzg99G9A4",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -321,7 +1428,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA3lMXVfZ9iVbxSTVvjuRCHH"
+              "id": "BA3xaHQgERlAHXQVzg99G9A4"
             }
           ],
           "links": {
@@ -333,10 +1440,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:55:40 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:26 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ3ytFuZSMcV9NmjRK0GhjEN
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ3LMS7cPB81h9m3PF0EeAg5
     body:
       encoding: US-ASCII
       string: ''
@@ -357,11 +1464,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:55:38 GMT
+      - Tue, 21 Oct 2014 23:39:23 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM77483d64594b11e4b7f006429171ffad
+      - OHM7ce36dae597b11e4bc0006429171ffad
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
@@ -371,7 +1478,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '599'
       Connection:
@@ -384,16 +1491,16 @@ http_interactions:
             {
               "verification_status": "pending",
               "links": {
-                "bank_account": "BA3lMXVfZ9iVbxSTVvjuRCHH"
+                "bank_account": "BA3xaHQgERlAHXQVzg99G9A4"
               },
-              "href": "/verifications/BZ3ytFuZSMcV9NmjRK0GhjEN",
-              "created_at": "2014-10-21T17:55:34.565313Z",
+              "href": "/verifications/BZ3LMS7cPB81h9m3PF0EeAg5",
+              "created_at": "2014-10-21T23:39:22.247693Z",
               "attempts_remaining": 3,
-              "updated_at": "2014-10-21T17:55:34.839107Z",
+              "updated_at": "2014-10-21T23:39:22.614495Z",
               "deposit_status": "succeeded",
               "attempts": 0,
               "meta": {},
-              "id": "BZ3ytFuZSMcV9NmjRK0GhjEN"
+              "id": "BZ3LMS7cPB81h9m3PF0EeAg5"
             }
           ],
           "links": {
@@ -401,13 +1508,13 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:55:41 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:26 GMT
 - request:
     method: put
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ3ytFuZSMcV9NmjRK0GhjEN
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ3LMS7cPB81h9m3PF0EeAg5
     body:
       encoding: UTF-8
-      string: '{"verification_status":"pending","links":{"bank_account":"BA3lMXVfZ9iVbxSTVvjuRCHH"},"created_at":"2014-10-21T17:55:34.565313Z","attempts_remaining":3,"updated_at":"2014-10-21T17:55:34.839107Z","deposit_status":"succeeded","attempts":0,"meta":{},"id":"BZ3ytFuZSMcV9NmjRK0GhjEN","amount_1":"1","amount_2":"1"}'
+      string: '{"verification_status":"pending","links":{"bank_account":"BA3xaHQgERlAHXQVzg99G9A4"},"created_at":"2014-10-21T23:39:22.247693Z","attempts_remaining":3,"updated_at":"2014-10-21T23:39:22.614495Z","deposit_status":"succeeded","attempts":0,"meta":{},"id":"BZ3LMS7cPB81h9m3PF0EeAg5","amount_1":"1","amount_2":"1"}'
     headers:
       User-Agent:
       - balanced-ruby/1.1.1
@@ -425,13 +1532,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:55:39 GMT
+      - Tue, 21 Oct 2014 23:39:24 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM779f5a72594b11e4990f0230f00c9248
+      - OHM7d0e8f16597b11e4b84f0230f00c9248
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
+      - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -439,7 +1546,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '601'
       Connection:
@@ -452,16 +1559,16 @@ http_interactions:
             {
               "verification_status": "succeeded",
               "links": {
-                "bank_account": "BA3lMXVfZ9iVbxSTVvjuRCHH"
+                "bank_account": "BA3xaHQgERlAHXQVzg99G9A4"
               },
-              "href": "/verifications/BZ3ytFuZSMcV9NmjRK0GhjEN",
-              "created_at": "2014-10-21T17:55:34.565313Z",
+              "href": "/verifications/BZ3LMS7cPB81h9m3PF0EeAg5",
+              "created_at": "2014-10-21T23:39:22.247693Z",
               "attempts_remaining": 2,
-              "updated_at": "2014-10-21T17:55:39.265345Z",
+              "updated_at": "2014-10-21T23:39:24.244272Z",
               "deposit_status": "succeeded",
               "attempts": 1,
               "meta": {},
-              "id": "BZ3ytFuZSMcV9NmjRK0GhjEN"
+              "id": "BZ3LMS7cPB81h9m3PF0EeAg5"
             }
           ],
           "links": {
@@ -469,7 +1576,7 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:55:41 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:26 GMT
 - request:
     method: post
     uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts
@@ -500,11 +1607,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:55:40 GMT
+      - Tue, 21 Oct 2014 23:39:24 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM77fe7eee594b11e48a6802a1fe53e539
+      - OHM7d3c5658597b11e4a66302a1fe53e539
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
@@ -514,11 +1621,11 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       X-Midlr-Version:
       - '2'
       X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKBQFQV1IMCgdcVlsHAw9VVh0WAVBQT0ISUwlRCAxQUQZdWwBUAwcGBRQbQQACVEBVOQ==
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKBAZRUFMNAgRQVFIHBgRUUAMaE1BUVU4QQAsBAF0CA1cBC1IIAlIAVA4VTUYFWV9DATw=
       Content-Length:
       - '1291'
       Connection:
@@ -538,10 +1645,10 @@ http_interactions:
                 "bank_account_verification": null
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:55:40.188922Z",
+              "created_at": "2014-10-21T23:39:24.675278Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:55:40.188925Z",
-              "href": "/bank_accounts/BA3ENHoFNubmupQL9Z3Sef2Z",
+              "updated_at": "2014-10-21T23:39:24.675281Z",
+              "href": "/bank_accounts/BA3Ow2FDskXptypN8dS168YZ",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -553,7 +1660,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA3ENHoFNubmupQL9Z3Sef2Z"
+              "id": "BA3Ow2FDskXptypN8dS168YZ"
             }
           ],
           "links": {
@@ -565,10 +1672,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:55:42 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:27 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA3ENHoFNubmupQL9Z3Sef2Z
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA3Ow2FDskXptypN8dS168YZ
     body:
       encoding: US-ASCII
       string: ''
@@ -589,11 +1696,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:55:40 GMT
+      - Tue, 21 Oct 2014 23:39:25 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM7891549e594b11e4b03b02b12035401b
+      - OHM7d9c3db6597b11e49ead06429171ffad
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
@@ -603,644 +1710,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
-      Content-Length:
-      - '496'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_accounts": [
-            {
-              "routing_number": "021000021",
-              "bank_name": "JPMORGAN CHASE BANK",
-              "account_type": "checking",
-              "name": "Johann Bernoulli",
-              "links": {
-                "customer": null,
-                "bank_account_verification": null
-              },
-              "can_credit": true,
-              "created_at": "2014-10-21T17:55:40.188922Z",
-              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:55:40.188925Z",
-              "href": "/bank_accounts/BA3ENHoFNubmupQL9Z3Sef2Z",
-              "meta": {},
-              "account_number": "xxxxxx0002",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": false,
-              "id": "BA3ENHoFNubmupQL9Z3Sef2Z"
-            }
-          ],
-          "links": {
-            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
-            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications",
-            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
-            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
-            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:55:43 GMT
-- request:
-    method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA3ENHoFNubmupQL9Z3Sef2Z/verifications
-    body:
-      encoding: UTF-8
-      string: "{}"
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 21 Oct 2014 17:55:49 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM78da5edc594b11e48f790230f00c9248
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.30
-      Content-Length:
-      - '599'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_account_verifications": [
-            {
-              "verification_status": "pending",
-              "links": {
-                "bank_account": "BA3ENHoFNubmupQL9Z3Sef2Z"
-              },
-              "href": "/verifications/BZ3Ow737tw2HhRY8WSOJYqVq",
-              "created_at": "2014-10-21T17:55:48.824184Z",
-              "attempts_remaining": 3,
-              "updated_at": "2014-10-21T17:55:49.189046Z",
-              "deposit_status": "succeeded",
-              "attempts": 0,
-              "meta": {},
-              "id": "BZ3Ow737tw2HhRY8WSOJYqVq"
-            }
-          ],
-          "links": {
-            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:55:52 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA3ENHoFNubmupQL9Z3Sef2Z
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 21 Oct 2014 17:55:51 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM7ec99362594b11e4884a0230f00c9248
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.30
-      Content-Length:
-      - '523'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_accounts": [
-            {
-              "routing_number": "021000021",
-              "bank_name": "JPMORGAN CHASE BANK",
-              "account_type": "checking",
-              "name": "Johann Bernoulli",
-              "links": {
-                "customer": null,
-                "bank_account_verification": "BZ3Ow737tw2HhRY8WSOJYqVq"
-              },
-              "can_credit": true,
-              "created_at": "2014-10-21T17:55:40.188922Z",
-              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:55:40.188925Z",
-              "href": "/bank_accounts/BA3ENHoFNubmupQL9Z3Sef2Z",
-              "meta": {},
-              "account_number": "xxxxxx0002",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": false,
-              "id": "BA3ENHoFNubmupQL9Z3Sef2Z"
-            }
-          ],
-          "links": {
-            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
-            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications",
-            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
-            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
-            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:55:53 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ3Ow737tw2HhRY8WSOJYqVq
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 21 Oct 2014 17:55:57 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM82b62184594b11e4990f0230f00c9248
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.30
-      Content-Length:
-      - '599'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_account_verifications": [
-            {
-              "verification_status": "pending",
-              "links": {
-                "bank_account": "BA3ENHoFNubmupQL9Z3Sef2Z"
-              },
-              "href": "/verifications/BZ3Ow737tw2HhRY8WSOJYqVq",
-              "created_at": "2014-10-21T17:55:48.824184Z",
-              "attempts_remaining": 3,
-              "updated_at": "2014-10-21T17:55:49.189046Z",
-              "deposit_status": "succeeded",
-              "attempts": 0,
-              "meta": {},
-              "id": "BZ3Ow737tw2HhRY8WSOJYqVq"
-            }
-          ],
-          "links": {
-            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:00 GMT
-- request:
-    method: put
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ3Ow737tw2HhRY8WSOJYqVq
-    body:
-      encoding: UTF-8
-      string: '{"verification_status":"pending","links":{"bank_account":"BA3ENHoFNubmupQL9Z3Sef2Z"},"created_at":"2014-10-21T17:55:48.824184Z","attempts_remaining":3,"updated_at":"2014-10-21T17:55:49.189046Z","deposit_status":"succeeded","attempts":0,"meta":{},"id":"BZ3Ow737tw2HhRY8WSOJYqVq","amount_1":"1","amount_2":"1"}'
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 21 Oct 2014 17:55:59 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM837e2ed6594b11e4884a0230f00c9248
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.30
-      Content-Length:
-      - '601'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_account_verifications": [
-            {
-              "verification_status": "succeeded",
-              "links": {
-                "bank_account": "BA3ENHoFNubmupQL9Z3Sef2Z"
-              },
-              "href": "/verifications/BZ3Ow737tw2HhRY8WSOJYqVq",
-              "created_at": "2014-10-21T17:55:48.824184Z",
-              "attempts_remaining": 2,
-              "updated_at": "2014-10-21T17:55:59.213347Z",
-              "deposit_status": "succeeded",
-              "attempts": 1,
-              "meta": {},
-              "id": "BZ3Ow737tw2HhRY8WSOJYqVq"
-            }
-          ],
-          "links": {
-            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:01 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA3lMXVfZ9iVbxSTVvjuRCHH
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 21 Oct 2014 17:56:00 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM83fdf6f2594b11e4b03b02b12035401b
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.30
-      Content-Length:
-      - '524'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_accounts": [
-            {
-              "routing_number": "021000021",
-              "bank_name": "JPMORGAN CHASE BANK",
-              "account_type": "checking",
-              "name": "Johann Bernoulli",
-              "links": {
-                "customer": null,
-                "bank_account_verification": "BZ3ytFuZSMcV9NmjRK0GhjEN"
-              },
-              "can_credit": true,
-              "created_at": "2014-10-21T17:55:23.285289Z",
-              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:55:39.264459Z",
-              "href": "/bank_accounts/BA3lMXVfZ9iVbxSTVvjuRCHH",
-              "meta": {},
-              "account_number": "xxxxxx0002",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": true,
-              "id": "BA3lMXVfZ9iVbxSTVvjuRCHH"
-            }
-          ],
-          "links": {
-            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
-            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications",
-            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
-            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
-            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:02 GMT
-- request:
-    method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA3lMXVfZ9iVbxSTVvjuRCHH/debits
-    body:
-      encoding: UTF-8
-      string: '{"amount":1,"appears_on_statement_as":"Epicodus tuition"}'
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 21 Oct 2014 17:56:00 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM846ab6ca594b11e4b7f006429171ffad
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.30
-      Content-Length:
-      - '1059'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "debits": [
-            {
-              "status": "succeeded",
-              "description": null,
-              "links": {
-                "customer": null,
-                "source": "BA3lMXVfZ9iVbxSTVvjuRCHH",
-                "card_hold": null,
-                "order": null,
-                "dispute": null
-              },
-              "updated_at": "2014-10-21T17:56:00.945381Z",
-              "created_at": "2014-10-21T17:56:00.735525Z",
-              "transaction_number": "W76I-JS2-WYMI",
-              "failure_reason": null,
-              "currency": "USD",
-              "amount": 1,
-              "failure_reason_code": null,
-              "meta": {},
-              "href": "/debits/WD41UrEA7s0X0aI3lh2oFrJX",
-              "appears_on_statement_as": "BAL*Epicodus tuition",
-              "id": "WD41UrEA7s0X0aI3lh2oFrJX"
-            }
-          ],
-          "links": {
-            "debits.customer": "/customers/{debits.customer}",
-            "debits.order": "/orders/{debits.order}",
-            "debits.dispute": "/disputes/{debits.dispute}",
-            "debits.source": "/resources/{debits.source}",
-            "debits.events": "/debits/{debits.id}/events",
-            "debits.refunds": "/debits/{debits.id}/refunds",
-            "debits.card_hold": "/holds/{debits.card_hold}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:03 GMT
-- request:
-    method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts
-    body:
-      encoding: UTF-8
-      string: '{"account_number":"9900000002","account_type":"checking","name":"Johann
-        Bernoulli","routing_number":"021000021"}'
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Access-Control-Allow-Headers:
-      - Content-Type
-      Access-Control-Allow-Methods:
-      - POST, OPTIONS
-      Access-Control-Allow-Origin:
-      - "*"
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 21 Oct 2014 17:56:02 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM853e4c9c594b11e4b68802a1fe52a36c
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.30
-      X-Midlr-Version:
-      - '2'
-      X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKAAJRVFcMCgVVU1YPAAFfSBEEAVRKQ0BVBwtXCF5RUwZVXwMIWVZXRhoXBwcPS1Zt
-      Content-Length:
-      - '1291'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_accounts": [
-            {
-              "routing_number": "021000021",
-              "bank_name": "JPMORGAN CHASE BANK",
-              "account_type": "checking",
-              "name": "Johann Bernoulli",
-              "links": {
-                "customer": null,
-                "bank_account_verification": null
-              },
-              "can_credit": true,
-              "created_at": "2014-10-21T17:56:02.762109Z",
-              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:56:02.762111Z",
-              "href": "/bank_accounts/BA44bWaaIniLchxjzmtifgxW",
-              "meta": {},
-              "account_number": "xxxxxx0002",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": false,
-              "id": "BA44bWaaIniLchxjzmtifgxW"
-            }
-          ],
-          "links": {
-            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
-            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications",
-            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
-            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
-            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:05 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA44bWaaIniLchxjzmtifgxW
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 21 Oct 2014 17:56:05 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM870124a0594b11e4b03b02b12035401b
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '498'
       Connection:
@@ -1260,10 +1730,10 @@ http_interactions:
                 "bank_account_verification": null
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:56:02.762109Z",
+              "created_at": "2014-10-21T23:39:24.675278Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:56:02.762111Z",
-              "href": "/bank_accounts/BA44bWaaIniLchxjzmtifgxW",
+              "updated_at": "2014-10-21T23:39:24.675281Z",
+              "href": "/bank_accounts/BA3Ow2FDskXptypN8dS168YZ",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -1275,7 +1745,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA44bWaaIniLchxjzmtifgxW"
+              "id": "BA3Ow2FDskXptypN8dS168YZ"
             }
           ],
           "links": {
@@ -1287,10 +1757,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:07 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:27 GMT
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA44bWaaIniLchxjzmtifgxW/verifications
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA3Ow2FDskXptypN8dS168YZ/verifications
     body:
       encoding: UTF-8
       string: "{}"
@@ -1311,13 +1781,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:56:15 GMT
+      - Tue, 21 Oct 2014 23:39:38 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM87f95e04594b11e4b1cd06429171ffad
+      - OHM7dc818be597b11e484b40230f00c9248
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
+      - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -1325,7 +1795,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '599'
       Connection:
@@ -1338,16 +1808,16 @@ http_interactions:
             {
               "verification_status": "pending",
               "links": {
-                "bank_account": "BA44bWaaIniLchxjzmtifgxW"
+                "bank_account": "BA3Ow2FDskXptypN8dS168YZ"
               },
-              "href": "/verifications/BZ4hZRrwh8AID26yfaEdib3v",
-              "created_at": "2014-10-21T17:56:15.036858Z",
+              "href": "/verifications/BZ42MWsi5SNmYKHFp3DWRLqw",
+              "created_at": "2014-10-21T23:39:37.364288Z",
               "attempts_remaining": 3,
-              "updated_at": "2014-10-21T17:56:15.311304Z",
+              "updated_at": "2014-10-21T23:39:37.735543Z",
               "deposit_status": "succeeded",
               "attempts": 0,
               "meta": {},
-              "id": "BZ4hZRrwh8AID26yfaEdib3v"
+              "id": "BZ42MWsi5SNmYKHFp3DWRLqw"
             }
           ],
           "links": {
@@ -1355,10 +1825,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:18 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:41 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA44bWaaIniLchxjzmtifgxW
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA3Ow2FDskXptypN8dS168YZ
     body:
       encoding: US-ASCII
       string: ''
@@ -1379,13 +1849,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:56:18 GMT
+      - Tue, 21 Oct 2014 23:39:38 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM8f236a76594b11e4b1cd06429171ffad
+      - OHM85ae3dce597b11e4a3de02b12035401b
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
+      - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -1393,9 +1863,9 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
-      - '521'
+      - '523'
       Connection:
       - keep-alive
     body:
@@ -1410,13 +1880,13 @@ http_interactions:
               "name": "Johann Bernoulli",
               "links": {
                 "customer": null,
-                "bank_account_verification": "BZ4hZRrwh8AID26yfaEdib3v"
+                "bank_account_verification": "BZ42MWsi5SNmYKHFp3DWRLqw"
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:56:02.762109Z",
+              "created_at": "2014-10-21T23:39:24.675278Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:56:02.762111Z",
-              "href": "/bank_accounts/BA44bWaaIniLchxjzmtifgxW",
+              "updated_at": "2014-10-21T23:39:24.675281Z",
+              "href": "/bank_accounts/BA3Ow2FDskXptypN8dS168YZ",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -1428,7 +1898,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA44bWaaIniLchxjzmtifgxW"
+              "id": "BA3Ow2FDskXptypN8dS168YZ"
             }
           ],
           "links": {
@@ -1440,10 +1910,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:21 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:41 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ4hZRrwh8AID26yfaEdib3v
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ42MWsi5SNmYKHFp3DWRLqw
     body:
       encoding: US-ASCII
       string: ''
@@ -1464,11 +1934,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:56:19 GMT
+      - Tue, 21 Oct 2014 23:39:38 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM8f90771a594b11e4b1cd06429171ffad
+      - OHM85da31cc597b11e4910006429171ffad
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
@@ -1478,7 +1948,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '599'
       Connection:
@@ -1491,16 +1961,16 @@ http_interactions:
             {
               "verification_status": "pending",
               "links": {
-                "bank_account": "BA44bWaaIniLchxjzmtifgxW"
+                "bank_account": "BA3Ow2FDskXptypN8dS168YZ"
               },
-              "href": "/verifications/BZ4hZRrwh8AID26yfaEdib3v",
-              "created_at": "2014-10-21T17:56:15.036858Z",
+              "href": "/verifications/BZ42MWsi5SNmYKHFp3DWRLqw",
+              "created_at": "2014-10-21T23:39:37.364288Z",
               "attempts_remaining": 3,
-              "updated_at": "2014-10-21T17:56:15.311304Z",
+              "updated_at": "2014-10-21T23:39:37.735543Z",
               "deposit_status": "succeeded",
               "attempts": 0,
               "meta": {},
-              "id": "BZ4hZRrwh8AID26yfaEdib3v"
+              "id": "BZ42MWsi5SNmYKHFp3DWRLqw"
             }
           ],
           "links": {
@@ -1508,13 +1978,13 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:21 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:41 GMT
 - request:
     method: put
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ4hZRrwh8AID26yfaEdib3v
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ42MWsi5SNmYKHFp3DWRLqw
     body:
       encoding: UTF-8
-      string: '{"verification_status":"pending","links":{"bank_account":"BA44bWaaIniLchxjzmtifgxW"},"created_at":"2014-10-21T17:56:15.036858Z","attempts_remaining":3,"updated_at":"2014-10-21T17:56:15.311304Z","deposit_status":"succeeded","attempts":0,"meta":{},"id":"BZ4hZRrwh8AID26yfaEdib3v","amount_1":"1","amount_2":"1"}'
+      string: '{"verification_status":"pending","links":{"bank_account":"BA3Ow2FDskXptypN8dS168YZ"},"created_at":"2014-10-21T23:39:37.364288Z","attempts_remaining":3,"updated_at":"2014-10-21T23:39:37.735543Z","deposit_status":"succeeded","attempts":0,"meta":{},"id":"BZ42MWsi5SNmYKHFp3DWRLqw","amount_1":"1","amount_2":"1"}'
     headers:
       User-Agent:
       - balanced-ruby/1.1.1
@@ -1532,11 +2002,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:56:20 GMT
+      - Tue, 21 Oct 2014 23:39:39 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM9002ba96594b11e4b7f006429171ffad
+      - OHM86074c70597b11e495990230f00c9248
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
@@ -1546,7 +2016,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '601'
       Connection:
@@ -1559,16 +2029,16 @@ http_interactions:
             {
               "verification_status": "succeeded",
               "links": {
-                "bank_account": "BA44bWaaIniLchxjzmtifgxW"
+                "bank_account": "BA3Ow2FDskXptypN8dS168YZ"
               },
-              "href": "/verifications/BZ4hZRrwh8AID26yfaEdib3v",
-              "created_at": "2014-10-21T17:56:15.036858Z",
+              "href": "/verifications/BZ42MWsi5SNmYKHFp3DWRLqw",
+              "created_at": "2014-10-21T23:39:37.364288Z",
               "attempts_remaining": 2,
-              "updated_at": "2014-10-21T17:56:20.177527Z",
+              "updated_at": "2014-10-21T23:39:39.282944Z",
               "deposit_status": "succeeded",
               "attempts": 1,
               "meta": {},
-              "id": "BZ4hZRrwh8AID26yfaEdib3v"
+              "id": "BZ42MWsi5SNmYKHFp3DWRLqw"
             }
           ],
           "links": {
@@ -1576,106 +2046,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:22 GMT
-- request:
-    method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts
-    body:
-      encoding: UTF-8
-      string: '{"account_number":"9900000002","account_type":"checking","name":"Johann
-        Bernoulli","routing_number":"021000021"}'
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Access-Control-Allow-Headers:
-      - Content-Type
-      Access-Control-Allow-Methods:
-      - POST, OPTIONS
-      Access-Control-Allow-Origin:
-      - "*"
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 21 Oct 2014 17:56:21 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM90e97c6a594b11e4803902a1fe53e539
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.30
-      X-Midlr-Version:
-      - '2'
-      X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKBQdZUVEPAwJRWFoCBgZRXB0WAVBQT0ISUwtbWglRUFdTWlICWAdRVRQbQQACVEBVOQ==
-      Content-Length:
-      - '1291'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_accounts": [
-            {
-              "routing_number": "021000021",
-              "bank_name": "JPMORGAN CHASE BANK",
-              "account_type": "checking",
-              "name": "Johann Bernoulli",
-              "links": {
-                "customer": null,
-                "bank_account_verification": null
-              },
-              "can_credit": true,
-              "created_at": "2014-10-21T17:56:21.948045Z",
-              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:56:21.948048Z",
-              "href": "/bank_accounts/BA4pLMUpm6JfRAtvxsS6mtna",
-              "meta": {},
-              "account_number": "xxxxxx0002",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": false,
-              "id": "BA4pLMUpm6JfRAtvxsS6mtna"
-            }
-          ],
-          "links": {
-            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
-            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications",
-            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
-            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
-            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:24 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:41 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA4pLMUpm6JfRAtvxsS6mtna
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA3xaHQgERlAHXQVzg99G9A4
     body:
       encoding: US-ASCII
       string: ''
@@ -1696,13 +2070,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:56:23 GMT
+      - Tue, 21 Oct 2014 23:39:39 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM91d7c0d2594b11e4b7f006429171ffad
+      - OHM8636dc06597b11e4b84f0230f00c9248
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
+      - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -1710,9 +2084,9 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
-      - '497'
+      - '524'
       Connection:
       - keep-alive
     body:
@@ -1727,387 +2101,13 @@ http_interactions:
               "name": "Johann Bernoulli",
               "links": {
                 "customer": null,
-                "bank_account_verification": null
+                "bank_account_verification": "BZ3LMS7cPB81h9m3PF0EeAg5"
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:56:21.948045Z",
+              "created_at": "2014-10-21T23:39:09.254919Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:56:21.948048Z",
-              "href": "/bank_accounts/BA4pLMUpm6JfRAtvxsS6mtna",
-              "meta": {},
-              "account_number": "xxxxxx0002",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": false,
-              "id": "BA4pLMUpm6JfRAtvxsS6mtna"
-            }
-          ],
-          "links": {
-            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
-            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications",
-            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
-            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
-            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:25 GMT
-- request:
-    method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA4pLMUpm6JfRAtvxsS6mtna/verifications
-    body:
-      encoding: UTF-8
-      string: "{}"
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 21 Oct 2014 17:56:33 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM92443316594b11e4a0ee06429171ffad
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.30
-      Content-Length:
-      - '599'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_account_verifications": [
-            {
-              "verification_status": "pending",
-              "links": {
-                "bank_account": "BA4pLMUpm6JfRAtvxsS6mtna"
-              },
-              "href": "/verifications/BZ4BqolzV2GcxwEmlQhjs8zS",
-              "created_at": "2014-10-21T17:56:32.308484Z",
-              "attempts_remaining": 3,
-              "updated_at": "2014-10-21T17:56:32.588546Z",
-              "deposit_status": "succeeded",
-              "attempts": 0,
-              "meta": {},
-              "id": "BZ4BqolzV2GcxwEmlQhjs8zS"
-            }
-          ],
-          "links": {
-            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:35 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA4pLMUpm6JfRAtvxsS6mtna
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 21 Oct 2014 17:56:33 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM9821d8c4594b11e4884a0230f00c9248
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.30
-      Content-Length:
-      - '522'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_accounts": [
-            {
-              "routing_number": "021000021",
-              "bank_name": "JPMORGAN CHASE BANK",
-              "account_type": "checking",
-              "name": "Johann Bernoulli",
-              "links": {
-                "customer": null,
-                "bank_account_verification": "BZ4BqolzV2GcxwEmlQhjs8zS"
-              },
-              "can_credit": true,
-              "created_at": "2014-10-21T17:56:21.948045Z",
-              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:56:21.948048Z",
-              "href": "/bank_accounts/BA4pLMUpm6JfRAtvxsS6mtna",
-              "meta": {},
-              "account_number": "xxxxxx0002",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": false,
-              "id": "BA4pLMUpm6JfRAtvxsS6mtna"
-            }
-          ],
-          "links": {
-            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
-            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications",
-            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
-            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
-            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:36 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ4BqolzV2GcxwEmlQhjs8zS
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 21 Oct 2014 17:56:34 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM98800192594b11e4b1cd06429171ffad
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.30
-      Content-Length:
-      - '599'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_account_verifications": [
-            {
-              "verification_status": "pending",
-              "links": {
-                "bank_account": "BA4pLMUpm6JfRAtvxsS6mtna"
-              },
-              "href": "/verifications/BZ4BqolzV2GcxwEmlQhjs8zS",
-              "created_at": "2014-10-21T17:56:32.308484Z",
-              "attempts_remaining": 3,
-              "updated_at": "2014-10-21T17:56:32.588546Z",
-              "deposit_status": "succeeded",
-              "attempts": 0,
-              "meta": {},
-              "id": "BZ4BqolzV2GcxwEmlQhjs8zS"
-            }
-          ],
-          "links": {
-            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:36 GMT
-- request:
-    method: put
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ4BqolzV2GcxwEmlQhjs8zS
-    body:
-      encoding: UTF-8
-      string: '{"verification_status":"pending","links":{"bank_account":"BA4pLMUpm6JfRAtvxsS6mtna"},"created_at":"2014-10-21T17:56:32.308484Z","attempts_remaining":3,"updated_at":"2014-10-21T17:56:32.588546Z","deposit_status":"succeeded","attempts":0,"meta":{},"id":"BZ4BqolzV2GcxwEmlQhjs8zS","amount_1":"1","amount_2":"1"}'
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 21 Oct 2014 17:56:35 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM98d3e8f2594b11e4990f0230f00c9248
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.30
-      Content-Length:
-      - '601'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_account_verifications": [
-            {
-              "verification_status": "succeeded",
-              "links": {
-                "bank_account": "BA4pLMUpm6JfRAtvxsS6mtna"
-              },
-              "href": "/verifications/BZ4BqolzV2GcxwEmlQhjs8zS",
-              "created_at": "2014-10-21T17:56:32.308484Z",
-              "attempts_remaining": 2,
-              "updated_at": "2014-10-21T17:56:34.975582Z",
-              "deposit_status": "succeeded",
-              "attempts": 1,
-              "meta": {},
-              "id": "BZ4BqolzV2GcxwEmlQhjs8zS"
-            }
-          ],
-          "links": {
-            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:37 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA44bWaaIniLchxjzmtifgxW
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 21 Oct 2014 17:56:36 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM99e3c8e8594b11e4b7f006429171ffad
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.30
-      Content-Length:
-      - '521'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_accounts": [
-            {
-              "routing_number": "021000021",
-              "bank_name": "JPMORGAN CHASE BANK",
-              "account_type": "checking",
-              "name": "Johann Bernoulli",
-              "links": {
-                "customer": null,
-                "bank_account_verification": "BZ4hZRrwh8AID26yfaEdib3v"
-              },
-              "can_credit": true,
-              "created_at": "2014-10-21T17:56:02.762109Z",
-              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:56:20.176531Z",
-              "href": "/bank_accounts/BA44bWaaIniLchxjzmtifgxW",
+              "updated_at": "2014-10-21T23:39:24.242421Z",
+              "href": "/bank_accounts/BA3xaHQgERlAHXQVzg99G9A4",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -2119,7 +2119,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": true,
-              "id": "BA44bWaaIniLchxjzmtifgxW"
+              "id": "BA3xaHQgERlAHXQVzg99G9A4"
             }
           ],
           "links": {
@@ -2131,10 +2131,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:39 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:42 GMT
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA44bWaaIniLchxjzmtifgxW/debits
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA3xaHQgERlAHXQVzg99G9A4/debits
     body:
       encoding: UTF-8
       string: '{"amount":1,"appears_on_statement_as":"Epicodus tuition"}'
@@ -2155,11 +2155,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:56:38 GMT
+      - Tue, 21 Oct 2014 23:39:40 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM9a8a6a90594b11e4a09f02b12035401b
+      - OHM8660fbd0597b11e4bc0006429171ffad
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
@@ -2169,7 +2169,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '1059'
       Connection:
@@ -2184,22 +2184,22 @@ http_interactions:
               "description": null,
               "links": {
                 "customer": null,
-                "source": "BA44bWaaIniLchxjzmtifgxW",
+                "source": "BA3xaHQgERlAHXQVzg99G9A4",
                 "card_hold": null,
                 "order": null,
                 "dispute": null
               },
-              "updated_at": "2014-10-21T17:56:38.057350Z",
-              "created_at": "2014-10-21T17:56:37.861979Z",
-              "transaction_number": "WUDZ-M4B-N8W4",
+              "updated_at": "2014-10-21T23:39:40.079934Z",
+              "created_at": "2014-10-21T23:39:39.871627Z",
+              "transaction_number": "WDBP-T9L-0KU7",
               "failure_reason": null,
               "currency": "USD",
               "amount": 1,
               "failure_reason_code": null,
               "meta": {},
-              "href": "/debits/WD4HFp89upKbaCwhK4WkDelL",
+              "href": "/debits/WD45BINZ9b1CoK2egDvSMAoB",
               "appears_on_statement_as": "BAL*Epicodus tuition",
-              "id": "WD4HFp89upKbaCwhK4WkDelL"
+              "id": "WD45BINZ9b1CoK2egDvSMAoB"
             }
           ],
           "links": {
@@ -2213,7 +2213,7 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:40 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:42 GMT
 - request:
     method: post
     uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts
@@ -2244,13 +2244,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:56:40 GMT
+      - Tue, 21 Oct 2014 23:39:40 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM9c0109f6594b11e48a6802a1fe53e539
+      - OHM86b3812a597b11e4877902a1fe52a36c
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
+      - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -2258,11 +2258,11 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       X-Midlr-Version:
       - '2'
       X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKBQ5QV1QBAwhQVlUACQRUVAIaE1BUVU4QQFwHD11QVAtWXwRXVAdXVwUVTUYFWV9DATw=
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKBQJWUVUBAwFWVVcGAABXXR0WAVBQT0ISUQ4ADFxQU1FVAVgDWABaXRQbQQACVEBVOQ==
       Content-Length:
       - '1291'
       Connection:
@@ -2282,10 +2282,10 @@ http_interactions:
                 "bank_account_verification": null
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:56:40.641355Z",
+              "created_at": "2014-10-21T23:39:40.689615Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:56:40.641358Z",
-              "href": "/bank_accounts/BA4KNmoQtGMkXOuzAY1J4g2Q",
+              "updated_at": "2014-10-21T23:39:40.689618Z",
+              "href": "/bank_accounts/BA46wDAp52WzRzDGdBbdv48d",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -2297,7 +2297,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA4KNmoQtGMkXOuzAY1J4g2Q"
+              "id": "BA46wDAp52WzRzDGdBbdv48d"
             }
           ],
           "links": {
@@ -2309,10 +2309,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:43 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:43 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA4KNmoQtGMkXOuzAY1J4g2Q
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA46wDAp52WzRzDGdBbdv48d
     body:
       encoding: US-ASCII
       string: ''
@@ -2333,11 +2333,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:56:41 GMT
+      - Tue, 21 Oct 2014 23:39:41 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM9cefaa0c594b11e48f790230f00c9248
+      - OHM871414ea597b11e4b84f0230f00c9248
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
@@ -2347,7 +2347,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '499'
       Connection:
@@ -2367,10 +2367,10 @@ http_interactions:
                 "bank_account_verification": null
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:56:40.641355Z",
+              "created_at": "2014-10-21T23:39:40.689615Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:56:40.641358Z",
-              "href": "/bank_accounts/BA4KNmoQtGMkXOuzAY1J4g2Q",
+              "updated_at": "2014-10-21T23:39:40.689618Z",
+              "href": "/bank_accounts/BA46wDAp52WzRzDGdBbdv48d",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -2382,7 +2382,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA4KNmoQtGMkXOuzAY1J4g2Q"
+              "id": "BA46wDAp52WzRzDGdBbdv48d"
             }
           ],
           "links": {
@@ -2394,10 +2394,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:44 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:43 GMT
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA4KNmoQtGMkXOuzAY1J4g2Q/verifications
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA46wDAp52WzRzDGdBbdv48d/verifications
     body:
       encoding: UTF-8
       string: "{}"
@@ -2418,13 +2418,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:56:52 GMT
+      - Tue, 21 Oct 2014 23:39:54 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM9d6ccf3c594b11e4990f0230f00c9248
+      - OHM874011e4597b11e4910006429171ffad
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
+      - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -2432,7 +2432,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '599'
       Connection:
@@ -2445,16 +2445,16 @@ http_interactions:
             {
               "verification_status": "pending",
               "links": {
-                "bank_account": "BA4KNmoQtGMkXOuzAY1J4g2Q"
+                "bank_account": "BA46wDAp52WzRzDGdBbdv48d"
               },
-              "href": "/verifications/BZ4XK9myZZmRUpiXQwah5ra0",
-              "created_at": "2014-10-21T17:56:52.152205Z",
+              "href": "/verifications/BZ4lfj4vMCbPece1z1WGmnXL",
+              "created_at": "2014-10-21T23:39:53.774167Z",
               "attempts_remaining": 3,
-              "updated_at": "2014-10-21T17:56:52.537123Z",
+              "updated_at": "2014-10-21T23:39:54.140802Z",
               "deposit_status": "succeeded",
               "attempts": 0,
               "meta": {},
-              "id": "BZ4XK9myZZmRUpiXQwah5ra0"
+              "id": "BZ4lfj4vMCbPece1z1WGmnXL"
             }
           ],
           "links": {
@@ -2462,10 +2462,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:55 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:57 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA4KNmoQtGMkXOuzAY1J4g2Q
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA46wDAp52WzRzDGdBbdv48d
     body:
       encoding: US-ASCII
       string: ''
@@ -2486,13 +2486,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:56:53 GMT
+      - Tue, 21 Oct 2014 23:39:55 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMa427bcba594b11e4b7f006429171ffad
+      - OHM8f8e055e597b11e49ead06429171ffad
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
+      - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -2500,9 +2500,9 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
-      - '523'
+      - '522'
       Connection:
       - keep-alive
     body:
@@ -2517,13 +2517,13 @@ http_interactions:
               "name": "Johann Bernoulli",
               "links": {
                 "customer": null,
-                "bank_account_verification": "BZ4XK9myZZmRUpiXQwah5ra0"
+                "bank_account_verification": "BZ4lfj4vMCbPece1z1WGmnXL"
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:56:40.641355Z",
+              "created_at": "2014-10-21T23:39:40.689615Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:56:40.641358Z",
-              "href": "/bank_accounts/BA4KNmoQtGMkXOuzAY1J4g2Q",
+              "updated_at": "2014-10-21T23:39:40.689618Z",
+              "href": "/bank_accounts/BA46wDAp52WzRzDGdBbdv48d",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -2535,7 +2535,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA4KNmoQtGMkXOuzAY1J4g2Q"
+              "id": "BA46wDAp52WzRzDGdBbdv48d"
             }
           ],
           "links": {
@@ -2547,10 +2547,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:56 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:57 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ4XK9myZZmRUpiXQwah5ra0
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ4lfj4vMCbPece1z1WGmnXL
     body:
       encoding: US-ASCII
       string: ''
@@ -2571,11 +2571,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:56:55 GMT
+      - Tue, 21 Oct 2014 23:39:55 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMa51eb286594b11e4a0ee06429171ffad
+      - OHM8fba51f4597b11e4bc0006429171ffad
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
@@ -2585,7 +2585,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '599'
       Connection:
@@ -2598,16 +2598,16 @@ http_interactions:
             {
               "verification_status": "pending",
               "links": {
-                "bank_account": "BA4KNmoQtGMkXOuzAY1J4g2Q"
+                "bank_account": "BA46wDAp52WzRzDGdBbdv48d"
               },
-              "href": "/verifications/BZ4XK9myZZmRUpiXQwah5ra0",
-              "created_at": "2014-10-21T17:56:52.152205Z",
+              "href": "/verifications/BZ4lfj4vMCbPece1z1WGmnXL",
+              "created_at": "2014-10-21T23:39:53.774167Z",
               "attempts_remaining": 3,
-              "updated_at": "2014-10-21T17:56:52.537123Z",
+              "updated_at": "2014-10-21T23:39:54.140802Z",
               "deposit_status": "succeeded",
               "attempts": 0,
               "meta": {},
-              "id": "BZ4XK9myZZmRUpiXQwah5ra0"
+              "id": "BZ4lfj4vMCbPece1z1WGmnXL"
             }
           ],
           "links": {
@@ -2615,13 +2615,13 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:58 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:58 GMT
 - request:
     method: put
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ4XK9myZZmRUpiXQwah5ra0
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ4lfj4vMCbPece1z1WGmnXL
     body:
       encoding: UTF-8
-      string: '{"verification_status":"pending","links":{"bank_account":"BA4KNmoQtGMkXOuzAY1J4g2Q"},"created_at":"2014-10-21T17:56:52.152205Z","attempts_remaining":3,"updated_at":"2014-10-21T17:56:52.537123Z","deposit_status":"succeeded","attempts":0,"meta":{},"id":"BZ4XK9myZZmRUpiXQwah5ra0","amount_1":"1","amount_2":"1"}'
+      string: '{"verification_status":"pending","links":{"bank_account":"BA46wDAp52WzRzDGdBbdv48d"},"created_at":"2014-10-21T23:39:53.774167Z","attempts_remaining":3,"updated_at":"2014-10-21T23:39:54.140802Z","deposit_status":"succeeded","attempts":0,"meta":{},"id":"BZ4lfj4vMCbPece1z1WGmnXL","amount_1":"1","amount_2":"1"}'
     headers:
       User-Agent:
       - balanced-ruby/1.1.1
@@ -2639,11 +2639,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:56:56 GMT
+      - Tue, 21 Oct 2014 23:39:56 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMa5823ac2594b11e48f790230f00c9248
+      - OHM8ff7d286597b11e49ead06429171ffad
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
@@ -2653,7 +2653,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '601'
       Connection:
@@ -2666,16 +2666,16 @@ http_interactions:
             {
               "verification_status": "succeeded",
               "links": {
-                "bank_account": "BA4KNmoQtGMkXOuzAY1J4g2Q"
+                "bank_account": "BA46wDAp52WzRzDGdBbdv48d"
               },
-              "href": "/verifications/BZ4XK9myZZmRUpiXQwah5ra0",
-              "created_at": "2014-10-21T17:56:52.152205Z",
+              "href": "/verifications/BZ4lfj4vMCbPece1z1WGmnXL",
+              "created_at": "2014-10-21T23:39:53.774167Z",
               "attempts_remaining": 2,
-              "updated_at": "2014-10-21T17:56:56.266551Z",
+              "updated_at": "2014-10-21T23:39:55.971104Z",
               "deposit_status": "succeeded",
               "attempts": 1,
               "meta": {},
-              "id": "BZ4XK9myZZmRUpiXQwah5ra0"
+              "id": "BZ4lfj4vMCbPece1z1WGmnXL"
             }
           ],
           "links": {
@@ -2683,7 +2683,7 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:56:58 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:58 GMT
 - request:
     method: post
     uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts
@@ -2714,13 +2714,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:56:57 GMT
+      - Tue, 21 Oct 2014 23:39:56 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMa5e76cc6594b11e4a96802a1fe53e539
+      - OHM9027470a597b11e4952f02a1fe52a36c
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
+      - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -2728,11 +2728,11 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       X-Midlr-Version:
       - '2'
       X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKBQJQUlsPAgVdVlAOAQdVXR0WAVBQT0ISUAoADw5WVgVXW1dVVVVaVRQbQQACVEBVOQ==
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKBA9XUlsJCwVTU1sOCQdSUx0WAVBQT0ISBA4HAAFXVlAACwQCAgNRXBQbQQACVEBVOQ==
       Content-Length:
       - '1291'
       Connection:
@@ -2752,10 +2752,10 @@ http_interactions:
                 "bank_account_verification": null
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:56:57.212742Z",
+              "created_at": "2014-10-21T23:39:56.484047Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:56:57.212745Z",
-              "href": "/bank_accounts/BA53qVKwp5qMCfgxa9npDBde",
+              "updated_at": "2014-10-21T23:39:56.484050Z",
+              "href": "/bank_accounts/BA4oi9B66IPnE7CqSJd9WZJb",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -2767,7 +2767,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA53qVKwp5qMCfgxa9npDBde"
+              "id": "BA4oi9B66IPnE7CqSJd9WZJb"
             }
           ],
           "links": {
@@ -2779,10 +2779,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:00 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:59 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA53qVKwp5qMCfgxa9npDBde
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA4oi9B66IPnE7CqSJd9WZJb
     body:
       encoding: US-ASCII
       string: ''
@@ -2803,11 +2803,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:56:58 GMT
+      - Tue, 21 Oct 2014 23:39:57 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMa6a3d974594b11e4990f0230f00c9248
+      - OHM90a78988597b11e4910006429171ffad
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
@@ -2817,7 +2817,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '500'
       Connection:
@@ -2837,10 +2837,10 @@ http_interactions:
                 "bank_account_verification": null
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:56:57.212742Z",
+              "created_at": "2014-10-21T23:39:56.484047Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:56:57.212745Z",
-              "href": "/bank_accounts/BA53qVKwp5qMCfgxa9npDBde",
+              "updated_at": "2014-10-21T23:39:56.484050Z",
+              "href": "/bank_accounts/BA4oi9B66IPnE7CqSJd9WZJb",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -2852,7 +2852,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA53qVKwp5qMCfgxa9npDBde"
+              "id": "BA4oi9B66IPnE7CqSJd9WZJb"
             }
           ],
           "links": {
@@ -2864,10 +2864,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:00 GMT
+  recorded_at: Tue, 21 Oct 2014 23:39:59 GMT
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA53qVKwp5qMCfgxa9npDBde/verifications
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA4oi9B66IPnE7CqSJd9WZJb/verifications
     body:
       encoding: UTF-8
       string: "{}"
@@ -2888,13 +2888,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:57:11 GMT
+      - Tue, 21 Oct 2014 23:40:08 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMa6ff590c594b11e4b1cd06429171ffad
+      - OHM90ded8de597b11e49ead06429171ffad
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
+      - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -2902,7 +2902,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '599'
       Connection:
@@ -2915,16 +2915,16 @@ http_interactions:
             {
               "verification_status": "pending",
               "links": {
-                "bank_account": "BA53qVKwp5qMCfgxa9npDBde"
+                "bank_account": "BA4oi9B66IPnE7CqSJd9WZJb"
               },
-              "href": "/verifications/BZ5hM1XTpvZj6LZWoxgXolMx",
-              "created_at": "2014-10-21T17:57:09.963365Z",
+              "href": "/verifications/BZ4AoOFSbrxw6HMMs78v3VoQ",
+              "created_at": "2014-10-21T23:40:07.247989Z",
               "attempts_remaining": 3,
-              "updated_at": "2014-10-21T17:57:10.726491Z",
+              "updated_at": "2014-10-21T23:40:07.664475Z",
               "deposit_status": "succeeded",
               "attempts": 0,
               "meta": {},
-              "id": "BZ5hM1XTpvZj6LZWoxgXolMx"
+              "id": "BZ4AoOFSbrxw6HMMs78v3VoQ"
             }
           ],
           "links": {
@@ -2932,10 +2932,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:14 GMT
+  recorded_at: Tue, 21 Oct 2014 23:40:10 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA53qVKwp5qMCfgxa9npDBde
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA4oi9B66IPnE7CqSJd9WZJb
     body:
       encoding: US-ASCII
       string: ''
@@ -2956,11 +2956,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:57:14 GMT
+      - Tue, 21 Oct 2014 23:40:08 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMb022dac2594b11e4990f0230f00c9248
+      - OHM9776fac8597b11e4bc6302b12035401b
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
@@ -2970,228 +2970,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
-      Content-Length:
-      - '525'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_accounts": [
-            {
-              "routing_number": "021000021",
-              "bank_name": "JPMORGAN CHASE BANK",
-              "account_type": "checking",
-              "name": "Johann Bernoulli",
-              "links": {
-                "customer": null,
-                "bank_account_verification": "BZ5hM1XTpvZj6LZWoxgXolMx"
-              },
-              "can_credit": true,
-              "created_at": "2014-10-21T17:56:57.212742Z",
-              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:56:57.212745Z",
-              "href": "/bank_accounts/BA53qVKwp5qMCfgxa9npDBde",
-              "meta": {},
-              "account_number": "xxxxxx0002",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": false,
-              "id": "BA53qVKwp5qMCfgxa9npDBde"
-            }
-          ],
-          "links": {
-            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
-            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications",
-            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
-            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
-            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:16 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ5hM1XTpvZj6LZWoxgXolMx
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 21 Oct 2014 17:57:14 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMb07e61da594b11e4bdff02b12035401b
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.30
-      Content-Length:
-      - '599'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_account_verifications": [
-            {
-              "verification_status": "pending",
-              "links": {
-                "bank_account": "BA53qVKwp5qMCfgxa9npDBde"
-              },
-              "href": "/verifications/BZ5hM1XTpvZj6LZWoxgXolMx",
-              "created_at": "2014-10-21T17:57:09.963365Z",
-              "attempts_remaining": 3,
-              "updated_at": "2014-10-21T17:57:10.726491Z",
-              "deposit_status": "succeeded",
-              "attempts": 0,
-              "meta": {},
-              "id": "BZ5hM1XTpvZj6LZWoxgXolMx"
-            }
-          ],
-          "links": {
-            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:17 GMT
-- request:
-    method: put
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ5hM1XTpvZj6LZWoxgXolMx
-    body:
-      encoding: UTF-8
-      string: '{"verification_status":"pending","links":{"bank_account":"BA53qVKwp5qMCfgxa9npDBde"},"created_at":"2014-10-21T17:57:09.963365Z","attempts_remaining":3,"updated_at":"2014-10-21T17:57:10.726491Z","deposit_status":"succeeded","attempts":0,"meta":{},"id":"BZ5hM1XTpvZj6LZWoxgXolMx","amount_1":"1","amount_2":"1"}'
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 21 Oct 2014 17:57:15 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMb0d42d4a594b11e4884a0230f00c9248
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.30
-      Content-Length:
-      - '601'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_account_verifications": [
-            {
-              "verification_status": "succeeded",
-              "links": {
-                "bank_account": "BA53qVKwp5qMCfgxa9npDBde"
-              },
-              "href": "/verifications/BZ5hM1XTpvZj6LZWoxgXolMx",
-              "created_at": "2014-10-21T17:57:09.963365Z",
-              "attempts_remaining": 2,
-              "updated_at": "2014-10-21T17:57:15.243864Z",
-              "deposit_status": "succeeded",
-              "attempts": 1,
-              "meta": {},
-              "id": "BZ5hM1XTpvZj6LZWoxgXolMx"
-            }
-          ],
-          "links": {
-            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:17 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA4KNmoQtGMkXOuzAY1J4g2Q
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 21 Oct 2014 17:57:15 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMb1311f82594b11e4b1cd06429171ffad
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '523'
       Connection:
@@ -3208,13 +2987,13 @@ http_interactions:
               "name": "Johann Bernoulli",
               "links": {
                 "customer": null,
-                "bank_account_verification": "BZ4XK9myZZmRUpiXQwah5ra0"
+                "bank_account_verification": "BZ4AoOFSbrxw6HMMs78v3VoQ"
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:56:40.641355Z",
+              "created_at": "2014-10-21T23:39:56.484047Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:56:56.264660Z",
-              "href": "/bank_accounts/BA4KNmoQtGMkXOuzAY1J4g2Q",
+              "updated_at": "2014-10-21T23:39:56.484050Z",
+              "href": "/bank_accounts/BA4oi9B66IPnE7CqSJd9WZJb",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -3225,8 +3004,8 @@ http_interactions:
                 "postal_code": null,
                 "country_code": null
               },
-              "can_debit": true,
-              "id": "BA4KNmoQtGMkXOuzAY1J4g2Q"
+              "can_debit": false,
+              "id": "BA4oi9B66IPnE7CqSJd9WZJb"
             }
           ],
           "links": {
@@ -3238,10 +3017,231 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:18 GMT
+  recorded_at: Tue, 21 Oct 2014 23:40:11 GMT
+- request:
+    method: get
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ4AoOFSbrxw6HMMs78v3VoQ
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 21 Oct 2014 23:40:08 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHM97a318ba597b11e4bc6302b12035401b
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-5-17
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.31
+      Content-Length:
+      - '599'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_account_verifications": [
+            {
+              "verification_status": "pending",
+              "links": {
+                "bank_account": "BA4oi9B66IPnE7CqSJd9WZJb"
+              },
+              "href": "/verifications/BZ4AoOFSbrxw6HMMs78v3VoQ",
+              "created_at": "2014-10-21T23:40:07.247989Z",
+              "attempts_remaining": 3,
+              "updated_at": "2014-10-21T23:40:07.664475Z",
+              "deposit_status": "succeeded",
+              "attempts": 0,
+              "meta": {},
+              "id": "BZ4AoOFSbrxw6HMMs78v3VoQ"
+            }
+          ],
+          "links": {
+            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 21 Oct 2014 23:40:11 GMT
+- request:
+    method: put
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ4AoOFSbrxw6HMMs78v3VoQ
+    body:
+      encoding: UTF-8
+      string: '{"verification_status":"pending","links":{"bank_account":"BA4oi9B66IPnE7CqSJd9WZJb"},"created_at":"2014-10-21T23:40:07.247989Z","attempts_remaining":3,"updated_at":"2014-10-21T23:40:07.664475Z","deposit_status":"succeeded","attempts":0,"meta":{},"id":"BZ4AoOFSbrxw6HMMs78v3VoQ","amount_1":"1","amount_2":"1"}'
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 21 Oct 2014 23:40:09 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHM97cd1de0597b11e4bd6f02b12035401b
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-4-8
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.31
+      Content-Length:
+      - '601'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_account_verifications": [
+            {
+              "verification_status": "succeeded",
+              "links": {
+                "bank_account": "BA4oi9B66IPnE7CqSJd9WZJb"
+              },
+              "href": "/verifications/BZ4AoOFSbrxw6HMMs78v3VoQ",
+              "created_at": "2014-10-21T23:40:07.247989Z",
+              "attempts_remaining": 2,
+              "updated_at": "2014-10-21T23:40:09.162500Z",
+              "deposit_status": "succeeded",
+              "attempts": 1,
+              "meta": {},
+              "id": "BZ4AoOFSbrxw6HMMs78v3VoQ"
+            }
+          ],
+          "links": {
+            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 21 Oct 2014 23:40:11 GMT
+- request:
+    method: get
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA46wDAp52WzRzDGdBbdv48d
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 21 Oct 2014 23:40:09 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHM981041c4597b11e4bc0006429171ffad
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-4-8
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.31
+      Content-Length:
+      - '524'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_accounts": [
+            {
+              "routing_number": "021000021",
+              "bank_name": "JPMORGAN CHASE BANK",
+              "account_type": "checking",
+              "name": "Johann Bernoulli",
+              "links": {
+                "customer": null,
+                "bank_account_verification": "BZ4lfj4vMCbPece1z1WGmnXL"
+              },
+              "can_credit": true,
+              "created_at": "2014-10-21T23:39:40.689615Z",
+              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
+              "updated_at": "2014-10-21T23:39:55.969206Z",
+              "href": "/bank_accounts/BA46wDAp52WzRzDGdBbdv48d",
+              "meta": {},
+              "account_number": "xxxxxx0002",
+              "address": {
+                "city": null,
+                "line2": null,
+                "line1": null,
+                "state": null,
+                "postal_code": null,
+                "country_code": null
+              },
+              "can_debit": true,
+              "id": "BA46wDAp52WzRzDGdBbdv48d"
+            }
+          ],
+          "links": {
+            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
+            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications",
+            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
+            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
+            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 21 Oct 2014 23:40:12 GMT
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA4KNmoQtGMkXOuzAY1J4g2Q/debits
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA46wDAp52WzRzDGdBbdv48d/debits
     body:
       encoding: UTF-8
       string: '{"amount":1,"appears_on_statement_as":"Epicodus tuition"}'
@@ -3262,11 +3262,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:57:17 GMT
+      - Tue, 21 Oct 2014 23:40:10 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMb1bf5658594b11e4b03b02b12035401b
+      - OHM983e765c597b11e4bd6f02b12035401b
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
@@ -3276,7 +3276,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '1059'
       Connection:
@@ -3291,22 +3291,22 @@ http_interactions:
               "description": null,
               "links": {
                 "customer": null,
-                "source": "BA4KNmoQtGMkXOuzAY1J4g2Q",
+                "source": "BA46wDAp52WzRzDGdBbdv48d",
                 "card_hold": null,
                 "order": null,
                 "dispute": null
               },
-              "updated_at": "2014-10-21T17:57:17.296262Z",
-              "created_at": "2014-10-21T17:57:16.883307Z",
-              "transaction_number": "WEC0-6VD-ZQMV",
+              "updated_at": "2014-10-21T23:40:10.220082Z",
+              "created_at": "2014-10-21T23:40:09.847244Z",
+              "transaction_number": "WOAD-SB0-1VZA",
               "failure_reason": null,
               "currency": "USD",
               "amount": 1,
               "failure_reason_code": null,
               "meta": {},
-              "href": "/debits/WD5pylNgcYCCy1JTWOsRe9tX",
+              "href": "/debits/WD4Dk0IajfgInLaLji4DDjKt",
               "appears_on_statement_as": "BAL*Epicodus tuition",
-              "id": "WD5pylNgcYCCy1JTWOsRe9tX"
+              "id": "WD4Dk0IajfgInLaLji4DDjKt"
             }
           ],
           "links": {
@@ -3320,7 +3320,7 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:19 GMT
+  recorded_at: Tue, 21 Oct 2014 23:40:13 GMT
 - request:
     method: post
     uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts
@@ -3351,11 +3351,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:57:18 GMT
+      - Tue, 21 Oct 2014 23:40:10 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMb274b002594b11e4b68802a1fe52a36c
+      - OHM98c0cdb4597b11e4877902a1fe52a36c
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
@@ -3365,11 +3365,11 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       X-Midlr-Version:
       - '2'
       X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKAA9RVFMKAwBTU1sEBgdXVh0WAVBQT0ISVABbXAxRC1JQClRXAwoGBxQbQQACVEBVOQ==
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKBANZU1INCwRQUlYCAQ5UUwYaE1BUVU4QQApUWwoAUVYGDVkDUgZaB1AVTUYFWV9DATw=
       Content-Length:
       - '1291'
       Connection:
@@ -3389,10 +3389,10 @@ http_interactions:
                 "bank_account_verification": null
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:57:18.565024Z",
+              "created_at": "2014-10-21T23:40:10.875201Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:57:18.565027Z",
-              "href": "/bank_accounts/BA5rrGHFbDmtk2RLeVY5oJ13",
+              "updated_at": "2014-10-21T23:40:10.875205Z",
+              "href": "/bank_accounts/BA4EtHfZefkb3yY2on3ffl0p",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -3404,7 +3404,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA5rrGHFbDmtk2RLeVY5oJ13"
+              "id": "BA4EtHfZefkb3yY2on3ffl0p"
             }
           ],
           "links": {
@@ -3416,10 +3416,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:21 GMT
+  recorded_at: Tue, 21 Oct 2014 23:40:13 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA5rrGHFbDmtk2RLeVY5oJ13
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA4EtHfZefkb3yY2on3ffl0p
     body:
       encoding: US-ASCII
       string: ''
@@ -3440,13 +3440,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:57:19 GMT
+      - Tue, 21 Oct 2014 23:40:11 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMb3319ed8594b11e48f790230f00c9248
+      - OHM9913dcac597b11e4bc0006429171ffad
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
+      - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -3454,9 +3454,9 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
-      - '499'
+      - '495'
       Connection:
       - keep-alive
     body:
@@ -3474,10 +3474,10 @@ http_interactions:
                 "bank_account_verification": null
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:57:18.565024Z",
+              "created_at": "2014-10-21T23:40:10.875201Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:57:18.565027Z",
-              "href": "/bank_accounts/BA5rrGHFbDmtk2RLeVY5oJ13",
+              "updated_at": "2014-10-21T23:40:10.875205Z",
+              "href": "/bank_accounts/BA4EtHfZefkb3yY2on3ffl0p",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -3489,7 +3489,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA5rrGHFbDmtk2RLeVY5oJ13"
+              "id": "BA4EtHfZefkb3yY2on3ffl0p"
             }
           ],
           "links": {
@@ -3501,10 +3501,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:21 GMT
+  recorded_at: Tue, 21 Oct 2014 23:40:13 GMT
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA5rrGHFbDmtk2RLeVY5oJ13/verifications
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA4EtHfZefkb3yY2on3ffl0p/verifications
     body:
       encoding: UTF-8
       string: "{}"
@@ -3525,13 +3525,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:57:29 GMT
+      - Tue, 21 Oct 2014 23:40:23 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMb395e3fc594b11e4b1cd06429171ffad
+      - OHM993d6e82597b11e495990230f00c9248
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
+      - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -3539,7 +3539,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '599'
       Connection:
@@ -3552,16 +3552,16 @@ http_interactions:
             {
               "verification_status": "pending",
               "links": {
-                "bank_account": "BA5rrGHFbDmtk2RLeVY5oJ13"
+                "bank_account": "BA4EtHfZefkb3yY2on3ffl0p"
               },
-              "href": "/verifications/BZ5CX0umHYuSmrUh198vedMN",
-              "created_at": "2014-10-21T17:57:28.791929Z",
+              "href": "/verifications/BZ4RRrvoeG3D2q9gf3aGgOzu",
+              "created_at": "2014-10-21T23:40:22.773227Z",
               "attempts_remaining": 3,
-              "updated_at": "2014-10-21T17:57:29.200769Z",
+              "updated_at": "2014-10-21T23:40:23.158552Z",
               "deposit_status": "succeeded",
               "attempts": 0,
               "meta": {},
-              "id": "BZ5CX0umHYuSmrUh198vedMN"
+              "id": "BZ4RRrvoeG3D2q9gf3aGgOzu"
             }
           ],
           "links": {
@@ -3569,10 +3569,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:32 GMT
+  recorded_at: Tue, 21 Oct 2014 23:40:26 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA5rrGHFbDmtk2RLeVY5oJ13
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA4EtHfZefkb3yY2on3ffl0p
     body:
       encoding: US-ASCII
       string: ''
@@ -3593,13 +3593,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:57:30 GMT
+      - Tue, 21 Oct 2014 23:40:24 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMb9cb2c64594b11e4b7f006429171ffad
+      - OHMa0cc636a597b11e4910006429171ffad
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
+      - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -3607,9 +3607,9 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
-      - '522'
+      - '518'
       Connection:
       - keep-alive
     body:
@@ -3624,13 +3624,13 @@ http_interactions:
               "name": "Johann Bernoulli",
               "links": {
                 "customer": null,
-                "bank_account_verification": "BZ5CX0umHYuSmrUh198vedMN"
+                "bank_account_verification": "BZ4RRrvoeG3D2q9gf3aGgOzu"
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:57:18.565024Z",
+              "created_at": "2014-10-21T23:40:10.875201Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:57:18.565027Z",
-              "href": "/bank_accounts/BA5rrGHFbDmtk2RLeVY5oJ13",
+              "updated_at": "2014-10-21T23:40:10.875205Z",
+              "href": "/bank_accounts/BA4EtHfZefkb3yY2on3ffl0p",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -3642,7 +3642,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA5rrGHFbDmtk2RLeVY5oJ13"
+              "id": "BA4EtHfZefkb3yY2on3ffl0p"
             }
           ],
           "links": {
@@ -3654,10 +3654,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:32 GMT
+  recorded_at: Tue, 21 Oct 2014 23:40:26 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ5CX0umHYuSmrUh198vedMN
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ4RRrvoeG3D2q9gf3aGgOzu
     body:
       encoding: US-ASCII
       string: ''
@@ -3678,11 +3678,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:57:30 GMT
+      - Tue, 21 Oct 2014 23:40:24 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMba187f64594b11e4a09f02b12035401b
+      - OHMa0f78644597b11e4a3de02b12035401b
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
@@ -3692,7 +3692,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '599'
       Connection:
@@ -3705,16 +3705,16 @@ http_interactions:
             {
               "verification_status": "pending",
               "links": {
-                "bank_account": "BA5rrGHFbDmtk2RLeVY5oJ13"
+                "bank_account": "BA4EtHfZefkb3yY2on3ffl0p"
               },
-              "href": "/verifications/BZ5CX0umHYuSmrUh198vedMN",
-              "created_at": "2014-10-21T17:57:28.791929Z",
+              "href": "/verifications/BZ4RRrvoeG3D2q9gf3aGgOzu",
+              "created_at": "2014-10-21T23:40:22.773227Z",
               "attempts_remaining": 3,
-              "updated_at": "2014-10-21T17:57:29.200769Z",
+              "updated_at": "2014-10-21T23:40:23.158552Z",
               "deposit_status": "succeeded",
               "attempts": 0,
               "meta": {},
-              "id": "BZ5CX0umHYuSmrUh198vedMN"
+              "id": "BZ4RRrvoeG3D2q9gf3aGgOzu"
             }
           ],
           "links": {
@@ -3722,13 +3722,13 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:33 GMT
+  recorded_at: Tue, 21 Oct 2014 23:40:27 GMT
 - request:
     method: put
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ5CX0umHYuSmrUh198vedMN
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ4RRrvoeG3D2q9gf3aGgOzu
     body:
       encoding: UTF-8
-      string: '{"verification_status":"pending","links":{"bank_account":"BA5rrGHFbDmtk2RLeVY5oJ13"},"created_at":"2014-10-21T17:57:28.791929Z","attempts_remaining":3,"updated_at":"2014-10-21T17:57:29.200769Z","deposit_status":"succeeded","attempts":0,"meta":{},"id":"BZ5CX0umHYuSmrUh198vedMN","amount_1":"1","amount_2":"1"}'
+      string: '{"verification_status":"pending","links":{"bank_account":"BA4EtHfZefkb3yY2on3ffl0p"},"created_at":"2014-10-21T23:40:22.773227Z","attempts_remaining":3,"updated_at":"2014-10-21T23:40:23.158552Z","deposit_status":"succeeded","attempts":0,"meta":{},"id":"BZ4RRrvoeG3D2q9gf3aGgOzu","amount_1":"1","amount_2":"1"}'
     headers:
       User-Agent:
       - balanced-ruby/1.1.1
@@ -3746,11 +3746,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:57:31 GMT
+      - Tue, 21 Oct 2014 23:40:24 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMba513ab6594b11e4b03b02b12035401b
+      - OHMa123bebc597b11e4bd6f02b12035401b
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
@@ -3760,7 +3760,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '601'
       Connection:
@@ -3773,16 +3773,16 @@ http_interactions:
             {
               "verification_status": "succeeded",
               "links": {
-                "bank_account": "BA5rrGHFbDmtk2RLeVY5oJ13"
+                "bank_account": "BA4EtHfZefkb3yY2on3ffl0p"
               },
-              "href": "/verifications/BZ5CX0umHYuSmrUh198vedMN",
-              "created_at": "2014-10-21T17:57:28.791929Z",
+              "href": "/verifications/BZ4RRrvoeG3D2q9gf3aGgOzu",
+              "created_at": "2014-10-21T23:40:22.773227Z",
               "attempts_remaining": 2,
-              "updated_at": "2014-10-21T17:57:31.172829Z",
+              "updated_at": "2014-10-21T23:40:24.791932Z",
               "deposit_status": "succeeded",
               "attempts": 1,
               "meta": {},
-              "id": "BZ5CX0umHYuSmrUh198vedMN"
+              "id": "BZ4RRrvoeG3D2q9gf3aGgOzu"
             }
           ],
           "links": {
@@ -3790,7 +3790,7 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:33 GMT
+  recorded_at: Tue, 21 Oct 2014 23:40:27 GMT
 - request:
     method: post
     uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts
@@ -3821,13 +3821,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:57:32 GMT
+      - Tue, 21 Oct 2014 23:40:25 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMba81cf6e594b11e4919202a1fe52a36c
+      - OHMa1588142597b11e4a66302a1fe53e539
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
+      - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -3835,11 +3835,11 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       X-Midlr-Version:
       - '2'
       X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKDgZSX1EIAwJVUVcAAAVeXR0WAVBQT0ISAQBRCw8ABgRQCVEIV1cHVxQbQQACVEBVOQ==
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKBQ5WUlYNCgNUVlIOCQReXAYaE1BUVU4QQFtVDAwBA1BUXQUJUFYHVgMVTUYFWV9DATw=
       Content-Length:
       - '1291'
       Connection:
@@ -3859,10 +3859,10 @@ http_interactions:
                 "bank_account_verification": null
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:57:32.216318Z",
+              "created_at": "2014-10-21T23:40:25.444793Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:57:32.216321Z",
-              "href": "/bank_accounts/BA5GNKinyqsVT8kbFXnamqAg",
+              "updated_at": "2014-10-21T23:40:25.444797Z",
+              "href": "/bank_accounts/BA4URE0QqML1YraIiSUdlkKF",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -3874,7 +3874,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA5GNKinyqsVT8kbFXnamqAg"
+              "id": "BA4URE0QqML1YraIiSUdlkKF"
             }
           ],
           "links": {
@@ -3886,10 +3886,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:35 GMT
+  recorded_at: Tue, 21 Oct 2014 23:40:28 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA5GNKinyqsVT8kbFXnamqAg
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA4URE0QqML1YraIiSUdlkKF
     body:
       encoding: US-ASCII
       string: ''
@@ -3910,13 +3910,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:57:32 GMT
+      - Tue, 21 Oct 2014 23:40:26 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMbb526138594b11e4a09f02b12035401b
+      - OHMa1de3102597b11e4b84f0230f00c9248
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
+      - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -3924,9 +3924,9 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
-      - '499'
+      - '500'
       Connection:
       - keep-alive
     body:
@@ -3944,10 +3944,10 @@ http_interactions:
                 "bank_account_verification": null
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:57:32.216318Z",
+              "created_at": "2014-10-21T23:40:25.444793Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:57:32.216321Z",
-              "href": "/bank_accounts/BA5GNKinyqsVT8kbFXnamqAg",
+              "updated_at": "2014-10-21T23:40:25.444797Z",
+              "href": "/bank_accounts/BA4URE0QqML1YraIiSUdlkKF",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -3959,7 +3959,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA5GNKinyqsVT8kbFXnamqAg"
+              "id": "BA4URE0QqML1YraIiSUdlkKF"
             }
           ],
           "links": {
@@ -3971,10 +3971,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:35 GMT
+  recorded_at: Tue, 21 Oct 2014 23:40:28 GMT
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA5GNKinyqsVT8kbFXnamqAg/verifications
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA4URE0QqML1YraIiSUdlkKF/verifications
     body:
       encoding: UTF-8
       string: "{}"
@@ -3995,11 +3995,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:57:45 GMT
+      - Tue, 21 Oct 2014 23:40:39 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMbb91f19a594b11e4b03b02b12035401b
+      - OHMa20f93c8597b11e4a3de02b12035401b
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
@@ -4009,7 +4009,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '599'
       Connection:
@@ -4022,16 +4022,16 @@ http_interactions:
             {
               "verification_status": "pending",
               "links": {
-                "bank_account": "BA5GNKinyqsVT8kbFXnamqAg"
+                "bank_account": "BA4URE0QqML1YraIiSUdlkKF"
               },
-              "href": "/verifications/BZ5Ur8fpQLJvePmLwPWgt56B",
-              "created_at": "2014-10-21T17:57:44.338918Z",
+              "href": "/verifications/BZ59vXGihmfdHiGPNm1vTPmd",
+              "created_at": "2014-10-21T23:40:38.468456Z",
               "attempts_remaining": 3,
-              "updated_at": "2014-10-21T17:57:44.802269Z",
+              "updated_at": "2014-10-21T23:40:38.874878Z",
               "deposit_status": "succeeded",
               "attempts": 0,
               "meta": {},
-              "id": "BZ5Ur8fpQLJvePmLwPWgt56B"
+              "id": "BZ59vXGihmfdHiGPNm1vTPmd"
             }
           ],
           "links": {
@@ -4039,10 +4039,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:48 GMT
+  recorded_at: Tue, 21 Oct 2014 23:40:42 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA5GNKinyqsVT8kbFXnamqAg
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA4URE0QqML1YraIiSUdlkKF
     body:
       encoding: US-ASCII
       string: ''
@@ -4063,13 +4063,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:57:46 GMT
+      - Tue, 21 Oct 2014 23:40:39 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMc3989f4c594b11e4a0ee06429171ffad
+      - OHMaa1ae82e597b11e4a3de02b12035401b
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
+      - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -4077,7 +4077,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '523'
       Connection:
@@ -4094,13 +4094,13 @@ http_interactions:
               "name": "Johann Bernoulli",
               "links": {
                 "customer": null,
-                "bank_account_verification": "BZ5Ur8fpQLJvePmLwPWgt56B"
+                "bank_account_verification": "BZ59vXGihmfdHiGPNm1vTPmd"
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:57:32.216318Z",
+              "created_at": "2014-10-21T23:40:25.444793Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:57:32.216321Z",
-              "href": "/bank_accounts/BA5GNKinyqsVT8kbFXnamqAg",
+              "updated_at": "2014-10-21T23:40:25.444797Z",
+              "href": "/bank_accounts/BA4URE0QqML1YraIiSUdlkKF",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -4112,7 +4112,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA5GNKinyqsVT8kbFXnamqAg"
+              "id": "BA4URE0QqML1YraIiSUdlkKF"
             }
           ],
           "links": {
@@ -4124,10 +4124,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:49 GMT
+  recorded_at: Tue, 21 Oct 2014 23:40:42 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ5Ur8fpQLJvePmLwPWgt56B
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ59vXGihmfdHiGPNm1vTPmd
     body:
       encoding: US-ASCII
       string: ''
@@ -4148,11 +4148,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:57:47 GMT
+      - Tue, 21 Oct 2014 23:40:40 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMc3db5b48594b11e4a09f02b12035401b
+      - OHMaa466710597b11e4bd6f02b12035401b
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
@@ -4162,7 +4162,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '599'
       Connection:
@@ -4175,16 +4175,16 @@ http_interactions:
             {
               "verification_status": "pending",
               "links": {
-                "bank_account": "BA5GNKinyqsVT8kbFXnamqAg"
+                "bank_account": "BA4URE0QqML1YraIiSUdlkKF"
               },
-              "href": "/verifications/BZ5Ur8fpQLJvePmLwPWgt56B",
-              "created_at": "2014-10-21T17:57:44.338918Z",
+              "href": "/verifications/BZ59vXGihmfdHiGPNm1vTPmd",
+              "created_at": "2014-10-21T23:40:38.468456Z",
               "attempts_remaining": 3,
-              "updated_at": "2014-10-21T17:57:44.802269Z",
+              "updated_at": "2014-10-21T23:40:38.874878Z",
               "deposit_status": "succeeded",
               "attempts": 0,
               "meta": {},
-              "id": "BZ5Ur8fpQLJvePmLwPWgt56B"
+              "id": "BZ59vXGihmfdHiGPNm1vTPmd"
             }
           ],
           "links": {
@@ -4192,13 +4192,13 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:49 GMT
+  recorded_at: Tue, 21 Oct 2014 23:40:42 GMT
 - request:
     method: put
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ5Ur8fpQLJvePmLwPWgt56B
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ59vXGihmfdHiGPNm1vTPmd
     body:
       encoding: UTF-8
-      string: '{"verification_status":"pending","links":{"bank_account":"BA5GNKinyqsVT8kbFXnamqAg"},"created_at":"2014-10-21T17:57:44.338918Z","attempts_remaining":3,"updated_at":"2014-10-21T17:57:44.802269Z","deposit_status":"succeeded","attempts":0,"meta":{},"id":"BZ5Ur8fpQLJvePmLwPWgt56B","amount_1":"1","amount_2":"1"}'
+      string: '{"verification_status":"pending","links":{"bank_account":"BA4URE0QqML1YraIiSUdlkKF"},"created_at":"2014-10-21T23:40:38.468456Z","attempts_remaining":3,"updated_at":"2014-10-21T23:40:38.874878Z","deposit_status":"succeeded","attempts":0,"meta":{},"id":"BZ59vXGihmfdHiGPNm1vTPmd","amount_1":"1","amount_2":"1"}'
     headers:
       User-Agent:
       - balanced-ruby/1.1.1
@@ -4216,11 +4216,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:57:49 GMT
+      - Tue, 21 Oct 2014 23:40:40 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMc54982de594b11e4b1cd06429171ffad
+      - OHMaa742b14597b11e4a3de02b12035401b
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
@@ -4230,7 +4230,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '601'
       Connection:
@@ -4243,16 +4243,16 @@ http_interactions:
             {
               "verification_status": "succeeded",
               "links": {
-                "bank_account": "BA5GNKinyqsVT8kbFXnamqAg"
+                "bank_account": "BA4URE0QqML1YraIiSUdlkKF"
               },
-              "href": "/verifications/BZ5Ur8fpQLJvePmLwPWgt56B",
-              "created_at": "2014-10-21T17:57:44.338918Z",
+              "href": "/verifications/BZ59vXGihmfdHiGPNm1vTPmd",
+              "created_at": "2014-10-21T23:40:38.468456Z",
               "attempts_remaining": 2,
-              "updated_at": "2014-10-21T17:57:49.575151Z",
+              "updated_at": "2014-10-21T23:40:40.495326Z",
               "deposit_status": "succeeded",
               "attempts": 1,
               "meta": {},
-              "id": "BZ5Ur8fpQLJvePmLwPWgt56B"
+              "id": "BZ59vXGihmfdHiGPNm1vTPmd"
             }
           ],
           "links": {
@@ -4260,10 +4260,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:52 GMT
+  recorded_at: Tue, 21 Oct 2014 23:40:43 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA5rrGHFbDmtk2RLeVY5oJ13
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA4EtHfZefkb3yY2on3ffl0p
     body:
       encoding: US-ASCII
       string: ''
@@ -4284,11 +4284,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:57:50 GMT
+      - Tue, 21 Oct 2014 23:40:40 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMc5c806ae594b11e4b7f006429171ffad
+      - OHMaab3a10e597b11e4bc6302b12035401b
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
@@ -4298,9 +4298,9 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
-      - '523'
+      - '520'
       Connection:
       - keep-alive
     body:
@@ -4315,13 +4315,13 @@ http_interactions:
               "name": "Johann Bernoulli",
               "links": {
                 "customer": null,
-                "bank_account_verification": "BZ5CX0umHYuSmrUh198vedMN"
+                "bank_account_verification": "BZ4RRrvoeG3D2q9gf3aGgOzu"
               },
               "can_credit": true,
-              "created_at": "2014-10-21T17:57:18.565024Z",
+              "created_at": "2014-10-21T23:40:10.875201Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-21T17:57:31.170982Z",
-              "href": "/bank_accounts/BA5rrGHFbDmtk2RLeVY5oJ13",
+              "updated_at": "2014-10-21T23:40:24.789870Z",
+              "href": "/bank_accounts/BA4EtHfZefkb3yY2on3ffl0p",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -4333,7 +4333,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": true,
-              "id": "BA5rrGHFbDmtk2RLeVY5oJ13"
+              "id": "BA4EtHfZefkb3yY2on3ffl0p"
             }
           ],
           "links": {
@@ -4345,10 +4345,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:53 GMT
+  recorded_at: Tue, 21 Oct 2014 23:40:43 GMT
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA5rrGHFbDmtk2RLeVY5oJ13/debits
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA4EtHfZefkb3yY2on3ffl0p/debits
     body:
       encoding: UTF-8
       string: '{"amount":1,"appears_on_statement_as":"Epicodus tuition"}'
@@ -4369,13 +4369,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 17:57:52 GMT
+      - Tue, 21 Oct 2014 23:40:41 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMc6da3d0a594b11e4a09f02b12035401b
+      - OHMaade70d2597b11e4910006429171ffad
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
+      - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -4383,7 +4383,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.30
+      - 1.8.31
       Content-Length:
       - '1059'
       Connection:
@@ -4398,22 +4398,22 @@ http_interactions:
               "description": null,
               "links": {
                 "customer": null,
-                "source": "BA5rrGHFbDmtk2RLeVY5oJ13",
+                "source": "BA4EtHfZefkb3yY2on3ffl0p",
                 "card_hold": null,
                 "order": null,
                 "dispute": null
               },
-              "updated_at": "2014-10-21T17:57:52.518573Z",
-              "created_at": "2014-10-21T17:57:52.188146Z",
-              "transaction_number": "WNAP-SGO-56CT",
+              "updated_at": "2014-10-21T23:40:41.514400Z",
+              "created_at": "2014-10-21T23:40:41.095717Z",
+              "transaction_number": "WRX7-CES-MCR6",
               "failure_reason": null,
               "currency": "USD",
               "amount": 1,
               "failure_reason_code": null,
               "meta": {},
-              "href": "/debits/WD63gus1RvGPq0QJ0Vj3RrvG",
+              "href": "/debits/WD5ct3obI4LmNTumGV5LvA8J",
               "appears_on_statement_as": "BAL*Epicodus tuition",
-              "id": "WD63gus1RvGPq0QJ0Vj3RrvG"
+              "id": "WD5ct3obI4LmNTumGV5LvA8J"
             }
           ],
           "links": {
@@ -4427,5 +4427,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 17:57:55 GMT
+  recorded_at: Tue, 21 Oct 2014 23:40:44 GMT
 recorded_with: VCR 2.9.3
