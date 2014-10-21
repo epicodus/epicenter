@@ -1,9 +1,0 @@
-<h1>Start recurring payments</h1>
-
-<p class="lead">Your monthly payment amount is <%= number_to_currency(@payment.amount / 100) %>. Payment will be withdrawn from your verified bank account. </p>
-
-<div class="action-buttons">
-  <%= form_for @payment, url: recurring_payments_path do |f| %>
-    <%= f.submit "Start recurring payments", class: 'btn btn-large btn-primary' %>
-  <% end %>
-</div>

@@ -14,8 +14,21 @@
   <p>Looks like you haven't made any payments yet.</p>
 <% end %>
 
-<%= link_to "Make upfront payment", new_upfront_payment_path, class: 'btn btn-primary' if current_user.upfront_payment_due? %></p>
-<%= link_to "Start recurring payments", new_recurring_payment_path, class: 'btn btn-primary' if current_user.ready_to_start_recurring_payments? %></p>
+<% if current_user.upfront_payment_due? %>
+  <div class="action-buttons">
+    <%= form_for @payment, url: upfront_payments_path do |f| %>
+      <%= f.submit "Make upfront payment of #{number_to_currency(@upfront_amount / 100.00)}", data: { confirm: "Make upfront payment?" }, class: 'btn btn-large btn-primary' %>
+    <% end %>
+  </div>
+<% end %>
+
+<% if current_user.ready_to_start_recurring_payments? %>
+  <div class="action-buttons">
+    <%= form_for @payment, url: recurring_payments_path do |f| %>
+      <%= f.submit "Start recurring payments of #{number_to_currency(@recurring_amount / 100.00)}", data: { confirm: "Start recurring payments?" }, class: 'btn btn-large btn-primary' %>
+    <% end %>
+  </div>
+<% end %>
 
 <p>
   If you have any questions or need to stop your payments, contact Michael.
