@@ -26,6 +26,14 @@ FactoryGirl.define do
     end
   end
 
+  factory :invalid_credit_card, parent: :credit_card do
+    user
+    after(:build) do |credit_card|
+      balanced_credit_card = create_invalid_balanced_credit_card
+      credit_card.credit_card_uri = balanced_credit_card.href
+    end
+  end
+
   factory :payment do
     association :user, factory: :user_with_verified_bank_account
     amount 1
@@ -71,6 +79,10 @@ FactoryGirl.define do
 
     factory :user_with_credit_card do
       association :credit_card
+    end
+
+    factory :user_with_invalid_credit_card do
+      association :credit_card, factory: :invalid_credit_card
     end
 
     factory :user_with_verified_bank_account do

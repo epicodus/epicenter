@@ -69,12 +69,13 @@ class User < ActiveRecord::Base
   end
 
   def make_upfront_payment
-    payments.create!(amount: plan.upfront_amount, payment_method: primary_payment_method)
+    Payment.create(user: self, amount: plan.upfront_amount, payment_method: primary_payment_method)
   end
 
   def start_recurring_payments
-    update!(recurring_active: true)
-    payments.create!(amount: plan.recurring_amount, payment_method: primary_payment_method)
+    payment = Payment.create(user: self, amount: plan.recurring_amount, payment_method: primary_payment_method)
+    update!(recurring_active: true) if payment.persisted?
+    payment
   end
 
   def on_time_attendances

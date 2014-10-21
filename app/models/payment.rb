@@ -10,10 +10,16 @@ class Payment < ActiveRecord::Base
 private
   def make_payment
     payment_method_to_charge = user.primary_payment_method
-    debit = payment_method_to_charge.fetch_balanced_account.debit(
-      :amount => payment_method_to_charge.calculate_charge(amount),
-      :appears_on_statement_as => 'Epicodus tuition'
-    )
-    self.payment_uri = debit.href if !debit.failure_reason
+    self.amount = payment_method_to_charge.calculate_charge(amount)
+    begin
+      debit = payment_method_to_charge.fetch_balanced_account.debit(
+        :amount => amount,
+        :appears_on_statement_as => 'Epicodus tuition'
+      )
+      self.payment_uri = debit.href
+    rescue => exception
+      errors.add(:base, exception.description)
+      false
+    end
   end
 end
