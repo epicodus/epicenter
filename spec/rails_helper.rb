@@ -35,6 +35,7 @@ Billy.configure do |c|
   c.cache = true
   c.persist_cache = true
   c.ignore_params = ["https://api.balancedpayments.com/jsonp/bank_accounts"]
+  c.ignore_params = ["https://api.balancedpayments.com/jsonp/cards"]
   c.cache_path = 'spec/cassettes/javascript/'
   c.non_successful_error_level = :warn
 end
