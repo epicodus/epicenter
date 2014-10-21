@@ -1,5 +1,6 @@
 class BankAccountsController < ApplicationController
   before_action :authenticate_user!
+
   def new
     @bank_account = BankAccount.new
   end
