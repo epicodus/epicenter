@@ -3,10 +3,12 @@ require 'rails_helper'
 describe User do
   it { should validate_presence_of :name }
   it { should validate_presence_of :plan_id }
+  it { should validate_presence_of :cohort_id }
   it { should have_one :bank_account }
   it { should have_many :payments }
   it { should belong_to :plan }
   it { should have_many :attendance_records }
+  it { should belong_to :cohort }
 
   describe ".recurring_active" do
     it "only includes users that are recurring_active", :vcr do
@@ -62,6 +64,16 @@ describe User do
         user = FactoryGirl.create(:user_with_recurring_active)
       end
       travel_to(Date.parse("February 2, 2014")) do
+        expect(User.billable_in_three_days).to eq [user]
+      end
+    end
+
+    it 'works even if the payment is made at a different time than the method is run' do
+      user = nil
+      travel_to(Time.new(2014, 1, 5, 12, 0, 0, 0)) do
+        user = FactoryGirl.create(:user_with_recurring_active)
+      end
+      travel_to(Time.new(2014, 2, 2, 15, 0, 0, 0)) do
         expect(User.billable_in_three_days).to eq [user]
       end
     end
@@ -234,6 +246,43 @@ describe User do
     it "returns a BankAccount if user has a verified bank account" do
       user = FactoryGirl.create(:user_with_verified_bank_account)
       expect(user.primary_payment_method).to eq user.bank_account
+    end
+  end
+
+  describe 'attendance methods' do
+    include ActiveSupport::Testing::TimeHelpers
+
+    let(:cohort) { FactoryGirl.create(:cohort) }
+    let(:user) { FactoryGirl.create(:user, cohort: cohort) }
+
+    describe '#on_time_attendances' do
+      it 'counts the number of days the student has been on time to class' do
+        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 8, 55, 00) do
+          FactoryGirl.create(:attendance_record, user: user)
+          expect(user.on_time_attendances).to eq 1
+        end
+      end
+    end
+
+    describe '#tardies' do
+      it 'counts the number of days the student has been tardy' do
+        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 9, 10, 00) do
+          FactoryGirl.create(:attendance_record, user: user)
+          travel 1.day
+          FactoryGirl.create(:attendance_record, user: user)
+          expect(user.tardies).to eq 2
+        end
+      end
+    end
+
+    describe '#absences' do
+      it 'counts the number of days the student has been absent' do
+        travel_to cohort.start_date do
+          travel 1.day
+          FactoryGirl.create(:attendance_record, user: user)
+          expect(user.absences).to eq 1
+        end
+      end
     end
   end
 end

@@ -66,8 +66,9 @@ FactoryGirl.define do
   end
 
   factory :user do
+    cohort
     association :plan, factory: :recurring_plan_with_upfront_payment
-    name "Jane Doe"
+    sequence(:name) { |n| "Example Brown #{n}" }
     sequence(:email) { |n| "user#{n}@example.com" }
     password "password"
     password_confirmation "password"
@@ -119,5 +120,16 @@ FactoryGirl.define do
 
   factory :attendance_record do
     user
+  end
+
+  factory :cohort do
+    description 'Current cohort'
+    start_date Date.today.beginning_of_week
+    end_date (Date.today + 14.weeks).end_of_week - 2.days
+
+    factory :past_cohort do
+      start_date 125.days.ago.beginning_of_week
+      end_date 20.days.ago.end_of_week - 2.days
+    end
   end
 end

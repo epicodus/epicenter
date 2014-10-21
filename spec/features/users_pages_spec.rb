@@ -3,6 +3,7 @@ require 'rails_helper'
 feature 'User signs up' do
   before do
     @plan = FactoryGirl.create :recurring_plan_with_upfront_payment
+    @cohort = FactoryGirl.create :cohort
     visit new_user_registration_path
     fill_in 'Email', with: 'example_user@example.com'
     fill_in 'Password', with: 'password'
@@ -12,6 +13,7 @@ feature 'User signs up' do
   scenario 'with valid information', js: true do
     fill_in 'Name', with: 'Ryan Larson'
     select @plan.name, from: 'user_plan_id'
+    select @cohort.description, from: 'user_cohort_id'
     click_on 'Sign up'
     expect(page).to have_content 'How would you like to make payments'
   end

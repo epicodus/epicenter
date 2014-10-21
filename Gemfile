@@ -1,4 +1,4 @@
-ruby '2.1.2'
+ruby '2.1.3'
 
 source 'https://rubygems.org'
 
@@ -9,6 +9,8 @@ gem 'jquery-rails'
 gem 'devise'
 gem 'balanced'
 gem 'rest_client'
+gem 'chartkick'
+gem 'groupdate'
 
 group :development do
   gem 'spring'

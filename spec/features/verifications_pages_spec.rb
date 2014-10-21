@@ -6,7 +6,7 @@ describe 'verifying bank account', :vcr do
       sign_in(user)
       fill_in 'First deposit amount', with: '1'
       fill_in 'Second deposit amount', with: '1'
-      click_on 'Confirm account & start payments'
+      click_on 'Confirm account'
     end
 
     context 'with correct deposit amounts' do
@@ -26,7 +26,7 @@ describe 'verifying bank account', :vcr do
       sign_in(user)
       fill_in 'First deposit amount', with: '2'
       fill_in 'Second deposit amount', with: '1'
-      click_on 'Confirm account & start payments'
+      click_on 'Confirm account'
       expect(page).to have_content 'Authentication amounts do not match.'
     end
   end

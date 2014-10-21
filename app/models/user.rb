@@ -8,8 +8,10 @@ class User < ActiveRecord::Base
 
   validates :name, presence: true
   validates :plan_id, presence: true
+  validates :cohort_id, presence: true
 
   belongs_to :plan
+  belongs_to :cohort
   has_one :bank_account
   has_one :credit_card
   has_many :payments
@@ -23,7 +25,7 @@ class User < ActiveRecord::Base
 
   def self.billable_in_three_days
     recurring_active.select do |user|
-      (user.payments.last.created_at - 3.days) == 1.month.ago
+      (user.payments.last.created_at - 3.days).to_date == 1.month.ago.to_date
     end
   end
 
@@ -74,5 +76,17 @@ class User < ActiveRecord::Base
     payment = Payment.create(user: self, amount: plan.recurring_amount, payment_method: primary_payment_method)
     update!(recurring_active: true) if payment.persisted?
     payment
+  end
+
+  def on_time_attendances
+    attendance_records.where(tardy: false).count
+  end
+
+  def tardies
+    attendance_records.where(tardy: true).count
+  end
+
+  def absences
+    cohort.number_of_days_since_start - attendance_records.count
   end
 end

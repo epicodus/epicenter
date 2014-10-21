@@ -12,4 +12,7 @@ Rails.application.routes.draw do
   resources :upfront_payments, only: [:create]
   resources :recurring_payments, only: [:create]
   resources :attendance_records, only: [:create, :destroy]
+  resources :cohorts, only: [] do
+    resource :attendance_statistics, only: [:show]
+  end
 end

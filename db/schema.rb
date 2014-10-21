@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20141021174409) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "tardy"
   end
 
   create_table "bank_accounts", force: true do |t|
@@ -29,6 +30,14 @@ ActiveRecord::Schema.define(version: 20141021174409) do
     t.datetime "updated_at"
     t.integer  "user_id"
     t.boolean  "verified"
+  end
+
+  create_table "cohorts", force: true do |t|
+    t.string   "description"
+    t.date     "start_date"
+    t.date     "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "credit_cards", force: true do |t|
@@ -72,6 +81,7 @@ ActiveRecord::Schema.define(version: 20141021174409) do
     t.string   "name"
     t.integer  "plan_id"
     t.boolean  "recurring_active"
+    t.integer  "cohort_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
