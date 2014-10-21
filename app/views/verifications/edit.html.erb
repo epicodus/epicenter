@@ -1,13 +1,6 @@
-<h1>Confirm your account and start payments</h1>
+<h1>Confirm your account</h1>
 
-<p>
-  After entering your test deposit amounts and clicking the button below, your
-  account will be confirmed and your first payment of $625.00 will be withdrawn
-  from your account. You will continue to be charged $625.00 each month for
-  seven more months, at which point you will have paid off your loan. If you
-  need to stop payment before then, or if you want to pay off your loan more
-  quickly, contact Michael.
-</p>
+<p>You won't be charged anything at this time.</p>
 
 <%= render '/layouts/errors', :object => @verification %>
 
@@ -23,6 +16,6 @@
   </div>
 
   <div>
-    <%= f.submit "Confirm account & start payments", id: "account-verify-button", class: 'btn' %>
+    <%= f.submit "Confirm account", id: "account-verify-button", class: 'btn' %>
   </div>
 <% end %>
