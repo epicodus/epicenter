@@ -30,11 +30,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 16 Oct 2014 22:30:54 GMT
+      - Tue, 21 Oct 2014 18:04:56 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM16f0da7c558411e495d002a1fe52a36c
+      - OHMc39e25ba594c11e4a45b02a1fe52a36c
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
@@ -44,13 +44,13 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.25
+      - 1.8.30
       X-Midlr-Version:
       - '2'
       X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKBQFQVFIKAwFRUFcGCABRUQUaE1BUVU4QQFwBCABRBwpWDVAIVgIHVQ8VTUYFWV9DATw=
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKAgJXXlEOCgJRU1UABgdfXQcaE1BUVU4QQFsBXQoECgtRWFFQBVIDUwIVTUYFWV9DATw=
       Content-Length:
-      - '1289'
+      - '1291'
       Connection:
       - keep-alive
     body:
@@ -68,10 +68,10 @@ http_interactions:
                 "bank_account_verification": null
               },
               "can_credit": true,
-              "created_at": "2014-10-16T22:30:54.014109Z",
+              "created_at": "2014-10-21T18:04:56.653314Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-16T22:30:54.014111Z",
-              "href": "/bank_accounts/BAHEhDrNgjm7SFx9q7ljnBr",
+              "updated_at": "2014-10-21T18:04:56.653318Z",
+              "href": "/bank_accounts/BA5XBtukNzsCJo4yOTIPpART",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -83,7 +83,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BAHEhDrNgjm7SFx9q7ljnBr"
+              "id": "BA5XBtukNzsCJo4yOTIPpART"
             }
           ],
           "links": {
@@ -95,10 +95,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Thu, 16 Oct 2014 22:30:54 GMT
+  recorded_at: Tue, 21 Oct 2014 18:04:59 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BAHEhDrNgjm7SFx9q7ljnBr
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA5XBtukNzsCJo4yOTIPpART
     body:
       encoding: US-ASCII
       string: ''
@@ -119,13 +119,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 16 Oct 2014 22:30:54 GMT
+      - Tue, 21 Oct 2014 18:04:59 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM178783a0558411e4a4f602b12035401b
+      - OHMc53c0310594c11e48f790230f00c9248
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
+      - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -133,9 +133,9 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.25
+      - 1.8.30
       Content-Length:
-      - '498'
+      - '499'
       Connection:
       - keep-alive
     body:
@@ -153,10 +153,10 @@ http_interactions:
                 "bank_account_verification": null
               },
               "can_credit": true,
-              "created_at": "2014-10-16T22:30:54.014109Z",
+              "created_at": "2014-10-21T18:04:56.653314Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-10-16T22:30:54.014111Z",
-              "href": "/bank_accounts/BAHEhDrNgjm7SFx9q7ljnBr",
+              "updated_at": "2014-10-21T18:04:56.653318Z",
+              "href": "/bank_accounts/BA5XBtukNzsCJo4yOTIPpART",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -168,7 +168,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BAHEhDrNgjm7SFx9q7ljnBr"
+              "id": "BA5XBtukNzsCJo4yOTIPpART"
             }
           ],
           "links": {
@@ -180,10 +180,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Thu, 16 Oct 2014 22:30:55 GMT
+  recorded_at: Tue, 21 Oct 2014 18:05:01 GMT
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BAHEhDrNgjm7SFx9q7ljnBr/verifications
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA5XBtukNzsCJo4yOTIPpART/verifications
     body:
       encoding: UTF-8
       string: "{}"
@@ -204,13 +204,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 16 Oct 2014 22:31:04 GMT
+      - Tue, 21 Oct 2014 18:05:10 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM17b6a374558411e4a4f602b12035401b
+      - OHMc598ffde594c11e4b1cd06429171ffad
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
+      - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -218,9 +218,9 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.25
+      - 1.8.30
       Content-Length:
-      - '596'
+      - '599'
       Connection:
       - keep-alive
     body:
@@ -231,16 +231,16 @@ http_interactions:
             {
               "verification_status": "pending",
               "links": {
-                "bank_account": "BAHEhDrNgjm7SFx9q7ljnBr"
+                "bank_account": "BA5XBtukNzsCJo4yOTIPpART"
               },
-              "href": "/verifications/BZSarPAoWXSX4qMCXmWyoDu",
-              "created_at": "2014-10-16T22:31:03.370657Z",
+              "href": "/verifications/BZ6cmDn9HDbqhpOWdUwfg8G9",
+              "created_at": "2014-10-21T18:05:09.775534Z",
               "attempts_remaining": 3,
-              "updated_at": "2014-10-16T22:31:03.675473Z",
+              "updated_at": "2014-10-21T18:05:10.587777Z",
               "deposit_status": "succeeded",
               "attempts": 0,
               "meta": {},
-              "id": "BZSarPAoWXSX4qMCXmWyoDu"
+              "id": "BZ6cmDn9HDbqhpOWdUwfg8G9"
             }
           ],
           "links": {
@@ -248,5 +248,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Thu, 16 Oct 2014 22:31:04 GMT
+  recorded_at: Tue, 21 Oct 2014 18:05:13 GMT
 recorded_with: VCR 2.9.3
