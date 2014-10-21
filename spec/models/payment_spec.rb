@@ -14,6 +14,12 @@ describe Payment do
       user.payments.create(amount: 100, payment_method: user.bank_account)
       expect(user.payments.first.payment_uri).to_not be_nil
     end
+
+    it "doesn't make a payment with a bad card", :vcr do
+      user = FactoryGirl.create :user_with_invalid_credit_card
+      user.payments.create(amount: 100, payment_method: user.credit_card)
+      expect(user.payments.first.payment_uri).to be_nil
+    end
   end
 end
 

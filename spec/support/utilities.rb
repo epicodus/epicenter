@@ -25,6 +25,16 @@ def create_balanced_credit_card
   balanced_credit_card
 end
 
+def create_invalid_balanced_credit_card
+  balanced_credit_card = Balanced::Card.new(
+    :number => '4444444444444448',
+    :expiration_month => '12',
+    :expiration_year => '2020',
+    :cvv => '123'
+  ).save
+  balanced_credit_card
+end
+
 def correctly_verify_bank_account(user)
   fill_in 'First deposit amount', with: '1'
   fill_in 'Second deposit amount', with: '1'
