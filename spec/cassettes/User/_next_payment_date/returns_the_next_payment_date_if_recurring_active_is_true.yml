@@ -1107,4 +1107,55 @@ http_interactions:
         }
     http_version: 
   recorded_at: Sun, 05 Jan 2014 08:00:00 GMT
+- request:
+    method: post
+    uri: https://api:key-6i28pis-hiythfyhqx-njd6gv4a2xuy3@api.mailgun.net/v2/epicodus.com/messages
+    body:
+      encoding: US-ASCII
+      string: from=michael%40epicodus.com&to=user179%40example.com&bcc=michael%40epicodus.com&subject=Epicodus%20tuition%20payment%20receipt&text=Hi%20Example%20Brown%20171.%20This%20is%20to%20confirm%20your%20payment%20of%201%20for%20Epicodus%20tuition.%20If%20you%20have%20any%20questions%2C%20reply%20to%20this%20email.%20Thanks!
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Length:
+      - '318'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.4.7
+      Date:
+      - Wed, 22 Oct 2014 22:57:22 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '90'
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - inline
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '600'
+      Access-Control-Allow-Methods:
+      - GET, POST, PUT, DELETE, OPTIONS
+      Access-Control-Allow-Headers:
+      - Content-Type, x-requested-with
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "message": "Queued. Thank you.",
+          "id": "<20141022225722.82078.81126@epicodus.com>"
+        }
+    http_version: 
+  recorded_at: Sun, 05 Jan 2014 08:00:00 GMT
 recorded_with: VCR 2.9.3
