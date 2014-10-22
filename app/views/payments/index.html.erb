@@ -4,7 +4,7 @@
 
 <% if @payments.present? %>
   <ul>
-    <% @payments.each do |payment| %>
+    <% @payments.order_by_latest.each do |payment| %>
       <li>
         <%= number_to_currency(payment.amount / 100.00) %>
         paid on

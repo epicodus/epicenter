@@ -7,6 +7,8 @@ class Payment < ActiveRecord::Base
 
   before_create :make_payment
 
+  scope :order_by_latest, -> { order('created_at DESC') }
+
 private
   def make_payment
     payment_method_to_charge = user.primary_payment_method
