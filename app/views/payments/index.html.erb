@@ -3,15 +3,37 @@
 <%= render 'layouts/errors', object: @payment %>
 
 <% if @payments.present? %>
-  <ul>
-    <% @payments.order_by_latest.each do |payment| %>
-      <li>
-        <%= number_to_currency(payment.amount / 100.00) %>
-        paid on
-        <%= payment.created_at.strftime("%F") %>
-      </li>
-    <% end %>
-  </ul>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>
+          Status
+        </th>
+        <th>
+          Date
+        </th>
+        <th>
+          Amount
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render 'next_payment_date' %>
+      <% @payments.order_by_latest.each do |payment| %>
+        <tr>
+          <td>
+            Paid
+          </td>
+          <td>
+            <%= payment.created_at.strftime("%F") %>
+          </td>
+          <td>
+            <%= number_to_currency(payment.amount / 100.00) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 <% else %>
   <p>Looks like you haven't made any payments yet.</p>
 <% end %>
