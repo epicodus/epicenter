@@ -45,42 +45,73 @@ end
 feature 'show page' do
   context 'when visiting as a student' do
     let(:student) { FactoryGirl.create(:user) }
+    let(:assessment) { FactoryGirl.create(:assessment) }
     before { sign_in student }
+    subject { page }
 
-    context 'and submitting an assessment' do
-      scenario 'with valid input' do
-        assessment = FactoryGirl.create(:assessment)
+    context 'before submitting' do
+      before do
         visit assessment_path(assessment)
+      end
+
+      it { is_expected.to have_button 'Submit' }
+      it { is_expected.to_not have_content 'pending review' }
+      it { is_expected.to_not have_link 'has been reviewed' }
+
+    end
+
+    context 'when submitting' do
+      before do
+        visit assessment_path(assessment)
+      end
+
+      scenario 'with valid input' do
         fill_in 'submission_link', with: 'http://github.com'
         click_button 'Submit'
-        expect(page).to have_content 'Thank you for submitting'
+        is_expected.to have_content 'Thank you for submitting'
       end
 
       scenario 'with invalid input' do
-        assessment = FactoryGirl.create(:assessment)
-        visit assessment_path(assessment)
         click_button 'Submit'
-        expect(page).to have_content "can't be blank"
+        is_expected.to have_content "can't be blank"
       end
     end
 
-    context 'after having submitted for this assessment' do
-      scenario 'allows student to resubmit' do
-        assessment = FactoryGirl.create(:assessment)
+    context 'after having submitted' do
+      before do
         FactoryGirl.create(:submission, assessment: assessment, user: student)
         visit assessment_path(assessment)
-        expect(page).to have_button 'Resubmit'
       end
 
-      context 'and submission has been reviewed' do
-        scenario 'links to submission page' do
-          assessment = FactoryGirl.create(:assessment)
-          submission = FactoryGirl.create(:submission, assessment: assessment, user: student)
-          FactoryGirl.create(:review, submission: submission)
-          visit assessment_path(assessment)
-          expect(page).to have_link 'has been reviewed'
-        end
+      it { is_expected.to have_button 'Resubmit' }
+      it { is_expected.to have_content 'pending review' }
+      it { is_expected.to_not have_link 'has been reviewed' }
+    end
+
+    context 'after submission has been reviewed' do
+      let(:submission) { FactoryGirl.create(:submission, assessment: assessment, user: student) }
+
+      before do
+        FactoryGirl.create(:review, submission: submission)
+        visit assessment_path(assessment)
       end
+
+      it { is_expected.to_not have_content 'pending review' }
+      it { is_expected.to have_link 'has been reviewed' }
+    end
+
+    context 'after resubmitting' do
+      let(:submission) { FactoryGirl.create(:submission, assessment: assessment, user: student) }
+
+      before do
+        FactoryGirl.create(:review, submission: submission)
+        visit assessment_path(assessment)
+        click_on 'Resubmit'
+      end
+
+      it { is_expected.to have_content 'Submission updated' }
+      it { is_expected.to have_content 'pending review' }
+      it { is_expected.to_not have_link 'has been reviewed' }
     end
   end
 end
