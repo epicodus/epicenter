@@ -14,5 +14,3 @@
 <% elsif @submission.has_been_reviewed? %>
   <%= link_to "Your assessment has been reviewed!", assessment_submission_path(@assessment) %>
 <% end %>
-
-<%= debug("Submission needs review?: #{@submission.needs_review}") %>
