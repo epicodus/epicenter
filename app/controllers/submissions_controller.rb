@@ -10,23 +10,20 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  def show
-    @submission = Submission.find(params[:id])
-  end
-
   def update
-    @submission = Submission.find(params[:id])
+    @assessment = Assessment.find(params[:assessment_id])
+    @submission = @assessment.submission_for(current_user)
     if @submission.update(submission_params)
-      redirect_to submissions_url, notice: "Submission updated!"
+      redirect_to @assessment, notice: "Submission updated!"
     else
-      render 'new'
+      render 'assessments/show'
     end
   end
 
 private
 
   def submission_params
-    params.require(:submission).permit(:link)
+    params.require(:submission).permit(:link, :needs_review).merge(user_id: current_user.id)
   end
 
 end
