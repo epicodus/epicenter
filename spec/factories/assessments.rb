@@ -4,10 +4,8 @@ FactoryGirl.define do
     section 'object oriented design'
     url 'http://learnhowtoprogram.com'
 
-    factory :assessment_with_requirements do
-      after(:create) do |assessment|
-        4.times { create(:requirement, assessment: assessment) }
-      end
+    before(:create) do |assessment|
+      4.times { assessment.requirements << build(:requirement) }
     end
   end
 end

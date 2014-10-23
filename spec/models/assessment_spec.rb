@@ -6,6 +6,13 @@ describe Assessment do
   it { should validate_presence_of :url }
   it { should have_many :requirements }
   it { should have_many :submissions }
+  it { should accept_nested_attributes_for :requirements }
+
+  it 'validates presence of at least one requirement' do
+    assessment = FactoryGirl.build(:assessment)
+    assessment.save
+    expect(assessment.errors.full_messages.first).to eq 'Requirements must be present.'
+  end
 
   describe '#has_been_submitted_by' do
     it 'is true if the given user has already made a submission for this assessment' do
