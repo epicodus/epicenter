@@ -1,6 +1,8 @@
 <h2>New Assessment</h2>
 
 <%= form_for @assessment do |f| %>
+  <%= render 'layouts/errors', object: @assessment %>
+  
   <%= f.label :title %>
   <%= f.text_field :title %>
 
@@ -11,7 +13,7 @@
   <%= f.text_field :url %>
 
   <h3>Requirements</h3>
-  <ol>
+  <ol id="requirement-fields">
     <%= f.nested_fields_for :requirements, wrapper_tag: :li do |ff| %>
       <%= ff.text_field :content %>
     <% end %>

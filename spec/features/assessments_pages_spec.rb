@@ -33,7 +33,7 @@ feature 'index page' do
     end
 
     scenario 'links to assessment show page' do
-      assessment = FactoryGirl.create(:assessment_with_requirements)
+      assessment = FactoryGirl.create(:assessment)
       visit assessments_path
       click_link assessment.title
       expect(page).to have_content assessment.title
@@ -112,6 +112,53 @@ feature 'show page' do
       it { is_expected.to have_content 'Submission updated' }
       it { is_expected.to have_content 'pending review' }
       it { is_expected.to_not have_link 'has been reviewed' }
+    end
+  end
+end
+
+feature 'creating an assessment' do
+  scenario 'with valid input' do
+    assessment = FactoryGirl.build(:assessment)
+    visit new_assessment_path
+    fill_in 'Title', with: assessment.title
+    fill_in 'Section', with: assessment.section
+    fill_in 'Url', with: assessment.url
+    fill_in 'assessment_requirements_attributes_0_content', with: 'requirement'
+    click_button 'Create Assessment'
+    expect(page).to have_content 'Assessment has been saved'
+  end
+
+  scenario 'with invalid input' do
+    assessment = FactoryGirl.build(:assessment)
+    visit new_assessment_path
+    click_button 'Create Assessment'
+    expect(page).to have_content "can't be blank"
+  end
+
+  context 'with requirements' do
+    scenario 'form defaults with 3 requirement fields' do
+      visit new_assessment_path
+      within('ol#requirement-fields') do
+        expect(page).to have_selector('li', count: 3)
+      end
+    end
+
+    scenario 'allows more requirements to be added', js: true do
+      visit new_assessment_path
+      click_link 'Add Requirement'
+      within('ol#requirement-fields') do
+        expect(page).to have_selector('li', count: 4)
+      end
+    end
+
+    scenario 'requires at least one requirement to be added' do
+      assessment = FactoryGirl.build(:assessment)
+      visit new_assessment_path
+      fill_in 'Title', with: assessment.title
+      fill_in 'Section', with: assessment.section
+      fill_in 'Url', with: assessment.url
+      click_button 'Create Assessment'
+      expect(page).to have_content 'Requirements must be present'
     end
   end
 end
