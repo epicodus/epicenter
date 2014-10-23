@@ -94,6 +94,7 @@ GEM
     groupdate (2.3.0)
       activesupport (>= 3)
     hike (1.2.3)
+    hodel_3000_compliant_logger (0.1.1)
     http_parser.rb (0.6.0)
     httparty (0.13.1)
       json (~> 1.8)
@@ -126,6 +127,9 @@ GEM
     newrelic_rpm (3.9.6.257)
     nokogiri (1.6.3.1)
       mini_portile (= 0.6.0)
+    oink (0.10.1)
+      activerecord
+      hodel_3000_compliant_logger
     orm_adapter (0.5.0)
     pg (0.17.1)
     poltergeist (1.5.1)
@@ -249,6 +253,7 @@ DEPENDENCIES
   lograge
   mailgun-ruby
   newrelic_rpm
+  oink
   pg
   poltergeist
   pry
