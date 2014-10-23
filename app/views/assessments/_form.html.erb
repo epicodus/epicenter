@@ -1,4 +1,4 @@
-<%= form_for assessment, class: 'assessment_form' do |f| %>
+<%= form_for assessment, html: { class: 'assessment-form' } do |f| %>
   <%= render 'layouts/errors', object: assessment %>
 
   <%= f.label :title %>

@@ -160,10 +160,23 @@ a.employer {
   font-size: 120%;
 }
 
-#new_assessment input {
+.assessment-form input {
   width: 100%;
 }
 
-#new_assessment .submit {
+#requirement-fields input {
+  width: 97%;
+}
+
+#requirement-fields a {
+  text-decoration: none;
+  color: #e74c3c;
+}
+
+#requirement-fields a:hover {
+  color: #c0392b;
+}
+
+.assessment-form .submit {
   margin-top: 50px;
 }
