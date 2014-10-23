@@ -1,4 +1,5 @@
 Rails.application.configure do
+  config.middleware.use(Oink::Middleware, :logger => Hodel3000CompliantLogger.new(STDOUT))
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
