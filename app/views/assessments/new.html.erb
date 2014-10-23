@@ -1,0 +1,24 @@
+<h2>New Assessment</h2>
+
+<%= form_for @assessment do |f| %>
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+
+  <%= f.label :section %>
+  <%= f.text_field :section %>
+
+  <%= f.label :url %>
+  <%= f.text_field :url %>
+
+  <h3>Requirements</h3>
+  <ol>
+    <%= f.nested_fields_for :requirements, wrapper_tag: :li do |ff| %>
+      <%= ff.text_field :content %>
+    <% end %>
+  </ol>
+  <%= f.add_nested_fields_link :requirements %>
+
+  <div class="submit">
+    <%= f.submit nil, class: 'btn btn-primary' %>
+  </div>
+<% end %>

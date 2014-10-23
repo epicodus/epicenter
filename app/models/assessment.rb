@@ -4,6 +4,8 @@ class Assessment < ActiveRecord::Base
   has_many :requirements
   has_many :submissions
 
+  accepts_nested_attributes_for :requirements
+
   def has_been_submitted_by(user)
     submissions.exists?(user: user)
   end

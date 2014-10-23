@@ -6,11 +6,13 @@ gem 'rails', '4.1.6'
 gem 'pg'
 gem 'uglifier'
 gem 'jquery-rails'
+gem 'coffee-script'
 gem 'devise'
 gem 'balanced'
 gem 'chartkick'
 gem 'groupdate'
 gem 'mailgun-ruby', require: 'mailgun'
+gem 'nested_form_fields'
 
 group :development do
   gem 'spring'

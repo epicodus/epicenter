@@ -5,9 +5,16 @@ class AssessmentsController < ApplicationController
   end
 
   def new
+    @assessment = Assessment.new
   end
 
   def create
+    @assessment = Assessment.new(assessment_params)
+    if @assessment.save
+      redirect_to @assessment, notice: "Assessment has been saved!"
+    else
+      render 'new'
+    end
   end
 
   def show
@@ -27,6 +34,6 @@ class AssessmentsController < ApplicationController
 private
 
   def assessment_params
-    params.require(:assessment).permit(:title, :section, :url)
+    params.require(:assessment).permit(:title, :section, :url, requirements_attributes: [:content])
   end
 end

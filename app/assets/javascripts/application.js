@@ -13,4 +13,5 @@
 //= require jquery
 //= require jquery_ujs
 //= require balanced
+//= require nested_form_fields
 //= require_tree .

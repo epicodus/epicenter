@@ -54,6 +54,10 @@ GEM
     chartkick (1.3.2)
     cliver (0.3.2)
     coderay (1.1.0)
+    coffee-script (2.3.0)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.8.0)
     cookiejar (0.3.2)
     crack (0.4.2)
       safe_yaml (~> 1.0.0)
@@ -123,6 +127,8 @@ GEM
     multi_json (1.10.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
+    nested_form_fields (0.5.2)
+      rails (>= 3.2.0)
     netrc (0.7.9)
     newrelic_rpm (3.9.6.257)
     nokogiri (1.6.3.1)
@@ -243,6 +249,7 @@ DEPENDENCIES
   bugsnag
   capybara
   chartkick
+  coffee-script
   database_cleaner
   devise
   dotenv-rails
@@ -252,6 +259,7 @@ DEPENDENCIES
   launchy
   lograge
   mailgun-ruby
+  nested_form_fields
   newrelic_rpm
   oink
   pg
