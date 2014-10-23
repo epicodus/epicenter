@@ -5,7 +5,7 @@ class Assessment < ActiveRecord::Base
   has_many :requirements
   has_many :submissions
 
-  accepts_nested_attributes_for :requirements, reject_if: :attributes_blank?
+  accepts_nested_attributes_for :requirements, reject_if: :attributes_blank?, allow_destroy: true
 
   def has_been_submitted_by(user)
     submissions.exists?(user: user)

@@ -24,9 +24,16 @@ class AssessmentsController < ApplicationController
   end
 
   def edit
+    @assessment = Assessment.find(params[:id])
   end
 
   def update
+    @assessment = Assessment.find(params[:id])
+    if @assessment.update(assessment_params)
+      redirect_to @assessment, notice: "Assessment updated."
+    else
+      render 'edit'
+    end
   end
 
   def destroy
@@ -35,6 +42,6 @@ class AssessmentsController < ApplicationController
 private
 
   def assessment_params
-    params.require(:assessment).permit(:title, :section, :url, requirements_attributes: [:content])
+    params.require(:assessment).permit(:title, :section, :url, requirements_attributes: [:id, :content, :_destroy])
   end
 end

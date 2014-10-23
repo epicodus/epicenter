@@ -162,3 +162,44 @@ feature 'creating an assessment' do
     end
   end
 end
+
+feature 'editing an assessment' do
+  scenario 'with valid input' do
+    assessment = FactoryGirl.create(:assessment)
+    visit edit_assessment_path(assessment)
+    fill_in 'Title', with: 'Another title'
+    click_button 'Update Assessment'
+    expect(page).to have_content 'Assessment updated'
+  end
+
+  scenario 'with invalid input' do
+    assessment = FactoryGirl.create(:assessment)
+    visit edit_assessment_path(assessment)
+    fill_in 'Title', with: ''
+    click_button 'Update Assessment'
+    expect(page).to have_content "can't be blank"
+  end
+
+  scenario 'removing requirements', js: true do
+    assessment = FactoryGirl.create(:assessment)
+    requirement_count = assessment.requirements.count
+    visit edit_assessment_path(assessment)
+    within('ol#requirement-fields') do
+      first(:link, 'x').click
+    end
+    click_button 'Update Assessment'
+    expect(assessment.requirements.count).to eq requirement_count - 1
+  end
+
+  scenario 'adding requirements', js: true do
+    assessment = FactoryGirl.create(:assessment)
+    requirement_count = assessment.requirements.count
+    visit edit_assessment_path(assessment)
+    click_link 'Add Requirement'
+    within('ol#requirement-fields') do
+      all('input').last.set 'The last requirement'
+    end
+    click_button 'Update Assessment'
+    expect(assessment.requirements.count).to eq requirement_count + 1
+  end
+end
