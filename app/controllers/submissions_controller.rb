@@ -1,4 +1,8 @@
 class SubmissionsController < ApplicationController
+  def index
+    @assessment = Assessment.find(params[:assessment_id])
+    @submissions = @assessment.submissions
+  end
 
   def create
     @assessment = Assessment.find(params[:assessment_id])

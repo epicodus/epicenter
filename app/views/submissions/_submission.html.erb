@@ -1,4 +1,3 @@
-<%= link_to assessment_submission_path(submission.assessment, submission), class: "list-group-item" do %>
-  <h2 class="list-group-item-heading"><%= submission.link %></h2>
-<% end %>
-  <p class="list-group-item-text"><%= submission.note %></p>
+<td><%= submission.user.name %></td>
+<td><%= link_to 'view code', submission.link %></td>
+<td><%= time_ago_in_words(submission.updated_at) %> ago</td>

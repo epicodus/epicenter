@@ -1,3 +1,14 @@
-<div class="list-group">
-  <%= render @submissions %>
-</div>
+<h2>Submissions for <%= @assessment.title %></h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Student name</th>
+      <th></th>
+      <th>Submitted</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render @submissions %>
+  </tbody>
+</table>
