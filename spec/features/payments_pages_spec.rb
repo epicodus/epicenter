@@ -26,7 +26,7 @@ feature 'User views payment index page' do
       user = payment.user
       sign_in user
       visit payments_path
-      expect(page).to have_content 617.92
+      expect(page).to have_content 618.21
     end
   end
 
@@ -47,7 +47,7 @@ feature 'User views payment index page' do
       user = FactoryGirl.create(:user_with_credit_card, plan: plan)
       sign_in user
       visit payments_path
-      expect(page).to have_button('Make upfront payment of $205.97')
+      expect(page).to have_button('Make upfront payment of $206.27')
       expect(page).to_not have_button('Start recurring payments')
     end
   end
@@ -59,7 +59,7 @@ feature 'User views payment index page' do
       sign_in user
       visit payments_path
       expect(page).to_not have_button('Make upfront payment')
-      expect(page).to have_button('Start recurring payments of $617.92')
+      expect(page).to have_button('Start recurring payments of $618.21')
     end
   end
 

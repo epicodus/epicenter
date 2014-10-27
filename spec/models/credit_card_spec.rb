@@ -16,7 +16,7 @@ describe CreditCard do
   describe "#calculate_charge" do
     it "returns the amount given plus credit card fees", :vcr do
       credit_card = FactoryGirl.create :credit_card
-      expect(credit_card.calculate_charge(600_00)).to eq 617_92
+      expect(credit_card.calculate_charge(600_00)).to eq 618_21
     end
   end
 end

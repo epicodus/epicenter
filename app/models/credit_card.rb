@@ -10,6 +10,6 @@ class CreditCard < ActiveRecord::Base
   end
 
   def calculate_charge(amount)
-    ((amount / BigDecimal.new("0.971")) + BigDecimal.new("0.3")).to_i
+    ((amount / BigDecimal.new("0.971")) + 30).to_i
   end
 end
