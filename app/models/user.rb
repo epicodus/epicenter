@@ -68,6 +68,10 @@ class User < ActiveRecord::Base
     attendance_records.today.exists?
   end
 
+  def next_payment_date
+    payments.last.created_at + 1.month if recurring_active == true
+  end
+
   def make_upfront_payment
     Payment.create(user: self, amount: plan.upfront_amount, payment_method: primary_payment_method)
   end

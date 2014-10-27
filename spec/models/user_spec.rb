@@ -322,4 +322,20 @@ describe User do
       expect(user.primary_payment_method).to eq user.bank_account
     end
   end
+
+  describe "#next_payment_date", :vcr do
+    include ActiveSupport::Testing::TimeHelpers
+    it "returns nil if recurring_active is not true" do
+      user = FactoryGirl.create(:user_with_upfront_payment)
+      expect(user.next_payment_date).to eq nil
+    end
+
+    it "returns the next payment date if recurring_active is true" do
+      user = nil
+      travel_to(Date.parse("January 5, 2014")) do
+        user = FactoryGirl.create(:user_with_recurring_active)
+      end
+      expect(user.next_payment_date.to_date).to eq Date.parse("February 5, 2014")
+    end
+  end
 end
