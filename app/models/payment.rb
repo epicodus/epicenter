@@ -1,4 +1,6 @@
 class Payment < ActiveRecord::Base
+  include ActionView::Helpers::NumberHelper
+
   belongs_to :user
   belongs_to :payment_method, polymorphic: true
 
@@ -17,7 +19,7 @@ private
         :to => user.email,
         :bcc => "michael@epicodus.com",
         :subject => "Epicodus tuition payment receipt",
-        :text => "Hi #{user.name}. This is to confirm your payment of #{amount} for Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
+        :text => "Hi #{user.name}. This is to confirm your payment of #{number_to_currency(amount / 100.00)} for Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
     )
   end
 

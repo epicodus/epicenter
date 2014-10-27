@@ -46,7 +46,7 @@ describe Payment do
           :to => user.email,
           :bcc => "michael@epicodus.com",
           :subject => "Epicodus tuition payment receipt",
-          :text => "Hi #{user.name}. This is to confirm your payment of #{payment.amount} for Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
+          :text => "Hi #{user.name}. This is to confirm your payment of $618.21 for Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
       )
     end
   end
