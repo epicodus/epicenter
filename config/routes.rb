@@ -21,5 +21,9 @@ Rails.application.routes.draw do
     resource :submission, only: [:create, :show, :update]
   end
 
+  resources :submissions, only: [] do
+    resources :reviews, only: [:new, :create]
+  end
+
   resources :assessments
 end

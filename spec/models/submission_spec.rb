@@ -25,4 +25,22 @@ describe Submission do
       expect(submission.has_been_reviewed?).to eq true
     end
   end
+
+  describe '.needing_review' do
+    it 'returns only submissions still needing review' do
+      reviewed_submission = FactoryGirl.create(:submission)
+      not_reviewed_submission = FactoryGirl.create(:submission)
+      FactoryGirl.create(:review, submission: reviewed_submission)
+      expect(Submission.needing_review).to eq [not_reviewed_submission]
+    end
+  end
+
+  describe 'default scope' do
+    it 'orders by updated_at ascending' do
+      first_submission = FactoryGirl.create(:submission)
+      second_submission = FactoryGirl.create(:submission)
+      first_submission.touch # updates the updated_at field to simulate resubmission
+      expect(Submission.all).to eq [second_submission, first_submission]
+    end
+  end
 end

@@ -1,0 +1,9 @@
+<% if @review.errors.any? %>
+  $('#submission_<%= @submission.id %> form').prepend('<%= j render "layouts/errors", object: @review %>')
+<% else %>
+  $('.submissions').prepend("<div class='alert alert-success' style='display:none'>Saved!</div>");
+  $('.submissions .alert').fadeIn().delay(1000).fadeOut(400, function() {
+    $(this).remove();
+  });
+  $('#submission_<%= @submission.id %>').remove();
+<% end %>

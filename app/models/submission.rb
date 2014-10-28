@@ -1,4 +1,6 @@
 class Submission < ActiveRecord::Base
+  default_scope { order(:updated_at) }
+  scope :needing_review, -> { where(needs_review: true) }
   validates_presence_of :link
 
   belongs_to :user

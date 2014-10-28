@@ -1,7 +1,7 @@
 class SubmissionsController < ApplicationController
   def index
     @assessment = Assessment.find(params[:assessment_id])
-    @submissions = @assessment.submissions
+    @submissions = @assessment.submissions.needing_review
   end
 
   def create

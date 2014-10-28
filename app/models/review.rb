@@ -5,6 +5,8 @@ class Review < ActiveRecord::Base
 
   validates :note, presence: true
 
+  accepts_nested_attributes_for :grades
+
   after_create :mark_submission_as_reviewed
 
   private
