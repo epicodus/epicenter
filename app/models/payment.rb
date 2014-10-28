@@ -33,7 +33,7 @@ private
       )
       self.payment_uri = debit.href
       send_payment_receipt
-    rescue => exception
+    rescue Balanced::Error => exception
       errors.add(:base, exception.description)
       false
     end
