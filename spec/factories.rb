@@ -52,16 +52,19 @@ FactoryGirl.define do
     factory :recurring_plan_with_upfront_payment do
       upfront_amount 200_00
       recurring_amount 600_00
+      total_amount 5000_00
     end
 
     factory :upfront_payment_only_plan do
       upfront_amount 3400_00
       recurring_amount 0
+      total_amount 3400_00
     end
 
     factory :recurring_plan_with_no_upfront_payment do
       upfront_amount 0
       recurring_amount 625_00
+      total_amount 5000_00
     end
   end
 

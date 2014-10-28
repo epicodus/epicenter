@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 20141028223902) do
     t.integer  "upfront_amount"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "total_amount"
   end
 
   create_table "users", force: true do |t|
