@@ -31,6 +31,27 @@ describe Payment do
     end
   end
 
+  describe '#check_if_paid_up' do
+    it 'does nothing if user is not paid up', :vcr do
+      user = FactoryGirl.create(:user_with_recurring_active)
+      payment = user.payments.create(amount: 600_00, payment_method: user.credit_card)
+      expect(user.recurring_active).to be true
+    end
+
+    let(:plan) { FactoryGirl.create(:recurring_plan_with_upfront_payment, total_amount: 5000_00) }
+    let(:user) { FactoryGirl.create(:user_with_credit_card, plan: plan) }
+
+    it 'sets recurring_active to false if user is paid up', :vcr do
+      payment = user.payments.create(amount: 5000_00, payment_method: user.credit_card)
+      expect(user.recurring_active).to be false
+    end
+
+    it 'sets recurring_active to false if user has paid more than the total_amount', :vcr do
+      payment = user.payments.create(amount: 5100_00, payment_method: user.credit_card)
+      expect(user.recurring_active).to be false
+    end
+  end
+
   describe "#send_payment_receipt" do
     it "emails the user a receipt after successful payment", :vcr do
       user = FactoryGirl.create(:user_with_credit_card)

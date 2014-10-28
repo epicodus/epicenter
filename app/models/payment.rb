@@ -8,10 +8,15 @@ class Payment < ActiveRecord::Base
   validates :payment_method, presence: true
 
   before_create :make_payment
+  after_create :check_if_paid_up
 
   scope :order_by_latest, -> { order('created_at DESC') }
 
 private
+  def check_if_paid_up
+    user.update(recurring_active: false) if user.payments.sum(:amount) >= user.plan.total_amount
+  end
+
   def send_payment_receipt
     Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message(
       "epicodus.com",
