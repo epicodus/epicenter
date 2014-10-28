@@ -29,6 +29,14 @@ describe User do
       expect(User.billable_today).to eq []
     end
 
+    it "doesn't matter if previous payments get updated" do
+      user = FactoryGirl.create(:user_with_recurring_not_due)
+      old_payment = FactoryGirl.create(:payment, user: user, created_at: 6.weeks.ago)
+      newer_payment = FactoryGirl.create(:payment, user: user, created_at: 2.weeks.ago)
+      old_payment.update(updated_at: Date.today)
+      expect(User.billable_today).to eq []
+    end
+
     it "only includes users that are recurring_active" do
       user = FactoryGirl.create(:user_with_recurring_due)
       user.update(recurring_active: false)
