@@ -68,7 +68,7 @@ ActiveRecord::Schema.define(version: 20141030175701) do
     t.integer  "submission_id"
     t.integer  "requirement_id"
     t.string   "comment"
-    t.integer  "score"
+    t.integer  "score_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "user_id"
@@ -109,6 +109,13 @@ ActiveRecord::Schema.define(version: 20141030175701) do
     t.integer  "submission_id"
     t.integer  "user_id"
     t.text     "note"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "scores", force: true do |t|
+    t.integer  "value"
+    t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

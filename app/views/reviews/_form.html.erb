@@ -6,12 +6,7 @@
           <%= ff.object.requirement.content if ff.object.requirement %>
         </div>
         <div class="span3">
-          <%= ff.select :score do %>
-            <option value="1">Does not meet expectations</option>
-            <option value="2">Meets expectations some of the time</option>
-            <option value="3">Meets expectations most of the time</option>
-            <option value="4">Meets expectations all of the time</option>
-          <% end %>
+          <%= ff.collection_select :score_id, Score.all, :id, :description %>
         </div>
       </div>
     <% end %>
