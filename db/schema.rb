@@ -65,7 +65,6 @@ ActiveRecord::Schema.define(version: 20141030175701) do
   add_index "credit_cards", ["user_id"], name: "index_credit_cards_on_user_id", using: :btree
 
   create_table "grades", force: true do |t|
-    t.integer  "submission_id"
     t.integer  "requirement_id"
     t.string   "comment"
     t.integer  "score_id"
