@@ -13,6 +13,7 @@ gem 'chartkick'
 gem 'groupdate'
 gem 'mailgun-ruby', require: 'mailgun'
 gem 'nested_form_fields'
+gem 'redcarpet'
 
 group :development do
   gem 'spring'
