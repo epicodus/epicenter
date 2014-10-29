@@ -52,6 +52,14 @@ describe Payment do
     end
   end
 
+  describe '#total_amount' do
+    it 'returns payment amount plus fees', :vcr do
+      user = FactoryGirl.create(:user_with_credit_card)
+      payment = user.payments.create(amount: 600_00, payment_method: user.credit_card)
+      expect(payment.total_amount).to be 618_21
+    end
+  end
+
   describe "#send_payment_receipt" do
     it "emails the user a receipt after successful payment", :vcr do
       user = FactoryGirl.create(:user_with_credit_card)

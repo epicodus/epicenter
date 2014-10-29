@@ -22,10 +22,10 @@ describe BankAccount do
     end
   end
 
-  describe "#calculate_charge" do
-    it "returns the amount given", :vcr do
+  describe "#calculate_fee" do
+    it "returns zero", :vcr do
       bank_account = FactoryGirl.create :verified_bank_account
-      expect(bank_account.calculate_charge(600_00)).to eq 600_00
+      expect(bank_account.calculate_fee(600_00)).to eq 0
     end
   end
 end

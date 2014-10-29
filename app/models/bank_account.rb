@@ -16,7 +16,7 @@ class BankAccount < ActiveRecord::Base
     verification.create_test_deposits
   end
 
-  def calculate_charge(amount)
-    amount
+  def calculate_fee(amount)
+    0
   end
 end

@@ -12,6 +12,10 @@ class Payment < ActiveRecord::Base
 
   scope :order_by_latest, -> { order('created_at DESC') }
 
+  def total_amount
+    amount + fee
+  end
+
 private
   def check_if_paid_up
     user.update(recurring_active: false) if user.payments.sum(:amount) >= user.plan.total_amount
@@ -24,16 +28,16 @@ private
         :to => user.email,
         :bcc => "michael@epicodus.com",
         :subject => "Epicodus tuition payment receipt",
-        :text => "Hi #{user.name}. This is to confirm your payment of #{number_to_currency(amount / 100.00)} for Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
+        :text => "Hi #{user.name}. This is to confirm your payment of #{number_to_currency(total_amount / 100.00)} for Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
     )
   end
 
   def make_payment
     payment_method_to_charge = user.primary_payment_method
-    self.amount = payment_method_to_charge.calculate_charge(amount)
+    self.fee = payment_method_to_charge.calculate_fee(amount)
     begin
       debit = payment_method_to_charge.fetch_balanced_account.debit(
-        :amount => amount,
+        :amount => total_amount,
         :appears_on_statement_as => 'Epicodus tuition'
       )
       self.payment_uri = debit.href
