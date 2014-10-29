@@ -4,6 +4,7 @@ describe Submission do
   it { should validate_presence_of :link }
   it { should belong_to :assessment }
   it { should have_many :reviews }
+  it { should have_one :latest_review }
 
   describe '#needs_review?' do
     it 'is true if no review has been created for this submission' do
@@ -41,6 +42,15 @@ describe Submission do
       second_submission = FactoryGirl.create(:submission)
       first_submission.touch # updates the updated_at field to simulate resubmission
       expect(Submission.all).to eq [second_submission, first_submission]
+    end
+  end
+
+  describe 'latest_review' do
+    it 'returns the most recent review for this submissions' do
+      submission = FactoryGirl.create(:submission)
+      first_review = FactoryGirl.create(:review, submission: submission)
+      second_review = FactoryGirl.create(:review, submission: submission)
+      expect(submission.latest_review).to eq second_review
     end
   end
 end

@@ -6,6 +6,7 @@ class Submission < ActiveRecord::Base
   belongs_to :user
   belongs_to :assessment
   has_many :reviews
+  has_one :latest_review, -> { order('created_at DESC') }, class_name: "Review"
 
   before_create :mark_as_needing_review
 
