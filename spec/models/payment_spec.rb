@@ -4,9 +4,9 @@ describe Payment do
 
   it { should belong_to :user }
   it { should belong_to :payment_method }
-  it { should validate_presence_of :amount }
   it { should validate_presence_of :user_id }
   it { should validate_presence_of :payment_method }
+  it { should validate_presence_of :amount }
 
   describe '.order_by_latest scope' do
     let!(:payment_one) { FactoryGirl.create(:payment) }
@@ -38,17 +38,21 @@ describe Payment do
       expect(user.recurring_active).to be true
     end
 
-    let(:plan) { FactoryGirl.create(:recurring_plan_with_upfront_payment, total_amount: 5000_00) }
-    let(:user) { FactoryGirl.create(:user_with_credit_card, plan: plan) }
-
     it 'sets recurring_active to false if user is paid up', :vcr do
+      plan = FactoryGirl.create(:recurring_plan_with_upfront_payment, total_amount: 5000_00)
+      user = FactoryGirl.create(:user_with_credit_card, plan: plan)
       payment = user.payments.create(amount: 5000_00, payment_method: user.credit_card)
       expect(user.recurring_active).to be false
     end
+  end
 
-    it 'sets recurring_active to false if user has paid more than the total_amount', :vcr do
-      payment = user.payments.create(amount: 5100_00, payment_method: user.credit_card)
-      expect(user.recurring_active).to be false
+  describe '#ensure_payment_isnt_over_balance' do
+    it 'does not save if payment amount exceeds outstanding balance', :vcr do
+      plan = FactoryGirl.create(:recurring_plan_with_upfront_payment, total_amount: 5000_00)
+      user = FactoryGirl.create(:user_with_credit_card, plan: plan)
+      payment = user.payments.new(amount: 5100_00, payment_method: user.credit_card)
+      expect(payment.valid?).to be false
+      expect(payment.errors.messages[:amount]).to include('exceeds the outstanding balance.')
     end
   end
 
