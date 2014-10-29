@@ -9,6 +9,7 @@
           <%= ff.collection_select :score_id, Score.all, :id, :description %>
         </div>
       </div>
+      <%= ff.hidden_field :requirement_id %>
     <% end %>
 
     <%= f.label :note %>
