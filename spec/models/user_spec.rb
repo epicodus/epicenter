@@ -213,6 +213,28 @@ describe User do
     end
   end
 
+  describe "#recurring_amount_with_fees", :vcr do
+    let(:plan) { FactoryGirl.create(:recurring_plan_with_upfront_payment, recurring_amount: 600_00) }
+
+    it "calculates the total recurring amount for a credit card" do
+      user = FactoryGirl.create(:user_with_credit_card, plan: plan)
+      expect(user.recurring_amount_with_fees).to eq 618_21
+    end
+
+    it 'calculates the total recurring amount for a bank account' do
+      user = FactoryGirl.create(:user_with_verified_bank_account, plan: plan)
+      expect(user.recurring_amount_with_fees).to eq 600_00
+    end
+  end
+
+  describe "#upfront_amount_with_fees", :vcr do
+    it "calculates the total upfront amount" do
+      plan = FactoryGirl.create(:recurring_plan_with_upfront_payment, upfront_amount: 200_00)
+      user = FactoryGirl.create(:user_with_credit_card, plan: plan)
+      expect(user.upfront_amount_with_fees).to eq 206_27
+    end
+  end
+
   describe '#signed_in_today?' do
     let(:user) { FactoryGirl.create(:user) }
 
