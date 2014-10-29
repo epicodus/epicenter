@@ -60,6 +60,14 @@ class User < ActiveRecord::Base
     plan.upfront_amount > 0 && payments.count == 0
   end
 
+  def recurring_amount_with_fees
+    plan.recurring_amount + primary_payment_method.calculate_fee(plan.recurring_amount)
+  end
+
+  def upfront_amount_with_fees
+    plan.upfront_amount + primary_payment_method.calculate_fee(plan.upfront_amount)
+  end
+
   def ready_to_start_recurring_payments?
     plan.recurring_amount > 0 && recurring_active != true && !upfront_payment_due?
   end

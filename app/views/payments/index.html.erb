@@ -28,7 +28,7 @@
             <%= payment.created_at.strftime("%F") %>
           </td>
           <td>
-            <%= number_to_currency(payment.amount / 100.00) %>
+            <%= number_to_currency(payment.total_amount / 100.00) %>
           </td>
         </tr>
       <% end %>

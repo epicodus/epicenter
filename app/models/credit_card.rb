@@ -9,7 +9,7 @@ class CreditCard < ActiveRecord::Base
     Balanced::Card.fetch(credit_card_uri)
   end
 
-  def calculate_charge(amount)
-    ((amount / BigDecimal.new("0.971")) + 30).to_i
+  def calculate_fee(amount)
+    ((amount / BigDecimal.new("0.971")) + 30).to_i - amount
   end
 end
