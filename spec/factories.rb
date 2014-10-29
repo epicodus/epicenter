@@ -135,4 +135,9 @@ FactoryGirl.define do
       end_date 20.days.ago.end_of_week - 2.days
     end
   end
+
+  factory :score do
+    value 3
+    description "Meets expectations most of the time"
+  end
 end

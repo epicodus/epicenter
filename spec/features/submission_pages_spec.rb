@@ -48,6 +48,9 @@ feature 'index page' do
 
     context 'creating a review', js: true do
       let(:teacher) { FactoryGirl.create(:user) }
+      before do
+        (1..4).each { |n| Score.create(value: n, description: "description #{n}") }
+      end
 
       scenario 'with valid input' do
         FactoryGirl.create(:submission, assessment: assessment, user: student)

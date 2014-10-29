@@ -90,14 +90,15 @@ feature 'show page' do
 
     context 'after submission has been reviewed' do
       let(:submission) { FactoryGirl.create(:submission, assessment: assessment, user: student) }
+      let!(:review) { FactoryGirl.create(:review, submission: submission) }
 
       before do
-        FactoryGirl.create(:review, submission: submission)
         visit assessment_path(assessment)
       end
 
       it { is_expected.to_not have_content 'pending review' }
-      it { is_expected.to have_link 'has been reviewed' }
+      it { is_expected.to have_content review.note }
+      it { is_expected.to have_content 'Meets expectations' }
     end
 
     context 'after resubmitting' do

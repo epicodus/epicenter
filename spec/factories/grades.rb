@@ -2,5 +2,6 @@
 
 FactoryGirl.define do
   factory :grade do
+    score
   end
 end

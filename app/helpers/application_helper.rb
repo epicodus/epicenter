@@ -11,4 +11,9 @@ module ApplicationHelper
                                              :fenced_code_blocks => true)
     markdown.render(text).html_safe
   end
+
+  def colorize_grade(grade)
+    grade_class = grade.score.value > 1 ? 'happy-grade' : 'sad-grade'
+    content_tag(:span, grade.score.description, class: [grade_class, 'pull-right'])
+  end
 end

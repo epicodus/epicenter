@@ -2,15 +2,25 @@
 
 <h3>Requirements</h3>
 <ul class="unstyled requirements">
-  <%= render @assessment.requirements %>
+  <% if @submission.has_been_reviewed? %>
+    <%= render @submission.latest_review.grades %>
+  <% else %>
+    <%= render @assessment.requirements %>
+  <% end %>
 </ul>
+
+
+<% if @submission.needs_review? %>
+  <hr>
+  <p class='text-muted'>Your submission is pending review.</p>
+<% elsif @submission.has_been_reviewed? %>
+  <hr>
+  <h3>Feedback</h3>
+  <div>
+    <%= markdown(@submission.latest_review.note) %>
+  </div>
+<% end %>
 
 <hr>
 
 <%= render 'submissions/form' %>
-
-<% if @submission.needs_review? %>
-  <p class='text-muted'>Your submission is pending review.</p>
-<% elsif @submission.has_been_reviewed? %>
-  <%= link_to "Your assessment has been reviewed!", assessment_submission_path(@assessment) %>
-<% end %>
