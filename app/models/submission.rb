@@ -11,10 +11,6 @@ class Submission < ActiveRecord::Base
 
   before_create :mark_as_needing_review
 
-  def needs_review?
-    needs_review
-  end
-
   def has_been_reviewed?
     needs_review == false
   end
