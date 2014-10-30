@@ -7,10 +7,6 @@ class Assessment < ActiveRecord::Base
 
   accepts_nested_attributes_for :requirements, reject_if: :attributes_blank?, allow_destroy: true
 
-  def has_been_submitted_by(user)
-    submissions.exists?(user: user)
-  end
-
   def submission_for(user)
     submissions.find_by(user: user)
   end
