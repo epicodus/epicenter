@@ -1,4 +1,4 @@
-<%= div_for submission, class: 'row' do %>
+<%= div_for submission, class: 'list-row row' do %>
   <div class="span3"><%= submission.user.name %></div>
   <div class="span2"><%= link_to 'view code', submission.link, target: '_blank' %></div>
   <div class="span2"><%= time_ago_in_words(submission.updated_at) %> ago</div>

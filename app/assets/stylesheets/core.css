@@ -182,10 +182,14 @@ a.employer {
   margin-top: 50px;
 }
 
-.submission {
+.list-row {
   border-top: 1px solid #ccc;
   padding-top: 10px;
   padding-bottom: 10px;
+}
+
+.list-link:hover {
+  background-color: #eee;
 }
 
 .submission a.btn {
@@ -214,4 +218,10 @@ a.employer {
 .sad-grade {
   color: #f39c12;
   font-weight: bold;
+}
+
+.pull-right {
+  float: right;
+  text-align: right;
+  margin-right: 10px;
 }
