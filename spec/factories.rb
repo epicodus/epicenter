@@ -147,7 +147,7 @@ FactoryGirl.define do
     url 'http://learnhowtoprogram.com'
 
     before(:create) do |assessment|
-      4.times { assessment.requirements << build(:requirement) }
+      assessment.requirements << build(:requirement)
     end
   end
 

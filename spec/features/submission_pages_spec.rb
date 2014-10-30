@@ -68,9 +68,6 @@ feature 'index page' do
         visit assessment_submissions_path(assessment)
         click_on 'Review'
         select_second_option('review_grades_attributes_0_score_id')
-        select_second_option('review_grades_attributes_1_score_id')
-        select_second_option('review_grades_attributes_2_score_id')
-        select_second_option('review_grades_attributes_3_score_id')
         fill_in 'Note', with: 'Well done!'
         click_on 'Create Review'
         expect(page).to have_content 'Saved!'
