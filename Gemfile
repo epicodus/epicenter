@@ -14,6 +14,7 @@ gem 'groupdate'
 gem 'mailgun-ruby', require: 'mailgun'
 gem 'nested_form_fields'
 gem 'redcarpet'
+gem 'deep_cloneable'
 
 group :development do
   gem 'spring'

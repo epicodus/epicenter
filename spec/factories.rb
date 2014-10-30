@@ -138,6 +138,6 @@ FactoryGirl.define do
 
   factory :score do
     value 3
-    description "Meets expectations most of the time"
+    sequence(:description) { |n| "Meets expectations #{n} of the time" }
   end
 end
