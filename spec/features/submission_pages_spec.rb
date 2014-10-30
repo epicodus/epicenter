@@ -48,38 +48,37 @@ feature 'index page' do
 
     context 'creating a review', js: true do
       let(:teacher) { FactoryGirl.create(:user) }
+      let!(:submission) { FactoryGirl.create(:submission, assessment: assessment, user: student) }
+      let!(:score) { FactoryGirl.create(:score) }
 
       before do
-        (1..4).each { |n| FactoryGirl.create(:score) }
-      end
-
-      scenario 'should be prepopulated with information from the last review created for this submission' do
-        submission = FactoryGirl.create(:submission, assessment: assessment, user: student)
-        review = FactoryGirl.create(:review, submission: submission, note: 'Great specs!')
-        submission.update(needs_review: true)
+        sign_in teacher
         visit assessment_submissions_path(assessment)
-        click_on 'Review'
-        expect(find_field('Note').value).to eq review.note
       end
 
       scenario 'with valid input' do
-        FactoryGirl.create(:submission, assessment: assessment, user: student)
-        sign_in teacher
-        visit assessment_submissions_path(assessment)
         click_on 'Review'
-        select_second_option('review_grades_attributes_0_score_id')
+        select score.description, from: 'review_grades_attributes_0_score_id'
         fill_in 'Note', with: 'Well done!'
         click_on 'Create Review'
         expect(page).to have_content 'Saved!'
       end
 
       scenario 'with invalid input' do
-        FactoryGirl.create(:submission, assessment: assessment, user: student)
-        sign_in teacher
-        visit assessment_submissions_path(assessment)
         click_on 'Review'
         click_on 'Create Review'
         expect(page).to have_content "can't be blank"
+      end
+
+      context 'when the submission has been reviewed before' do
+        let!(:review) { FactoryGirl.create(:review, submission: submission) }
+
+        before { submission.update(needs_review: true) }
+
+        scenario 'should be prepopulated with information from the last review created for this submission' do
+          click_on 'Review'
+          expect(find_field('Note').value).to eq review.note
+        end
       end
     end
   end

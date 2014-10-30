@@ -3,18 +3,17 @@ require 'rails_helper'
 feature 'index page' do
   context 'when visiting as a student' do
     let(:student) { FactoryGirl.create(:user) }
+    let!(:assessment) { FactoryGirl.create(:assessment) }
     before { sign_in student }
 
     scenario 'shows all assessments' do
-      first_assessment = FactoryGirl.create(:assessment)
-      second_assessment = FactoryGirl.create(:assessment, title: 'another_assessment')
+      another_assessment = FactoryGirl.create(:assessment, title: 'another_assessment')
       visit assessments_path
-      expect(page).to have_content first_assessment.title
-      expect(page).to have_content second_assessment.title
+      expect(page).to have_content assessment.title
+      expect(page).to have_content another_assessment.title
     end
 
     scenario 'shows if the student has submitted an assessment' do
-      assessment = FactoryGirl.create(:assessment)
       FactoryGirl.create(:submission, assessment: assessment, user: student)
       visit assessments_path
       expect(page).to have_content 'Submitted'
@@ -22,7 +21,6 @@ feature 'index page' do
     end
 
     scenario 'shows if the assessment has been graded' do
-      assessment = FactoryGirl.create(:assessment)
       submission = FactoryGirl.create(:submission, assessment: assessment, user: student)
       FactoryGirl.create(:review, submission: submission)
       visit assessments_path
@@ -31,7 +29,6 @@ feature 'index page' do
     end
 
     scenario 'links to assessment show page' do
-      assessment = FactoryGirl.create(:assessment)
       visit assessments_path
       click_link assessment.title
       expect(page).to have_content assessment.title
@@ -59,9 +56,7 @@ feature 'show page' do
     end
 
     context 'when submitting' do
-      before do
-        visit assessment_path(assessment)
-      end
+      before { visit assessment_path(assessment) }
 
       scenario 'with valid input' do
         fill_in 'submission_link', with: 'http://github.com'
@@ -116,9 +111,10 @@ feature 'show page' do
 end
 
 feature 'creating an assessment' do
+  let(:assessment) { FactoryGirl.build(:assessment) }
+  before { visit new_assessment_path }
+
   scenario 'with valid input' do
-    assessment = FactoryGirl.build(:assessment)
-    visit new_assessment_path
     fill_in 'Title', with: assessment.title
     fill_in 'Section', with: assessment.section
     fill_in 'Url', with: assessment.url
@@ -128,22 +124,18 @@ feature 'creating an assessment' do
   end
 
   scenario 'with invalid input' do
-    assessment = FactoryGirl.build(:assessment)
-    visit new_assessment_path
     click_button 'Create Assessment'
     expect(page).to have_content "can't be blank"
   end
 
   context 'with requirements' do
     scenario 'form defaults with 3 requirement fields' do
-      visit new_assessment_path
       within('ol#requirement-fields') do
         expect(page).to have_selector('li', count: 3)
       end
     end
 
     scenario 'allows more requirements to be added', js: true do
-      visit new_assessment_path
       click_link 'Add Requirement'
       within('ol#requirement-fields') do
         expect(page).to have_selector('li', count: 4)
@@ -151,8 +143,6 @@ feature 'creating an assessment' do
     end
 
     scenario 'requires at least one requirement to be added' do
-      assessment = FactoryGirl.build(:assessment)
-      visit new_assessment_path
       fill_in 'Title', with: assessment.title
       fill_in 'Section', with: assessment.section
       fill_in 'Url', with: assessment.url
@@ -163,26 +153,23 @@ feature 'creating an assessment' do
 end
 
 feature 'editing an assessment' do
+  let(:assessment) { FactoryGirl.create(:assessment) }
+  before { visit edit_assessment_path(assessment) }
+
   scenario 'with valid input' do
-    assessment = FactoryGirl.create(:assessment)
-    visit edit_assessment_path(assessment)
     fill_in 'Title', with: 'Another title'
     click_button 'Update Assessment'
     expect(page).to have_content 'Assessment updated'
   end
 
   scenario 'with invalid input' do
-    assessment = FactoryGirl.create(:assessment)
-    visit edit_assessment_path(assessment)
     fill_in 'Title', with: ''
     click_button 'Update Assessment'
     expect(page).to have_content "can't be blank"
   end
 
   scenario 'removing requirements', js: true do
-    assessment = FactoryGirl.create(:assessment)
     requirement_count = assessment.requirements.count
-    visit edit_assessment_path(assessment)
     within('ol#requirement-fields') do
       first(:link, 'x').click
     end
@@ -191,9 +178,7 @@ feature 'editing an assessment' do
   end
 
   scenario 'adding requirements', js: true do
-    assessment = FactoryGirl.create(:assessment)
     requirement_count = assessment.requirements.count
-    visit edit_assessment_path(assessment)
     click_link 'Add Requirement'
     within('ol#requirement-fields') do
       all('input').last.set 'The last requirement'

@@ -40,9 +40,3 @@ def correctly_verify_bank_account(user)
   fill_in 'Second deposit amount', with: '1'
   click_on 'Confirm account & start payments'
 end
-
-def select_second_option(id)
-  second_option_xpath = "//*[@id='#{id}']/option[2]"
-  second_option = find(:xpath, second_option_xpath).text
-  select(second_option, :from => id)
-end
