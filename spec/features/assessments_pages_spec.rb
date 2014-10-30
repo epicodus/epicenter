@@ -13,9 +13,7 @@ feature 'index page' do
       expect(page).to have_content second_assessment.title
     end
 
-    # these two tests will require some extra model methods to determine the
-    # if the student has submitted an assessment or not.
-    xscenario 'shows if the student has submitted an assessment' do
+    scenario 'shows if the student has submitted an assessment' do
       assessment = FactoryGirl.create(:assessment)
       FactoryGirl.create(:submission, assessment: assessment, user: student)
       visit assessments_path
@@ -23,12 +21,12 @@ feature 'index page' do
       expect(page).to_not have_content 'Not submitted'
     end
 
-    xscenario 'shows if the assessment has been graded' do
+    scenario 'shows if the assessment has been graded' do
       assessment = FactoryGirl.create(:assessment)
       submission = FactoryGirl.create(:submission, assessment: assessment, user: student)
       FactoryGirl.create(:review, submission: submission)
       visit assessments_path
-      expect(page).to have_content 'Graded'
+      expect(page).to have_content 'Reviewed'
       expect(page).to_not have_content 'Submitted'
     end
 
