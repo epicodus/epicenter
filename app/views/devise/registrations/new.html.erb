@@ -16,12 +16,12 @@
 
     <div>
       <%= f.label :cohort_id, "Choose class" %>
-      <%= f.select(:cohort_id, Cohort.all.collect {|c| [ c.description, c.id ] }) %>
+      <%= f.select(:cohort_id, Cohort.all.collect {|c| [ c.description, c.id ] }, :include_blank => true) %>
     </div>
 
     <div>
       <%= f.label :plan_id, "Choose payment plan" %>
-      <%= f.select(:plan_id, Plan.all.collect {|p| [ p.name, p.id ] }) %>
+      <%= f.select(:plan_id, Plan.all.collect {|p| [ p.name, p.id ] }, :include_blank => true) %>
     </div>
 
     <div>
