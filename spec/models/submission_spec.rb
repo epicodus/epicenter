@@ -62,6 +62,11 @@ describe Submission do
       expect(submission.clone_or_build_review).to be_a_new Review
     end
 
+    it 'returns a new review object that has grades built based on number of requirements' do
+      new_review = submission.clone_or_build_review
+      expect(new_review.grades.size).to eq submission.assessment.requirements.size
+    end
+
     it 'returns a cloned review object if there is a latest review' do
       old_review = FactoryGirl.create(:review, submission: submission)
       new_review = submission.clone_or_build_review

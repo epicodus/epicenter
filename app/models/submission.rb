@@ -20,9 +20,8 @@ class Submission < ActiveRecord::Base
       latest_review.deep_clone(include: :grades)
     else
       review = Review.new(submission: self)
-      self.assessment.requirements.each do |requirement|
-        review.grades.build(requirement: requirement)
-      end
+      assessment.requirements.each { |requirement| review.grades.build(requirement: requirement) }
+      review
     end
   end
 
