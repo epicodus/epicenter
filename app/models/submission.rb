@@ -23,7 +23,7 @@ class Submission < ActiveRecord::Base
     end
   end
 
-  private
+private
 
   def mark_as_needing_review
     self.needs_review = true

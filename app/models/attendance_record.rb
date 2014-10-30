@@ -6,7 +6,7 @@ class AttendanceRecord < ActiveRecord::Base
 
   belongs_to :user
 
-  private
+private
 
   def set_tardiness
     class_late_time = Time.parse(ENV['CLASS_START_TIME'] ||= '9:05 AM')

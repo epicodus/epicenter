@@ -11,7 +11,7 @@ class Assessment < ActiveRecord::Base
     submissions.find_by(user: user)
   end
 
-  private
+private
 
   def presence_of_requirements
     if requirements.size < 1

@@ -17,7 +17,7 @@ class ReviewsController < ApplicationController
     end
   end
 
-  private
+private
 
   def review_params
     params.require(:review).permit(:note, grades_attributes: [:score_id, :requirement_id]).merge(user_id: current_user.id)

@@ -9,7 +9,7 @@ class Review < ActiveRecord::Base
 
   after_create :mark_submission_as_reviewed
 
-  private
+private
 
   def mark_submission_as_reviewed
     submission.update(needs_review: false)

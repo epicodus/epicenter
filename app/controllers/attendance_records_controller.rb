@@ -21,7 +21,7 @@ class AttendanceRecordsController < ApplicationController
     redirect_to attendance_path
   end
 
-  private
+private
 
   def attendance_record_params
     params.require(:attendance_record).permit(:user_id)
