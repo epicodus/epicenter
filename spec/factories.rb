@@ -140,4 +140,38 @@ FactoryGirl.define do
     value 3
     sequence(:description) { |n| "Meets expectations #{n} of the time" }
   end
+
+  factory :assessment do
+    title 'assessment title'
+    section 'object oriented design'
+    url 'http://learnhowtoprogram.com'
+
+    before(:create) do |assessment|
+      4.times { assessment.requirements << build(:requirement) }
+    end
+  end
+
+  factory :grade do
+    score
+  end
+
+  factory :requirement do
+    content 'Did you meet all the requirements from last time?'
+  end
+
+  factory :review do
+    note 'Great job!'
+    submission
+
+    after(:create) do |review|
+      review.submission.assessment.requirements.each do |requirement|
+        FactoryGirl.create(:grade, review: review, requirement: requirement)
+      end
+    end
+  end
+
+  factory :submission do
+    link 'http://github.com'
+    assessment
+  end
 end
