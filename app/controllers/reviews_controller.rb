@@ -1,13 +1,9 @@
 class ReviewsController < ApplicationController
   def new
     @submission = Submission.find(params[:submission_id])
-    if @submission.latest_review
-      @review = @submission.latest_review.deep_clone(include: :grades)
-    else
-      @review = Review.new(submission: @submission)
-      @submission.assessment.requirements.each do |requirement|
-        @review.grades.build(requirement: requirement)
-      end
+    @review = @submission.clone_or_build_review
+    @submission.assessment.requirements.each do |requirement|
+      @review.grades.build(requirement: requirement)
     end
   end
 

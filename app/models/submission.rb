@@ -15,6 +15,14 @@ class Submission < ActiveRecord::Base
     needs_review == false
   end
 
+  def clone_or_build_review
+    if latest_review
+      latest_review.deep_clone(include: :grades)
+    else
+      Review.new(submission: self)
+    end
+  end
+
   private
 
   def mark_as_needing_review
