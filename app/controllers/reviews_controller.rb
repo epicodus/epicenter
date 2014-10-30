@@ -2,9 +2,6 @@ class ReviewsController < ApplicationController
   def new
     @submission = Submission.find(params[:submission_id])
     @review = @submission.clone_or_build_review
-    @submission.assessment.requirements.each do |requirement|
-      @review.grades.build(requirement: requirement)
-    end
   end
 
   def create

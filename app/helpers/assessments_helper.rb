@@ -6,8 +6,15 @@ module AssessmentsHelper
     markdown.render(text).html_safe
   end
 
-  def colorize_grade(grade)
-    grade_class = grade.score.value > 1 ? 'happy-grade' : 'sad-grade'
-    content_tag(:span, grade.score.description, class: [grade_class, 'pull-right'])
+  def tr_for_grade(grade, &block)
+    case grade.score.value
+    when 1
+      score_class = 'error'
+    when 2
+      score_class = 'warning'
+    else
+      score_class = 'success'
+    end
+    content_tag(:tr, class: score_class, &block)
   end
 end

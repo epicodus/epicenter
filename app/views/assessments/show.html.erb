@@ -1,13 +1,15 @@
 <h1 class="page-header"><%= @assessment.title %></h1>
 
 <h3>Requirements</h3>
-<ul class="unstyled requirements">
-  <% if @submission.has_been_reviewed? %>
+<% if @submission.has_been_reviewed? %>
+  <table class="table table-hover">
     <%= render @submission.latest_review.grades %>
-  <% else %>
+  </table>
+<% else %>
+  <ul class="unstyled requirements">
     <%= render @assessment.requirements %>
-  <% end %>
-</ul>
+  </ul>
+<% end %>
 
 
 <% if @submission.needs_review? %>
