@@ -9,7 +9,12 @@ class ReviewsController < ApplicationController
 
   def create
     @submission = Submission.find(params[:submission_id])
-    @review = @submission.reviews.create(review_params)
+    @review = @submission.reviews.new(review_params)
+    if @review.save
+      render :create
+    else
+      render :errors
+    end
   end
 
   private
