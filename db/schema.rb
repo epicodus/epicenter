@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141028223902) do
+ActiveRecord::Schema.define(version: 20141030175701) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,10 @@ ActiveRecord::Schema.define(version: 20141028223902) do
     t.boolean  "tardy"
   end
 
+  add_index "attendance_records", ["created_at"], name: "index_attendance_records_on_created_at", using: :btree
+  add_index "attendance_records", ["tardy"], name: "index_attendance_records_on_tardy", using: :btree
+  add_index "attendance_records", ["user_id"], name: "index_attendance_records_on_user_id", using: :btree
+
   create_table "bank_accounts", force: true do |t|
     t.string   "account_uri"
     t.string   "verification_uri"
@@ -31,6 +35,9 @@ ActiveRecord::Schema.define(version: 20141028223902) do
     t.integer  "user_id"
     t.boolean  "verified"
   end
+
+  add_index "bank_accounts", ["user_id"], name: "index_bank_accounts_on_user_id", using: :btree
+  add_index "bank_accounts", ["verified"], name: "index_bank_accounts_on_verified", using: :btree
 
   create_table "cohorts", force: true do |t|
     t.string   "description"
@@ -47,6 +54,8 @@ ActiveRecord::Schema.define(version: 20141028223902) do
     t.datetime "updated_at"
   end
 
+  add_index "credit_cards", ["user_id"], name: "index_credit_cards_on_user_id", using: :btree
+
   create_table "payments", force: true do |t|
     t.integer  "amount"
     t.datetime "created_at"
@@ -57,6 +66,9 @@ ActiveRecord::Schema.define(version: 20141028223902) do
     t.string   "payment_method_type"
     t.integer  "fee",                 default: 0, null: false
   end
+
+  add_index "payments", ["payment_method_type", "payment_method_id"], name: "payment_method_index", using: :btree
+  add_index "payments", ["user_id"], name: "index_payments_on_user_id", using: :btree
 
   create_table "plans", force: true do |t|
     t.string   "name"
@@ -87,6 +99,8 @@ ActiveRecord::Schema.define(version: 20141028223902) do
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["plan_id"], name: "index_users_on_plan_id", using: :btree
+  add_index "users", ["recurring_active"], name: "index_users_on_recurring_active", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end

@@ -49,7 +49,7 @@ describe User do
       user3 = FactoryGirl.create(:user_with_recurring_not_due)
       user4 = FactoryGirl.create(:user_with_recurring_due)
       user4.update(recurring_active: false)
-      expect(User.billable_today).to eq [user1, user2]
+      expect(User.billable_today).to match_array [user1, user2]
     end
 
     include ActiveSupport::Testing::TimeHelpers
