@@ -17,8 +17,7 @@ Rails.application.routes.draw do
   end
 
   resources :assessments do
-    resources :submissions, only: [:index]
-    resource :submission, only: [:create, :show, :update]
+    resources :submissions, only: [:index, :create, :update]
   end
 
   resources :submissions, only: [] do
