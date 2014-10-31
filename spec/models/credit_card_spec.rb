@@ -6,6 +6,15 @@ describe CreditCard do
   it { should validate_presence_of :credit_card_uri }
   it { should validate_presence_of :user_id }
 
+  describe "create create card", :vcr do
+    let(:credit_card) { FactoryGirl.create :credit_card }
+
+    it "gets last four digits before_create" do
+      credit_card = FactoryGirl.create(:credit_card)
+      expect(credit_card.last_four_string).to eq "xxxxxxxxxxxx1111"
+    end
+  end
+
   describe "#fetch_balanced_account" do
     it "returns the balanced credit card object", :vcr do
       credit_card = FactoryGirl.create :credit_card

@@ -13,6 +13,11 @@ describe BankAccount do
       bank_account = FactoryGirl.create(:bank_account)
       expect(bank_account.verification_uri).to_not be_nil
     end
+
+    it "gets last four digits before_create" do
+      bank_account = FactoryGirl.create(:bank_account)
+      expect(bank_account.last_four_string).to eq "xxxxxx0002"
+    end
   end
 
   describe "#fetch_balanced_account" do

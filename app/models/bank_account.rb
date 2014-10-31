@@ -6,6 +6,7 @@ class BankAccount < ActiveRecord::Base
   has_many :payments, :as => :payment_method
 
   before_create :create_verification
+  before_create :get_last_four_string
 
   def fetch_balanced_account
     Balanced::BankAccount.fetch(account_uri)
@@ -18,5 +19,10 @@ class BankAccount < ActiveRecord::Base
 
   def calculate_fee(amount)
     0
+  end
+
+private
+  def get_last_four_string
+    self.last_four_string = fetch_balanced_account.account_number
   end
 end
