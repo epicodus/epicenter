@@ -1,0 +1,25 @@
+<%= form_for assessment, html: { class: 'assessment-form' } do |f| %>
+  <%= render 'layouts/errors', object: assessment %>
+
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+
+  <%= f.label :section %>
+  <%= f.text_field :section %>
+
+  <%= f.label :url %>
+  <%= f.text_field :url %>
+
+  <h3>Requirements</h3>
+  <ol id="requirement-fields">
+    <%= f.nested_fields_for :requirements, wrapper_tag: :li do |ff| %>
+      <%= ff.text_field :content %>
+      <%= ff.remove_nested_fields_link %>
+    <% end %>
+  </ol>
+  <%= f.add_nested_fields_link :requirements %>
+
+  <div class="submit">
+    <%= f.submit nil, class: 'btn btn-primary' %>
+  </div>
+<% end %>

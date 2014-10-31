@@ -16,6 +16,14 @@ ActiveRecord::Schema.define(version: 20141030175701) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "assessments", force: true do |t|
+    t.string   "title"
+    t.string   "section"
+    t.string   "url"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "attendance_records", force: true do |t|
     t.integer  "user_id"
     t.datetime "created_at"
@@ -56,6 +64,16 @@ ActiveRecord::Schema.define(version: 20141030175701) do
 
   add_index "credit_cards", ["user_id"], name: "index_credit_cards_on_user_id", using: :btree
 
+  create_table "grades", force: true do |t|
+    t.integer  "requirement_id"
+    t.string   "comment"
+    t.integer  "score_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "user_id"
+    t.integer  "review_id"
+  end
+
   create_table "payments", force: true do |t|
     t.integer  "amount"
     t.datetime "created_at"
@@ -77,6 +95,38 @@ ActiveRecord::Schema.define(version: 20141030175701) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "total_amount"
+  end
+
+  create_table "requirements", force: true do |t|
+    t.string   "content"
+    t.integer  "assessment_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "reviews", force: true do |t|
+    t.integer  "submission_id"
+    t.integer  "user_id"
+    t.text     "note"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "scores", force: true do |t|
+    t.integer  "value"
+    t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "submissions", force: true do |t|
+    t.integer  "user_id"
+    t.string   "link"
+    t.text     "note"
+    t.integer  "assessment_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "needs_review"
   end
 
   create_table "users", force: true do |t|

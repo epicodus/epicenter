@@ -15,4 +15,14 @@ Rails.application.routes.draw do
   resources :cohorts, only: [] do
     resource :attendance_statistics, only: [:show]
   end
+
+  resources :assessments do
+    resources :submissions, only: [:index, :create, :update]
+  end
+
+  resources :submissions, only: [] do
+    resources :reviews, only: [:new, :create]
+  end
+
+  resources :assessments
 end

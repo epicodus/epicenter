@@ -1,0 +1,23 @@
+<div class="span8">
+  <%= form_for [@submission, @review], remote: true do |f| %>
+    <%= f.nested_fields_for :grades, wrapper_tag: :div do |ff| %>
+      <div class="row">
+        <div class="span5">
+          <%= ff.object.requirement.content if ff.object.requirement %>
+        </div>
+        <div class="span3">
+          <%= ff.collection_select :score_id, Score.all, :id, :description, prompt: "Please select" %>
+        </div>
+      </div>
+      <%= ff.hidden_field :requirement_id %>
+    <% end %>
+
+    <%= f.label :note %>
+    <%= f.text_area :note, class: 'span8', rows: 5 %>
+
+    <div class="buttons">
+      <%= f.submit nil, class: "btn btn-primary" %>
+      <button type="button" class="cancel btn btn-warning">Cancel</button>
+    </div>
+  <% end %>
+</div>
