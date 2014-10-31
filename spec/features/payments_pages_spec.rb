@@ -1,4 +1,4 @@
-require 'rails_helper'
+ require 'rails_helper'
 
 feature 'User views payment index page' do
   context 'before any payments have been made', :vcr do
@@ -17,6 +17,7 @@ feature 'User views payment index page' do
       sign_in user
       visit payments_path
       expect(page).to have_content 600.00
+      expect(page).to have_content "Bank account ending in 0002"
     end
   end
 
@@ -27,6 +28,7 @@ feature 'User views payment index page' do
       sign_in user
       visit payments_path
       expect(page).to have_content 618.21
+      expect(page).to have_content "Credit card ending in 1111"
     end
   end
 
