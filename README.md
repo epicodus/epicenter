@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/epicodus/payments.svg?branch=master)](https://travis-ci.org/epicodus/payments)
+[![Code Climate](https://codeclimate.com/github/epicodus/payments/badges/gpa.svg)](https://codeclimate.com/github/epicodus/payments)
 # Payments
 
 This is a recurring payments app built with the Balanced API.
