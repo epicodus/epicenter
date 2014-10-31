@@ -13,6 +13,13 @@ describe CreditCard do
     end
   end
 
+  describe "#get_last_four_string" do
+    it "gets the last digits of the credit card before saving", :vcr do
+      credit_card = FactoryGirl.create :credit_card
+      expect(credit_card.last_four_string).to eq "xxxxxxxxxxxx1111"
+    end
+  end
+
   describe "#calculate_fee" do
     it "returns the credit card fees for the amount given", :vcr do
       credit_card = FactoryGirl.create :credit_card
