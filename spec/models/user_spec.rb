@@ -272,14 +272,16 @@ describe User do
   end
 
   describe "#primary_payment_method", :vcr do
-    it "returns a CreditCard if user has a credit card" do
-      user = FactoryGirl.create(:user_with_credit_card)
-      expect(user.primary_payment_method).to eq user.credit_card
+    it "returns the user's primary payment method" do
+      user = FactoryGirl.create(:user)
+      credit_card = FactoryGirl.create(:credit_card)
+      user.set_primary_payment_method(credit_card)
+      expect(user.primary_payment_method).to eq credit_card
     end
 
-    it "returns a BankAccount if user has a verified bank account" do
-      user = FactoryGirl.create(:user_with_verified_bank_account)
-      expect(user.primary_payment_method).to eq user.bank_account
+    it "returns nil if user does not have a primary payment method" do
+      user = FactoryGirl.create(:user_with_unverified_bank_account)
+      expect(user.primary_payment_method).to eq nil
     end
   end
 

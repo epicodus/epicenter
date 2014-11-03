@@ -55,7 +55,9 @@ class User < ActiveRecord::Base
   end
 
   def primary_payment_method
-    credit_card.present? ? credit_card : bank_account
+    if primary_payment_method_type != nil && primary_payment_method_id > 0
+      primary_payment_method_type.constantize.find(primary_payment_method_id)
+    end
   end
 
   def set_primary_payment_method(payment_method)
