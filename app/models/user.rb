@@ -58,6 +58,10 @@ class User < ActiveRecord::Base
     credit_card.present? ? credit_card : bank_account
   end
 
+  def set_primary_payment_method(payment_method)
+    update!(primary_payment_method_id: payment_method.id, primary_payment_method_type: payment_method.class.name)
+  end
+
   def upfront_payment_due?
     plan.upfront_amount > 0 && payments.count == 0
   end

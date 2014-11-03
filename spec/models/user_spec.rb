@@ -283,6 +283,16 @@ describe User do
     end
   end
 
+  describe "#set_primary_payment_method", :vcr do
+    it "sets the primary payment method of the user" do
+      user = FactoryGirl.create(:user)
+      credit_card = FactoryGirl.create(:credit_card)
+      user.set_primary_payment_method(credit_card)
+      expect(user.primary_payment_method_type).to eq 'CreditCard'
+      expect(user.primary_payment_method_id).to eq credit_card.id
+    end
+  end
+
   describe 'attendance methods' do
     include ActiveSupport::Testing::TimeHelpers
 
