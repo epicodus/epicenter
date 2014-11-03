@@ -7,6 +7,8 @@ class CreditCard < ActiveRecord::Base
 
   before_create :get_last_four_string
 
+  after_create :ensure_primary_method_exists
+
   def fetch_balanced_account
     Balanced::Card.fetch(credit_card_uri)
   end
@@ -16,6 +18,10 @@ class CreditCard < ActiveRecord::Base
   end
 
 private
+  def ensure_primary_method_exists
+    user.set_primary_payment_method(self) if !user.primary_payment_method
+  end
+
   def get_last_four_string
     self.last_four_string = fetch_balanced_account.number
   end

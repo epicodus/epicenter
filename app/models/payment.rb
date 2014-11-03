@@ -42,10 +42,9 @@ private
   end
 
   def make_payment
-    payment_method_to_charge = user.primary_payment_method
-    self.fee = payment_method_to_charge.calculate_fee(amount)
+    self.fee = payment_method.calculate_fee(amount)
     begin
-      debit = payment_method_to_charge.fetch_balanced_account.debit(
+      debit = payment_method.fetch_balanced_account.debit(
         :amount => total_amount,
         :appears_on_statement_as => 'Epicodus tuition'
       )

@@ -81,15 +81,21 @@ FactoryGirl.define do
     end
 
     factory :user_with_credit_card do
-      association :credit_card
+      after(:create) do |user|
+        create(:credit_card, user: user)
+      end
     end
 
     factory :user_with_invalid_credit_card do
-      association :credit_card, factory: :invalid_credit_card
+      after(:create) do |user|
+        create(:invalid_credit_card, user: user)
+      end
     end
 
     factory :user_with_verified_bank_account do
-      association :bank_account, factory: :verified_bank_account
+      after(:create) do |user|
+        create(:verified_bank_account, user: user)
+      end
 
       factory :user_with_recurring_active do
         recurring_active true

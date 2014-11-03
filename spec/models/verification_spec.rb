@@ -33,6 +33,11 @@ describe Verification, :vcr do
         expect(verification.confirm).to be true
       end
 
+      it "sets the confirmed bank account as the primary payment method if user does not have one" do
+        bank_account = FactoryGirl.create(:verified_bank_account)
+        expect(bank_account.user.primary_payment_method).to eq bank_account
+      end
+
       it "cleans the input" do
         user = FactoryGirl.create(:user_with_unverified_bank_account)
         verification = Verification.new(bank_account: user.bank_account, first_deposit: "$0.01", second_deposit: 1)
