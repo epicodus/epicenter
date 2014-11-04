@@ -308,28 +308,6 @@ describe Student do
     end
   end
 
-  describe "#has_payment_method", :vcr do
-    it "returns true if student has a credit card" do
-      student = FactoryGirl.create(:user_with_credit_card)
-      expect(student.has_payment_method).to eq true
-    end
-
-    it "returns true if student has a verified bank account" do
-      student = FactoryGirl.create(:user_with_verified_bank_account)
-      expect(student.has_payment_method).to eq true
-    end
-
-    it "returns false if student has no credit card and unverified bank account" do
-      student = FactoryGirl.create(:user_with_unverified_bank_account)
-      expect(student.has_payment_method).to eq false
-    end
-
-    it "returns false if student doesn't have a credit card or bank account" do
-      student = FactoryGirl.create(:student)
-      expect(student.has_payment_method).to eq false
-    end
-  end
-
   describe "#next_payment_date", :vcr do
     include ActiveSupport::Testing::TimeHelpers
     it "returns nil if recurring_active is not true" do

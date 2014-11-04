@@ -44,10 +44,6 @@ class Student < User
     end
   end
 
-  def has_payment_method
-    primary_payment_method.present?
-  end
-
   def primary_payment_method
     if primary_payment_method_type != nil && primary_payment_method_id > 0
       primary_payment_method_type.constantize.find(primary_payment_method_id)
