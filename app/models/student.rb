@@ -13,6 +13,10 @@ class Student < User
   has_many :submissions
   has_many :grades
 
+  def payment_methods
+    credit_cards + bank_accounts
+  end
+
   def self.billable_today
     recurring_active.select do |student|
       student.payments.last.created_at.to_date < 1.month.ago

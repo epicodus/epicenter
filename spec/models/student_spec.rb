@@ -9,6 +9,16 @@ describe Student do
   it { should have_many :attendance_records }
   it { should belong_to :cohort }
 
+  describe "#payment_methods" do
+    it "returns all the student's bank accounts and credit cards", :vcr do
+      student = FactoryGirl.create(:student)
+      credit_card_1 = FactoryGirl.create(:credit_card, student: student)
+      credit_card_2 = FactoryGirl.create(:credit_card, student: student)
+      bank_account = FactoryGirl.create(:bank_account, student: student)
+      expect(student.payment_methods).to match_array [credit_card_1, credit_card_2, bank_account]
+    end
+  end
+
   describe ".recurring_active" do
     it "only includes users that are recurring_active", :vcr do
       recurring_active_user = FactoryGirl.create(:user_with_recurring_active)
