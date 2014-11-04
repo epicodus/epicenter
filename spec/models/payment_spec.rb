@@ -20,7 +20,7 @@ describe Payment do
   describe "make a payment" do
     it "makes a successful payment", :vcr do
       student = FactoryGirl.create :user_with_verified_bank_account
-      student.payments.create(amount: 100, payment_method: student.bank_account)
+      student.payments.create(amount: 100, payment_method: student.bank_accounts.first)
       expect(student.payments.first.payment_uri).to_not be_nil
     end
 

@@ -77,7 +77,9 @@ FactoryGirl.define do
     password_confirmation "password"
 
     factory :user_with_unverified_bank_account do
-      association :bank_account
+      after(:create) do |student|
+        create(:bank_account, student: student)
+      end
     end
 
     factory :user_with_credit_card do

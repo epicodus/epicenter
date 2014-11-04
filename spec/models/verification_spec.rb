@@ -22,14 +22,14 @@ describe Verification, :vcr do
     context "with correct amounts" do
       it "sets the student's bank_account verified status to true" do
         student = FactoryGirl.create(:user_with_unverified_bank_account)
-        verification = Verification.new(bank_account: student.bank_account, first_deposit: 1, second_deposit: 1)
+        verification = Verification.new(bank_account: student.bank_accounts.first, first_deposit: 1, second_deposit: 1)
         verification.confirm
-        expect(student.bank_account.verified).to be true
+        expect(student.bank_accounts.first.verified).to be true
       end
 
       it "returns true" do
         student = FactoryGirl.create(:user_with_unverified_bank_account)
-        verification = Verification.new(bank_account: student.bank_account, first_deposit: 1, second_deposit: 1)
+        verification = Verification.new(bank_account: student.bank_accounts.first, first_deposit: 1, second_deposit: 1)
         expect(verification.confirm).to be true
       end
 
@@ -40,7 +40,7 @@ describe Verification, :vcr do
 
       it "cleans the input" do
         student = FactoryGirl.create(:user_with_unverified_bank_account)
-        verification = Verification.new(bank_account: student.bank_account, first_deposit: "$0.01", second_deposit: 1)
+        verification = Verification.new(bank_account: student.bank_accounts.first, first_deposit: "$0.01", second_deposit: 1)
         expect(verification.confirm).to be true
       end
     end
@@ -48,13 +48,13 @@ describe Verification, :vcr do
     context "with incorrect amounts" do
       it "returns false" do
         student = FactoryGirl.create(:user_with_unverified_bank_account)
-        verification = Verification.new(bank_account: student.bank_account, first_deposit: 1, second_deposit: 2)
+        verification = Verification.new(bank_account: student.bank_accounts.first, first_deposit: 1, second_deposit: 2)
         expect(verification.confirm).to be false
       end
 
       it "adds errors to the object" do
         student = FactoryGirl.create(:user_with_unverified_bank_account)
-        verification = Verification.new(bank_account: student.bank_account, first_deposit: 1, second_deposit: 2)
+        verification = Verification.new(bank_account: student.bank_accounts.first, first_deposit: 1, second_deposit: 2)
         verification.confirm
         expect(verification.errors.full_messages).to eq ["Authentication amounts do not match. Your request id is OHM457f68b4644c11e4bc0006429171ffad."]
       end

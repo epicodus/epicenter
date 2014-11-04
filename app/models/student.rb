@@ -6,7 +6,7 @@ class Student < User
 
   belongs_to :plan
   belongs_to :cohort
-  has_one :bank_account
+  has_many :bank_accounts
   has_one :credit_card
   has_many :payments
   has_many :attendance_records
@@ -45,7 +45,7 @@ class Student < User
   end
 
   def has_payment_method
-    credit_card.present? || (bank_account.present? && bank_account.verified == true)
+    primary_payment_method.present?
   end
 
   def primary_payment_method

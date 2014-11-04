@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Student do
   it { should validate_presence_of :plan_id }
   it { should validate_presence_of :cohort_id }
-  it { should have_one :bank_account }
+  it { should have_many :bank_accounts }
   it { should have_many :payments }
   it { should belong_to :plan }
   it { should have_many :attendance_records }
