@@ -29,11 +29,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 23:36:26 GMT
+      - Tue, 04 Nov 2014 17:44:57 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM12e1cc20597b11e4a66302a1fe53e539
+      - OHM4acd57ce644a11e49b0502a1fe52a36c
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
@@ -43,13 +43,13 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.31
+      - 1.8.39
       X-Midlr-Version:
       - '2'
       X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVcKUgFWBlpRAQZXVFcPBgVdTUIFCA5KRBNSVwMDAVRVBw8HAAEBB1EDG00RB1IOF1Nq
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVENWANSAVNUBwNVVlcKCgdIQVAOCBtGRgQPAlQDAFECVA9SAQsHVFdHFUFXAF8RAWs=
       Content-Length:
-      - '1264'
+      - '1266'
       Connection:
       - keep-alive
     body:
@@ -67,14 +67,14 @@ http_interactions:
               "avs_postal_match": null,
               "expiration_month": 12,
               "meta": {},
-              "id": "CCzShNPfK83lSWGin51iD9m",
+              "id": "CC2hBYPd4LVSd6zbpyrLhPI4",
               "category": "other",
               "type": "credit",
               "cvv_match": "yes",
               "bank_name": "JPMORGAN CHASE BANK, N.A.",
               "avs_street_match": null,
               "brand": "Visa",
-              "updated_at": "2014-10-21T23:36:26.284380Z",
+              "updated_at": "2014-11-04T17:45:09.888495Z",
               "address": {
                 "city": null,
                 "line2": null,
@@ -90,8 +90,8 @@ http_interactions:
               "is_verified": true,
               "avs_result": null,
               "can_credit": false,
-              "href": "/cards/CCzShNPfK83lSWGin51iD9m",
-              "created_at": "2014-10-21T23:36:26.284376Z"
+              "href": "/cards/CC2hBYPd4LVSd6zbpyrLhPI4",
+              "created_at": "2014-11-04T17:45:09.888493Z"
             }
           ],
           "links": {
@@ -102,7 +102,7 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 23:36:29 GMT
+  recorded_at: Tue, 04 Nov 2014 17:44:58 GMT
 - request:
     method: post
     uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards
@@ -132,13 +132,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 23:36:27 GMT
+      - Tue, 04 Nov 2014 17:44:59 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM1366789e597b11e480c602a1fe52a36c
+      - OHM4b8c681c644a11e4ba8502a1fe53e539
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
+      - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -146,13 +146,13 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.31
+      - 1.8.39
       X-Midlr-Version:
       - '2'
       X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVcLUgdYBFtUBgBWVFMBBwdXTUIFCA5KRBNTV1BSUQcDWwxRCQsAUAZdG00RB1IOF1Nq
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVEBWQdTBFtVBgFQUlMJAAZTTUIFCA5KRBNUBQEAVlYBUQ8GDwhSBgJdG00RB1IOF1Nq
       Content-Length:
-      - '1272'
+      - '1274'
       Connection:
       - keep-alive
     body:
@@ -170,14 +170,14 @@ http_interactions:
               "avs_postal_match": null,
               "expiration_month": 12,
               "meta": {},
-              "id": "CCAOztJD43t9eelqrvuVV6M",
+              "id": "CC2j5KTEkYMnIABMAKDGUeY5",
               "category": "other",
               "type": "credit",
               "cvv_match": "yes",
               "bank_name": "CREDIT AGRICOLE BANK POLSKA, S.A.",
               "avs_street_match": null,
               "brand": "Visa",
-              "updated_at": "2014-10-21T23:36:27.121672Z",
+              "updated_at": "2014-11-04T17:45:11.211286Z",
               "address": {
                 "city": null,
                 "line2": null,
@@ -193,8 +193,8 @@ http_interactions:
               "is_verified": true,
               "avs_result": null,
               "can_credit": false,
-              "href": "/cards/CCAOztJD43t9eelqrvuVV6M",
-              "created_at": "2014-10-21T23:36:27.121668Z"
+              "href": "/cards/CC2j5KTEkYMnIABMAKDGUeY5",
+              "created_at": "2014-11-04T17:45:11.211284Z"
             }
           ],
           "links": {
@@ -205,10 +205,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 21 Oct 2014 23:36:29 GMT
+  recorded_at: Tue, 04 Nov 2014 17:44:59 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CCAOztJD43t9eelqrvuVV6M
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC2j5KTEkYMnIABMAKDGUeY5
     body:
       encoding: US-ASCII
       string: ''
@@ -229,204 +229,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 21 Oct 2014 23:36:27 GMT
+      - Tue, 04 Nov 2014 17:44:59 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM13b51e0e597b11e4910006429171ffad
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.31
-      Content-Length:
-      - '572'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "cards": [
-            {
-              "links": {
-                "customer": null
-              },
-              "fingerprint": "9ea2b317b53183f5a93ba23a594a0b8a0f2183ea9cc338e0964755cd9df71b99",
-              "cvv_result": "Match",
-              "number": "xxxxxxxxxxxx4448",
-              "avs_postal_match": null,
-              "expiration_month": 12,
-              "meta": {},
-              "id": "CCAOztJD43t9eelqrvuVV6M",
-              "category": "other",
-              "type": "credit",
-              "cvv_match": "yes",
-              "bank_name": "CREDIT AGRICOLE BANK POLSKA, S.A.",
-              "avs_street_match": null,
-              "brand": "Visa",
-              "updated_at": "2014-10-21T23:36:27.121672Z",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": true,
-              "name": null,
-              "expiration_year": 2020,
-              "cvv": "xxx",
-              "is_verified": true,
-              "avs_result": null,
-              "can_credit": false,
-              "href": "/cards/CCAOztJD43t9eelqrvuVV6M",
-              "created_at": "2014-10-21T23:36:27.121668Z"
-            }
-          ],
-          "links": {
-            "cards.card_holds": "/cards/{cards.id}/card_holds",
-            "cards.customer": "/customers/{cards.customer}",
-            "cards.disputes": "/cards/{cards.id}/disputes",
-            "cards.debits": "/cards/{cards.id}/debits"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 21 Oct 2014 23:36:30 GMT
-- request:
-    method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CCAOztJD43t9eelqrvuVV6M/debits
-    body:
-      encoding: UTF-8
-      string: '{"amount":103,"appears_on_statement_as":"Epicodus tuition"}'
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 402
-      message: PAYMENT REQUIRED
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 21 Oct 2014 23:36:27 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM13de5a94597b11e4910006429171ffad
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.31
-      Content-Length:
-      - '1470'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "errors": [
-            {
-              "status": "Payment Required",
-              "category_code": "card-declined",
-              "additional": "Account Frozen",
-              "status_code": 402,
-              "category_type": "banking",
-              "extras": {},
-              "request_id": "OHM13de5a94597b11e4910006429171ffad",
-              "description": "R758: Account Frozen. Your request id is OHM13de5a94597b11e4910006429171ffad."
-            }
-          ],
-          "links": {
-            "debits.customer": "/customers/{debits.customer}",
-            "debits.order": "/orders/{debits.order}",
-            "debits.dispute": "/disputes/{debits.dispute}",
-            "debits.source": "/resources/{debits.source}",
-            "debits.events": "/debits/{debits.id}/events",
-            "debits.refunds": "/debits/{debits.id}/refunds",
-            "debits.card_hold": "/holds/{debits.card_hold}"
-          },
-          "debits": [
-            {
-              "status": "failed",
-              "description": null,
-              "links": {
-                "customer": null,
-                "source": "CCAOztJD43t9eelqrvuVV6M",
-                "card_hold": null,
-                "order": null,
-                "dispute": null
-              },
-              "updated_at": "2014-10-21T23:36:27.928826Z",
-              "created_at": "2014-10-21T23:36:27.764135Z",
-              "transaction_number": "WYJ0-NOH-4FBA",
-              "failure_reason": "R758: Account Frozen.",
-              "currency": "USD",
-              "amount": 103,
-              "failure_reason_code": "card-declined",
-              "meta": {},
-              "href": "/debits/WDBx5Mw2zB3XPklRigQUqre",
-              "appears_on_statement_as": "BAL*Epicodus tuition",
-              "id": "WDBx5Mw2zB3XPklRigQUqre"
-            }
-          ]
-        }
-    http_version: 
-  recorded_at: Tue, 21 Oct 2014 23:36:30 GMT
-- request:
-    method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards
-    body:
-      encoding: UTF-8
-      string: '{"number":"4444444444444448","expiration_month":"12","expiration_year":"2020","cvv":"123"}'
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Access-Control-Allow-Headers:
-      - Content-Type
-      Access-Control-Allow-Methods:
-      - POST, OPTIONS
-      Access-Control-Allow-Origin:
-      - "*"
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 29 Oct 2014 22:01:11 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM17ac65ac5fb711e4a34102a1fe53e539
+      - OHM4c2f8c4a644a11e4910006429171ffad
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
@@ -437,12 +244,8 @@ http_interactions:
       - '1.1'
       X-Balanced-Software-Build:
       - 1.8.39
-      X-Midlr-Version:
-      - '2'
-      X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVMJVQhVBlpdDgdUUFMLAwNIQVAOCBtGRgMFBQYDW1YJUA9aXF4DVgRHFUFXAF8RAWs=
       Content-Length:
-      - '1272'
+      - '575'
       Connection:
       - keep-alive
     body:
@@ -460,14 +263,14 @@ http_interactions:
               "avs_postal_match": null,
               "expiration_month": 12,
               "meta": {},
-              "id": "CCJj9FpzzZgrcQ1YwEhT5bL",
+              "id": "CC2j5KTEkYMnIABMAKDGUeY5",
               "category": "other",
               "type": "credit",
               "cvv_match": "yes",
               "bank_name": "CREDIT AGRICOLE BANK POLSKA, S.A.",
               "avs_street_match": null,
               "brand": "Visa",
-              "updated_at": "2014-10-29T22:01:11.453554Z",
+              "updated_at": "2014-11-04T17:45:11.211286Z",
               "address": {
                 "city": null,
                 "line2": null,
@@ -483,8 +286,8 @@ http_interactions:
               "is_verified": true,
               "avs_result": null,
               "can_credit": false,
-              "href": "/cards/CCJj9FpzzZgrcQ1YwEhT5bL",
-              "created_at": "2014-10-29T22:01:11.453551Z"
+              "href": "/cards/CC2j5KTEkYMnIABMAKDGUeY5",
+              "created_at": "2014-11-04T17:45:11.211284Z"
             }
           ],
           "links": {
@@ -495,10 +298,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Wed, 29 Oct 2014 22:01:11 GMT
+  recorded_at: Tue, 04 Nov 2014 17:44:59 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CCJj9FpzzZgrcQ1YwEhT5bL
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC2j5KTEkYMnIABMAKDGUeY5
     body:
       encoding: US-ASCII
       string: ''
@@ -519,13 +322,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 29 Oct 2014 22:01:11 GMT
+      - Tue, 04 Nov 2014 17:45:00 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM183d61925fb711e484b40230f00c9248
+      - OHM4c7f28f4644a11e4bd6f02b12035401b
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
+      - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -535,7 +338,7 @@ http_interactions:
       X-Balanced-Software-Build:
       - 1.8.39
       Content-Length:
-      - '573'
+      - '575'
       Connection:
       - keep-alive
     body:
@@ -553,14 +356,14 @@ http_interactions:
               "avs_postal_match": null,
               "expiration_month": 12,
               "meta": {},
-              "id": "CCJj9FpzzZgrcQ1YwEhT5bL",
+              "id": "CC2j5KTEkYMnIABMAKDGUeY5",
               "category": "other",
               "type": "credit",
               "cvv_match": "yes",
               "bank_name": "CREDIT AGRICOLE BANK POLSKA, S.A.",
               "avs_street_match": null,
               "brand": "Visa",
-              "updated_at": "2014-10-29T22:01:11.453554Z",
+              "updated_at": "2014-11-04T17:45:11.211286Z",
               "address": {
                 "city": null,
                 "line2": null,
@@ -576,8 +379,8 @@ http_interactions:
               "is_verified": true,
               "avs_result": null,
               "can_credit": false,
-              "href": "/cards/CCJj9FpzzZgrcQ1YwEhT5bL",
-              "created_at": "2014-10-29T22:01:11.453551Z"
+              "href": "/cards/CC2j5KTEkYMnIABMAKDGUeY5",
+              "created_at": "2014-11-04T17:45:11.211284Z"
             }
           ],
           "links": {
@@ -588,10 +391,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Wed, 29 Oct 2014 22:01:12 GMT
+  recorded_at: Tue, 04 Nov 2014 17:45:00 GMT
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CCJj9FpzzZgrcQ1YwEhT5bL/debits
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC2j5KTEkYMnIABMAKDGUeY5/debits
     body:
       encoding: UTF-8
       string: '{"amount":132,"appears_on_statement_as":"Epicodus tuition"}'
@@ -612,11 +415,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 29 Oct 2014 22:01:12 GMT
+      - Tue, 04 Nov 2014 17:45:02 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM187689905fb711e484b40230f00c9248
+      - OHM4d0d226c644a11e4910006429171ffad
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
@@ -628,7 +431,7 @@ http_interactions:
       X-Balanced-Software-Build:
       - 1.8.39
       Content-Length:
-      - '1470'
+      - '1473'
       Connection:
       - keep-alive
     body:
@@ -643,8 +446,8 @@ http_interactions:
               "status_code": 402,
               "category_type": "banking",
               "extras": {},
-              "request_id": "OHM187689905fb711e484b40230f00c9248",
-              "description": "R758: Account Frozen. Your request id is OHM187689905fb711e484b40230f00c9248."
+              "request_id": "OHM4d0d226c644a11e4910006429171ffad",
+              "description": "R758: Account Frozen. Your request id is OHM4d0d226c644a11e4910006429171ffad."
             }
           ],
           "links": {
@@ -662,211 +465,25 @@ http_interactions:
               "description": null,
               "links": {
                 "customer": null,
-                "source": "CCJj9FpzzZgrcQ1YwEhT5bL",
+                "source": "CC2j5KTEkYMnIABMAKDGUeY5",
                 "card_hold": null,
                 "order": null,
                 "dispute": null
               },
-              "updated_at": "2014-10-29T22:01:12.549170Z",
-              "created_at": "2014-10-29T22:01:12.288179Z",
-              "transaction_number": "W1WE-ZOW-NR2L",
+              "updated_at": "2014-11-04T17:45:13.886837Z",
+              "created_at": "2014-11-04T17:45:13.516524Z",
+              "transaction_number": "WF5M-QBE-55YY",
               "failure_reason": "R758: Account Frozen.",
               "currency": "USD",
               "amount": 132,
               "failure_reason_code": "card-declined",
               "meta": {},
-              "href": "/debits/WDKfm2GHbf3SrDNeDrHC9ag",
+              "href": "/debits/WD2lGa4CWDe5fm2ooXUBgb3a",
               "appears_on_statement_as": "BAL*Epicodus tuition",
-              "id": "WDKfm2GHbf3SrDNeDrHC9ag"
+              "id": "WD2lGa4CWDe5fm2ooXUBgb3a"
             }
           ]
         }
     http_version: 
-  recorded_at: Wed, 29 Oct 2014 22:01:13 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CCAOztJD43t9eelqrvuVV6M
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 31 Oct 2014 17:47:58 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM0d017244612611e4910006429171ffad
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.39
-      Content-Length:
-      - '572'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "cards": [
-            {
-              "links": {
-                "customer": null
-              },
-              "fingerprint": "9ea2b317b53183f5a93ba23a594a0b8a0f2183ea9cc338e0964755cd9df71b99",
-              "cvv_result": "Match",
-              "number": "xxxxxxxxxxxx4448",
-              "avs_postal_match": null,
-              "expiration_month": 12,
-              "meta": {},
-              "id": "CCAOztJD43t9eelqrvuVV6M",
-              "category": "other",
-              "type": "credit",
-              "cvv_match": "yes",
-              "bank_name": "CREDIT AGRICOLE BANK POLSKA, S.A.",
-              "avs_street_match": null,
-              "brand": "Visa",
-              "updated_at": "2014-10-21T23:36:27.121672Z",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": true,
-              "name": null,
-              "expiration_year": 2020,
-              "cvv": "xxx",
-              "is_verified": true,
-              "avs_result": null,
-              "can_credit": false,
-              "href": "/cards/CCAOztJD43t9eelqrvuVV6M",
-              "created_at": "2014-10-21T23:36:27.121668Z"
-            }
-          ],
-          "links": {
-            "cards.card_holds": "/cards/{cards.id}/card_holds",
-            "cards.customer": "/customers/{cards.customer}",
-            "cards.disputes": "/cards/{cards.id}/disputes",
-            "cards.debits": "/cards/{cards.id}/debits"
-          }
-        }
-    http_version: 
-  recorded_at: Fri, 31 Oct 2014 17:47:58 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CCAOztJD43t9eelqrvuVV6M
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 31 Oct 2014 18:15:32 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMe6bf9940612911e4b84f0230f00c9248
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.39
-      Content-Length:
-      - '572'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "cards": [
-            {
-              "links": {
-                "customer": null
-              },
-              "fingerprint": "9ea2b317b53183f5a93ba23a594a0b8a0f2183ea9cc338e0964755cd9df71b99",
-              "cvv_result": "Match",
-              "number": "xxxxxxxxxxxx4448",
-              "avs_postal_match": null,
-              "expiration_month": 12,
-              "meta": {},
-              "id": "CCAOztJD43t9eelqrvuVV6M",
-              "category": "other",
-              "type": "credit",
-              "cvv_match": "yes",
-              "bank_name": "CREDIT AGRICOLE BANK POLSKA, S.A.",
-              "avs_street_match": null,
-              "brand": "Visa",
-              "updated_at": "2014-10-21T23:36:27.121672Z",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": true,
-              "name": null,
-              "expiration_year": 2020,
-              "cvv": "xxx",
-              "is_verified": true,
-              "avs_result": null,
-              "can_credit": false,
-              "href": "/cards/CCAOztJD43t9eelqrvuVV6M",
-              "created_at": "2014-10-21T23:36:27.121668Z"
-            }
-          ],
-          "links": {
-            "cards.card_holds": "/cards/{cards.id}/card_holds",
-            "cards.customer": "/customers/{cards.customer}",
-            "cards.disputes": "/cards/{cards.id}/disputes",
-            "cards.debits": "/cards/{cards.id}/debits"
-          }
-        }
-    http_version: 
-  recorded_at: Fri, 31 Oct 2014 18:15:32 GMT
+  recorded_at: Tue, 04 Nov 2014 17:45:02 GMT
 recorded_with: VCR 2.9.3

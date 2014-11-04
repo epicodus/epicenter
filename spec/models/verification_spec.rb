@@ -20,43 +20,43 @@ describe Verification, :vcr do
 
   describe "#confirm" do
     context "with correct amounts" do
-      it "sets the user's bank_account verified status to true" do
-        user = FactoryGirl.create(:user_with_unverified_bank_account)
-        verification = Verification.new(bank_account: user.bank_account, first_deposit: 1, second_deposit: 1)
+      it "sets the student's bank_account verified status to true" do
+        student = FactoryGirl.create(:user_with_unverified_bank_account)
+        verification = Verification.new(bank_account: student.bank_account, first_deposit: 1, second_deposit: 1)
         verification.confirm
-        expect(user.bank_account.verified).to be true
+        expect(student.bank_account.verified).to be true
       end
 
       it "returns true" do
-        user = FactoryGirl.create(:user_with_unverified_bank_account)
-        verification = Verification.new(bank_account: user.bank_account, first_deposit: 1, second_deposit: 1)
+        student = FactoryGirl.create(:user_with_unverified_bank_account)
+        verification = Verification.new(bank_account: student.bank_account, first_deposit: 1, second_deposit: 1)
         expect(verification.confirm).to be true
       end
 
-      it "sets the confirmed bank account as the primary payment method if user does not have one" do
+      it "sets the confirmed bank account as the primary payment method if student does not have one" do
         bank_account = FactoryGirl.create(:verified_bank_account)
-        expect(bank_account.user.primary_payment_method).to eq bank_account
+        expect(bank_account.student.primary_payment_method).to eq bank_account
       end
 
       it "cleans the input" do
-        user = FactoryGirl.create(:user_with_unverified_bank_account)
-        verification = Verification.new(bank_account: user.bank_account, first_deposit: "$0.01", second_deposit: 1)
+        student = FactoryGirl.create(:user_with_unverified_bank_account)
+        verification = Verification.new(bank_account: student.bank_account, first_deposit: "$0.01", second_deposit: 1)
         expect(verification.confirm).to be true
       end
     end
 
     context "with incorrect amounts" do
       it "returns false" do
-        user = FactoryGirl.create(:user_with_unverified_bank_account)
-        verification = Verification.new(bank_account: user.bank_account, first_deposit: 1, second_deposit: 2)
+        student = FactoryGirl.create(:user_with_unverified_bank_account)
+        verification = Verification.new(bank_account: student.bank_account, first_deposit: 1, second_deposit: 2)
         expect(verification.confirm).to be false
       end
 
       it "adds errors to the object" do
-        user = FactoryGirl.create(:user_with_unverified_bank_account)
-        verification = Verification.new(bank_account: user.bank_account, first_deposit: 1, second_deposit: 2)
+        student = FactoryGirl.create(:user_with_unverified_bank_account)
+        verification = Verification.new(bank_account: student.bank_account, first_deposit: 1, second_deposit: 2)
         verification.confirm
-        expect(verification.errors.full_messages).to eq ["Authentication amounts do not match. Your request id is OHMdfc41062597c11e4910006429171ffad."]
+        expect(verification.errors.full_messages).to eq ["Authentication amounts do not match. Your request id is OHM457f68b4644c11e4bc0006429171ffad."]
       end
     end
   end

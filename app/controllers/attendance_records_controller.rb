@@ -1,12 +1,12 @@
 class AttendanceRecordsController < ApplicationController
   def index
-    @students = User.all #TODO default scope this to the current class
+    @students = Student.all #TODO default scope this to the current class
   end
 
   def create
     @attendance_record = AttendanceRecord.new(attendance_record_params)
     if @attendance_record.save
-      flash[:notice] = "Welcome #{@attendance_record.user.name}"
+      flash[:notice] = "Welcome #{@attendance_record.student.name}"
       flash[:secure] =  view_context.link_to("Not you?",
                         attendance_record_path(@attendance_record),
                         data: {method: :delete})
@@ -24,6 +24,6 @@ class AttendanceRecordsController < ApplicationController
 private
 
   def attendance_record_params
-    params.require(:attendance_record).permit(:user_id)
+    params.require(:attendance_record).permit(:student_id)
   end
 end

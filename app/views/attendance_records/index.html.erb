@@ -8,7 +8,7 @@
         <span class="pull-right text-success">Signed in</span>
       <% else %>
         <%= form_for AttendanceRecord.new, html: {class: "pull-right"} do |f| %>
-          <%= f.hidden_field :user_id, value: student.id %>
+          <%= f.hidden_field :student_id, value: student.id %>
           <%= f.submit "I'm here", class: 'btn btn-primary' %>
         <% end %>
       <% end %>

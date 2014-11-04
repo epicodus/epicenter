@@ -1,11 +1,11 @@
 class Payment < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
 
-  belongs_to :user
+  belongs_to :student
   belongs_to :payment_method, polymorphic: true
 
   validates :amount, presence: true
-  validates :user_id, presence: true
+  validates :student_id, presence: true
   validates :payment_method, presence: true
   validate :ensure_payment_isnt_over_balance
 
@@ -21,23 +21,23 @@ class Payment < ActiveRecord::Base
 
 private
   def ensure_payment_isnt_over_balance
-    if user && user.payments.sum(:amount) + amount.to_i > user.plan.total_amount
+    if student && student.payments.sum(:amount) + amount.to_i > student.plan.total_amount
       errors.add(:amount, 'exceeds the outstanding balance.')
     end
   end
 
   def check_if_paid_up
-    user.update(recurring_active: false) if user.payments.sum(:amount) == user.plan.total_amount
+    student.update(recurring_active: false) if student.payments.sum(:amount) == student.plan.total_amount
   end
 
   def send_payment_receipt
     Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message(
       "epicodus.com",
       { :from => "michael@epicodus.com",
-        :to => user.email,
+        :to => student.email,
         :bcc => "michael@epicodus.com",
         :subject => "Epicodus tuition payment receipt",
-        :text => "Hi #{user.name}. This is to confirm your payment of #{number_to_currency(total_amount / 100.00)} for Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
+        :text => "Hi #{student.name}. This is to confirm your payment of #{number_to_currency(total_amount / 100.00)} for Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
     )
   end
 

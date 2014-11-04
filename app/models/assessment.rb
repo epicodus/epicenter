@@ -7,8 +7,8 @@ class Assessment < ActiveRecord::Base
 
   accepts_nested_attributes_for :requirements, reject_if: :attributes_blank?, allow_destroy: true
 
-  def submission_for(user)
-    submissions.find_by(user: user)
+  def submission_for(student)
+    submissions.find_by(student: student)
   end
 
 private

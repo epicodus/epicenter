@@ -1,21 +1,21 @@
 require 'rails_helper'
 
 describe AttendanceRecord do
-  it { should belong_to :user }
-  it { should validate_presence_of :user_id }
+  it { should belong_to :student }
+  it { should validate_presence_of :student_id }
 
   describe 'uniqueness validation for users' do
-    it 'validates that an attendance record for a user has not already been created for today' do
+    it 'validates that an attendance record for a student has not already been created for today' do
       first_attendance_record = FactoryGirl.create(:attendance_record)
-      second_attendance_record = FactoryGirl.build(:attendance_record, user: first_attendance_record.user)
+      second_attendance_record = FactoryGirl.build(:attendance_record, student: first_attendance_record.student)
       expect(second_attendance_record.valid?).to eq false
     end
 
     it 'allows multiple users to check in on a single day' do
-      first_user = FactoryGirl.create(:user)
-      second_user = FactoryGirl.create(:user)
-      first_attendance_record = FactoryGirl.create(:attendance_record, user: first_user)
-      second_attendance_record = FactoryGirl.build(:attendance_record, user: second_user)
+      first_user = FactoryGirl.create(:student)
+      second_user = FactoryGirl.create(:student)
+      first_attendance_record = FactoryGirl.create(:attendance_record, student: first_user)
+      second_attendance_record = FactoryGirl.build(:attendance_record, student: second_user)
       expect(second_attendance_record.valid?).to eq true
     end
   end
@@ -25,7 +25,7 @@ describe AttendanceRecord do
 
     it 'returns all the attendance records for today' do
       past_attendance_record = FactoryGirl.create(:attendance_record)
-      travel_to Date.today + 1.day do
+      travel_to Time.now + 1.day do
         current_attendance_record = FactoryGirl.create(:attendance_record)
         expect(AttendanceRecord.today).to eq [current_attendance_record]
       end

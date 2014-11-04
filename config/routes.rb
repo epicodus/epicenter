@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   get 'attendance', to: 'attendance_records#index', as: 'attendance'
   get 'payment_method', to: 'static_pages#payment_method', as: 'payment_method'
 
-  devise_for :users
+  devise_for :users, expect: :registrations
+  devise_for :student, expect: :sessions
 
   resource :bank_account, only: [:new, :create]
   resource :credit_card, only: [:new, :create]

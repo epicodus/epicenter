@@ -1,6 +1,6 @@
 class Review < ActiveRecord::Base
   belongs_to :submission
-  belongs_to :user
+  belongs_to :admin
   has_many :grades
 
   validates :note, presence: true

@@ -10,7 +10,7 @@ class CohortAttendanceStatistics
   end
 
   def student_breakdown # this is a terrible name
-    students = @cohort.users.sort_by(&:absences).reverse
+    students = @cohort.students.sort_by(&:absences).reverse
     [
       {
         name: "On time",

@@ -32,7 +32,7 @@ class Verification
 
 private
   def ensure_primary_method_exists
-    @bank_account.user.set_primary_payment_method(@bank_account) if !@bank_account.user.primary_payment_method
+    @bank_account.student.set_primary_payment_method(@bank_account) if !@bank_account.student.primary_payment_method
   end
 
   def clean_deposit_input(input)

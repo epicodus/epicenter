@@ -9,6 +9,9 @@ class AddPrimaryPaymentMethod < ActiveRecord::Migration
   end
 
   class User < ActiveRecord::Base
+  end
+
+  class Student < User
     has_one :credit_card
     has_one :bank_account
 
@@ -25,11 +28,11 @@ class AddPrimaryPaymentMethod < ActiveRecord::Migration
     add_column :users, :primary_payment_method_type, :string
     add_column :users, :primary_payment_method_id, :integer
 
-    User.all.each do |user|
-      if user.has_payment_method
-        user.primary_payment_method_type = user.primary_payment_method.class.name.split('::').last
-        user.primary_payment_method_id = user.primary_payment_method.id
-        user.save
+    Student.all.each do |student|
+      if student.has_payment_method
+        student.primary_payment_method_type = student.primary_payment_method.class.name.split('::').last
+        student.primary_payment_method_id = student.primary_payment_method.id
+        student.save
       end
     end
   end

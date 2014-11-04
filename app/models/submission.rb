@@ -2,9 +2,9 @@ class Submission < ActiveRecord::Base
   default_scope { order(:updated_at) }
   scope :needing_review, -> { where(needs_review: true) }
   validates_presence_of :link
-  validates :user_id, uniqueness: { scope: :assessment_id }
+  validates :student_id, uniqueness: { scope: :assessment_id }
 
-  belongs_to :user
+  belongs_to :student
   belongs_to :assessment
   has_many :reviews
   has_one :latest_review, -> { order('created_at DESC') }, class_name: "Review"
