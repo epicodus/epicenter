@@ -148,9 +148,9 @@ ActiveRecord::Schema.define(version: 20141103230804) do
     t.integer  "plan_id"
     t.boolean  "recurring_active"
     t.integer  "cohort_id"
-    t.string   "type"
     t.string   "primary_payment_method_type"
     t.integer  "primary_payment_method_id"
+    t.string   "type"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
