@@ -3,17 +3,17 @@ require 'rails_helper'
 describe 'verifying bank account', :vcr do
   context 'with correct deposit amounts' do
     before do
-      sign_in(user)
+      sign_in(student)
       fill_in 'First deposit amount', with: '1'
       fill_in 'Second deposit amount', with: '1'
       click_on 'Confirm account'
     end
 
     context 'with correct deposit amounts' do
-      let(:user) { FactoryGirl.create :user_with_unverified_bank_account, plan: plan }
+      let(:student) { FactoryGirl.create :user_with_unverified_bank_account, plan: plan }
       let(:plan) { FactoryGirl.create :recurring_plan_with_upfront_payment }
 
-      it 'gives the user a confirmation notice and redirects to payments page' do
+      it 'gives the student a confirmation notice and redirects to payments page' do
         expect(page).to have_content 'account has been confirmed'
         expect(current_path).to eq payments_path
       end
@@ -22,8 +22,8 @@ describe 'verifying bank account', :vcr do
 
   context 'with incorrect deposit ammounts' do
     it 'gives an error notice' do
-      user = FactoryGirl.create :user_with_unverified_bank_account
-      sign_in(user)
+      student = FactoryGirl.create :user_with_unverified_bank_account
+      sign_in(student)
       fill_in 'First deposit amount', with: '2'
       fill_in 'Second deposit amount', with: '1'
       click_on 'Confirm account'

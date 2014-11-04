@@ -1,9 +1,9 @@
 class CreditCard < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :student
   has_many :payments, :as => :payment_method
 
   validates :credit_card_uri, presence: true
-  validates :user_id, presence: true
+  validates :student_id, presence: true
 
   before_create :get_last_four_string
 
@@ -19,7 +19,7 @@ class CreditCard < ActiveRecord::Base
 
 private
   def ensure_primary_method_exists
-    user.set_primary_payment_method(self) if !user.primary_payment_method
+    student.set_primary_payment_method(self) if !student.primary_payment_method
   end
 
   def get_last_four_string

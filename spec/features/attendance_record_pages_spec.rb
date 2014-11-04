@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'creating an attendance record' do
   scenario 'correctly' do
-    FactoryGirl.create(:user)
+    FactoryGirl.create(:student)
     visit attendance_path
     click_button("I'm here")
     expect(page).to have_content "Welcome"
@@ -17,7 +17,7 @@ end
 
 feature 'destroying an attendance record' do
   scenario 'after accidentally creating one' do
-    FactoryGirl.create(:user)
+    FactoryGirl.create(:student)
     visit attendance_path
     click_button("I'm here")
     click_link("Not you?")

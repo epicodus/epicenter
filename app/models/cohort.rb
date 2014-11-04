@@ -3,8 +3,8 @@ class Cohort < ActiveRecord::Base
   validates :start_date, presence: true
   validates :end_date, presence: true
 
-  has_many :users
-  has_many :attendance_records, through: :users
+  has_many :students
+  has_many :attendance_records, through: :students
 
   def number_of_days_since_start
     last_date = Date.today <= end_date ? Date.today : end_date

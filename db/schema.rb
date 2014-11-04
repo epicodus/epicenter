@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141031215142) do
+ActiveRecord::Schema.define(version: 20141103230804) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,27 +25,27 @@ ActiveRecord::Schema.define(version: 20141031215142) do
   end
 
   create_table "attendance_records", force: true do |t|
-    t.integer  "user_id"
+    t.integer  "student_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "tardy"
   end
 
   add_index "attendance_records", ["created_at"], name: "index_attendance_records_on_created_at", using: :btree
+  add_index "attendance_records", ["student_id"], name: "index_attendance_records_on_student_id", using: :btree
   add_index "attendance_records", ["tardy"], name: "index_attendance_records_on_tardy", using: :btree
-  add_index "attendance_records", ["user_id"], name: "index_attendance_records_on_user_id", using: :btree
 
   create_table "bank_accounts", force: true do |t|
     t.string   "account_uri"
     t.string   "verification_uri"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
+    t.integer  "student_id"
     t.boolean  "verified"
     t.string   "last_four_string"
   end
 
-  add_index "bank_accounts", ["user_id"], name: "index_bank_accounts_on_user_id", using: :btree
+  add_index "bank_accounts", ["student_id"], name: "index_bank_accounts_on_student_id", using: :btree
   add_index "bank_accounts", ["verified"], name: "index_bank_accounts_on_verified", using: :btree
 
   create_table "cohorts", force: true do |t|
@@ -58,13 +58,13 @@ ActiveRecord::Schema.define(version: 20141031215142) do
 
   create_table "credit_cards", force: true do |t|
     t.string   "credit_card_uri"
-    t.integer  "user_id"
+    t.integer  "student_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "last_four_string"
   end
 
-  add_index "credit_cards", ["user_id"], name: "index_credit_cards_on_user_id", using: :btree
+  add_index "credit_cards", ["student_id"], name: "index_credit_cards_on_student_id", using: :btree
 
   create_table "grades", force: true do |t|
     t.integer  "requirement_id"
@@ -81,14 +81,14 @@ ActiveRecord::Schema.define(version: 20141031215142) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "payment_uri"
-    t.integer  "user_id"
+    t.integer  "student_id"
     t.integer  "payment_method_id"
     t.string   "payment_method_type"
     t.integer  "fee",                 default: 0, null: false
   end
 
   add_index "payments", ["payment_method_type", "payment_method_id"], name: "payment_method_index", using: :btree
-  add_index "payments", ["user_id"], name: "index_payments_on_user_id", using: :btree
+  add_index "payments", ["student_id"], name: "index_payments_on_student_id", using: :btree
 
   create_table "plans", force: true do |t|
     t.string   "name"
@@ -108,7 +108,7 @@ ActiveRecord::Schema.define(version: 20141031215142) do
 
   create_table "reviews", force: true do |t|
     t.integer  "submission_id"
-    t.integer  "user_id"
+    t.integer  "admin_id"
     t.text     "note"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -122,7 +122,7 @@ ActiveRecord::Schema.define(version: 20141031215142) do
   end
 
   create_table "submissions", force: true do |t|
-    t.integer  "user_id"
+    t.integer  "student_id"
     t.string   "link"
     t.text     "note"
     t.integer  "assessment_id"
@@ -148,6 +148,7 @@ ActiveRecord::Schema.define(version: 20141031215142) do
     t.integer  "plan_id"
     t.boolean  "recurring_active"
     t.integer  "cohort_id"
+    t.string   "type"
     t.string   "primary_payment_method_type"
     t.integer  "primary_payment_method_id"
   end

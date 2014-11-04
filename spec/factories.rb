@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :bank_account do
-    user
+    student
 
     after(:build) do |bank_account|
       balanced_bank_account = create_balanced_bank_account
@@ -19,7 +19,7 @@ FactoryGirl.define do
   end
 
   factory :credit_card do
-    user
+    student
     after(:build) do |credit_card|
       balanced_credit_card = create_balanced_credit_card
       credit_card.credit_card_uri = balanced_credit_card.href
@@ -27,7 +27,7 @@ FactoryGirl.define do
   end
 
   factory :invalid_credit_card, parent: :credit_card do
-    user
+    student
     after(:build) do |credit_card|
       balanced_credit_card = create_invalid_balanced_credit_card
       credit_card.credit_card_uri = balanced_credit_card.href
@@ -35,13 +35,13 @@ FactoryGirl.define do
   end
 
   factory :payment do
-    association :user, factory: :user_with_verified_bank_account
+    association :student, factory: :user_with_verified_bank_account
     amount 1
     association :payment_method, factory: :verified_bank_account
   end
 
   factory :payment_with_credit_card, parent: :payment do
-    association :user, factory: :user_with_credit_card
+    association :student, factory: :user_with_credit_card
     amount 1
     association :payment_method, factory: :credit_card
   end
@@ -68,11 +68,11 @@ FactoryGirl.define do
     end
   end
 
-  factory :user do
+  factory :student do
     cohort
     association :plan, factory: :recurring_plan_with_upfront_payment
     sequence(:name) { |n| "Example Brown #{n}" }
-    sequence(:email) { |n| "user#{n}@example.com" }
+    sequence(:email) { |n| "student#{n}@example.com" }
     password "password"
     password_confirmation "password"
 
@@ -81,46 +81,46 @@ FactoryGirl.define do
     end
 
     factory :user_with_credit_card do
-      after(:create) do |user|
-        create(:credit_card, user: user)
+      after(:create) do |student|
+        create(:credit_card, student: student)
       end
     end
 
     factory :user_with_invalid_credit_card do
-      after(:create) do |user|
-        create(:invalid_credit_card, user: user)
+      after(:create) do |student|
+        create(:invalid_credit_card, student: student)
       end
     end
 
     factory :user_with_verified_bank_account do
-      after(:create) do |user|
-        create(:verified_bank_account, user: user)
+      after(:create) do |student|
+        create(:verified_bank_account, student: student)
       end
 
       factory :user_with_recurring_active do
         recurring_active true
-        after(:create) do |user|
-          create(:payment, user: user)
+        after(:create) do |student|
+          create(:payment, student: student)
         end
       end
 
       factory :user_with_recurring_not_due do
         recurring_active true
-        after(:create) do |user|
-          create(:payment, user: user, created_at: 2.weeks.ago)
+        after(:create) do |student|
+          create(:payment, student: student, created_at: 2.weeks.ago)
         end
       end
 
       factory :user_with_recurring_due do
         recurring_active true
-        after(:create) do |user|
-          create(:payment, user: user, created_at: 1.month.ago)
+        after(:create) do |student|
+          create(:payment, student: student, created_at: 1.month.ago)
         end
       end
 
       factory :user_with_upfront_payment do
-        after(:create) do |user|
-          user.make_upfront_payment
+        after(:create) do |student|
+          student.make_upfront_payment
         end
       end
 
@@ -128,7 +128,7 @@ FactoryGirl.define do
   end
 
   factory :attendance_record do
-    user
+    student
   end
 
   factory :cohort do

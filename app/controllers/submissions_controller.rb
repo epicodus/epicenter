@@ -27,7 +27,7 @@ class SubmissionsController < ApplicationController
 private
 
   def submission_params
-    params.require(:submission).permit(:link, :needs_review).merge(user_id: current_user.id)
+    params.require(:submission).permit(:link, :needs_review).merge(student_id: current_user.id)
   end
 
 end

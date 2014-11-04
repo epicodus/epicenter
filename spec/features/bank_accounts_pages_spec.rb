@@ -2,10 +2,10 @@ require 'rails_helper'
 
 feature 'User creates a bank account' do
   before do
-    user = FactoryGirl.create(:user)
-    sign_in user
+    student = FactoryGirl.create(:student)
+    sign_in student
     visit new_bank_account_path
-    fill_in 'Name on account', with: user.name
+    fill_in 'Name on account', with: student.name
   end
 
   xscenario 'with valid information', js: true do

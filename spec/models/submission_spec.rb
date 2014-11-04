@@ -5,7 +5,8 @@ describe Submission do
   it { should belong_to :assessment }
   it { should have_many :reviews }
   it { should have_one :latest_review }
-  it { should validate_uniqueness_of(:user_id).scoped_to(:assessment_id) }
+  it { should belong_to :student }
+  it { should validate_uniqueness_of(:student_id).scoped_to(:assessment_id) }
 
   describe '#needs_review?' do
     it 'is true if no review has been created for this submission' do

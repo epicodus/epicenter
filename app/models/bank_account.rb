@@ -1,8 +1,8 @@
 class BankAccount < ActiveRecord::Base
   validates :account_uri, presence: true
-  validates :user_id, presence: true
+  validates :student_id, presence: true
 
-  belongs_to :user
+  belongs_to :student
   has_many :payments, :as => :payment_method
 
   before_create :create_verification

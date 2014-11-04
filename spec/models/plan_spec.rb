@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Plan do
-  it { should have_many :users }
+  it { should have_many :students }
   it { should validate_presence_of :name }
   it { should validate_presence_of :recurring_amount }
   it { should validate_presence_of :upfront_amount }

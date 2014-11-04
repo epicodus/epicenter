@@ -2,10 +2,10 @@ require 'rails_helper'
 
 feature 'User creates a credit card' do
   before do
-    user = FactoryGirl.create(:user)
-    sign_in user
+    student = FactoryGirl.create(:student)
+    sign_in student
     visit new_credit_card_path
-    fill_in 'Name on card', with: user.name
+    fill_in 'Name on card', with: student.name
   end
 
   xscenario 'with valid information', js: true do

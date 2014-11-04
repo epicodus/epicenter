@@ -1,10 +1,10 @@
 class AttendanceRecord < ActiveRecord::Base
   scope :today, -> { where(created_at: (Time.now.utc.beginning_of_day..Time.now.utc.end_of_day)) }
-  validates :user_id, presence: true, uniqueness: { conditions: -> { today } }
+  validates :student_id, presence: true, uniqueness: { conditions: -> { today } }
 
   after_validation :set_tardiness
 
-  belongs_to :user
+  belongs_to :student
 
 private
 

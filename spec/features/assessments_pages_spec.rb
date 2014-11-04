@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature 'index page' do
   context 'when visiting as a student' do
-    let(:student) { FactoryGirl.create(:user) }
+    let(:student) { FactoryGirl.create(:student) }
     let!(:assessment) { FactoryGirl.create(:assessment) }
     before { sign_in student }
 
@@ -14,14 +14,14 @@ feature 'index page' do
     end
 
     scenario 'shows if the student has submitted an assessment' do
-      FactoryGirl.create(:submission, assessment: assessment, user: student)
+      FactoryGirl.create(:submission, assessment: assessment, student: student)
       visit assessments_path
       expect(page).to have_content 'Submitted'
       expect(page).to_not have_content 'Not submitted'
     end
 
     scenario 'shows if the assessment has been graded' do
-      submission = FactoryGirl.create(:submission, assessment: assessment, user: student)
+      submission = FactoryGirl.create(:submission, assessment: assessment, student: student)
       FactoryGirl.create(:review, submission: submission)
       visit assessments_path
       expect(page).to have_content 'Reviewed'
@@ -39,7 +39,7 @@ end
 
 feature 'show page' do
   context 'when visiting as a student' do
-    let(:student) { FactoryGirl.create(:user) }
+    let(:student) { FactoryGirl.create(:student) }
     let(:assessment) { FactoryGirl.create(:assessment) }
     before { sign_in student }
     subject { page }
@@ -72,7 +72,7 @@ feature 'show page' do
 
     context 'after having submitted' do
       before do
-        FactoryGirl.create(:submission, assessment: assessment, user: student)
+        FactoryGirl.create(:submission, assessment: assessment, student: student)
         visit assessment_path(assessment)
       end
 
@@ -82,7 +82,7 @@ feature 'show page' do
     end
 
     context 'after submission has been reviewed' do
-      let(:submission) { FactoryGirl.create(:submission, assessment: assessment, user: student) }
+      let(:submission) { FactoryGirl.create(:submission, assessment: assessment, student: student) }
       let!(:review) { FactoryGirl.create(:review, submission: submission) }
 
       before do
@@ -95,7 +95,7 @@ feature 'show page' do
     end
 
     context 'after resubmitting' do
-      let(:submission) { FactoryGirl.create(:submission, assessment: assessment, user: student) }
+      let(:submission) { FactoryGirl.create(:submission, assessment: assessment, student: student) }
 
       before do
         FactoryGirl.create(:review, submission: submission)

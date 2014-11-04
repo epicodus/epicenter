@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe Cohort do
-  it { should have_many :users }
-  it { should have_many(:attendance_records).through(:users) }
+  it { should have_many :students }
+  it { should have_many(:attendance_records).through(:students) }
   it { should validate_presence_of :description }
   it { should validate_presence_of :start_date }
   it { should validate_presence_of :end_date }
