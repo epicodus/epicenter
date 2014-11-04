@@ -7,7 +7,7 @@ class Student < User
   belongs_to :plan
   belongs_to :cohort
   has_many :bank_accounts
-  has_one :credit_card
+  has_many :credit_cards
   has_many :payments
   has_many :attendance_records
   has_many :submissions
