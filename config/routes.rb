@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   devise_for :student
   devise_for :admins, skip: :registrations
 
+  resources :students, only: [:update]
   resources :payment_methods, only: [:index, :new]
   resource :bank_account, only: [:new, :create]
   resource :credit_card, only: [:new, :create]

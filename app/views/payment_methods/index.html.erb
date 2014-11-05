@@ -22,13 +22,17 @@
       <% @payment_methods.each do |payment_method| %>
         <% if payment_method == @primary_payment_method %>
           <tr class="info">
-            <td>
+            <td class="primary-payment-method">
               <span class="check-mark">✓</span>
             </td>
         <% else %>
           <tr>
             <td>
-              Make Primary
+              <%= form_for payment_method.student, html: {class: 'payment-button-form'} do |f| %>
+                <%= f.hidden_field :primary_payment_method_type, value: payment_method.class.name %>
+                <%= f.hidden_field :primary_payment_method_id, value: payment_method.id %>
+                <%= f.submit 'Make Primary', class: 'btn', data: { confirm: "Change primary payment method?" } %>
+              <% end %>
             </td>
         <% end %>
           <td>
