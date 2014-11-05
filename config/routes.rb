@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   devise_for :users, expect: :registrations
   devise_for :student, expect: :sessions
+  devise_for :admins, skip: :registrations
 
   resource :bank_account, only: [:new, :create]
   resource :credit_card, only: [:new, :create]
