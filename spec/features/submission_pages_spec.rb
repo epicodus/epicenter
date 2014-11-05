@@ -52,7 +52,7 @@ feature 'index page' do
       let!(:score) { FactoryGirl.create(:score) }
 
       before do
-        sign_in admin
+        login_as(admin, scope: :admin)
         visit assessment_submissions_path(assessment)
       end
 

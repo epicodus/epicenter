@@ -4,7 +4,7 @@ feature 'index page' do
   context 'when visiting as a student' do
     let(:student) { FactoryGirl.create(:student) }
     let!(:assessment) { FactoryGirl.create(:assessment) }
-    before { sign_in student }
+    before { login_as(student, scope: :student) }
 
     scenario 'shows all assessments' do
       another_assessment = FactoryGirl.create(:assessment, title: 'another_assessment')
@@ -41,7 +41,7 @@ feature 'show page' do
   context 'when visiting as a student' do
     let(:student) { FactoryGirl.create(:student) }
     let(:assessment) { FactoryGirl.create(:assessment) }
-    before { sign_in student }
+    before { login_as(student, scope: :student) }
     subject { page }
 
     context 'before submitting' do

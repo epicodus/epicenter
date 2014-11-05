@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'User creates a bank account' do
   before do
     student = FactoryGirl.create(:student)
-    sign_in student
+    login_as(student, scope: :student)
     visit new_bank_account_path
     fill_in 'Name on account', with: student.name
   end

@@ -8,6 +8,9 @@ require 'capybara/rails'
 require 'capybara/poltergeist'
 require 'billy/rspec'
 
+include Warden::Test::Helpers
+Warden.test_mode!
+
 Capybara.javascript_driver = :poltergeist_billy
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
