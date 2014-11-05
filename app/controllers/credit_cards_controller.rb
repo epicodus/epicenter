@@ -6,7 +6,7 @@ class CreditCardsController < ApplicationController
   end
 
   def create
-    @credit_card = CreditCard.create(credit_card_params.merge(user: current_user))
+    @credit_card = CreditCard.create(credit_card_params.merge(student: current_user))
     if @credit_card.save
       flash[:notice] = "Your credit card has been added."
       redirect_to payments_path
