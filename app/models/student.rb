@@ -17,6 +17,10 @@ class Student < User
     credit_cards + bank_accounts
   end
 
+  def payment_methods_primary_first
+    (payment_methods - [primary_payment_method]).unshift(primary_payment_method).compact
+  end
+
   def self.billable_today
     recurring_active.select do |student|
       student.payments.last.created_at.to_date < 1.month.ago

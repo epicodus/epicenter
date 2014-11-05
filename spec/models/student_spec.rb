@@ -19,6 +19,15 @@ describe Student do
     end
   end
 
+  describe "#payment_methods_primary_first" do
+    it "returns payment methods with primary first", :vcr do
+      student = FactoryGirl.create(:student)
+      credit_card_1 = FactoryGirl.create(:credit_card, student: student)
+      credit_card_2 = FactoryGirl.create(:credit_card, student: student)
+      expect(student.payment_methods_primary_first.first).to eq credit_card_1
+    end
+  end
+
   describe ".recurring_active" do
     it "only includes users that are recurring_active", :vcr do
       recurring_active_user = FactoryGirl.create(:user_with_recurring_active)
