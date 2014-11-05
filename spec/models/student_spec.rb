@@ -345,4 +345,11 @@ describe Student do
       expect(student.next_payment_date.to_date).to eq Date.parse("February 5, 2014")
     end
   end
+
+  describe "abilities" do
+    let(:student) { FactoryGirl.create(:student) }
+    subject { Ability.new(student) }
+
+    it { is_expected.to be_able_to(:read, Assessment.new) }
+  end
 end

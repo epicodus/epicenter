@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 feature 'index page' do
+  scenario 'not logged in' do
+    visit assessments_path
+    expect(page).to have_content 'need to sign in'
+  end
+
   context 'when visiting as a student' do
     let(:student) { FactoryGirl.create(:student) }
     let!(:assessment) { FactoryGirl.create(:assessment) }
@@ -38,9 +43,15 @@ feature 'index page' do
 end
 
 feature 'show page' do
+  let(:assessment) { FactoryGirl.create(:assessment) }
+
+  scenario 'not signed in' do
+    visit assessment_path(assessment)
+    expect(page).to have_content 'need to sign in'
+  end
+
   context 'when visiting as a student' do
     let(:student) { FactoryGirl.create(:student) }
-    let(:assessment) { FactoryGirl.create(:assessment) }
     before { login_as(student, scope: :student) }
     subject { page }
 
@@ -111,79 +122,124 @@ feature 'show page' do
 end
 
 feature 'creating an assessment' do
-  let(:assessment) { FactoryGirl.build(:assessment) }
-  before { visit new_assessment_path }
-
-  scenario 'with valid input' do
-    fill_in 'Title', with: assessment.title
-    fill_in 'Section', with: assessment.section
-    fill_in 'Url', with: assessment.url
-    fill_in 'assessment_requirements_attributes_0_content', with: 'requirement'
-    click_button 'Create Assessment'
-    expect(page).to have_content 'Assessment has been saved'
+  scenario 'not signed in' do
+    visit new_assessment_path
+    expect(page).to have_content 'need to sign in'
   end
 
-  scenario 'with invalid input' do
-    click_button 'Create Assessment'
-    expect(page).to have_content "can't be blank"
-  end
+  context 'as an admin' do
+    let(:assessment) { FactoryGirl.build(:assessment) }
+    let(:admin) { FactoryGirl.create(:admin) }
 
-  context 'with requirements' do
-    scenario 'form defaults with 3 requirement fields' do
-      within('ol#requirement-fields') do
-        expect(page).to have_selector('li', count: 3)
-      end
+    before do
+      login_as(admin, scope: :admin)
+      visit new_assessment_path
     end
 
-    scenario 'allows more requirements to be added', js: true do
-      click_link 'Add Requirement'
-      within('ol#requirement-fields') do
-        expect(page).to have_selector('li', count: 4)
-      end
-    end
-
-    scenario 'requires at least one requirement to be added' do
+    scenario 'with valid input' do
       fill_in 'Title', with: assessment.title
       fill_in 'Section', with: assessment.section
       fill_in 'Url', with: assessment.url
+      fill_in 'assessment_requirements_attributes_0_content', with: 'requirement'
       click_button 'Create Assessment'
-      expect(page).to have_content 'Requirements must be present'
+      expect(page).to have_content 'Assessment has been saved'
+    end
+
+    scenario 'with invalid input' do
+      click_button 'Create Assessment'
+      expect(page).to have_content "can't be blank"
+    end
+
+    context 'with requirements' do
+      scenario 'form defaults with 3 requirement fields' do
+        within('ol#requirement-fields') do
+          expect(page).to have_selector('li', count: 3)
+        end
+      end
+
+      scenario 'allows more requirements to be added', js: true do
+        click_link 'Add Requirement'
+        within('ol#requirement-fields') do
+          expect(page).to have_selector('li', count: 4)
+        end
+      end
+
+      scenario 'requires at least one requirement to be added' do
+        fill_in 'Title', with: assessment.title
+        fill_in 'Section', with: assessment.section
+        fill_in 'Url', with: assessment.url
+        click_button 'Create Assessment'
+        expect(page).to have_content 'Requirements must be present'
+      end
+    end
+  end
+
+  context 'as a student' do
+    let(:student) { FactoryGirl.create(:student) }
+
+    scenario 'you are not authorized' do
+      login_as(student, scope: :student)
+      visit new_assessment_path
+      expect(page).to have_content 'not authorized'
     end
   end
 end
 
 feature 'editing an assessment' do
   let(:assessment) { FactoryGirl.create(:assessment) }
-  before { visit edit_assessment_path(assessment) }
 
-  scenario 'with valid input' do
-    fill_in 'Title', with: 'Another title'
-    click_button 'Update Assessment'
-    expect(page).to have_content 'Assessment updated'
+  scenario 'not signed in' do
+    visit edit_assessment_path(assessment)
+    expect(page).to have_content 'need to sign in'
   end
 
-  scenario 'with invalid input' do
-    fill_in 'Title', with: ''
-    click_button 'Update Assessment'
-    expect(page).to have_content "can't be blank"
-  end
+  context 'as an admin' do
+    let(:admin) { FactoryGirl.create(:admin) }
 
-  scenario 'removing requirements', js: true do
-    requirement_count = assessment.requirements.count
-    within('ol#requirement-fields') do
-      first(:link, 'x').click
+    before do
+      login_as(admin, scope: :admin)
+      visit edit_assessment_path(assessment)
     end
-    click_button 'Update Assessment'
-    expect(assessment.requirements.count).to eq requirement_count - 1
+
+    scenario 'with valid input' do
+      fill_in 'Title', with: 'Another title'
+      click_button 'Update Assessment'
+      expect(page).to have_content 'Assessment updated'
+    end
+
+    scenario 'with invalid input' do
+      fill_in 'Title', with: ''
+      click_button 'Update Assessment'
+      expect(page).to have_content "can't be blank"
+    end
+
+    scenario 'removing requirements', js: true do
+      requirement_count = assessment.requirements.count
+      within('ol#requirement-fields') do
+        first(:link, 'x').click
+      end
+      click_button 'Update Assessment'
+      expect(assessment.requirements.count).to eq requirement_count - 1
+    end
+
+    scenario 'adding requirements', js: true do
+      requirement_count = assessment.requirements.count
+      click_link 'Add Requirement'
+      within('ol#requirement-fields') do
+        all('input').last.set 'The last requirement'
+      end
+      click_button 'Update Assessment'
+      expect(assessment.requirements.count).to eq requirement_count + 1
+    end
   end
 
-  scenario 'adding requirements', js: true do
-    requirement_count = assessment.requirements.count
-    click_link 'Add Requirement'
-    within('ol#requirement-fields') do
-      all('input').last.set 'The last requirement'
+  context 'as a student' do
+    let(:student) { FactoryGirl.create(:student) }
+
+    scenario 'you are not authorized' do
+      login_as(student, scope: :student)
+      visit edit_assessment_path(assessment)
+      expect(page).to have_content 'not authorized'
     end
-    click_button 'Update Assessment'
-    expect(assessment.requirements.count).to eq requirement_count + 1
   end
 end

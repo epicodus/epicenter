@@ -15,6 +15,7 @@ gem 'mailgun-ruby', require: 'mailgun'
 gem 'nested_form_fields'
 gem 'redcarpet'
 gem 'deep_cloneable'
+gem 'cancancan'
 
 group :development do
   gem 'spring'
