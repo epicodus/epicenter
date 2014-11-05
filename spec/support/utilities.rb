@@ -1,6 +1,5 @@
 def sign_in(user)
-  path = user.is_a?(Student) ? new_student_session_path : new_admin_session_path
-  visit path
+  visit new_student_session_path
   fill_in 'Email', with: user.email
   fill_in 'Password', with: user.password
   click_button 'Sign in'

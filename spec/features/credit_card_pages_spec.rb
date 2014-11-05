@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'User creates a credit card' do
   before do
     student = FactoryGirl.create(:student)
-    sign_in student
+    login_as(student, scope: :student)
     visit new_credit_card_path
     fill_in 'Name on card', with: student.name
   end

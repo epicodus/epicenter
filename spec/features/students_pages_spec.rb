@@ -28,7 +28,7 @@ feature "Student signs in" do
   context "before adding a payment method" do
     it "takes them to the page to choose payment method" do
       student = FactoryGirl.create(:student)
-      sign_in student
+      sign_in(student)
       expect(page).to have_content "How would you like to make payments"
     end
   end
@@ -37,7 +37,7 @@ feature "Student signs in" do
     it "takes them to the page to verify their account", :vcr do
       student = FactoryGirl.create(:student)
       bank_account = FactoryGirl.create(:bank_account, student: student)
-      sign_in student
+      sign_in(student)
       expect(page).to have_content "Confirm your account"
     end
   end
@@ -45,7 +45,7 @@ feature "Student signs in" do
   context "after verifying their bank account", :vcr do
     it "shows them their payment history" do
       student = FactoryGirl.create(:user_with_verified_bank_account)
-      sign_in student
+      sign_in(student)
       expect(page).to have_content "Your payments"
     end
   end
@@ -53,7 +53,7 @@ feature "Student signs in" do
   context "after adding a credit card", :vcr do
     it "shows them their payment history" do
       student = FactoryGirl.create(:user_with_credit_card)
-      sign_in student
+      sign_in(student)
       expect(page).to have_content "Your payments"
     end
   end
