@@ -1,0 +1,49 @@
+<h1>Your payment methods</h1>
+
+<% if @payment_methods.present? %>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>
+          Primary
+        </th>
+        <th>
+          Type
+        </th>
+        <th>
+          Number
+        </th>
+        <th>
+          Status
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @payment_methods.each do |payment_method| %>
+        <% if payment_method == @primary_payment_method %>
+          <tr class="info">
+            <td>
+              <span class="check-mark">✓</span>
+            </td>
+        <% else %>
+          <tr>
+            <td>
+              Make Primary
+            </td>
+        <% end %>
+          <td>
+            <%= payment_method.class.name.underscore.humanize %>
+          </td>
+          <td>
+            <%= payment_method.last_four_string %>
+          </td>
+          <td>
+            Verified
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>Looks like you haven't added any payment methods yet.</p>
+<% end %>
