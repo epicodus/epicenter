@@ -22,4 +22,12 @@ protected
       end
     end
   end
+
+  def current_user
+    current_student || current_admin
+  end
+
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to root_path, alert: exception.message
+  end
 end

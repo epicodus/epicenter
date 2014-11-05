@@ -1,4 +1,5 @@
 class AssessmentsController < ApplicationController
+  authorize_resource
 
   def index
     @assessments = Assessment.all

@@ -7,6 +7,7 @@ require 'shoulda/matchers'
 require 'capybara/rails'
 require 'capybara/poltergeist'
 require 'billy/rspec'
+require "cancan/matchers"
 
 include Warden::Test::Helpers
 Warden.test_mode!
