@@ -47,12 +47,12 @@ feature 'index page' do
     end
 
     context 'creating a review', js: true do
-      let(:teacher) { FactoryGirl.create(:student) }
+      let(:admin) { FactoryGirl.create(:admin) }
       let!(:submission) { FactoryGirl.create(:submission, assessment: assessment, student: student) }
       let!(:score) { FactoryGirl.create(:score) }
 
       before do
-        sign_in teacher
+        sign_in admin
         visit assessment_submissions_path(assessment)
       end
 

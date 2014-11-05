@@ -16,7 +16,7 @@ class SubmissionsController < ApplicationController
 
   def update
     @assessment = Assessment.find(params[:assessment_id])
-    @submission = @assessment.submission_for(current_user)
+    @submission = @assessment.submission_for(current_student)
     if @submission.update(submission_params)
       redirect_to @assessment, notice: "Submission updated!"
     else
@@ -27,7 +27,7 @@ class SubmissionsController < ApplicationController
 private
 
   def submission_params
-    params.require(:submission).permit(:link, :needs_review).merge(student_id: current_user.id)
+    params.require(:submission).permit(:link, :needs_review).merge(student_id: current_student.id)
   end
 
 end
