@@ -5,9 +5,9 @@
     </div>
     <div class="span3">
       <span class="pull-right">
-        <% if assessment.submission_for(current_user).nil? %>
+        <% if assessment.submission_for(current_student).nil? %>
           Not submitted
-        <% elsif assessment.submission_for(current_user).has_been_reviewed? %>
+        <% elsif assessment.submission_for(current_student).has_been_reviewed? %>
           Reviewed
         <% else %>
           Submitted - Pending review

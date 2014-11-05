@@ -127,6 +127,13 @@ FactoryGirl.define do
     end
   end
 
+  factory :admin do
+    sequence(:name) { |n| "Admin Brown #{n}" }
+    sequence(:email) { |n| "admin#{n}@example.com" }
+    password "password"
+    password_confirmation "password"
+  end
+
   factory :attendance_record do
     student
   end

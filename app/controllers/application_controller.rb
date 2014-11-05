@@ -9,13 +9,17 @@ protected
     devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:plan_id, :cohort_id, :name, :email, :password, :password_confirmation) }
   end
 
-  def after_sign_in_path_for(student)
-    if student.has_payment_method
-      payments_path
-    elsif student.bank_account.present?
-      edit_verification_path
-    else
-      payment_method_path
+  def after_sign_in_path_for(user)
+    if user.is_a? Admin
+      root_path
+    elsif user.is_a? Student
+      if user.has_payment_method
+        payments_path
+      elsif user.bank_account.present?
+        edit_verification_path
+      else
+        payment_method_path
+      end
     end
   end
 end

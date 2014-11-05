@@ -1,13 +1,13 @@
 class RecurringPaymentsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_student!
 
   def create
-    @payment = current_user.start_recurring_payments
+    @payment = current_student.start_recurring_payments
     if @payment.persisted?
       flash[:notice] = "Thank You! Your first recurring payment has been made."
       redirect_to payments_path
     else
-      @payments = current_user.payments
+      @payments = current_student.payments
       render 'payments/index'
     end
   end

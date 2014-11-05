@@ -1,10 +1,10 @@
-<% if current_user.next_payment_date %>
+<% if current_student.next_payment_date %>
   <tr class="info">
     <td>
       Upcoming
     </td>
     <td>
-      <%= current_user.next_payment_date.strftime("%F") %>
+      <%= current_student.next_payment_date.strftime("%F") %>
     </td>
     <td>
       <%= number_to_currency(@payment.amount / 100.00) %>

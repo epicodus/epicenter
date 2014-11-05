@@ -44,7 +44,7 @@
   <p>Looks like you haven't made any payments yet.</p>
 <% end %>
 
-<% if current_user.upfront_payment_due? %>
+<% if current_student.upfront_payment_due? %>
   <div class="action-buttons">
     <%= form_for @payment, url: upfront_payments_path do |f| %>
       <%= f.submit "Make upfront payment of #{number_to_currency(@payment.amount / 100.00)}", data: { confirm: "Make upfront payment?" }, class: 'btn btn-large btn-primary' %>
@@ -52,7 +52,7 @@
   </div>
 <% end %>
 
-<% if current_user.ready_to_start_recurring_payments? %>
+<% if current_student.ready_to_start_recurring_payments? %>
   <div class="action-buttons">
     <%= form_for @payment, url: recurring_payments_path do |f| %>
       <%= f.submit "Start recurring payments of #{number_to_currency(@payment.amount / 100.00)}", data: { confirm: "Start recurring payments?" }, class: 'btn btn-large btn-primary' %>
