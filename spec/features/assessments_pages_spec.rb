@@ -63,7 +63,6 @@ feature 'show page' do
       it { is_expected.to have_button 'Submit' }
       it { is_expected.to_not have_content 'pending review' }
       it { is_expected.to_not have_link 'has been reviewed' }
-
     end
 
     context 'when submitting' do

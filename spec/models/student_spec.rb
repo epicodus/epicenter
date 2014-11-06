@@ -350,5 +350,9 @@ describe Student do
     subject { Ability.new(student) }
 
     it { is_expected.to be_able_to(:read, Assessment.new) }
+
+    it { is_expected.to be_able_to(:create, Submission.new) }
+    it { is_expected.to be_able_to(:update, Submission.new(student: student)) }
+    it { is_expected.to_not be_able_to(:update, Submission.new) }
   end
 end
