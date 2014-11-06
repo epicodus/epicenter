@@ -5,6 +5,6 @@ describe Admin do
     let(:admin) { FactoryGirl.create(:admin) }
     subject { Ability.new(admin) }
 
-    it { is_expected.to be_able_to(:manage, Assessment.new) }
+    it { is_expected.to be_able_to(:manage, :all) }
   end
 end
