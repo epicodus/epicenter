@@ -1,5 +1,5 @@
 class CreditCardsController < ApplicationController
-  before_action :authenticate_student!
+  authorize_resource
 
   def new
     @credit_card = CreditCard.new

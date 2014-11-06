@@ -1,6 +1,6 @@
 class PaymentsController < ApplicationController
-  before_action :authenticate_student!
-
+  authorize_resource
+  
   def index
     @payments = current_student.payments
     if current_student.upfront_payment_due?

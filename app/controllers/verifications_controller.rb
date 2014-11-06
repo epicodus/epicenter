@@ -1,5 +1,5 @@
 class VerificationsController < ApplicationController
-  before_action :authenticate_student!
+  authorize_resource
 
   def edit
     @bank_account = BankAccount.find(params[:bank_account_id])

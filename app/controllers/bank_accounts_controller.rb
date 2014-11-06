@@ -1,6 +1,6 @@
 class BankAccountsController < ApplicationController
-  before_action :authenticate_student!
-
+  authorize_resource
+  
   def new
     @bank_account = BankAccount.new
   end

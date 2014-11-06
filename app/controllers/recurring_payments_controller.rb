@@ -1,5 +1,5 @@
 class RecurringPaymentsController < ApplicationController
-  before_action :authenticate_student!
+  authorize_resource :payment
 
   def create
     @payment = current_student.start_recurring_payments
