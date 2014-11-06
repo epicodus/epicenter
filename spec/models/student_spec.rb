@@ -349,12 +349,61 @@ describe Student do
     let(:student) { FactoryGirl.create(:student) }
     subject { Ability.new(student) }
 
-    it { is_expected.to be_able_to(:read, Assessment.new) }
+    context 'for assessments' do
+      it { is_expected.to have_abilities(:read, Assessment.new) }
+    end
 
-    it { is_expected.to be_able_to(:create, Submission.new) }
-    it { is_expected.to be_able_to(:update, Submission.new(student: student)) }
-    it { is_expected.to_not be_able_to(:update, Submission.new) }
+    context 'for submissions' do
+      it { is_expected.to have_abilities(:create, Submission.new) }
+      it { is_expected.to have_abilities(:update, Submission.new(student: student)) }
+      it { is_expected.to not_have_abilities(:update, Submission.new) }
+    end
 
-    it { is_expected.to_not be_able_to(:read, CohortAttendanceStatistics) }
+    context 'for reviews' do
+      it { is_expected.to not_have_abilities([:create, :read, :update, :destroy], Review.new) }
+    end
+
+    context 'for cohort_attendance_statistics' do
+      it { is_expected.to not_have_abilities(:read, CohortAttendanceStatistics) }
+    end
+
+    context 'for bank_accounts' do
+      it { is_expected.to have_abilities(:create, BankAccount.new) }
+    end
+
+    context 'for credit_cards' do
+      it { is_expected.to have_abilities(:create, CreditCard.new) }
+    end
+
+
+    context 'for payments', vcr: true do
+      let(:bank_account) { FactoryGirl.create(:bank_account, student: student) }
+      let(:credit_card) { FactoryGirl.create(:credit_card, student: student) }
+
+      it 'allows students to create payments using one of their payment methods' do
+        is_expected.to have_abilities(:create, Payment.new(payment_method: bank_account))
+        is_expected.to have_abilities(:create, Payment.new(payment_method: credit_card))
+      end
+
+      it "doesn't allow students to create payments for others' payment methods" do
+        another_bank_account = FactoryGirl.create(:bank_account)
+        another_credit_card = FactoryGirl.create(:credit_card)
+        is_expected.to not_have_abilities(:create, Payment.new(payment_method: another_bank_account))
+        is_expected.to not_have_abilities(:create, Payment.new(payment_method: another_credit_card))
+      end
+      it { is_expected.to have_abilities(:create, Payment.new(payment_method: bank_account)) }
+
+      it { is_expected.to have_abilities(:read, Payment.new(student: student)) }
+      it { is_expected.to not_have_abilities(:read, Payment.new) }
+    end
+
+    context 'for verifications', vcr: true do
+      it 'allows students to verify their own bank accounts' do
+        bank_account = FactoryGirl.create(:bank_account, student: student)
+        is_expected.to have_abilities(:update, Verification.new(bank_account: bank_account))
+      end
+
+      it { is_expected.to not_have_abilities(:update, Verification.new) }
+    end
   end
 end
