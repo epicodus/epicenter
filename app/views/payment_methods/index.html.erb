@@ -45,7 +45,7 @@
           </td>
           <td>
             <% unless payment_method.verified? %>
-              Pending
+              <%= link_to 'Verify Account', edit_bank_account_verification_path(payment_method), class: 'btn btn-primary' %>
             <% else %>
               Verified
             <% end %>
@@ -58,8 +58,10 @@
   <p>Looks like you haven't added any payment methods yet.</p>
 <% end %>
 
+<p class='new-method-links'><%= link_to 'Make or review payments', payments_path %></p>
 <p class='new-method-links'><%= link_to '+ Add credit card', new_credit_card_path %></p>
 <p class='new-method-links'><%= link_to '+ Add bank account', new_bank_account_path %></p>
+
 
 
 

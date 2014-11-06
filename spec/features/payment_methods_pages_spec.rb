@@ -11,13 +11,13 @@ feature 'Student views payment methods page' do
   end
 
   context 'after a bank account is added but not verified', :vcr do
-    it "shows payment method as pending with no 'Make Primary' button" do
+    it "shows 'Verify Account' button" do
       student = FactoryGirl.create(:user_with_unverified_bank_account)
       sign_in student
       visit payment_methods_path
       expect(page).to have_content "xxxxxx0002"
       expect(page).to have_content "Bank account"
-      expect(page).to have_content "Pending"
+      expect(page).to have_link "Verify Account"
       expect(page).to_not have_button "Make Primary"
       expect(page).to_not have_content "✓"
     end

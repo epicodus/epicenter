@@ -10,7 +10,7 @@
 
 <%= render '/layouts/errors', :object => @bank_account%>
 
-<%= form_for @bank_account, url: bank_account_path do |f| %>
+<%= form_for @bank_account do |f| %>
   <div>
     <%= label_tag :name, "Name on account" %>
     <%= text_field_tag :name, nil, autofocus: true %>

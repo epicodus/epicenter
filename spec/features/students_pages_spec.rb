@@ -34,11 +34,12 @@ feature "Student signs in" do
   end
 
   context "after entering bank account info but before verifying" do
-    it "takes them to the page to verify their account", :vcr do
+    it "takes them to the payment methods page", :vcr do
       student = FactoryGirl.create(:student)
       bank_account = FactoryGirl.create(:bank_account, student: student)
-      sign_in(student)
-      expect(page).to have_content "Confirm your account"
+      sign_in student
+      expect(page).to have_content "Your payment methods"
+      expect(page).to have_link "Verify Account"
     end
   end
 
@@ -68,7 +69,7 @@ feature 'Guest not signed in' do
   end
 
   context 'visits edit verification path' do
-    before { visit edit_verification_path }
+    before { visit "/bank_accounts/1/verification/edit" }
     it { should have_content 'You need to sign in' }
   end
 

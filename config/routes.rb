@@ -7,9 +7,10 @@ Rails.application.routes.draw do
 
   resources :students, only: [:update]
   resources :payment_methods, only: [:index, :new]
-  resource :bank_account, only: [:new, :create]
+  resources :bank_accounts, only: [:new, :create] do
+    resource :verification, only: [:edit, :update]
+  end
   resource :credit_card, only: [:new, :create]
-  resource :verification, only: [:edit, :update]
   resources :payments, only: [:index]
   resources :upfront_payments, only: [:create]
   resources :recurring_payments, only: [:create]
