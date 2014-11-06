@@ -3,7 +3,7 @@ require 'rails_helper'
 describe 'verifying bank account', :vcr do
 
   scenario 'as a guest' do
-    visit edit_verification_path
+    visit payment_methods_path
     expect(page).to have_content 'need to sign in'
   end
 
@@ -14,7 +14,8 @@ describe 'verifying bank account', :vcr do
 
       before do
         login_as(student, scope: :student)
-        visit edit_verification_path
+        visit payment_methods_path
+        click_on 'Verify Account'
         fill_in 'First deposit amount', with: '1'
         fill_in 'Second deposit amount', with: '1'
         click_on 'Confirm account'
@@ -30,7 +31,8 @@ describe 'verifying bank account', :vcr do
       it 'gives an error notice' do
         student = FactoryGirl.create :user_with_unverified_bank_account
         login_as(student, scope: :student)
-        visit edit_verification_path
+        visit payment_methods_path
+        click_on 'Verify Account'
         fill_in 'First deposit amount', with: '2'
         fill_in 'Second deposit amount', with: '1'
         click_on 'Confirm account'
