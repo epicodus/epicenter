@@ -1,4 +1,6 @@
 class ReviewsController < ApplicationController
+  authorize_resource
+  
   def new
     @submission = Submission.find(params[:submission_id])
     @review = @submission.clone_or_build_review

@@ -1,4 +1,6 @@
 class SubmissionsController < ApplicationController
+  authorize_resource
+  
   def index
     @assessment = Assessment.find(params[:assessment_id])
     @submissions = @assessment.submissions.needing_review
