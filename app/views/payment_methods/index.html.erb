@@ -28,10 +28,12 @@
         <% else %>
           <tr>
             <td>
-              <%= form_for payment_method.student, html: {class: 'payment-button-form'} do |f| %>
-                <%= f.hidden_field :primary_payment_method_type, value: payment_method.class.name %>
-                <%= f.hidden_field :primary_payment_method_id, value: payment_method.id %>
-                <%= f.submit 'Make Primary', class: 'btn', data: { confirm: "Change primary payment method?" } %>
+              <% if payment_method.verified? %>
+                <%= form_for payment_method.student, html: {class: 'payment-button-form'} do |f| %>
+                  <%= f.hidden_field :primary_payment_method_type, value: payment_method.class.name %>
+                  <%= f.hidden_field :primary_payment_method_id, value: payment_method.id %>
+                  <%= f.submit 'Make Primary', class: 'btn', data: { confirm: "Change primary payment method?" } %>
+                <% end %>
               <% end %>
             </td>
         <% end %>
@@ -42,7 +44,7 @@
             <%= payment_method.last_four_string %>
           </td>
           <td>
-            <% if payment_method.class.name == "BankAccount" && !payment_method.verified %>
+            <% unless payment_method.verified? %>
               Pending
             <% else %>
               Verified
@@ -55,3 +57,4 @@
 <% else %>
   <p>Looks like you haven't added any payment methods yet.</p>
 <% end %>
+
