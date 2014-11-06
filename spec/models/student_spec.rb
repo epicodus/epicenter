@@ -354,5 +354,7 @@ describe Student do
     it { is_expected.to be_able_to(:create, Submission.new) }
     it { is_expected.to be_able_to(:update, Submission.new(student: student)) }
     it { is_expected.to_not be_able_to(:update, Submission.new) }
+
+    it { is_expected.to_not be_able_to(:read, CohortAttendanceStatistics) }
   end
 end
