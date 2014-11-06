@@ -13,12 +13,12 @@ protected
     if user.is_a? Admin
       root_path
     elsif user.is_a? Student
-      if user.has_payment_method
+      if user.primary_payment_method.present?
         payments_path
-      elsif user.bank_account.present?
-        edit_verification_path
+      elsif user.bank_accounts.first.present?
+        payment_methods_path
       else
-        payment_method_path
+        new_payment_method_path
       end
     end
   end

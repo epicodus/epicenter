@@ -6,7 +6,7 @@
 
 <%= render '/layouts/errors', :object => @verification %>
 
-<%= form_for @verification, url: '/verification', method: :patch do |f| %>
+<%= form_for @verification, url: bank_account_verification_path(@bank_account), method: :patch do |f| %>
   <div>
     <%= f.label :first_deposit, "First deposit amount in cents" %>
     $0.<%= f.text_field :first_deposit, autofocus: true %>

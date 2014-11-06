@@ -6,7 +6,7 @@ class BankAccountsController < ApplicationController
   end
 
   def create
-    @bank_account = BankAccount.create(bank_account_params.merge(user: current_student))
+    @bank_account = BankAccount.create(bank_account_params.merge(student: current_student))
     unless @bank_account.save
       render :new
     end

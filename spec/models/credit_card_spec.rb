@@ -33,4 +33,11 @@ describe CreditCard do
       expect(credit_card.calculate_fee(600_00)).to eq 18_21
     end
   end
+
+  describe "#verified?" do
+    it "returns true", :vcr do
+      credit_card = FactoryGirl.create :credit_card
+      expect(credit_card.verified?).to eq true
+    end
+  end
 end

@@ -4,7 +4,8 @@ describe 'verifying bank account', :vcr do
   context 'with correct deposit amounts' do
     before do
       login_as(student, scope: :student)
-      visit edit_verification_path
+      visit payment_methods_path
+      click_on 'Verify Account'
       fill_in 'First deposit amount', with: '1'
       fill_in 'Second deposit amount', with: '1'
       click_on 'Confirm account'
@@ -16,7 +17,7 @@ describe 'verifying bank account', :vcr do
 
       it 'gives the student a confirmation notice and redirects to payments page' do
         expect(page).to have_content 'account has been confirmed'
-        expect(current_path).to eq payments_path
+        expect(current_path).to eq payment_methods_path
       end
     end
   end
@@ -25,7 +26,8 @@ describe 'verifying bank account', :vcr do
     it 'gives an error notice' do
       student = FactoryGirl.create :user_with_unverified_bank_account
       login_as(student, scope: :student)
-      visit edit_verification_path
+      visit payment_methods_path
+      click_on 'Verify Account'
       fill_in 'First deposit amount', with: '2'
       fill_in 'Second deposit amount', with: '1'
       click_on 'Confirm account'

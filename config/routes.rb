@@ -1,14 +1,16 @@
 Rails.application.routes.draw do
   root 'static_pages#index'
   get 'attendance', to: 'attendance_records#index', as: 'attendance'
-  get 'payment_method', to: 'static_pages#payment_method', as: 'payment_method'
 
   devise_for :student
   devise_for :admins, skip: :registrations
 
-  resource :bank_account, only: [:new, :create]
+  resources :students, only: [:update]
+  resources :payment_methods, only: [:index, :new]
+  resources :bank_accounts, only: [:new, :create] do
+    resource :verification, only: [:edit, :update]
+  end
   resource :credit_card, only: [:new, :create]
-  resource :verification, only: [:edit, :update]
   resources :payments, only: [:index]
   resources :upfront_payments, only: [:create]
   resources :recurring_payments, only: [:create]

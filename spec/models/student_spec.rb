@@ -3,11 +3,32 @@ require 'rails_helper'
 describe Student do
   it { should validate_presence_of :plan_id }
   it { should validate_presence_of :cohort_id }
-  it { should have_one :bank_account }
+  it { should have_many :bank_accounts }
   it { should have_many :payments }
   it { should belong_to :plan }
   it { should have_many :attendance_records }
   it { should belong_to :cohort }
+
+  describe "#payment_methods" do
+    it "returns all the student's bank accounts and credit cards", :vcr do
+      student = FactoryGirl.create(:student)
+      credit_card_1 = FactoryGirl.create(:credit_card, student: student)
+      credit_card_2 = FactoryGirl.create(:credit_card, student: student)
+      bank_account = FactoryGirl.create(:bank_account, student: student)
+      expect(student.payment_methods).to match_array [credit_card_1, credit_card_2, bank_account]
+    end
+  end
+
+  describe "#payment_methods_primary_first_then_pending" do
+    it "returns payment methods with primary first, then pending bank accounts", :vcr do
+      student = FactoryGirl.create(:student)
+      credit_card_1 = FactoryGirl.create(:credit_card, student: student)
+      bank_account = FactoryGirl.create(:bank_account, student: student)
+      credit_card_2 = FactoryGirl.create(:credit_card, student: student)
+      expect(student.payment_methods_primary_first_then_pending[0]).to eq credit_card_1
+      expect(student.payment_methods_primary_first_then_pending[1]).to eq bank_account
+    end
+  end
 
   describe ".recurring_active" do
     it "only includes users that are recurring_active", :vcr do
@@ -305,28 +326,6 @@ describe Student do
           expect(student.absences).to eq 1
         end
       end
-    end
-  end
-
-  describe "#has_payment_method", :vcr do
-    it "returns true if student has a credit card" do
-      student = FactoryGirl.create(:user_with_credit_card)
-      expect(student.has_payment_method).to eq true
-    end
-
-    it "returns true if student has a verified bank account" do
-      student = FactoryGirl.create(:user_with_verified_bank_account)
-      expect(student.has_payment_method).to eq true
-    end
-
-    it "returns false if student has no credit card and unverified bank account" do
-      student = FactoryGirl.create(:user_with_unverified_bank_account)
-      expect(student.has_payment_method).to eq false
-    end
-
-    it "returns false if student doesn't have a credit card or bank account" do
-      student = FactoryGirl.create(:student)
-      expect(student.has_payment_method).to eq false
     end
   end
 

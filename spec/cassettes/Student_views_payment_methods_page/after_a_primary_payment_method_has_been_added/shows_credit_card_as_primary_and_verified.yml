@@ -1,0 +1,199 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards
+    body:
+      encoding: UTF-8
+      string: '{"number":"4111111111111111","expiration_month":"12","expiration_year":"2020","cvv":"123"}'
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 05 Nov 2014 19:26:47 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHMae9f71c4652111e492f402a1fe53e539
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-5-17
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.39
+      X-Midlr-Version:
+      - '2'
+      X-Newrelic-App-Data:
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVEKVAZZAlJUBAdVUlUPBAdXTUIFCA5KRBNUUgZeV1RVUA0AD11WCgcDG00RB1IOF1Nq
+      Content-Length:
+      - '1266'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "cards": [
+            {
+              "links": {
+                "customer": null
+              },
+              "fingerprint": "b3ecb5551877e4c9ee9937f74cffbcfacc388e575cb4c061c30f8a32d340001b",
+              "cvv_result": "Match",
+              "number": "xxxxxxxxxxxx1111",
+              "avs_postal_match": null,
+              "expiration_month": 12,
+              "meta": {},
+              "id": "CC5jVrIv3GNo1xghglB3YWje",
+              "category": "other",
+              "type": "credit",
+              "cvv_match": "yes",
+              "bank_name": "JPMORGAN CHASE BANK, N.A.",
+              "avs_street_match": null,
+              "brand": "Visa",
+              "updated_at": "2014-11-05T19:27:01.381199Z",
+              "address": {
+                "city": null,
+                "line2": null,
+                "line1": null,
+                "state": null,
+                "postal_code": null,
+                "country_code": null
+              },
+              "can_debit": true,
+              "name": null,
+              "expiration_year": 2020,
+              "cvv": "xxx",
+              "is_verified": true,
+              "avs_result": null,
+              "can_credit": false,
+              "href": "/cards/CC5jVrIv3GNo1xghglB3YWje",
+              "created_at": "2014-11-05T19:27:01.381196Z"
+            }
+          ],
+          "links": {
+            "cards.card_holds": "/cards/{cards.id}/card_holds",
+            "cards.customer": "/customers/{cards.customer}",
+            "cards.disputes": "/cards/{cards.id}/disputes",
+            "cards.debits": "/cards/{cards.id}/debits"
+          }
+        }
+    http_version: 
+  recorded_at: Wed, 05 Nov 2014 19:26:47 GMT
+- request:
+    method: get
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC5jVrIv3GNo1xghglB3YWje
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 05 Nov 2014 19:26:47 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHMaf32235c652111e4bc0006429171ffad
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-5-17
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.39
+      Content-Length:
+      - '564'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "cards": [
+            {
+              "links": {
+                "customer": null
+              },
+              "fingerprint": "b3ecb5551877e4c9ee9937f74cffbcfacc388e575cb4c061c30f8a32d340001b",
+              "cvv_result": "Match",
+              "number": "xxxxxxxxxxxx1111",
+              "avs_postal_match": null,
+              "expiration_month": 12,
+              "meta": {},
+              "id": "CC5jVrIv3GNo1xghglB3YWje",
+              "category": "other",
+              "type": "credit",
+              "cvv_match": "yes",
+              "bank_name": "JPMORGAN CHASE BANK, N.A.",
+              "avs_street_match": null,
+              "brand": "Visa",
+              "updated_at": "2014-11-05T19:27:01.381199Z",
+              "address": {
+                "city": null,
+                "line2": null,
+                "line1": null,
+                "state": null,
+                "postal_code": null,
+                "country_code": null
+              },
+              "can_debit": true,
+              "name": null,
+              "expiration_year": 2020,
+              "cvv": "xxx",
+              "is_verified": true,
+              "avs_result": null,
+              "can_credit": false,
+              "href": "/cards/CC5jVrIv3GNo1xghglB3YWje",
+              "created_at": "2014-11-05T19:27:01.381196Z"
+            }
+          ],
+          "links": {
+            "cards.card_holds": "/cards/{cards.id}/card_holds",
+            "cards.customer": "/customers/{cards.customer}",
+            "cards.disputes": "/cards/{cards.id}/disputes",
+            "cards.debits": "/cards/{cards.id}/debits"
+          }
+        }
+    http_version: 
+  recorded_at: Wed, 05 Nov 2014 19:26:47 GMT
+recorded_with: VCR 2.9.3

@@ -6,12 +6,20 @@ class Student < User
 
   belongs_to :plan
   belongs_to :cohort
-  has_one :bank_account
-  has_one :credit_card
+  has_many :bank_accounts
+  has_many :credit_cards
   has_many :payments
   has_many :attendance_records
   has_many :submissions
   has_many :grades
+
+  def payment_methods
+    credit_cards + bank_accounts
+  end
+
+  def payment_methods_primary_first_then_pending
+    (payment_methods.sort_by { |p| !p.verified? ? 0 : 1 } - [primary_payment_method]).unshift(primary_payment_method).compact
+  end
 
   def self.billable_today
     recurring_active.select do |student|
@@ -42,10 +50,6 @@ class Student < User
     billable_today.each do |student|
       student.payments.create(amount: student.plan.recurring_amount, payment_method: student.primary_payment_method)
     end
-  end
-
-  def has_payment_method
-    credit_card.present? || (bank_account.present? && bank_account.verified == true)
   end
 
   def primary_payment_method
