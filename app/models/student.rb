@@ -15,7 +15,7 @@ class Student < User
 
   def self.billable_today
     recurring_active.select do |student|
-      student.payments.last.created_at < 1.month.ago
+      student.payments.last.created_at.to_date < 1.month.ago
     end
   end
 
