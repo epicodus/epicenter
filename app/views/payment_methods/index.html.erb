@@ -25,6 +25,10 @@
             <td class="primary-payment-method">
               <span class="check-mark">✓</span>
             </td>
+        <% elsif !payment_method.verified? %>
+          <tr class="alert">
+            <td>
+            </td>
         <% else %>
           <tr>
             <td>
@@ -45,7 +49,7 @@
           </td>
           <td>
             <% unless payment_method.verified? %>
-              <%= link_to 'Verify Account', edit_bank_account_verification_path(payment_method), class: 'btn btn-primary' %>
+              <%= link_to 'Verify Account', edit_bank_account_verification_path(payment_method), class: 'btn btn-primary verify-button-link' %>
             <% else %>
               Verified
             <% end %>
@@ -61,7 +65,3 @@
 <p class='new-method-links'><%= link_to 'Make or review payments', payments_path %></p>
 <p class='new-method-links'><%= link_to '+ Add credit card', new_credit_card_path %></p>
 <p class='new-method-links'><%= link_to '+ Add bank account', new_bank_account_path %></p>
-
-
-
-

@@ -19,12 +19,14 @@ describe Student do
     end
   end
 
-  describe "#payment_methods_primary_first" do
-    it "returns payment methods with primary first", :vcr do
+  describe "#payment_methods_primary_first_then_pending" do
+    it "returns payment methods with primary first, then pending bank accounts", :vcr do
       student = FactoryGirl.create(:student)
       credit_card_1 = FactoryGirl.create(:credit_card, student: student)
+      bank_account = FactoryGirl.create(:bank_account, student: student)
       credit_card_2 = FactoryGirl.create(:credit_card, student: student)
-      expect(student.payment_methods_primary_first.first).to eq credit_card_1
+      expect(student.payment_methods_primary_first_then_pending[0]).to eq credit_card_1
+      expect(student.payment_methods_primary_first_then_pending[1]).to eq bank_account
     end
   end
 

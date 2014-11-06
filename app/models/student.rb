@@ -17,8 +17,8 @@ class Student < User
     credit_cards + bank_accounts
   end
 
-  def payment_methods_primary_first
-    (payment_methods - [primary_payment_method]).unshift(primary_payment_method).compact
+  def payment_methods_primary_first_then_pending
+    (payment_methods.sort_by { |p| !p.verified? ? 0 : 1 } - [primary_payment_method]).unshift(primary_payment_method).compact
   end
 
   def self.billable_today
