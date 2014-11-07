@@ -7,11 +7,12 @@ feature 'Student views payment methods page' do
       sign_in student
       visit payment_methods_path
       expect(page).to have_content "Looks like you haven't added any payment methods yet."
+      expect(page).to_not have_link "Make or review payments"
     end
   end
 
   context 'after a bank account is added but not verified', :vcr do
-    it "shows 'Verify Account' button" do
+    it "shows 'Verify Account' button and does not show link to make payments" do
       student = FactoryGirl.create(:user_with_unverified_bank_account)
       sign_in student
       visit payment_methods_path
@@ -20,11 +21,12 @@ feature 'Student views payment methods page' do
       expect(page).to have_link "Verify Account"
       expect(page).to_not have_button "Make Primary"
       expect(page).to_not have_content "✓"
+      expect(page).to_not have_link "Make or review payments"
     end
   end
 
   context 'after a primary payment method has been added', :vcr do
-    it "shows credit card as primary and verified" do
+    it "shows credit card as primary and shows link to make payments" do
       student = FactoryGirl.create(:user_with_credit_card)
       sign_in student
       visit payment_methods_path
@@ -33,6 +35,7 @@ feature 'Student views payment methods page' do
       expect(page).to have_content "Credit card"
       expect(page).to have_content "Verified"
       expect(page).to_not have_button "Make Primary"
+      expect(page).to have_link "Make or review payments"
     end
 
     it "shows verified bank account as primary and verified" do
