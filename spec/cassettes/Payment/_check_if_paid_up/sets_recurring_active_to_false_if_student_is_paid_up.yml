@@ -29,13 +29,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 04 Nov 2014 17:45:26 GMT
+      - Fri, 07 Nov 2014 17:20:28 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM5bc4735a644a11e48e3702a1fe52a36c
+      - OHM5dfbea6866a211e4ba8502a1fe53e539
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
+      - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -47,7 +47,7 @@ http_interactions:
       X-Midlr-Version:
       - '2'
       X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVEOVwNVAFJVDwZRUlMIAAlIQVAOCBtGRgkOBloFVAcBBltRCFwFBVBHFUFXAF8RAWs=
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQDHVULUgZUAFpcBwNUUlcOBAhIQVAOCBtGRgYFAgBWB1tSWghaDABRUQJHFUFXAF8RAWs=
       Content-Length:
       - '1266'
       Connection:
@@ -67,14 +67,14 @@ http_interactions:
               "avs_postal_match": null,
               "expiration_month": 12,
               "meta": {},
-              "id": "CC2NEEdXLONsXXjehkYttgXe",
+              "id": "CC2SiUKYiFznfVGAfcmpQTnD",
               "category": "other",
               "type": "credit",
               "cvv_match": "yes",
               "bank_name": "JPMORGAN CHASE BANK, N.A.",
               "avs_street_match": null,
               "brand": "Visa",
-              "updated_at": "2014-11-04T17:45:38.379258Z",
+              "updated_at": "2014-11-07T17:20:46.843700Z",
               "address": {
                 "city": null,
                 "line2": null,
@@ -90,8 +90,8 @@ http_interactions:
               "is_verified": true,
               "avs_result": null,
               "can_credit": false,
-              "href": "/cards/CC2NEEdXLONsXXjehkYttgXe",
-              "created_at": "2014-11-04T17:45:38.379256Z"
+              "href": "/cards/CC2SiUKYiFznfVGAfcmpQTnD",
+              "created_at": "2014-11-07T17:20:46.843698Z"
             }
           ],
           "links": {
@@ -102,10 +102,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 04 Nov 2014 17:45:26 GMT
+  recorded_at: Fri, 07 Nov 2014 17:20:28 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC2NEEdXLONsXXjehkYttgXe
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC2SiUKYiFznfVGAfcmpQTnD
     body:
       encoding: US-ASCII
       string: ''
@@ -126,104 +126,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 04 Nov 2014 17:45:26 GMT
+      - Fri, 07 Nov 2014 17:20:28 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM5c3ec056644a11e49ead06429171ffad
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.39
-      Content-Length:
-      - '564'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "cards": [
-            {
-              "links": {
-                "customer": null
-              },
-              "fingerprint": "b3ecb5551877e4c9ee9937f74cffbcfacc388e575cb4c061c30f8a32d340001b",
-              "cvv_result": "Match",
-              "number": "xxxxxxxxxxxx1111",
-              "avs_postal_match": null,
-              "expiration_month": 12,
-              "meta": {},
-              "id": "CC2NEEdXLONsXXjehkYttgXe",
-              "category": "other",
-              "type": "credit",
-              "cvv_match": "yes",
-              "bank_name": "JPMORGAN CHASE BANK, N.A.",
-              "avs_street_match": null,
-              "brand": "Visa",
-              "updated_at": "2014-11-04T17:45:38.379258Z",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": true,
-              "name": null,
-              "expiration_year": 2020,
-              "cvv": "xxx",
-              "is_verified": true,
-              "avs_result": null,
-              "can_credit": false,
-              "href": "/cards/CC2NEEdXLONsXXjehkYttgXe",
-              "created_at": "2014-11-04T17:45:38.379256Z"
-            }
-          ],
-          "links": {
-            "cards.card_holds": "/cards/{cards.id}/card_holds",
-            "cards.customer": "/customers/{cards.customer}",
-            "cards.disputes": "/cards/{cards.id}/disputes",
-            "cards.debits": "/cards/{cards.id}/debits"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 04 Nov 2014 17:45:26 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC2NEEdXLONsXXjehkYttgXe
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 04 Nov 2014 17:45:27 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM5c76eba2644a11e49ead06429171ffad
+      - OHM5ec93c5266a211e4b84f0230f00c9248
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
@@ -235,7 +142,7 @@ http_interactions:
       X-Balanced-Software-Build:
       - 1.8.39
       Content-Length:
-      - '564'
+      - '567'
       Connection:
       - keep-alive
     body:
@@ -253,14 +160,14 @@ http_interactions:
               "avs_postal_match": null,
               "expiration_month": 12,
               "meta": {},
-              "id": "CC2NEEdXLONsXXjehkYttgXe",
+              "id": "CC2SiUKYiFznfVGAfcmpQTnD",
               "category": "other",
               "type": "credit",
               "cvv_match": "yes",
               "bank_name": "JPMORGAN CHASE BANK, N.A.",
               "avs_street_match": null,
               "brand": "Visa",
-              "updated_at": "2014-11-04T17:45:38.379258Z",
+              "updated_at": "2014-11-07T17:20:46.843700Z",
               "address": {
                 "city": null,
                 "line2": null,
@@ -276,8 +183,8 @@ http_interactions:
               "is_verified": true,
               "avs_result": null,
               "can_credit": false,
-              "href": "/cards/CC2NEEdXLONsXXjehkYttgXe",
-              "created_at": "2014-11-04T17:45:38.379256Z"
+              "href": "/cards/CC2SiUKYiFznfVGAfcmpQTnD",
+              "created_at": "2014-11-07T17:20:46.843698Z"
             }
           ],
           "links": {
@@ -288,10 +195,103 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 04 Nov 2014 17:45:27 GMT
+  recorded_at: Fri, 07 Nov 2014 17:20:29 GMT
+- request:
+    method: get
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC2SiUKYiFznfVGAfcmpQTnD
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 07 Nov 2014 17:20:29 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHM5ef9ca6666a211e49ead06429171ffad
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-4-8
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.8.39
+      Content-Length:
+      - '567'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "cards": [
+            {
+              "links": {
+                "customer": null
+              },
+              "fingerprint": "b3ecb5551877e4c9ee9937f74cffbcfacc388e575cb4c061c30f8a32d340001b",
+              "cvv_result": "Match",
+              "number": "xxxxxxxxxxxx1111",
+              "avs_postal_match": null,
+              "expiration_month": 12,
+              "meta": {},
+              "id": "CC2SiUKYiFznfVGAfcmpQTnD",
+              "category": "other",
+              "type": "credit",
+              "cvv_match": "yes",
+              "bank_name": "JPMORGAN CHASE BANK, N.A.",
+              "avs_street_match": null,
+              "brand": "Visa",
+              "updated_at": "2014-11-07T17:20:46.843700Z",
+              "address": {
+                "city": null,
+                "line2": null,
+                "line1": null,
+                "state": null,
+                "postal_code": null,
+                "country_code": null
+              },
+              "can_debit": true,
+              "name": null,
+              "expiration_year": 2020,
+              "cvv": "xxx",
+              "is_verified": true,
+              "avs_result": null,
+              "can_credit": false,
+              "href": "/cards/CC2SiUKYiFznfVGAfcmpQTnD",
+              "created_at": "2014-11-07T17:20:46.843698Z"
+            }
+          ],
+          "links": {
+            "cards.card_holds": "/cards/{cards.id}/card_holds",
+            "cards.customer": "/customers/{cards.customer}",
+            "cards.disputes": "/cards/{cards.id}/disputes",
+            "cards.debits": "/cards/{cards.id}/debits"
+          }
+        }
+    http_version: 
+  recorded_at: Fri, 07 Nov 2014 17:20:29 GMT
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC2NEEdXLONsXXjehkYttgXe/debits
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC2SiUKYiFznfVGAfcmpQTnD/debits
     body:
       encoding: UTF-8
       string: '{"amount":514963,"appears_on_statement_as":"Epicodus tuition"}'
@@ -312,11 +312,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 04 Nov 2014 17:45:28 GMT
+      - Fri, 07 Nov 2014 17:20:30 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM5cb03aa6644a11e4bc0006429171ffad
+      - OHM5f32b94866a211e495990230f00c9248
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
@@ -341,22 +341,22 @@ http_interactions:
               "description": null,
               "links": {
                 "customer": null,
-                "source": "CC2NEEdXLONsXXjehkYttgXe",
-                "card_hold": "HL2OY7juA8PouLVFgkT3bDzT",
+                "source": "CC2SiUKYiFznfVGAfcmpQTnD",
+                "card_hold": "HL2THws8GUNPNcHHn0qAfVdP",
                 "order": null,
                 "dispute": null
               },
-              "updated_at": "2014-11-04T17:45:40.303386Z",
-              "created_at": "2014-11-04T17:45:39.585209Z",
-              "transaction_number": "W5HR-XP8-MYI6",
+              "updated_at": "2014-11-07T17:20:48.927710Z",
+              "created_at": "2014-11-07T17:20:48.110041Z",
+              "transaction_number": "WJ4G-MZL-179M",
               "failure_reason": null,
               "currency": "USD",
               "amount": 514963,
               "failure_reason_code": null,
               "meta": {},
-              "href": "/debits/WD2OZCzVYBuhONlAl80SgxyB",
+              "href": "/debits/WD2TIVN52d6yQ7ynL1uWMUCh",
               "appears_on_statement_as": "BAL*Epicodus tuition",
-              "id": "WD2OZCzVYBuhONlAl80SgxyB"
+              "id": "WD2TIVN52d6yQ7ynL1uWMUCh"
             }
           ],
           "links": {
@@ -370,20 +370,20 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 04 Nov 2014 17:45:28 GMT
+  recorded_at: Fri, 07 Nov 2014 17:20:30 GMT
 - request:
     method: post
-    uri: https://api:key-6i28pis-hiythfyhqx-njd6gv4a2xuy3@api.mailgun.net/v2/epicodus.com/messages
+    uri: https://api:<MAILGUN_API_KEY>@api.mailgun.net/v2/epicodus.com/messages
     body:
       encoding: US-ASCII
-      string: from=michael%40epicodus.com&to=student95%40example.com&bcc=michael%40epicodus.com&subject=Epicodus%20tuition%20payment%20receipt&text=Hi%20Example%20Brown%2087.%20This%20is%20to%20confirm%20your%20payment%20of%20%245%2C149.63%20for%20Epicodus%20tuition.%20If%20you%20have%20any%20questions%2C%20reply%20to%20this%20email.%20Thanks!
+      string: from=michael%40epicodus.com&to=student103%40example.com&bcc=michael%40epicodus.com&subject=Epicodus%20tuition%20payment%20receipt&text=Hi%20Example%20Brown%2095.%20This%20is%20to%20confirm%20your%20payment%20of%20%245%2C149.63%20for%20Epicodus%20tuition.%20If%20you%20have%20any%20questions%2C%20reply%20to%20this%20email.%20Thanks!
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
       Accept-Encoding:
       - gzip, deflate
       Content-Length:
-      - '331'
+      - '332'
       Content-Type:
       - application/x-www-form-urlencoded
       User-Agent:
@@ -396,11 +396,11 @@ http_interactions:
       Server:
       - nginx/1.4.7
       Date:
-      - Tue, 04 Nov 2014 17:45:28 GMT
+      - Fri, 07 Nov 2014 17:20:31 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '90'
+      - '91'
       Connection:
       - keep-alive
       Content-Disposition:
@@ -418,8 +418,8 @@ http_interactions:
       string: |-
         {
           "message": "Queued. Thank you.",
-          "id": "<20141104174528.85196.66745@epicodus.com>"
+          "id": "<20141107172031.108083.20843@epicodus.com>"
         }
     http_version: 
-  recorded_at: Tue, 04 Nov 2014 17:45:29 GMT
+  recorded_at: Fri, 07 Nov 2014 17:20:31 GMT
 recorded_with: VCR 2.9.3

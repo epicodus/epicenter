@@ -33,6 +33,7 @@ VCR.configure do |config|
   config.configure_rspec_metadata!
   config.allow_http_connections_when_no_cassette = true
   config.filter_sensitive_data('<BALANCED_API_KEY>') { ENV['BALANCED_API_KEY'] }
+  config.filter_sensitive_data('<MAILGUN_API_KEY>') { ENV['MAILGUN_API_KEY'] }
 end
 
 Billy.configure do |c|

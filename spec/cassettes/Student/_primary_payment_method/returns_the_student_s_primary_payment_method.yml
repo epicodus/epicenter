@@ -29,13 +29,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 04 Nov 2014 17:56:31 GMT
+      - Fri, 07 Nov 2014 17:30:46 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMe7f54a7e644b11e49a8102a1fe52a36c
+      - OHMce3d7aca66a311e4ba8502a1fe53e539
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
+      - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -47,7 +47,7 @@ http_interactions:
       X-Midlr-Version:
       - '2'
       X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVAJVwBYC1pcBQdUUFUMAwZIQVAOCBtGRggAB1ZeAFdTVghUWwkMV1dHFUFXAF8RAWs=
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQDHVUNUAhUB1JQBgJTUVAMAAhIQVAOCBtGRlUPVVFUVwZRVg5RWQpRBlBHFUFXAF8RAWs=
       Content-Length:
       - '1266'
       Connection:
@@ -67,14 +67,14 @@ http_interactions:
               "avs_postal_match": null,
               "expiration_month": 12,
               "meta": {},
-              "id": "CC74dfWXEsmocM5Kfck81gZ2",
+              "id": "CC6ijfqIGE2npN5WQ6tAqDdP",
               "category": "other",
               "type": "credit",
               "cvv_match": "yes",
               "bank_name": "JPMORGAN CHASE BANK, N.A.",
               "avs_street_match": null,
               "brand": "Visa",
-              "updated_at": "2014-11-04T17:56:43.113263Z",
+              "updated_at": "2014-11-07T17:31:04.846243Z",
               "address": {
                 "city": null,
                 "line2": null,
@@ -90,8 +90,8 @@ http_interactions:
               "is_verified": true,
               "avs_result": null,
               "can_credit": false,
-              "href": "/cards/CC74dfWXEsmocM5Kfck81gZ2",
-              "created_at": "2014-11-04T17:56:43.113261Z"
+              "href": "/cards/CC6ijfqIGE2npN5WQ6tAqDdP",
+              "created_at": "2014-11-07T17:31:04.846241Z"
             }
           ],
           "links": {
@@ -102,10 +102,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 04 Nov 2014 17:56:31 GMT
+  recorded_at: Fri, 07 Nov 2014 17:30:46 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC74dfWXEsmocM5Kfck81gZ2
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC6ijfqIGE2npN5WQ6tAqDdP
     body:
       encoding: US-ASCII
       string: ''
@@ -126,13 +126,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 04 Nov 2014 17:56:36 GMT
+      - Fri, 07 Nov 2014 17:30:47 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMeb622966644b11e495990230f00c9248
+      - OHMcf31c2f666a311e4bc0006429171ffad
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
+      - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -142,7 +142,7 @@ http_interactions:
       X-Balanced-Software-Build:
       - 1.8.39
       Content-Length:
-      - '562'
+      - '565'
       Connection:
       - keep-alive
     body:
@@ -160,14 +160,14 @@ http_interactions:
               "avs_postal_match": null,
               "expiration_month": 12,
               "meta": {},
-              "id": "CC74dfWXEsmocM5Kfck81gZ2",
+              "id": "CC6ijfqIGE2npN5WQ6tAqDdP",
               "category": "other",
               "type": "credit",
               "cvv_match": "yes",
               "bank_name": "JPMORGAN CHASE BANK, N.A.",
               "avs_street_match": null,
               "brand": "Visa",
-              "updated_at": "2014-11-04T17:56:43.113263Z",
+              "updated_at": "2014-11-07T17:31:04.846243Z",
               "address": {
                 "city": null,
                 "line2": null,
@@ -183,8 +183,8 @@ http_interactions:
               "is_verified": true,
               "avs_result": null,
               "can_credit": false,
-              "href": "/cards/CC74dfWXEsmocM5Kfck81gZ2",
-              "created_at": "2014-11-04T17:56:43.113261Z"
+              "href": "/cards/CC6ijfqIGE2npN5WQ6tAqDdP",
+              "created_at": "2014-11-07T17:31:04.846241Z"
             }
           ],
           "links": {
@@ -195,5 +195,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 04 Nov 2014 17:56:36 GMT
+  recorded_at: Fri, 07 Nov 2014 17:30:47 GMT
 recorded_with: VCR 2.9.3

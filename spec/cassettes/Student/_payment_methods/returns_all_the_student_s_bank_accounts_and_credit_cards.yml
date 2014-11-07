@@ -29,13 +29,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 04 Nov 2014 22:42:07 GMT
+      - Fri, 07 Nov 2014 17:20:41 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMce2de664647311e49b0502a1fe52a36c
+      - OHM660c59c266a211e4a20002a1fe53e539
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
+      - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -47,7 +47,7 @@ http_interactions:
       X-Midlr-Version:
       - '2'
       X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVMKUAZZBlpSDwJYXlAACwdIQVAOCBtGRlAFVQNUVlAIVAEBC10DUAdHFUFXAF8RAWs=
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVMMWQNWBFJXAgBUX1YKAgVIQVAOCBtGRgYBUgcEW1EEAQBWXg4CAQdHFUFXAF8RAWs=
       Content-Length:
       - '1266'
       Connection:
@@ -67,14 +67,14 @@ http_interactions:
               "avs_postal_match": null,
               "expiration_month": 12,
               "meta": {},
-              "id": "CC6hLZBwO11POqvdJXav7sqc",
+              "id": "CC37haD7ihg27higfhkTiiZn",
               "category": "other",
               "type": "credit",
               "cvv_match": "yes",
               "bank_name": "JPMORGAN CHASE BANK, N.A.",
               "avs_street_match": null,
               "brand": "Visa",
-              "updated_at": "2014-11-04T22:42:20.342369Z",
+              "updated_at": "2014-11-07T17:21:00.150470Z",
               "address": {
                 "city": null,
                 "line2": null,
@@ -90,8 +90,8 @@ http_interactions:
               "is_verified": true,
               "avs_result": null,
               "can_credit": false,
-              "href": "/cards/CC6hLZBwO11POqvdJXav7sqc",
-              "created_at": "2014-11-04T22:42:20.342367Z"
+              "href": "/cards/CC37haD7ihg27higfhkTiiZn",
+              "created_at": "2014-11-07T17:21:00.150469Z"
             }
           ],
           "links": {
@@ -102,10 +102,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 04 Nov 2014 22:42:08 GMT
+  recorded_at: Fri, 07 Nov 2014 17:20:42 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC6hLZBwO11POqvdJXav7sqc
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC37haD7ihg27higfhkTiiZn
     body:
       encoding: US-ASCII
       string: ''
@@ -126,11 +126,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 04 Nov 2014 22:42:08 GMT
+      - Fri, 07 Nov 2014 17:20:42 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMcee7f0c2647311e4b84f0230f00c9248
+      - OHM66a8028266a211e49ead06429171ffad
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
@@ -142,7 +142,7 @@ http_interactions:
       X-Balanced-Software-Build:
       - 1.8.39
       Content-Length:
-      - '565'
+      - '562'
       Connection:
       - keep-alive
     body:
@@ -160,14 +160,14 @@ http_interactions:
               "avs_postal_match": null,
               "expiration_month": 12,
               "meta": {},
-              "id": "CC6hLZBwO11POqvdJXav7sqc",
+              "id": "CC37haD7ihg27higfhkTiiZn",
               "category": "other",
               "type": "credit",
               "cvv_match": "yes",
               "bank_name": "JPMORGAN CHASE BANK, N.A.",
               "avs_street_match": null,
               "brand": "Visa",
-              "updated_at": "2014-11-04T22:42:20.342369Z",
+              "updated_at": "2014-11-07T17:21:00.150470Z",
               "address": {
                 "city": null,
                 "line2": null,
@@ -183,8 +183,8 @@ http_interactions:
               "is_verified": true,
               "avs_result": null,
               "can_credit": false,
-              "href": "/cards/CC6hLZBwO11POqvdJXav7sqc",
-              "created_at": "2014-11-04T22:42:20.342367Z"
+              "href": "/cards/CC37haD7ihg27higfhkTiiZn",
+              "created_at": "2014-11-07T17:21:00.150469Z"
             }
           ],
           "links": {
@@ -195,7 +195,7 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 04 Nov 2014 22:42:08 GMT
+  recorded_at: Fri, 07 Nov 2014 17:20:42 GMT
 - request:
     method: post
     uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards
@@ -225,11 +225,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 04 Nov 2014 22:42:09 GMT
+      - Fri, 07 Nov 2014 17:20:42 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMcf103370647311e4ba8502a1fe53e539
+      - OHM66d45e7266a211e49b0502a1fe52a36c
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
@@ -243,7 +243,7 @@ http_interactions:
       X-Midlr-Version:
       - '2'
       X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVIOWAdXAFJcAw5SUVYUEwJdWE4XE1RXVgcCBFZWAFBWUF0ECVsWHhMDWA1CBG4=
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVAPVQZZA1tRBgJVUFEOBwZIQVAOCBtGRgFUAAEAUQMIVw0BDF0EAlZHFUFXAF8RAWs=
       Content-Length:
       - '1266'
       Connection:
@@ -263,14 +263,14 @@ http_interactions:
               "avs_postal_match": null,
               "expiration_month": 12,
               "meta": {},
-              "id": "CC6jyv3cu7yx3XkyxhtNS9IQ",
+              "id": "CC38Ckx3DgFiR8sjybZxkkQ8",
               "category": "other",
               "type": "credit",
               "cvv_match": "yes",
               "bank_name": "JPMORGAN CHASE BANK, N.A.",
               "avs_street_match": null,
               "brand": "Visa",
-              "updated_at": "2014-11-04T22:42:21.925610Z",
+              "updated_at": "2014-11-07T17:21:01.344726Z",
               "address": {
                 "city": null,
                 "line2": null,
@@ -286,8 +286,8 @@ http_interactions:
               "is_verified": true,
               "avs_result": null,
               "can_credit": false,
-              "href": "/cards/CC6jyv3cu7yx3XkyxhtNS9IQ",
-              "created_at": "2014-11-04T22:42:21.925608Z"
+              "href": "/cards/CC38Ckx3DgFiR8sjybZxkkQ8",
+              "created_at": "2014-11-07T17:21:01.344724Z"
             }
           ],
           "links": {
@@ -298,10 +298,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 04 Nov 2014 22:42:09 GMT
+  recorded_at: Fri, 07 Nov 2014 17:20:43 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC6jyv3cu7yx3XkyxhtNS9IQ
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC38Ckx3DgFiR8sjybZxkkQ8
     body:
       encoding: US-ASCII
       string: ''
@@ -322,13 +322,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 04 Nov 2014 22:42:09 GMT
+      - Fri, 07 Nov 2014 17:20:43 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMcfce1b56647311e4bd6f02b12035401b
+      - OHM6763623e66a211e4bd6f02b12035401b
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
+      - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -338,7 +338,7 @@ http_interactions:
       X-Balanced-Software-Build:
       - 1.8.39
       Content-Length:
-      - '564'
+      - '563'
       Connection:
       - keep-alive
     body:
@@ -356,14 +356,14 @@ http_interactions:
               "avs_postal_match": null,
               "expiration_month": 12,
               "meta": {},
-              "id": "CC6jyv3cu7yx3XkyxhtNS9IQ",
+              "id": "CC38Ckx3DgFiR8sjybZxkkQ8",
               "category": "other",
               "type": "credit",
               "cvv_match": "yes",
               "bank_name": "JPMORGAN CHASE BANK, N.A.",
               "avs_street_match": null,
               "brand": "Visa",
-              "updated_at": "2014-11-04T22:42:21.925610Z",
+              "updated_at": "2014-11-07T17:21:01.344726Z",
               "address": {
                 "city": null,
                 "line2": null,
@@ -379,8 +379,8 @@ http_interactions:
               "is_verified": true,
               "avs_result": null,
               "can_credit": false,
-              "href": "/cards/CC6jyv3cu7yx3XkyxhtNS9IQ",
-              "created_at": "2014-11-04T22:42:21.925608Z"
+              "href": "/cards/CC38Ckx3DgFiR8sjybZxkkQ8",
+              "created_at": "2014-11-07T17:21:01.344724Z"
             }
           ],
           "links": {
@@ -391,7 +391,7 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 04 Nov 2014 22:42:10 GMT
+  recorded_at: Fri, 07 Nov 2014 17:20:43 GMT
 - request:
     method: post
     uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts
@@ -422,11 +422,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 04 Nov 2014 22:42:11 GMT
+      - Fri, 07 Nov 2014 17:20:44 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMcffdd2ec647311e48e3702a1fe52a36c
+      - OHM678f9bf666a211e4a20002a1fe53e539
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
@@ -440,7 +440,7 @@ http_interactions:
       X-Midlr-Version:
       - '2'
       X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1NKAwZRUFQOCwZUWVIOAgVQVh0WAVBQT0ISUAADDF0GAVVVCVkAVlUGUhQbQQACVEBVOQ==
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKAgdSU1cLCgRdUFAAAA5RVgYaE1BUVU4QQF5RDQgBAwcGXQQGVAdaVAUVTUYFWV9DATw=
       Content-Length:
       - '1291'
       Connection:
@@ -460,10 +460,10 @@ http_interactions:
                 "bank_account_verification": null
               },
               "can_credit": true,
-              "created_at": "2014-11-04T22:42:24.155328Z",
+              "created_at": "2014-11-07T17:21:02.379196Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-11-04T22:42:24.155330Z",
-              "href": "/bank_accounts/BA6m3UJRBoUFlB9EVlldVpF6",
+              "updated_at": "2014-11-07T17:21:02.379198Z",
+              "href": "/bank_accounts/BA39MskpXpxo5E4ZebjMBVi8",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -475,7 +475,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA6m3UJRBoUFlB9EVlldVpF6"
+              "id": "BA39MskpXpxo5E4ZebjMBVi8"
             }
           ],
           "links": {
@@ -487,10 +487,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 04 Nov 2014 22:42:11 GMT
+  recorded_at: Fri, 07 Nov 2014 17:20:44 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA6m3UJRBoUFlB9EVlldVpF6
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA39MskpXpxo5E4ZebjMBVi8
     body:
       encoding: US-ASCII
       string: ''
@@ -511,11 +511,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 04 Nov 2014 22:42:12 GMT
+      - Fri, 07 Nov 2014 17:20:44 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMd118bd7c647311e4910006429171ffad
+      - OHM681f329866a211e4bc6302b12035401b
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
@@ -545,10 +545,10 @@ http_interactions:
                 "bank_account_verification": null
               },
               "can_credit": true,
-              "created_at": "2014-11-04T22:42:24.155328Z",
+              "created_at": "2014-11-07T17:21:02.379196Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-11-04T22:42:24.155330Z",
-              "href": "/bank_accounts/BA6m3UJRBoUFlB9EVlldVpF6",
+              "updated_at": "2014-11-07T17:21:02.379198Z",
+              "href": "/bank_accounts/BA39MskpXpxo5E4ZebjMBVi8",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -560,7 +560,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA6m3UJRBoUFlB9EVlldVpF6"
+              "id": "BA39MskpXpxo5E4ZebjMBVi8"
             }
           ],
           "links": {
@@ -572,10 +572,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 04 Nov 2014 22:42:12 GMT
+  recorded_at: Fri, 07 Nov 2014 17:20:44 GMT
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA6m3UJRBoUFlB9EVlldVpF6/verifications
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA39MskpXpxo5E4ZebjMBVi8/verifications
     body:
       encoding: UTF-8
       string: "{}"
@@ -596,11 +596,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 04 Nov 2014 22:42:19 GMT
+      - Fri, 07 Nov 2014 17:20:50 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMd15c6590647311e4bd6f02b12035401b
+      - OHM684efd1666a211e495990230f00c9248
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
@@ -623,16 +623,16 @@ http_interactions:
             {
               "verification_status": "pending",
               "links": {
-                "bank_account": "BA6m3UJRBoUFlB9EVlldVpF6"
+                "bank_account": "BA39MskpXpxo5E4ZebjMBVi8"
               },
-              "href": "/verifications/BZ6ug537s8u7Ui9UDbN0kJlS",
-              "created_at": "2014-11-04T22:42:31.440291Z",
+              "href": "/verifications/BZ3fROQBA9rQIDYANTC6zZbq",
+              "created_at": "2014-11-07T17:21:07.789176Z",
               "attempts_remaining": 3,
-              "updated_at": "2014-11-04T22:42:31.910169Z",
+              "updated_at": "2014-11-07T17:21:08.145295Z",
               "deposit_status": "succeeded",
               "attempts": 0,
               "meta": {},
-              "id": "BZ6ug537s8u7Ui9UDbN0kJlS"
+              "id": "BZ3fROQBA9rQIDYANTC6zZbq"
             }
           ],
           "links": {
@@ -640,10 +640,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 04 Nov 2014 22:42:20 GMT
+  recorded_at: Fri, 07 Nov 2014 17:20:50 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA6m3UJRBoUFlB9EVlldVpF6
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA39MskpXpxo5E4ZebjMBVi8
     body:
       encoding: US-ASCII
       string: ''
@@ -664,13 +664,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 04 Nov 2014 22:42:20 GMT
+      - Fri, 07 Nov 2014 17:20:50 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHMd644cb60647311e4910006429171ffad
+      - OHM6ba9811666a211e4b84f0230f00c9248
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
+      - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -680,7 +680,7 @@ http_interactions:
       X-Balanced-Software-Build:
       - 1.8.39
       Content-Length:
-      - '522'
+      - '524'
       Connection:
       - keep-alive
     body:
@@ -695,13 +695,13 @@ http_interactions:
               "name": "Johann Bernoulli",
               "links": {
                 "customer": null,
-                "bank_account_verification": "BZ6ug537s8u7Ui9UDbN0kJlS"
+                "bank_account_verification": "BZ3fROQBA9rQIDYANTC6zZbq"
               },
               "can_credit": true,
-              "created_at": "2014-11-04T22:42:24.155328Z",
+              "created_at": "2014-11-07T17:21:02.379196Z",
               "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-11-04T22:42:24.155330Z",
-              "href": "/bank_accounts/BA6m3UJRBoUFlB9EVlldVpF6",
+              "updated_at": "2014-11-07T17:21:02.379198Z",
+              "href": "/bank_accounts/BA39MskpXpxo5E4ZebjMBVi8",
               "meta": {},
               "account_number": "xxxxxx0002",
               "address": {
@@ -713,7 +713,7 @@ http_interactions:
                 "country_code": null
               },
               "can_debit": false,
-              "id": "BA6m3UJRBoUFlB9EVlldVpF6"
+              "id": "BA39MskpXpxo5E4ZebjMBVi8"
             }
           ],
           "links": {
@@ -725,5 +725,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 04 Nov 2014 22:42:20 GMT
+  recorded_at: Fri, 07 Nov 2014 17:20:50 GMT
 recorded_with: VCR 2.9.3
