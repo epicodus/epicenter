@@ -22,7 +22,7 @@ FactoryGirl.define do
     student
     after(:build) do |credit_card|
       balanced_credit_card = create_balanced_credit_card
-      credit_card.credit_card_uri = balanced_credit_card.href
+      credit_card.account_uri = balanced_credit_card.href
     end
   end
 
@@ -30,7 +30,7 @@ FactoryGirl.define do
     student
     after(:build) do |credit_card|
       balanced_credit_card = create_invalid_balanced_credit_card
-      credit_card.credit_card_uri = balanced_credit_card.href
+      credit_card.account_uri = balanced_credit_card.href
     end
   end
 

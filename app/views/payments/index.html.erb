@@ -34,7 +34,7 @@
             <%= number_to_currency(payment.total_amount / 100.00) %>
           </td>
           <td>
-            <%= payment.payment_method_type.underscore.humanize + ' ending in ' + payment.payment_method.last_four_string[-4,4] %>
+            <%= payment.payment_method.class.name.underscore.humanize + ' ending in ' + payment.payment_method.last_four_string[-4,4] %>
           </td>
         </tr>
       <% end %>

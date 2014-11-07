@@ -2,7 +2,7 @@ class Payment < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
 
   belongs_to :student
-  belongs_to :payment_method, polymorphic: true
+  belongs_to :payment_method
 
   validates :amount, presence: true
   validates :student_id, presence: true

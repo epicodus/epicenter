@@ -1,4 +1,4 @@
-class BankAccount < ActiveRecord::Base
+class BankAccount < PaymentMethod
   validates :account_uri, presence: true
   validates :student_id, presence: true
 
