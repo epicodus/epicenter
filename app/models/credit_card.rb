@@ -1,8 +1,8 @@
-class CreditCard < ActiveRecord::Base
+class CreditCard < PaymentMethod
   belongs_to :student
   has_many :payments, :as => :payment_method
 
-  validates :credit_card_uri, presence: true
+  validates :account_uri, presence: true
   validates :student_id, presence: true
 
   before_create :get_last_four_string
@@ -10,7 +10,7 @@ class CreditCard < ActiveRecord::Base
   after_create :ensure_primary_method_exists
 
   def fetch_balanced_account
-    Balanced::Card.fetch(credit_card_uri)
+    Balanced::Card.fetch(account_uri)
   end
 
   def verified?

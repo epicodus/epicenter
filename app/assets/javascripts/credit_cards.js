@@ -20,7 +20,7 @@ $(function() {
 var handleResponseCreditCard = function(response) {
   if (response.status_code === 201) {
     var uri = response.cards[0].href;
-    $("input#credit_card_credit_card_uri").val(uri);
+    $("input#credit_card_account_uri").val(uri);
 
     $("input#card_number").val('****************');
     $("input#cvv_code").val('***');
