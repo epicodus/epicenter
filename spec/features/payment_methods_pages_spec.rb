@@ -61,6 +61,13 @@ feature 'Student views payment methods page' do
   end
 end
 
+feature 'Guest views payments methods page' do
+  it 'is not authorized' do
+    visit payment_methods_path
+    expect(page).to have_content 'need to sign in'
+  end
+end
+
 describe 'change primary payment method', :vcr do
   it "displays the new primary payment method and shows confirmation message" do
     student = FactoryGirl.create(:user_with_credit_card)

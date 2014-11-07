@@ -1,5 +1,5 @@
 class UpfrontPaymentsController < ApplicationController
-  before_action :authenticate_student!
+  authorize_resource :payment
 
   def create
     @payment = current_student.make_upfront_payment

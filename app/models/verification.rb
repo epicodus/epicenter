@@ -1,6 +1,6 @@
 class Verification
   include ActiveModel::Model
-  attr_accessor :first_deposit, :second_deposit
+  attr_accessor :first_deposit, :second_deposit, :bank_account
 
   def initialize(params={})
     @bank_account = params[:bank_account]
