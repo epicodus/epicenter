@@ -16,7 +16,7 @@ class Student < User
   belongs_to :primary_payment_method, class_name: 'PaymentMethod'
 
   def payment_methods_primary_first_then_pending
-    (payment_methods.sort_by { |p| !p.verified? ? 0 : 1 } - [primary_payment_method]).unshift(primary_payment_method).compact
+    (payment_methods.not_verified_first - [primary_payment_method]).unshift(primary_payment_method).compact
   end
 
   def self.billable_today
