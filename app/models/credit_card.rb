@@ -1,9 +1,5 @@
 class CreditCard < PaymentMethod
   belongs_to :student
-  has_many :payments, :as => :payment_method
-
-  validates :account_uri, presence: true
-  validates :student_id, presence: true
 
   before_create :get_last_four_string
 

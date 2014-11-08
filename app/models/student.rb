@@ -12,10 +12,8 @@ class Student < User
   has_many :attendance_records
   has_many :submissions
   has_many :grades
-
-  def payment_methods
-    credit_cards + bank_accounts
-  end
+  has_many :payment_methods
+  belongs_to :primary_payment_method, class_name: 'PaymentMethod'
 
   def payment_methods_primary_first_then_pending
     (payment_methods.sort_by { |p| !p.verified? ? 0 : 1 } - [primary_payment_method]).unshift(primary_payment_method).compact
@@ -52,14 +50,8 @@ class Student < User
     end
   end
 
-  def primary_payment_method
-    if primary_payment_method_type != nil && primary_payment_method_id > 0
-      primary_payment_method_type.constantize.find(primary_payment_method_id)
-    end
-  end
-
   def set_primary_payment_method(payment_method)
-    update!(primary_payment_method_id: payment_method.id, primary_payment_method_type: payment_method.class.name)
+    update!(primary_payment_method_id: payment_method.id)
   end
 
   def upfront_payment_due?

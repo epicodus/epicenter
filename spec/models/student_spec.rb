@@ -4,6 +4,8 @@ describe Student do
   it { should validate_presence_of :plan_id }
   it { should validate_presence_of :cohort_id }
   it { should have_many :bank_accounts }
+  it { should have_many :payment_methods }
+  it { should have_many :credit_cards }
   it { should have_many :payments }
   it { should belong_to :plan }
   it { should have_many :attendance_records }
@@ -287,8 +289,7 @@ describe Student do
       student = FactoryGirl.create(:student)
       credit_card = FactoryGirl.create(:credit_card)
       student.set_primary_payment_method(credit_card)
-      expect(student.primary_payment_method_type).to eq 'CreditCard'
-      expect(student.primary_payment_method_id).to eq credit_card.id
+      expect(student.primary_payment_method).to eq credit_card
     end
   end
 
