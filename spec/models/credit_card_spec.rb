@@ -9,9 +9,10 @@ describe CreditCard do
   describe "create create card", :vcr do
     let(:credit_card) { FactoryGirl.create :credit_card }
 
-    it "gets last four digits before_create" do
+    it "sets verified to 'true' and gets last four digits before_create" do
       credit_card = FactoryGirl.create(:credit_card)
       expect(credit_card.last_four_string).to eq "xxxxxxxxxxxx1111"
+      expect(credit_card.verified).to eq true
     end
 
     it "is made the primary payment method if student does not have one" do

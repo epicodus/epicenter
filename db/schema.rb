@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141107212711) do
+ActiveRecord::Schema.define(version: 20141108000447) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,19 @@ ActiveRecord::Schema.define(version: 20141107212711) do
   add_index "attendance_records", ["student_id"], name: "index_attendance_records_on_student_id", using: :btree
   add_index "attendance_records", ["tardy"], name: "index_attendance_records_on_tardy", using: :btree
 
+  create_table "bank_accounts", force: true do |t|
+    t.string   "account_uri"
+    t.string   "verification_uri"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "student_id"
+    t.boolean  "verified"
+    t.string   "last_four_string"
+  end
+
+  add_index "bank_accounts", ["student_id"], name: "index_bank_accounts_on_student_id", using: :btree
+  add_index "bank_accounts", ["verified"], name: "index_bank_accounts_on_verified", using: :btree
+
   create_table "cohorts", force: true do |t|
     t.string   "description"
     t.date     "start_date"
@@ -42,6 +55,16 @@ ActiveRecord::Schema.define(version: 20141107212711) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "credit_cards", force: true do |t|
+    t.string   "credit_card_uri"
+    t.integer  "student_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "last_four_string"
+  end
+
+  add_index "credit_cards", ["student_id"], name: "index_credit_cards_on_student_id", using: :btree
 
   create_table "grades", force: true do |t|
     t.integer  "requirement_id"

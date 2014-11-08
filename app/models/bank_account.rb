@@ -1,10 +1,4 @@
 class BankAccount < PaymentMethod
-  validates :account_uri, presence: true
-  validates :student_id, presence: true
-
-  belongs_to :student
-  has_many :payments, :as => :payment_method
-
   before_create :create_verification
   before_create :get_last_four_string
 

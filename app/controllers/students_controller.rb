@@ -10,6 +10,6 @@ class StudentsController < ApplicationController
 
 private
   def student_params
-    params.require(:student).permit(:primary_payment_method_type, :primary_payment_method_id)
+    params.require(:student).permit(:primary_payment_method_id)
   end
 end
