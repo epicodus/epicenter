@@ -2,6 +2,7 @@ class CreditCard < PaymentMethod
   belongs_to :student
 
   before_create :get_last_four_string
+  before_create :set_verified_true
 
   after_create :ensure_primary_method_exists
 
@@ -24,5 +25,9 @@ private
 
   def get_last_four_string
     self.last_four_string = fetch_balanced_account.number
+  end
+
+  def set_verified_true
+    self.verified = true
   end
 end
