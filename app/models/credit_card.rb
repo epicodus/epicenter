@@ -1,6 +1,4 @@
 class CreditCard < PaymentMethod
-  belongs_to :student
-
   before_create :get_last_four_string
   before_create :set_verified_true
 

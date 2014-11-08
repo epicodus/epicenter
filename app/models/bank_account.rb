@@ -1,6 +1,4 @@
 class BankAccount < PaymentMethod
-  belongs_to :student
-
   before_create :create_verification
   before_create :get_last_four_string
 
