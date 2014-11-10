@@ -9,7 +9,6 @@ class Ability
       can :read, Submission
       can :create, Review
       can :read, CohortAttendanceStatistics
-      can :read, Payment
     elsif user.is_a? Student
       can :read, Assessment
       can :create, Submission
