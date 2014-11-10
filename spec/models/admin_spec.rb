@@ -29,8 +29,7 @@ describe Admin do
     end
 
     context 'for payments', vcr: true do
-      it { is_expected.to not_have_abilities(:create, Payment.new) }
-      it { is_expected.to have_abilities(:read, Payment.new) }
+      it { is_expected.to not_have_abilities([:create, :update], Payment.new) }
     end
 
     context 'for verifications', vcr: true do
