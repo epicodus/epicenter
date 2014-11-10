@@ -11,23 +11,13 @@
 </head>
 <body>
   <div class="container">
-    <div class="row">
-      <% if current_student %>
-        <div class="span8 offset2 text-center">
-          <p class="pull-right"><%= link_to "Log out", destroy_student_session_path, data: { method: :delete } %></p>
-        </div>
-      <% end %>
-    </div>
-    <div class="row">
-      <div class="span8 offset2 text-center">
-        <%= flash_notice(flash) do %>
-          <%= flash[:notice] %>
-          <%= flash[:alert] %>
-          <%= flash[:secure].html_safe if flash[:secure] %>
-        <% end %>
-        <%= yield %>
-      </div>
-    </div>
+    <%= render 'layouts/navbar' %>
+    <%= flash_notice(flash) do %>
+      <%= flash[:notice] %>
+      <%= flash[:alert] %>
+      <%= flash[:secure].html_safe if flash[:secure] %>
+    <% end %>
+    <%= yield %>
   </div>
 </body>
 </html>
