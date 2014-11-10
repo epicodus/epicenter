@@ -13,13 +13,17 @@ protected
     if user.is_a? Admin
       root_path
     elsif user.is_a? Student
-      if user.primary_payment_method.present?
-        payments_path
-      elsif user.bank_accounts.first.present?
-        payment_methods_path
-      else
-        new_payment_method_path
-      end
+      user.class_in_session? ? assessments_path : class_not_in_session(user)
+    end
+  end
+
+  def class_not_in_session(user)
+    if user.primary_payment_method.present?
+      payments_path
+    elsif user.bank_accounts.first.present?
+      payment_methods_path
+    else
+      new_payment_method_path
     end
   end
 

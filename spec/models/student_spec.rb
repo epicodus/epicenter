@@ -293,6 +293,35 @@ describe Student do
     end
   end
 
+  describe '#class_in_session?' do
+    include ActiveSupport::Testing::TimeHelpers
+
+    let(:cohort) { FactoryGirl.create(:cohort) }
+    let(:student) { FactoryGirl.create(:student, cohort: cohort) }
+
+    it 'returns false for a date before class starts' do
+      travel_to cohort.start_date.to_date - 1.day do
+        expect(student.class_in_session?).to eq false
+      end
+    end
+
+    it 'returns false for a date after class ends' do
+      travel_to cohort.end_date.to_date + 1.day do
+        expect(student.class_in_session?).to eq false
+      end
+    end
+
+    it 'returns true for a date during class' do
+      travel_to cohort.start_date.to_date do
+        expect(student.class_in_session?).to eq true
+      end
+
+      travel_to cohort.start_date.to_date + 2.weeks do
+        expect(student.class_in_session?).to eq true
+      end
+    end
+  end
+
   describe 'attendance methods' do
     include ActiveSupport::Testing::TimeHelpers
 

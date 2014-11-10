@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'Student signs up' do
   before do
     @plan = FactoryGirl.create :recurring_plan_with_upfront_payment
-    @cohort = FactoryGirl.create :cohort
+    @cohort = FactoryGirl.create :future_cohort
     visit new_student_registration_path
     fill_in 'Email', with: 'example_user@example.com'
     fill_in 'Password', with: 'password'
@@ -24,10 +24,13 @@ feature 'Student signs up' do
   end
 end
 
-feature "Student signs in" do
+feature "Student signs in while class is not in session" do
+
+  let(:future_cohort) { FactoryGirl.create(:future_cohort) }
+  let(:student) { FactoryGirl.create(:student, cohort: future_cohort) }
+
   context "before adding a payment method" do
     it "takes them to the page to choose payment method" do
-      student = FactoryGirl.create(:student)
       sign_in(student)
       expect(page).to have_content "How would you like to make payments"
     end
@@ -35,7 +38,6 @@ feature "Student signs in" do
 
   context "after entering bank account info but before verifying" do
     it "takes them to the payment methods page", :vcr do
-      student = FactoryGirl.create(:student)
       bank_account = FactoryGirl.create(:bank_account, student: student)
       sign_in student
       expect(page).to have_content "Your payment methods"
@@ -45,7 +47,7 @@ feature "Student signs in" do
 
   context "after verifying their bank account", :vcr do
     it "shows them their payment history" do
-      student = FactoryGirl.create(:user_with_verified_bank_account)
+      verified_bank_account = FactoryGirl.create(:verified_bank_account, student: student)
       sign_in(student)
       expect(page).to have_content "Your payments"
     end
@@ -53,10 +55,20 @@ feature "Student signs in" do
 
   context "after adding a credit card", :vcr do
     it "shows them their payment history" do
-      student = FactoryGirl.create(:user_with_credit_card)
+      credit_card = FactoryGirl.create(:credit_card, student: student)
       sign_in(student)
       expect(page).to have_content "Your payments"
     end
+  end
+end
+
+feature "Student signs in while class is in session" do
+  let(:student) { FactoryGirl.create(:student) }
+
+  it "takes them to the assessments page" do
+    sign_in(student)
+    expect(current_path).to eq assessments_path
+    expect(page).to have_content "Assessments"
   end
 end
 

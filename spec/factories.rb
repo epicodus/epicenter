@@ -149,6 +149,11 @@ FactoryGirl.define do
       start_date 125.days.ago.beginning_of_week
       end_date 20.days.ago.end_of_week - 2.days
     end
+
+    factory :future_cohort do
+      start_date (Date.today + 4.weeks).beginning_of_week
+      end_date (Date.today + 15.weeks).beginning_of_week
+    end
   end
 
   factory :score do
