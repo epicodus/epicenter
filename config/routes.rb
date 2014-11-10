@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   resources :recurring_payments, only: [:create]
   resources :attendance_records, only: [:create, :destroy]
   resources :cohorts, only: [] do
-    resource :attendance_statistics, only: [:show]
+    resources :attendance_statistics, only: [:index]
   end
 
   resources :assessments do
