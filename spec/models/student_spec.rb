@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe Student do
   it { should validate_presence_of :plan_id }
   it { should validate_presence_of :cohort_id }
@@ -74,7 +72,6 @@ describe Student do
       expect(Student.billable_today).to match_array [student1, student2]
     end
 
-    include ActiveSupport::Testing::TimeHelpers
     it "handles months with different amounts of days" do
       student = nil
       travel_to(Date.parse("January 31, 2014")) do
@@ -87,7 +84,6 @@ describe Student do
   end
 
   describe ".billable_in_three_days", :vcr do
-    include ActiveSupport::Testing::TimeHelpers
     it 'tells you which users are billable in three days' do
       student = nil
       travel_to(Date.parse("January 5, 2014")) do
@@ -130,8 +126,6 @@ describe Student do
   end
 
   describe ".email_upcoming_payees" do
-    include ActiveSupport::Testing::TimeHelpers
-
     it "emails users who are due in 3 days", :vcr do
       student = nil
       travel_to(Date.parse("January 5, 2014")) do
@@ -294,8 +288,6 @@ describe Student do
   end
 
   describe '#class_in_session?' do
-    include ActiveSupport::Testing::TimeHelpers
-
     let(:cohort) { FactoryGirl.create(:cohort) }
     let(:student) { FactoryGirl.create(:student, cohort: cohort) }
 
@@ -323,8 +315,6 @@ describe Student do
   end
 
   describe 'attendance methods' do
-    include ActiveSupport::Testing::TimeHelpers
-
     let(:cohort) { FactoryGirl.create(:cohort) }
     let(:student) { FactoryGirl.create(:student, cohort: cohort) }
 
@@ -360,7 +350,6 @@ describe Student do
   end
 
   describe "#next_payment_date", :vcr do
-    include ActiveSupport::Testing::TimeHelpers
     it "returns nil if recurring_active is not true" do
       student = FactoryGirl.create(:user_with_upfront_payment)
       expect(student.next_payment_date).to eq nil

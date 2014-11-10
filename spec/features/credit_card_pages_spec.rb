@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 feature 'Creating a credit card' do
   scenario 'as a guest' do
     visit new_credit_card_path

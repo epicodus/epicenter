@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 feature 'Student makes an upfront payment' do
   context 'with a valid credit card', :vcr do
     it "shows successful payment message" do

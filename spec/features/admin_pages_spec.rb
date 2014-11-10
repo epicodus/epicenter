@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 feature 'Admin signs in' do
   let(:admin) { FactoryGirl.create(:admin) }
 

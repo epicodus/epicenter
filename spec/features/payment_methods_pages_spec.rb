@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 feature 'Student views payment methods page' do
   context 'before any payment methods have been added', :vcr do
     it "doesn't show any payment methods" do

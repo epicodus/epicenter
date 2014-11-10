@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe Cohort do
   it { should have_many :students }
   it { should have_many(:attendance_records).through(:students) }
@@ -8,8 +6,6 @@ describe Cohort do
   it { should validate_presence_of :end_date }
 
   describe '#number_of_days_since_start' do
-    include ActiveSupport::Testing::TimeHelpers
-
     let(:cohort) { FactoryGirl.create(:cohort) }
 
     it 'counts number of days since start of class' do
@@ -32,8 +28,6 @@ describe Cohort do
   end
 
   describe '.current' do
-    include ActiveSupport::Testing::TimeHelpers
-
     it 'is the current cohort' do
       current_cohort = FactoryGirl.create(:cohort)
       past_cohort = FactoryGirl.create(:past_cohort)

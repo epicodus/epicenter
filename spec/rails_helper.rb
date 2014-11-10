@@ -12,6 +12,8 @@ require "cancan/matchers"
 include Warden::Test::Helpers
 Warden.test_mode!
 
+include ActiveSupport::Testing::TimeHelpers
+
 Capybara.javascript_driver = :poltergeist_billy
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }

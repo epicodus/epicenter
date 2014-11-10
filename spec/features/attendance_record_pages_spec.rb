@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 feature 'creating an attendance record' do
   scenario 'correctly' do
     FactoryGirl.create(:student)

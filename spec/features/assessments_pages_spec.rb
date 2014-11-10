@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 feature 'index page' do
   scenario 'not logged in' do
     visit assessments_path
