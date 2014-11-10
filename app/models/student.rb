@@ -82,6 +82,10 @@ class Student < User
     Payment.create(student: self, amount: plan.upfront_amount, payment_method: primary_payment_method)
   end
 
+  def class_in_session?
+    cohort.start_date <= Date.today && cohort.end_date >= Date.today
+  end
+
   def start_recurring_payments
     payment = Payment.create(student: self, amount: plan.recurring_amount, payment_method: primary_payment_method)
     update!(recurring_active: true) if payment.persisted?
