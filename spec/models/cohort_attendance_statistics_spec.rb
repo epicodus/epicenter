@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe CohortAttendanceStatistics do
   it 'initializes with a cohort' do
     cohort = FactoryGirl.create(:cohort)
@@ -8,8 +6,6 @@ describe CohortAttendanceStatistics do
   end
 
   describe '#daily_presence' do
-    include ActiveSupport::Testing::TimeHelpers
-
     it 'returns data for the line chart' do
       cohort = FactoryGirl.create(:cohort)
       2.times { FactoryGirl.create(:student, cohort: cohort) }
@@ -34,8 +30,6 @@ describe CohortAttendanceStatistics do
   end
 
   describe '#student_breakdown' do
-    include ActiveSupport::Testing::TimeHelpers
-
     let(:cohort) { FactoryGirl.create(:cohort) }
     let(:cohort_attendance_statistics) { CohortAttendanceStatistics.new(cohort) }
     let!(:first_student) { FactoryGirl.create(:student, name: 'Amo', cohort: cohort) }

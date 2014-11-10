@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe 'verifying bank account', :vcr do
 
   scenario 'as a guest' do

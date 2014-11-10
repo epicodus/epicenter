@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 feature 'Student signs up' do
   before do
     @plan = FactoryGirl.create :recurring_plan_with_upfront_payment

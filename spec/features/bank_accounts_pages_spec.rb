@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 feature 'Creating a bank account' do
   scenario 'as a guest' do
     visit new_bank_account_path

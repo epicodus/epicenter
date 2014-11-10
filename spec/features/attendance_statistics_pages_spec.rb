@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 feature 'attendance statistics page' do
   let!(:cohort) { FactoryGirl.create(:cohort) }
 

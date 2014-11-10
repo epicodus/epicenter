@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe AttendanceRecord do
   it { should belong_to :student }
   it { should validate_presence_of :student_id }
@@ -21,8 +19,6 @@ describe AttendanceRecord do
   end
 
   describe '.today' do
-    include ActiveSupport::Testing::TimeHelpers
-
     it 'returns all the attendance records for today' do
       past_attendance_record = FactoryGirl.create(:attendance_record)
       travel_to Time.now + 1.day do
@@ -33,8 +29,6 @@ describe AttendanceRecord do
   end
 
   describe '#tardy' do
-    include ActiveSupport::Testing::TimeHelpers
-
     it 'is true if the student checks in after the start of class' do
       travel_to Time.new(2015, 01, 05, 9, 30, 00) do
         tardy_attendance_record = FactoryGirl.create(:attendance_record)

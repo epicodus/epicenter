@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe Admin do
   describe "abilities" do
     let(:admin) { FactoryGirl.create(:admin) }

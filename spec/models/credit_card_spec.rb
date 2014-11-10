@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe CreditCard do
   it { should belong_to :student }
   it { should have_many :payments }

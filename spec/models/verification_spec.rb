@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 describe Verification, :vcr do
   describe "#create_test_deposits" do
     it "creates a verification for the balanced account of the given bank_account" do

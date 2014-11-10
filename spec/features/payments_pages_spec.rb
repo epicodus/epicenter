@@ -1,11 +1,9 @@
- require 'rails_helper'
-
 feature 'Viewing payment index page' do
   scenario 'as a guest' do
     visit payments_path
     expect(page).to have_content 'need to sign in'
   end
-  
+
   context 'as a student' do
     context 'before any payments have been made', :vcr do
       it "doesn't show payment history" do

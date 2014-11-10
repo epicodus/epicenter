@@ -1,12 +1,10 @@
-require 'rails_helper'
-
 feature 'index page' do
   let(:assessment) { FactoryGirl.create(:assessment) }
   let(:student) { FactoryGirl.create(:student) }
 
   context 'as a student' do
     before { login_as(student, scope: :student) }
-    
+
     scenario 'you are not authorized' do
       visit assessment_submissions_path(assessment)
       expect(page).to have_content 'not authorized'
@@ -40,8 +38,6 @@ feature 'index page' do
     end
 
     context 'within an individual submission' do
-      include ActiveSupport::Testing::TimeHelpers
-
       scenario 'shows how long ago the submission was last updated' do
         travel_to 2.days.ago do
           FactoryGirl.create(:submission, assessment: assessment, student: student)
