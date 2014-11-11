@@ -1,22 +1,27 @@
-<h1 class="page-header">Attendance statistics</h1>
-<%= line_chart @attendance_statistic.daily_presence,
-      library: {
-        hAxis: { format: "MMM d" },
-        title: 'Number of students present',
-        chartArea: { left: 20, top: 20, right: 20, width: '95%', height: '75%' },
-        colors: ['#2980b9']
-      } %>
+<h1>Your attendance record</h1>
 
-<h3>Students</h3>
-<%= bar_chart @attendance_statistic.student_breakdown, stacked: true,
+<div class="row">
+  <div class="span12">
+    <%= pie_chart @student_attendance_stats.punctuality_hash,
       library: {
-        height: @cohort.students.length * 50,
-        hAxis: {
-          baseline: 'transparent',
-          textStyle: { color: 'transparent' }
-        },
-        chartArea: { left: 150, top: 20, right: 0, width: '100%', height: "90%" },
-        bar: { groupWidth: '60%' },
-        legend: { position: 'none' },
-        colors: ['#2980b9', '#f39c12', '#e74c3c']
+        pieHole: 0.5,
+        chartArea: { top: 20, bottom: 20, width: '100%', height: '90%' },
+        colors: ['#2980b9', '#f39c12', '#e74c3c'],
+        legend: {
+          textStyle: { fontSize: 30 }
+        }
       } %>
+  </div>
+</div>
+
+<div class="row">
+  <h3 class="span12">
+    Class progress
+    <span class="pull-right muted">
+      <%= pluralize(@student_attendance_stats.days_remaining, 'day') %> left of class
+    </span>
+  </h3>
+  <div class="progress progress-striped span12">
+    <div class="bar" style="width: <%= current_student.cohort.progress_percent %>%;"></div>
+  </div>
+</div>

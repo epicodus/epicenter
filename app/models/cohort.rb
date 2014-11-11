@@ -13,6 +13,18 @@ class Cohort < ActiveRecord::Base
     end.count
   end
 
+  def total_class_days
+    (start_date..end_date).select { |date| !date.saturday? && !date.sunday? }.count
+  end
+
+  def number_of_days_left
+    total_class_days - number_of_days_since_start
+  end
+
+  def progress_percent
+    (number_of_days_since_start.to_f / total_class_days.to_f) * 100
+  end
+
   def self.current
     where('start_date <= :today AND end_date >= :today', { today: Date.today }).first
   end

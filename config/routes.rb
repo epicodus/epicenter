@@ -19,6 +19,8 @@ Rails.application.routes.draw do
     resources :attendance_statistics, only: [:index]
   end
 
+  resource :attendance_statistics, only: [:show]
+
   resources :assessments do
     resources :submissions, only: [:index, :create, :update]
   end

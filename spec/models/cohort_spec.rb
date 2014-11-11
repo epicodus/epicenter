@@ -27,6 +27,39 @@ describe Cohort do
     end
   end
 
+  describe '#total_class_days' do
+    it 'counts the days of class minus weekends' do
+      cohort = FactoryGirl.create(:cohort, start_date: Date.today, end_date: (Date.today + 2.weeks - 1.day))
+      expect(cohort.total_class_days).to eq 10
+    end
+  end
+
+  describe '#number_of_days_left' do
+    it 'returns the number of days left in the cohort' do
+      monday = Date.today.beginning_of_week
+      friday = monday + 4.days
+      next_friday = friday + 1.week
+
+      cohort = FactoryGirl.create(:cohort, start_date: monday, end_date: next_friday)
+      travel_to friday do
+        expect(cohort.number_of_days_left).to eq 5
+      end
+    end
+  end
+
+  describe '#progress_percent' do
+    it 'returns the percent of how many days have passed' do
+      monday = Date.today.beginning_of_week
+      friday = monday + 4.days
+      next_friday = friday + 1.week
+
+      cohort = FactoryGirl.create(:cohort, start_date: monday, end_date: next_friday)
+      travel_to friday do
+        expect(cohort.progress_percent).to eq 50.0
+      end
+    end
+  end
+
   describe '.current' do
     it 'is the current cohort' do
       current_cohort = FactoryGirl.create(:cohort)
