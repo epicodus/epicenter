@@ -43,6 +43,10 @@ input[type="checkbox"] {
   .features {
     padding: 10px;
   }
+
+  .navbar {
+    margin-top: 0px;
+  }
 }
 
 @media (max-width: 767px) {
@@ -71,6 +75,10 @@ input[type="checkbox"] {
   .features .row {
     margin-top: 0px;
     margin-bottom: 0px;
+  }
+
+  body {
+    padding-top: 120px;
   }
 }
 
@@ -122,6 +130,12 @@ a.employer {
 @media (min-width: 980px) and (max-width: 1199px) {
   .video {
     width: 50%;
+  }
+}
+
+@media (min-width: 980px) {
+  .navbar {
+    margin-top: 20px;
   }
 }
 
@@ -222,6 +236,6 @@ p.new-method-links {
   font-weight: bold;
 }
 
-.navbar {
-  margin-top: 20px;
+h1 {
+  margin-bottom: 20px;
 }
