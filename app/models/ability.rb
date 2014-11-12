@@ -18,6 +18,7 @@ class Ability
       can :create, Payment, payment_method: { student_id: user.id }
       can :read, Payment, student_id: user.id
       can :update, Verification, bank_account: { student_id: user.id }
+      can :read, StudentAttendanceStatistics, student: user
     else
       raise CanCan::AccessDenied.new("You need to sign in.", :manage, :all)
     end

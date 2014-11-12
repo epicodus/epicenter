@@ -1,5 +1,6 @@
 class AttendanceStatisticsController < ApplicationController
   authorize_resource :cohort_attendance_statistics, only: :index
+  authorize_resource :student_attendance_statistics, only: :show
 
   def index
     @cohort = Cohort.find(params[:cohort_id])
