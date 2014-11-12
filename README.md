@@ -1,6 +1,6 @@
-[![Build status](https://travis-ci.org/epicodus/payments.svg?branch=master)](https://travis-ci.org/epicodus/epicenter)
-[![Code climate](https://codeclimate.com/github/epicodus/payments/badges/gpa.svg)](https://codeclimate.com/github/epicodus/epicenter)
-[![Dependency status](https://gemnasium.com/epicodus/textbook.png)](https://gemnasium.com/epicodus/epicenter)
+[![Build status](https://travis-ci.org/epicodus/epicenter.svg?branch=master)](https://travis-ci.org/epicodus/epicenter)
+[![Code climate](https://codeclimate.com/github/epicodus/epicenter/badges/gpa.svg)](https://codeclimate.com/github/epicodus/epicenter)
+[![Dependency status](https://gemnasium.com/epicodus/epicenter.png)](https://gemnasium.com/epicodus/epicenter)
 
 # Epicenter
 
