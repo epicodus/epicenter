@@ -7,7 +7,7 @@ deploy:
   provider: heroku
   api_key:
     secure: fsM+etUAZoDfSFICXzq4PbK6i8uRBD+FXyZGsBEk4SuVuwtYQ5g34mGUnDi2cEX1CXVCmkZe0wYymTWSBWa7vaw5zbQ9iGx0sEbQAML7MFSRgRIGKji/ekCuMHMqT1+Y6TMvkJCn4BriWxX0TPCQ/PAyjmIRI3OjKODFAWtWke4=
-  app: epicodus-payments
+  app: epicodus-epicenter
   on:
-    repo: epicodus/payments
+    repo: epicodus/epicenter
   run: "rake db:migrate"
