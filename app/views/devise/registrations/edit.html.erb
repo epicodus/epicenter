@@ -1,6 +1,8 @@
 <h1>Profile</h1>
 
-<h2><%= link_to_if @student.class_over?, "Print your certificate of completion", certificate_path %></h2>
+<% if @student.class_over? %>
+  <h2><%= link_to "Print your certificate of completion", certificate_path %></h2>
+<% end %>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= devise_error_messages! %>
