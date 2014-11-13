@@ -163,6 +163,7 @@ ActiveRecord::Schema.define(version: 20141112193218) do
     t.string   "primary_payment_method_type"
     t.integer  "primary_payment_method_id"
     t.string   "type"
+    t.integer  "current_cohort_id"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

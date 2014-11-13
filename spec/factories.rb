@@ -134,6 +134,7 @@ FactoryGirl.define do
     sequence(:email) { |n| "admin#{n}@example.com" }
     password "password"
     password_confirmation "password"
+    association :current_cohort, factory: :cohort
   end
 
   factory :attendance_record do
@@ -193,5 +194,6 @@ FactoryGirl.define do
   factory :submission do
     link 'http://github.com'
     assessment
+    student
   end
 end

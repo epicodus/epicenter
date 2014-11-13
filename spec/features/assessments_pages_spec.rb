@@ -38,6 +38,32 @@ feature 'index page' do
       expect(page).to have_content assessment.requirements.first.content
     end
   end
+
+  context 'when visitin as an admin' do
+    let(:admin) { FactoryGirl.create(:admin) }
+    let(:assessment) { FactoryGirl.create(:assessment) }
+
+    before { login_as(admin, scope: :admin) }
+
+    scenario 'has a link to create a new assessment' do
+      visit assessments_path
+      click_on 'Add an assessment'
+      expect(page).to have_content 'New Assessment'
+    end
+
+    scenario 'shows the number of submissions needing review for each assessment' do
+      FactoryGirl.create(:submission, assessment: assessment)
+      visit assessments_path
+      expect(page).to have_content '1 new submission'
+    end
+
+    scenario 'admin clicks on number of submission badge and is taken to submissions index of that assessment' do
+      FactoryGirl.create(:submission, assessment: assessment)
+      visit assessments_path
+      click_link '1 new submission'
+      expect(page).to have_content "Submissions for #{assessment.title}"
+    end
+  end
 end
 
 feature 'show page' do
@@ -46,6 +72,29 @@ feature 'show page' do
   scenario 'not signed in' do
     visit assessment_path(assessment)
     expect(page).to have_content 'need to sign in'
+  end
+
+  context 'when visiting as an admin' do
+    let(:admin) { FactoryGirl.create(:admin) }
+    before do
+      login_as(admin, scope: :admin)
+      visit assessment_path(assessment)
+    end
+
+    scenario 'has a link to edit assessment' do
+      click_on 'Edit'
+      expect(page).to have_content 'Edit Assessment'
+    end
+
+    scenario 'has a link to delete assessment' do
+      click_on 'Delete'
+      expect(page).to have_content "#{assessment.title} has been deleted"
+    end
+
+    scenario 'has a link to create a new assessment' do
+      click_on 'New'
+      expect(page).to have_content 'New Assessment'
+    end
   end
 
   context 'when visiting as a student' do

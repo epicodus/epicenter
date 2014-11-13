@@ -1,18 +1,28 @@
 <%= link_to assessment do %>
   <%= div_for assessment, class: 'list-row list-link row' do %>
-    <div class="span5">
+    <div class="span8">
       <h4><%= assessment.title %></h4>
     </div>
-    <div class="span3">
-      <span class="pull-right">
-        <% if assessment.submission_for(current_student).nil? %>
-          Not submitted
-        <% elsif assessment.submission_for(current_student).has_been_reviewed? %>
-          Reviewed
-        <% else %>
-          Submitted - Pending review
-        <% end %>
-      </span>
+
+    <div class="span4">
+      <% if current_student %>
+
+        <span class="pull-right assessment-status">
+          <% if assessment.submission_for(current_student).nil? %>
+            Not submitted
+          <% elsif assessment.submission_for(current_student).has_been_reviewed? %>
+            Reviewed
+          <% else %>
+            Submitted - Pending review
+          <% end %>
+        </span>
+
+      <% elsif current_admin %>
+
+        <%= submissions_count_badge(assessment) %>
+
+      <% end %>
     </div>
+
   <% end %>
 <% end %>
