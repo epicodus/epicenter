@@ -314,6 +314,23 @@ describe Student do
     end
   end
 
+  describe '#class_over?' do
+    let(:cohort) { FactoryGirl.create(:cohort) }
+    let(:student) { FactoryGirl.create(:student, cohort: cohort) }
+
+    it 'returns false before class is over' do
+      travel_to cohort.end_date.to_date - 5.days do
+        expect(student.class_over?).to eq false
+      end
+    end
+
+    it 'returns true after class ends' do
+      travel_to cohort.end_date.to_date + 1.day do
+        expect(student.class_over?).to eq true
+      end
+    end
+  end
+
   describe 'attendance methods' do
     let(:cohort) { FactoryGirl.create(:cohort) }
     let(:student) { FactoryGirl.create(:student, cohort: cohort) }
