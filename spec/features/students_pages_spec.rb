@@ -60,6 +60,16 @@ feature "Student signs in while class is not in session" do
   end
 end
 
+feature "Student visits homepage after logged in" do
+  let(:student) { FactoryGirl.create(:student) }
+
+  it "takes them to the correct path" do
+    sign_in(student)
+    visit root_path
+    expect(current_path).to_not eq root_path
+  end
+end
+
 feature "Student signs in while class is in session" do
   let(:student) { FactoryGirl.create(:student) }
 

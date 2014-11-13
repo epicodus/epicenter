@@ -12,7 +12,7 @@ protected
 
   def after_sign_in_path_for(user)
     if user.is_a? Admin
-      root_path
+      assessments_path
     elsif user.is_a? Student
       user.class_in_session? ? assessments_path : class_not_in_session(user)
     end
