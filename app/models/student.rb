@@ -86,6 +86,10 @@ class Student < User
     cohort.start_date <= Date.today && cohort.end_date >= Date.today
   end
 
+  def class_over?
+    Date.today > cohort.end_date
+  end
+
   def start_recurring_payments
     payment = Payment.create(student: self, amount: plan.recurring_amount, payment_method: primary_payment_method)
     update!(recurring_active: true) if payment.persisted?

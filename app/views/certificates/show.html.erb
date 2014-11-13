@@ -1,0 +1,20 @@
+<div class="certificate span10">
+  <h1>Certificate of Completion for Epicodus</h1>
+
+  <h2>Intensive Web Development</h2>
+  <h3><%= @student.cohort.end_date.strftime('%B %d, %Y') %></h3>
+
+  <br>
+  <p>
+    <strong><%= @student.name %></strong> has completed Epicodus's Intensive Web
+    Development course, which covered the fundamentals of programming
+    for the web, from database to backend to client-side development.
+  </p>
+  <br>
+
+  <p><%= image_tag "signature.png" %></p>
+
+  <p><strong>Michael Kaiser-Nyman, President</strong></p>
+</div>
+
+

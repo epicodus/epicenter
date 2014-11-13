@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resource :verification, only: [:edit, :update]
   end
   resource :credit_card, only: [:new, :create]
+  resource :certificate, only: [:show]
   resources :payments, only: [:index]
   resources :upfront_payments, only: [:create]
   resources :recurring_payments, only: [:create]
