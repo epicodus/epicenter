@@ -1,4 +1,6 @@
 describe Admin do
+  it { should belong_to :current_cohort }
+
   describe "abilities" do
     let(:admin) { FactoryGirl.create(:admin) }
     subject { Ability.new(admin) }

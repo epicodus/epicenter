@@ -17,4 +17,14 @@ module AssessmentsHelper
     end
     content_tag(:tr, class: score_class, &block)
   end
+
+  def submissions_count_badge(assessment)
+    unless assessment.submissions.needing_review.empty?
+      link_to assessment_submissions_path(assessment) do
+        content_tag :span, class: 'pull-right badge badge-info assessment-status' do
+          pluralize assessment.submissions.needing_review.count, 'new submission'
+        end
+      end
+    end
+  end
 end

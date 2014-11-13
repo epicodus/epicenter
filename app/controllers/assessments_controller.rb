@@ -37,6 +37,12 @@ class AssessmentsController < ApplicationController
     end
   end
 
+  def destroy
+    @assessment = Assessment.find(params[:id])
+    @assessment.destroy
+    redirect_to assessments_path, alert: "#{@assessment.title} has been deleted."
+  end
+
 private
 
   def assessment_params
