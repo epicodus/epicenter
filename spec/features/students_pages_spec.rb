@@ -75,7 +75,7 @@ feature "Student signs in while class is in session" do
 
   it "takes them to the assessments page" do
     sign_in(student)
-    expect(current_path).to eq assessments_path
+    expect(current_path).to eq cohort_assessments_path(student.cohort)
     expect(page).to have_content "Assessments"
   end
 end

@@ -12,9 +12,9 @@ protected
 
   def after_sign_in_path_for(user)
     if user.is_a? Admin
-      assessments_path
+      cohort_assessments_path(user.current_cohort)
     elsif user.is_a? Student
-      user.class_in_session? ? assessments_path : class_not_in_session(user)
+      user.class_in_session? ? cohort_assessments_path(user.cohort) : class_not_in_session(user)
     end
   end
 

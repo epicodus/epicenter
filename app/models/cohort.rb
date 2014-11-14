@@ -5,6 +5,7 @@ class Cohort < ActiveRecord::Base
 
   has_many :students
   has_many :attendance_records, through: :students
+  has_many :assessments
 
   def number_of_days_since_start
     last_date = Date.today <= end_date ? Date.today : end_date

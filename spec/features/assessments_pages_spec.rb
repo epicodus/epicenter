@@ -1,24 +1,25 @@
 feature 'index page' do
+  let!(:assessment) { FactoryGirl.create(:assessment) }
+
   scenario 'not logged in' do
-    visit assessments_path
+    visit cohort_assessments_path(assessment.cohort)
     expect(page).to have_content 'need to sign in'
   end
 
   context 'when visiting as a student' do
     let(:student) { FactoryGirl.create(:student) }
-    let!(:assessment) { FactoryGirl.create(:assessment) }
     before { login_as(student, scope: :student) }
 
     scenario 'shows all assessments' do
-      another_assessment = FactoryGirl.create(:assessment, title: 'another_assessment')
-      visit assessments_path
+      another_assessment = FactoryGirl.create(:assessment, title: 'another_assessment', cohort: assessment.cohort)
+      visit cohort_assessments_path(assessment.cohort)
       expect(page).to have_content assessment.title
       expect(page).to have_content another_assessment.title
     end
 
     scenario 'shows if the student has submitted an assessment' do
       FactoryGirl.create(:submission, assessment: assessment, student: student)
-      visit assessments_path
+      visit cohort_assessments_path(assessment.cohort)
       expect(page).to have_content 'Submitted'
       expect(page).to_not have_content 'Not submitted'
     end
@@ -26,13 +27,13 @@ feature 'index page' do
     scenario 'shows if the assessment has been graded' do
       submission = FactoryGirl.create(:submission, assessment: assessment, student: student)
       FactoryGirl.create(:review, submission: submission)
-      visit assessments_path
+      visit cohort_assessments_path(assessment.cohort)
       expect(page).to have_content 'Reviewed'
       expect(page).to_not have_content 'Submitted'
     end
 
     scenario 'links to assessment show page' do
-      visit assessments_path
+      visit cohort_assessments_path(assessment.cohort)
       click_link assessment.title
       expect(page).to have_content assessment.title
       expect(page).to have_content assessment.requirements.first.content
@@ -46,20 +47,20 @@ feature 'index page' do
     before { login_as(admin, scope: :admin) }
 
     scenario 'has a link to create a new assessment' do
-      visit assessments_path
+      visit cohort_assessments_path(assessment.cohort)
       click_on 'Add an assessment'
       expect(page).to have_content 'New Assessment'
     end
 
     scenario 'shows the number of submissions needing review for each assessment' do
       FactoryGirl.create(:submission, assessment: assessment)
-      visit assessments_path
+      visit cohort_assessments_path(assessment.cohort)
       expect(page).to have_content '1 new submission'
     end
 
     scenario 'admin clicks on number of submission badge and is taken to submissions index of that assessment' do
       FactoryGirl.create(:submission, assessment: assessment)
-      visit assessments_path
+      visit cohort_assessments_path(assessment.cohort)
       click_link '1 new submission'
       expect(page).to have_content "Submissions for #{assessment.title}"
     end
