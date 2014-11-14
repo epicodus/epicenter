@@ -1,4 +1,6 @@
 class Assessment < ActiveRecord::Base
+  default_scope { order(:number) }
+  
   validates_presence_of :title, :section, :url
   validate :presence_of_requirements
   validates :cohort_id, presence: true

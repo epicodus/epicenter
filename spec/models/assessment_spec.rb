@@ -20,6 +20,17 @@ describe Assessment do
     expect(next_assessment.number).to eq 2
   end
 
+  describe '.default_scope' do
+    let(:second_assessment) { FactoryGirl.create(:assessment) }
+    let(:first_assessment) { FactoryGirl.create(:assessment, cohort: second_assessment.cohort) }
+
+    it 'orders assessments by their number, ascending' do
+      first_assessment.update_attribute(:number, 1)
+      second_assessment.update_attribute(:number, 2)
+      expect(Assessment.all).to eq [first_assessment, second_assessment]
+    end
+  end
+
   describe '#submission_for' do
     it 'returns submission of given user for this assessment' do
       student = FactoryGirl.create(:student)
