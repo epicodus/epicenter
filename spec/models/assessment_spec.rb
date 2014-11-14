@@ -14,6 +14,12 @@ describe Assessment do
     expect(assessment.errors.full_messages.first).to eq 'Requirements must be present.'
   end
 
+  it 'assigns an order number before creation (defaulted to last)' do
+    assessment = FactoryGirl.create(:assessment)
+    next_assessment = FactoryGirl.create(:assessment, cohort: assessment.cohort)
+    expect(next_assessment.number).to eq 2
+  end
+
   describe '#submission_for' do
     it 'returns submission of given user for this assessment' do
       student = FactoryGirl.create(:student)
