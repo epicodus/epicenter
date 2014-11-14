@@ -38,4 +38,11 @@ describe Admin do
       it { is_expected.to not_have_abilities(:update, Verification.new) }
     end
   end
+
+  it 'is assigned a default current_cohort before creation' do
+    FactoryGirl.create(:cohort)
+    admin = FactoryGirl.build(:admin, current_cohort: nil)
+    admin.save
+    expect(admin.current_cohort).to be_a Cohort
+  end
 end

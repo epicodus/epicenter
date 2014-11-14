@@ -2,7 +2,7 @@ class AssessmentsController < ApplicationController
   authorize_resource
 
   def index
-    @assessments = Assessment.all
+    @assessments = Cohort.find(params[:cohort_id]).assessments
   end
 
   def new
@@ -40,12 +40,12 @@ class AssessmentsController < ApplicationController
   def destroy
     @assessment = Assessment.find(params[:id])
     @assessment.destroy
-    redirect_to assessments_path, alert: "#{@assessment.title} has been deleted."
+    redirect_to cohort_assessments_path(current_admin.current_cohort), alert: "#{@assessment.title} has been deleted."
   end
 
 private
 
   def assessment_params
-    params.require(:assessment).permit(:title, :section, :url, requirements_attributes: [:id, :content, :_destroy])
+    params.require(:assessment).permit(:title, :section, :url, requirements_attributes: [:id, :content, :_destroy]).merge(cohort_id: current_admin.current_cohort.id)
   end
 end

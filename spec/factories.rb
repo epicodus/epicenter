@@ -166,6 +166,7 @@ FactoryGirl.define do
     title 'assessment title'
     section 'object oriented design'
     url 'http://learnhowtoprogram.com'
+    cohort
 
     before(:create) do |assessment|
       assessment.requirements << build(:requirement)

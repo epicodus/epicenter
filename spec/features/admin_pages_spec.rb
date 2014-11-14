@@ -41,4 +41,17 @@ feature 'Changing current cohort', js: true do
       expect(page).to have_content student.name
     end
   end
+
+  context 'when viewing a cohort assessments page' do
+    it 'redirects them to the assessments for their current cohort' do
+      cohort = FactoryGirl.create(:cohort, description: 'Winter 2015')
+      assessment = FactoryGirl.create(:assessment, cohort: cohort)
+      login_as(admin, scope: :admin)
+      visit cohort_assessments_path(admin.current_cohort)
+      expect(page).to_not have_content assessment.title
+      click_link admin.current_cohort.description
+      click_link cohort.description
+      expect(page).to have_content assessment.title
+    end
+  end
 end

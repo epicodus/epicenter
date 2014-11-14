@@ -19,17 +19,16 @@ Rails.application.routes.draw do
   resources :attendance_records, only: [:create, :destroy]
   resources :cohorts, only: [] do
     resources :attendance_statistics, only: [:index]
+    resources :assessments, only: [:index]
   end
 
   resource :attendance_statistics, only: [:show]
 
-  resources :assessments do
+  resources :assessments, except: [:index] do
     resources :submissions, only: [:index, :create, :update]
   end
 
   resources :submissions, only: [] do
     resources :reviews, only: [:new, :create]
   end
-
-  resources :assessments
 end

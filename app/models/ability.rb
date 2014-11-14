@@ -10,7 +10,7 @@ class Ability
       can :create, Review
       can :read, CohortAttendanceStatistics
     elsif user.is_a? Student
-      can :read, Assessment
+      can :read, Assessment, cohort_id: user.cohort_id
       can :create, Submission
       can :update, Submission, student_id: user.id
       can :create, BankAccount

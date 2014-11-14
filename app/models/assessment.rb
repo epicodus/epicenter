@@ -1,9 +1,11 @@
 class Assessment < ActiveRecord::Base
   validates_presence_of :title, :section, :url
   validate :presence_of_requirements
+  validates :cohort_id, presence: true
 
   has_many :requirements
   has_many :submissions
+  belongs_to :cohort
 
   accepts_nested_attributes_for :requirements, reject_if: :attributes_blank?, allow_destroy: true
 

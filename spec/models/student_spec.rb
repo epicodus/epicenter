@@ -386,7 +386,8 @@ describe Student do
     subject { Ability.new(student) }
 
     context 'for assessments' do
-      it { is_expected.to have_abilities(:read, Assessment.new) }
+      it { is_expected.to have_abilities(:read, Assessment.new(cohort: student.cohort)) }
+      it { is_expected.to not_have_abilities(:read, Assessment.new) }
     end
 
     context 'for submissions' do

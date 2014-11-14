@@ -2,8 +2,10 @@ describe Assessment do
   it { should validate_presence_of :title }
   it { should validate_presence_of :section }
   it { should validate_presence_of :url }
+  it { should validate_presence_of :cohort_id }
   it { should have_many :requirements }
   it { should have_many :submissions }
+  it { should belong_to :cohort }
   it { should accept_nested_attributes_for :requirements }
 
   it 'validates presence of at least one requirement' do
