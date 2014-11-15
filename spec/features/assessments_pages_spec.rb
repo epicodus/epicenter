@@ -7,8 +7,14 @@ feature 'index page' do
   end
 
   context 'when visiting as a student' do
-    let(:student) { FactoryGirl.create(:student) }
+    let(:student) { FactoryGirl.create(:student, cohort: assessment.cohort) }
     before { login_as(student, scope: :student) }
+
+    scenario "but isn't this student's cohort" do
+      another_cohort = FactoryGirl.create(:cohort)
+      visit cohort_assessments_path(another_cohort)
+      expect(page).to have_content 'not authorized'
+    end
 
     scenario 'shows all assessments' do
       another_assessment = FactoryGirl.create(:assessment, title: 'another_assessment', cohort: assessment.cohort)
@@ -116,9 +122,15 @@ feature 'show page' do
   end
 
   context 'when visiting as a student' do
-    let(:student) { FactoryGirl.create(:student) }
+    let(:student) { FactoryGirl.create(:student, cohort: assessment.cohort) }
     before { login_as(student, scope: :student) }
     subject { page }
+
+    scenario "but this assessment is not part of your cohort" do
+      assessment_of_another_cohort = FactoryGirl.create(:assessment)
+      visit assessment_path(assessment_of_another_cohort)
+      expect(page).to have_content 'not authorized'
+    end
 
     context 'before submitting' do
       before do

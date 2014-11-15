@@ -6,6 +6,7 @@ class Ability
 
     if user.is_a? Admin
       can :manage, Assessment
+      can :manage, Cohort
       can :read, Submission
       can :create, Review
       can :read, CohortAttendanceStatistics
@@ -14,6 +15,7 @@ class Ability
       can :create, Submission
       can :update, Submission, student_id: user.id
       can :create, BankAccount
+      can :read, Cohort, id: user.cohort_id
       can :create, CreditCard
       can :create, Payment, payment_method: { student_id: user.id }
       can :read, Payment, student_id: user.id
