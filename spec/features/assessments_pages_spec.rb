@@ -38,6 +38,11 @@ feature 'index page' do
       expect(page).to have_content assessment.title
       expect(page).to have_content assessment.requirements.first.content
     end
+
+    scenario 'does not have button to save order of assessments' do
+      visit cohort_assessments_path(assessment.cohort)
+      expect(page).to_not have_button 'Save order'
+    end
   end
 
   context 'when visitin as an admin' do
@@ -63,6 +68,18 @@ feature 'index page' do
       visit cohort_assessments_path(assessment.cohort)
       click_link '1 new submission'
       expect(page).to have_content "Submissions for #{assessment.title}"
+    end
+
+    scenario 'has a button to save order of assessments' do
+      visit cohort_assessments_path(assessment.cohort)
+      expect(page).to have_button 'Save order'
+    end
+
+    scenario 'changes lesson order' do
+      another_assesment = FactoryGirl.create(:assessment, cohort: assessment.cohort)
+      visit cohort_assessments_path(assessment.cohort)
+      click_on 'Save order'
+      expect(page).to have_content 'Order has been saved'
     end
   end
 end

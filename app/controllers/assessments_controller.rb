@@ -43,6 +43,11 @@ class AssessmentsController < ApplicationController
     redirect_to cohort_assessments_path(current_admin.current_cohort), alert: "#{@assessment.title} has been deleted."
   end
 
+  def update_multiple
+    Assessment.update(params[:assessments].keys, params[:assessments].values)
+    redirect_to :back, notice: 'Order has been saved.'
+  end
+
 private
 
   def assessment_params

@@ -20,7 +20,7 @@ class Assessment < ActiveRecord::Base
 private
 
   def set_number
-    self.number = cohort.assessments.order(:number).pluck(:number).last.to_i + 1
+    self.number = cohort.assessments.pluck(:number).last.to_i + 1
   end
 
   def presence_of_requirements

@@ -26,6 +26,9 @@ Rails.application.routes.draw do
 
   resources :assessments, except: [:index] do
     resources :submissions, only: [:index, :create, :update]
+    collection do
+      patch :update_multiple, :path => ''
+    end
   end
 
   resources :submissions, only: [] do

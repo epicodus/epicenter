@@ -204,6 +204,27 @@ a.employer {
 
 .list-link:hover {
   background-color: #eee;
+  cursor: move;
+}
+
+.moving-list-link:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 10px;
+  width: 100%;
+  margin-left: -10px;
+  border-radius: 30%;
+
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+     -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  z-index: -1;
+}
+
+.list-link a {
+  text-decoration: none;
 }
 
 .submission a.btn {
