@@ -1,7 +1,7 @@
-<%= link_to assessment do %>
-  <%= div_for assessment, class: 'list-row list-link row' do %>
+<div class="assessment">
+  <div class='list-row list-link row'>
     <div class="span8">
-      <h4><%= assessment.title %></h4>
+      <h4><%= link_to assessment.title, assessment %></h4>
     </div>
 
     <div class="span4">
@@ -21,8 +21,11 @@
 
         <%= submissions_count_badge(assessment) %>
 
+        <%= fields_for 'assessments[]', assessment do |f| %>
+          <%= f.hidden_field :number, class: 'assessment-number' %>
+        <% end %>
+
       <% end %>
     </div>
-
-  <% end %>
-<% end %>
+  </div>
+</div>

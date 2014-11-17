@@ -1,5 +1,7 @@
 class Assessment < ActiveRecord::Base
-  validates_presence_of :title, :section, :url
+  default_scope { order(:number) }
+
+  validates_presence_of :title
   validate :presence_of_requirements
   validates :cohort_id, presence: true
 
@@ -9,11 +11,17 @@ class Assessment < ActiveRecord::Base
 
   accepts_nested_attributes_for :requirements, reject_if: :attributes_blank?, allow_destroy: true
 
+  before_create :set_number
+
   def submission_for(student)
     submissions.find_by(student: student)
   end
 
 private
+
+  def set_number
+    self.number = cohort.assessments.pluck(:number).last.to_i + 1
+  end
 
   def presence_of_requirements
     if requirements.size < 1

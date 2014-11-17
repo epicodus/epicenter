@@ -1,13 +1,22 @@
 <h1>
   Assessments
 </h1>
-<div>
-  <%= render @assessments %>
-  <% if current_admin %>
-    <div class='list-row row'>
-      <%= link_to new_assessment_path do %>
-        <h4 class="span8 text-success">+ Add an assessment</h4>
-      <% end %>
+<% if can? :manage, Assessment %>
+  <%= form_tag update_multiple_assessments_path, method: :patch, class: 'update-multiple-assessments' do %>
+    <div class="sortable-assessments">
+      <%= render @assessments %>
+
+      <div class='list-row row'>
+        <%= link_to new_assessment_path do %>
+          <h4 class="span3 text-success">+ Add an assessment</h4>
+        <% end %>
+      </div>
     </div>
+
+    <%= submit_tag 'Save order', class: "btn btn-warning pull-right" %>
   <% end %>
-</div>
+<% else %>
+  <div class="assessments">
+    <%= render @assessments %>
+  </div>
+<% end %>

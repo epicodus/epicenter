@@ -7,8 +7,14 @@ feature 'index page' do
   end
 
   context 'when visiting as a student' do
-    let(:student) { FactoryGirl.create(:student) }
+    let(:student) { FactoryGirl.create(:student, cohort: assessment.cohort) }
     before { login_as(student, scope: :student) }
+
+    scenario "but isn't this student's cohort" do
+      another_cohort = FactoryGirl.create(:cohort)
+      visit cohort_assessments_path(another_cohort)
+      expect(page).to have_content 'not authorized'
+    end
 
     scenario 'shows all assessments' do
       another_assessment = FactoryGirl.create(:assessment, title: 'another_assessment', cohort: assessment.cohort)
@@ -38,6 +44,11 @@ feature 'index page' do
       expect(page).to have_content assessment.title
       expect(page).to have_content assessment.requirements.first.content
     end
+
+    scenario 'does not have button to save order of assessments' do
+      visit cohort_assessments_path(assessment.cohort)
+      expect(page).to_not have_button 'Save order'
+    end
   end
 
   context 'when visitin as an admin' do
@@ -63,6 +74,18 @@ feature 'index page' do
       visit cohort_assessments_path(assessment.cohort)
       click_link '1 new submission'
       expect(page).to have_content "Submissions for #{assessment.title}"
+    end
+
+    scenario 'has a button to save order of assessments' do
+      visit cohort_assessments_path(assessment.cohort)
+      expect(page).to have_button 'Save order'
+    end
+
+    scenario 'changes lesson order' do
+      another_assesment = FactoryGirl.create(:assessment, cohort: assessment.cohort)
+      visit cohort_assessments_path(assessment.cohort)
+      click_on 'Save order'
+      expect(page).to have_content 'Order has been saved'
     end
   end
 end
@@ -99,9 +122,15 @@ feature 'show page' do
   end
 
   context 'when visiting as a student' do
-    let(:student) { FactoryGirl.create(:student) }
+    let(:student) { FactoryGirl.create(:student, cohort: assessment.cohort) }
     before { login_as(student, scope: :student) }
     subject { page }
+
+    scenario "but this assessment is not part of your cohort" do
+      assessment_of_another_cohort = FactoryGirl.create(:assessment)
+      visit assessment_path(assessment_of_another_cohort)
+      expect(page).to have_content 'not authorized'
+    end
 
     context 'before submitting' do
       before do
@@ -185,8 +214,6 @@ feature 'creating an assessment' do
 
     scenario 'with valid input' do
       fill_in 'Title', with: assessment.title
-      fill_in 'Section', with: assessment.section
-      fill_in 'Url', with: assessment.url
       fill_in 'assessment_requirements_attributes_0_content', with: 'requirement'
       click_button 'Create Assessment'
       expect(page).to have_content 'Assessment has been saved'
@@ -213,8 +240,6 @@ feature 'creating an assessment' do
 
       scenario 'requires at least one requirement to be added' do
         fill_in 'Title', with: assessment.title
-        fill_in 'Section', with: assessment.section
-        fill_in 'Url', with: assessment.url
         click_button 'Create Assessment'
         expect(page).to have_content 'Requirements must be present'
       end

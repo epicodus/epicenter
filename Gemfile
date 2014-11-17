@@ -16,6 +16,7 @@ gem 'nested_form_fields'
 gem 'redcarpet'
 gem 'deep_cloneable'
 gem 'cancancan'
+gem 'jquery-ui-rails'
 
 group :development do
   gem 'spring'

@@ -4,12 +4,6 @@
   <%= f.label :title %>
   <%= f.text_field :title %>
 
-  <%= f.label :section %>
-  <%= f.text_field :section %>
-
-  <%= f.label :url %>
-  <%= f.text_field :url %>
-
   <h3>Requirements</h3>
   <ol id="requirement-fields">
     <%= f.nested_fields_for :requirements, wrapper_tag: :li do |ff| %>

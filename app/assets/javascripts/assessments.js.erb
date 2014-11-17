@@ -1,0 +1,21 @@
+$(function() {
+  $('div.sortable-assessments').sortable({
+    axis: 'y',
+    items: "> div.assessment",
+    forcePlaceholderSize: true,
+    cursor: 'move',
+    start: function(event, ui) {
+      ui.item.addClass('moving-list-link');
+    },
+    stop: function(event, ui) {
+      ui.item.removeClass('moving-list-link');
+    }
+  });
+
+  $('form.update-multiple-assessments').submit(function(event) {
+    var count = 1
+    $('input.assessment-number').each(function() {
+      $(this).val(count++);
+    });
+  });
+});

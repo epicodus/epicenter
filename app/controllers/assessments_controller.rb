@@ -2,7 +2,9 @@ class AssessmentsController < ApplicationController
   authorize_resource
 
   def index
-    @assessments = Cohort.find(params[:cohort_id]).assessments
+    cohort = Cohort.find(params[:cohort_id])
+    @assessments = cohort.assessments
+    authorize! :read, cohort
   end
 
   def new
@@ -22,6 +24,7 @@ class AssessmentsController < ApplicationController
   def show
     @assessment = Assessment.find(params[:id])
     @submission = @assessment.submission_for(current_student) || Submission.new(assessment: @assessment)
+    authorize! :show, @assessment # I don't know what this is necessary. Should be handled by authorize_resource above.
   end
 
   def edit
@@ -41,6 +44,11 @@ class AssessmentsController < ApplicationController
     @assessment = Assessment.find(params[:id])
     @assessment.destroy
     redirect_to cohort_assessments_path(current_admin.current_cohort), alert: "#{@assessment.title} has been deleted."
+  end
+
+  def update_multiple
+    Assessment.update(params[:assessments].keys, params[:assessments].values)
+    redirect_to :back, notice: 'Order has been saved.'
   end
 
 private
