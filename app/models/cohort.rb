@@ -7,6 +7,10 @@ class Cohort < ActiveRecord::Base
   has_many :attendance_records, through: :students
   has_many :assessments
 
+  attr_reader :importing_cohort_id
+
+  before_create :import_assessments
+
   def number_of_days_since_start
     last_date = Date.today <= end_date ? Date.today : end_date
     (start_date..last_date).select do |date|
@@ -28,5 +32,15 @@ class Cohort < ActiveRecord::Base
 
   def self.current
     where('start_date <= :today AND end_date >= :today', { today: Date.today }).first
+  end
+
+  def importing_cohort_id=(cohort_id)
+    @importing_cohort = Cohort.find(cohort_id) unless cohort_id.empty?
+  end
+
+private
+
+  def import_assessments
+    self.assessments = @importing_cohort.deep_clone(include: { assessments: :requirements }).assessments if @importing_cohort
   end
 end

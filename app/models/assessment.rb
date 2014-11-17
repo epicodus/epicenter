@@ -3,7 +3,7 @@ class Assessment < ActiveRecord::Base
 
   validates_presence_of :title
   validate :presence_of_requirements
-  validates :cohort_id, presence: true
+  validates :cohort, presence: true
 
   has_many :requirements
   has_many :submissions

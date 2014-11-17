@@ -1,0 +1,19 @@
+<h1>New class</h1>
+
+<%= form_for @cohort do |f| %>
+  <%= render 'layouts/errors', object: @cohort %>
+
+  <%= f.label :description %>
+  <%= f.text_field :description %>
+
+  <%= f.label :start_date %>
+  <%= f.text_field :start_date %>
+
+  <%= f.label :end_date %>
+  <%= f.text_field :end_date %>
+
+  <%= f.label :importing_cohort_id, 'Import assessments from previous cohort' %>
+  <%= f.collection_select :importing_cohort_id, Cohort.all, :id, :description %>
+
+  <%= f.submit 'Create class', class: 'btn btn-primary' %>
+<% end %>

@@ -17,6 +17,7 @@
             <% Cohort.all.each do |cohort| %>
               <li><%= link_to cohort.description, admin_path(current_admin, admin: { current_cohort_id: cohort.id }), method: :patch %></li>
             <% end %>
+            <li><%= link_to 'Add a class', new_cohort_path %></li>
           </ul>
         </li>
         <li><%= link_to 'Assessments', cohort_assessments_path(current_admin.current_cohort) %></li>
