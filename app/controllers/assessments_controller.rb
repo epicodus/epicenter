@@ -24,7 +24,7 @@ class AssessmentsController < ApplicationController
   def show
     @assessment = Assessment.find(params[:id])
     @submission = @assessment.submission_for(current_student) || Submission.new(assessment: @assessment)
-    authorize! :show, @assessment # I dont't know what this is necessary. Should be handled by authorize_resource above.
+    authorize! :show, @assessment # I don't know what this is necessary. Should be handled by authorize_resource above.
   end
 
   def edit
