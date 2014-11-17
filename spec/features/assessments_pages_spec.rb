@@ -214,8 +214,6 @@ feature 'creating an assessment' do
 
     scenario 'with valid input' do
       fill_in 'Title', with: assessment.title
-      fill_in 'Section', with: assessment.section
-      fill_in 'Url', with: assessment.url
       fill_in 'assessment_requirements_attributes_0_content', with: 'requirement'
       click_button 'Create Assessment'
       expect(page).to have_content 'Assessment has been saved'
@@ -242,8 +240,6 @@ feature 'creating an assessment' do
 
       scenario 'requires at least one requirement to be added' do
         fill_in 'Title', with: assessment.title
-        fill_in 'Section', with: assessment.section
-        fill_in 'Url', with: assessment.url
         click_button 'Create Assessment'
         expect(page).to have_content 'Requirements must be present'
       end

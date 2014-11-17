@@ -18,8 +18,6 @@ ActiveRecord::Schema.define(version: 20141114181118) do
 
   create_table "assessments", force: true do |t|
     t.string   "title"
-    t.string   "section"
-    t.string   "url"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "cohort_id"
