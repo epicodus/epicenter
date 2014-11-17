@@ -15,6 +15,11 @@ class BankAccount < PaymentMethod
     0
   end
 
+  def starting_status
+    "pending"
+  end
+
+
 private
   def get_last_four_string
     self.last_four_string = fetch_balanced_account.account_number

@@ -48,6 +48,7 @@ private
         :amount => total_amount,
         :appears_on_statement_as => 'Epicodus tuition'
       )
+      self.status = payment_method.starting_status
       self.payment_uri = debit.href
       send_payment_receipt
     rescue Balanced::Error => exception

@@ -26,6 +26,13 @@ describe CreditCard do
     end
   end
 
+  describe "#starting_status" do
+    it "returns 'succeeded'", :vcr do
+      credit_card = FactoryGirl.create :credit_card
+      expect(credit_card.starting_status).to eq 'succeeded'
+    end
+  end
+
   describe "#calculate_fee" do
     it "returns the credit card fees for the amount given", :vcr do
       credit_card = FactoryGirl.create :credit_card
