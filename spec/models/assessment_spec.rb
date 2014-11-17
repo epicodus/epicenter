@@ -1,6 +1,6 @@
 describe Assessment do
   it { should validate_presence_of :title }
-  it { should validate_presence_of :cohort_id }
+  it { should validate_presence_of :cohort }
   it { should have_many :requirements }
   it { should have_many :submissions }
   it { should belong_to :cohort }
