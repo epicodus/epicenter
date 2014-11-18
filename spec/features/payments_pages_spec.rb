@@ -15,23 +15,25 @@ feature 'Viewing payment index page' do
     end
 
     context 'after a payment has been made with bank account', :vcr do
-      it 'shows payment history with correct charge' do
+      it 'shows payment history with correct charge and status' do
         payment = FactoryGirl.create(:payment, amount: 600_00)
         student = payment.student
         login_as(student, scope: :student)
         visit payments_path
         expect(page).to have_content 600.00
+        expect(page).to have_content "Pending"
         expect(page).to have_content "Bank account ending in 0002"
       end
     end
 
     context 'after a payment has been made with credit card', :vcr do
-      it 'shows payment history with correct charge' do
+      it 'shows payment history with correct charge and status' do
         payment = FactoryGirl.create(:payment_with_credit_card, amount: 600_00)
         student = payment.student
         login_as(student, scope: :student)
         visit payments_path
         expect(page).to have_content 618.21
+        expect(page).to have_content "Succeeded"
         expect(page).to have_content "Credit card ending in 1111"
       end
     end

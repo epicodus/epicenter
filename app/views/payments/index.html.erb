@@ -25,7 +25,7 @@
       <% @payments.order_by_latest.each do |payment| %>
         <tr>
           <td>
-            Paid
+            <%= payment.status.capitalize %>
           </td>
           <td>
             <%= payment.created_at.strftime("%F") %>

@@ -16,6 +16,10 @@ class CreditCard < PaymentMethod
     ((amount / BigDecimal.new("0.971")) + 30).to_i - amount
   end
 
+  def starting_status
+    "succeeded"
+  end
+
 private
   def ensure_primary_method_exists
     student.set_primary_payment_method(self) if !student.primary_payment_method

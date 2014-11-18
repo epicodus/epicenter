@@ -34,4 +34,6 @@ Rails.application.routes.draw do
   resources :submissions, only: [] do
     resources :reviews, only: [:new, :create]
   end
+
+  resources :balanced_callbacks, only: [:create]
 end

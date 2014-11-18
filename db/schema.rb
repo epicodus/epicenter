@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141114181118) do
+ActiveRecord::Schema.define(version: 20141117223210) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(version: 20141114181118) do
     t.string   "old_payment_method_type"
     t.integer  "fee",                     default: 0, null: false
     t.integer  "payment_method_id"
+    t.string   "status"
   end
 
   add_index "payments", ["old_payment_method_type", "old_payment_method_id"], name: "payment_method_index", using: :btree

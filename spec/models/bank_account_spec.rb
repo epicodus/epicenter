@@ -25,6 +25,13 @@ describe BankAccount do
     end
   end
 
+  describe "#starting_status" do
+    it "returns 'pending'", :vcr do
+      bank_account = FactoryGirl.create :bank_account
+      expect(bank_account.starting_status).to eq 'pending'
+    end
+  end
+
   describe "#calculate_fee" do
     it "returns zero", :vcr do
       bank_account = FactoryGirl.create :verified_bank_account
