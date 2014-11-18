@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   root 'static_pages#index'
   get 'attendance', to: 'attendance_records#index', as: 'attendance'
-  post 'balanced_events', to: 'balanced_events#create'
 
   devise_for :student
   devise_for :admins, skip: :registrations
@@ -35,4 +34,6 @@ Rails.application.routes.draw do
   resources :submissions, only: [] do
     resources :reviews, only: [:new, :create]
   end
+
+  resources :balanced_events, only: [:create]
 end
