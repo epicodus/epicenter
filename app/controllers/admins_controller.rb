@@ -16,8 +16,10 @@ private
 
   def current_cohort_path(cohort)
     cohort_referer = request.referer[/cohorts\/\d+\/(.*)/, 1]
-    if cohort_referer
+    if respond_to? "cohort_#{cohort_referer}_path"
       send("cohort_#{cohort_referer}_path", cohort)
+    elsif respond_to? "#{cohort_referer}_cohort_path"
+      send("#{cohort_referer}_cohort_path", cohort)
     else
       :back
     end
