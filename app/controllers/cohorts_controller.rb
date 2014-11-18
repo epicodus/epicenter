@@ -15,6 +15,25 @@ class CohortsController < ApplicationController
     end
   end
 
+  def edit
+    @cohort = Cohort.find(params[:id])
+  end
+
+  def update
+    @cohort = Cohort.find(params[:id])
+    if @cohort.update(cohort_params)
+      redirect_to cohort_assessments_path(@cohort), notice: "#{@cohort.description} has been updated."
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    @cohort = Cohort.find(params[:id])
+    @cohort.destroy
+    redirect_to root_path, notice: "#{@cohort.description} has been deleted."
+  end
+
 private
 
   def cohort_params

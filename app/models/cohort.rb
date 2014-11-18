@@ -10,6 +10,7 @@ class Cohort < ActiveRecord::Base
   attr_accessor :importing_cohort_id
 
   before_create :import_assessments
+  after_destroy :reassign_admin_current_cohorts
 
   def number_of_days_since_start
     last_date = Date.today <= end_date ? Date.today : end_date
@@ -40,5 +41,9 @@ private
     unless @importing_cohort_id.blank?
       self.assessments = Cohort.find(@importing_cohort_id).deep_clone(include: { assessments: :requirements }).assessments
     end
+  end
+
+  def reassign_admin_current_cohorts
+    Admin.where(current_cohort_id: self.id).update_all(current_cohort_id: Cohort.last.id)
   end
 end

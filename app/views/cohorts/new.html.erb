@@ -1,37 +1,3 @@
-<h1>New class</h1>
+<h1>New cohort</h1>
 
-<%= form_for @cohort do |f| %>
-  <%= render 'layouts/errors', object: @cohort %>
-
-  <div class="row">
-    <div class="span12">
-      <%= f.label :description %>
-      <%= f.text_field :description, class: 'span12' %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="span6">
-      <%= f.label :start_date %>
-      <%= f.text_field :start_date, class: 'datepicker span6' %>
-    </div>
-
-    <div class="span6">
-      <%= f.label :end_date %>
-      <%= f.text_field :end_date, class: 'datepicker span6' %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="span4">
-      <%= f.label :importing_cohort_id, 'Import assessments from previous cohort' %>
-      <%= f.collection_select :importing_cohort_id, Cohort.all, :id, :description, { :include_blank => "Please select" }, class: 'span4' %>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="span2">
-      <%= f.submit 'Create class', class: 'btn btn-primary span2' %>
-    </div>
-  </div>
-<% end %>
+<%= render 'form', cohort: @cohort %>

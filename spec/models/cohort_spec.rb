@@ -68,4 +68,16 @@ describe Cohort do
       expect(Cohort.current).to eq current_cohort
     end
   end
+
+  context 'after_destroy' do
+    let(:cohort) { FactoryGirl.create(:cohort) }
+
+    it 'reassigns all admins that have this as their current cohort to a different cohort' do
+      another_cohort = FactoryGirl.create(:cohort)
+      admin = FactoryGirl.create(:admin, current_cohort: cohort)
+      cohort.destroy
+      admin.reload
+      expect(admin.current_cohort).to eq another_cohort
+    end
+  end
 end
