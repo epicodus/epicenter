@@ -3,19 +3,28 @@ class BalancedEvent
 
   def initialize(params)
     params["events"].each do |event|
-      payment_uri = event['entity']['debits'][0]['href']
-      if event["type"] == "debit.succeeded"
-        # update status of payment to succeeded
-      elsif event["type"] == "debit.failed"
-        # update status of payment to failed, if exists
-      end
+      check_event_type(event)
     end
   end
 
-  def update_payment_status
+private
+  def check_event_type(event)
+    if event["type"] == "debit.succeeded"
+      update_payment_status(event, "succeeded")
+    elsif event["type"] == "debit.failed"
+      update_payment_status(event, "failed")
+    end
+  end
+
+  def update_payment_status(event, status)
+    payment = Payment.find_by_payment_uri(payment_uri(event))
+    payment.update(status: status) if payment
+  end
+
+  def payment_uri(event)
+    event['entity']['debits'][0]['href']
   end
 end
-
 
 # event type
 # params["events"][0]["type"]
