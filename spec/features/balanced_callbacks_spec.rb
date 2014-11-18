@@ -11,7 +11,7 @@ feature 'Balanced callback occurs' do
   context "with a status of 'debit.succeeded'", :vcr do
     it "updates the payment to 'succeeded'" do
       payment_uri = Payment.last.payment_uri
-      session_driver.submit :post, "/balanced_events", balanced_callback_debit_succeeded_json(payment_uri)
+      session_driver.submit :post, "/balanced_callbacks", balanced_callback_debit_succeeded_json(payment_uri)
       visit payments_path
       expect(page).to have_content "Succeeded"
     end
@@ -20,7 +20,7 @@ feature 'Balanced callback occurs' do
   context "with a status of 'debit.failed'", :vcr do
     it "updates the payment to 'Failed'" do
       payment_uri = Payment.last.payment_uri
-      session_driver.submit :post, "/balanced_events", balanced_callback_debit_failed_json(payment_uri)
+      session_driver.submit :post, "/balanced_callbacks", balanced_callback_debit_failed_json(payment_uri)
       visit payments_path
       expect(page).to have_content "Failed"
     end

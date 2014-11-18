@@ -1,4 +1,4 @@
-class BalancedEvent
+class BalancedCallback
   include ActiveModel::Model
 
   def initialize(params)
