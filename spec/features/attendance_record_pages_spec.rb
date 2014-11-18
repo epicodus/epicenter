@@ -1,4 +1,9 @@
 feature 'creating an attendance record' do
+  before do
+    admin = FactoryGirl.create(:admin)
+    login_as(admin, scope: :admin)
+  end
+
   scenario 'correctly' do
     FactoryGirl.create(:student)
     visit attendance_path
@@ -14,11 +19,31 @@ feature 'creating an attendance record' do
 end
 
 feature 'destroying an attendance record' do
+  before do
+    admin = FactoryGirl.create(:admin)
+    login_as(admin, scope: :admin)
+  end
+
   scenario 'after accidentally creating one' do
     FactoryGirl.create(:student)
     visit attendance_path
     click_button("I'm here")
     click_link("Not you?")
     expect(page).to have_content 'Attendance record has been deleted'
+  end
+end
+
+feature 'only allow admins to view attendance sign-in page' do
+  let!(:student) { FactoryGirl.create(:student) }
+
+  scenario "guest tries to view sign-in page" do
+    visit attendance_path
+    expect(page).to have_content "You need to sign in."
+  end
+
+  scenario "student tries to view sign-in page" do
+    login_as(student, scope: :student)
+    visit attendance_path
+    expect(page).to have_content "You are not authorized to access this page."
   end
 end

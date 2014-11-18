@@ -1,4 +1,6 @@
 class AttendanceRecordsController < ApplicationController
+  authorize_resource
+
   def index
     @students = Student.all #TODO default scope this to the current class
   end

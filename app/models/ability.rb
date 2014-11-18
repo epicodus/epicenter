@@ -5,6 +5,7 @@ class Ability
     user ||= User.new
 
     if user.is_a? Admin
+      can :manage, AttendanceRecord
       can :manage, Assessment
       can :manage, Cohort
       can :read, Submission
