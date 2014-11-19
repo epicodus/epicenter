@@ -7,10 +7,9 @@ describe Payment do
   it { should validate_presence_of :amount }
 
   describe '.order_by_latest scope' do
-    let!(:payment_one) { FactoryGirl.create(:payment) }
-    let!(:payment_two) { FactoryGirl.create(:payment) }
-
     it 'orders by created_at, descending', :vcr do
+      payment_one = FactoryGirl.create(:payment)
+      payment_two = FactoryGirl.create(:payment)
       expect(Payment.order_by_latest).to eq [payment_two, payment_one]
     end
   end
@@ -19,13 +18,15 @@ describe Payment do
     it "makes a successful payment", :vcr do
       student = FactoryGirl.create :user_with_verified_bank_account
       student.payments.create(amount: 100, payment_method: student.bank_accounts.first)
-      expect(student.payments.first.payment_uri).to_not be_nil
+      student.reload
+      expect(student.payments).to_not eq []
     end
 
     it "doesn't make a payment with a bad card", :vcr do
       student = FactoryGirl.create :user_with_invalid_credit_card
       student.payments.create(amount: 100, payment_method: student.credit_cards.first)
-      expect(student.payments.first.payment_uri).to be_nil
+      student.reload
+      expect(student.payments).to eq []
     end
   end
 

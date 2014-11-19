@@ -67,7 +67,7 @@ class Student < User
   end
 
   def ready_to_start_recurring_payments?
-    plan.recurring_amount > 0 && recurring_active != true && !upfront_payment_due?
+    plan.recurring_amount > 0 && !recurring_active && !upfront_payment_due?
   end
 
   def signed_in_today?
@@ -75,7 +75,7 @@ class Student < User
   end
 
   def next_payment_date
-    payments.last.created_at + 1.month if recurring_active == true
+    payments.last.created_at + 1.month if recurring_active
   end
 
   def make_upfront_payment

@@ -63,15 +63,6 @@ describe Student do
       expect(Student.billable_today).to eq []
     end
 
-    it "returns all users that are due for payment" do
-      student1 = FactoryGirl.create(:user_with_recurring_due)
-      student2 = FactoryGirl.create(:user_with_recurring_due)
-      student3 = FactoryGirl.create(:user_with_recurring_not_due)
-      student4 = FactoryGirl.create(:user_with_recurring_due)
-      student4.update(recurring_active: false)
-      expect(Student.billable_today).to match_array [student1, student2]
-    end
-
     it "handles months with different amounts of days" do
       student = nil
       travel_to(Date.parse("January 31, 2014")) do

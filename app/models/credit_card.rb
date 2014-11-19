@@ -8,10 +8,6 @@ class CreditCard < PaymentMethod
     Balanced::Card.fetch(account_uri)
   end
 
-  def verified?
-    true
-  end
-
   def calculate_fee(amount)
     ((amount / BigDecimal.new("0.971")) + 30).to_i - amount
   end
@@ -21,10 +17,6 @@ class CreditCard < PaymentMethod
   end
 
 private
-  def ensure_primary_method_exists
-    student.set_primary_payment_method(self) if !student.primary_payment_method
-  end
-
   def get_last_four_string
     self.last_four_string = fetch_balanced_account.number
   end

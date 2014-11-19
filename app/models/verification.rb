@@ -22,7 +22,7 @@ class Verification
     begin
       verification.confirm(@first_deposit, @second_deposit)
       @bank_account.update!(verified: true)
-      ensure_primary_method_exists
+      @bank_account.ensure_primary_method_exists
       true
     rescue Balanced::BankAccountVerificationFailure => exception
       errors.add(:base, exception.description)
@@ -31,10 +31,6 @@ class Verification
   end
 
 private
-  def ensure_primary_method_exists
-    @bank_account.student.set_primary_payment_method(@bank_account) if !@bank_account.student.primary_payment_method
-  end
-
   def clean_deposit_input(input)
     input.to_s.split(".").last
   end

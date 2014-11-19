@@ -1,5 +1,5 @@
 class Payment < ActiveRecord::Base
-  include ActionView::Helpers::NumberHelper
+  include ActionView::Helpers::NumberHelper  #for number_to_currency
 
   belongs_to :student
   belongs_to :payment_method
