@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141119233708) do
+ActiveRecord::Schema.define(version: 20141119235649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,29 +75,6 @@ ActiveRecord::Schema.define(version: 20141119233708) do
     t.integer  "review_id"
   end
 
-  create_table "old_bank_accounts", force: true do |t|
-    t.string   "account_uri"
-    t.string   "verification_uri"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "student_id"
-    t.boolean  "verified"
-    t.string   "last_four_string"
-  end
-
-  add_index "old_bank_accounts", ["student_id"], name: "index_old_bank_accounts_on_student_id", using: :btree
-  add_index "old_bank_accounts", ["verified"], name: "index_old_bank_accounts_on_verified", using: :btree
-
-  create_table "old_credit_cards", force: true do |t|
-    t.string   "credit_card_uri"
-    t.integer  "student_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "last_four_string"
-  end
-
-  add_index "old_credit_cards", ["student_id"], name: "index_old_credit_cards_on_student_id", using: :btree
-
   create_table "payment_methods", force: true do |t|
     t.string   "account_uri"
     t.string   "verification_uri"
@@ -115,14 +92,11 @@ ActiveRecord::Schema.define(version: 20141119233708) do
     t.datetime "updated_at"
     t.string   "payment_uri"
     t.integer  "student_id"
-    t.integer  "old_payment_method_id"
-    t.string   "old_payment_method_type"
-    t.integer  "fee",                     default: 0, null: false
+    t.integer  "fee",               default: 0, null: false
     t.integer  "payment_method_id"
     t.string   "status"
   end
 
-  add_index "payments", ["old_payment_method_type", "old_payment_method_id"], name: "payment_method_index", using: :btree
   add_index "payments", ["student_id"], name: "index_payments_on_student_id", using: :btree
 
   create_table "plans", force: true do |t|
