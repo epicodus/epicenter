@@ -7,7 +7,6 @@ class Submission < ActiveRecord::Base
   belongs_to :student
   belongs_to :assessment
   has_many :reviews
-  has_one :latest_review, -> { order('created_at DESC') }, class_name: "Review"
 
   before_create :mark_as_needing_review
 
@@ -23,6 +22,14 @@ class Submission < ActiveRecord::Base
       assessment.requirements.each { |requirement| review.grades.build(requirement: requirement) }
       review
     end
+  end
+
+  def latest_review
+    reviews.order('created_at DESC').first
+  end
+
+  def meets_expectations?
+    latest_review.try(:meets_expectations?)
   end
 
 private

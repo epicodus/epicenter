@@ -32,7 +32,7 @@ feature 'index page' do
 
     scenario 'shows if the assessment has been graded' do
       submission = FactoryGirl.create(:submission, assessment: assessment, student: student)
-      FactoryGirl.create(:review, submission: submission)
+      FactoryGirl.create(:passing_review, submission: submission)
       visit cohort_assessments_path(assessment.cohort)
       expect(page).to have_content 'Reviewed'
       expect(page).to_not have_content 'Submitted'
@@ -170,7 +170,7 @@ feature 'show page' do
 
     context 'after submission has been reviewed' do
       let(:submission) { FactoryGirl.create(:submission, assessment: assessment, student: student) }
-      let!(:review) { FactoryGirl.create(:review, submission: submission) }
+      let!(:review) { FactoryGirl.create(:passing_review, submission: submission) }
 
       before do
         visit assessment_path(assessment)
@@ -185,7 +185,7 @@ feature 'show page' do
       let(:submission) { FactoryGirl.create(:submission, assessment: assessment, student: student) }
 
       before do
-        FactoryGirl.create(:review, submission: submission)
+        FactoryGirl.create(:passing_review, submission: submission)
         visit assessment_path(assessment)
         click_on 'Resubmit'
       end

@@ -1,0 +1,26 @@
+<div class="transcript">
+  <h1>Epicodus</h1>
+  <h2>Intensive Web Development</h2>
+  <h2>Transcript</h2>
+
+  <p>
+    Student: <%= @transcript.student.name %><br>
+    Class: <%= @transcript.student.cohort.description %>
+  </p>
+
+  <hr>
+
+  <p>Student has met course expecations in these areas:</p>
+  <ul>
+    <% @transcript.passing_assessments.each do |assessment| %>
+      <li><%= assessment.title %></li>
+    <% end %>
+  </ul>
+
+  <hr>
+  <h3>Attendance</h3>
+  <p>
+    <%= @transcript.student.name %> was present
+    <%= @transcript.bottom_of_percentile_range %>% - <%= @transcript.bottom_of_percentile_range + 5 %>%
+    of the time.</p>
+</div>

@@ -23,7 +23,7 @@ feature 'index page' do
 
     scenario 'lists only submissions needing review' do
       reviewed_submission = FactoryGirl.create(:submission, assessment: assessment, student: student)
-      FactoryGirl.create(:review, submission: reviewed_submission)
+      FactoryGirl.create(:passing_review, submission: reviewed_submission)
       visit assessment_submissions_path(assessment)
       expect(page).to_not have_content reviewed_submission.student.name
     end
@@ -58,7 +58,7 @@ feature 'index page' do
       context 'creating a review', js: true do
         let(:admin) { FactoryGirl.create(:admin) }
         let!(:submission) { FactoryGirl.create(:submission, assessment: assessment, student: student) }
-        let!(:score) { FactoryGirl.create(:score) }
+        let!(:score) { FactoryGirl.create(:passing_score) }
 
         before do
           login_as(admin, scope: :admin)
@@ -80,7 +80,7 @@ feature 'index page' do
         end
 
         context 'when the submission has been reviewed before' do
-          let!(:review) { FactoryGirl.create(:review, submission: submission) }
+          let!(:review) { FactoryGirl.create(:passing_review, submission: submission) }
 
           before { submission.update(needs_review: true) }
 

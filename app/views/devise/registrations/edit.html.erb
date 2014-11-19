@@ -1,7 +1,8 @@
 <h1>Profile</h1>
 
 <% if @student.class_over? %>
-  <h2><%= link_to "Print your certificate of completion", certificate_path %></h2>
+  <h2><%= link_to "View certificate of completion", certificate_path, target: '_blank' %></h2>
+  <h2><%= link_to "View transcript", transcript_path, target: '_blank' %></h2>
 <% end %>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
@@ -34,4 +35,3 @@
 <% end %>
 
 <%= link_to "Back", :back %>
-

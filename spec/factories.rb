@@ -158,12 +158,19 @@ FactoryGirl.define do
   end
 
   factory :score do
-    value 3
     sequence(:description) { |n| "Meets expectations #{n} of the time" }
+
+    factory :failing_score do
+      value 1
+    end
+
+    factory :passing_score do
+      value 3
+    end
   end
 
   factory :assessment do
-    title 'assessment title'
+    sequence(:title) { |n| "assessment #{n}" }
     cohort
 
     before(:create) do |assessment|
@@ -172,7 +179,13 @@ FactoryGirl.define do
   end
 
   factory :grade do
-    score
+    factory :passing_grade do
+      association :score, factory: :passing_score
+    end
+
+    factory :failing_grade do
+      association :score, factory: :failing_score
+    end
   end
 
   factory :requirement do
@@ -183,9 +196,19 @@ FactoryGirl.define do
     note 'Great job!'
     submission
 
-    after(:create) do |review|
-      review.submission.assessment.requirements.each do |requirement|
-        FactoryGirl.create(:grade, review: review, requirement: requirement)
+    factory :passing_review do
+      after(:create) do |review|
+        review.submission.assessment.requirements.each do |requirement|
+          FactoryGirl.create(:passing_grade, review: review, requirement: requirement)
+        end
+      end
+    end
+
+    factory :failing_review do
+      after(:create) do |review|
+        review.submission.assessment.requirements.each do |requirement|
+          FactoryGirl.create(:failing_grade, review: review, requirement: requirement)
+        end
       end
     end
   end
