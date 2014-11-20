@@ -10,8 +10,7 @@ class VerificationsController < ApplicationController
     @bank_account = BankAccount.find(params[:bank_account_id])
     @verification = Verification.new(params[:verification].merge(bank_account: @bank_account))
     if @verification.confirm
-      flash[:notice] = "Your bank account has been confirmed."
-      redirect_to payment_methods_path
+      redirect_to payment_methods_path, notice: "Your bank account has been confirmed."
     else
       render :edit
     end

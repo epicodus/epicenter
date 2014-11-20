@@ -2,7 +2,7 @@ class AttendanceRecordsController < ApplicationController
   authorize_resource
 
   def index
-    @students = Student.all #TODO default scope this to the current class
+    @students = current_admin.current_cohort.students
   end
 
   def create
@@ -19,8 +19,7 @@ class AttendanceRecordsController < ApplicationController
   def destroy
     @attendance_record = AttendanceRecord.find(params[:id])
     @attendance_record.destroy
-    flash[:alert] = "Attendance record has been deleted."
-    redirect_to attendance_path
+    redirect_to attendance_path, alert: "Attendance record has been deleted."
   end
 
 private

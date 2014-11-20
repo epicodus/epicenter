@@ -4,7 +4,7 @@ class AssessmentsController < ApplicationController
   def index
     cohort = Cohort.find(params[:cohort_id])
     @assessments = cohort.assessments
-    authorize! :read, cohort
+    authorize! :read, cohort # I don't know what this is necessary. Should be handled by authorize_resource above.
   end
 
   def new

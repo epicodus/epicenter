@@ -9,7 +9,7 @@ class CohortAttendanceStatistics
     @cohort.attendance_records.group('DATE(attendance_records.created_at)').count
   end
 
-  def student_attendance_data # this is a terrible name
+  def student_attendance_data
     students = @cohort.students.sort_by(&:absences).reverse
     [
       {
