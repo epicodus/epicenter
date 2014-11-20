@@ -36,7 +36,7 @@ describe CohortAttendanceStatistics do
     let!(:second_student) { FactoryGirl.create(:student, name: 'Catherine', cohort: cohort) }
 
     it 'returns data for on time students' do
-      travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 8, 55, 00) do
+      travel_to cohort.start_date do
         cohort.students.each { |student| FactoryGirl.create(:attendance_record, student: student) }
         on_time_data = cohort_attendance_statistics.student_attendance_data[0]
         expect(on_time_data[:name]).to eq 'On time'
@@ -45,7 +45,9 @@ describe CohortAttendanceStatistics do
     end
 
     it 'returns data for tardy students' do
-      travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 9, 10, 00) do
+      start_time = Time.parse(ENV['CLASS_START_TIME'])
+
+      travel_to start_time + 1.minute do
         cohort.students.each { |student| FactoryGirl.create(:attendance_record, student: student) }
         tardy_data = cohort_attendance_statistics.student_attendance_data[1]
         expect(tardy_data[:name]).to eq 'Tardy'
@@ -54,7 +56,7 @@ describe CohortAttendanceStatistics do
     end
 
     it 'returns data for absent students' do
-      travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 8, 55, 00) do
+      travel_to cohort.start_date do
         absent_data = cohort_attendance_statistics.student_attendance_data[2]
         expect(absent_data[:name]).to eq 'Absent'
         expect(absent_data[:data]).to eq [[second_student.name, 1], [first_student.name, 1]]
@@ -62,8 +64,7 @@ describe CohortAttendanceStatistics do
     end
 
     it 'orders data by number of absences descending' do
-      travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 8, 55, 00) do
-        travel 1.day
+      travel_to cohort.start_date + 1.day do
         FactoryGirl.create(:attendance_record, student: second_student)
         absent_data = cohort_attendance_statistics.student_attendance_data[2]
         expect(absent_data[:data]).to eq [[first_student.name, 2], [second_student.name, 1]]

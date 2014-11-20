@@ -29,15 +29,17 @@ describe AttendanceRecord do
   end
 
   describe '#tardy' do
+    let(:start_time) { Time.parse(ENV['CLASS_START_TIME']) }
+
     it 'is true if the student checks in after the start of class' do
-      travel_to Time.new(2015, 01, 05, 9, 30, 00) do
+      travel_to start_time + 1.minute do
         tardy_attendance_record = FactoryGirl.create(:attendance_record)
         expect(tardy_attendance_record.tardy).to eq true
       end
     end
 
-    it 'is true if the student checks in after the start of class' do
-      travel_to Time.new(2015, 01, 05, 8, 55, 00) do
+    it 'is false if the student checks in before the start of class' do
+      travel_to start_time - 1.minute do
         on_time_attendance_record = FactoryGirl.create(:attendance_record)
         expect(on_time_attendance_record.tardy).to eq false
       end
