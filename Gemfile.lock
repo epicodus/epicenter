@@ -234,6 +234,9 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    validate_url (1.0.0)
+      activemodel (>= 3.0.0)
+      addressable
     vcr (2.9.3)
     warden (1.2.3)
       rack (>= 1.0)
@@ -284,5 +287,6 @@ DEPENDENCIES
   spring
   uglifier
   unicorn
+  validate_url
   vcr
   webmock

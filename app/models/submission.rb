@@ -1,7 +1,7 @@
 class Submission < ActiveRecord::Base
   default_scope { order(:updated_at) }
   scope :needing_review, -> { where(needs_review: true) }
-  validates :link, presence: true
+  validates :link, presence: true, url: true
   validates :student_id, uniqueness: { scope: :assessment_id }
 
   belongs_to :student
