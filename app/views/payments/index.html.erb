@@ -21,7 +21,7 @@
       </tr>
     </thead>
     <tbody>
-      <%= render 'next_payment_date' %>
+      <%= render 'payments/next_payment_date' %>
       <% @payments.order_by_latest.each do |payment| %>
         <tr>
           <td>

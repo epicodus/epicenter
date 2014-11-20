@@ -48,7 +48,7 @@ class Student < User
   end
 
   def make_upfront_payment
-    Payment.create(student: self, amount: plan.upfront_amount, payment_method: primary_payment_method)
+    payments.create(amount: plan.upfront_amount, payment_method: primary_payment_method)
   end
 
   def class_in_session?
@@ -60,7 +60,7 @@ class Student < User
   end
 
   def start_recurring_payments
-    payment = Payment.create(student: self, amount: plan.recurring_amount, payment_method: primary_payment_method)
+    payment = payments.create(amount: plan.recurring_amount, payment_method: primary_payment_method)
     update!(recurring_active: true) if payment.persisted?
     payment
   end
