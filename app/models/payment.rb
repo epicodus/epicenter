@@ -49,7 +49,7 @@ private
         :to => student.email,
         :bcc => "michael@epicodus.com",
         :subject => "Epicodus payment failure notice",
-        :text => "Hi #{student.name}. This is to notify you that a recent payment you made for Epicodus tuition has failed. If you have any questions, reply to this email. Thanks!" }
+        :text => "Hi #{student.name}. This is to notify you that a recent payment you made for Epicodus tuition has failed. Please reply to this email so we can sort it out together. Thanks!" }
     )
   end
 
