@@ -14,13 +14,11 @@ class Cohort < ActiveRecord::Base
 
   def number_of_days_since_start
     last_date = Date.today <= end_date ? Date.today : end_date
-    (start_date..last_date).select do |date|
-      !date.saturday? && !date.sunday?
-    end.count
+    class_days_until(last_date)
   end
 
   def total_class_days
-    (start_date..end_date).select { |date| !date.saturday? && !date.sunday? }.count
+    class_days_until(end_date)
   end
 
   def number_of_days_left
@@ -41,5 +39,9 @@ private
 
   def reassign_admin_current_cohorts
     Admin.where(current_cohort_id: self.id).update_all(current_cohort_id: Cohort.last.id)
+  end
+
+  def class_days_until(last_date)
+    (start_date..last_date).select { |date| !date.saturday? && !date.sunday? }.count
   end
 end
