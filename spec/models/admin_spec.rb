@@ -1,45 +1,6 @@
 describe Admin do
   it { should belong_to :current_cohort }
 
-  describe '.escrow_balance' do
-    it "returns the current escrow balance amount" do
-      mine = double('mine')
-      allow(Balanced::Marketplace).to receive(:mine) { mine }
-      allow(mine).to receive(:in_escrow) { 21000 }
-      expect(Admin.escrow_balance).to eq 21000
-    end
-  end
-
-  describe '.transfer_full_escrow_balance' do
-    it "does nothing if balance is zero" do
-      mine = double('mine')
-      allow(Balanced::Marketplace).to receive(:mine) { mine }
-      allow(mine).to receive(:in_escrow) { 0 }
-
-      owner_customer = double('owner_customer')
-      allow(mine).to receive(:owner_customer) { owner_customer }
-
-      Admin.transfer_full_escrow_balance
-
-      expect(mine).to_not have_received(:owner_customer)
-    end
-
-    it "pays out the full escrow balance to the Balanced owner bank account" do
-      mine = double('mine')
-      allow(mine).to receive(:in_escrow) { 21000 }
-      allow(Balanced::Marketplace).to receive(:mine) { mine }
-
-      first = spy('first')
-      allow(mine).to receive_message_chain(:owner_customer, :bank_accounts, :first).and_return(first)
-
-      Admin.transfer_full_escrow_balance
-      expect(first).to have_received(:credit).with(
-        :amount => 21000,
-        :description => 'Tuition payments withdrawal'
-      )
-    end
-  end
-
   describe "abilities" do
     let(:admin) { FactoryGirl.create(:admin) }
     subject { Ability.new(admin) }
