@@ -1,8 +1,8 @@
-<div class="span8">
+<div class="span12">
   <%= form_for [@submission, @review], remote: true do |f| %>
     <%= f.nested_fields_for :grades, wrapper_tag: :div do |ff| %>
       <div class="row">
-        <div class="span5">
+        <div class="span9">
           <%= ff.object.requirement.content if ff.object.requirement %>
         </div>
         <div class="span3">
@@ -13,7 +13,7 @@
     <% end %>
 
     <%= f.label :note %>
-    <%= f.text_area :note, class: 'span8', rows: 5 %>
+    <%= f.text_area :note, class: 'span12', rows: 5 %>
 
     <div class="buttons">
       <%= f.submit nil, class: "btn btn-primary" %>
