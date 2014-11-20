@@ -14,15 +14,13 @@ module BillingTasks
     end
 
     def billable_today
-      Student.recurring_active.select do |student|
-        student.payments.last.created_at.to_date < 1.month.ago
-      end
+      recurring_students_joined_with_last_payment
+        .where('payments.created_at < ?', 1.month.ago)
     end
 
     def billable_in_three_days
-      Student.recurring_active.select do |student|
-        (student.payments.last.created_at - 3.days).to_date == 1.month.ago.to_date
-      end
+      recurring_students_joined_with_last_payment
+        .where('DATE(payments.created_at) = ?', 1.month.ago.to_date + 3.days)
     end
 
     def email_upcoming_payees
@@ -42,6 +40,14 @@ module BillingTasks
       self.billable_today.each do |student|
         student.payments.create(amount: student.plan.recurring_amount, payment_method: student.primary_payment_method)
       end
+    end
+
+  private
+
+    def recurring_students_joined_with_last_payment
+      Student.recurring_active.joins(:payments)
+        .where(payments: { created_at: Payment.select('MAX(payments.created_at)')
+          .from('payments WHERE payments.student_id = users.id') })
     end
   end
 end
