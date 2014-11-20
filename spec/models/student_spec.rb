@@ -310,6 +310,13 @@ describe Student do
         is_expected.to not_have_abilities(:create, Payment.new(payment_method: another_bank_account))
         is_expected.to not_have_abilities(:create, Payment.new(payment_method: another_credit_card))
       end
+
+      it "doesn't allow students to create payments for other students" do
+        bank_account = FactoryGirl.create(:bank_account, student: student)
+        another_student = FactoryGirl.create(:student)
+        is_expected.to not_have_abilities(:create, Payment.new(student: another_student, payment_method: bank_account))
+      end
+
       it { is_expected.to not_have_abilities(:create, Payment.new(payment_method: bank_account)) }
 
       it { is_expected.to have_abilities(:read, Payment.new(student: student)) }
