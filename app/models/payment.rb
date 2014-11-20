@@ -1,5 +1,5 @@
 class Payment < ActiveRecord::Base
-  include ActionView::Helpers::NumberHelper
+  include ActionView::Helpers::NumberHelper  #for number_to_currency
 
   belongs_to :student
   belongs_to :payment_method
@@ -9,7 +9,8 @@ class Payment < ActiveRecord::Base
   validates :payment_method, presence: true
   validate :ensure_payment_isnt_over_balance
 
-  before_create :make_payment
+  after_update :send_payment_failure_notice, if: lambda {|payment| payment.status == "failed" }
+  before_create :make_payment, :send_payment_receipt
   after_validation :ensure_payment_isnt_over_balance, :on => :create
   after_create :check_if_paid_up
 
@@ -41,6 +42,17 @@ private
     )
   end
 
+  def send_payment_failure_notice
+    Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message(
+      "epicodus.com",
+      { :from => "michael@epicodus.com",
+        :to => student.email,
+        :bcc => "michael@epicodus.com",
+        :subject => "Epicodus payment failure notice",
+        :text => "Hi #{student.name}. This is to notify you that a recent payment you made for Epicodus tuition has failed. Please reply to this email so we can sort it out together. Thanks!" }
+    )
+  end
+
   def make_payment
     self.fee = payment_method.calculate_fee(amount)
     begin
@@ -50,7 +62,6 @@ private
       )
       self.status = payment_method.starting_status
       self.payment_uri = debit.href
-      send_payment_receipt
     rescue Balanced::Error => exception
       errors.add(:base, exception.description)
       false

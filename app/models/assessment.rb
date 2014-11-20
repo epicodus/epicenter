@@ -1,9 +1,9 @@
 class Assessment < ActiveRecord::Base
   default_scope { order(:number) }
 
-  validates_presence_of :title
-  validate :presence_of_requirements
+  validates :title, presence: true
   validates :cohort, presence: true
+  validate :presence_of_requirements
 
   has_many :requirements
   has_many :submissions

@@ -1,5 +1,5 @@
 class Requirement < ActiveRecord::Base
-  validates_presence_of :content
+  validates :content, presence: true
 
   belongs_to :assessment
   has_many :grades

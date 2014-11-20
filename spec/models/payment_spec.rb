@@ -7,10 +7,9 @@ describe Payment do
   it { should validate_presence_of :amount }
 
   describe '.order_by_latest scope' do
-    let!(:payment_one) { FactoryGirl.create(:payment) }
-    let!(:payment_two) { FactoryGirl.create(:payment) }
-
     it 'orders by created_at, descending', :vcr do
+      payment_one = FactoryGirl.create(:payment)
+      payment_two = FactoryGirl.create(:payment)
       expect(Payment.order_by_latest).to eq [payment_two, payment_one]
     end
   end
@@ -19,13 +18,15 @@ describe Payment do
     it "makes a successful payment", :vcr do
       student = FactoryGirl.create :user_with_verified_bank_account
       student.payments.create(amount: 100, payment_method: student.bank_accounts.first)
-      expect(student.payments.first.payment_uri).to_not be_nil
+      student.reload
+      expect(student.payments).to_not eq []
     end
 
     it "doesn't make a payment with a bad card", :vcr do
       student = FactoryGirl.create :user_with_invalid_credit_card
       student.payments.create(amount: 100, payment_method: student.credit_cards.first)
-      expect(student.payments.first.payment_uri).to be_nil
+      student.reload
+      expect(student.payments).to eq []
     end
   end
 
@@ -78,6 +79,27 @@ describe Payment do
           :bcc => "michael@epicodus.com",
           :subject => "Epicodus tuition payment receipt",
           :text => "Hi #{student.name}. This is to confirm your payment of $618.21 for Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
+      )
+    end
+  end
+
+  describe "#send_payment_failure_notice" do
+    it "emails the student a failure notice if payment status is updated to 'failed'", :vcr do
+      student = FactoryGirl.create(:user_with_credit_card)
+
+      mailgun_client = spy("mailgun client")
+      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+
+      payment = student.payments.create(amount: 600_00, payment_method: student.credit_cards.first)
+      payment.update(status: 'failed')
+
+      expect(mailgun_client).to have_received(:send_message).with(
+        "epicodus.com",
+        { :from => "michael@epicodus.com",
+          :to => student.email,
+          :bcc => "michael@epicodus.com",
+          :subject => "Epicodus payment failure notice",
+          :text => "Hi #{student.name}. This is to notify you that a recent payment you made for Epicodus tuition has failed. Please reply to this email so we can sort it out together. Thanks!" }
       )
     end
   end

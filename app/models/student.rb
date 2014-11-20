@@ -19,37 +19,6 @@ class Student < User
     (payment_methods.not_verified_first - [primary_payment_method]).unshift(primary_payment_method).compact
   end
 
-  def self.billable_today
-    recurring_active.select do |student|
-      student.payments.last.created_at.to_date < 1.month.ago
-    end
-  end
-
-  def self.billable_in_three_days
-    recurring_active.select do |student|
-      (student.payments.last.created_at - 3.days).to_date == 1.month.ago.to_date
-    end
-  end
-
-  def self.email_upcoming_payees
-    billable_in_three_days.each do |student|
-      Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message(
-        "epicodus.com",
-        { :from => "michael@epicodus.com",
-          :to => student.email,
-          :bcc => "michael@epicodus.com",
-          :subject => "Upcoming Epicodus tuition payment",
-          :text => "Hi #{student.name}. This is just a reminder that your next Epicodus tuition payment will be withdrawn from your bank account in 3 days. If you need anything, reply to this email. Thanks!" }
-      )
-    end
-  end
-
-  def self.bill_bank_accounts
-    billable_today.each do |student|
-      student.payments.create(amount: student.plan.recurring_amount, payment_method: student.primary_payment_method)
-    end
-  end
-
   def set_primary_payment_method(payment_method)
     update!(primary_payment_method_id: payment_method.id)
   end
@@ -67,7 +36,7 @@ class Student < User
   end
 
   def ready_to_start_recurring_payments?
-    plan.recurring_amount > 0 && recurring_active != true && !upfront_payment_due?
+    plan.recurring_amount > 0 && !recurring_active && !upfront_payment_due?
   end
 
   def signed_in_today?
@@ -75,11 +44,11 @@ class Student < User
   end
 
   def next_payment_date
-    payments.last.created_at + 1.month if recurring_active == true
+    payments.last.created_at + 1.month if recurring_active
   end
 
   def make_upfront_payment
-    Payment.create(student: self, amount: plan.upfront_amount, payment_method: primary_payment_method)
+    payments.create(amount: plan.upfront_amount, payment_method: primary_payment_method)
   end
 
   def class_in_session?
@@ -91,7 +60,7 @@ class Student < User
   end
 
   def start_recurring_payments
-    payment = Payment.create(student: self, amount: plan.recurring_amount, payment_method: primary_payment_method)
+    payment = payments.create(amount: plan.recurring_amount, payment_method: primary_payment_method)
     update!(recurring_active: true) if payment.persisted?
     payment
   end

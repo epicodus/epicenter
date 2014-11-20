@@ -6,4 +6,8 @@ class PaymentMethod < ActiveRecord::Base
 
   belongs_to :student
   has_many :payments
+
+  def ensure_primary_method_exists
+    student.set_primary_payment_method(self) if !student.primary_payment_method
+  end
 end

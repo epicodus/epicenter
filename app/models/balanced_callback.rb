@@ -18,7 +18,7 @@ private
 
   def update_payment_status(event, status)
     payment = Payment.find_by_payment_uri(payment_uri(event))
-    payment.update(status: status) if payment
+    payment.try(:update, status: status)
   end
 
   def payment_uri(event)
