@@ -73,7 +73,7 @@ FactoryGirl.define do
     end
   end
 
-  factory :invalid_credit_card, parent: :credit_card do
+  factory :invalid_credit_card, class: CreditCard do
     student
     after(:build) do |credit_card|
       balanced_credit_card = create_invalid_balanced_credit_card
@@ -87,7 +87,7 @@ FactoryGirl.define do
     association :payment_method, factory: :verified_bank_account
   end
 
-  factory :payment_with_credit_card, parent: :payment do
+  factory :payment_with_credit_card, class: Payment do
     association :student, factory: :user_with_credit_card
     amount 1
     association :payment_method, factory: :credit_card

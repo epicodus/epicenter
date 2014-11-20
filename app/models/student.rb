@@ -1,6 +1,4 @@
 class Student < User
-  # extend BillingTask
-
   scope :recurring_active, -> { where(recurring_active: true) }
 
   validates :plan_id, presence: true

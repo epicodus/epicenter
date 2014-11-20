@@ -5,109 +5,6 @@ http_interactions:
     uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards
     body:
       encoding: UTF-8
-      string: '{"number":"4111111111111111","expiration_month":"12","expiration_year":"2020","cvv":"123"}'
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Access-Control-Allow-Headers:
-      - Content-Type
-      Access-Control-Allow-Methods:
-      - POST, OPTIONS
-      Access-Control-Allow-Origin:
-      - "*"
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 07 Nov 2014 17:50:26 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM8e1ac66666a611e492f402a1fe53e539
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.39
-      X-Midlr-Version:
-      - '2'
-      X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVANVghUAltXAABTV1sIAghIQVAOCBtGRgEPBQdQVVoDAA8HCF5RVwtHFUFXAF8RAWs=
-      Content-Length:
-      - '1266'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "cards": [
-            {
-              "links": {
-                "customer": null
-              },
-              "fingerprint": "b3ecb5551877e4c9ee9937f74cffbcfacc388e575cb4c061c30f8a32d340001b",
-              "cvv_result": "Match",
-              "number": "xxxxxxxxxxxx1111",
-              "avs_postal_match": null,
-              "expiration_month": 12,
-              "meta": {},
-              "id": "CC4kHR5ozRuhVh0PGDNRaDNH",
-              "category": "other",
-              "type": "credit",
-              "cvv_match": "yes",
-              "bank_name": "JPMORGAN CHASE BANK, N.A.",
-              "avs_street_match": null,
-              "brand": "Visa",
-              "updated_at": "2014-11-07T17:50:45.246703Z",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": true,
-              "name": null,
-              "expiration_year": 2020,
-              "cvv": "xxx",
-              "is_verified": true,
-              "avs_result": null,
-              "can_credit": false,
-              "href": "/cards/CC4kHR5ozRuhVh0PGDNRaDNH",
-              "created_at": "2014-11-07T17:50:45.246701Z"
-            }
-          ],
-          "links": {
-            "cards.card_holds": "/cards/{cards.id}/card_holds",
-            "cards.customer": "/customers/{cards.customer}",
-            "cards.disputes": "/cards/{cards.id}/disputes",
-            "cards.debits": "/cards/{cards.id}/debits"
-          }
-        }
-    http_version: 
-  recorded_at: Fri, 07 Nov 2014 17:50:27 GMT
-- request:
-    method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards
-    body:
-      encoding: UTF-8
       string: '{"number":"4444444444444448","expiration_month":"12","expiration_year":"2020","cvv":"123"}'
     headers:
       User-Agent:
@@ -132,13 +29,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 07 Nov 2014 17:50:27 GMT
+      - Thu, 20 Nov 2014 18:23:42 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM8eaf28a666a611e482fc02a1fe52a36c
+      - OHM5a6f096270e211e4927702a1fe53e539
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
+      - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -146,11 +43,11 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.39
+      - 1.10.5
       X-Midlr-Version:
       - '2'
       X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVMOWQFSBFpcBw9UV1IBBQNIQVAOCBtGRlIPUgMFUFFRU15bXQpXBAtHFUFXAF8RAWs=
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVwBUQJUBltTDgdQVFMABhxEU1sOHRdEUQIDBlVRUABSUgxSCwwABRFJGQdQDUAHOQ==
       Content-Length:
       - '1274'
       Connection:
@@ -170,14 +67,14 @@ http_interactions:
               "avs_postal_match": null,
               "expiration_month": 12,
               "meta": {},
-              "id": "CC4lWlW4SjeOvUt8h9ZoKyLH",
+              "id": "CC2LHRPwLlfapw6pLEvAnyIE",
               "category": "other",
               "type": "credit",
               "cvv_match": "yes",
               "bank_name": "CREDIT AGRICOLE BANK POLSKA, S.A.",
               "avs_street_match": null,
               "brand": "Visa",
-              "updated_at": "2014-11-07T17:50:46.343756Z",
+              "updated_at": "2014-11-20T18:24:27.817132Z",
               "address": {
                 "city": null,
                 "line2": null,
@@ -193,8 +90,8 @@ http_interactions:
               "is_verified": true,
               "avs_result": null,
               "can_credit": false,
-              "href": "/cards/CC4lWlW4SjeOvUt8h9ZoKyLH",
-              "created_at": "2014-11-07T17:50:46.343755Z"
+              "href": "/cards/CC2LHRPwLlfapw6pLEvAnyIE",
+              "created_at": "2014-11-20T18:24:27.817130Z"
             }
           ],
           "links": {
@@ -205,10 +102,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Fri, 07 Nov 2014 17:50:28 GMT
+  recorded_at: Thu, 20 Nov 2014 18:23:42 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC4lWlW4SjeOvUt8h9ZoKyLH
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC2LHRPwLlfapw6pLEvAnyIE
     body:
       encoding: US-ASCII
       string: ''
@@ -229,11 +126,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 07 Nov 2014 17:50:28 GMT
+      - Thu, 20 Nov 2014 18:23:42 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM8f71472e66a611e4bc6302b12035401b
+      - OHM5b5b29c870e211e4a3de02b12035401b
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
@@ -243,9 +140,9 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.39
+      - 1.10.5
       Content-Length:
-      - '574'
+      - '573'
       Connection:
       - keep-alive
     body:
@@ -263,14 +160,14 @@ http_interactions:
               "avs_postal_match": null,
               "expiration_month": 12,
               "meta": {},
-              "id": "CC4lWlW4SjeOvUt8h9ZoKyLH",
+              "id": "CC2LHRPwLlfapw6pLEvAnyIE",
               "category": "other",
               "type": "credit",
               "cvv_match": "yes",
               "bank_name": "CREDIT AGRICOLE BANK POLSKA, S.A.",
               "avs_street_match": null,
               "brand": "Visa",
-              "updated_at": "2014-11-07T17:50:46.343756Z",
+              "updated_at": "2014-11-20T18:24:27.817132Z",
               "address": {
                 "city": null,
                 "line2": null,
@@ -286,8 +183,8 @@ http_interactions:
               "is_verified": true,
               "avs_result": null,
               "can_credit": false,
-              "href": "/cards/CC4lWlW4SjeOvUt8h9ZoKyLH",
-              "created_at": "2014-11-07T17:50:46.343755Z"
+              "href": "/cards/CC2LHRPwLlfapw6pLEvAnyIE",
+              "created_at": "2014-11-20T18:24:27.817130Z"
             }
           ],
           "links": {
@@ -298,10 +195,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Fri, 07 Nov 2014 17:50:28 GMT
+  recorded_at: Thu, 20 Nov 2014 18:23:43 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC4lWlW4SjeOvUt8h9ZoKyLH
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC2LHRPwLlfapw6pLEvAnyIE
     body:
       encoding: US-ASCII
       string: ''
@@ -322,13 +219,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 07 Nov 2014 17:50:28 GMT
+      - Thu, 20 Nov 2014 18:23:43 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM8fa2f9e066a611e4bc6302b12035401b
+      - OHM5ba21a4a70e211e4bc0006429171ffad
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
+      - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -336,9 +233,9 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.39
+      - 1.10.5
       Content-Length:
-      - '574'
+      - '573'
       Connection:
       - keep-alive
     body:
@@ -356,14 +253,14 @@ http_interactions:
               "avs_postal_match": null,
               "expiration_month": 12,
               "meta": {},
-              "id": "CC4lWlW4SjeOvUt8h9ZoKyLH",
+              "id": "CC2LHRPwLlfapw6pLEvAnyIE",
               "category": "other",
               "type": "credit",
               "cvv_match": "yes",
               "bank_name": "CREDIT AGRICOLE BANK POLSKA, S.A.",
               "avs_street_match": null,
               "brand": "Visa",
-              "updated_at": "2014-11-07T17:50:46.343756Z",
+              "updated_at": "2014-11-20T18:24:27.817132Z",
               "address": {
                 "city": null,
                 "line2": null,
@@ -379,8 +276,8 @@ http_interactions:
               "is_verified": true,
               "avs_result": null,
               "can_credit": false,
-              "href": "/cards/CC4lWlW4SjeOvUt8h9ZoKyLH",
-              "created_at": "2014-11-07T17:50:46.343755Z"
+              "href": "/cards/CC2LHRPwLlfapw6pLEvAnyIE",
+              "created_at": "2014-11-20T18:24:27.817130Z"
             }
           ],
           "links": {
@@ -391,10 +288,10 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Fri, 07 Nov 2014 17:50:29 GMT
+  recorded_at: Thu, 20 Nov 2014 18:23:43 GMT
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC4lWlW4SjeOvUt8h9ZoKyLH/debits
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC2LHRPwLlfapw6pLEvAnyIE/debits
     body:
       encoding: UTF-8
       string: '{"amount":20627,"appears_on_statement_as":"Epicodus tuition"}'
@@ -415,13 +312,13 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 07 Nov 2014 17:50:30 GMT
+      - Thu, 20 Nov 2014 18:23:44 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM8fe9a61a66a611e49ead06429171ffad
+      - OHM5bd9097470e211e484b40230f00c9248
       X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
+      - bapi-integration-prod-8u30f7-10-3-4-8
       X-Balanced-Marketplace:
       - TEST-MP25WywsPx8EeGEUdXq7NHPH
       X-Balanced-Merchant:
@@ -429,7 +326,7 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.39
+      - 1.10.5
       Content-Length:
       - '1475'
       Connection:
@@ -446,8 +343,8 @@ http_interactions:
               "status_code": 402,
               "category_type": "banking",
               "extras": {},
-              "request_id": "OHM8fe9a61a66a611e49ead06429171ffad",
-              "description": "R758: Account Frozen. Your request id is OHM8fe9a61a66a611e49ead06429171ffad."
+              "request_id": "OHM5bd9097470e211e484b40230f00c9248",
+              "description": "R758: Account Frozen. Your request id is OHM5bd9097470e211e484b40230f00c9248."
             }
           ],
           "links": {
@@ -465,344 +362,25 @@ http_interactions:
               "description": null,
               "links": {
                 "customer": null,
-                "source": "CC4lWlW4SjeOvUt8h9ZoKyLH",
+                "source": "CC2LHRPwLlfapw6pLEvAnyIE",
                 "card_hold": null,
                 "order": null,
                 "dispute": null
               },
-              "updated_at": "2014-11-07T17:50:49.127479Z",
-              "created_at": "2014-11-07T17:50:48.405024Z",
-              "transaction_number": "W6D5-OI7-R7NW",
+              "updated_at": "2014-11-20T18:24:29.803837Z",
+              "created_at": "2014-11-20T18:24:29.355876Z",
+              "transaction_number": "WG0W-IJ7-G5DY",
               "failure_reason": "R758: Account Frozen.",
               "currency": "USD",
               "amount": 20627,
               "failure_reason_code": "card-declined",
               "meta": {},
-              "href": "/debits/WD4of85ttk3Fw8udl474c2Ji",
+              "href": "/debits/WD2NpJ7sxQgBLfdBqKEgLxMp",
               "appears_on_statement_as": "BAL*Epicodus tuition",
-              "id": "WD4of85ttk3Fw8udl474c2Ji"
+              "id": "WD2NpJ7sxQgBLfdBqKEgLxMp"
             }
           ]
         }
     http_version: 
-  recorded_at: Fri, 07 Nov 2014 17:50:31 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC4kHR5ozRuhVh0PGDNRaDNH
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 19 Nov 2014 23:20:41 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMad6d53e4704211e4bc0006429171ffad
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.10.4
-      Content-Length:
-      - '564'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "cards": [
-            {
-              "links": {
-                "customer": null
-              },
-              "fingerprint": "b3ecb5551877e4c9ee9937f74cffbcfacc388e575cb4c061c30f8a32d340001b",
-              "cvv_result": "Match",
-              "number": "xxxxxxxxxxxx1111",
-              "avs_postal_match": null,
-              "expiration_month": 12,
-              "meta": {},
-              "id": "CC4kHR5ozRuhVh0PGDNRaDNH",
-              "category": "other",
-              "type": "credit",
-              "cvv_match": "yes",
-              "bank_name": "JPMORGAN CHASE BANK, N.A.",
-              "avs_street_match": null,
-              "brand": "Visa",
-              "updated_at": "2014-11-07T17:50:45.246703Z",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": true,
-              "name": null,
-              "expiration_year": 2020,
-              "cvv": "xxx",
-              "is_verified": true,
-              "avs_result": null,
-              "can_credit": false,
-              "href": "/cards/CC4kHR5ozRuhVh0PGDNRaDNH",
-              "created_at": "2014-11-07T17:50:45.246701Z"
-            }
-          ],
-          "links": {
-            "cards.card_holds": "/cards/{cards.id}/card_holds",
-            "cards.customer": "/customers/{cards.customer}",
-            "cards.disputes": "/cards/{cards.id}/disputes",
-            "cards.debits": "/cards/{cards.id}/debits"
-          }
-        }
-    http_version: 
-  recorded_at: Wed, 19 Nov 2014 23:20:42 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC4kHR5ozRuhVh0PGDNRaDNH
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 19 Nov 2014 23:20:42 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMae9aa64a704211e4bc6302b12035401b
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.10.4
-      Content-Length:
-      - '564'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "cards": [
-            {
-              "links": {
-                "customer": null
-              },
-              "fingerprint": "b3ecb5551877e4c9ee9937f74cffbcfacc388e575cb4c061c30f8a32d340001b",
-              "cvv_result": "Match",
-              "number": "xxxxxxxxxxxx1111",
-              "avs_postal_match": null,
-              "expiration_month": 12,
-              "meta": {},
-              "id": "CC4kHR5ozRuhVh0PGDNRaDNH",
-              "category": "other",
-              "type": "credit",
-              "cvv_match": "yes",
-              "bank_name": "JPMORGAN CHASE BANK, N.A.",
-              "avs_street_match": null,
-              "brand": "Visa",
-              "updated_at": "2014-11-07T17:50:45.246703Z",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": true,
-              "name": null,
-              "expiration_year": 2020,
-              "cvv": "xxx",
-              "is_verified": true,
-              "avs_result": null,
-              "can_credit": false,
-              "href": "/cards/CC4kHR5ozRuhVh0PGDNRaDNH",
-              "created_at": "2014-11-07T17:50:45.246701Z"
-            }
-          ],
-          "links": {
-            "cards.card_holds": "/cards/{cards.id}/card_holds",
-            "cards.customer": "/customers/{cards.customer}",
-            "cards.disputes": "/cards/{cards.id}/disputes",
-            "cards.debits": "/cards/{cards.id}/debits"
-          }
-        }
-    http_version: 
-  recorded_at: Wed, 19 Nov 2014 23:20:43 GMT
-- request:
-    method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC4kHR5ozRuhVh0PGDNRaDNH/debits
-    body:
-      encoding: UTF-8
-      string: '{"amount":20627,"appears_on_statement_as":"Epicodus tuition"}'
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 19 Nov 2014 23:20:46 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMaef70f16704211e49ead06429171ffad
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.10.4
-      Content-Length:
-      - '1085'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "debits": [
-            {
-              "status": "succeeded",
-              "description": null,
-              "links": {
-                "customer": null,
-                "source": "CC4kHR5ozRuhVh0PGDNRaDNH",
-                "card_hold": "HL5keUFrutf8eUPnxWVwdiTP",
-                "order": null,
-                "dispute": null
-              },
-              "updated_at": "2014-11-19T23:21:30.574805Z",
-              "created_at": "2014-11-19T23:21:27.675146Z",
-              "transaction_number": "WFPZ-TXY-UMTD",
-              "failure_reason": null,
-              "currency": "USD",
-              "amount": 20627,
-              "failure_reason_code": null,
-              "meta": {},
-              "href": "/debits/WD5kh3sqsQ4Z85D7v9JDwYfz",
-              "appears_on_statement_as": "BAL*Epicodus tuition",
-              "id": "WD5kh3sqsQ4Z85D7v9JDwYfz"
-            }
-          ],
-          "links": {
-            "debits.customer": "/customers/{debits.customer}",
-            "debits.order": "/orders/{debits.order}",
-            "debits.dispute": "/disputes/{debits.dispute}",
-            "debits.source": "/resources/{debits.source}",
-            "debits.events": "/debits/{debits.id}/events",
-            "debits.refunds": "/debits/{debits.id}/refunds",
-            "debits.card_hold": "/holds/{debits.card_hold}"
-          }
-        }
-    http_version: 
-  recorded_at: Wed, 19 Nov 2014 23:20:46 GMT
-- request:
-    method: post
-    uri: https://api:<MAILGUN_API_KEY>@api.mailgun.net/v2/epicodus.com/messages
-    body:
-      encoding: US-ASCII
-      string: from=michael%40epicodus.com&to=student48%40example.com&bcc=michael%40epicodus.com&subject=Epicodus%20tuition%20payment%20receipt&text=Hi%20Example%20Brown%2048.%20This%20is%20to%20confirm%20your%20payment%20of%20%24206.27%20for%20Epicodus%20tuition.%20If%20you%20have%20any%20questions%2C%20reply%20to%20this%20email.%20Thanks!
-    headers:
-      Accept:
-      - "*/*; q=0.5, application/xml"
-      Accept-Encoding:
-      - gzip, deflate
-      Content-Length:
-      - '327'
-      Content-Type:
-      - application/x-www-form-urlencoded
-      User-Agent:
-      - Ruby
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Server:
-      - nginx/1.4.7
-      Date:
-      - Wed, 19 Nov 2014 23:20:47 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '90'
-      Connection:
-      - keep-alive
-      Content-Disposition:
-      - inline
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Max-Age:
-      - '600'
-      Access-Control-Allow-Methods:
-      - GET, POST, PUT, DELETE, OPTIONS
-      Access-Control-Allow-Headers:
-      - Content-Type, x-requested-with
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "message": "Queued. Thank you.",
-          "id": "<20141119232047.43954.32388@epicodus.com>"
-        }
-    http_version: 
-  recorded_at: Wed, 19 Nov 2014 23:20:47 GMT
+  recorded_at: Thu, 20 Nov 2014 18:23:44 GMT
 recorded_with: VCR 2.9.3
