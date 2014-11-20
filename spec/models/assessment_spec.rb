@@ -37,4 +37,21 @@ describe Assessment do
       expect(assessment.submission_for(student)).to eq submission
     end
   end
+
+  describe '#exepectations_met_by?' do
+    let(:assessment) { FactoryGirl.create(:assessment) }
+    let(:student) { FactoryGirl.create(:student) }
+
+    it "is true if the student's submission has met expectations" do
+      submission = FactoryGirl.create(:submission, student: student, assessment: assessment)
+      FactoryGirl.create(:passing_review, submission: submission)
+      expect(assessment.expectations_met_by?(student)).to eq true
+    end
+
+    it "is false if the student's submission has not met expectations" do
+      submission = FactoryGirl.create(:submission, student: student, assessment: assessment)
+      FactoryGirl.create(:failing_review, submission: submission)
+      expect(assessment.expectations_met_by?(student)).to eq false
+    end
+  end
 end

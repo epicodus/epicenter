@@ -17,6 +17,10 @@ class Assessment < ActiveRecord::Base
     submissions.find_by(student: student)
   end
 
+  def expectations_met_by?(student)
+    submission_for(student).try(:meets_expectations?)
+  end
+
 private
 
   def set_number

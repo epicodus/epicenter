@@ -9,6 +9,10 @@ class Review < ActiveRecord::Base
 
   after_create :mark_submission_as_reviewed
 
+  def meets_expectations?
+    grades.includes(:score).pluck(:value).all? { |value| value > 1 }
+  end
+
 private
 
   def mark_submission_as_reviewed

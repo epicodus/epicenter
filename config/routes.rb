@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   end
   resource :credit_card, only: [:new, :create]
   resource :certificate, only: [:show]
+  resource :transcript, only: [:show]
   resources :payments, only: [:index]
   resources :upfront_payments, only: [:create]
   resources :recurring_payments, only: [:create]
