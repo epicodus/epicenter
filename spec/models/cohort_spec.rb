@@ -61,14 +61,6 @@ describe Cohort do
     end
   end
 
-  describe '.current' do
-    it 'is the current cohort' do
-      current_cohort = FactoryGirl.create(:cohort)
-      past_cohort = FactoryGirl.create(:past_cohort)
-      expect(Cohort.current).to eq current_cohort
-    end
-  end
-
   context 'after_destroy' do
     let(:cohort) { FactoryGirl.create(:cohort) }
 

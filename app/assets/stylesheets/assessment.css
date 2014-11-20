@@ -1,0 +1,49 @@
+.assessment-status {
+  margin-top: 10px;
+  margin-right: 20px;
+}
+
+.assessment .badge-info {
+  background-color: #3498db;
+}
+
+.assessment-form input {
+  width: 100%;
+}
+
+#requirement-fields input {
+  width: 97%;
+}
+
+#requirement-fields a {
+  text-decoration: none;
+  color: #e74c3c;
+}
+
+#requirement-fields a:hover {
+  color: #c0392b;
+}
+
+.assessment-form .submit {
+  margin-top: 50px;
+}
+
+.sortable-assessments .list-link:hover {
+  cursor: move;
+}
+
+.moving-list-link:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 10px;
+  width: 100%;
+  margin-left: -10px;
+  border-radius: 30%;
+
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+     -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+  z-index: -1;
+}

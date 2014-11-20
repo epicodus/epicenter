@@ -22,6 +22,10 @@ a {
   text-decoration: underline;
 }
 
+h1 {
+  margin-bottom: 20px;
+}
+
 h1 a, a.btn {
   text-decoration: none;
   margin-bottom: 20px;
@@ -139,6 +143,7 @@ a.employer {
   }
 }
 
+
 .div-list {
   border-top: 1px solid #bdc3c7;
   border-right: 1px solid #bdc3c7;
@@ -161,41 +166,6 @@ a.employer {
   margin-bottom: 0;
 }
 
-.cc-form input {
-  width: 190px;
-}
-
-.cc-form  {
-  margin-right: 40px;
-}
-
-.requirement {
-  margin-top: 30px;
-  font-size: 120%;
-  list-style: none;
-}
-
-.assessment-form input {
-  width: 100%;
-}
-
-#requirement-fields input {
-  width: 97%;
-}
-
-#requirement-fields a {
-  text-decoration: none;
-  color: #e74c3c;
-}
-
-#requirement-fields a:hover {
-  color: #c0392b;
-}
-
-.assessment-form .submit {
-  margin-top: 50px;
-}
-
 .list-row {
   border-top: 1px solid #ccc;
   padding-top: 10px;
@@ -206,117 +176,6 @@ a.employer {
   background-color: #eee;
 }
 
-.sortable-assessments .list-link:hover {
-  cursor: move;
-}
-
-.moving-list-link:after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  height: 10px;
-  width: 100%;
-  margin-left: -10px;
-  border-radius: 30%;
-
-  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-     -moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
-  z-index: -1;
-}
-
 .list-link a {
   text-decoration: none;
-}
-
-.submission a.btn {
-  margin-bottom: 0;
-}
-
-.new_review {
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
-
-.check-mark {
-  padding-left: 25px;
-}
-
-form.payment-button-form {
-  margin-bottom: 0;
-}
-
-a.verify-button-link {
-  margin-bottom: 0;
-}
-
-td.primary-payment-method {
-  padding-bottom: 20px;
-}
-
-p.new-method-links {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-h1 {
-  margin-bottom: 20px;
-}
-
-.certificate {
-  text-align: center;
-  font-size: 21px;
-  font-family: "Times New Roman"
-}
-
-.dropdown-menu a {
-  text-decoration: none;
-  text-align: center;
-}
-
-.dropdown-menu .new-cohort a {
-  font-weight: bold;
-}
-
-.assessment-status {
-  margin-top: 10px;
-  margin-right: 20px;
-}
-
-.assessment .badge-info {
-  background-color: #3498db;
-}
-
-a .badge:hover {
-  background-color: #2980b9;
-}
-
-.nav > li.dropdown > a {
-  display: inline-block;
-  padding: 3px;
-}
-
-.edit_cohort a.btn-danger {
-  margin-top: 20px;
-}
-
-.transcript {
-  margin-top: 20px;
-}
-
-.transcript h1 {
-  font-size: 250%;
-  margin-bottom: -20px;
-}
-.transcript h2 {
-  font-size: 200%;
-}
-
-.transcript p, .transcript li {
-  color: #333;
-}
-
-.transcript hr {
-  border-color: #999;
 }

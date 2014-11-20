@@ -391,7 +391,8 @@ describe Student do
     end
 
     context 'for submissions' do
-      it { is_expected.to have_abilities(:create, Submission.new) }
+      it { is_expected.to not_have_abilities(:create, Submission.new) }
+      it { is_expected.to have_abilities(:create, Submission.new(student: student)) }
       it { is_expected.to have_abilities(:update, Submission.new(student: student)) }
       it { is_expected.to not_have_abilities(:update, Submission.new) }
     end
@@ -423,8 +424,8 @@ describe Student do
       let(:credit_card) { FactoryGirl.create(:credit_card, student: student) }
 
       it 'allows students to create payments using one of their payment methods' do
-        is_expected.to have_abilities(:create, Payment.new(payment_method: bank_account))
-        is_expected.to have_abilities(:create, Payment.new(payment_method: credit_card))
+        is_expected.to have_abilities(:create, Payment.new(payment_method: bank_account, student_id: student.id))
+        is_expected.to have_abilities(:create, Payment.new(payment_method: credit_card, student_id: student.id))
       end
 
       it "doesn't allow students to create payments for others' payment methods" do
@@ -433,7 +434,7 @@ describe Student do
         is_expected.to not_have_abilities(:create, Payment.new(payment_method: another_bank_account))
         is_expected.to not_have_abilities(:create, Payment.new(payment_method: another_credit_card))
       end
-      it { is_expected.to have_abilities(:create, Payment.new(payment_method: bank_account)) }
+      it { is_expected.to not_have_abilities(:create, Payment.new(payment_method: bank_account)) }
 
       it { is_expected.to have_abilities(:read, Payment.new(student: student)) }
       it { is_expected.to not_have_abilities(:read, Payment.new) }

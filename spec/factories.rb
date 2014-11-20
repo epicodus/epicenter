@@ -1,4 +1,25 @@
 FactoryGirl.define do
+  factory :admin do
+    sequence(:name) { |n| "Admin Brown #{n}" }
+    sequence(:email) { |n| "admin#{n}@example.com" }
+    password "password"
+    password_confirmation "password"
+    association :current_cohort, factory: :cohort
+  end
+
+  factory :assessment do
+    sequence(:title) { |n| "assessment #{n}" }
+    cohort
+
+    before(:create) do |assessment|
+      assessment.requirements << build(:requirement)
+    end
+  end
+
+  factory :attendance_record do
+    student
+  end
+
   factory :bank_account do
     student
 
@@ -18,11 +39,37 @@ FactoryGirl.define do
     end
   end
 
+  factory :cohort do
+    description 'Current cohort'
+    start_date Date.today.beginning_of_week
+    end_date (Date.today + 14.weeks).end_of_week - 2.days
+
+    factory :past_cohort do
+      start_date 125.days.ago.beginning_of_week
+      end_date 20.days.ago.end_of_week - 2.days
+    end
+
+    factory :future_cohort do
+      start_date (Date.today + 4.weeks).beginning_of_week
+      end_date (Date.today + 15.weeks).beginning_of_week
+    end
+  end
+
   factory :credit_card do
     student
     after(:build) do |credit_card|
       balanced_credit_card = create_balanced_credit_card
       credit_card.account_uri = balanced_credit_card.href
+    end
+  end
+
+  factory :grade do
+    factory :passing_grade do
+      association :score, factory: :passing_score
+    end
+
+    factory :failing_grade do
+      association :score, factory: :failing_score
     end
   end
 
@@ -65,6 +112,43 @@ FactoryGirl.define do
       upfront_amount 0
       recurring_amount 625_00
       total_amount 5000_00
+    end
+  end
+
+  factory :requirement do
+    content 'Did you meet all the requirements from last time?'
+  end
+
+  factory :review do
+    note 'Great job!'
+    submission
+
+    factory :passing_review do
+      after(:create) do |review|
+        review.submission.assessment.requirements.each do |requirement|
+          FactoryGirl.create(:passing_grade, review: review, requirement: requirement)
+        end
+      end
+    end
+
+    factory :failing_review do
+      after(:create) do |review|
+        review.submission.assessment.requirements.each do |requirement|
+          FactoryGirl.create(:failing_grade, review: review, requirement: requirement)
+        end
+      end
+    end
+  end
+
+  factory :score do
+    sequence(:description) { |n| "Meets expectations #{n} of the time" }
+
+    factory :failing_score do
+      value 1
+    end
+
+    factory :passing_score do
+      value 3
     end
   end
 
@@ -126,90 +210,6 @@ FactoryGirl.define do
         end
       end
 
-    end
-  end
-
-  factory :admin do
-    sequence(:name) { |n| "Admin Brown #{n}" }
-    sequence(:email) { |n| "admin#{n}@example.com" }
-    password "password"
-    password_confirmation "password"
-    association :current_cohort, factory: :cohort
-  end
-
-  factory :attendance_record do
-    student
-  end
-
-  factory :cohort do
-    description 'Current cohort'
-    start_date Date.today.beginning_of_week
-    end_date (Date.today + 14.weeks).end_of_week - 2.days
-
-    factory :past_cohort do
-      start_date 125.days.ago.beginning_of_week
-      end_date 20.days.ago.end_of_week - 2.days
-    end
-
-    factory :future_cohort do
-      start_date (Date.today + 4.weeks).beginning_of_week
-      end_date (Date.today + 15.weeks).beginning_of_week
-    end
-  end
-
-  factory :score do
-    sequence(:description) { |n| "Meets expectations #{n} of the time" }
-
-    factory :failing_score do
-      value 1
-    end
-
-    factory :passing_score do
-      value 3
-    end
-  end
-
-  factory :assessment do
-    sequence(:title) { |n| "assessment #{n}" }
-    cohort
-
-    before(:create) do |assessment|
-      assessment.requirements << build(:requirement)
-    end
-  end
-
-  factory :grade do
-    factory :passing_grade do
-      association :score, factory: :passing_score
-    end
-
-    factory :failing_grade do
-      association :score, factory: :failing_score
-    end
-  end
-
-  factory :requirement do
-    content 'Did you meet all the requirements from last time?'
-  end
-
-  factory :review do
-    note 'Great job!'
-    submission
-
-    factory :passing_review do
-      after(:create) do |review|
-        review.submission.assessment.requirements.each do |requirement|
-          FactoryGirl.create(:passing_grade, review: review, requirement: requirement)
-        end
-      end
-    end
-
-    factory :failing_review do
-      after(:create) do |review|
-        review.submission.assessment.requirements.each do |requirement|
-          FactoryGirl.create(:failing_grade, review: review, requirement: requirement)
-        end
-      end
     end
   end
 

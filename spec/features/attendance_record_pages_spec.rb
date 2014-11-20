@@ -1,11 +1,9 @@
 feature 'creating an attendance record' do
-  before do
-    admin = FactoryGirl.create(:admin)
-    login_as(admin, scope: :admin)
-  end
+  let(:admin) { FactoryGirl.create(:admin) }
+  before { login_as(admin, scope: :admin) }
 
   scenario 'correctly' do
-    FactoryGirl.create(:student)
+    FactoryGirl.create(:student, cohort: admin.current_cohort)
     visit attendance_path
     click_button("I'm here")
     expect(page).to have_content "Welcome"
@@ -19,13 +17,11 @@ feature 'creating an attendance record' do
 end
 
 feature 'destroying an attendance record' do
-  before do
-    admin = FactoryGirl.create(:admin)
-    login_as(admin, scope: :admin)
-  end
+  let(:admin) { FactoryGirl.create(:admin) }
+  before { login_as(admin, scope: :admin) }
 
   scenario 'after accidentally creating one' do
-    FactoryGirl.create(:student)
+    FactoryGirl.create(:student, cohort: admin.current_cohort)
     visit attendance_path
     click_button("I'm here")
     click_link("Not you?")

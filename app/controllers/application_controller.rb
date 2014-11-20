@@ -14,11 +14,11 @@ protected
     if user.is_a? Admin
       cohort_assessments_path(user.current_cohort)
     elsif user.is_a? Student
-      user.class_in_session? ? cohort_assessments_path(user.cohort) : class_not_in_session(user)
+      user.class_in_session? ? cohort_assessments_path(user.cohort) : proper_payments_path(user)
     end
   end
 
-  def class_not_in_session(user)
+  def proper_payments_path(user)
     if user.primary_payment_method.present?
       payments_path
     elsif user.bank_accounts.first.present?

@@ -32,9 +32,8 @@ feature 'index page' do
       another_student = FactoryGirl.create(:student)
       first_submission = FactoryGirl.create(:submission, assessment: assessment, student: student)
       second_submission = FactoryGirl.create(:submission, assessment: assessment, student: another_student)
-      first_submission.touch # updates the updated_at field to simulate resubmission
       visit assessment_submissions_path(assessment)
-      expect(first('.submission')).to have_content second_submission.student.name
+      expect(first('.submission')).to have_content first_submission.student.name
     end
 
     context 'within an individual submission' do

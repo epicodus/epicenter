@@ -74,6 +74,25 @@ describe Submission do
       expect(new_review.grades.size).to eq submission.assessment.requirements.size
     end
 
+    context 'when there is a latest review' do
+      let!(:old_review) { FactoryGirl.create(:passing_review, submission: submission) }
+      let(:new_review) { submission.clone_or_build_review }
+
+      it "clones the note of the latest review" do
+        expect(new_review.note).to eq old_review.note
+      end
+
+      it "clones the submission_id of the latest review" do
+        expect(new_review.submission).to eq old_review.submission
+      end
+
+      it "clones the grades of the latest review" do
+        new_review_grade_scores = new_review.grades.map { |grade| grade.score }
+        old_review_grade_scores = old_review.grades.map { |grade| grade.score }
+        expect(new_review_grade_scores).to eq old_review_grade_scores
+      end
+    end
+
     it 'returns a cloned review object if there is a latest review' do
       old_review = FactoryGirl.create(:passing_review, submission: submission)
       new_review = submission.clone_or_build_review
