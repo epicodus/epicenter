@@ -5,6 +5,16 @@ describe Submission do
   it { should belong_to :student }
   it { should validate_uniqueness_of(:student_id).scoped_to(:assessment_id) }
 
+  it 'is invalid if link is not a valid url' do
+    submission = FactoryGirl.build(:submission, link: 'github.com')
+    expect(submission.valid?).to eq false
+  end
+
+  it 'is valid if link is a valid url' do
+    submission = FactoryGirl.build(:submission, link: 'http://github.com')
+    expect(submission.valid?).to eq true
+  end
+
   describe '#needs_review?' do
     it 'is true if no review has been created for this submission' do
       submission = FactoryGirl.create(:submission)

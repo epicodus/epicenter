@@ -17,6 +17,7 @@ gem 'redcarpet'
 gem 'deep_cloneable'
 gem 'cancancan'
 gem 'jquery-ui-rails'
+gem 'validate_url'
 
 group :development do
   gem 'spring'
