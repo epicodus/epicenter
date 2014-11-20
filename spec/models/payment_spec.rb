@@ -82,4 +82,25 @@ describe Payment do
       )
     end
   end
+
+  describe "#send_payment_failure_notice" do
+    it "emails the student a failure notice if payment status is updated to 'failed'", :vcr do
+      student = FactoryGirl.create(:user_with_credit_card)
+
+      mailgun_client = spy("mailgun client")
+      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+
+      payment = student.payments.create(amount: 600_00, payment_method: student.credit_cards.first)
+      payment.update(status: 'failed')
+
+      expect(mailgun_client).to have_received(:send_message).with(
+        "epicodus.com",
+        { :from => "michael@epicodus.com",
+          :to => student.email,
+          :bcc => "michael@epicodus.com",
+          :subject => "Epicodus payment failure notice",
+          :text => "Hi #{student.name}. This is to notify you that a recent payment you made for Epicodus tuition has failed. If you have any questions, reply to this email. Thanks!" }
+      )
+    end
+  end
 end

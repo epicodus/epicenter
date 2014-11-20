@@ -1328,4 +1328,55 @@ http_interactions:
         }
     http_version: 
   recorded_at: Tue, 18 Nov 2014 20:03:21 GMT
+- request:
+    method: post
+    uri: https://api:<MAILGUN_API_KEY>@api.mailgun.net/v2/epicodus.com/messages
+    body:
+      encoding: US-ASCII
+      string: from=michael%40epicodus.com&to=student100%40example.com&bcc=michael%40epicodus.com&subject=Epicodus%20payment%20failure%20notice&text=Hi%20Example%20Brown%20100.%20This%20is%20to%20notify%20you%20that%20a%20recent%20payment%20you%20made%20has%20failed.%20%3F%3F%3F.%20If%20you%20have%20any%20questions%2C%20reply%20to%20this%20email.%20Thanks!
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      Content-Length:
+      - '343'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.4.7
+      Date:
+      - Thu, 20 Nov 2014 00:59:18 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '91'
+      Connection:
+      - keep-alive
+      Content-Disposition:
+      - inline
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '600'
+      Access-Control-Allow-Methods:
+      - GET, POST, PUT, DELETE, OPTIONS
+      Access-Control-Allow-Headers:
+      - Content-Type, x-requested-with
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "message": "Queued. Thank you.",
+          "id": "<20141120005918.119880.93260@epicodus.com>"
+        }
+    http_version: 
+  recorded_at: Thu, 20 Nov 2014 00:59:19 GMT
 recorded_with: VCR 2.9.3
