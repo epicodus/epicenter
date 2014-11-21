@@ -45,9 +45,17 @@ module BillingTasks
   private
 
     def recurring_students_joined_with_last_payment
-      Student.recurring_active.joins(:payments)
-        .where(payments: { created_at: Payment.select('MAX(payments.created_at)')
-          .from('payments WHERE payments.student_id = users.id') })
+      Student
+        .recurring_active
+        .joins(:payments)
+        .where(payments: {
+          created_at:
+            Payment.order(created_at: :desc)
+                   .limit(1)
+                   .select(:created_at)
+                   .from('payments WHERE payments.student_id = users.id')
+           }
+         )
     end
   end
 end
