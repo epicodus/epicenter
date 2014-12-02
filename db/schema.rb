@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141119235649) do
+ActiveRecord::Schema.define(version: 20141202180313) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,12 +117,12 @@ ActiveRecord::Schema.define(version: 20141119235649) do
   end
 
   create_table "users", force: true do |t|
-    t.string   "email",                       default: "", null: false
-    t.string   "encrypted_password",          default: "", null: false
+    t.string   "email",                     default: "", null: false
+    t.string   "encrypted_password",        default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",               default: 0,  null: false
+    t.integer  "sign_in_count",             default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -133,7 +133,6 @@ ActiveRecord::Schema.define(version: 20141119235649) do
     t.integer  "plan_id"
     t.boolean  "recurring_active"
     t.integer  "cohort_id"
-    t.string   "primary_payment_method_type"
     t.integer  "primary_payment_method_id"
     t.string   "type"
     t.integer  "current_cohort_id"
