@@ -9,6 +9,13 @@ describe Student do
   it { should have_many :attendance_records }
   it { should belong_to :cohort }
 
+  it "validates that the primary payment method belongs to the user" do
+    student = FactoryGirl.create(:student)
+    other_students_credit_card = FactoryGirl.create(:credit_card)
+    student.primary_payment_method = other_students_credit_card
+    expect(student.valid?).to be false
+  end
+
   describe "#payment_methods" do
     it "returns all the student's bank accounts and credit cards", :vcr do
       student = FactoryGirl.create(:student)

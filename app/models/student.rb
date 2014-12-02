@@ -3,6 +3,7 @@ class Student < User
 
   validates :plan_id, presence: true
   validates :cohort_id, presence: true
+  validate :primary_payment_method_belongs_to_student
 
   belongs_to :plan
   belongs_to :cohort
@@ -75,5 +76,13 @@ class Student < User
 
   def absences
     cohort.number_of_days_since_start - attendance_records.count
+  end
+
+private
+
+  def primary_payment_method_belongs_to_student
+    if primary_payment_method && primary_payment_method.student != self
+      errors.add(:primary_payment_method, 'must belong to you.')
+    end
   end
 end
