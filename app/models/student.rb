@@ -20,10 +20,6 @@ class Student < User
     (payment_methods.not_verified_first - [primary_payment_method]).unshift(primary_payment_method).compact
   end
 
-  def set_primary_payment_method(payment_method)
-    update!(primary_payment_method_id: payment_method.id)
-  end
-
   def upfront_payment_due?
     plan.upfront_amount > 0 && payments.count == 0
   end

@@ -8,6 +8,7 @@ describe Student do
   it { should belong_to :plan }
   it { should have_many :attendance_records }
   it { should belong_to :cohort }
+  it { should belong_to(:primary_payment_method).class_name('PaymentMethod') }
 
   it "validates that the primary payment method belongs to the user" do
     student = FactoryGirl.create(:student)
@@ -144,29 +145,6 @@ describe Student do
     it 'is true if the student has already signed in today' do
       attendance_record = FactoryGirl.create(:attendance_record, student: student)
       expect(student.signed_in_today?).to eq true
-    end
-  end
-
-  describe "#primary_payment_method", :vcr do
-    it "returns the student's primary payment method" do
-      student = FactoryGirl.create(:student)
-      credit_card = FactoryGirl.create(:credit_card)
-      student.set_primary_payment_method(credit_card)
-      expect(student.primary_payment_method).to eq credit_card
-    end
-
-    it "returns nil if student does not have a primary payment method" do
-      student = FactoryGirl.create(:user_with_unverified_bank_account)
-      expect(student.primary_payment_method).to eq nil
-    end
-  end
-
-  describe "#set_primary_payment_method", :vcr do
-    it "sets the primary payment method of the student" do
-      student = FactoryGirl.create(:student)
-      credit_card = FactoryGirl.create(:credit_card)
-      student.set_primary_payment_method(credit_card)
-      expect(student.primary_payment_method).to eq credit_card
     end
   end
 
