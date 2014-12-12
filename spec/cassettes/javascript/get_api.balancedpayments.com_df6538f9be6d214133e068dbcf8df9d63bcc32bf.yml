@@ -1,0 +1,18 @@
+---
+:scope: 
+:url: https://api.balancedpayments.com/jsonp/bank_accounts?callback=balanced_jsonp_7043652073480189&data=%7B%22routing_number%22%3A%22321174851%22%2C%22account_number%22%3A%22123456789%22%2C%22name%22%3A%22Example%20Brown%201%22%2C%22meta%22%3A%7B%22capabilities_system_timezone%22%3A-8%2C%22capabilities_user_agent%22%3A%22Mozilla%2F5.0%20(Macintosh%3B%20PPC%20Mac%20OS%20X)%20AppleWebKit%2F534.34%20(KHTML%2C%20like%20Gecko)%20PhantomJS%2F1.9.7%20Safari%2F534.34%22%2C%22capabilities_language%22%3A%22en-US%22%2C%22capabilities_kp%22%3A33%2C%22capabilities_cli%22%3A1%2C%22capabilities_loaded%22%3A1418414438496%2C%22capabilities_screen_width%22%3A2560%2C%22capabilities_screen_length%22%3A1440%2C%22capabilities_hist%22%3A1%2C%22capabilities_cookie%22%3A%221418414438496.2733336272649467.1!0%22%2C%22capabilities_cl%22%3Afalse%2C%22capabilities_submitted%22%3A1418414438536%2C%22capabilities_scrollX%22%3A0%2C%22capabilities_scrollY%22%3A0%7D%7D
+:body: ''
+:status: 200
+:method: get
+:headers:
+  Content-Type:
+  - text/plain
+  - application/javascript
+  Date: Fri, 12 Dec 2014 20:00:38 GMT
+  Server: ngx_openresty/1.2.6.3
+  Content-Length: '852'
+  Connection: close
+:content: |
+  /**/ balanced_jsonp_7043652073480189(
+  {"status":201,"header":{"X-Balanced-Guru":"OHM8aee5882823911e481b402a1fe52a36c","Content-Type":"application\/json","x-balanced-host":"bapi-live-prod-7nf6hx-10-3-5-34","x-balanced-software-build":"1.12.9","Content-Length":170,"access-control-allow-origin":"*","access-control-allow-headers":"Content-Type","x-balanced-revision":"1.1","access-control-allow-methods":"POST, OPTIONS","X-Midlr-Version":"2","x-newrelic-app-data":"PxQFWFNXCQYTVVhWAwQDVUYdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKBgdYUFMKAwZdWVcDBgRQVwMOH0JeV1ocQhpaWV5SVgYDWwIIAgtaAQFTQ0pDXlJcFwQ\/"},"body":"{\n  \"bank_accounts\": [\n    {\n      \"href\": \"\/bank_accounts\/BA4eaIwK78vWhoBFCFrljlB8\",\n      \"id\": \"BA4eaIwK78vWhoBFCFrljlB8\",\n      \"links\": {}\n    }\n  ],\n  \"links\": {}\n}"}
+  );
