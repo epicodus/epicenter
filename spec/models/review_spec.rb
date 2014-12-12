@@ -3,12 +3,31 @@ describe Review do
   it { should have_many :grades }
   it { should belong_to :admin }
   it { should validate_presence_of :note }
+  it { should have_one(:student) }
 
   describe 'on creation' do
     it 'updates the submission needs review to false' do
       submission = FactoryGirl.create(:submission)
       review = FactoryGirl.create(:passing_review, submission: submission)
       expect(submission.needs_review).to eq false
+    end
+
+    it 'emails the student' do
+      mailgun_client = spy("mailgun client")
+      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+
+      review = FactoryGirl.create(:review)
+      submission = review.submission
+      student = submission.student
+
+      expect(mailgun_client).to have_received(:send_message).with(
+        "epicodus.com",
+        { :from => "michael@epicodus.com",
+          :to => student.email,
+          :subject => "Assessment reviewed",
+          :text => "Hi #{student.name}. Your #{submission.assessment.title} assessment has been reviewed. You can view it at #{Rails.application.routes.url_helpers.assessment_url(submission.assessment)}."
+        }
+      )
     end
   end
 
