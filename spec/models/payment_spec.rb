@@ -53,6 +53,13 @@ describe Payment do
       expect(payment.valid?).to be false
       expect(payment.errors.messages[:amount]).to include('exceeds the outstanding balance.')
     end
+
+    it 'allows a previous payment to be updated', :vcr do
+      plan = FactoryGirl.create(:recurring_plan_with_upfront_payment, total_amount: 5000_00)
+      student = FactoryGirl.create(:user_with_verified_bank_account, plan: plan)
+      payment = student.payments.create(amount: 5000_00, payment_method: student.bank_accounts.first)
+      expect(payment.update(status: "failed")).to be true
+    end
   end
 
   describe '#total_amount' do

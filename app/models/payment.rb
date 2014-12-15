@@ -7,11 +7,10 @@ class Payment < ActiveRecord::Base
   validates :amount, presence: true
   validates :student_id, presence: true
   validates :payment_method, presence: true
-  validate :ensure_payment_isnt_over_balance
+  validate :ensure_payment_isnt_over_balance, on: :create
 
   after_update :send_payment_failure_notice, if: lambda {|payment| payment.status == "failed" }
   before_create :make_payment, :send_payment_receipt
-  after_validation :ensure_payment_isnt_over_balance, :on => :create
   after_create :check_if_paid_up
 
   scope :order_by_latest, -> { order('created_at DESC') }
