@@ -1,0 +1,18 @@
+---
+:scope: 
+:url: https://api.balancedpayments.com/jsonp/cards?
+:body: ''
+:status: 200
+:method: get
+:headers:
+  Content-Type:
+  - text/plain
+  - application/javascript
+  Date: Tue, 16 Dec 2014 18:36:43 GMT
+  Server: ngx_openresty/1.2.6.3
+  Content-Length: '829'
+  Connection: close
+:content: |
+  /**/ balanced_jsonp_3823949375655502(
+  {"status":201,"header":{"X-Balanced-Guru":"OHM7b776b84855211e4bf7802a1fe52a36c","Content-Type":"application\/json","x-balanced-host":"bapi-live-prod-7nf6hx-10-3-4-170","x-balanced-software-build":"1.12.14","Content-Length":154,"access-control-allow-origin":"*","access-control-allow-headers":"Content-Type","x-balanced-revision":"1.1","access-control-allow-methods":"POST, OPTIONS","X-Midlr-Version":"2","x-newrelic-app-data":"PxQFWFNXCQYTVVhWAwQDVUYdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVUJWQBRBltdBQVWVlsPBwBWUk4XAAdVVR0WEVpQVgBWAVoHWgsGAgEDWlITTRMEBVpEBDs="},"body":"{\n  \"cards\": [\n    {\n      \"href\": \"\/cards\/CC3KZEo5WH7rOU4VFZ1lf7AX\",\n      \"id\": \"CC3KZEo5WH7rOU4VFZ1lf7AX\",\n      \"links\": {}\n    }\n  ],\n  \"links\": {}\n}"}
+  );

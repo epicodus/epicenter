@@ -19,7 +19,7 @@ feature "viewing transcript" do
       expect(page).to have_content student.name
     end
 
-    it 'shows a breakdown of how they did on each assessment' do
+    it 'shows a breakdown of how they did on each assessment', :vcr do
       cohort = FactoryGirl.create(:past_cohort)
       student = FactoryGirl.create(:student, cohort: cohort)
       assessment = FactoryGirl.create(:assessment, cohort: cohort)

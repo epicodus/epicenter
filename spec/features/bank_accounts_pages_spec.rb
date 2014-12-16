@@ -12,11 +12,11 @@ feature 'Creating a bank account' do
       fill_in 'Name on account', with: student.name
     end
 
-    scenario 'with valid information', js: true do
+    scenario 'with valid information', :vcr, js: true do
       fill_in 'Bank account number', with: '123456789'
       fill_in 'Routing number', with: '321174851'
       click_on 'Verify bank account'
-      expect(page).to have_content 'two small test deposits'
+      expect(page).to have_content '2-3 business days'
     end
 
     scenario 'with missing account number', js: true do

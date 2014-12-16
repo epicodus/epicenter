@@ -1,0 +1,18 @@
+---
+:scope: 
+:url: https://api.balancedpayments.com/jsonp/bank_accounts?
+:body: ''
+:status: 200
+:method: get
+:headers:
+  Content-Type:
+  - text/plain
+  - application/javascript
+  Date: Tue, 16 Dec 2014 19:22:11 GMT
+  Server: ngx_openresty/1.2.6.3
+  Content-Length: '852'
+  Connection: close
+:content: |
+  /**/ balanced_jsonp_6773175620473921(
+  {"status":201,"header":{"X-Balanced-Guru":"OHMd564adc2855811e4a13102a1fe52a36c","Content-Type":"application\/json","x-balanced-host":"bapi-live-prod-7nf6hx-10-3-5-34","x-balanced-software-build":"1.12.16","Content-Length":170,"access-control-allow-origin":"*","access-control-allow-headers":"Content-Type","x-balanced-revision":"1.1","access-control-allow-methods":"POST, OPTIONS","X-Midlr-Version":"2","x-newrelic-app-data":"PxQFWFNXCQYTVVhWAwQDVUYdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKBgJWVlQAAgJXUVsFBwJXVwYaE1pSWk4QQF0ECg0ABlAEWFYEWABUU1cVTUYFWV9DATw="},"body":"{\n  \"bank_accounts\": [\n    {\n      \"href\": \"\/bank_accounts\/BA6uHpU4zgaOP4afGaAoalqq\",\n      \"id\": \"BA6uHpU4zgaOP4afGaAoalqq\",\n      \"links\": {}\n    }\n  ],\n  \"links\": {}\n}"}
+  );

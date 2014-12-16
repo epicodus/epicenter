@@ -21,14 +21,14 @@ describe Submission do
       expect(submission.needs_review?).to eq true
     end
 
-    it 'is false if a review has been created for this submission' do
+    it 'is false if a review has been created for this submission', :vcr do
       submission = FactoryGirl.create(:submission)
       FactoryGirl.create(:passing_review, submission: submission)
       expect(submission.needs_review?).to eq false
     end
   end
 
-  describe '#has_been_reviewed?' do
+  describe '#has_been_reviewed?', :vcr do
     it 'is true if submission has been reviewed' do
       submission = FactoryGirl.create(:submission)
       FactoryGirl.create(:passing_review, submission: submission)
@@ -36,7 +36,7 @@ describe Submission do
     end
   end
 
-  describe '.needing_review' do
+  describe '.needing_review', :vcr do
     it 'returns only submissions still needing review' do
       reviewed_submission = FactoryGirl.create(:submission)
       not_reviewed_submission = FactoryGirl.create(:submission)
@@ -45,7 +45,7 @@ describe Submission do
     end
   end
 
-  describe '#latest_review' do
+  describe '#latest_review', :vcr do
     it 'returns the latest review for this submission' do
       submission = FactoryGirl.create(:submission)
       review = FactoryGirl.create(:review, submission: submission)
@@ -63,7 +63,7 @@ describe Submission do
     end
   end
 
-  describe 'latest_review' do
+  describe 'latest_review', :vcr do
     it 'returns the most recent review for this submissions' do
       submission = FactoryGirl.create(:submission)
       first_review = FactoryGirl.create(:passing_review, submission: submission)
@@ -84,7 +84,7 @@ describe Submission do
       expect(new_review.grades.size).to eq submission.assessment.requirements.size
     end
 
-    context 'when there is a latest review' do
+    context 'when there is a latest review', :vcr do
       let!(:old_review) { FactoryGirl.create(:passing_review, submission: submission) }
       let(:new_review) { submission.clone_or_build_review }
 
@@ -103,7 +103,7 @@ describe Submission do
       end
     end
 
-    it 'returns a cloned review object if there is a latest review' do
+    it 'returns a cloned review object if there is a latest review', :vcr do
       old_review = FactoryGirl.create(:passing_review, submission: submission)
       new_review = submission.clone_or_build_review
       expect(new_review.note).to eq old_review.note
@@ -112,7 +112,7 @@ describe Submission do
     end
   end
 
-  describe '#meets_expectations?' do
+  describe '#meets_expectations?', :vcr do
     let(:submission) { FactoryGirl.create(:submission) }
 
     it 'is true if the latest review meets expectations' do

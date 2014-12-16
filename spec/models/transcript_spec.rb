@@ -7,7 +7,7 @@ describe Transcript do
   end
 
   describe '#passing_assessments' do
-    it 'returns all the assessments for which the student has met expectations' do
+    it 'returns all the assessments for which the student has met expectations', :vcr do
       passed_assessment = FactoryGirl.create(:assessment, cohort: student.cohort)
       passed_submission = FactoryGirl.create(:submission, student: student, assessment: passed_assessment)
       FactoryGirl.create(:passing_review, submission: passed_submission)

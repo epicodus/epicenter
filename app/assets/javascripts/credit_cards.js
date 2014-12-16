@@ -12,7 +12,6 @@ $(function() {
         postal_code: $('input#zip_code').val()
       }
     };
-
     balanced.card.create(formData, handleResponseCreditCard);
   });
 });

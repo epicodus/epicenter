@@ -1,0 +1,380 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://127.0.0.1:50581/__identify__
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: 'OK '
+    headers:
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.1.4/2014-10-27)
+      Date:
+      - Tue, 16 Dec 2014 19:22:09 GMT
+      Content-Length:
+      - '14'
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '70272997000260'
+    http_version: 
+  recorded_at: Tue, 16 Dec 2014 19:22:09 GMT
+- request:
+    method: get
+    uri: https://api.balancedpayments.com/jsonp/bank_accounts?callback=balanced_jsonp_6773175620473921&data=%7B%22routing_number%22:%22321174851%22,%22account_number%22:%22123456789%22,%22name%22:%22Example%20Brown%201%22,%22meta%22:%7B%22capabilities_system_timezone%22:-8,%22capabilities_user_agent%22:%22Mozilla/5.0%20(Macintosh%3B%20PPC%20Mac%20OS%20X)%20AppleWebKit/534.34%20(KHTML,%20like%20Gecko)%20PhantomJS/1.9.7%20Safari/534.34%22,%22capabilities_language%22:%22en-US%22,%22capabilities_kp%22:33,%22capabilities_cli%22:1,%22capabilities_loaded%22:1418757730706,%22capabilities_screen_width%22:2560,%22capabilities_screen_length%22:1440,%22capabilities_hist%22:1,%22capabilities_cookie%22:%221418757730706.10806326591409743.1!0%22,%22capabilities_cl%22:false,%22capabilities_submitted%22:1418757730749,%22capabilities_scrollX%22:0,%22capabilities_scrollY%22:0%7D%7D
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; PPC Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko)
+        PhantomJS/1.9.7 Safari/534.34
+      Accept:
+      - "*/*"
+      Referer:
+      - http://127.0.0.1:50581/bank_accounts/new
+      Connection:
+      - Keep-Alive
+      Accept-Language:
+      - en-US,*
+      Host:
+      - api.balancedpayments.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/javascript
+      - text/plain
+      Date:
+      - Tue, 16 Dec 2014 19:22:11 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      Content-Length:
+      - '852'
+      Connection:
+      - Close
+    body:
+      encoding: UTF-8
+      string: |
+        /**/ balanced_jsonp_6773175620473921(
+        {"status":201,"header":{"X-Balanced-Guru":"OHMd564adc2855811e4a13102a1fe52a36c","Content-Type":"application\/json","x-balanced-host":"bapi-live-prod-7nf6hx-10-3-5-34","x-balanced-software-build":"1.12.16","Content-Length":170,"access-control-allow-origin":"*","access-control-allow-headers":"Content-Type","x-balanced-revision":"1.1","access-control-allow-methods":"POST, OPTIONS","X-Midlr-Version":"2","x-newrelic-app-data":"PxQFWFNXCQYTVVhWAwQDVUYdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKBgJWVlQAAgJXUVsFBwJXVwYaE1pSWk4QQF0ECg0ABlAEWFYEWABUU1cVTUYFWV9DATw="},"body":"{\n  \"bank_accounts\": [\n    {\n      \"href\": \"\/bank_accounts\/BA6uHpU4zgaOP4afGaAoalqq\",\n      \"id\": \"BA6uHpU4zgaOP4afGaAoalqq\",\n      \"links\": {}\n    }\n  ],\n  \"links\": {}\n}"}
+        );
+    http_version: 
+  recorded_at: Tue, 16 Dec 2014 19:22:11 GMT
+- request:
+    method: get
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA6uHpU4zgaOP4afGaAoalqq
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 16 Dec 2014 19:22:12 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHMd5db5a26855811e4ab7e0230f00c9248
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-4-8
+      X-Balanced-Marketplace:
+      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
+      X-Balanced-Merchant:
+      - TEST-MR1lb6D220PWeBKNmZs46597
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.12.16
+      Content-Length:
+      - '517'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_accounts": [
+            {
+              "routing_number": "321174851",
+              "bank_name": "SAN MATEO CREDIT UNION",
+              "account_type": "checking",
+              "name": "Example Brown 1",
+              "links": {
+                "customer": null,
+                "bank_account_verification": null
+              },
+              "can_credit": true,
+              "created_at": "2014-12-16T19:23:52.842787Z",
+              "fingerprint": "15e2b0d3c33891ebb0f1ef609ec419420c20e320ce94c65fbc8c3312448eb225",
+              "updated_at": "2014-12-16T19:23:52.842789Z",
+              "href": "/bank_accounts/BA6uHpU4zgaOP4afGaAoalqq",
+              "meta": {},
+              "account_number": "xxxxx6789",
+              "address": {
+                "city": null,
+                "line2": null,
+                "line1": null,
+                "state": null,
+                "postal_code": null,
+                "country_code": null
+              },
+              "can_debit": false,
+              "id": "BA6uHpU4zgaOP4afGaAoalqq"
+            }
+          ],
+          "links": {
+            "bank_accounts.settlements": "/bank_accounts/{bank_accounts.id}/settlements",
+            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}",
+            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
+            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
+            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
+            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 16 Dec 2014 19:22:13 GMT
+- request:
+    method: post
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA6uHpU4zgaOP4afGaAoalqq/verifications
+    body:
+      encoding: UTF-8
+      string: "{}"
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 201
+      message: CREATED
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 16 Dec 2014 19:22:20 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHMd68fd582855811e494d406429171ffad
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-4-8
+      X-Balanced-Marketplace:
+      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
+      X-Balanced-Merchant:
+      - TEST-MR1lb6D220PWeBKNmZs46597
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.12.16
+      Content-Length:
+      - '599'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_account_verifications": [
+            {
+              "verification_status": "pending",
+              "links": {
+                "bank_account": "BA6uHpU4zgaOP4afGaAoalqq"
+              },
+              "href": "/verifications/BZ6DEZplkna2v7rzpxvnk0rb",
+              "created_at": "2014-12-16T19:23:59.339308Z",
+              "attempts_remaining": 3,
+              "updated_at": "2014-12-16T19:23:59.735923Z",
+              "deposit_status": "succeeded",
+              "attempts": 0,
+              "meta": {},
+              "id": "BZ6DEZplkna2v7rzpxvnk0rb"
+            }
+          ],
+          "links": {
+            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 16 Dec 2014 19:22:20 GMT
+- request:
+    method: get
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA6uHpU4zgaOP4afGaAoalqq
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - balanced-ruby/1.1.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 16 Dec 2014 19:22:20 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHMdb1bddee855811e48c5306429171ffad
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-4-8
+      X-Balanced-Marketplace:
+      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
+      X-Balanced-Merchant:
+      - TEST-MR1lb6D220PWeBKNmZs46597
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.12.16
+      Content-Length:
+      - '537'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "bank_accounts": [
+            {
+              "routing_number": "321174851",
+              "bank_name": "SAN MATEO CREDIT UNION",
+              "account_type": "checking",
+              "name": "Example Brown 1",
+              "links": {
+                "customer": null,
+                "bank_account_verification": "BZ6DEZplkna2v7rzpxvnk0rb"
+              },
+              "can_credit": true,
+              "created_at": "2014-12-16T19:23:52.842787Z",
+              "fingerprint": "15e2b0d3c33891ebb0f1ef609ec419420c20e320ce94c65fbc8c3312448eb225",
+              "updated_at": "2014-12-16T19:23:52.842789Z",
+              "href": "/bank_accounts/BA6uHpU4zgaOP4afGaAoalqq",
+              "meta": {},
+              "account_number": "xxxxx6789",
+              "address": {
+                "city": null,
+                "line2": null,
+                "line1": null,
+                "state": null,
+                "postal_code": null,
+                "country_code": null
+              },
+              "can_debit": false,
+              "id": "BA6uHpU4zgaOP4afGaAoalqq"
+            }
+          ],
+          "links": {
+            "bank_accounts.settlements": "/bank_accounts/{bank_accounts.id}/settlements",
+            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}",
+            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
+            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
+            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
+            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications"
+          }
+        }
+    http_version: 
+  recorded_at: Tue, 16 Dec 2014 19:22:21 GMT
+- request:
+    method: get
+    uri: http://127.0.0.1:50606/__identify__
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: 'OK '
+    headers:
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.1.4/2014-10-27)
+      Date:
+      - Tue, 16 Dec 2014 19:22:39 GMT
+      Content-Length:
+      - '14'
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '70350149931640'
+    http_version: 
+  recorded_at: Tue, 16 Dec 2014 19:22:39 GMT
+- request:
+    method: get
+    uri: http://127.0.0.1:50634/__identify__
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: 'OK '
+    headers:
+      Server:
+      - WEBrick/1.3.1 (Ruby/2.1.4/2014-10-27)
+      Date:
+      - Tue, 16 Dec 2014 19:22:56 GMT
+      Content-Length:
+      - '14'
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: '70231629779200'
+    http_version: 
+  recorded_at: Tue, 16 Dec 2014 19:22:56 GMT
+recorded_with: VCR 2.9.3
