@@ -42,7 +42,7 @@ group :test do
   gem 'database_cleaner'
   gem 'webmock', require: false
   gem 'vcr'
-  gem 'puffing-billy'
+  gem 'puffing-billy', git: 'https://github.com/oesmith/puffing-billy'
 end
 
 group :production do

@@ -1,3 +1,16 @@
+GIT
+  remote: https://github.com/oesmith/puffing-billy
+  revision: 230f2818a57da29a07cd5d7adc758892a23d3c5e
+  specs:
+    puffing-billy (0.2.3)
+      capybara
+      em-http-request
+      em-synchrony
+      eventmachine
+      eventmachine_httpserver
+      http_parser.rb (~> 0.6.0)
+      multi_json
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -85,6 +98,8 @@ GEM
       http_parser.rb (>= 0.6.0)
     em-socksify (0.3.0)
       eventmachine (>= 1.0.0.beta.4)
+    em-synchrony (1.0.3)
+      eventmachine (>= 1.0.0.beta.1)
     erubis (2.7.0)
     eventmachine (1.0.3)
     eventmachine_httpserver (0.2.1)
@@ -152,13 +167,6 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    puffing-billy (0.2.3)
-      capybara
-      em-http-request
-      eventmachine
-      eventmachine_httpserver
-      http_parser.rb
-      multi_json
     quiet_assets (1.0.3)
       railties (>= 3.1, < 5.0)
     rack (1.5.2)
@@ -277,7 +285,7 @@ DEPENDENCIES
   pg
   poltergeist
   pry
-  puffing-billy
+  puffing-billy!
   quiet_assets
   rails (= 4.1.6)
   rails_12factor
