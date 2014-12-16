@@ -38,7 +38,7 @@ describe Assessment do
     end
   end
 
-  describe '#exepectations_met_by?' do
+  describe '#exepectations_met_by?', :vcr do
     let(:assessment) { FactoryGirl.create(:assessment) }
     let(:student) { FactoryGirl.create(:student) }
 

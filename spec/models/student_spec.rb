@@ -10,7 +10,7 @@ describe Student do
   it { should belong_to :cohort }
   it { should belong_to(:primary_payment_method).class_name('PaymentMethod') }
 
-  it "validates that the primary payment method belongs to the user" do
+  it "validates that the primary payment method belongs to the user", :vcr do
     student = FactoryGirl.create(:student)
     other_students_credit_card = FactoryGirl.create(:credit_card)
     student.primary_payment_method = other_students_credit_card

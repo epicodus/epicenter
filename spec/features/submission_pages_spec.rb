@@ -21,7 +21,7 @@ feature 'index page' do
       expect(page).to have_content submission.student.name
     end
 
-    scenario 'lists only submissions needing review' do
+    scenario 'lists only submissions needing review', :vcr do
       reviewed_submission = FactoryGirl.create(:submission, assessment: assessment, student: student)
       FactoryGirl.create(:passing_review, submission: reviewed_submission)
       visit assessment_submissions_path(assessment)
@@ -64,7 +64,7 @@ feature 'index page' do
           visit assessment_submissions_path(assessment)
         end
 
-        scenario 'with valid input' do
+        scenario 'with valid input', :vcr do
           click_on 'Review'
           select score.description, from: 'review_grades_attributes_0_score_id'
           fill_in 'Note', with: 'Well done!'
@@ -83,7 +83,7 @@ feature 'index page' do
 
           before { submission.update(needs_review: true) }
 
-          scenario 'should be prepopulated with information from the last review created for this submission' do
+          scenario 'should be prepopulated with information from the last review created for this submission', :vcr do
             click_on 'Review'
             expect(find_field('Note').value).to eq review.note
           end

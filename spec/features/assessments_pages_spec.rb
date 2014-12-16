@@ -30,7 +30,7 @@ feature 'index page' do
       expect(page).to_not have_content 'Not submitted'
     end
 
-    scenario 'shows if the assessment has been graded' do
+    scenario 'shows if the assessment has been graded', :vcr do
       submission = FactoryGirl.create(:submission, assessment: assessment, student: student)
       FactoryGirl.create(:passing_review, submission: submission)
       visit cohort_assessments_path(assessment.cohort)
@@ -168,7 +168,7 @@ feature 'show page' do
       it { is_expected.to_not have_link 'has been reviewed' }
     end
 
-    context 'after submission has been reviewed' do
+    context 'after submission has been reviewed', :vcr do
       let(:submission) { FactoryGirl.create(:submission, assessment: assessment, student: student) }
       let!(:review) { FactoryGirl.create(:passing_review, submission: submission) }
 
@@ -181,7 +181,7 @@ feature 'show page' do
       it { is_expected.to have_content 'Meets expectations' }
     end
 
-    context 'after resubmitting' do
+    context 'after resubmitting', :vcr do
       let(:submission) { FactoryGirl.create(:submission, assessment: assessment, student: student) }
 
       before do

@@ -6,7 +6,7 @@ describe Review do
   it { should have_one(:student) }
 
   describe 'on creation' do
-    it 'updates the submission needs review to false' do
+    it 'updates the submission needs review to false', :vcr do
       submission = FactoryGirl.create(:submission)
       review = FactoryGirl.create(:passing_review, submission: submission)
       expect(submission.needs_review).to eq false
@@ -31,7 +31,7 @@ describe Review do
     end
   end
 
-  describe '#meets_expectations?' do
+  describe '#meets_expectations?', :vcr do
     it "is true if the review's scores are all above 1" do
       review = FactoryGirl.create(:passing_review)
       expect(review.meets_expectations?).to eq true
