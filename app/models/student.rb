@@ -21,7 +21,7 @@ class Student < User
   end
 
   def upfront_payment_due?
-    plan.upfront_amount > 0 && payments.count == 0
+    plan.upfront_amount > 0 && payments.without_failed.count == 0
   end
 
   def recurring_amount_with_fees
@@ -36,12 +36,16 @@ class Student < User
     plan.recurring_amount > 0 && !recurring_active && !upfront_payment_due?
   end
 
+  def total_paid
+    payments.without_failed.sum(:amount)
+  end
+
   def signed_in_today?
     attendance_records.today.exists?
   end
 
   def next_payment_date
-    payments.last.created_at + 1.month if recurring_active
+    payments.without_failed.last.created_at + 1.month if recurring_active
   end
 
   def make_upfront_payment

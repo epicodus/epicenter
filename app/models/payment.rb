@@ -14,6 +14,7 @@ class Payment < ActiveRecord::Base
   after_update :send_payment_failure_notice, if: ->(payment) { payment.status == "failed" }
 
   scope :order_by_latest, -> { order('created_at DESC') }
+  scope :without_failed, -> { where.not(status: 'failed') }
 
   def total_amount
     amount + fee
@@ -21,13 +22,15 @@ class Payment < ActiveRecord::Base
 
 private
   def ensure_payment_isnt_over_balance
-    if student && student.payments.sum(:amount) + amount.to_i > student.plan.total_amount
+    if student && student.total_paid + amount.to_i > student.plan.total_amount
       errors.add(:amount, 'exceeds the outstanding balance.')
     end
   end
 
   def check_if_paid_up
-    student.update(recurring_active: false) if student.payments.sum(:amount) == student.plan.total_amount
+    if student.total_paid == student.plan.total_amount
+      student.update(recurring_active: false)
+    end
   end
 
   def send_payment_receipt

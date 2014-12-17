@@ -14,6 +14,14 @@ describe Payment do
     end
   end
 
+  describe '.without_failed' do
+    it "doesn't include failed payments", :vcr do
+      failed_payment = FactoryGirl.create(:payment)
+      failed_payment.update(status: 'failed')
+      expect(Payment.without_failed).to eq []
+    end
+  end
+
   describe "make a payment" do
     it "makes a successful payment", :vcr do
       student = FactoryGirl.create :user_with_verified_bank_account
@@ -59,6 +67,15 @@ describe Payment do
       student = FactoryGirl.create(:user_with_verified_bank_account, plan: plan)
       payment = student.payments.create(amount: 5000_00, payment_method: student.bank_accounts.first)
       expect(payment.update(status: "failed")).to be true
+    end
+
+    it 'does not include failed payments', :vcr do
+      plan = FactoryGirl.create(:recurring_plan_with_upfront_payment, total_amount: 5000_00)
+      student = FactoryGirl.create(:user_with_verified_bank_account, plan: plan)
+      failed_payment = student.payments.create(amount: 5000_00, payment_method: student.bank_accounts.first)
+      failed_payment.update(status: "failed")
+      new_payment = student.payments.new(amount: 5000_00, payment_method: student.bank_accounts.first)
+      expect(new_payment.valid?).to be true
     end
   end
 

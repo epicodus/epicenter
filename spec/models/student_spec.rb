@@ -242,6 +242,23 @@ describe Student do
     end
   end
 
+  describe '#total_paid', :vcr do
+    it 'sums all of the students payments' do
+      student = FactoryGirl.create(:user_with_credit_card)
+      FactoryGirl.create(:payment, student: student, amount: 200_00)
+      FactoryGirl.create(:payment, student: student, amount: 200_00)
+      expect(student.total_paid).to eq 400_00
+    end
+
+    it 'does not include failed payments' do
+      student = FactoryGirl.create(:user_with_credit_card)
+      FactoryGirl.create(:payment, student: student, amount: 200_00)
+      failed_payment = FactoryGirl.create(:payment, student: student, amount: 200_00)
+      failed_payment.update(status: 'failed')
+      expect(student.total_paid).to eq 200_00
+    end
+  end
+
   describe "abilities" do
     let(:student) { FactoryGirl.create(:student) }
     subject { Ability.new(student) }
