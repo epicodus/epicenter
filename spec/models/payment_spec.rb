@@ -107,7 +107,7 @@ describe Payment do
     end
   end
 
-  describe "#send_payment_failure_notice" do
+  describe "failed" do
     it "emails the student a failure notice if payment status is updated to 'failed'", :vcr do
       student = FactoryGirl.create(:user_with_credit_card)
 
@@ -125,6 +125,14 @@ describe Payment do
           :subject => "Epicodus payment failure notice",
           :text => "Hi #{student.name}. This is to notify you that a recent payment you made for Epicodus tuition has failed. Please reply to this email so we can sort it out together. Thanks!" }
       )
+    end
+
+    it "switches their recurring active status to false", :vcr do
+      student = FactoryGirl.create(:user_with_credit_card)
+      student.update(recurring_active: true)
+      payment = FactoryGirl.create(:payment, student: student)
+      payment.update(status: 'failed')
+      expect(student.recurring_active?).to be false
     end
   end
 end

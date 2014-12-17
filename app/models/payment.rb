@@ -12,6 +12,7 @@ class Payment < ActiveRecord::Base
   before_create :make_payment, :send_payment_receipt
   after_create :check_if_paid_up
   after_update :send_payment_failure_notice, if: ->(payment) { payment.status == "failed" }
+  after_update :switch_recurring_off, if: ->(payment) { payment.status == "failed" }
 
   scope :order_by_latest, -> { order('created_at DESC') }
   scope :without_failed, -> { where.not(status: 'failed') }
@@ -68,5 +69,9 @@ private
       errors.add(:base, exception.description)
       false
     end
+  end
+
+  def switch_recurring_off
+    student.update(recurring_active: false)
   end
 end
