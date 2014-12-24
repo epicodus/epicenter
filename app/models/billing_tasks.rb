@@ -15,7 +15,7 @@ module BillingTasks
 
     def billable_today
       recurring_students_joined_with_last_payment
-        .where('payments.created_at < ?', 1.month.ago)
+        .where('DATE(payments.created_at) <= ?', 1.month.ago.to_date)
     end
 
     def billable_in_three_days
