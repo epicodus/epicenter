@@ -46,22 +46,3 @@ Billy.configure do |c|
   c.cache_path = 'spec/cassettes/javascript/'
   c.non_successful_error_level = :warn
 end
-
-
-# the gem looks for '({' at the beginning of the response, but balanced puts /**/ first and a newline between ( and {. i am opening a pull request so we can get rid of this monkey patch.
-
-module Billy
-  class CacheHandler
-    private
-
-    def replace_response_callback(response, url)
-      request_uri = URI::parse(url)
-      if request_uri.query
-        params = CGI::parse(request_uri.query)
-        if params['callback'].first and response[:content].match(/\w+\(/)
-          response[:content].sub!(/\w+\(/, params['callback'].first + '(')
-        end
-      end
-    end
-  end
-end
