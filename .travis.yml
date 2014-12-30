@@ -1,10 +1,13 @@
+sudo: false
 language: ruby
 rvm:
   - 2.1.4
+cache: bundler
 before_script:
   - "bundle exec rake db:create db:schema:load"
 deploy:
   provider: heroku
+  strategy: git
   api_key:
     secure: fsM+etUAZoDfSFICXzq4PbK6i8uRBD+FXyZGsBEk4SuVuwtYQ5g34mGUnDi2cEX1CXVCmkZe0wYymTWSBWa7vaw5zbQ9iGx0sEbQAML7MFSRgRIGKji/ekCuMHMqT1+Y6TMvkJCn4BriWxX0TPCQ/PAyjmIRI3OjKODFAWtWke4=
   app: epicodus-epicenter

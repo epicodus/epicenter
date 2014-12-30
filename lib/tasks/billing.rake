@@ -13,4 +13,11 @@ namespace :billing do
   task :transfer_escrow => :environment do
     BillingTasks.transfer_full_escrow_balance
   end
+
+  desc "Show who is billable today"
+  task :print_billable_today => :environment do
+    BillingTasks.billable_today.each do |student|
+      puts student.name + ', last paid on ' + student.payments.last.created_at.to_s
+    end
+  end
 end

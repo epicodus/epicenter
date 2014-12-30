@@ -72,6 +72,16 @@ describe BillingTasks do
         expect(BillingTasks.billable_today).to eq [student]
       end
     end
+
+    it "disregards the time of day the last payment was made" do
+      student = nil
+      travel_to(Time.parse("January 1, 2014 2:00pm")) do
+        student = FactoryGirl.create(:user_with_recurring_active)
+      end
+      travel_to(Date.parse("February 1, 2014 1:00pm")) do
+        expect(BillingTasks.billable_today).to eq [student]
+      end
+    end
   end
 
   describe ".billable_in_three_days", :vcr do
