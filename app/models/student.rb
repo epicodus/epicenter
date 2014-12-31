@@ -12,7 +12,6 @@ class Student < User
   has_many :payments
   has_many :attendance_records
   has_many :submissions
-  has_many :grades
   has_many :payment_methods
   belongs_to :primary_payment_method, class_name: 'PaymentMethod'
 
