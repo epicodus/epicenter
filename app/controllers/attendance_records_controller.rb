@@ -2,7 +2,7 @@ class AttendanceRecordsController < ApplicationController
   authorize_resource
 
   def index
-    @students = current_admin.current_cohort.students
+    @students = current_admin.current_cohort.students.order(:name)
   end
 
   def create
