@@ -1,3 +1,16 @@
+describe 'student list' do
+  it 'should list students in alphabetical order' do
+    admin = FactoryGirl.create(:admin)
+    student = FactoryGirl.create(:student, cohort: admin.current_cohort, name: 'zelda')
+    another_student = FactoryGirl.create(:student, cohort: admin.current_cohort, name: 'annie')
+    login_as(admin, scope: :admin)
+    visit attendance_path
+    within first("div.student") do
+      expect(page).to have_content 'annie'
+    end
+  end
+end
+
 feature 'creating an attendance record' do
   let(:admin) { FactoryGirl.create(:admin) }
   before { login_as(admin, scope: :admin) }
