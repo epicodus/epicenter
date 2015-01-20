@@ -41,6 +41,10 @@ describe Admin do
     context 'for cohorts' do
       it { is_expected.to have_abilities(:manage, Cohort.new) }
     end
+
+    context 'for attendance record amendments' do
+      it { is_expected.to have_abilities(:create, AttendanceRecordAmendment.new) }
+    end
   end
 
   it 'is assigned a default current_cohort before creation' do

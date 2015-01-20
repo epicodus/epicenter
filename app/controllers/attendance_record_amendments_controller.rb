@@ -1,4 +1,6 @@
 class AttendanceRecordAmendmentsController < ApplicationController
+  authorize_resource
+  
   def new
     @attendance_record_amendment = AttendanceRecordAmendment.new
   end

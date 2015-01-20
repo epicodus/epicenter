@@ -12,4 +12,10 @@ feature "creating an attendance record amendment" do
     click_button "Submit"
     expect(page).to have_content "#{student.name}'s attendance record has been amended."
   end
+
+  scenario 'as a student' do
+    login_as(student, scope: :student)
+    visit new_attendance_record_amendment_path
+    expect(page).to have_content "You are not authorized to access this page."
+  end
 end
