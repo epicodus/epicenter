@@ -1,0 +1,12 @@
+<%= form_for @attendance_record_amendment do |f| %>
+  <%= f.label :student_id %>
+  <%= f.collection_select(:student_id, current_cohort.students, :id, :name) %>
+
+  <%= f.label :date %>
+  <%= date_select :attendance_record_amendment, :date %>
+
+  <%= f.label :status %>
+  <%= f.select(:status, options_for_select(["On time", "Tardy", "Absent"])) %>
+
+  <%= f.submit "Submit" %>
+<% end %>
