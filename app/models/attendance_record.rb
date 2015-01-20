@@ -17,7 +17,7 @@ private
   end
 
   def set_date
-    self.date = Date.today
+    self.date = Date.today if self.date.nil?
   end
 
   def set_date_and_tardiness
