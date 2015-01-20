@@ -9,7 +9,7 @@ class AttendanceRecord < ActiveRecord::Base
 private
 
   def set_tardiness
-    if self.tardy.blank?
+    if self.tardy.nil?
       class_late_time = Time.parse(ENV['CLASS_START_TIME'] ||= '9:05 AM')
       current_time = Time.zone.now
       self.tardy = current_time >= class_late_time
