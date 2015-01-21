@@ -1,0 +1,22 @@
+<table>
+  <thead>
+    <tr>
+      <td></td>
+      <% @assessment.requirements.each do |requirement| %>
+        <td><%= requirement.content %></td>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @cohort.students.each do |student| %>
+      <tr>
+        <td><%= student.name %></td>
+        <% @assessment.requirements.each do |requirement| %>
+          <td><%= score_for(student, @assessment, requirement) %></td>
+        <% end %>
+        <td><%= @assessment.requirements.inject(0) { |sum, requirement| sum += score_for(student, @assessment, requirement).to_i } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
