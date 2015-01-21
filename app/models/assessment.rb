@@ -21,6 +21,10 @@ class Assessment < ActiveRecord::Base
     submission_for(student).try(:meets_expectations?)
   end
 
+  def latest_total_score_for(student)
+    requirements.inject(0) { |sum, requirement| sum += requirement.score_for(student) }
+  end
+
 private
 
   def set_number

@@ -13,9 +13,9 @@
       <tr>
         <td><%= student.name %></td>
         <% @assessment.requirements.each do |requirement| %>
-          <td><%= score_for(student, @assessment, requirement) %></td>
+          <td><%= requirement.score_for(student) %></td>
         <% end %>
-        <td><%= @assessment.requirements.inject(0) { |sum, requirement| sum += score_for(student, @assessment, requirement).to_i } %></td>
+        <td><%= @assessment.latest_total_score_for(student) %></td>
       </tr>
     <% end %>
   </tbody>
