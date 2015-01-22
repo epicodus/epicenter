@@ -11,4 +11,23 @@ feature 'assessment report' do
     click_link 'Grades report'
     expect(page).to have_content grade.score.value
   end
+
+  it "sorts the table by the student's total score for that assessment" do
+    student = FactoryGirl.create(:student)
+    another_student = FactoryGirl.create(:student, cohort: student.cohort)
+    assessment = FactoryGirl.create(:assessment, cohort: student.cohort)
+    submission = FactoryGirl.create(:submission, assessment: assessment, student: student)
+    another_submission = FactoryGirl.create(:submission, assessment: assessment, student: another_student)
+    review = FactoryGirl.create(:review, submission: submission)
+    another_review = FactoryGirl.create(:review, submission: submission)
+    failing_grade = FactoryGirl.create(:failing_grade, review: review, requirement: assessment.requirements.first)
+    passing_grade = FactoryGirl.create(:passing_grade, review: another_review, requirement: assessment.requirements.first)
+    admin = FactoryGirl.create(:admin, current_cohort: student.cohort)
+    login_as(admin, scope: :admin)
+    visit cohort_assessments_path(assessment.cohort)
+    click_link 'Grades report'
+    within('tr', :text => another_student.name) do
+      expect(page).to have_content passing_grade.score.value
+    end
+  end
 end

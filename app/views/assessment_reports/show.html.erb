@@ -1,15 +1,15 @@
-<table>
+<table class="table table-striped table-hover">
   <thead>
     <tr>
-      <td></td>
+      <th></th>
       <% @assessment.requirements.each do |requirement| %>
-        <td><%= requirement.content %></td>
+        <th><%= requirement.content %></th>
       <% end %>
     </tr>
   </thead>
 
   <tbody>
-    <% @cohort.students.each do |student| %>
+    <% @cohort.students.sort_by { |student| @assessment.latest_total_score_for(student) }.reverse.each do |student| %>
       <tr>
         <td><%= student.name %></td>
         <% @assessment.requirements.each do |requirement| %>
