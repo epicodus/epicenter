@@ -14,5 +14,20 @@ describe Requirement do
       FactoryGirl.create(:grade, requirement: first_requirement, score: score, review: review)
       expect(first_requirement.score_for(student)).to eq 1
     end
+
+    it "returns 0 if the student hasn't submitted for the requirement's assessment" do
+      student = FactoryGirl.create(:student)
+      assessment = FactoryGirl.create(:assessment)
+      first_requirement = assessment.requirements.first
+      expect(first_requirement.score_for(student)).to eq 0
+    end
+
+    it "returns 0 if the student's submission hasn't been reviewed" do
+      student = FactoryGirl.create(:student)
+      assessment = FactoryGirl.create(:assessment)
+      first_requirement = assessment.requirements.first
+      submission = FactoryGirl.create(:submission, assessment: assessment, student: student)
+      expect(first_requirement.score_for(student)).to eq 0
+    end
   end
 end

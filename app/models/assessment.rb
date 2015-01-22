@@ -22,7 +22,11 @@ class Assessment < ActiveRecord::Base
   end
 
   def latest_total_score_for(student)
-    requirements.inject(0) { |sum, requirement| sum += requirement.score_for(student) }
+    if submission_for(student).try(:has_been_reviewed?)
+      requirements.inject(0) { |sum, requirement| sum += requirement.score_for(student) }
+    else
+      0
+    end
   end
 
 private

@@ -5,6 +5,11 @@ class Requirement < ActiveRecord::Base
   has_many :grades
 
   def score_for(student)
-    assessment.submission_for(student).latest_review.grades.where(requirement: self).last.score.value
+    student_submission = assessment.submission_for(student)
+    if student_submission && student_submission.has_been_reviewed?
+      student_submission.latest_review.grades.where(requirement: self).last.score.value
+    else
+      0
+    end
   end
 end

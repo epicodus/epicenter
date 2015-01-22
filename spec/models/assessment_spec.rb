@@ -70,5 +70,14 @@ describe Assessment do
       expected_score = number_of_requirements * score.value
       expect(assessment.latest_total_score_for(student)).to eq expected_score
     end
+
+    it "gives 0 if the student hasn't submitted for this assessment" do
+      expect(assessment.latest_total_score_for(student)).to eq 0
+    end
+
+    it "gives 0 if the student's submission hasn't been reviewed" do
+      submission = FactoryGirl.create(:submission, assessment: assessment, student: student)
+      expect(assessment.latest_total_score_for(student)).to eq 0
+    end
   end
 end
