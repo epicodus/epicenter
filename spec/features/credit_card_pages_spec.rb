@@ -33,7 +33,7 @@ feature 'Creating a credit card' do
       end
     end
 
-    scenario 'with invalid routing number', js: true do
+    scenario 'with invalid account number', js: true do
       fill_in 'Card number', with: '4111111111111112'
       fill_in 'Expiration month', with: '12'
       fill_in 'Expiration year', with: '2020'
