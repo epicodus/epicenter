@@ -1,0 +1,74 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards
+    body:
+      encoding: UTF-8
+      string: '{"number":"4222222222222220","expiration_month":"12","expiration_year":"2020","cvv":"123"}'
+    headers:
+      User-Agent:
+      - balanced-ruby/1.2.1
+      Content-Type:
+      - application/json;revision=1.1
+      Accept:
+      - application/vnd.api+json;revision=1.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 402
+      message: PAYMENT REQUIRED
+    headers:
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Access-Control-Allow-Methods:
+      - POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 22 Jan 2015 16:30:44 GMT
+      Server:
+      - ngx_openresty/1.2.6.3
+      X-Balanced-Guru:
+      - OHM02c05d80a25411e488e302a1fe52a36c
+      X-Balanced-Host:
+      - bapi-integration-prod-8u30f7-10-3-5-17
+      X-Balanced-Marketplace:
+      - TEST-MP25WywsPx8EeGEUdXq7NHPH
+      X-Balanced-Merchant:
+      - TEST-MR25szSXTcDDLogl9uXOlFKV
+      X-Balanced-Revision:
+      - '1.1'
+      X-Balanced-Software-Build:
+      - 1.14.4
+      X-Midlr-Version:
+      - '2'
+      X-Newrelic-App-Data:
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVEPUQdUClJWAQdYX1UICgRIQVAOCBtGRlVSC1VSWlQDUQAAXg0CUQVHFUFXAF8RAWs=
+      Content-Length:
+      - '510'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "errors": [
+            {
+              "status": "Payment Required",
+              "category_code": "card-declined",
+              "additional": "This transaction was declined by the card issuer. Customer please call bank.",
+              "status_code": 402,
+              "category_type": "banking",
+              "extras": {},
+              "request_id": "OHM02c05d80a25411e488e302a1fe52a36c",
+              "description": "R530: This transaction was declined by the card issuer. Customer please call bank. Your request id is OHM02c05d80a25411e488e302a1fe52a36c."
+            }
+          ]
+        }
+    http_version: 
+  recorded_at: Thu, 22 Jan 2015 16:30:44 GMT
+recorded_with: VCR 2.9.3

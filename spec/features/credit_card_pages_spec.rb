@@ -44,5 +44,17 @@ feature 'Creating a credit card' do
         expect(page).to have_content 'not a valid credit card number'
       end
     end
+
+    xscenario 'with a cancelled card, this test depends on fixing https://github.com/oesmith/puffing-billy/issues/79', :vcr, js: true do
+      fill_in 'Card number', with: '4222222222222220'
+      fill_in 'Expiration month', with: '12'
+      fill_in 'Expiration year', with: '2020'
+      fill_in 'CVV code', with: '123'
+      fill_in 'Zip code', with: '11211'
+      click_on 'Add credit card'
+      within '.alert-error' do
+        expect(page).to have_content 'This transaction was declined by the card issuer.'
+      end
+    end
   end
 end

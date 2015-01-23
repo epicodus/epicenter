@@ -5,7 +5,12 @@ class CreditCard < PaymentMethod
   after_create :ensure_primary_method_exists
 
   def fetch_balanced_account
-    Balanced::Card.fetch(account_uri)
+    begin
+      Balanced::Card.fetch(account_uri)
+    rescue Balanced::PaymentRequired => exception
+      errors.add(:base, exception.additional)
+      false
+    end
   end
 
   def calculate_fee(amount)
@@ -18,7 +23,11 @@ class CreditCard < PaymentMethod
 
 private
   def get_last_four_string
-    self.last_four_string = fetch_balanced_account.number
+    if balanced_account = fetch_balanced_account
+      self.last_four_string = balanced_account.number
+    else
+      false
+    end
   end
 
   def set_verified_true

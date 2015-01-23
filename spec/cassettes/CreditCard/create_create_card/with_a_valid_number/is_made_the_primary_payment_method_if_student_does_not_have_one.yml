@@ -8,7 +8,7 @@ http_interactions:
       string: '{"number":"4111111111111111","expiration_month":"12","expiration_year":"2020","cvv":"123"}'
     headers:
       User-Agent:
-      - balanced-ruby/1.1.1
+      - balanced-ruby/1.2.1
       Content-Type:
       - application/json;revision=1.1
       Accept:
@@ -29,11 +29,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 04 Nov 2014 17:44:02 GMT
+      - Fri, 23 Jan 2015 01:01:00 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM29b31e66644a11e4ba8502a1fe53e539
+      - OHM4b7c7a58a29b11e4b37202a1fe53e539
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
@@ -43,13 +43,13 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.39
+      - 1.14.5
       X-Midlr-Version:
       - '2'
       X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQDHVUMVQZQAFtSAgNXVFEAAwNIQVAOCBtGRlUPBQQHUFcJU1lbXl0FBwRHFUFXAF8RAWs=
+      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVYNUwBTC1tdBAdZVlUACwVIQVAOCBtGRgdXVgBXAgAJAVtXCl0EVwFHFUFXAF8RAWs=
       Content-Length:
-      - '1266'
+      - '1317'
       Connection:
       - keep-alive
     body:
@@ -67,14 +67,14 @@ http_interactions:
               "avs_postal_match": null,
               "expiration_month": 12,
               "meta": {},
-              "id": "CC1hUdqyytgcbmYwC5Plgpe8",
+              "id": "CC2iMKfkX5X3wtRQE2NZho1W",
               "category": "other",
               "type": "credit",
               "cvv_match": "yes",
               "bank_name": "JPMORGAN CHASE BANK, N.A.",
               "avs_street_match": null,
               "brand": "Visa",
-              "updated_at": "2014-11-04T17:44:15.025224Z",
+              "updated_at": "2015-01-23T01:03:57.230897Z",
               "address": {
                 "city": null,
                 "line2": null,
@@ -88,10 +88,10 @@ http_interactions:
               "expiration_year": 2020,
               "cvv": "xxx",
               "is_verified": true,
-              "avs_result": null,
+              "avs_result": "Postal code matches, but street address not verified.",
               "can_credit": false,
-              "href": "/cards/CC1hUdqyytgcbmYwC5Plgpe8",
-              "created_at": "2014-11-04T17:44:15.025223Z"
+              "href": "/cards/CC2iMKfkX5X3wtRQE2NZho1W",
+              "created_at": "2015-01-23T01:03:57.230895Z"
             }
           ],
           "links": {
@@ -102,16 +102,16 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 04 Nov 2014 17:44:03 GMT
+  recorded_at: Fri, 23 Jan 2015 01:01:00 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC1hUdqyytgcbmYwC5Plgpe8
+    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC2iMKfkX5X3wtRQE2NZho1W
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
-      - balanced-ruby/1.1.1
+      - balanced-ruby/1.2.1
       Content-Type:
       - application/json;revision=1.1
       Accept:
@@ -126,11 +126,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 04 Nov 2014 17:44:03 GMT
+      - Fri, 23 Jan 2015 01:01:00 GMT
       Server:
       - ngx_openresty/1.2.6.3
       X-Balanced-Guru:
-      - OHM2aa42f40644a11e4bd6f02b12035401b
+      - OHM4bfffcdea29b11e49dde06429171ffad
       X-Balanced-Host:
       - bapi-integration-prod-8u30f7-10-3-5-17
       X-Balanced-Marketplace:
@@ -140,9 +140,9 @@ http_interactions:
       X-Balanced-Revision:
       - '1.1'
       X-Balanced-Software-Build:
-      - 1.8.39
+      - 1.14.5
       Content-Length:
-      - '562'
+      - '590'
       Connection:
       - keep-alive
     body:
@@ -160,14 +160,14 @@ http_interactions:
               "avs_postal_match": null,
               "expiration_month": 12,
               "meta": {},
-              "id": "CC1hUdqyytgcbmYwC5Plgpe8",
+              "id": "CC2iMKfkX5X3wtRQE2NZho1W",
               "category": "other",
               "type": "credit",
               "cvv_match": "yes",
               "bank_name": "JPMORGAN CHASE BANK, N.A.",
               "avs_street_match": null,
               "brand": "Visa",
-              "updated_at": "2014-11-04T17:44:15.025224Z",
+              "updated_at": "2015-01-23T01:03:57.230897Z",
               "address": {
                 "city": null,
                 "line2": null,
@@ -181,10 +181,10 @@ http_interactions:
               "expiration_year": 2020,
               "cvv": "xxx",
               "is_verified": true,
-              "avs_result": null,
+              "avs_result": "Postal code matches, but street address not verified.",
               "can_credit": false,
-              "href": "/cards/CC1hUdqyytgcbmYwC5Plgpe8",
-              "created_at": "2014-11-04T17:44:15.025223Z"
+              "href": "/cards/CC2iMKfkX5X3wtRQE2NZho1W",
+              "created_at": "2015-01-23T01:03:57.230895Z"
             }
           ],
           "links": {
@@ -195,5 +195,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Tue, 04 Nov 2014 17:44:03 GMT
+  recorded_at: Fri, 23 Jan 2015 01:01:00 GMT
 recorded_with: VCR 2.9.3
