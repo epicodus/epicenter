@@ -3,7 +3,7 @@ describe Requirement do
   it { should belong_to :assessment }
   it { should have_many :grades }
 
-  describe "#latest_score_for" do
+  describe "#score_for" do
     it "returns the latest score of the student given for this requirement" do
       student = FactoryGirl.create(:student)
       assessment = FactoryGirl.create(:assessment)
