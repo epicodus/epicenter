@@ -1,6 +1,6 @@
 class AttendanceRecordAmendmentsController < ApplicationController
   authorize_resource
-  
+
   def new
     @attendance_record_amendment = AttendanceRecordAmendment.new
   end
@@ -18,14 +18,6 @@ class AttendanceRecordAmendmentsController < ApplicationController
 private
 
   def attendance_record_amendment_params
-    params.require(:attendance_record_amendment).permit(:student_id, :status).merge(date: parsed_date_params)
-  end
-
-  def parsed_date_params
-    Date.new(
-      params[:attendance_record_amendment][:"date(1i)"].to_i,
-      params[:attendance_record_amendment][:"date(2i)"].to_i,
-      params[:attendance_record_amendment][:"date(3i)"].to_i
-    )
+    params.require(:attendance_record_amendment).permit(:student_id, :status, :date)
   end
 end
