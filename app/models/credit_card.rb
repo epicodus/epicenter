@@ -8,7 +8,7 @@ class CreditCard < PaymentMethod
     begin
       Balanced::Card.fetch(account_uri)
     rescue Balanced::PaymentRequired => exception
-      errors.add(:base, exception.additional)
+      errors.add(:base, exception.description)
       false
     end
   end
