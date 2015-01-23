@@ -1,0 +1,24 @@
+<h1>Report for <%= @assessment.title %></h1>
+
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th></th>
+      <% @assessment.requirements.each do |requirement| %>
+        <th><%= requirement.content %></th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @cohort.students.sort_by { |student| @assessment.latest_total_score_for(student) }.reverse.each do |student| %>
+      <tr>
+        <td><%= student.name %></td>
+        <% @assessment.requirements.each do |requirement| %>
+          <td><%= requirement.score_for(student) %></td>
+        <% end %>
+        <td><%= @assessment.latest_total_score_for(student) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

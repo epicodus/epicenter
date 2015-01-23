@@ -18,7 +18,7 @@
         </span>
 
       <% elsif current_admin %>
-
+        <%= link_to 'Grades report', assessment_report_path(assessment) %>
         <%= submissions_count_badge(assessment) %>
 
         <%= fields_for 'assessments[]', assessment do |f| %>

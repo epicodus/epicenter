@@ -54,4 +54,30 @@ describe Assessment do
       expect(assessment.expectations_met_by?(student)).to eq false
     end
   end
+
+  describe '#latest_total_score_for' do
+    let(:assessment) { FactoryGirl.create(:assessment) }
+    let(:student) { FactoryGirl.create(:student) }
+
+    it 'gives the latest total score the student received for this assessment' do
+      submission = FactoryGirl.create(:submission, assessment: assessment, student: student)
+      review = FactoryGirl.create(:review, submission: submission)
+      score = FactoryGirl.create(:score, value: 1)
+      assessment.requirements.each do |requirement|
+        FactoryGirl.create(:grade, requirement: requirement, score: score, review: review)
+      end
+      number_of_requirements = assessment.requirements.count
+      expected_score = number_of_requirements * score.value
+      expect(assessment.latest_total_score_for(student)).to eq expected_score
+    end
+
+    it "gives 0 if the student hasn't submitted for this assessment" do
+      expect(assessment.latest_total_score_for(student)).to eq 0
+    end
+
+    it "gives 0 if the student's submission hasn't been reviewed" do
+      submission = FactoryGirl.create(:submission, assessment: assessment, student: student)
+      expect(assessment.latest_total_score_for(student)).to eq 0
+    end
+  end
 end
