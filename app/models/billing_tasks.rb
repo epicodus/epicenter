@@ -15,12 +15,12 @@ module BillingTasks
 
     def billable_today
       recurring_students_joined_with_last_payment
-        .where('DATE(payments.created_at) <= ?', 1.month.ago.to_date)
+        .where('DATE(payments.created_at) <= ?', 1.month.ago.utc) # dates in db are in utc
     end
 
     def billable_in_three_days
       recurring_students_joined_with_last_payment
-        .where('DATE(payments.created_at) = ?', 1.month.ago.to_date + 3.days)
+        .where('DATE(payments.created_at) = ?', 1.month.ago.utc + 3.days) # dates in db are in utc
     end
 
     def email_upcoming_payees
