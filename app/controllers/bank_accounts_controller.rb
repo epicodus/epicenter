@@ -1,12 +1,12 @@
 class BankAccountsController < ApplicationController
   authorize_resource
-  
+
   def new
     @bank_account = BankAccount.new
   end
 
   def create
-    @bank_account = BankAccount.create(bank_account_params.merge(student: current_student))
+    @bank_account = BankAccount.new(bank_account_params.merge(student: current_student))
     unless @bank_account.save
       render :new
     end
