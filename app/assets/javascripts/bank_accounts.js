@@ -4,8 +4,8 @@ $(function() {
 
     var formData = {
       routing_number: $("input#routing_number").val(),
-      account_number:$("input#bank_account_number").val(),
-      name:$("input#name").val()
+      account_number: $("input#bank_account_number").val(),
+      name: $("input#name").val()
     };
 
     balanced.bankAccount.create(formData, handleResponse);
