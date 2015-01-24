@@ -19,13 +19,6 @@ describe CreditCard do
         expect(credit_card.student.primary_payment_method).to eq credit_card
       end
     end
-
-    describe "with an invalid number" do
-      xit "adds the Balanced message to the errors, except there doesn't seem to be a way to tokenize a card without claiming and authenticating, as happens in balanced.js" do
-        credit_card = FactoryGirl.create(:invalid_credit_card)
-        expect(credit_card.errors.full_messages).to eq ["This transaction was declined by the card issuer. Customer please call bank."]
-      end
-    end
   end
 
   describe "#fetch_balanced_account" do
