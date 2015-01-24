@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 20150120224554) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "tardy"
+    t.date     "date"
   end
 
   add_index "attendance_records", ["created_at"], name: "index_attendance_records_on_created_at", using: :btree

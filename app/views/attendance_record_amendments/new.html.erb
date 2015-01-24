@@ -1,0 +1,29 @@
+<h1>Amend student attendance record</h1>
+
+<div class="row">
+  <div class="span8 offset2">
+
+    <%= form_for @attendance_record_amendment do |f| %>
+      <div class="row">
+        <div class="span8">
+          <%= f.label :student_id %>
+          <%= f.collection_select :student_id, current_cohort.students, :id, :name, {}, { class: "span8" } %>
+        </div>
+        <div class="span4">
+          <%= f.label :date %>
+          <%= f.text_field :date, class: 'datepicker span4' %>
+        </div>
+        <div class="span4">
+          <%= f.label :status %>
+          <%= f.select :status, options_for_select(["On time", "Tardy", "Absent"]), {}, { class: "span4" } %>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="span8">
+          <%= f.submit "Submit", class: 'btn btn-primary pull-right' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
