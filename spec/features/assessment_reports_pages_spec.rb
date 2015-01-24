@@ -26,4 +26,10 @@ feature 'assessment report' do
       expect(page).to have_content passing_grade.score.value
     end
   end
+
+  scenario 'visiting as a student' do
+    login_as(student, scope: :student)
+    visit assessment_report_path(assessment)
+    expect(page).to have_content "You are not authorized to access this page."
+  end
 end
