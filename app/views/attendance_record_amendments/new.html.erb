@@ -4,6 +4,7 @@
   <div class="span8 offset2">
 
     <%= form_for @attendance_record_amendment do |f| %>
+      <%= render 'layouts/errors', object: @attendance_record_amendment %>
       <div class="row">
         <div class="span8">
           <%= f.label :student_id %>

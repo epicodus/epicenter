@@ -1,16 +1,27 @@
 class AttendanceRecordAmendment
   include ActiveModel::Model
 
-  attr_reader :student_id, :date, :status, :attendance_record
+  validates :student_id, :date, :status, presence: true
+
+  attr_accessor :student_id, :date, :status
 
   def initialize(attributes={})
     @student_id = attributes[:student_id]
-    @date = attributes[:date]
+    @date = attributes[:date] unless attributes[:date].blank?
     @status = attributes[:status]
-    @attendance_record = fetch_attendance_record
   end
 
-  def amend
+  def save
+    if valid?
+      amend_attendance_record
+    else
+      false
+    end
+  end
+
+private
+
+  def amend_attendance_record
     case status
     when "On time"
       attendance_record.update(tardy: false)
@@ -21,10 +32,8 @@ class AttendanceRecordAmendment
     end
   end
 
-private
-
-  def fetch_attendance_record
-    AttendanceRecord.find_or_initialize_by(student_id: student_id, date: date)
+  def attendance_record
+    @attendance_record ||= AttendanceRecord.find_or_initialize_by(student_id: student_id, date: date)
   end
 
   def destroy_attendance_record

@@ -17,4 +17,12 @@ feature "creating an attendance record amendment" do
     visit new_attendance_record_amendment_path
     expect(page).to have_content "You are not authorized to access this page."
   end
+
+  scenario 'with errors' do
+    admin = FactoryGirl.create(:admin, current_cohort: student.cohort)
+    login_as(admin, scope: :admin)
+    visit new_attendance_record_amendment_path
+    click_button "Submit"
+    expect(page).to have_content "can't be blank"
+  end
 end
