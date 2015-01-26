@@ -2,6 +2,13 @@ describe AttendanceRecord do
   it { should belong_to :student }
   it { should validate_presence_of :student_id }
 
+  context 'before create' do
+    it 'sets the date property to the current date' do
+      attendance_record = FactoryGirl.create(:attendance_record)
+      expect(attendance_record.date).to eq(Date.today)
+    end
+  end
+
   describe 'uniqueness validation for users' do
     it 'validates that an attendance record for a student has not already been created for today' do
       first_attendance_record = FactoryGirl.create(:attendance_record)
