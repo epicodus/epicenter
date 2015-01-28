@@ -36,7 +36,7 @@ describe AttendanceRecord do
   end
 
   describe '#tardy' do
-    let(:start_time) { Time.parse(ENV['CLASS_START_TIME']) }
+    let(:start_time) { Time.zone.parse(ENV['CLASS_START_TIME'] ||= '9:05 AM') }
 
     it 'is true if the student checks in after the start of class' do
       travel_to start_time + 1.minute do

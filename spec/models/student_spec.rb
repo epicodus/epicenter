@@ -207,7 +207,7 @@ describe Student do
 
     describe '#tardies' do
       it 'counts the number of days the student has been tardy' do
-        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 9, 10, 00) do
+        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 9, 10, 00, Time.zone.formatted_offset) do
           FactoryGirl.create(:attendance_record, student: student)
           travel 1.day
           FactoryGirl.create(:attendance_record, student: student)
