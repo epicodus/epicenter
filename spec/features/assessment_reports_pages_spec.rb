@@ -30,4 +30,14 @@ feature 'assessment report' do
       expect(page).to have_content passing_grade.score.value
     end
   end
+
+  context 'visiting as a student' do
+    it 'is not authorized' do
+      student = FactoryGirl.create(:student)
+      assessment = FactoryGirl.create(:assessment)
+      login_as(student, scope: :student)
+      visit assessment_report_path(assessment)
+      expect(page).to have_content("not authorized")
+    end
+  end
 end
