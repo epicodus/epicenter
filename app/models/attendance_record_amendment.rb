@@ -35,8 +35,4 @@ private
   def attendance_record
     @attendance_record ||= AttendanceRecord.find_or_initialize_by(student_id: student_id, date: date)
   end
-
-  def destroy_attendance_record
-    attendance_record.try(:destroy)
-  end
 end
