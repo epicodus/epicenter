@@ -18,6 +18,7 @@ gem 'deep_cloneable'
 gem 'cancancan'
 gem 'jquery-ui-rails'
 gem 'validate_url'
+gem 'gravatarify', '~> 3.0.0'
 
 group :development do
   gem 'spring'
