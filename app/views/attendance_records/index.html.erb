@@ -1,17 +1,35 @@
-<div class="div-list">
-  <%= div_for @students, class: 'div-list-item row-fluid' do |student| %>
-    <div class="span9">
-      <p class="lead"><%= student.name %></p>
-    </div>
-    <div class="span3">
+<style>
+  .student h2 {
+    margin: 8px auto 0;
+    font-size: 21px;
+    font-weight: 200;
+    line-height: 36px;
+  }
+  .student img { vertical-align: top; }
+  .student .text-success { margin-top: 12px; font-weight: bold; }
+  .student input[type="submit"] { margin-top: 12px;}
+  .student form { margin-bottom: 2px; }
+</style>
+
+<div class="row">
+  <div class="span12">
+    <header>
+      <h1><%= current_cohort.description %> Student Sign-in </h1>
+    </header>
+  </div>
+</div>
+
+<div class="row">
+  <%= div_for @students, class: 'well span3' do |student| %>
       <% if student.signed_in_today? %>
-        <span class="pull-right text-success">Signed in</span>
+        <p class="text-success pull-right">&#x2713;&nbsp;&nbsp;Signed in</p>
       <% else %>
-        <%= form_for AttendanceRecord.new, html: {class: "pull-right"} do |f| %>
+        <%= form_for AttendanceRecord.new do |f| %>
           <%= f.hidden_field :student_id, value: student.id %>
-          <%= f.submit "I'm here", class: 'btn btn-primary' %>
+          <%= f.submit "I'm here", class: 'btn btn-primary pull-right' %>
         <% end %>
       <% end %>
-    </div>
+        <%= gravatar_tag student.email, :size => 85, :html => { :class => 'img-rounded' }, :default => "http://placehold.it/85&text=%20" %>
+    <h2><%= student.name %></h2>
   <% end %>
 </div>
