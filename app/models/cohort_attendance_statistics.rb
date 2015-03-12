@@ -6,7 +6,7 @@ class CohortAttendanceStatistics
   end
 
   def daily_presence
-    @cohort.attendance_records.group(:date).count
+    @cohort.attendance_records.unscope(:order).group(:date).count
   end
 
   def student_attendance_data
