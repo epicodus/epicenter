@@ -1,5 +1,6 @@
 class Student < User
   scope :recurring_active, -> { where(recurring_active: true) }
+  default_scope { order(:name) }
 
   validates :plan_id, presence: true
   validates :cohort_id, presence: true
