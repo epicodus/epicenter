@@ -4,29 +4,36 @@
   <h2><%= link_to "View certificate of completion", certificate_path, target: '_blank' %></h2>
   <h2><%= link_to "View transcript", transcript_path, target: '_blank' %></h2>
 <% end %>
-
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= devise_error_messages! %>
-
-  <div>
-    <%= f.label :name %>
-    <%= f.text_field :name, autofocus: true %>
+<div class='row'>
+  <div class='span3'>
+    <%= gravatar_tag @student.email, :size => 140, :html => { :class => 'img-rounded' }, :default => "http://placehold.it/85&text=%20" %>
+    <p><a href="https://www.gravatar.com">Update your Avatar</a></p>
   </div>
 
-  <div>
-    <%= f.label :email %>
-    <%= f.email_field :email, autofocus: true %>
+  <div class='span9'>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+    <%= devise_error_messages! %>
+
+    <div>
+      <%= f.label :name %>
+      <%= f.text_field :name, autofocus: true %>
+    </div>
+
+    <div>
+      <%= f.label :email %>
+      <%= f.email_field :email, autofocus: true %>
+    </div>
+
+    <div><%= f.label :password, 'New password' %> <i>(leave blank if you don't want to change it)</i>
+      <%= f.password_field :password, autocomplete: "off" %></div>
+
+    <div><%= f.label :password_confirmation, 'New password confirmation' %>
+      <%= f.password_field :password_confirmation, autocomplete: "off" %></div>
+
+    <div><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i>
+      <%= f.password_field :current_password, autocomplete: "off" %></div>
+
+    <div><%= f.submit "Update", class: 'btn btn-large btn-primary' %></div>
+  <% end %>
   </div>
-
-  <div><%= f.label :password, 'New password' %> <i>(leave blank if you don't want to change it)</i>
-    <%= f.password_field :password, autocomplete: "off" %></div>
-
-  <div><%= f.label :password_confirmation, 'New password confirmation' %>
-    <%= f.password_field :password_confirmation, autocomplete: "off" %></div>
-
-  <div><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i>
-    <%= f.password_field :current_password, autocomplete: "off" %></div>
-
-  <div><%= f.submit "Update", class: 'btn btn-large btn-primary' %></div>
-<% end %>
-
+</div>
