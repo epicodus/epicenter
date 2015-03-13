@@ -24,6 +24,11 @@
       <%= f.email_field :email, autofocus: true %>
     </div>
 
+    <div>
+      <%= f.label :cohort_id, "Class" %>
+      <%= f.select(:cohort_id, Cohort.all.collect {|c| [ c.description, c.id ] }, :include_blank => true) %>
+    </div>
+
     <div><%= f.label :password, 'New password' %> <i>(leave blank if you don't want to change it)</i>
       <%= f.password_field :password, autocomplete: "off" %></div>
 
