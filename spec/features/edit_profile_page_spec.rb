@@ -28,7 +28,7 @@ feature 'Student edits their profile' do
       student = FactoryGirl.create(:user_with_credit_card)
       login_as(student, scope: :student)
       visit edit_student_registration_path
-      select "Current cohort", :from => "Class"
+      select 'Current cohort', :from => 'Class'
       fill_in 'Current password', with: student.password
       click_on 'Update'
       expect(page).to have_content "You updated your account successfully"
