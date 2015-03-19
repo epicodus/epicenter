@@ -28,6 +28,23 @@ describe Cohort do
     end
   end
 
+  describe '#class_dates' do
+    let(:cohort) { FactoryGirl.create(:cohort) }
+
+    it 'returns a collection of date objects for the class days up to a given date' do
+      day_one = cohort.start_date
+      day_two = day_one + 1.day
+      travel_to day_two do
+        expect(cohort.class_dates(Date.today)).to eq [day_one, day_two]
+      end
+    end
+
+    it 'returns date objects for all the days in the class if no date is given' do
+      cohort.update(end_date: cohort.start_date + 1.day)
+      expect(cohort.class_dates).to eq [cohort.start_date, cohort.end_date]
+    end
+  end
+
   describe '#total_class_days' do
     it 'counts the days of class minus weekends' do
       cohort = FactoryGirl.create(:cohort, start_date: Date.today, end_date: (Date.today + 2.weeks - 1.day))
