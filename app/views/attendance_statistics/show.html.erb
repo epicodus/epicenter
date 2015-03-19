@@ -1,27 +1,47 @@
 <h1>Your attendance record</h1>
 
 <div class="row">
-  <div class="span12">
-    <%= pie_chart @student_attendance_stats.punctuality_hash,
-      library: {
-        pieHole: 0.5,
-        chartArea: { top: 20, bottom: 20, width: '100%', height: '90%' },
-        colors: ['#27ae60', '#f39c12', '#e74c3c'],
-        legend: {
-          textStyle: { fontSize: 30 }
-        }
-      } %>
-  </div>
-</div>
+  <div class="span8">
+    <div class="row">
+      <div class="span8 panel">
+        <%= pie_chart @student_attendance_stats.punctuality_hash,
+          library: {
+            pieHole: 0.5,
+            chartArea: { top: 20, bottom: 20, width: '100%', height: '90%' },
+            colors: ['#27ae60', '#f39c12', '#e74c3c'],
+            legend: {
+              textStyle: { fontSize: 30 }
+            }
+          } %>
+      </div>
+    </div>
 
-<div class="row">
-  <h3 class="span12">
-    Class progress
-    <span class="pull-right muted">
-      <%= pluralize(@student_attendance_stats.days_remaining, 'day') %> left of class
-    </span>
-  </h3>
-  <div class="progress progress-striped span12">
-    <div class="bar" style="width: <%= current_student.cohort.progress_percent %>%;"></div>
+    <div class="row">
+      <h3 class="span8">
+        Class progress
+        <span class="pull-right muted">
+          <%= pluralize(@student_attendance_stats.days_remaining, 'day') %> left of class
+        </span>
+      </h3>
+      <div class="progress progress-striped span8">
+        <div class="bar" style="width: <%= current_student.cohort.progress_percent %>%;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="span4 panel">
+    <table class="table table-bordered">
+      <thead><tr><th class="text-warning">Tardies</th></tr></thead>
+      <% @student_attendance_stats.tardies.each do |tardy| %>
+        <tr><td><%= tardy.strftime("%A, %B %-d") %></td></tr>
+      <% end %>
+    </table>
+    <hr>
+    <table class="table table-bordered">
+      <thead><tr><th class="text-error">Absences</th></tr></thead>
+      <% @student_attendance_stats.absences.each do |tardy| %>
+        <tr><td><%= tardy.strftime("%A, %B %-d") %></td></tr>
+      <% end %>
+    </table>
   </div>
 </div>
