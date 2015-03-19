@@ -37,4 +37,32 @@ describe StudentAttendanceStatistics do
       end
     end
   end
+
+  describe '#tardies' do
+    it 'returns a collection of day objects for student tardies' do
+      day_one_tardy = cohort.start_date.beginning_of_day + 10.hours
+      day_two_tardy = day_one_tardy + 1.day
+      travel_to day_one_tardy do
+        FactoryGirl.create(:attendance_record, student: student)
+      end
+      travel_to day_two_tardy do
+        FactoryGirl.create(:attendance_record, student: student)
+      end
+      student_attendance_statistics = StudentAttendanceStatistics.new(student)
+      expect(student_attendance_statistics.tardies).to eq [day_one_tardy.to_date, day_two_tardy.to_date]
+    end
+  end
+
+  describe '#absences' do
+    it 'returns a collection of day objects for student absences' do
+      day_one = cohort.start_date
+      day_two = day_one + 1.day
+      day_three = day_two + 1.day
+      travel_to day_three do
+        FactoryGirl.create(:attendance_record, student: student)
+        student_attendance_statistics = StudentAttendanceStatistics.new(student)
+        expect(student_attendance_statistics.absences).to eq [day_one.to_date, day_two.to_date]
+      end
+    end
+  end
 end
