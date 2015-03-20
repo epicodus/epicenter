@@ -14,11 +14,11 @@ class Cohort < ActiveRecord::Base
 
   def number_of_days_since_start
     last_date = Date.today <= end_date ? Date.today : end_date
-    class_days_until(last_date)
+    class_dates(last_date).count
   end
 
   def total_class_days
-    class_days_until(end_date)
+    class_dates(end_date).count
   end
 
   def number_of_days_left
@@ -27,6 +27,10 @@ class Cohort < ActiveRecord::Base
 
   def progress_percent
     (number_of_days_since_start.to_f / total_class_days.to_f) * 100
+  end
+
+  def class_dates(last_date)
+    (start_date..last_date).select { |date| !date.saturday? && !date.sunday? }
   end
 
 private
@@ -39,9 +43,5 @@ private
 
   def reassign_admin_current_cohorts
     Admin.where(current_cohort_id: self.id).update_all(current_cohort_id: Cohort.last.id)
-  end
-
-  def class_days_until(last_date)
-    (start_date..last_date).select { |date| !date.saturday? && !date.sunday? }.count
   end
 end
