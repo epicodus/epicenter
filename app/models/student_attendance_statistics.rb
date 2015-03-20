@@ -22,7 +22,7 @@ class StudentAttendanceStatistics
   end
 
   def absences
-    class_dates_so_far = student.cohort.class_dates(Date.today)
+    class_dates_so_far = student.cohort.class_dates_until(Date.today)
     student_attendance_record_dates = student.attendance_records.pluck(:date)
     class_dates_so_far - student_attendance_record_dates
   end

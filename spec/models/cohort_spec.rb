@@ -35,7 +35,7 @@ describe Cohort do
       day_one = cohort.start_date
       day_two = day_one + 1.day
       travel_to day_two do
-        expect(cohort.class_dates(day_two)).to eq [day_one, day_two]
+        expect(cohort.class_dates_until(day_two)).to eq [day_one, day_two]
       end
     end
   end

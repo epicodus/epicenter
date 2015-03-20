@@ -14,11 +14,11 @@ class Cohort < ActiveRecord::Base
 
   def number_of_days_since_start
     last_date = Date.today <= end_date ? Date.today : end_date
-    class_dates(last_date).count
+    class_dates_until(last_date).count
   end
 
   def total_class_days
-    class_dates(end_date).count
+    class_dates_until(end_date).count
   end
 
   def number_of_days_left
@@ -29,7 +29,7 @@ class Cohort < ActiveRecord::Base
     (number_of_days_since_start.to_f / total_class_days.to_f) * 100
   end
 
-  def class_dates(last_date)
+  def class_dates_until(last_date)
     (start_date..last_date).select { |date| !date.saturday? && !date.sunday? }
   end
 
