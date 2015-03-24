@@ -218,4 +218,15 @@ FactoryGirl.define do
     assessment
     student
   end
+
+  factory :company do
+    name Faker::Company.name
+    company_description Faker::Company.bs
+    company_website 'http://www.testcompany.com'
+    company_address "#{Faker::Address.street_address} #{Faker::Address.city}, #{Faker::Address.state} #{Faker::Address.zip}"
+    contact_name    'Alice Wonder'
+    contact_phone   '(555)555-5555'
+    contact_email   'test@company.com'
+    contact_title   'mentor'
+  end
 end

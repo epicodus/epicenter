@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     resources :attendance_statistics, only: [:index]
     resources :assessments, only: [:index]
   end
+  resources :companies, only: [:index, :show]
 
   resource :attendance_statistics, only: [:show]
 

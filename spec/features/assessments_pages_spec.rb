@@ -51,7 +51,7 @@ feature 'index page' do
     end
   end
 
-  context 'when visitingas an admin' do
+  context 'when visiting as an admin' do
     let(:admin) { FactoryGirl.create(:admin) }
     let(:assessment) { FactoryGirl.create(:assessment) }
 
