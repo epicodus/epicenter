@@ -37,7 +37,7 @@ private
   def send_payment_receipt
     Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message(
       "epicodus.com",
-      { :from => "michael@epicodus.com",
+      { :from => ENV['FROM_EMAIL'],
         :to => student.email,
         :bcc => "michael@epicodus.com",
         :subject => "Epicodus tuition payment receipt",
