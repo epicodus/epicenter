@@ -221,9 +221,9 @@ FactoryGirl.define do
 
   factory :company do
     sequence(:name) { |n| "#{n} labs" }
-    company_description 'A great company'
-    company_website 'http://www.testcompany.com'
-    company_address '123 N Main st. Portland, OR 97200'
+    description 'A great company'
+    website 'http://www.testcompany.com'
+    address '123 N Main st. Portland, OR 97200'
     contact_name    'Alice Wonder'
     contact_phone   '(555)555-5555'
     contact_email   'test@company.com'

@@ -22,10 +22,15 @@ feature 'index page' do
     before { login_as(admin, scope: :admin) }
 
     scenario "all companies should be listed" do
-
       visit companies_path
       expect(page).to have_content "1 labs"
       expect(page).to have_content other_company.name
+    end
+
+    scenario "Companies are linked to their show page" do
+      visit companies_path
+      click_link company.name
+      expect(page).to have_content company.description
     end
   end
 

@@ -1,0 +1,18 @@
+<h2><%= @company.name %></h2>
+  <table class="table table-rating">
+    <tr>
+      <th>Company Info:</th>
+      <td>
+        <%= @company.website %><br>
+        <%= @company.address %><br><br>
+        <%= @company.description %>
+      </td>
+    </tr>
+    <tr>
+      <th>Contact:</th>
+      <td>
+        <%= "#{@company.contact_name}, #{@company.contact_title}" %><br>
+        <%= @company.contact_phone %><br>
+        <%= @company.contact_email %>
+      </td>
+  </table>
