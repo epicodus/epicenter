@@ -31,8 +31,44 @@ feature 'index page' do
       visit companies_path
       click_link company.name
       expect(page).to have_content company.description
+      expect(page).to have_content company.contact_name
+    end
+
+    scenario "it should have an add new company button" do
+      visit companies_path
+      expect(page).to have_content "+ New Company"
+    end
+  end
+end
+
+feature "creating a new company" do
+  let(:cohort) { FactoryGirl.create(:cohort) }
+  let(:admin) { FactoryGirl.create(:admin) }
+  before { login_as(admin, scope: :admin) }
+
+
+  context "with valid input" do
+    scenario "it adds a new company" do
+      visit companies_path
+      click_link "+ New Company"
+      fill_in "Company Name", with: "New Company"
+      fill_in "Phone Number", with: "555-555-5555"
+      fill_in "Email", with: "test@test.com"
+      click_on "Create Company"
+      expect(page).to have_content "New Company"
     end
   end
 
+  context "with invalid input" do
+    scenario "it adds a new company" do
+      visit companies_path
+      click_link "+ New Company"
+      fill_in "Company Name", with: ""
+      fill_in "Phone Number", with: "555-555-5555"
+      fill_in "Email", with: "test@test.com"
+      click_on "Create Company"
+      expect(page).to have_content "Company Name"
+    end
+  end
 end
 
