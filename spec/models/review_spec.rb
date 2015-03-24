@@ -22,7 +22,7 @@ describe Review do
 
       expect(mailgun_client).to have_received(:send_message).with(
         "epicodus.com",
-        { :from => "teachers@epicodus.com",
+        { :from => ENV['FROM_EMAIL_REVIEW'],
           :to => student.email,
           :subject => "Assessment reviewed",
           :text => "Hi #{student.name}. Your #{submission.assessment.title} assessment has been reviewed. You can view it at #{Rails.application.routes.url_helpers.assessment_url(submission.assessment)}."
