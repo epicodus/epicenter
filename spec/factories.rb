@@ -220,10 +220,10 @@ FactoryGirl.define do
   end
 
   factory :company do
-    name Faker::Company.name
-    company_description Faker::Company.bs
+    sequence(:name) { |n| "#{n} labs" }
+    company_description 'A great company'
     company_website 'http://www.testcompany.com'
-    company_address "#{Faker::Address.street_address} #{Faker::Address.city}, #{Faker::Address.state} #{Faker::Address.zip}"
+    company_address '123 N Main st. Portland, OR 97200'
     contact_name    'Alice Wonder'
     contact_phone   '(555)555-5555'
     contact_email   'test@company.com'

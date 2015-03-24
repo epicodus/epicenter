@@ -17,13 +17,14 @@ feature 'index page' do
   context "as an admin" do
     let(:cohort) { FactoryGirl.create(:cohort) }
     let(:admin) { FactoryGirl.create(:admin) }
-    let(:company) { FactoryGirl.create(:company) }
-    let(:other_company) { FactoryGirl.create(:company) }
+    let!(:company) { FactoryGirl.create(:company) }
+    let!(:other_company) { FactoryGirl.create(:company) }
     before { login_as(admin, scope: :admin) }
 
     scenario "all companies should be listed" do
+
       visit companies_path
-      expect(page).to have_content company.name
+      expect(page).to have_content "1 labs"
       expect(page).to have_content other_company.name
     end
   end
