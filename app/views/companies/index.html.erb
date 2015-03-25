@@ -3,9 +3,18 @@
 
 <ul class="company-list">
   <% @companies.each do |company| %>
-    <li><%= link_to company.name, company %></li>
+    <li>
+      <%= link_to company.name, company %>
+      <span class='update-company'>
+        <%= link_to 'Edit', edit_company_path(company) %>
+        <%= spacer %>
+        <%= link_to 'Delete', company_path(company), method: :delete %>
+        </span>
+    </li>
+    <% unless company.last_company? %>
+      <hr>
+    <% end %>
   <% end %>
 </ul>
-
-<hr/>
+<hr>
 <%= link_to "+ New Company", new_company_path, class: "unstyled-link" %>

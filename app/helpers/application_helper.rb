@@ -10,4 +10,8 @@ module ApplicationHelper
       "http://" + url
     end
   end
+
+  def spacer
+    " | "
+  end
 end
