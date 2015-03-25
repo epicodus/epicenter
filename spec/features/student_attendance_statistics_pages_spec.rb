@@ -34,4 +34,27 @@ feature 'student attendance statistics page' do
       end
     end
   end
+
+  context 'within attendance alerts section' do
+    it 'shows days students have been late' do
+      after_class_start_time = student.cohort.start_date.beginning_of_day + 10.hours
+      formatted_after_class_start_time = after_class_start_time.strftime("%A, %B %-d")
+      travel_to after_class_start_time do
+        FactoryGirl.create(:attendance_record, student: student)
+      end
+      visit attendance_statistics_path
+      expect(page).to have_content formatted_after_class_start_time
+    end
+
+    it 'shows days students have been absent' do
+      first_day_of_class = student.cohort.start_date
+      second_day_of_class = first_day_of_class + 1.day
+      formatted_absent_day = first_day_of_class.strftime("%A, %B %-d")
+      travel_to second_day_of_class do
+        FactoryGirl.create(:attendance_record, student: student)
+      end
+      visit attendance_statistics_path
+      expect(page).to have_content formatted_absent_day
+    end
+  end
 end
