@@ -3,7 +3,7 @@
     <tr>
       <th>Company Info:</th>
       <td>
-        <%= @company.website %><br>
+        <%= link_to @company.website, fix_url(@company.website) %><br>
         <%= @company.address %><br><br>
         <%= @company.description %>
       </td>
