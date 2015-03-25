@@ -73,6 +73,14 @@ describe Cohort do
     end
   end
 
+  describe '.order_by_start_date' do
+    it 'uses AR to order the cohorts coming out of the DB' do
+      cohort = FactoryGirl.create(:cohort, start_date: '2015-01-01', end_date: '2015-01-02')
+      cohort2 = FactoryGirl.create(:cohort, start_date: '2014-01-01', end_date: '2014-01-01')
+      expect(Cohort.order_by_start_date). to eq [cohort2, cohort]
+    end
+  end
+
   context 'after_destroy' do
     let(:cohort) { FactoryGirl.create(:cohort) }
 

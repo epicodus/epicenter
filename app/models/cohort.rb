@@ -33,6 +33,10 @@ class Cohort < ActiveRecord::Base
     (start_date..last_date).select { |date| !date.saturday? && !date.sunday? }
   end
 
+  def self.order_by_start_date
+    Cohort.order(:start_date)
+  end
+
 private
 
   def import_assessments
