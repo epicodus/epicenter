@@ -36,7 +36,7 @@ feature 'Changing current cohort', js: true do
       student = FactoryGirl.create(:student, cohort: cohort)
       login_as(admin, scope: :admin)
       visit cohort_attendance_statistics_path(admin.current_cohort)
-      expect(page).to_not have_content student.name
+      expect(page).to have_content student.name
       click_link admin.current_cohort.description
       expect(page).to have_content student.name
     end
