@@ -15,7 +15,7 @@
             <%= link_to '(edit)', edit_cohort_path(current_admin.current_cohort), class: 'fixit' %>
           </a>
           <ul class="dropdown-menu">
-            <% Cohort.order_by_start_date.each do |cohort| %>
+            <% Cohort.all.each do |cohort| %>
               <li><%= link_to cohort.description, admin_path(current_admin, admin: { current_cohort_id: cohort.id }), method: :patch %></li>
             <% end %>
             <li class="new-cohort"><%= link_to '+ Add a class', new_cohort_path %></li>
