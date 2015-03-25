@@ -27,6 +27,16 @@ class CompaniesController < ApplicationController
   def edit
   end
 
+  def update
+    if @company.update(company_params)
+      flash[:notice] = "#{@company.name} updated"
+      redirect_to companies_path
+    else
+      flash[:alert] = "Something went wrong"
+      render :edit
+    end
+  end
+
   def destroy
     @company.delete
     flash[:alert] = "Company deleted."

@@ -72,6 +72,33 @@ feature "creating a new company" do
   end
 end
 
+feature "editing a company" do
+  let(:cohort) { FactoryGirl.create(:cohort) }
+  let(:admin) { FactoryGirl.create(:admin) }
+  let!(:company) { FactoryGirl.create(:company) }
+  before { login_as(admin, scope: :admin) }
+
+  context "with valid input" do
+    scenario "edits a company successfully" do
+      visit companies_path
+      click_link "Edit"
+      fill_in "Company Name", with: "New Company Name"
+      click_on "Update Company"
+      expect(page).to have_content "New Company Name"
+    end
+  end
+
+  context "with invalid input" do
+    scenario "edits a company successfully" do
+      visit companies_path
+      click_link "Edit"
+      fill_in "Company Name", with: ""
+      click_on "Update Company"
+      expect(page).to have_content "Edit Company"
+    end
+  end
+end
+
 feature "deleting a company" do
   let(:cohort) { FactoryGirl.create(:cohort) }
   let(:admin) { FactoryGirl.create(:admin) }
