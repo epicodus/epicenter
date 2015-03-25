@@ -25,6 +25,11 @@
     </div>
 
     <div>
+      <%= f.label :cohort_id, "Class" %>
+      <%= f.select(:cohort_id, Cohort.all.collect {|c| [ c.description, c.id ] }) %>
+    </div>
+
+    <div>
       <%= f.label :plan_id, "Payment Plan" %>
       <%= f.select(:plan_id, Plan.all.collect {|p| [ p.name, p.id ] }) %>
     </div>

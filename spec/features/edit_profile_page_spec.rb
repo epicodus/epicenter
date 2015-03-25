@@ -22,4 +22,5 @@ feature 'Student edits their profile' do
       expect(page).to have_content "Current password is invalid"
     end
   end
+
 end
