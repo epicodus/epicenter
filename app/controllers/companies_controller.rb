@@ -27,6 +27,12 @@ class CompaniesController < ApplicationController
   def edit
   end
 
+  def destroy
+    @company.delete
+    flash[:alert] = "Company deleted."
+    redirect_to companies_path
+  end
+
   private
     def find_company
       @company = Company.find params[:id]
