@@ -22,11 +22,12 @@ feature 'Changing current cohort', js: true do
 
   scenario 'admin selects a cohort from the drop down' do
     cohort = FactoryGirl.create(:cohort, description: 'Winter 2015')
+    cohort2 = FactoryGirl.create(:cohort, description: 'Spring 2015')
     login_as(admin, scope: :admin)
     visit root_path
     click_link admin.current_cohort.description
-    click_link cohort.description
-    expect(page).to have_content "You have switched to #{cohort.description}"
+    click_link cohort2.description
+    expect(page).to have_content "You have switched to #{cohort2.description}"
   end
 
   context 'when viewing a cohort attendance statistics page' do
@@ -35,9 +36,8 @@ feature 'Changing current cohort', js: true do
       student = FactoryGirl.create(:student, cohort: cohort)
       login_as(admin, scope: :admin)
       visit cohort_attendance_statistics_path(admin.current_cohort)
-      expect(page).to_not have_content student.name
+      expect(page).to have_content student.name
       click_link admin.current_cohort.description
-      click_link cohort.description
       expect(page).to have_content student.name
     end
   end
@@ -48,9 +48,8 @@ feature 'Changing current cohort', js: true do
       assessment = FactoryGirl.create(:assessment, cohort: cohort)
       login_as(admin, scope: :admin)
       visit cohort_assessments_path(admin.current_cohort)
-      expect(page).to_not have_content assessment.title
+      expect(page).to have_content assessment.title
       click_link admin.current_cohort.description
-      click_link cohort.description
       expect(page).to have_content assessment.title
     end
   end
