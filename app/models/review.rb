@@ -24,7 +24,7 @@ private
   def email_student
     Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message(
       "epicodus.com",
-      { :from => "teachers@epicodus.com",
+      { :from => ENV['FROM_EMAIL_REVIEW'],
         :to => student.email,
         :subject => "Assessment reviewed",
         :text => "Hi #{student.name}. Your #{submission.assessment.title} assessment has been reviewed. You can view it at #{Rails.application.routes.url_helpers.assessment_url(self.submission.assessment)}."

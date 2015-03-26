@@ -98,7 +98,7 @@ describe Payment do
 
       expect(mailgun_client).to have_received(:send_message).with(
         "epicodus.com",
-        { :from => "michael@epicodus.com",
+        { :from => ENV['FROM_EMAIL_PAYMENT'],
           :to => student.email,
           :bcc => "michael@epicodus.com",
           :subject => "Epicodus tuition payment receipt",
@@ -119,7 +119,7 @@ describe Payment do
 
       expect(mailgun_client).to have_received(:send_message).with(
         "epicodus.com",
-        { :from => "michael@epicodus.com",
+        { :from => ENV['FROM_EMAIL_PAYMENT'],
           :to => student.email,
           :bcc => "michael@epicodus.com",
           :subject => "Epicodus payment failure notice",
