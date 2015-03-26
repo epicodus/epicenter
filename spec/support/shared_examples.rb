@@ -1,6 +1,7 @@
 shared_examples "require admin login" do
   before { visit root_path }
   before { click_link "Log out" }
+
   it "requires login" do
     action
     expect(page).to have_content 'You need to sign in.'
