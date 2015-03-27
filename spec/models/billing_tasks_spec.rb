@@ -142,9 +142,8 @@ describe BillingTasks do
 
       expect(mailgun_client).to have_received(:send_message).with(
         "epicodus.com",
-        { :from => "michael@epicodus.com",
+        { :from => ENV['FROM_EMAIL_PAYMENT'],
           :to => student.email,
-          :bcc => "michael@epicodus.com",
           :subject => "Upcoming Epicodus tuition payment",
           :text => "Hi #{student.name}. This is just a reminder that your next Epicodus tuition payment will be withdrawn from your bank account in 3 days. If you need anything, reply to this email. Thanks!" }
       )
