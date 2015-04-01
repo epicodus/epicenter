@@ -8,6 +8,10 @@ class ApplicationController < ActionController::Base
 
 protected
   def configure_permitted_params
+    devise_parameter_sanitizer.for(:accept_invitation) do |u|
+    u.permit(:name, :email, :cohort_id, :password, :password_confirmation,
+             :invitation_token)
+    end
     devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:plan_id, :cohort_id, :name, :email, :password, :password_confirmation) }
     devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:plan_id, :cohort_id, :name, :email, :password, :password_confirmation, :current_password) }
   end
