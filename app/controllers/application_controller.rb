@@ -46,6 +46,10 @@ protected
     end
   end
 
+  def authenticate_inviter!
+    authenticate_admin!(:force => true)
+  end
+
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_path, alert: exception.message
   end
