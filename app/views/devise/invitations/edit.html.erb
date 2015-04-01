@@ -4,6 +4,15 @@
   <%= devise_error_messages! %>
   <%= f.hidden_field :invitation_token %>
 
+  <p><%= f.label :name %><br />
+  <%= f.text_field :name %></p>
+
+  <p><%= f.label :cohort_id %><br />
+  <%= f.select(:cohort_id, Cohort.all.collect {|c| [ c.description, c.id ] }) %></p>
+
+  <p><%= f.label :plan_id %><br />
+  <%= f.select(:plan_id, Plan.all.collect {|p| [ p.name, p.id ] }) %></p>
+
   <p><%= f.label :password %><br />
   <%= f.password_field :password %></p>
 
