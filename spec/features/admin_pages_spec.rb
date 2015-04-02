@@ -14,6 +14,7 @@ feature 'Admin signs in' do
     visit root_path
     expect(page).to have_link 'Assessments'
     expect(page).to have_link 'Attendance statistics'
+    expect(page).to have_link 'Invite students'
   end
 end
 
