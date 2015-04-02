@@ -59,7 +59,7 @@ describe Assessment do
     let(:assessment) { FactoryGirl.create(:assessment) }
     let(:student) { FactoryGirl.create(:student) }
 
-    it 'gives the latest total score the student received for this assessment' do
+    it 'gives the latest total score the student received for this assessment', vcr: true do
       submission = FactoryGirl.create(:submission, assessment: assessment, student: student)
       review = FactoryGirl.create(:review, submission: submission)
       score = FactoryGirl.create(:score, value: 1)
