@@ -70,14 +70,6 @@ feature "creating a new company" do
       expect(page).to have_content "Company Name"
     end
   end
-
-  context "not an admin" do
-    it_behaves_like "require admin login" do
-      let(:action) do
-        visit new_company_path
-      end
-    end
-  end
 end
 
 feature "editing a company" do
@@ -105,14 +97,6 @@ feature "editing a company" do
       expect(page).to have_content "Edit Company"
     end
   end
-
-  context "not an admin" do
-    let!(:company) { FactoryGirl.create(:company) }
-
-    it_behaves_like "require admin login" do
-      let(:action) { visit edit_company_path(company) }
-    end
-  end
 end
 
 feature "deleting a company" do
@@ -127,14 +111,6 @@ feature "deleting a company" do
       click_link "Delete"
       expect(page).to have_content "Companies"
       expect(page).to_not have_content company.name
-    end
-  end
-
-  context "not an admin" do
-    let!(:company) { FactoryGirl.create(:company) }
-
-    it_behaves_like "require admin login" do
-      let(:action) { page.driver.submit :delete, "/companies/#{company.id}", {} }
     end
   end
 end
