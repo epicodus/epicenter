@@ -8,6 +8,7 @@ class Ability
       can :manage, AttendanceRecord
       can :manage, Assessment
       can :manage, Cohort
+      can :manage, Company
       can :read, Submission
       can :create, Review
       can :read, CohortAttendanceStatistics

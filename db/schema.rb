@@ -46,12 +46,32 @@ ActiveRecord::Schema.define(version: 20150325190112) do
 
   add_index "cohorts", ["start_date"], name: "index_cohorts_on_start_date", using: :btree
 
+  create_table "companies", force: true do |t|
+    t.string "name"
+    t.text   "description"
+    t.string "website"
+    t.string "address"
+    t.string "contact_name"
+    t.string "contact_phone"
+    t.string "contact_email"
+    t.string "contact_title"
+  end
+
   create_table "grades", force: true do |t|
     t.integer  "requirement_id"
     t.integer  "score_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "review_id"
+  end
+
+  create_table "internships", force: true do |t|
+    t.integer "company_id"
+    t.integer "cohort_id"
+    t.text    "description"
+    t.text    "ideal_intern"
+    t.boolean "clearance_required"
+    t.text    "clearance_description"
   end
 
   create_table "payment_methods", force: true do |t|

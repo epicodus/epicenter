@@ -218,4 +218,15 @@ FactoryGirl.define do
     assessment
     student
   end
+
+  factory :company do
+    sequence(:name) { |n| "#{n} labs" }
+    description 'A great company'
+    website 'http://www.testcompany.com'
+    address '123 N Main st. Portland, OR 97200'
+    contact_name    'Alice Wonder'
+    contact_phone   '(555)555-5555'
+    contact_email   'test@company.com'
+    contact_title   'mentor'
+  end
 end

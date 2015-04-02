@@ -4,7 +4,7 @@ describe Requirement do
   it { should have_many :grades }
 
   describe "#score_for" do
-    it "returns the latest score of the student given for this requirement" do
+    it "returns the latest score of the student given for this requirement", vcr: true do
       student = FactoryGirl.create(:student)
       assessment = FactoryGirl.create(:assessment)
       first_requirement = assessment.requirements.first

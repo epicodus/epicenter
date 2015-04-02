@@ -1,4 +1,4 @@
-feature 'assessment report' do
+feature 'assessment report', vcr: true do
   it 'shows a table with all of the students and their grades' do
     student = FactoryGirl.create(:student)
     assessment = FactoryGirl.create(:assessment, cohort: student.cohort)
