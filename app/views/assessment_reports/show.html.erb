@@ -18,6 +18,9 @@
           <td><%= requirement.score_for(student) %></td>
         <% end %>
         <td><%= @assessment.latest_total_score_for(student) %></td>
+        <td>
+          <%= @assessment.submission_for(student).try(:reviews).try(:last).try(:note) %>
+        </td>
       </tr>
     <% end %>
   </tbody>
