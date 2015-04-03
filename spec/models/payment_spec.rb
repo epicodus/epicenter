@@ -100,6 +100,7 @@ describe Payment do
         "epicodus.com",
         { :from => ENV['FROM_EMAIL_PAYMENT'],
           :to => student.email,
+          :bcc => ENV['FROM_EMAIL_PAYMENT'],
           :subject => "Epicodus tuition payment receipt",
           :text => "Hi #{student.name}. This is to confirm your payment of $618.21 for Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
       )
@@ -120,6 +121,7 @@ describe Payment do
         "epicodus.com",
         { :from => ENV['FROM_EMAIL_PAYMENT'],
           :to => student.email,
+          :bcc => ENV['FROM_EMAIL_PAYMENT'],
           :subject => "Epicodus payment failure notice",
           :text => "Hi #{student.name}. This is to notify you that a recent payment you made for Epicodus tuition has failed. Please reply to this email so we can sort it out together. Thanks!" }
       )
