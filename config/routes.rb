@@ -2,11 +2,7 @@ Rails.application.routes.draw do
   root 'static_pages#index'
   get 'attendance', to: 'attendance_records#index', as: 'attendance'
 
-  devise_for :student, :controllers => { :invitations => 'invitations' }, skip: :registrations
-  as :student do
-    get 'student/edit' => 'devise/registrations#edit', :as => 'edit_student_registration'
-    put 'users' => 'devise/registrations#update', :as => 'user_registration'
-  end
+  devise_for :student, :controllers => { :invitations => 'invitations', :registrations => 'registrations' }
   devise_for :admins, skip: :registrations
 
 
