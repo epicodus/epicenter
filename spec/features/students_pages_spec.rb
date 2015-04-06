@@ -1,24 +1,25 @@
 feature 'Student signs up via invitation' do
-  before do
-    @student = FactoryGirl.create(:student)
-    @student.invite!
-    visit accept_student_invitation_path(@student, invitation_token: @student.raw_invitation_token)
-    fill_in 'Password', with: 'password'
-    fill_in 'Password confirmation', with: 'password'
-  end
+
+  let(:student) { FactoryGirl.create(:student) }
 
   scenario 'with valid information', js: true do
+    student.invite!
+    visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
     fill_in 'Name', with: 'Ryan Larson'
-    select @student.plan.name, from: 'student_plan_id'
-    select @student.cohort.description, from: 'student_cohort_id'
+    select student.plan.name, from: 'student_plan_id'
+    select student.cohort.description, from: 'student_cohort_id'
+    fill_in 'Password', with: 'password'
+    fill_in 'Password confirmation', with: 'password'
     click_on 'Submit'
     expect(page).to have_content 'Your password was set successfully. You are now signed in.'
   end
 
   scenario 'with missing information', js: true do
+    student.invite!
+    visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
     fill_in 'Name', with: ''
-    select @student.plan.name, from: 'student_plan_id'
-    select @student.cohort.description, from: 'student_cohort_id'
+    select student.plan.name, from: 'student_plan_id'
+    select student.cohort.description, from: 'student_cohort_id'
     click_on 'Submit'
     expect(page).to have_content 'error'
   end
