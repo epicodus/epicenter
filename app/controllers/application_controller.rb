@@ -47,7 +47,9 @@ protected
       current_admin.current_cohort
     end
   end
-
+  #authenticate_inviter is used to restrict who can send invitations. We are overriding the devise default
+  #behavior as this requires authentication of the same resource as the invited one. Only admins are allowed
+  #to send invitations. This requires that the DeviseInvitable::Inviter is added to the Admin model.
   def authenticate_inviter!
     authenticate_admin!(:force => true)
   end
