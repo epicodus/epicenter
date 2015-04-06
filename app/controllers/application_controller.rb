@@ -12,8 +12,10 @@ protected
       u.permit(:name, :email, :cohort_id, :plan_id, :password, :password_confirmation,
              :invitation_token)
     end
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:plan_id, :cohort_id, :name, :email, :password, :password_confirmation) }
     devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:plan_id, :cohort_id, :name, :email, :password, :password_confirmation, :current_password) }
+    devise_parameter_sanitizer.for(:sign_up) do |u|
+      u.permit(:plan_id, :cohort_id, :name, :email, :password, :password_confirmation)
+    end
   end
 
   def after_sign_in_path_for(user)
