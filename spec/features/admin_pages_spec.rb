@@ -59,18 +59,13 @@ end
 feature 'Inviting new students', js: true do
   let(:admin) { FactoryGirl.create(:admin) }
 
-  scenario 'admin selects the invite students link' do
+  scenario 'admin sends invitation to a student' do
     login_as(admin, scope: :admin)
     visit root_path
     click_on 'Invite students'
-    expect(page).to have_content "Send invitation"
-  end
-
-  scenario 'when submitting an email address of a new student for an invitation email' do
-      login_as(admin, scope: :admin)
-      visit new_student_invitation_path
-      fill_in 'Email', with: 'newstudent@example.com'
-      click_on 'Send an invitation'
-      expect(page).to have_content "An invitation email has been sent to newstudent@example.com"
+    visit new_student_invitation_path
+    fill_in 'Email', with: 'newstudent@example.com'
+    click_on 'Send an invitation'
+    expect(page).to have_content "An invitation email has been sent to newstudent@example.com"
   end
 end
