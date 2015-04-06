@@ -1,23 +1,36 @@
 <h2><%= t 'devise.invitations.edit.header' %></h2>
+<div class='row'>
+  <div class='span9'>
+  <%= form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => { :method => :put } do |f| %>
+    <%= devise_error_messages! %>
+    <%= f.hidden_field :invitation_token %>
 
-<%= form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => { :method => :put } do |f| %>
-  <%= devise_error_messages! %>
-  <%= f.hidden_field :invitation_token %>
+    <div>
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </div>
 
-  <p><%= f.label :name %><br />
-  <%= f.text_field :name %></p>
+    <div>
+      <%= f.label :cohort_id %>
+      <%= f.select(:cohort_id, Cohort.all.collect {|c| [ c.description, c.id ] }) %>
+    </div>
 
-  <p><%= f.label :cohort_id %><br />
-  <%= f.select(:cohort_id, Cohort.all.collect {|c| [ c.description, c.id ] }) %></p>
+    <div>
+      <%= f.label :plan_id %>
+      <%= f.select(:plan_id, Plan.all.collect {|p| [ p.name, p.id ] }) %>
+    </div>
 
-  <p><%= f.label :plan_id %><br />
-  <%= f.select(:plan_id, Plan.all.collect {|p| [ p.name, p.id ] }) %></p>
+    <div>
+      <%= f.label :password %>
+      <%= f.password_field :password %>
+    </div>
 
-  <p><%= f.label :password %><br />
-  <%= f.password_field :password %></p>
+    <div>
+      <%= f.label :password_confirmation %>
+      <%= f.password_field :password_confirmation %>
+    </div>
 
-  <p><%= f.label :password_confirmation %><br />
-  <%= f.password_field :password_confirmation %></p>
-
-  <p><%= f.submit t("devise.invitations.edit.submit_button") %></p>
-<% end %>
+    <div><%= f.submit t("devise.invitations.edit.submit_button") %></div>
+  <% end %>
+  </div>
+</div>
