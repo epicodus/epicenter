@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150406170804) do
+ActiveRecord::Schema.define(version: 20150407195719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,11 +58,18 @@ ActiveRecord::Schema.define(version: 20150406170804) do
   end
 
   create_table "grades", force: true do |t|
-    t.integer  "requirement_id"
+    t.integer  "objective_id"
     t.integer  "score_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "review_id"
+  end
+
+  create_table "objectives", force: true do |t|
+    t.string   "content"
+    t.integer  "code_review_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "payment_methods", force: true do |t|
@@ -96,13 +103,6 @@ ActiveRecord::Schema.define(version: 20150406170804) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "total_amount"
-  end
-
-  create_table "requirements", force: true do |t|
-    t.string   "content"
-    t.integer  "code_review_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "reviews", force: true do |t|

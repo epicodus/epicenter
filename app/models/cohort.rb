@@ -38,7 +38,7 @@ private
 
   def import_code_reviews
     unless @importing_cohort_id.blank?
-      self.code_reviews = Cohort.find(@importing_cohort_id).deep_clone(include: { code_reviews: :requirements }).code_reviews
+      self.code_reviews = Cohort.find(@importing_cohort_id).deep_clone(include: { code_reviews: :objectives }).code_reviews
     end
   end
 

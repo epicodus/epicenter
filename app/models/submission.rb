@@ -19,7 +19,7 @@ class Submission < ActiveRecord::Base
       latest_review.deep_clone(include: :grades)
     else
       review = Review.new(submission: self)
-      code_review.requirements.each { |requirement| review.grades.build(requirement: requirement) }
+      code_review.objectives.each { |objective| review.grades.build(objective: objective) }
       review
     end
   end

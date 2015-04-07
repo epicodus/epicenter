@@ -3,13 +3,13 @@ class CodeReview < ActiveRecord::Base
 
   validates :title, presence: true
   validates :cohort, presence: true
-  validate :presence_of_requirements
+  validate :presence_of_objectives
 
-  has_many :requirements
+  has_many :objectives
   has_many :submissions
   belongs_to :cohort
 
-  accepts_nested_attributes_for :requirements, reject_if: :attributes_blank?, allow_destroy: true
+  accepts_nested_attributes_for :objectives, reject_if: :attributes_blank?, allow_destroy: true
 
   before_create :set_number
 
@@ -23,7 +23,7 @@ class CodeReview < ActiveRecord::Base
 
   def latest_total_score_for(student)
     if submission_for(student).try(:has_been_reviewed?)
-      requirements.inject(0) { |sum, requirement| sum += requirement.score_for(student) }
+      objectives.inject(0) { |sum, objective| sum += objective.score_for(student) }
     else
       0
     end
@@ -35,9 +35,9 @@ private
     self.number = cohort.code_reviews.pluck(:number).last.to_i + 1
   end
 
-  def presence_of_requirements
-    if requirements.size < 1
-      errors.add(:requirements, 'must be present.')
+  def presence_of_objectives
+    if objectives.size < 1
+      errors.add(:objectives, 'must be present.')
     end
   end
 

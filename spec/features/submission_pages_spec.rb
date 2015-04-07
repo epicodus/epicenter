@@ -50,7 +50,7 @@ feature 'index page' do
         visit code_review_submissions_path(code_review)
         expect(page).to_not have_button 'Create Review'
         click_on 'Review'
-        expect(page).to have_content code_review.requirements.first.content
+        expect(page).to have_content code_review.objectives.first.content
         expect(page).to have_button 'Create Review'
       end
 

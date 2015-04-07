@@ -79,9 +79,9 @@ describe Submission do
       expect(submission.clone_or_build_review).to be_a_new Review
     end
 
-    it 'returns a new review object that has grades built based on number of requirements' do
+    it 'returns a new review object that has grades built based on number of objectives' do
       new_review = submission.clone_or_build_review
-      expect(new_review.grades.size).to eq submission.code_review.requirements.size
+      expect(new_review.grades.size).to eq submission.code_review.objectives.size
     end
 
     context 'when there is a latest review', :vcr do

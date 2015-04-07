@@ -9,7 +9,7 @@ class CodeReviewsController < ApplicationController
 
   def new
     @code_review = CodeReview.new
-    3.times { @code_review.requirements.build }
+    3.times { @code_review.objectives.build }
   end
 
   def create
@@ -54,6 +54,6 @@ class CodeReviewsController < ApplicationController
 private
 
   def code_review_params
-    params.require(:code_review).permit(:title, :section, :url, requirements_attributes: [:id, :content, :_destroy]).merge(cohort_id: current_admin.current_cohort.id)
+    params.require(:code_review).permit(:title, :section, :url, objectives_attributes: [:id, :content, :_destroy]).merge(cohort_id: current_admin.current_cohort.id)
   end
 end

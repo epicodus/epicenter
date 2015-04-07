@@ -42,7 +42,7 @@ feature 'index page' do
       visit cohort_code_reviews_path(code_review.cohort)
       click_link code_review.title
       expect(page).to have_content code_review.title
-      expect(page).to have_content code_review.requirements.first.content
+      expect(page).to have_content code_review.objectives.first.content
     end
 
     scenario 'does not have button to save order of code reviews' do
@@ -214,7 +214,7 @@ feature 'creating an code_review' do
 
     scenario 'with valid input' do
       fill_in 'Title', with: code_review.title
-      fill_in 'code_review_requirements_attributes_0_content', with: 'requirement'
+      fill_in 'code_review_objectives_attributes_0_content', with: 'objective'
       click_button 'Create Code review'
       expect(page).to have_content 'Code review has been saved'
     end
@@ -224,24 +224,24 @@ feature 'creating an code_review' do
       expect(page).to have_content "can't be blank"
     end
 
-    context 'with requirements' do
-      scenario 'form defaults with 3 requirement fields' do
-        within('ol#requirement-fields') do
+    context 'with objectives' do
+      scenario 'form defaults with 3 objective fields' do
+        within('ol#objective-fields') do
           expect(page).to have_selector('li', count: 3)
         end
       end
 
-      scenario 'allows more requirements to be added', js: true do
-        click_link 'Add Requirement'
-        within('ol#requirement-fields') do
+      scenario 'allows more objectives to be added', js: true do
+        click_link 'Add Objective'
+        within('ol#objective-fields') do
           expect(page).to have_selector('li', count: 4)
         end
       end
 
-      scenario 'requires at least one requirement to be added' do
+      scenario 'requires at least one objective to be added' do
         fill_in 'Title', with: code_review.title
         click_button 'Create Code review'
-        expect(page).to have_content 'Requirements must be present'
+        expect(page).to have_content 'Objectives must be present'
       end
     end
   end
@@ -285,23 +285,23 @@ feature 'editing an code_review' do
       expect(page).to have_content "can't be blank"
     end
 
-    scenario 'removing requirements', js: true do
-      requirement_count = code_review.requirements.count
-      within('ol#requirement-fields') do
+    scenario 'removing objectives', js: true do
+      objective_count = code_review.objectives.count
+      within('ol#objective-fields') do
         first(:link, 'x').click
       end
       click_button 'Update Code review'
-      expect(code_review.requirements.count).to eq requirement_count - 1
+      expect(code_review.objectives.count).to eq objective_count - 1
     end
 
-    scenario 'adding requirements', js: true do
-      requirement_count = code_review.requirements.count
-      click_link 'Add Requirement'
-      within('ol#requirement-fields') do
-        all('input').last.set 'The last requirement'
+    scenario 'adding objectives', js: true do
+      objective_count = code_review.objectives.count
+      click_link 'Add Objective'
+      within('ol#objective-fields') do
+        all('input').last.set 'The last objective'
       end
       click_button 'Update Code review'
-      expect(code_review.requirements.count).to eq requirement_count + 1
+      expect(code_review.objectives.count).to eq objective_count + 1
     end
   end
 

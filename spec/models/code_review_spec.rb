@@ -1,15 +1,15 @@
 describe CodeReview do
   it { should validate_presence_of :title }
   it { should validate_presence_of :cohort }
-  it { should have_many :requirements }
+  it { should have_many :objectives }
   it { should have_many :submissions }
   it { should belong_to :cohort }
-  it { should accept_nested_attributes_for :requirements }
+  it { should accept_nested_attributes_for :objectives }
 
-  it 'validates presence of at least one requirement' do
+  it 'validates presence of at least one objective' do
     code_review = FactoryGirl.build(:code_review)
     code_review.save
-    expect(code_review.errors.full_messages.first).to eq 'Requirements must be present.'
+    expect(code_review.errors.full_messages.first).to eq 'Objectives must be present.'
   end
 
   it 'assigns an order number before creation (defaulted to last)' do
@@ -63,11 +63,11 @@ describe CodeReview do
       submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
       review = FactoryGirl.create(:review, submission: submission)
       score = FactoryGirl.create(:score, value: 1)
-      code_review.requirements.each do |requirement|
-        FactoryGirl.create(:grade, requirement: requirement, score: score, review: review)
+      code_review.objectives.each do |objective|
+        FactoryGirl.create(:grade, objective: objective, score: score, review: review)
       end
-      number_of_requirements = code_review.requirements.count
-      expected_score = number_of_requirements * score.value
+      number_of_objectives = code_review.objectives.count
+      expected_score = number_of_objectives * score.value
       expect(code_review.latest_total_score_for(student)).to eq expected_score
     end
 
