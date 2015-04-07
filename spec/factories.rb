@@ -7,15 +7,6 @@ FactoryGirl.define do
     association :current_cohort, factory: :cohort
   end
 
-  factory :assessment do
-    sequence(:title) { |n| "assessment #{n}" }
-    cohort
-
-    before(:create) do |assessment|
-      assessment.requirements << build(:requirement)
-    end
-  end
-
   factory :attendance_record do
     student
   end
@@ -36,6 +27,15 @@ FactoryGirl.define do
         verification.confirm
       end
       verified true
+    end
+  end
+
+  factory :code_review do
+    sequence(:title) { |n| "code_review #{n}" }
+    cohort
+
+    before(:create) do |code_review|
+      code_review.requirements << build(:requirement)
     end
   end
 
@@ -125,7 +125,7 @@ FactoryGirl.define do
 
     factory :passing_review do
       after(:create) do |review|
-        review.submission.assessment.requirements.each do |requirement|
+        review.submission.code_review.requirements.each do |requirement|
           FactoryGirl.create(:passing_grade, review: review, requirement: requirement)
         end
       end
@@ -133,7 +133,7 @@ FactoryGirl.define do
 
     factory :failing_review do
       after(:create) do |review|
-        review.submission.assessment.requirements.each do |requirement|
+        review.submission.code_review.requirements.each do |requirement|
           FactoryGirl.create(:failing_grade, review: review, requirement: requirement)
         end
       end
@@ -215,7 +215,7 @@ FactoryGirl.define do
 
   factory :submission do
     link 'http://github.com'
-    assessment
+    code_review
     student
   end
 

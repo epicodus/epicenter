@@ -23,7 +23,7 @@
   <% unless cohort.persisted? %>
     <div class="row">
       <div class="span4">
-        <%= f.label :importing_cohort_id, 'Import assessments from previous cohort' %>
+        <%= f.label :importing_cohort_id, 'Import code reviews from previous cohort' %>
         <%= f.collection_select :importing_cohort_id, Cohort.all, :id, :description, { :include_blank => "Do not import any assessment" }, class: 'span4' %>
       </div>
     </div>

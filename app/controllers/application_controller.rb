@@ -22,9 +22,9 @@ protected
 
   def after_sign_in_path_for(user)
     if user.is_a? Admin
-      cohort_assessments_path(user.current_cohort)
+      cohort_code_reviews_path(user.current_cohort)
     elsif user.is_a? Student
-      user.class_in_session? ? cohort_assessments_path(user.cohort) : proper_payments_path(user)
+      user.class_in_session? ? cohort_code_reviews_path(user.cohort) : proper_payments_path(user)
     end
   end
 

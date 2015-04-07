@@ -271,9 +271,9 @@ describe Student do
     let(:student) { FactoryGirl.create(:student) }
     subject { Ability.new(student) }
 
-    context 'for assessments' do
-      it { is_expected.to have_abilities(:read, Assessment.new(cohort: student.cohort)) }
-      it { is_expected.to not_have_abilities(:read, Assessment.new) }
+    context 'for code reviews' do
+      it { is_expected.to have_abilities(:read, CodeReview.new(cohort: student.cohort)) }
+      it { is_expected.to not_have_abilities(:read, CodeReview.new) }
     end
 
     context 'for submissions' do

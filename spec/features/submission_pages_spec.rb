@@ -1,12 +1,12 @@
 feature 'index page' do
-  let(:assessment) { FactoryGirl.create(:assessment) }
+  let(:code_review) { FactoryGirl.create(:code_review) }
   let(:student) { FactoryGirl.create(:student) }
 
   context 'as a student' do
     before { login_as(student, scope: :student) }
 
     scenario 'you are not authorized' do
-      visit assessment_submissions_path(assessment)
+      visit code_review_submissions_path(code_review)
       expect(page).to have_content 'not authorized'
     end
   end
@@ -16,52 +16,52 @@ feature 'index page' do
     before { login_as(admin, scope: :admin) }
 
     scenario 'lists submissions' do
-      submission = FactoryGirl.create(:submission, assessment: assessment, student: student)
-      visit assessment_submissions_path(assessment)
+      submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
+      visit code_review_submissions_path(code_review)
       expect(page).to have_content submission.student.name
     end
 
     scenario 'lists only submissions needing review', :vcr do
-      reviewed_submission = FactoryGirl.create(:submission, assessment: assessment, student: student)
+      reviewed_submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
       FactoryGirl.create(:passing_review, submission: reviewed_submission)
-      visit assessment_submissions_path(assessment)
+      visit code_review_submissions_path(code_review)
       expect(page).to_not have_content reviewed_submission.student.name
     end
 
     scenario 'lists submissions in order of when they were submitted' do
       another_student = FactoryGirl.create(:student)
-      first_submission = FactoryGirl.create(:submission, assessment: assessment, student: student)
-      second_submission = FactoryGirl.create(:submission, assessment: assessment, student: another_student)
-      visit assessment_submissions_path(assessment)
+      first_submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
+      second_submission = FactoryGirl.create(:submission, code_review: code_review, student: another_student)
+      visit code_review_submissions_path(code_review)
       expect(first('.submission')).to have_content first_submission.student.name
     end
 
     context 'within an individual submission' do
       scenario 'shows how long ago the submission was last updated' do
         travel_to 2.days.ago do
-          FactoryGirl.create(:submission, assessment: assessment, student: student)
+          FactoryGirl.create(:submission, code_review: code_review, student: student)
         end
-        visit assessment_submissions_path(assessment)
+        visit code_review_submissions_path(code_review)
         expect(page).to have_content '2 days ago'
       end
 
       scenario 'clicking review link to show review form', js: true do
-        FactoryGirl.create(:submission, assessment: assessment, student: student)
-        visit assessment_submissions_path(assessment)
+        FactoryGirl.create(:submission, code_review: code_review, student: student)
+        visit code_review_submissions_path(code_review)
         expect(page).to_not have_button 'Create Review'
         click_on 'Review'
-        expect(page).to have_content assessment.requirements.first.content
+        expect(page).to have_content code_review.requirements.first.content
         expect(page).to have_button 'Create Review'
       end
 
       context 'creating a review', js: true do
         let(:admin) { FactoryGirl.create(:admin) }
-        let!(:submission) { FactoryGirl.create(:submission, assessment: assessment, student: student) }
+        let!(:submission) { FactoryGirl.create(:submission, code_review: code_review, student: student) }
         let!(:score) { FactoryGirl.create(:passing_score) }
 
         before do
           login_as(admin, scope: :admin)
-          visit assessment_submissions_path(assessment)
+          visit code_review_submissions_path(code_review)
         end
 
         scenario 'with valid input', :vcr do

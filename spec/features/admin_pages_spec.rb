@@ -12,7 +12,7 @@ feature 'Admin signs in' do
   scenario 'and sees navigation links' do
     login_as(admin, scope: :admin)
     visit root_path
-    expect(page).to have_link 'Assessments'
+    expect(page).to have_link 'Code Reviews'
     expect(page).to have_link 'Attendance statistics'
     expect(page).to have_link 'Invite students'
   end
@@ -43,15 +43,15 @@ feature 'Changing current cohort', js: true do
     end
   end
 
-  context 'when viewing a cohort assessments page' do
-    it 'redirects them to the assessments for their current cohort' do
+  context 'when viewing a cohort code review page' do
+    it 'redirects them to the code reviews for their current cohort' do
       cohort = FactoryGirl.create(:cohort, description: 'Winter 2015')
-      assessment = FactoryGirl.create(:assessment, cohort: cohort)
+      code_review = FactoryGirl.create(:code_review, cohort: cohort)
       login_as(admin, scope: :admin)
-      visit cohort_assessments_path(admin.current_cohort)
-      expect(page).to have_content assessment.title
+      visit cohort_code_reviews_path(admin.current_cohort)
+      expect(page).to have_content code_review.title
       click_link admin.current_cohort.description
-      expect(page).to have_content assessment.title
+      expect(page).to have_content code_review.title
     end
   end
 end

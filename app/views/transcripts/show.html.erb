@@ -12,8 +12,8 @@
 
   <p>Student has met course expecations in these areas:</p>
   <ul>
-    <% @transcript.passing_assessments.each do |assessment| %>
-      <li><%= assessment.title %></li>
+    <% @transcript.passing_code_reviews.each do |code_review| %>
+      <li><%= code_review.title %></li>
     <% end %>
   </ul>
 

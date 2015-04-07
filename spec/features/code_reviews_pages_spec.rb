@@ -1,89 +1,89 @@
 feature 'index page' do
-  let!(:assessment) { FactoryGirl.create(:assessment) }
+  let!(:code_review) { FactoryGirl.create(:code_review) }
 
   scenario 'not logged in' do
-    visit cohort_assessments_path(assessment.cohort)
+    visit cohort_code_reviews_path(code_review.cohort)
     expect(page).to have_content 'need to sign in'
   end
 
   context 'when visiting as a student' do
-    let(:student) { FactoryGirl.create(:student, cohort: assessment.cohort) }
+    let(:student) { FactoryGirl.create(:student, cohort: code_review.cohort) }
     before { login_as(student, scope: :student) }
 
     scenario "but isn't this student's cohort" do
       another_cohort = FactoryGirl.create(:cohort)
-      visit cohort_assessments_path(another_cohort)
+      visit cohort_code_reviews_path(another_cohort)
       expect(page).to have_content 'not authorized'
     end
 
-    scenario 'shows all assessments' do
-      another_assessment = FactoryGirl.create(:assessment, title: 'another_assessment', cohort: assessment.cohort)
-      visit cohort_assessments_path(assessment.cohort)
-      expect(page).to have_content assessment.title
-      expect(page).to have_content another_assessment.title
+    scenario 'shows all code reviews' do
+      another_code_review = FactoryGirl.create(:code_review, title: 'another_code_review', cohort: code_review.cohort)
+      visit cohort_code_reviews_path(code_review.cohort)
+      expect(page).to have_content code_review.title
+      expect(page).to have_content another_code_review.title
     end
 
-    scenario 'shows if the student has submitted an assessment' do
-      FactoryGirl.create(:submission, assessment: assessment, student: student)
-      visit cohort_assessments_path(assessment.cohort)
+    scenario 'shows if the student has submitted an code_review' do
+      FactoryGirl.create(:submission, code_review: code_review, student: student)
+      visit cohort_code_reviews_path(code_review.cohort)
       expect(page).to have_content 'Submitted'
       expect(page).to_not have_content 'Not submitted'
     end
 
-    scenario 'shows if the assessment has been graded', :vcr do
-      submission = FactoryGirl.create(:submission, assessment: assessment, student: student)
+    scenario 'shows if the code_review has been graded', :vcr do
+      submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
       FactoryGirl.create(:passing_review, submission: submission)
-      visit cohort_assessments_path(assessment.cohort)
+      visit cohort_code_reviews_path(code_review.cohort)
       expect(page).to have_content 'Reviewed'
       expect(page).to_not have_content 'Submitted'
     end
 
-    scenario 'links to assessment show page' do
-      visit cohort_assessments_path(assessment.cohort)
-      click_link assessment.title
-      expect(page).to have_content assessment.title
-      expect(page).to have_content assessment.requirements.first.content
+    scenario 'links to code_review show page' do
+      visit cohort_code_reviews_path(code_review.cohort)
+      click_link code_review.title
+      expect(page).to have_content code_review.title
+      expect(page).to have_content code_review.requirements.first.content
     end
 
-    scenario 'does not have button to save order of assessments' do
-      visit cohort_assessments_path(assessment.cohort)
+    scenario 'does not have button to save order of code reviews' do
+      visit cohort_code_reviews_path(code_review.cohort)
       expect(page).to_not have_button 'Save order'
     end
   end
 
   context 'when visiting as an admin' do
     let(:admin) { FactoryGirl.create(:admin) }
-    let(:assessment) { FactoryGirl.create(:assessment) }
+    let(:code_review) { FactoryGirl.create(:code_review) }
 
     before { login_as(admin, scope: :admin) }
 
-    scenario 'has a link to create a new assessment' do
-      visit cohort_assessments_path(assessment.cohort)
-      click_on 'Add an assessment'
-      expect(page).to have_content 'New Assessment'
+    scenario 'has a link to create a new code review' do
+      visit cohort_code_reviews_path(code_review.cohort)
+      click_on 'Add a code review'
+      expect(page).to have_content 'New Code Review'
     end
 
-    scenario 'shows the number of submissions needing review for each assessment' do
-      FactoryGirl.create(:submission, assessment: assessment)
-      visit cohort_assessments_path(assessment.cohort)
+    scenario 'shows the number of submissions needing review for each code_review' do
+      FactoryGirl.create(:submission, code_review: code_review)
+      visit cohort_code_reviews_path(code_review.cohort)
       expect(page).to have_content '1 new submission'
     end
 
-    scenario 'admin clicks on number of submission badge and is taken to submissions index of that assessment' do
-      FactoryGirl.create(:submission, assessment: assessment)
-      visit cohort_assessments_path(assessment.cohort)
+    scenario 'admin clicks on number of submission badge and is taken to submissions index of that code_review' do
+      FactoryGirl.create(:submission, code_review: code_review)
+      visit cohort_code_reviews_path(code_review.cohort)
       click_link '1 new submission'
-      expect(page).to have_content "Submissions for #{assessment.title}"
+      expect(page).to have_content "Submissions for #{code_review.title}"
     end
 
-    scenario 'has a button to save order of assessments' do
-      visit cohort_assessments_path(assessment.cohort)
+    scenario 'has a button to save order of code reviews' do
+      visit cohort_code_reviews_path(code_review.cohort)
       expect(page).to have_button 'Save order'
     end
 
     scenario 'changes lesson order' do
-      another_assesment = FactoryGirl.create(:assessment, cohort: assessment.cohort)
-      visit cohort_assessments_path(assessment.cohort)
+      another_assesment = FactoryGirl.create(:code_review, cohort: code_review.cohort)
+      visit cohort_code_reviews_path(code_review.cohort)
       click_on 'Save order'
       expect(page).to have_content 'Order has been saved'
     end
@@ -91,10 +91,10 @@ feature 'index page' do
 end
 
 feature 'show page' do
-  let(:assessment) { FactoryGirl.create(:assessment) }
+  let(:code_review) { FactoryGirl.create(:code_review) }
 
   scenario 'not signed in' do
-    visit assessment_path(assessment)
+    visit code_review_path(code_review)
     expect(page).to have_content 'need to sign in'
   end
 
@@ -102,39 +102,39 @@ feature 'show page' do
     let(:admin) { FactoryGirl.create(:admin) }
     before do
       login_as(admin, scope: :admin)
-      visit assessment_path(assessment)
+      visit code_review_path(code_review)
     end
 
-    scenario 'has a link to edit assessment' do
+    scenario 'has a link to edit code_review' do
       click_on 'Edit'
-      expect(page).to have_content 'Edit Assessment'
+      expect(page).to have_content 'Edit Code Review'
     end
 
-    scenario 'has a link to delete assessment' do
+    scenario 'has a link to delete code_review' do
       click_on 'Delete'
-      expect(page).to have_content "#{assessment.title} has been deleted"
+      expect(page).to have_content "#{code_review.title} has been deleted"
     end
 
-    scenario 'has a link to create a new assessment' do
+    scenario 'has a link to create a new code_review' do
       click_on 'New'
-      expect(page).to have_content 'New Assessment'
+      expect(page).to have_content 'New Code Review'
     end
   end
 
   context 'when visiting as a student' do
-    let(:student) { FactoryGirl.create(:student, cohort: assessment.cohort) }
+    let(:student) { FactoryGirl.create(:student, cohort: code_review.cohort) }
     before { login_as(student, scope: :student) }
     subject { page }
 
-    scenario "but this assessment is not part of your cohort" do
-      assessment_of_another_cohort = FactoryGirl.create(:assessment)
-      visit assessment_path(assessment_of_another_cohort)
+    scenario "but this code review is not part of your cohort" do
+      code_review_of_another_cohort = FactoryGirl.create(:code_review)
+      visit code_review_path(code_review_of_another_cohort)
       expect(page).to have_content 'not authorized'
     end
 
     context 'before submitting' do
       before do
-        visit assessment_path(assessment)
+        visit code_review_path(code_review)
       end
 
       it { is_expected.to have_button 'Submit' }
@@ -143,7 +143,7 @@ feature 'show page' do
     end
 
     context 'when submitting' do
-      before { visit assessment_path(assessment) }
+      before { visit code_review_path(code_review) }
 
       scenario 'with valid input' do
         fill_in 'submission_link', with: 'http://github.com'
@@ -159,8 +159,8 @@ feature 'show page' do
 
     context 'after having submitted' do
       before do
-        FactoryGirl.create(:submission, assessment: assessment, student: student)
-        visit assessment_path(assessment)
+        FactoryGirl.create(:submission, code_review: code_review, student: student)
+        visit code_review_path(code_review)
       end
 
       it { is_expected.to have_button 'Resubmit' }
@@ -169,11 +169,11 @@ feature 'show page' do
     end
 
     context 'after submission has been reviewed', :vcr do
-      let(:submission) { FactoryGirl.create(:submission, assessment: assessment, student: student) }
+      let(:submission) { FactoryGirl.create(:submission, code_review: code_review, student: student) }
       let!(:review) { FactoryGirl.create(:passing_review, submission: submission) }
 
       before do
-        visit assessment_path(assessment)
+        visit code_review_path(code_review)
       end
 
       it { is_expected.to_not have_content 'pending review' }
@@ -182,11 +182,11 @@ feature 'show page' do
     end
 
     context 'after resubmitting', :vcr do
-      let(:submission) { FactoryGirl.create(:submission, assessment: assessment, student: student) }
+      let(:submission) { FactoryGirl.create(:submission, code_review: code_review, student: student) }
 
       before do
         FactoryGirl.create(:passing_review, submission: submission)
-        visit assessment_path(assessment)
+        visit code_review_path(code_review)
         click_on 'Resubmit'
       end
 
@@ -197,30 +197,30 @@ feature 'show page' do
   end
 end
 
-feature 'creating an assessment' do
+feature 'creating an code_review' do
   scenario 'not signed in' do
-    visit new_assessment_path
+    visit new_code_review_path
     expect(page).to have_content 'need to sign in'
   end
 
   context 'as an admin' do
-    let(:assessment) { FactoryGirl.build(:assessment) }
+    let(:code_review) { FactoryGirl.build(:code_review) }
     let(:admin) { FactoryGirl.create(:admin) }
 
     before do
       login_as(admin, scope: :admin)
-      visit new_assessment_path
+      visit new_code_review_path
     end
 
     scenario 'with valid input' do
-      fill_in 'Title', with: assessment.title
-      fill_in 'assessment_requirements_attributes_0_content', with: 'requirement'
-      click_button 'Create Assessment'
-      expect(page).to have_content 'Assessment has been saved'
+      fill_in 'Title', with: code_review.title
+      fill_in 'code_review_requirements_attributes_0_content', with: 'requirement'
+      click_button 'Create Code review'
+      expect(page).to have_content 'Code review has been saved'
     end
 
     scenario 'with invalid input' do
-      click_button 'Create Assessment'
+      click_button 'Create Code review'
       expect(page).to have_content "can't be blank"
     end
 
@@ -239,8 +239,8 @@ feature 'creating an assessment' do
       end
 
       scenario 'requires at least one requirement to be added' do
-        fill_in 'Title', with: assessment.title
-        click_button 'Create Assessment'
+        fill_in 'Title', with: code_review.title
+        click_button 'Create Code review'
         expect(page).to have_content 'Requirements must be present'
       end
     end
@@ -251,17 +251,17 @@ feature 'creating an assessment' do
 
     scenario 'you are not authorized' do
       login_as(student, scope: :student)
-      visit new_assessment_path
+      visit new_code_review_path
       expect(page).to have_content 'not authorized'
     end
   end
 end
 
-feature 'editing an assessment' do
-  let(:assessment) { FactoryGirl.create(:assessment) }
+feature 'editing an code_review' do
+  let(:code_review) { FactoryGirl.create(:code_review) }
 
   scenario 'not signed in' do
-    visit edit_assessment_path(assessment)
+    visit edit_code_review_path(code_review)
     expect(page).to have_content 'need to sign in'
   end
 
@@ -270,38 +270,38 @@ feature 'editing an assessment' do
 
     before do
       login_as(admin, scope: :admin)
-      visit edit_assessment_path(assessment)
+      visit edit_code_review_path(code_review)
     end
 
     scenario 'with valid input' do
       fill_in 'Title', with: 'Another title'
-      click_button 'Update Assessment'
-      expect(page).to have_content 'Assessment updated'
+      click_button 'Update Code review'
+      expect(page).to have_content 'Code review updated'
     end
 
     scenario 'with invalid input' do
       fill_in 'Title', with: ''
-      click_button 'Update Assessment'
+      click_button 'Update Code review'
       expect(page).to have_content "can't be blank"
     end
 
     scenario 'removing requirements', js: true do
-      requirement_count = assessment.requirements.count
+      requirement_count = code_review.requirements.count
       within('ol#requirement-fields') do
         first(:link, 'x').click
       end
-      click_button 'Update Assessment'
-      expect(assessment.requirements.count).to eq requirement_count - 1
+      click_button 'Update Code review'
+      expect(code_review.requirements.count).to eq requirement_count - 1
     end
 
     scenario 'adding requirements', js: true do
-      requirement_count = assessment.requirements.count
+      requirement_count = code_review.requirements.count
       click_link 'Add Requirement'
       within('ol#requirement-fields') do
         all('input').last.set 'The last requirement'
       end
-      click_button 'Update Assessment'
-      expect(assessment.requirements.count).to eq requirement_count + 1
+      click_button 'Update Code review'
+      expect(code_review.requirements.count).to eq requirement_count + 1
     end
   end
 
@@ -310,7 +310,7 @@ feature 'editing an assessment' do
 
     scenario 'you are not authorized' do
       login_as(student, scope: :student)
-      visit edit_assessment_path(assessment)
+      visit edit_code_review_path(code_review)
       expect(page).to have_content 'not authorized'
     end
   end

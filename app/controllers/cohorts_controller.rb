@@ -9,7 +9,7 @@ class CohortsController < ApplicationController
     @cohort = Cohort.new(cohort_params)
     if @cohort.save
       current_admin.update(current_cohort: @cohort)
-      redirect_to cohort_assessments_path(@cohort), notice: 'Class has been created!'
+      redirect_to cohort_code_reviews_path(@cohort), notice: 'Class has been created!'
     else
       render :new
     end
@@ -22,7 +22,7 @@ class CohortsController < ApplicationController
   def update
     @cohort = Cohort.find(params[:id])
     if @cohort.update(cohort_params)
-      redirect_to cohort_assessments_path(@cohort), notice: "#{@cohort.description} has been updated."
+      redirect_to cohort_code_reviews_path(@cohort), notice: "#{@cohort.description} has been updated."
     else
       render :edit
     end

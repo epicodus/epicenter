@@ -34,20 +34,20 @@ feature 'creating a cohort' do
       fill_in 'End date', with: '2015-09-06'
       click_on 'Create Cohort'
       expect(page).to have_content 'Class has been created'
-      expect(page).to have_content 'Assessments'
+      expect(page).to have_content 'Code Reviews'
     end
 
     scenario 'cloned from another cohort' do
       previous_cohort = FactoryGirl.create(:cohort, description: 'Ruby/Rails - Fall 2014')
-      assessment = FactoryGirl.create(:assessment, cohort: previous_cohort)
+      code_review = FactoryGirl.create(:code_review, cohort: previous_cohort)
       visit new_cohort_path
       fill_in 'Description', with: 'Ruby/Rails - Summer 2015'
       fill_in 'Start date', with: '2015-05-01'
       fill_in 'End date', with: '2015-09-06'
-      select previous_cohort.description, from: 'Import assessments from previous cohort'
+      select previous_cohort.description, from: 'Import code reviews from previous cohort'
       click_on 'Create Cohort'
       expect(page).to have_content 'Class has been created'
-      expect(page).to have_content assessment.title
+      expect(page).to have_content code_review.title
     end
   end
 end
@@ -91,7 +91,7 @@ feature 'editing a cohort' do
       fill_in 'End date', with: '2015-09-06'
       click_on 'Update Cohort'
       expect(page).to have_content "PHP/Drupal - Summer 2015 has been updated"
-      expect(page).to have_content 'Assessments'
+      expect(page).to have_content 'Code Reviews'
     end
   end
 end

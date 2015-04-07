@@ -1,4 +1,4 @@
-class Assessment < ActiveRecord::Base
+class CodeReview < ActiveRecord::Base
   default_scope { order(:number) }
 
   validates :title, presence: true
@@ -32,7 +32,7 @@ class Assessment < ActiveRecord::Base
 private
 
   def set_number
-    self.number = cohort.assessments.pluck(:number).last.to_i + 1
+    self.number = cohort.code_reviews.pluck(:number).last.to_i + 1
   end
 
   def presence_of_requirements

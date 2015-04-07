@@ -1,9 +1,9 @@
 describe Submission do
   it { should validate_presence_of :link }
-  it { should belong_to :assessment }
+  it { should belong_to :code_review }
   it { should have_many :reviews }
   it { should belong_to :student }
-  it { should validate_uniqueness_of(:student_id).scoped_to(:assessment_id) }
+  it { should validate_uniqueness_of(:student_id).scoped_to(:code_review_id) }
 
   it 'is invalid if link is not a valid url' do
     submission = FactoryGirl.build(:submission, link: 'github.com')
@@ -81,7 +81,7 @@ describe Submission do
 
     it 'returns a new review object that has grades built based on number of requirements' do
       new_review = submission.clone_or_build_review
-      expect(new_review.grades.size).to eq submission.assessment.requirements.size
+      expect(new_review.grades.size).to eq submission.code_review.requirements.size
     end
 
     context 'when there is a latest review', :vcr do

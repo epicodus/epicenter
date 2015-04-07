@@ -1,7 +1,7 @@
 $(function() {
-  $('div.sortable-assessments').sortable({
+  $('div.sortable-code-reviews').sortable({
     axis: 'y',
-    items: "> div.assessment",
+    items: "> div.code-review",
     forcePlaceholderSize: true,
     cursor: 'move',
     start: function(event, ui) {
@@ -12,9 +12,9 @@ $(function() {
     }
   });
 
-  $('form.update-multiple-assessments').submit(function(event) {
+  $('form.update-multiple-code-reviews').submit(function(event) {
     var count = 1
-    $('input.assessment-number').each(function() {
+    $('input.code-review-number').each(function() {
       $(this).val(count++);
     });
   });

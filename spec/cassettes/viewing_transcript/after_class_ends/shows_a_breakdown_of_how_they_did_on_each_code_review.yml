@@ -5,14 +5,14 @@ http_interactions:
     uri: https://api:<MAILGUN_API_KEY>@api.mailgun.net/v2/epicodus.com/messages
     body:
       encoding: US-ASCII
-      string: from=michael%40epicodus.com&to=student98%40example.com&subject=Assessment%20reviewed&text=Hi%20Example%20Brown%2098.%20Your%20assessment%2062%20assessment%20has%20been%20reviewed.%20You%20can%20view%20it%20at%20https%3A%2F%2Fepicenter.epicodus.com%2Fassessments%2F1.
+      string: from=teacher%40school.edu&to=student104%40example.com&subject=CodeReview%20reviewed&text=Hi%20Example%20Brown%20102.%20Your%20code_review%2056%20code%20has%20been%20reviewed.%20You%20can%20view%20it%20at%20https%3A%2F%2Fepicenter.epicodus.com%2Fcode_reviews%2F1.
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
       Accept-Encoding:
       - gzip, deflate
       Content-Length:
-      - '266'
+      - '262'
       Content-Type:
       - application/x-www-form-urlencoded
       User-Agent:
@@ -23,9 +23,9 @@ http_interactions:
       message: OK
     headers:
       Server:
-      - nginx/1.4.7
+      - nginx/1.7.9
       Date:
-      - Tue, 16 Dec 2014 19:34:59 GMT
+      - Tue, 07 Apr 2015 00:30:33 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -47,8 +47,8 @@ http_interactions:
       string: |-
         {
           "message": "Queued. Thank you.",
-          "id": "<20141216193458.50093.45988@epicodus.com>"
+          "id": "<20150407003033.29537.44269@epicodus.com>"
         }
     http_version: 
-  recorded_at: Tue, 16 Dec 2014 19:34:59 GMT
+  recorded_at: Tue, 07 Apr 2015 00:30:32 GMT
 recorded_with: VCR 2.9.3

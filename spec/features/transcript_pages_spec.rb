@@ -19,18 +19,18 @@ feature "viewing transcript" do
       expect(page).to have_content student.name
     end
 
-    it 'shows a breakdown of how they did on each assessment', :vcr do
+    it 'shows a breakdown of how they did on each code review', :vcr do
       cohort = FactoryGirl.create(:past_cohort)
       student = FactoryGirl.create(:student, cohort: cohort)
-      assessment = FactoryGirl.create(:assessment, cohort: cohort)
-      not_taken_assessment = FactoryGirl.create(:assessment, cohort: cohort)
-      submission = FactoryGirl.create(:submission, assessment: assessment, student: student)
+      code_review = FactoryGirl.create(:code_review, cohort: cohort)
+      not_submitted_code_review = FactoryGirl.create(:code_review, cohort: cohort)
+      submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
       review = FactoryGirl.create(:passing_review, submission: submission)
 
       login_as(student, scope: :student)
       visit transcript_path
-      expect(page).to have_content assessment.title
-      expect(page).to_not have_content not_taken_assessment.title
+      expect(page).to have_content code_review.title
+      expect(page).to_not have_content not_submitted_code_review.title
     end
 
     it 'shows a summary of their attendance record' do

@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api:<MAILGUN_API_KEY>@api.mailgun.net/v2/epicodus.com/messages
     body:
       encoding: US-ASCII
-      string: from=michael%40epicodus.com&to=student175%40example.com&subject=Assessment%20reviewed&text=Hi%20Example%20Brown%20167.%20Your%20assessment%2066%20assessment%20has%20been%20reviewed.%20You%20can%20view%20it%20at%20https%3A%2F%2Fepicenter.epicodus.com%2Fassessments%2F1.
+      string: from=michael%40epicodus.com&to=student175%40example.com&subject=CodeReview%20reviewed&text=Hi%20Example%20Brown%20167.%20Your%20assessment%2066%20assessment%20has%20been%20reviewed.%20You%20can%20view%20it%20at%20https%3A%2F%2Fepicenter.epicodus.com%2Fassessments%2F1.
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"

@@ -1,4 +1,4 @@
-<%= form_for [@assessment, @submission] do |f| %>
+<%= form_for [@code_review, @submission] do |f| %>
   <%= render 'layouts/errors', object: @submission %>
   <%= f.hidden_field :needs_review, value: true %>
   <%= f.label :link, 'Link to Github repository' %>

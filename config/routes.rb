@@ -21,15 +21,15 @@ Rails.application.routes.draw do
   resources :attendance_record_amendments, only: [:new, :create]
   resources :cohorts, except: [:show, :index] do
     resources :attendance_statistics, only: [:index]
-    resources :assessments, only: [:index]
+    resources :code_reviews, only: [:index]
   end
   resources :companies
 
   resource :attendance_statistics, only: [:show]
 
-  resources :assessments, except: [:index] do
+  resources :code_reviews, except: [:index] do
     resources :submissions, only: [:index, :create, :update]
-    resource :report, only: [:show], to: 'assessment_reports#show'
+    resource :report, only: [:show], to: 'code_review_reports#show'
     collection do
       patch :update_multiple, :path => ''
     end

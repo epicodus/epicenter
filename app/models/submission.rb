@@ -2,10 +2,10 @@ class Submission < ActiveRecord::Base
   default_scope { order(:updated_at) }
   scope :needing_review, -> { where(needs_review: true) }
   validates :link, presence: true, url: true
-  validates :student_id, uniqueness: { scope: :assessment_id }
+  validates :student_id, uniqueness: { scope: :code_review_id }
 
   belongs_to :student
-  belongs_to :assessment
+  belongs_to :code_review
   has_many :reviews
 
   before_create :mark_as_needing_review
@@ -19,7 +19,7 @@ class Submission < ActiveRecord::Base
       latest_review.deep_clone(include: :grades)
     else
       review = Review.new(submission: self)
-      assessment.requirements.each { |requirement| review.grades.build(requirement: requirement) }
+      code_review.requirements.each { |requirement| review.grades.build(requirement: requirement) }
       review
     end
   end
