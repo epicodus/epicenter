@@ -1,26 +1,41 @@
-feature 'Student signs up' do
-  before do
-    @plan = FactoryGirl.create :recurring_plan_with_upfront_payment
-    @cohort = FactoryGirl.create :future_cohort
-    visit new_student_registration_path
-    fill_in 'Email', with: 'example_user@example.com'
-    fill_in 'Password', with: 'password'
-    fill_in 'Password confirmation', with: 'password'
-  end
+feature 'Student signs up via invitation' do
+
+  let(:student) { FactoryGirl.create(:student) }
 
   scenario 'with valid information', js: true do
+    student.invite!
+    visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
     fill_in 'Name', with: 'Ryan Larson'
-    select @plan.name, from: 'student_plan_id'
-    select @cohort.description, from: 'student_cohort_id'
-    click_on 'Sign up'
-    expect(page).to have_content 'How would you like to make payments'
+    select student.plan.name, from: 'student_plan_id'
+    select student.cohort.description, from: 'student_cohort_id'
+    fill_in 'Password', with: 'password'
+    fill_in 'Password confirmation', with: 'password'
+    click_on 'Submit'
+    expect(page).to have_content 'Your password was set successfully. You are now signed in.'
   end
 
   scenario 'with missing information', js: true do
-    click_on 'Sign up'
+    student.invite!
+    visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
+    fill_in 'Name', with: ''
+    select student.plan.name, from: 'student_plan_id'
+    select student.cohort.description, from: 'student_cohort_id'
+    click_on 'Submit'
     expect(page).to have_content 'error'
   end
 end
+
+feature 'Student cannot invite other students' do
+
+  let (:student) { FactoryGirl.create(:student) }
+
+  scenario 'student visits new_student_invitation path', js: true do
+    login_as(student)
+    visit new_student_invitation_path
+    expect(page).to have_content 'You need to sign in or sign up before continuing'
+  end
+end
+
 
 feature "Student signs in while class is not in session" do
 

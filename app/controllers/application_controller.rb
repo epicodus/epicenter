@@ -8,8 +8,16 @@ class ApplicationController < ActionController::Base
 
 protected
   def configure_permitted_params
-    devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:plan_id, :cohort_id, :name, :email, :password, :password_confirmation) }
-    devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:plan_id, :cohort_id, :name, :email, :password, :password_confirmation, :current_password) }
+    devise_parameter_sanitizer.for(:accept_invitation) do |u|
+      u.permit(:name, :email, :cohort_id, :plan_id, :password, :password_confirmation,
+             :invitation_token)
+    end
+    devise_parameter_sanitizer.for(:account_update) do |u|
+      u.permit(:plan_id, :cohort_id, :name, :email, :password, :password_confirmation, :current_password)
+    end
+    devise_parameter_sanitizer.for(:sign_up) do |u|
+      u.permit(:plan_id, :cohort_id, :name, :email, :password, :password_confirmation)
+    end
   end
 
   def after_sign_in_path_for(user)
@@ -40,6 +48,12 @@ protected
     elsif current_admin
       current_admin.current_cohort
     end
+  end
+  #authenticate_inviter is used to restrict who can send invitations. We are overriding the devise default
+  #behavior as this requires authentication of the same resource as the invited one. Only admins are allowed
+  #to send invitations. This requires that the DeviseInvitable::Inviter is added to the Admin model.
+  def authenticate_inviter!
+    authenticate_admin!(:force => true)
   end
 
   rescue_from CanCan::AccessDenied do |exception|
