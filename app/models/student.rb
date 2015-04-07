@@ -1,5 +1,4 @@
 class Student < User
-
 scope :recurring_active, -> { where(recurring_active: true) }
   default_scope { order(:name) }
 
