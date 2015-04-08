@@ -1,4 +1,4 @@
-class RenameCodeReviewsToCodeReviews < ActiveRecord::Migration
+class RenameAssessmentsToCodeReviews < ActiveRecord::Migration
   def change
     rename_table :assessments, :code_reviews
     rename_column :submissions, :assessment_id, :code_review_id
