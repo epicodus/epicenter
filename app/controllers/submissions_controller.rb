@@ -1,28 +1,28 @@
 class SubmissionsController < ApplicationController
   authorize_resource
-  
+
   def index
-    @assessment = Assessment.find(params[:assessment_id])
-    @submissions = @assessment.submissions.needing_review
+    @code_review = CodeReview.find(params[:code_review_id])
+    @submissions = @code_review.submissions.needing_review
   end
 
   def create
-    @assessment = Assessment.find(params[:assessment_id])
-    @submission = @assessment.submissions.new(submission_params)
+    @code_review = CodeReview.find(params[:code_review_id])
+    @submission = @code_review.submissions.new(submission_params)
     if @submission.save
-      redirect_to @assessment, notice: "Thank you for submitting."
+      redirect_to @code_review, notice: "Thank you for submitting."
     else
-      render 'assessments/show'
+      render 'code_reviews/show'
     end
   end
 
   def update
-    @assessment = Assessment.find(params[:assessment_id])
-    @submission = @assessment.submission_for(current_student)
+    @code_review = CodeReview.find(params[:code_review_id])
+    @submission = @code_review.submission_for(current_student)
     if @submission.update(submission_params)
-      redirect_to @assessment, notice: "Submission updated!"
+      redirect_to @code_review, notice: "Submission updated!"
     else
-      render 'assessments/show'
+      render 'code_reviews/show'
     end
   end
 

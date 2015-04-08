@@ -6,7 +6,7 @@ class Ability
 
     if user.is_a? Admin
       can :manage, AttendanceRecord
-      can :manage, Assessment
+      can :manage, CodeReview
       can :manage, Cohort
       can :manage, Company
       can :read, Submission
@@ -14,7 +14,7 @@ class Ability
       can :read, CohortAttendanceStatistics
       can :create, AttendanceRecordAmendment
     elsif user.is_a? Student
-      can :read, Assessment, cohort_id: user.cohort_id
+      can :read, CodeReview, cohort_id: user.cohort_id
       can :create, Submission, student_id: user.id
       can :update, Submission, student_id: user.id
       can :create, BankAccount

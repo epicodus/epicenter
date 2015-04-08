@@ -7,9 +7,9 @@ class Transcript
     @student = student
   end
 
-  def passing_assessments
-    @student.cohort.assessments.select do |assessment|
-      assessment.expectations_met_by? @student
+  def passing_code_reviews
+    @student.cohort.code_reviews.select do |code_review|
+      code_review.expectations_met_by? @student
     end
   end
 

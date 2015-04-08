@@ -8,7 +8,7 @@ This is app handles a few different things for Epicodus students and staff, incl
 
 * Tuition
 * Attendance
-* Assessments
+* Code Reviews
 
 It's designed to be flexible enough that other schools can adopt it with minimal changes.
 

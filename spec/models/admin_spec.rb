@@ -5,8 +5,8 @@ describe Admin do
     let(:admin) { FactoryGirl.create(:admin) }
     subject { Ability.new(admin) }
 
-    context 'for assessments' do
-      it { is_expected.to have_abilities(:manage, Assessment.new) }
+    context 'for code reviews' do
+      it { is_expected.to have_abilities(:manage, CodeReview.new) }
     end
 
     context 'for submissions' do

@@ -11,18 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150401203212) do
+ActiveRecord::Schema.define(version: 20150407195719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "assessments", force: true do |t|
-    t.string   "title"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "cohort_id"
-    t.integer  "number"
-  end
 
   create_table "attendance_records", force: true do |t|
     t.integer  "student_id"
@@ -35,6 +27,14 @@ ActiveRecord::Schema.define(version: 20150401203212) do
   add_index "attendance_records", ["created_at"], name: "index_attendance_records_on_created_at", using: :btree
   add_index "attendance_records", ["student_id"], name: "index_attendance_records_on_student_id", using: :btree
   add_index "attendance_records", ["tardy"], name: "index_attendance_records_on_tardy", using: :btree
+
+  create_table "code_reviews", force: true do |t|
+    t.string   "title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "cohort_id"
+    t.integer  "number"
+  end
 
   create_table "cohorts", force: true do |t|
     t.string   "description"
@@ -58,20 +58,18 @@ ActiveRecord::Schema.define(version: 20150401203212) do
   end
 
   create_table "grades", force: true do |t|
-    t.integer  "requirement_id"
+    t.integer  "objective_id"
     t.integer  "score_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "review_id"
   end
 
-  create_table "internships", force: true do |t|
-    t.integer "company_id"
-    t.integer "cohort_id"
-    t.text    "description"
-    t.text    "ideal_intern"
-    t.boolean "clearance_required"
-    t.text    "clearance_description"
+  create_table "objectives", force: true do |t|
+    t.string   "content"
+    t.integer  "code_review_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "payment_methods", force: true do |t|
@@ -107,13 +105,6 @@ ActiveRecord::Schema.define(version: 20150401203212) do
     t.integer  "total_amount"
   end
 
-  create_table "requirements", force: true do |t|
-    t.string   "content"
-    t.integer  "assessment_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "reviews", force: true do |t|
     t.integer  "submission_id"
     t.integer  "admin_id"
@@ -132,7 +123,7 @@ ActiveRecord::Schema.define(version: 20150401203212) do
   create_table "submissions", force: true do |t|
     t.integer  "student_id"
     t.string   "link"
-    t.integer  "assessment_id"
+    t.integer  "code_review_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "needs_review"

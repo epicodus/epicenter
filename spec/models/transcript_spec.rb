@@ -6,22 +6,22 @@ describe Transcript do
     expect(transcript).to be_a Transcript
   end
 
-  describe '#passing_assessments' do
-    it 'returns all the assessments for which the student has met expectations', :vcr do
-      passed_assessment = FactoryGirl.create(:assessment, cohort: student.cohort)
-      passed_submission = FactoryGirl.create(:submission, student: student, assessment: passed_assessment)
+  describe '#passing_code_reviews' do
+    it 'returns all the code reviews for which the student has met expectations', :vcr do
+      passed_code_review = FactoryGirl.create(:code_review, cohort: student.cohort)
+      passed_submission = FactoryGirl.create(:submission, student: student, code_review: passed_code_review)
       FactoryGirl.create(:passing_review, submission: passed_submission)
 
-      failed_assessment = FactoryGirl.create(:assessment, cohort: student.cohort)
-      failed_submission = FactoryGirl.create(:submission, student: student, assessment: failed_assessment)
+      failed_code_review = FactoryGirl.create(:code_review, cohort: student.cohort)
+      failed_submission = FactoryGirl.create(:submission, student: student, code_review: failed_code_review)
       failed_review = FactoryGirl.create(:passing_review, submission: failed_submission)
       failing_score = FactoryGirl.create(:failing_score)
       failed_review.grades.update_all(score_id: failing_score.id)
 
-      missed_assessment = FactoryGirl.create(:assessment, cohort: student.cohort)
+      missed_code_review = FactoryGirl.create(:code_review, cohort: student.cohort)
 
       transcript = Transcript.new(student)
-      expect(transcript.passing_assessments).to eq [passed_assessment]
+      expect(transcript.passing_code_reviews).to eq [passed_code_review]
     end
   end
 

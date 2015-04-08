@@ -1,6 +1,6 @@
 class ReviewsController < ApplicationController
   authorize_resource
-  
+
   def new
     @submission = Submission.find(params[:submission_id])
     @review = @submission.clone_or_build_review
@@ -19,6 +19,6 @@ class ReviewsController < ApplicationController
 private
 
   def review_params
-    params.require(:review).permit(:note, grades_attributes: [:score_id, :requirement_id]).merge(admin_id: current_admin.id)
+    params.require(:review).permit(:note, grades_attributes: [:score_id, :objective_id]).merge(admin_id: current_admin.id)
   end
 end

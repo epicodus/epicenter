@@ -6,11 +6,11 @@ class Cohort < ActiveRecord::Base
 
   has_many :students
   has_many :attendance_records, through: :students
-  has_many :assessments
+  has_many :code_reviews
 
   attr_accessor :importing_cohort_id
 
-  before_create :import_assessments
+  before_create :import_code_reviews
   after_destroy :reassign_admin_current_cohorts
 
   def number_of_days_since_start
@@ -36,9 +36,9 @@ class Cohort < ActiveRecord::Base
 
 private
 
-  def import_assessments
+  def import_code_reviews
     unless @importing_cohort_id.blank?
-      self.assessments = Cohort.find(@importing_cohort_id).deep_clone(include: { assessments: :requirements }).assessments
+      self.code_reviews = Cohort.find(@importing_cohort_id).deep_clone(include: { code_reviews: :objectives }).code_reviews
     end
   end
 

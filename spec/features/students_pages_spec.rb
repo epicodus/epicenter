@@ -88,10 +88,10 @@ end
 feature "Student signs in while class is in session" do
   let(:student) { FactoryGirl.create(:student) }
 
-  it "takes them to the assessments page" do
+  it "takes them to the code reviews page" do
     sign_in(student)
-    expect(current_path).to eq cohort_assessments_path(student.cohort)
-    expect(page).to have_content "Assessments"
+    expect(current_path).to eq cohort_code_reviews_path(student.cohort)
+    expect(page).to have_content "Code Reviews"
   end
 end
 
