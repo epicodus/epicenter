@@ -45,6 +45,7 @@ group :test do
   gem 'webmock', require: false
   gem 'vcr'
   gem 'puffing-billy'
+  gem 'simplecov', require: false
 end
 
 group :production do
