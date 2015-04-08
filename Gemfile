@@ -46,6 +46,7 @@ group :test do
   gem 'vcr'
   gem 'puffing-billy'
   gem 'simplecov', require: false
+  gem 'coveralls', require: false
 end
 
 group :production do
