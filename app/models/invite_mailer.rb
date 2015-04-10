@@ -1,16 +1,17 @@
 class InviteMailer < Devise::Mailer
 
-  def student_invitation_instructions(record, opts={})
-    devise_mail(record, :student_invitation_instructions, opts)
-  end
-
-  def admin_invitation_instructions(record, opts={})
-    devise_mail(record, :admin_invitation_instructions, opts)
-  end
-
-  # this moves the Devise template path from /views/devise/mailer to /views/invite_mailer/
   def headers_for(action, opts)
-      super.merge!({template_path: '/invite_mailer/'})
+    super.merge!({template_path: '/invite_mailer'})
+  end
+
+  def invite_email(invited_user, current_invitor)
+    @invited_user = invited_user
+    @current_invitor = current_invitor
+    @token = @invited_user.invitation_token
+    mail(to: @invited_user.email,
+    from: "students@epicodus.com",
+    subject: "Invitation to Epicenter",
+    layout: "invite_email")
   end
 
 end
