@@ -14,7 +14,7 @@ feature 'Admin signs in' do
     visit root_path
     expect(page).to have_link 'Code Reviews'
     expect(page).to have_link 'Attendance statistics'
-    expect(page).to have_link 'Invite students'
+    expect(page).to have_link 'Invite'
   end
 end
 
@@ -62,7 +62,7 @@ feature 'Inviting new students', js: true do
   scenario 'admin sends invitation to a student' do
     login_as(admin, scope: :admin)
     visit root_path
-    click_on 'Invite students'
+    click_on 'Invite'
     visit new_student_invitation_path
     fill_in 'Email', with: 'newstudent@example.com'
     click_on 'Send an invitation'
