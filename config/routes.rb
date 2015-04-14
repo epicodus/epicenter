@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get 'attendance', to: 'attendance_records#index', as: 'attendance'
 
   devise_for :student, :controllers => { :invitations => 'invitations', :registrations => 'registrations' }
-  devise_for :admins, :controllers => { :invitations => 'invitations' }, skip: :registrations
+  devise_for :admins, skip: :registrations
 
   resources :students, only: [:update]
   resources :admins, only: [:update]
