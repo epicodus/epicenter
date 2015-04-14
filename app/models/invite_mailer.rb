@@ -4,14 +4,19 @@ class InviteMailer < Devise::Mailer
     super.merge!({template_path: '/invite_mailer'})
   end
 
-  def invite_email(invited_user, current_invitor)
+  def invitation_instructions(invited_user, current_invitor)
     @invited_user = invited_user
     @current_invitor = current_invitor
-    @token = @invited_user.invitation_token
+    @token = @invited_user.raw_invitation_token
+    if invited_user.type == "Admin"
+      @url = accept_admin_invitation_url(invitation_token: @token)
+    else invited_user.type == "Student"
+      @url = accept_student_invitation_url(invitation_token: @token)
+    end
     mail(to: @invited_user.email,
     from: "students@epicodus.com",
     subject: "Invitation to Epicenter",
-    layout: "invite_email")
+    layout: "invitation_instructions")
   end
 
 end
