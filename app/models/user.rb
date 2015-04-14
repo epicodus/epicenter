@@ -5,7 +5,4 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   validates :name, presence: true
-
-  attr_accessor :invitation_sent_at
-
 end
