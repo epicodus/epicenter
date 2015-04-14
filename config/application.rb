@@ -30,3 +30,14 @@ module Epicenter
     Rails.application.routes.default_url_options[:host] = 'https://epicenter.epicodus.com'
   end
 end
+#Devise uses a mapping between classes and routes, so when a factory built object
+# comes through to Devise after a console reload, or a class redefinition then it will fail.
+ActionDispatch::Callbacks.after do
+  # Reload the factories
+  return unless (Rails.env.development? || Rails.env.test?)
+
+  unless FactoryGirl.factories.blank? # first init will load factories, this should only run on subsequent reloads
+    FactoryGirl.factories.clear
+    FactoryGirl.find_definitions
+  end
+end
