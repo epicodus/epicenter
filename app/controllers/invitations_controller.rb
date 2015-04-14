@@ -13,8 +13,8 @@ class InvitationsController < Devise::InvitationsController
     # Set the value for :invitation_sent_at because we skip calling the Devise Invitable method deliver_invitation which normally sets this value
     @invited_user.update_attribute :invitation_sent_at, Time.now.utc unless @invited_user.invitation_sent_at
     # Use our own mailer to send the invitation e-mail
-    if InviteMailer.invite_email(@invited_user, current_user).deliver
-      flash[:notice] = "You successfully invited #{@invited_user.email}"
+    if InviteMailer.invitation_instructions(@invited_user, current_user).deliver
+      flash[:notice] = "An invitation email has been sent to #{@invited_user.email}."
       redirect_to root_path
     else
       flash[:alert] = 'Your invitation did not send'
