@@ -56,7 +56,7 @@ feature 'Changing current cohort', js: true do
   end
 end
 
-feature 'Inviting new users', js: true do
+feature 'Inviting new users' do
   let(:admin) { FactoryGirl.create(:admin) }
 
   scenario 'admin sends invitation to a student' do
@@ -77,10 +77,9 @@ feature 'Inviting new users', js: true do
 end
 
 feature 'Admin signs up via invitation' do
-
   let(:admin) { FactoryGirl.create(:admin) }
 
-  scenario 'with valid information', js: true do
+  scenario 'with valid information' do
     admin.invite!
     visit accept_admin_invitation_path(admin, invitation_token: admin.raw_invitation_token)
     fill_in 'Name', with: 'Roberta Larson'
@@ -90,7 +89,7 @@ feature 'Admin signs up via invitation' do
     expect(page).to have_content 'Your password was set successfully. You are now signed in.'
   end
 
-  scenario 'with missing information', js: true do
+  scenario 'with missing information' do
     admin.invite!
     visit accept_admin_invitation_path(admin, invitation_token: admin.raw_invitation_token)
     fill_in 'Name', with: ''
