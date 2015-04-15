@@ -1,9 +1,9 @@
 <p><%= I18n.t("devise.mailer.invitation_instructions.hello", email: @resource.email) %></p>
 
 <% if @resource.is_a?(Admin) %>
-  <p><%= I18n.t("devise.mailer.invitation_instructions.someone_invited_admin", url: root_url) %></p>
+<p><%= I18n.t("devise.mailer.invitation_instructions.someone_invited_admin", url: root_url) %></p>
 <% else %>
-  <p><%= I18n.t("devise.mailer.invitation_instructions.someone_invited_you", url: root_url) %></p>
+<p><%= I18n.t("devise.mailer.invitation_instructions.someone_invited_you", url: root_url) %></p>
 <% end %>
 
 <p><%= link_to I18n.t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, :invitation_token => @token) %></p>
