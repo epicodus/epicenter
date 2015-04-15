@@ -10,15 +10,17 @@
       <%= f.text_field :name %>
     </div>
 
-    <div>
-      <%= f.label :cohort_id %>
-      <%= f.select(:cohort_id, Cohort.all.collect {|c| [ c.description, c.id ] }) %>
-    </div>
+    <% if resource.is_a?(Student) %>
+      <div>
+        <%= f.label :cohort_id %>
+        <%= f.select(:cohort_id, Cohort.all.collect {|c| [ c.description, c.id ] }) %>
+      </div>
 
-    <div>
-      <%= f.label :plan_id %>
-      <%= f.select(:plan_id, Plan.all.collect {|p| [ p.name, p.id ] }) %>
-    </div>
+      <div>
+        <%= f.label :plan_id %>
+        <%= f.select(:plan_id, Plan.all.collect {|p| [ p.name, p.id ] }) %>
+      </div>
+    <% end %>
 
     <div>
       <%= f.label :password %>
