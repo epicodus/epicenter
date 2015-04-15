@@ -1,11 +1,17 @@
-<p><%= I18n.t("devise.mailer.invitation_instructions.hello", email: @resource.email) %></p>
+<p><%= "Hi #{@resource.email}" %></p>
 
 <% if @resource.is_a?(Admin) %>
-<p><%= I18n.t("devise.mailer.invitation_instructions.someone_invited_admin", url: root_url) %></p>
+<p><%= "You have been invited to create an admin account at #{root_url}. Lucky you!" %></p>
 <% else %>
-<p><%= I18n.t("devise.mailer.invitation_instructions.someone_invited_you", url: root_url) %></p>
+<p><%= "I'm really happy to have you joining us at Epicodus! As your acceptance email indicated,
+        you will need to create an account at #{root_url} to finish your enrollment and pay your tuition.<br>
+        As a reminder, the payment plans we offer are:<br>
+        * Pay $3,400 up-front, within a week of being accepted.<br>
+        * Pay $900 up-front, and $3,600 on the first day of class ($4,500 total).<br>
+        * Pay $150 up-front, $25 monthly for 8 months, and then $600 monthly for 8 months ($5,150 total)." %></p>
 <% end %>
 
-<p><%= link_to I18n.t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, :invitation_token => @token) %></p>
+<p><%= link_to "Accept Invitation", accept_invitation_url(@resource, :invitation_token => @token) %></p>
 
-<p><%= I18n.t("devise.mailer.invitation_instructions.ignore").html_safe %></p>
+<p><%= "If you do not want to accept the invitation, please ignore this email.<br>
+        Your account won't be created until you access the link above and set your information." %></p>
