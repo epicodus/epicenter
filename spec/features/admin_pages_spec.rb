@@ -14,7 +14,7 @@ feature 'Admin signs in' do
     visit root_path
     expect(page).to have_link 'Code Reviews'
     expect(page).to have_link 'Attendance statistics'
-    expect(page).to have_link 'Invite students'
+    expect(page).to have_link 'Invite'
   end
 end
 
@@ -56,16 +56,22 @@ feature 'Changing current cohort', js: true do
   end
 end
 
-feature 'Inviting new students', js: true do
+feature 'Inviting new users', js: true do
   let(:admin) { FactoryGirl.create(:admin) }
 
   scenario 'admin sends invitation to a student' do
     login_as(admin, scope: :admin)
-    visit root_path
-    click_on 'Invite students'
     visit new_student_invitation_path
     fill_in 'Email', with: 'newstudent@example.com'
     click_on 'Send an invitation'
     expect(page).to have_content "An invitation email has been sent to newstudent@example.com"
+  end
+
+  scenario 'admin sends invitation to an admin' do
+    login_as(admin, scope: :admin)
+    visit new_admin_invitation_path
+    fill_in 'Email', with: 'newadmin@example.com'
+    click_on 'Send an invitation'
+    expect(page).to have_content "An invitation email has been sent to newadmin@example.com"
   end
 end
