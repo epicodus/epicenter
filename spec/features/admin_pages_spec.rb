@@ -75,3 +75,26 @@ feature 'Inviting new users', js: true do
     expect(page).to have_content "An invitation email has been sent to newadmin@example.com"
   end
 end
+
+feature 'Admin signs up via invitation' do
+
+  let(:admin) { FactoryGirl.create(:admin) }
+
+  scenario 'with valid information', js: true do
+    admin.invite!
+    visit accept_admin_invitation_path(admin, invitation_token: admin.raw_invitation_token)
+    fill_in 'Name', with: 'Roberta Larson'
+    fill_in 'Password', with: 'password'
+    fill_in 'Password confirmation', with: 'password'
+    click_on 'Submit'
+    expect(page).to have_content 'Your password was set successfully. You are now signed in.'
+  end
+
+  scenario 'with missing information', js: true do
+    admin.invite!
+    visit accept_admin_invitation_path(admin, invitation_token: admin.raw_invitation_token)
+    fill_in 'Name', with: ''
+    click_on 'Submit'
+    expect(page).to have_content 'error'
+  end
+end
