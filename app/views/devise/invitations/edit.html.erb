@@ -10,15 +10,24 @@
       <%= f.text_field :name %>
     </div>
 
-    <div>
-      <%= f.label :cohort_id %>
-      <%= f.select(:cohort_id, Cohort.all.collect {|c| [ c.description, c.id ] }) %>
-    </div>
+    <% if resource.is_a?(Admin) %>
+      <div>
+        <%= f.label :current_cohort_id %>
+        <%= f.select(:cohort_id, Cohort.all.collect {|c| [ c.description, c.id ] }) %>
+      </div>
+    <% end %>
 
-    <div>
-      <%= f.label :plan_id %>
-      <%= f.select(:plan_id, Plan.all.collect {|p| [ p.name, p.id ] }) %>
-    </div>
+    <% if resource.is_a?(Student) %>
+      <div>
+        <%= f.label :cohort_id %>
+        <%= f.select(:cohort_id, Cohort.all.collect {|c| [ c.description, c.id ] }) %>
+      </div>
+
+      <div>
+        <%= f.label :plan_id %>
+        <%= f.select(:plan_id, Plan.all.collect {|p| [ p.name, p.id ] }) %>
+      </div>
+    <% end %>
 
     <div>
       <%= f.label :password %>
@@ -30,7 +39,7 @@
       <%= f.password_field :password_confirmation %>
     </div>
 
-    <div><%= f.submit t("devise.invitations.edit.submit_button") %></div>
+    <div><%= f.submit "Submit" %></div>
   <% end %>
   </div>
 </div>

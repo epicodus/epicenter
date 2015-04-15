@@ -14,7 +14,7 @@ feature 'Admin signs in' do
     visit root_path
     expect(page).to have_link 'Code Reviews'
     expect(page).to have_link 'Attendance statistics'
-    expect(page).to have_link 'Invite students'
+    expect(page).to have_link 'Invite'
   end
 end
 
@@ -56,16 +56,44 @@ feature 'Changing current cohort', js: true do
   end
 end
 
-feature 'Inviting new students', js: true do
+feature 'Inviting new users' do
   let(:admin) { FactoryGirl.create(:admin) }
 
   scenario 'admin sends invitation to a student' do
     login_as(admin, scope: :admin)
-    visit root_path
-    click_on 'Invite students'
     visit new_student_invitation_path
     fill_in 'Email', with: 'newstudent@example.com'
     click_on 'Send an invitation'
     expect(page).to have_content "An invitation email has been sent to newstudent@example.com"
+  end
+
+  scenario 'admin sends invitation to an admin' do
+    login_as(admin, scope: :admin)
+    visit new_admin_invitation_path
+    fill_in 'Email', with: 'newadmin@example.com'
+    click_on 'Send an invitation'
+    expect(page).to have_content "An invitation email has been sent to newadmin@example.com"
+  end
+end
+
+feature 'Admin signs up via invitation' do
+  let(:admin) { FactoryGirl.create(:admin) }
+
+  scenario 'with valid information' do
+    admin.invite!
+    visit accept_admin_invitation_path(admin, invitation_token: admin.raw_invitation_token)
+    fill_in 'Name', with: 'Roberta Larson'
+    fill_in 'Password', with: 'password'
+    fill_in 'Password confirmation', with: 'password'
+    click_on 'Submit'
+    expect(page).to have_content 'Your password was set successfully. You are now signed in.'
+  end
+
+  scenario 'with missing information' do
+    admin.invite!
+    visit accept_admin_invitation_path(admin, invitation_token: admin.raw_invitation_token)
+    fill_in 'Name', with: ''
+    click_on 'Submit'
+    expect(page).to have_content 'error'
   end
 end
