@@ -5,6 +5,8 @@ describe Student do
   it { should have_many :payment_methods }
   it { should have_many :credit_cards }
   it { should have_many :payments }
+  it { should have_many :ratings }
+  it { should have_many(:internships).through(:ratings) }
   it { should belong_to :plan }
   it { should have_many :attendance_records }
   it { should belong_to :cohort }
@@ -264,6 +266,15 @@ describe Student do
       failed_payment = FactoryGirl.create(:payment, student: student, amount: 200_00)
       failed_payment.update(status: 'failed')
       expect(student.total_paid).to eq 200_00
+    end
+  end
+
+  describe '#find_rating' do
+    it 'finds the rating based on internship' do
+      student = FactoryGirl.create(:student)
+      internship = FactoryGirl.create(:internship)
+      rating = FactoryGirl.create(:rating, student: student, internship: internship)
+      expect(student.find_rating(internship)).to eq(rating)
     end
   end
 

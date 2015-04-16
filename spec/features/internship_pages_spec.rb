@@ -131,3 +131,35 @@ feature 'show page' do
     expect(page).to have_content 'Clearance description'
   end
 end
+
+feature 'rating an internship' do
+  let(:student) { FactoryGirl.create(:student) }
+  let!(:internship_one) { FactoryGirl.create(:internship, cohort: student.cohort) }
+  before { login_as(student, scope: :student) }
+
+  scenario 'a student can rate an internship from the internship page' do
+    visit cohort_internship_path(student.cohort, internship_one)
+    click_on "High"
+    expect(page).to have_css 'div.green-background'
+  end
+
+  scenario 'a student can update an internship with a new rating from the internship page' do
+    visit cohort_internship_path(student.cohort, internship_one)
+    click_on "Medium"
+    click_on "Low"
+    expect(page).to have_css 'div.red-background'
+  end
+
+  scenario 'a student can rate an internship from the internships index page' do
+    visit cohort_internships_path(student.cohort)
+    click_on "Medium"
+    expect(page).to have_css 'div.yellow-background'
+  end
+
+  scenario 'a student can add notes to a rating' do
+    visit cohort_internship_path(student.cohort, internship_one)
+    fill_in 'notes', with: 'New note'
+    click_on 'High'
+    expect(page).to have_content 'New note'
+  end
+end

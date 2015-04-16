@@ -238,4 +238,11 @@ FactoryGirl.define do
     clearance_required true
     clearance_description "You need to have an awesome attitude!"
   end
+
+  factory :rating do
+    student
+    internship
+    notes 'This one looks great!'
+    interest '1'
+  end
 end

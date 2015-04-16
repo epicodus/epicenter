@@ -2,17 +2,41 @@
 <hr/>
 
 <ul class="company-list">
-  <% @internships.each_with_index do |internship, index| %>
-    <div class='list-row list-link row'>
-      <li>
-        <%= link_to internship.company_name, cohort_internship_path(@cohort, internship) %>
-        <% if current_admin %>
-          <div class='update-company btn-group'>
-            <%= link_to 'Edit', edit_cohort_internship_path(internship.cohort, internship), class: 'btn btn-warning' %>
-            <%= link_to 'Delete', cohort_internship_path(@cohort, internship), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
-          </div>
-        <% end %>
-      </li>
+  <% @internships.each do |internship| %>
+    <% if current_student %>
+      <div class="span12 <%= set_internship_background(current_student.find_rating(internship)) %>">
+    <% else %>
+      <div class='span12'>
+    <% end %>
+      <div class='list-row list-link row'>
+        <li>
+          <span class='span3'><%= link_to internship.company_name, cohort_internship_path(@cohort, internship) %></span>
+          <% if current_admin %>
+            <div class='update-company btn-group'>
+              <%= link_to 'Edit', edit_cohort_internship_path(internship.cohort, internship), class: 'btn btn-warning' %>
+              <%= link_to 'Delete', cohort_internship_path(@cohort, internship), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+            </div>
+          <% elsif current_student %>
+            <%= form_tag('/ratings', method: :post, class: 'form-inline') do |f| %>
+              <div class='pull-right'>
+                <%= label_tag :notes %>
+                <% if current_student.ratings.where(internship_id: internship.id).empty? %>
+                  <%= text_area_tag :notes, nil, rows: 1 %>
+                <% else %>
+                  <%= text_area_tag :notes, current_student.find_rating(internship).notes, rows: 1 %>
+                <% end %>
+              </div>
+              <%= hidden_field_tag :internship_id, internship.id %>
+
+              <div class='update-company btn-group span3 pull-right'>
+                <%= submit_tag 'High', class: 'btn btn-success', name: 'commit[1]'  %>
+                <%= submit_tag 'Medium', class: 'btn btn-warning', name: 'commit[2]' %>
+                <%= submit_tag 'Low', class: 'btn btn-danger', name: 'commit[3]' %>
+              </div>
+            <% end %>
+          <% end %>
+        </li>
+      </div>
     </div>
   <% end %>
 </ul>

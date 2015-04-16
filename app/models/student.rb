@@ -14,6 +14,8 @@ scope :recurring_active, -> { where(recurring_active: true) }
   has_many :attendance_records
   has_many :submissions
   has_many :payment_methods
+  has_many :ratings
+  has_many :internships, through: :ratings
   belongs_to :primary_payment_method, class_name: 'PaymentMethod'
 
   def payment_methods_primary_first_then_pending
@@ -76,6 +78,10 @@ scope :recurring_active, -> { where(recurring_active: true) }
 
   def absences
     cohort.number_of_days_since_start - attendance_records.count
+  end
+
+  def find_rating(internship)
+    ratings.where(internship_id: internship.id).first
   end
 
 private
