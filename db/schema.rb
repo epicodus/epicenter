@@ -12,11 +12,10 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 20150407195719) do
-
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "attendance_records", force: true do |t|
+  create_table "attendance_records", force: :cascade do |t|
     t.integer  "student_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -28,16 +27,16 @@ ActiveRecord::Schema.define(version: 20150407195719) do
   add_index "attendance_records", ["student_id"], name: "index_attendance_records_on_student_id", using: :btree
   add_index "attendance_records", ["tardy"], name: "index_attendance_records_on_tardy", using: :btree
 
-  create_table "code_reviews", force: true do |t|
-    t.string   "title"
+  create_table "code_reviews", force: :cascade do |t|
+    t.string   "title",      limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "cohort_id"
     t.integer  "number"
   end
 
-  create_table "cohorts", force: true do |t|
-    t.string   "description"
+  create_table "cohorts", force: :cascade do |t|
+    t.string   "description", limit: 255
     t.date     "start_date"
     t.date     "end_date"
     t.datetime "created_at"
@@ -46,18 +45,20 @@ ActiveRecord::Schema.define(version: 20150407195719) do
 
   add_index "cohorts", ["start_date"], name: "index_cohorts_on_start_date", using: :btree
 
-  create_table "companies", force: true do |t|
-    t.string "name"
-    t.text   "description"
-    t.string "website"
-    t.string "address"
-    t.string "contact_name"
-    t.string "contact_phone"
-    t.string "contact_email"
-    t.string "contact_title"
+  create_table "companies", force: :cascade do |t|
+    t.string   "name",          limit: 255
+    t.text     "description"
+    t.string   "website",       limit: 255
+    t.string   "address",       limit: 255
+    t.string   "contact_name",  limit: 255
+    t.string   "contact_phone", limit: 255
+    t.string   "contact_email", limit: 255
+    t.string   "contact_title", limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table "grades", force: true do |t|
+  create_table "grades", force: :cascade do |t|
     t.integer  "objective_id"
     t.integer  "score_id"
     t.datetime "created_at"
@@ -65,39 +66,50 @@ ActiveRecord::Schema.define(version: 20150407195719) do
     t.integer  "review_id"
   end
 
-  create_table "objectives", force: true do |t|
-    t.string   "content"
+  create_table "internships", force: :cascade do |t|
+    t.integer  "company_id"
+    t.integer  "cohort_id"
+    t.text     "description"
+    t.text     "ideal_intern"
+    t.boolean  "clearance_required"
+    t.text     "clearance_description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "objectives", force: :cascade do |t|
+    t.string   "content",        limit: 255
     t.integer  "code_review_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "payment_methods", force: true do |t|
-    t.string   "account_uri"
-    t.string   "verification_uri"
+  create_table "payment_methods", force: :cascade do |t|
+    t.string   "account_uri",      limit: 255
+    t.string   "verification_uri", limit: 255
     t.integer  "student_id"
     t.boolean  "verified"
-    t.string   "last_four_string"
-    t.string   "type"
+    t.string   "last_four_string", limit: 255
+    t.string   "type",             limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "payments", force: true do |t|
+  create_table "payments", force: :cascade do |t|
     t.integer  "amount"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "payment_uri"
+    t.string   "payment_uri",       limit: 255
     t.integer  "student_id"
-    t.integer  "fee",               default: 0, null: false
+    t.integer  "fee",                           default: 0, null: false
     t.integer  "payment_method_id"
-    t.string   "status"
+    t.string   "status",            limit: 255
   end
 
   add_index "payments", ["student_id"], name: "index_payments_on_student_id", using: :btree
 
-  create_table "plans", force: true do |t|
-    t.string   "name"
+  create_table "plans", force: :cascade do |t|
+    t.string   "name",             limit: 255
     t.integer  "recurring_amount"
     t.integer  "upfront_amount"
     t.datetime "created_at"
@@ -105,7 +117,7 @@ ActiveRecord::Schema.define(version: 20150407195719) do
     t.integer  "total_amount"
   end
 
-  create_table "reviews", force: true do |t|
+  create_table "reviews", force: :cascade do |t|
     t.integer  "submission_id"
     t.integer  "admin_id"
     t.text     "note"
@@ -113,41 +125,41 @@ ActiveRecord::Schema.define(version: 20150407195719) do
     t.datetime "updated_at"
   end
 
-  create_table "scores", force: true do |t|
+  create_table "scores", force: :cascade do |t|
     t.integer  "value"
-    t.string   "description"
+    t.string   "description", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "submissions", force: true do |t|
+  create_table "submissions", force: :cascade do |t|
     t.integer  "student_id"
-    t.string   "link"
+    t.string   "link",           limit: 255
     t.integer  "code_review_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "needs_review"
   end
 
-  create_table "users", force: true do |t|
-    t.string   "email",                     default: "", null: false
-    t.string   "encrypted_password",        default: ""
-    t.string   "reset_password_token"
+  create_table "users", force: :cascade do |t|
+    t.string   "email",                     limit: 255, default: "", null: false
+    t.string   "encrypted_password",        limit: 255, default: ""
+    t.string   "reset_password_token",      limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",             default: 0,  null: false
+    t.integer  "sign_in_count",                         default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip"
-    t.string   "last_sign_in_ip"
+    t.string   "current_sign_in_ip",        limit: 255
+    t.string   "last_sign_in_ip",           limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "name"
+    t.string   "name",                      limit: 255
     t.integer  "plan_id"
     t.boolean  "recurring_active"
     t.integer  "cohort_id"
     t.integer  "primary_payment_method_id"
-    t.string   "type"
+    t.string   "type",                      limit: 255
     t.integer  "current_cohort_id"
     t.string   "invitation_token"
     t.datetime "invitation_created_at"
@@ -156,7 +168,7 @@ ActiveRecord::Schema.define(version: 20150407195719) do
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
-    t.integer  "invitations_count",         default: 0
+    t.integer  "invitations_count",                     default: 0
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

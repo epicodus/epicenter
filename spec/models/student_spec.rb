@@ -341,5 +341,14 @@ describe Student do
 
       it { is_expected.to not_have_abilities(:update, Verification.new) }
     end
+
+    context 'for companies' do
+      it { is_expected.to not_have_abilities([:create, :read, :update, :destroy], Company.new)}
+    end
+
+    context 'for internships' do
+      it { is_expected.to not_have_abilities([:create, :read, :update, :destroy], Internship.new)}
+      it { is_expected.to have_abilities(:read, Internship.new(cohort: student.cohort)) }
+    end
   end
 end

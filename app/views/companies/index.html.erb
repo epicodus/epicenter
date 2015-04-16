@@ -1,20 +1,19 @@
-<h3>Partner Companies</h3>
+<h1>Partner Companies</h1>
 <hr/>
 
 <ul class="company-list">
-  <% @companies.each do |company| %>
-    <li>
-      <%= link_to company.name, company %>
-      <span class='update-company'>
-        <%= link_to 'Edit', edit_company_path(company) %>
-        <%= spacer %>
-        <%= link_to 'Delete', company_path(company), method: :delete %>
-        </span>
-    </li>
-    <% unless company.last_company? %>
-      <hr>
-    <% end %>
+  <% @companies.each_with_index do |company, index| %>
+    <div class='list-row list-link row'>
+      <li>
+        <%= link_to company.name, company %>
+        <span class='update-company btn-group'>
+          <%= link_to 'Edit', edit_company_path(company), class: 'btn btn-warning' %>
+          <%= link_to 'Delete', company_path(company), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+          </span>
+      </li>
+    </div>
   <% end %>
 </ul>
-<hr>
-<%= link_to "+ New Company", new_company_path, class: "unstyled-link" %>
+<%= link_to new_company_path do %>
+  <h4 class="span3 text-success">+ New Company</h4>
+<% end %>

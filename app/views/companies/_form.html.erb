@@ -1,4 +1,6 @@
 <%= form_for @company do |f| %>
+  <%= render 'layouts/errors', object: @company %>
+
   <div class='form-group'>
     <%= f.label :name, "Company Name" %>
     <%= f.text_field :name %>
@@ -41,5 +43,7 @@
     <%= f.email_field :contact_email %>
   </div>
 
-  <%= f.submit %>
+  <div class="submit">
+    <%= f.submit nil, class: 'btn btn-primary' %>
+  </div>
 <% end %>
