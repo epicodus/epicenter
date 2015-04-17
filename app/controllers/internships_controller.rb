@@ -74,4 +74,5 @@ class InternshipsController < ApplicationController
         '0'
       end
     end
+
 end

@@ -140,20 +140,20 @@ feature 'rating an internship' do
   scenario 'a student can rate an internship from the internship page' do
     visit cohort_internship_path(student.cohort, internship_one)
     click_on "High"
-    expect(page).to have_css 'div.green-background'
+    expect(page).to have_css 'div.internship-high-interest'
   end
 
   scenario 'a student can update an internship with a new rating from the internship page' do
     visit cohort_internship_path(student.cohort, internship_one)
     click_on "Medium"
     click_on "Low"
-    expect(page).to have_css 'div.red-background'
+    expect(page).to have_css 'div.internship-low-interest'
   end
 
   scenario 'a student can rate an internship from the internships index page' do
     visit cohort_internships_path(student.cohort)
     click_on "Medium"
-    expect(page).to have_css 'div.yellow-background'
+    expect(page).to have_css 'div.internship-medium-interest'
   end
 
   scenario 'a student can add notes to a rating' do
@@ -161,5 +161,42 @@ feature 'rating an internship' do
     fill_in 'notes', with: 'New note'
     click_on 'High'
     expect(page).to have_content 'New note'
+  end
+end
+
+feature 'admin viewing students interested in an internship' do
+  let(:admin) { FactoryGirl.create(:admin) }
+  let(:student) { FactoryGirl.create(:student) }
+  let(:internship) { FactoryGirl.create(:internship, cohort: student.cohort) }
+  before { login_as(admin, scope: :admin) }
+
+  context 'on an internship page' do
+    scenario 'an admin can see students highly interested in that internship' do
+      rating = FactoryGirl.create(:rating, interest: '1', student: student, internship: internship)
+      visit cohort_internship_path(internship.cohort, internship)
+      click_on 'Highly interested students'
+      expect(page).to have_content student.name
+    end
+
+    scenario "an admin can't see students not-highly interested in that internship when on the 'high tab'" do
+      rating = FactoryGirl.create(:rating, interest: '2', student: student, internship: internship)
+      visit cohort_internship_path(internship.cohort, internship)
+      click_on 'Highly interested students'
+      expect(page).to_not have_content student.name
+    end
+
+    scenario 'an admin can see students moderately interested in that internship' do
+      rating = FactoryGirl.create(:rating, interest: '2', student: student, internship: internship)
+      visit cohort_internship_path(internship.cohort, internship)
+      click_on 'Moderately interested students'
+      expect(page).to have_content student.name
+    end
+
+    scenario 'an admin can see students moderately interested in that internship' do
+      rating = FactoryGirl.create(:rating, interest: '3', student: student, internship: internship)
+      visit cohort_internship_path(internship.cohort, internship)
+      click_on 'Not interested students'
+      expect(page).to have_content student.name
+    end
   end
 end

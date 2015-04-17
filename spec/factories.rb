@@ -233,7 +233,7 @@ FactoryGirl.define do
   factory :internship do
     company
     cohort
-    sequence(:description) { |n| "You will write awesome software here! #{n}" }
+    description "You will write awesome software here!"
     ideal_intern 'Somebody who writes awesome software!'
     clearance_required true
     clearance_description "You need to have an awesome attitude!"

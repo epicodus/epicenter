@@ -278,6 +278,21 @@ describe Student do
     end
   end
 
+  describe 'find_students_by_interest' do
+    let(:student) { FactoryGirl.create(:student) }
+    let(:internship) { FactoryGirl.create(:internship, cohort: student.cohort) }
+
+    it 'returns an array of students in an internship that share an interest level in that internship' do
+      FactoryGirl.create(:rating, interest: '1', internship: internship, student: student)
+      expect(Student.find_students_by_interest(internship, '1')).to eq([student])
+    end
+
+    it 'it doesn;t return students that do not share the interest level in an internship' do
+      FactoryGirl.create(:rating, interest: '1', internship: internship, student: student)
+      expect(Student.find_students_by_interest(internship, '2')).to_not eq([student])
+    end
+  end
+
   describe "abilities" do
     let(:student) { FactoryGirl.create(:student) }
     subject { Ability.new(student) }

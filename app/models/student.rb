@@ -84,6 +84,11 @@ scope :recurring_active, -> { where(recurring_active: true) }
     ratings.where(internship_id: internship.id).first
   end
 
+  def self.find_students_by_interest(internship, interest_level)
+    students = Student.all.drop_while { |student| !student.internships.include?(internship) }
+    students.select { |student| student.find_rating(internship).interest == interest_level }
+  end
+
 private
 
   def primary_payment_method_belongs_to_student
