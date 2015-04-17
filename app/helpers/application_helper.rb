@@ -8,11 +8,11 @@ module ApplicationHelper
   def set_internship_background(rating)
     if rating
       if rating.interest == "1"
-        'green-background'
+        'internship-high-interest'
       elsif rating.interest == "2"
-        'yellow-background'
+        'internship-medium-interest'
       elsif rating.interest == "3"
-        'red-background'
+        'internship-low-interest'
       end
     else
       nil

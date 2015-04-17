@@ -10,7 +10,7 @@ class Company < ActiveRecord::Base
 
   before_save :fix_url
 
-  private
+private
 
   def fix_url
     if self.website
