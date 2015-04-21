@@ -49,6 +49,10 @@ describe Admin do
     context 'for companies' do
       it { is_expected.to have_abilities(:manage, Company.new) }
     end
+
+    context 'for internships' do
+      it { is_expected.to have_abilities(:manage, Internship.new) }
+    end
   end
 
   it 'is assigned a default current_cohort before creation' do

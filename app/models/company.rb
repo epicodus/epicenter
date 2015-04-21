@@ -1,8 +1,23 @@
 class Company < ActiveRecord::Base
-  validates_presence_of :name, :contact_phone, :contact_email
-  validates_uniqueness_of :name
+  has_many :internships
 
-  def last_company?
-    self == Company.last
+  validates :name, presence: true, uniqueness: true
+  validates :contact_phone, presence: true
+  validates :contact_email, presence: true
+  validates :website, presence: true
+
+  default_scope { order('name') }
+
+  before_save :fix_url
+
+private
+
+  def fix_url
+    if self.website
+      uri = URI.parse(self.website)
+      unless uri.scheme
+        self.website = URI::HTTP.build({ host: self.website }).to_s
+      end
+    end
   end
 end

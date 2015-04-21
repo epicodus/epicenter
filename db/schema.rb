@@ -11,12 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150407195719) do
+ActiveRecord::Schema.define(version: 20150416181301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "attendance_records", force: true do |t|
+  create_table "attendance_records", force: :cascade do |t|
     t.integer  "student_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20150407195719) do
   add_index "attendance_records", ["student_id"], name: "index_attendance_records_on_student_id", using: :btree
   add_index "attendance_records", ["tardy"], name: "index_attendance_records_on_tardy", using: :btree
 
-  create_table "code_reviews", force: true do |t|
+  create_table "code_reviews", force: :cascade do |t|
     t.string   "title"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 20150407195719) do
     t.integer  "number"
   end
 
-  create_table "cohorts", force: true do |t|
+  create_table "cohorts", force: :cascade do |t|
     t.string   "description"
     t.date     "start_date"
     t.date     "end_date"
@@ -46,18 +46,20 @@ ActiveRecord::Schema.define(version: 20150407195719) do
 
   add_index "cohorts", ["start_date"], name: "index_cohorts_on_start_date", using: :btree
 
-  create_table "companies", force: true do |t|
-    t.string "name"
-    t.text   "description"
-    t.string "website"
-    t.string "address"
-    t.string "contact_name"
-    t.string "contact_phone"
-    t.string "contact_email"
-    t.string "contact_title"
+  create_table "companies", force: :cascade do |t|
+    t.string   "name"
+    t.text     "description"
+    t.string   "website"
+    t.string   "address"
+    t.string   "contact_name"
+    t.string   "contact_phone"
+    t.string   "contact_email"
+    t.string   "contact_title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
-  create_table "grades", force: true do |t|
+  create_table "grades", force: :cascade do |t|
     t.integer  "objective_id"
     t.integer  "score_id"
     t.datetime "created_at"
@@ -65,14 +67,25 @@ ActiveRecord::Schema.define(version: 20150407195719) do
     t.integer  "review_id"
   end
 
-  create_table "objectives", force: true do |t|
+  create_table "internships", force: :cascade do |t|
+    t.integer  "company_id"
+    t.integer  "cohort_id"
+    t.text     "description"
+    t.text     "ideal_intern"
+    t.boolean  "clearance_required"
+    t.text     "clearance_description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "objectives", force: :cascade do |t|
     t.string   "content"
     t.integer  "code_review_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "payment_methods", force: true do |t|
+  create_table "payment_methods", force: :cascade do |t|
     t.string   "account_uri"
     t.string   "verification_uri"
     t.integer  "student_id"
@@ -83,7 +96,7 @@ ActiveRecord::Schema.define(version: 20150407195719) do
     t.datetime "updated_at"
   end
 
-  create_table "payments", force: true do |t|
+  create_table "payments", force: :cascade do |t|
     t.integer  "amount"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -96,7 +109,7 @@ ActiveRecord::Schema.define(version: 20150407195719) do
 
   add_index "payments", ["student_id"], name: "index_payments_on_student_id", using: :btree
 
-  create_table "plans", force: true do |t|
+  create_table "plans", force: :cascade do |t|
     t.string   "name"
     t.integer  "recurring_amount"
     t.integer  "upfront_amount"
@@ -105,7 +118,16 @@ ActiveRecord::Schema.define(version: 20150407195719) do
     t.integer  "total_amount"
   end
 
-  create_table "reviews", force: true do |t|
+  create_table "ratings", force: :cascade do |t|
+    t.integer  "student_id"
+    t.integer  "internship_id"
+    t.string   "interest"
+    t.text     "notes"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "reviews", force: :cascade do |t|
     t.integer  "submission_id"
     t.integer  "admin_id"
     t.text     "note"
@@ -113,14 +135,14 @@ ActiveRecord::Schema.define(version: 20150407195719) do
     t.datetime "updated_at"
   end
 
-  create_table "scores", force: true do |t|
+  create_table "scores", force: :cascade do |t|
     t.integer  "value"
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "submissions", force: true do |t|
+  create_table "submissions", force: :cascade do |t|
     t.integer  "student_id"
     t.string   "link"
     t.integer  "code_review_id"
@@ -129,7 +151,7 @@ ActiveRecord::Schema.define(version: 20150407195719) do
     t.boolean  "needs_review"
   end
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "email",                     default: "", null: false
     t.string   "encrypted_password",        default: ""
     t.string   "reset_password_token"

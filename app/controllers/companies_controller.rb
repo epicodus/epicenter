@@ -19,7 +19,6 @@ class CompaniesController < ApplicationController
       flash[:notice] = "#{@company.name} added to companies"
       redirect_to @company
     else
-      flash[:alert] = "Company not added"
       render :new
     end
   end

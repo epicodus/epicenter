@@ -1,9 +1,9 @@
-<h2><%= @company.name %></h2>
+<h1><%= @company.name %></h1>
   <table class="table table-rating">
     <tr>
-      <th>Company Info:</th>
+      <th>Company info:</th>
       <td>
-        <%= link_to @company.website, fix_url(@company.website) %><br>
+        <%= link_to @company.website, @company.website %><br>
         <%= @company.address %><br><br>
         <%= @company.description %>
       </td>

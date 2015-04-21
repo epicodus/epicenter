@@ -229,4 +229,20 @@ FactoryGirl.define do
     contact_email   'test@company.com'
     contact_title   'mentor'
   end
+
+  factory :internship do
+    company
+    cohort
+    description "You will write awesome software here!"
+    ideal_intern 'Somebody who writes awesome software!'
+    clearance_required true
+    clearance_description "You need to have an awesome attitude!"
+  end
+
+  factory :rating do
+    student
+    internship
+    notes 'This one looks great!'
+    interest '1'
+  end
 end

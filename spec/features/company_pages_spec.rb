@@ -31,7 +31,6 @@ feature 'index page' do
       visit companies_path
       click_link company.name
       expect(page).to have_content company.description
-      expect(page).to have_content company.contact_name
     end
 
     scenario "it should have an add new company button" do
@@ -79,7 +78,7 @@ feature "editing a company" do
   before { login_as(admin, scope: :admin) }
 
   context "with valid input" do
-    scenario "edits a company successfully" do
+    scenario "updates a company successfully" do
       visit companies_path
       click_link "Edit"
       fill_in "Company Name", with: "New Company Name"
@@ -89,12 +88,12 @@ feature "editing a company" do
   end
 
   context "with invalid input" do
-    scenario "edits a company successfully" do
+    scenario "doesn't update the company" do
       visit companies_path
       click_link "Edit"
       fill_in "Company Name", with: ""
       click_on "Update Company"
-      expect(page).to have_content "Edit Company"
+      expect(page).to have_content "Please correct these problems:"
     end
   end
 end

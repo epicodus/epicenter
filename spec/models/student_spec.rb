@@ -5,6 +5,8 @@ describe Student do
   it { should have_many :payment_methods }
   it { should have_many :credit_cards }
   it { should have_many :payments }
+  it { should have_many :ratings }
+  it { should have_many(:internships).through(:ratings) }
   it { should belong_to :plan }
   it { should have_many :attendance_records }
   it { should belong_to :cohort }
@@ -267,6 +269,30 @@ describe Student do
     end
   end
 
+  describe '#find_rating' do
+    it 'finds the rating based on internship' do
+      student = FactoryGirl.create(:student)
+      internship = FactoryGirl.create(:internship)
+      rating = FactoryGirl.create(:rating, student: student, internship: internship)
+      expect(student.find_rating(internship)).to eq(rating)
+    end
+  end
+
+  describe 'find_students_by_interest' do
+    let(:student) { FactoryGirl.create(:student) }
+    let(:internship) { FactoryGirl.create(:internship, cohort: student.cohort) }
+
+    it 'returns an array of students in an internship that share an interest level in that internship' do
+      FactoryGirl.create(:rating, interest: '1', internship: internship, student: student)
+      expect(Student.find_students_by_interest(internship, '1')).to eq([student])
+    end
+
+    it 'it doesn;t return students that do not share the interest level in an internship' do
+      FactoryGirl.create(:rating, interest: '1', internship: internship, student: student)
+      expect(Student.find_students_by_interest(internship, '2')).to_not eq([student])
+    end
+  end
+
   describe "abilities" do
     let(:student) { FactoryGirl.create(:student) }
     subject { Ability.new(student) }
@@ -340,6 +366,15 @@ describe Student do
       end
 
       it { is_expected.to not_have_abilities(:update, Verification.new) }
+    end
+
+    context 'for companies' do
+      it { is_expected.to not_have_abilities([:create, :read, :update, :destroy], Company.new)}
+    end
+
+    context 'for internships' do
+      it { is_expected.to not_have_abilities([:create, :read, :update, :destroy], Internship.new)}
+      it { is_expected.to have_abilities(:read, Internship.new(cohort: student.cohort)) }
     end
   end
 end
