@@ -224,7 +224,11 @@ describe Student do
     describe '#on_time_attendances' do
       it 'counts the number of days the student has been on time to class' do
         travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 8, 55, 00) do
-          FactoryGirl.create(:attendance_record, student: student)
+          attendance_record = FactoryGirl.create(:attendance_record, student: student)
+          travel 10.hours do
+            attendance_record.sign_out
+            attendance_record.save
+          end
           expect(student.on_time_attendances).to eq 1
         end
       end
@@ -257,6 +261,7 @@ describe Student do
           attendance_record = FactoryGirl.create(:attendance_record, student: student)
           travel 7.hours do
             attendance_record.sign_out
+            attendance_record.save
             expect(student.left_earlies).to eq 1
           end
         end
