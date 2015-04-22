@@ -292,7 +292,7 @@ describe Student do
       expect(Student.find_students_by_interest(internship, '2')).to_not eq([student])
     end
 
-    it 'will take into account an internship that has not been rated for an interest level' do
+    it 'will take into account an internship that has not been rated an interest level' do
       expect(Student.find_students_by_interest(internship, '')).to eq ([])
     end
   end
