@@ -60,5 +60,22 @@ describe AttendanceRecord do
       attendance_record = FactoryGirl.create(:attendance_record)
       expect(attendance_record.left_early).to eq true
     end
+
+    it 'is true when a student leaves early' do
+      travel_to end_time - 1.minute do
+        shirker_attendance_record = FactoryGirl.create(:attendance_record)
+        shirker_attendance_record.sign_out
+        expect(shirker_attendance_record.left_early).to eq true
+      end
+    end
+
+    it 'is false when a student leaves after the alloted end time' do
+      travel_to end_time + 1.minute do
+        diligent_attendance_record = FactoryGirl.create(:attendance_record)
+        diligent_attendance_record.sign_out
+        expect(diligent_attendance_record.left_early).to eq false
+      end
+    end
+
   end
 end
