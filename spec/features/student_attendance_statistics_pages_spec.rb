@@ -12,7 +12,11 @@ feature 'student attendance statistics page' do
     scenario 'student has been on time' do
       before_class_start_time = student.cohort.start_date.beginning_of_day
       travel_to before_class_start_time do
-        FactoryGirl.create(:attendance_record, student: student)
+        attendance_record = FactoryGirl.create(:attendance_record, student: student)
+        travel 18.hours do
+          attendance_record.sign_out
+          attendance_record.save
+        end
       end
       visit attendance_statistics_path
       expect(page).to have_content 'On time'
