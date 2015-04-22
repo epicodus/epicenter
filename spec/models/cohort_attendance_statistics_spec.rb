@@ -55,6 +55,21 @@ describe CohortAttendanceStatistics do
       end
     end
 
+    it 'returns data for early leaving students' do
+      start_time = Time.zone.parse(ENV['CLASS_START_TIME'] ||= '9:05 AM')
+      end_time = Time.zone.parse(ENV['CLASS_END_TIME'] ||= '4:30 PM' )
+
+      travel_to start_time - 1.minute do
+        cohort.students.each { |student| FactoryGirl.create(:attendance_record, student: student) }
+        travel 7.hours do
+          cohort.students.each { |student| student.attendance_records.today.first.sign_out }
+          left_early_data = cohort_attendance_statistics.student_attendance_data[1]
+          expect(left_early_data[:name]).to eq 'Left early'
+          expect(left_early_data[:data]).to eq [[second_student.name, 1], [first_student.name, 1]]
+        end
+      end
+    end
+
     it 'returns data for absent students' do
       travel_to cohort.start_date do
         absent_data = cohort_attendance_statistics.student_attendance_data[3]
