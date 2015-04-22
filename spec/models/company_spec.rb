@@ -18,6 +18,11 @@ describe Company do
   end
 
   describe '#fix_url' do
+    it 'strips whitespace from url' do
+      company = FactoryGirl.create(:company, website: 'http://www.test.com    ')
+      expect(company.website).to eq 'http://www.test.com'
+    end
+
     context 'with a valid uri scheme' do
       it "doesn't prepend 'http://' to the url when it starts with 'http:/" do
         company = FactoryGirl.create(:company, website: 'http://www.test.com')
