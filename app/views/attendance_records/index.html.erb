@@ -27,7 +27,7 @@
         <% if student.signed_out_today? %>
           <p class="text-success pull-right"><span class="check">&#x2713;</span> Signed out</p>
         <% else %>
-          <%= form_for student.attendance_records.first, method: 'patch' do |f| %>
+          <%= form_for student.attendance_records.today.first do |f| %>
             <%= f.hidden_field :student_id, value: student.id %>
             <%= f.submit "I'm leaving", class: 'btn btn-primary pull-right' %>
           <% end %>
