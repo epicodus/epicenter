@@ -166,6 +166,13 @@ describe Student do
       expect(student.signed_out_today?).to eq false
     end
 
+    it 'is true if the student has signed out' do
+      attendance_record = FactoryGirl.create(:attendance_record, student: student)
+      attendance_record.sign_out
+      attendance_record.save
+      expect(student.signed_out_today?).to eq true
+    end 
+
     it 'populates the signed_out_time field for a students attendance record' do
       attendance_record = FactoryGirl.create(:attendance_record, student: student)
       time = attendance_record.sign_out
