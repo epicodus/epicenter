@@ -43,5 +43,12 @@
         <tr><td><%= tardy.strftime("%A, %B %-d") %></td></tr>
       <% end %>
     </table>
+    <hr>
+    <table class="table table-bordered">
+      <thead><tr><th class="text-warning">Left early</th></tr></thead>
+      <% @student_attendance_stats.left_earlies.each do |early| %>
+        <tr><td><%= early.strftime("%A, %B %-d") %></td></tr>
+      <% end %>
+    </table>
   </div>
 </div>
