@@ -23,6 +23,11 @@ describe Company do
       expect(company.website).to eq 'http://www.test.com'
     end
 
+    it 'returns false with invalid url' do
+      company = FactoryGirl.build(:company, website: 'http://].com')
+      expect(company.save).to eq false
+    end
+
     context 'with a valid uri scheme' do
       it "doesn't prepend 'http://' to the url when it starts with 'http:/" do
         company = FactoryGirl.create(:company, website: 'http://www.test.com')
