@@ -38,6 +38,13 @@ describe CohortAttendanceStatistics do
     it 'returns data for on time students' do
       travel_to cohort.start_date do
         cohort.students.each { |student| FactoryGirl.create(:attendance_record, student: student) }
+        travel_to cohort.start_date + 18.hours do
+          cohort.students.each do |student|
+            record = student.attendance_records.today.first
+            record.sign_out
+            record.save
+          end
+        end
         on_time_data = cohort_attendance_statistics.student_attendance_data[0]
         expect(on_time_data[:name]).to eq 'On time'
         expect(on_time_data[:data]).to eq [[second_student.name, 1], [first_student.name, 1]]
