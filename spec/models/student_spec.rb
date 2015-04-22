@@ -158,6 +158,21 @@ describe Student do
     end
   end
 
+  describe '#signed_out_today?' do
+    let(:student) { FactoryGirl.create(:student) }
+
+    it 'is false if the student has not signed out today' do
+      attendance_record = FactoryGirl.create(:attendance_record, student: student)
+      expect(student.signed_out_today?).to eq false
+    end
+
+    it 'populates the signed_out_time field for a students attendance record' do
+      attendance_record = FactoryGirl.create(:attendance_record, student: student)
+      time = attendance_record.sign_out
+      expect(attendance_record.signed_out_time).to eq time
+    end
+  end
+
   describe '#class_in_session?' do
     let(:cohort) { FactoryGirl.create(:cohort) }
     let(:student) { FactoryGirl.create(:student, cohort: cohort) }
@@ -232,6 +247,18 @@ describe Student do
           travel 1.day
           FactoryGirl.create(:attendance_record, student: student)
           expect(student.absences).to eq 1
+        end
+      end
+    end
+
+    describe '#left_earlies' do
+      it 'counts the number of days the student has left early (failed to sign out)' do
+        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 8, 55, 00) do
+          attendance_record = FactoryGirl.create(:attendance_record, student: student)
+          travel 7.hours do
+            attendance_record.sign_out
+            expect(student.left_earlies).to eq 1
+          end
         end
       end
     end
