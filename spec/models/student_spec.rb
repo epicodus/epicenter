@@ -291,6 +291,10 @@ describe Student do
       FactoryGirl.create(:rating, interest: '1', internship: internship, student: student)
       expect(Student.find_students_by_interest(internship, '2')).to_not eq([student])
     end
+
+    it 'will take into account an internship that has not been rated an interest level' do
+      expect(Student.find_students_by_interest(internship, '')).to eq ([])
+    end
   end
 
   describe "abilities" do
