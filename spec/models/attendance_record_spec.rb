@@ -53,7 +53,7 @@ describe AttendanceRecord do
     end
   end
 
-  describe '#left_early' do
+  describe '#sign_out' do
     let(:end_time) { Time.zone.parse(ENV['CLASS_END_TIME'] ||= '4:30 PM') }
 
     it 'is true by default' do
@@ -77,5 +77,10 @@ describe AttendanceRecord do
       end
     end
 
+    it 'sets time when a student signs out' do
+      attendance_record = FactoryGirl.create(:attendance_record)
+      attendance_record.sign_out
+      expect(attendance_record.signed_out_time.min).to eq Time.now.min
+    end
   end
 end
