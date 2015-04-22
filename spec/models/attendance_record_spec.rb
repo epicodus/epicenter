@@ -65,6 +65,7 @@ describe AttendanceRecord do
       travel_to end_time - 1.minute do
         shirker_attendance_record = FactoryGirl.create(:attendance_record)
         shirker_attendance_record.sign_out
+        shirker_attendance_record.save
         expect(shirker_attendance_record.left_early).to eq true
       end
     end
@@ -73,6 +74,7 @@ describe AttendanceRecord do
       travel_to end_time + 1.minute do
         diligent_attendance_record = FactoryGirl.create(:attendance_record)
         diligent_attendance_record.sign_out
+        diligent_attendance_record.save
         expect(diligent_attendance_record.left_early).to eq false
       end
     end
@@ -80,6 +82,7 @@ describe AttendanceRecord do
     it 'sets time when a student signs out' do
       attendance_record = FactoryGirl.create(:attendance_record)
       attendance_record.sign_out
+      attendance_record.save
       expect(attendance_record.signed_out_time.min).to eq Time.now.min
     end
   end
