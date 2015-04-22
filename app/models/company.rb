@@ -13,7 +13,7 @@ class Company < ActiveRecord::Base
 private
 
   def fix_url
-    self.website = self.website.rstrip.lstrip
+    self.website = self.website.try(:strip)
     if self.website
       begin
         uri = URI.parse(self.website)
