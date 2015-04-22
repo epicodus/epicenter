@@ -47,7 +47,9 @@ scope :recurring_active, -> { where(recurring_active: true) }
   end
 
   def signed_out_today?
-    attendance_records.today.first.signed_out_time != nil
+    if attendance_records.today.exists?
+      attendance_records.today.first.signed_out_time != nil
+    end
   end
 
   def next_payment_date
