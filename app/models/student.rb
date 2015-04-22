@@ -75,7 +75,7 @@ scope :recurring_active, -> { where(recurring_active: true) }
   end
 
   def on_time_attendances
-    attendance_records.where(tardy: false).count
+    attendance_records.where(tardy: false, left_early: false).count
   end
 
   def tardies
