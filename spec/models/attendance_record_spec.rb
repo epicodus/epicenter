@@ -52,4 +52,13 @@ describe AttendanceRecord do
       end
     end
   end
+
+  describe '#left_early' do
+    let(:end_time) { Time.zone.parse(ENV['CLASS_END_TIME'] ||= '4:30 PM') }
+
+    it 'is true by default' do
+      attendance_record = FactoryGirl.create(:attendance_record)
+      expect(attendance_record.left_early).to eq true
+    end
+  end
 end
