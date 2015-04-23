@@ -85,8 +85,7 @@ scope :recurring_active, -> { where(recurring_active: true) }
   end
 
   def self.find_students_by_interest(internship, interest_level)
-    students = Student.all.drop_while { |student| !student.internships.include?(internship) }
-    students.select { |student| student.try(:find_rating, internship).try(:interest) == interest_level }
+    internship.students.select { |student| student.try(:find_rating, internship).try(:interest) == interest_level }
   end
 
 private
