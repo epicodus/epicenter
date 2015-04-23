@@ -1,11 +1,15 @@
 class AttendanceRecord < ActiveRecord::Base
+  attr_accessor :signing_out
   scope :today, -> { where(date: Date.today) }
   validates :student_id, presence: true, uniqueness: { scope: :date }
   validates :date, presence: true
 
   before_validation :set_date_and_tardiness
+  before_update :sign_out, if: @signing_out == true
   belongs_to :student
-  
+
+private
+
   def sign_out
     class_end_time = Time.zone.parse(ENV['CLASS_END_TIME'] ||= '4:30 PM')
     current_time = Time.zone.now
@@ -14,8 +18,6 @@ class AttendanceRecord < ActiveRecord::Base
     end
     self.signed_out_time = current_time
   end
-
-private
 
   def sign_in
     if self.tardy.nil?
