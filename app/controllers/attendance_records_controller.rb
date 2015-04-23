@@ -21,9 +21,8 @@ class AttendanceRecordsController < ApplicationController
 
   def update
     @attendance_record = AttendanceRecord.find(params[:id])
-    @attendance_record.sign_out
     if @attendance_record.update(attendance_record_params)
-      redirect_to attendance_path, notice: "#{@attendance_record.student.name} successfully signed out"
+      redirect_to attendance_path, notice: "#{@attendance_record.student.name} successfully updated."
     else
       flash[:alert] = "Something went wrong: " + @attendance_record.errors.full_messages.join(", ")
       redirect_to attendance_path
@@ -39,6 +38,6 @@ class AttendanceRecordsController < ApplicationController
 private
 
   def attendance_record_params
-    params.require(:attendance_record).permit(:student_id, :left_early, :signed_out_time)
+    params.require(:attendance_record).permit({:attendance_record => {:signing_out => true}}, :student_id)
   end
 end
