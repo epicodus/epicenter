@@ -40,8 +40,9 @@ describe CohortAttendanceStatistics do
         cohort.students.each { |student| FactoryGirl.create(:attendance_record, student: student) }
         travel_to cohort.start_date + 18.hours do
           cohort.students.each do |student|
-            record = student.attendance_records.today.first
-            record.update({:signing_out => true})
+            student.attendance_records.all.each do |record|
+              record.update({:signing_out => true})
+            end
           end
         end
         on_time_data = cohort_attendance_statistics.student_attendance_data[0]
