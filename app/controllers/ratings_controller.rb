@@ -4,7 +4,8 @@ class RatingsController < ApplicationController
     rating = current_student.ratings.new(rating_params)
     if rating.save
     else
-      rating = Rating.where(internship_id: params[:internship_id], student: current_student).first
+      internship = internship.find(params[:internship_id])
+      rating = Rating.for(internship, current_student)
       rating.update(rating_params)
     end
     redirect_to :back
