@@ -38,6 +38,6 @@ class AttendanceRecordsController < ApplicationController
 private
 
   def attendance_record_params
-    params.require(:attendance_record).permit({:attendance_record => {:signing_out => true}}, :student_id)
+    params.require(:attendance_record).permit(:signing_out, :student_id)
   end
 end
