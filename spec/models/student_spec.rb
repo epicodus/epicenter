@@ -168,15 +168,14 @@ describe Student do
 
     it 'is true if the student has signed out' do
       attendance_record = FactoryGirl.create(:attendance_record, student: student)
-      attendance_record.sign_out
-      attendance_record.save
+      attendance_record.update({:signing_out => true})
       expect(student.signed_out_today?).to eq true
-    end 
+    end
 
     it 'populates the signed_out_time field for a students attendance record' do
       attendance_record = FactoryGirl.create(:attendance_record, student: student)
-      time = attendance_record.sign_out
-      expect(attendance_record.signed_out_time).to eq time
+      attendance_record.update({:signing_out => true})
+      expect(attendance_record.signed_out_time).to_not eq nil
     end
   end
 
@@ -233,8 +232,7 @@ describe Student do
         travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 8, 55, 00) do
           attendance_record = FactoryGirl.create(:attendance_record, student: student)
           travel 10.hours do
-            attendance_record.sign_out
-            attendance_record.save
+            attendance_record.update({:signing_out => true})
           end
           expect(student.on_time_attendances).to eq 1
         end
@@ -267,8 +265,7 @@ describe Student do
         travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 8, 55, 00) do
           attendance_record = FactoryGirl.create(:attendance_record, student: student)
           travel 7.hours do
-            attendance_record.sign_out
-            attendance_record.save
+            attendance_record.update({:signing_out => true})
             expect(student.left_earlies).to eq 1
           end
         end
