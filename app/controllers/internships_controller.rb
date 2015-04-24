@@ -52,7 +52,7 @@ class InternshipsController < ApplicationController
     internship = Internship.find(params[:id])
     internship.destroy
     flash[:alert] = "Internship deleted"
-    redirect_to cohort_internships_path(@cohort)
+    redirect_to cohort_internships_path(cohort)
   end
 
 

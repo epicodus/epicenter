@@ -4,7 +4,7 @@ class RatingsController < ApplicationController
     rating = current_student.ratings.new(rating_params)
     if rating.save
     else
-      internship = internship.find(params[:internship_id])
+      internship = Internship.find(params[:internship_id])
       rating = Rating.for(internship, current_student)
       rating.update(rating_params)
     end
