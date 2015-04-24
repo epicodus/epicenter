@@ -41,8 +41,7 @@ describe CohortAttendanceStatistics do
         travel_to cohort.start_date + 18.hours do
           cohort.students.each do |student|
             record = student.attendance_records.today.first
-            record.sign_out
-            record.save
+            record.update({:signing_out => true})
           end
         end
         on_time_data = cohort_attendance_statistics.student_attendance_data[0]
@@ -69,7 +68,7 @@ describe CohortAttendanceStatistics do
       travel_to start_time - 1.minute do
         cohort.students.each { |student| FactoryGirl.create(:attendance_record, student: student) }
         travel 7.hours do
-          cohort.students.each { |student| student.attendance_records.today.first.sign_out }
+          cohort.students.each { |student| student.attendance_records.today.first.update({:signing_out => true}) }
           left_early_data = cohort_attendance_statistics.student_attendance_data[1]
           expect(left_early_data[:name]).to eq 'Left early'
           expect(left_early_data[:data]).to eq [[second_student.name, 1], [first_student.name, 1]]
