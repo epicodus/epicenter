@@ -35,6 +35,17 @@ class Cohort < ActiveRecord::Base
     (start_date..last_date).select { |date| !date.saturday? && !date.sunday? }
   end
 
+  def internships_sorted_by_interest(current_student)
+    self.internships.sort_by do |internship|
+      rating = current_student.find_rating(internship)
+      if rating
+        rating.interest
+      else
+        '0'
+      end
+    end
+  end
+
 private
 
   def import_code_reviews
