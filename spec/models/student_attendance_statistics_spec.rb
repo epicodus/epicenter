@@ -61,8 +61,7 @@ describe StudentAttendanceStatistics do
       travel_to day_one do
         attendance_record = FactoryGirl.create(:attendance_record, student: student)
         travel 7.hours do
-          attendance_record.sign_out
-          attendance_record.save
+          attendance_record.update({:signing_out => true})
           student_attendance_statistics = StudentAttendanceStatistics.new(student)
           expect(student_attendance_statistics.left_earlies).to eq [day_one.to_date]
         end
