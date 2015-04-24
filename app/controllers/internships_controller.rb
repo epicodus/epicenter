@@ -1,9 +1,10 @@
 class InternshipsController < ApplicationController
   def index
     @cohort = Cohort.find(params[:cohort_id])
-    @internships = @cohort.internships
     if current_student
-      @internships = @internships.sort_by { |internship| by_student_interest(internship) }
+      @internships = @cohort.internships_sorted_by_interest(current_student)
+    else
+      @internships = @cohort.internships
     end
   end
 
@@ -62,17 +63,9 @@ class InternshipsController < ApplicationController
 
 
   private
+
     def internship_params
       params.require(:internship).permit(:company_id, :description, :ideal_intern, :clearance_required, :clearance_description)
-    end
-
-    def by_student_interest(internship)
-      rating = current_student.find_rating(internship)
-      if rating
-        rating.interest
-      else
-        '0'
-      end
     end
 
 end
