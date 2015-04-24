@@ -5,7 +5,7 @@ class AttendanceRecord < ActiveRecord::Base
   validates :date, presence: true
 
   before_validation :set_date_and_tardiness
-  before_update :sign_out, if: @signing_out == true
+  before_update :sign_out, if: :signing_out
   belongs_to :student
 
 private
