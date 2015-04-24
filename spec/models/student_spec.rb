@@ -233,8 +233,8 @@ describe Student do
           attendance_record = FactoryGirl.create(:attendance_record, student: student)
           travel 10.hours do
             attendance_record.update({:signing_out => true})
+            expect(student.on_time_attendances).to eq 1
           end
-          expect(student.on_time_attendances).to eq 1
         end
       end
     end
