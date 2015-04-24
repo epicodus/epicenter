@@ -14,7 +14,7 @@ feature 'student attendance statistics page' do
       travel_to before_class_start_time do
         attendance_record = FactoryGirl.create(:attendance_record, student: student)
         travel 18.hours do
-          attendance_record.sign_out
+          attendance_record.update({:signing_out => true})
           attendance_record.save
         end
       end
