@@ -1,22 +1,17 @@
 class InternshipsController < ApplicationController
   def index
     @cohort = Cohort.find(params[:cohort_id])
-    @internships = @cohort.internships
     if current_student
-      @internships = @internships.sort_by { |internship| by_student_interest(internship) }
+      @internships = @cohort.internships_sorted_by_interest(current_student)
+    else
+      @internships = @cohort.internships
     end
   end
 
   def show
     @internship = Internship.find(params[:id])
     @company = @internship.company
-    if current_student
-      if current_student.ratings.where(internship_id: @internship.id).any?
-        @rating = current_student.find_rating(@internship)
-      else
-        @rating = Rating.new
-      end
-    end
+    @rating = Rating.for(@internship, current_student)
   end
 
   def new
@@ -53,26 +48,18 @@ class InternshipsController < ApplicationController
   end
 
   def destroy
-    @cohort = Cohort.find(params[:cohort_id])
-    @internship = Internship.find(params[:id])
-    @internship.destroy
+    cohort = Cohort.find(params[:cohort_id])
+    internship = Internship.find(params[:id])
+    internship.destroy
     flash[:alert] = "Internship deleted"
-    redirect_to cohort_internships_path(@cohort)
+    redirect_to cohort_internships_path(cohort)
   end
 
 
-  private
-    def internship_params
-      params.require(:internship).permit(:company_id, :description, :ideal_intern, :clearance_required, :clearance_description)
-    end
+private
 
-    def by_student_interest(internship)
-      rating = current_student.find_rating(internship)
-      if rating
-        rating.interest
-      else
-        '0'
-      end
-    end
+  def internship_params
+    params.require(:internship).permit(:company_id, :description, :ideal_intern, :clearance_required, :clearance_description)
+  end
 
 end
