@@ -13,9 +13,7 @@ private
   def sign_out
     class_end_time = Time.zone.parse(ENV['CLASS_END_TIME'] ||= '4:30 PM')
     current_time = Time.zone.now
-    if current_time >= class_end_time
-      self.left_early = false
-    end
+    self.left_early = current_time < class_end_time
     self.signed_out_time = current_time
   end
 
