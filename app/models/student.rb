@@ -92,7 +92,8 @@ scope :recurring_active, -> { where(recurring_active: true) }
 
   def self.find_students_by_interest(internship, interest_level)
     internship.students.select { |student| student.try(:find_rating, internship).try(:interest) == interest_level }
-
+  end
+  
   def left_earlies
     attendance_records.where(left_early: true).count
   end
