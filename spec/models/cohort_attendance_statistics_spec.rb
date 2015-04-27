@@ -38,6 +38,13 @@ describe CohortAttendanceStatistics do
     it 'returns data for on time students' do
       travel_to cohort.start_date do
         cohort.students.each { |student| FactoryGirl.create(:attendance_record, student: student) }
+        travel_to cohort.start_date + 18.hours do
+          cohort.students.each do |student|
+            student.attendance_records.all.each do |record|
+              record.update({:signing_out => true})
+            end
+          end
+        end
         on_time_data = cohort_attendance_statistics.student_attendance_data[0]
         expect(on_time_data[:name]).to eq 'On time'
         expect(on_time_data[:data]).to eq [[second_student.name, 1], [first_student.name, 1]]
@@ -49,15 +56,30 @@ describe CohortAttendanceStatistics do
 
       travel_to start_time + 1.minute do
         cohort.students.each { |student| FactoryGirl.create(:attendance_record, student: student) }
-        tardy_data = cohort_attendance_statistics.student_attendance_data[1]
+        tardy_data = cohort_attendance_statistics.student_attendance_data[2]
         expect(tardy_data[:name]).to eq 'Tardy'
         expect(tardy_data[:data]).to eq [[second_student.name, 1], [first_student.name, 1]]
       end
     end
 
+    it 'returns data for early leaving students' do
+      start_time = Time.zone.parse(ENV['CLASS_START_TIME'] ||= '9:05 AM')
+      end_time = Time.zone.parse(ENV['CLASS_END_TIME'] ||= '4:30 PM' )
+
+      travel_to start_time - 1.minute do
+        cohort.students.each { |student| FactoryGirl.create(:attendance_record, student: student) }
+        travel 7.hours do
+          cohort.students.each { |student| student.attendance_records.today.first.update({:signing_out => true}) }
+          left_early_data = cohort_attendance_statistics.student_attendance_data[1]
+          expect(left_early_data[:name]).to eq 'Left early'
+          expect(left_early_data[:data]).to eq [[second_student.name, 1], [first_student.name, 1]]
+        end
+      end
+    end
+
     it 'returns data for absent students' do
       travel_to cohort.start_date do
-        absent_data = cohort_attendance_statistics.student_attendance_data[2]
+        absent_data = cohort_attendance_statistics.student_attendance_data[3]
         expect(absent_data[:name]).to eq 'Absent'
         expect(absent_data[:data]).to eq [[second_student.name, 1], [first_student.name, 1]]
       end
@@ -66,7 +88,7 @@ describe CohortAttendanceStatistics do
     it 'orders data by number of absences descending' do
       travel_to cohort.start_date + 1.day do
         FactoryGirl.create(:attendance_record, student: second_student)
-        absent_data = cohort_attendance_statistics.student_attendance_data[2]
+        absent_data = cohort_attendance_statistics.student_attendance_data[3]
         expect(absent_data[:data]).to eq [[first_student.name, 2], [second_student.name, 1]]
       end
     end

@@ -7,9 +7,10 @@ class StudentAttendanceStatistics
 
   def punctuality_hash
     {
-      'On time'  => @student.on_time_attendances,
-      'Tardy'    => @student.tardies,
-      'Absent' => @student.absences
+      'On time'    => @student.on_time_attendances,
+      'Left early' => @student.left_earlies,
+      'Tardy'      => @student.tardies,
+      'Absent'     => @student.absences
     }
   end
 
@@ -19,6 +20,10 @@ class StudentAttendanceStatistics
 
   def tardies
     student.attendance_records.where(tardy: true).pluck(:date)
+  end
+
+  def left_earlies
+    student.attendance_records.where(left_early: true).pluck(:date)
   end
 
   def absences
