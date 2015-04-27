@@ -98,6 +98,10 @@ scope :recurring_active, -> { where(recurring_active: true) }
     attendance_records.where(left_early: true).count
   end
 
+  def create_stripe_customer
+    Stripe::Customer.retreive(id)
+  end
+
 private
 
   def primary_payment_method_belongs_to_student
