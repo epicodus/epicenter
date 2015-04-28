@@ -18,16 +18,9 @@ Contributions from students, alumni, and other schools are welcome! If you're co
 
 ## Configuration
 
-You need to set environment variables for:
-
-```
-BALANCED_API_KEY
-MAILGUN_API_KEY
-CLASS_START_TIME (defaults to 9:05am)
-CLASS_END_TIME (defaults to 4:30pm)
-FROM_EMAIL_PAYMENT
-FROM_EMAIL_REVIEW
-```
+Epicenter uses several environmental variables loaded from the `.env` file.
+An example `.env.example` file is provided; you should copy it to `.env` and
+update the example values.
 
 ## License
 GPL2
