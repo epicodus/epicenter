@@ -1,6 +1,6 @@
 class AttendanceRecord < ActiveRecord::Base
   attr_accessor :signing_out
-  scope :today, -> { where(date: Date.today) }
+  scope :today, -> { where(date: Time.zone.now.to_date) }
   validates :student_id, presence: true, uniqueness: { scope: :date }
   validates :date, presence: true
 
@@ -27,7 +27,7 @@ private
   end
 
   def set_date
-    self.date = Date.today if self.date.nil?
+    self.date = Time.zone.now.to_date if self.date.nil?
   end
 
   def set_date_and_tardiness
