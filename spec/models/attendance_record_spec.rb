@@ -5,7 +5,7 @@ describe AttendanceRecord do
   context 'before create' do
     it 'sets the date property to the current date' do
       attendance_record = FactoryGirl.create(:attendance_record)
-      expect(attendance_record.date).to eq(Date.today)
+      expect(attendance_record.date).to eq(Time.zone.now.to_date)
     end
   end
 
