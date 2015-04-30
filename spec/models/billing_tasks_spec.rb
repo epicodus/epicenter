@@ -53,7 +53,7 @@ describe BillingTasks do
       student = FactoryGirl.create(:user_with_recurring_not_due)
       old_payment = FactoryGirl.create(:payment, student: student, created_at: 6.weeks.ago)
       newer_payment = FactoryGirl.create(:payment, student: student, created_at: 2.weeks.ago)
-      old_payment.update(updated_at: Date.today)
+      old_payment.update(updated_at: Time.zone.now.to_date)
       expect(BillingTasks.billable_today).to eq []
     end
 
