@@ -61,11 +61,11 @@ scope :recurring_active, -> { where(recurring_active: true) }
   end
 
   def class_in_session?
-    cohort.start_date <= Date.today && cohort.end_date >= Date.today
+    cohort.start_date <= Time.zone.now.to_date && cohort.end_date >= Time.zone.now.to_date
   end
 
   def class_over?
-    Date.today > cohort.end_date
+    Time.zone.now.to_date > cohort.end_date
   end
 
   def start_recurring_payments
