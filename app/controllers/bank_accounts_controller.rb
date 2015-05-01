@@ -17,4 +17,7 @@ private
   def bank_account_params
     params.require(:bank_account).permit(:account_uri, :verification_uri)
   end
+  # def bank_account_params
+  #   params.require(:bank_account).permit(:stripe_token)
+  # end
 end

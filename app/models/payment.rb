@@ -9,6 +9,7 @@ class Payment < ActiveRecord::Base
   validates :payment_method, presence: true
   validate :ensure_payment_isnt_over_balance, on: :create
 
+
   before_create :make_payment, :send_payment_receipt
   after_create :check_if_paid_up
   after_update :send_payment_failure_notice, if: ->(payment) { payment.status == "failed" }
@@ -71,7 +72,20 @@ private
     end
   end
 
+  # def make_payment
+  #   cutomer_id = payment_method.get_stripe_customer_id(student)
+  #   self.fee = payment_method.calculate_fee(amount)
+  #   begin
+  #     Stripe::Charge.create(amount: total_amount, currency: 'usd', customer: customer_id)
+  #     self.status = payment_method.starting_status
+  #   rescue Stripe::StripeError => exception
+  #     errors.add(:base, exception.message)
+  #     false
+  #   end
+  # end
+
   def switch_recurring_off
     student.update(recurring_active: false)
   end
+
 end

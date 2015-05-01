@@ -19,4 +19,8 @@ private
   def credit_card_params
     params.require(:credit_card).permit(:account_uri)
   end
+
+  # def credit_card_params
+  #   params.require(:credit_card).permit(:stripe_token)
+  # end
 end

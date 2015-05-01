@@ -12,21 +12,22 @@ $(function() {
         postal_code: $('input#zip_code').val()
       }
     };
-    balanced.card.create(formData, handleResponseCreditCard);
+    Stripe.card.createToken(formData, handleResponseCreditCard);
   });
 });
 
-var handleResponseCreditCard = function(response) {
-  if (response.status_code === 201) {
-    var uri = response.cards[0].href;
-    $("input#credit_card_account_uri").val(uri);
+var handleResponseCreditCard = function(status, response) {
+  if (status === 200) {
+    // var uri = response.card.href;
+    // $("input#credit_card_account_uri").val(uri);
 
     $("input#card_number").val('****************');
     $("input#cvv_code").val('***');
     $("input#expiration_month").val('**');
     $("input#expiration_year").val('****');
 
-
+    var token = response.id;
+    $('form#new_credit_card').append($('<input type="hidden" name="stripeToken" />').val(token));
     $('form#new_credit_card').unbind('submit').submit();
     $('#card-submit-button').val('loading...').attr('disabled', 'disabled');
   } else {

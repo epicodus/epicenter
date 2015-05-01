@@ -1,7 +1,7 @@
 describe CreditCard do
   it { should belong_to :student }
   it { should have_many :payments }
-  it { should validate_presence_of :account_uri }
+  # it { should validate_presence_of :account_uri }
   it { should validate_presence_of :student_id }
 
   describe "create create card", :vcr do

@@ -8,18 +8,19 @@ $(function() {
       name: $("input#name").val()
     };
 
-    balanced.bankAccount.create(formData, handleResponse);
+    Stripe.bankAccount.createToken(formData, stripeResponseHandler);
   });
 });
 
-var handleResponse = function(response) {
-  if (response.status_code === 201) {
-    var uri = response.bank_accounts[0].href;
-    $("input#bank_account_account_uri").val(uri);
+var stripeResponseHandler = function(status, response) {
+  if (status === 200) {
+    // var uri = response.bank_account.href;
+    // $("input#bank_account_account_uri").val(uri);
 
     $("input#bank_account_number").val('*********');
     $("input#routing_number").val('*********');
-
+    var token = response.id;
+    $('form#new_bank_account').append($('<input type="hidden" name="stripeToken" />').val(token));
     $('form#new_bank_account').unbind('submit').submit();
     $('#account-submit-button').val('loading...').attr('disabled', 'disabled');
   } else {
@@ -33,7 +34,7 @@ var handleResponse = function(response) {
     );
 
     response.errors.forEach(function(error) {
-      $('.alert-error ul').append('<li>' + error.description + '</li>');
+      $('.alert-error ul').append('<li>' + error.message + '</li>');
     });
   }
 };
