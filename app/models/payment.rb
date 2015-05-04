@@ -58,31 +58,16 @@ private
   end
 
   def make_payment
+    cutomer_id = payment_method.get_stripe_customer_id(student)
     self.fee = payment_method.calculate_fee(amount)
     begin
-      debit = payment_method.fetch_balanced_account.debit(
-        :amount => total_amount,
-        :appears_on_statement_as => 'Epicodus tuition'
-      )
+      Stripe::Charge.create(amount: total_amount, currency: 'usd', customer: customer_id)
       self.status = payment_method.starting_status
-      self.payment_uri = debit.href
-    rescue Balanced::Error => exception
-      errors.add(:base, exception.description)
+    rescue Stripe::StripeError => exception
+      errors.add(:base, exception.message)
       false
     end
   end
-
-  # def make_payment
-  #   cutomer_id = payment_method.get_stripe_customer_id(student)
-  #   self.fee = payment_method.calculate_fee(amount)
-  #   begin
-  #     Stripe::Charge.create(amount: total_amount, currency: 'usd', customer: customer_id)
-  #     self.status = payment_method.starting_status
-  #   rescue Stripe::StripeError => exception
-  #     errors.add(:base, exception.message)
-  #     false
-  #   end
-  # end
 
   def switch_recurring_off
     student.update(recurring_active: false)
