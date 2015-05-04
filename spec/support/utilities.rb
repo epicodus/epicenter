@@ -14,6 +14,15 @@ def create_balanced_bank_account
   ).save
 end
 
+# def create_stripe_bank_account
+#   Stripe::BankAccount.new(
+#     :account_number => '000123456789',
+#     :account_type => 'bank_account',
+#     :name => 'Johann Bernoulli',
+#     :routing_number => '110000000'
+#   ).save
+# end
+
 def create_balanced_credit_card
   Balanced::Card.new(
     :number => '4111111111111111',
@@ -23,6 +32,15 @@ def create_balanced_credit_card
   ).save
 end
 
+# def create_stripe_credit_card
+#   Stripe::Card.new(
+#     :number => '4242424242424242',
+#     :expiration_month => '12',
+#     :expiration_year => '2020',
+#     :cvv => '123'
+#   ).save
+# end
+
 def create_invalid_balanced_credit_card
   Balanced::Card.new(
     :number => '4444444444444448',
@@ -31,3 +49,12 @@ def create_invalid_balanced_credit_card
     :cvv => '123'
   ).save
 end
+
+# def create_invalid_stripe_credit_card
+#   Stripe::Card.new(
+#     :number => '4444444444444448',
+#     :expiration_month => '12',
+#     :expiration_year => '2020',
+#     :cvv => '123'
+#   ).save
+# end
