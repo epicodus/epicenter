@@ -28,6 +28,20 @@ FactoryGirl.define do
       end
       verified true
     end
+
+  #   after(:build) do |bank_account|
+  #     stripe_bank_account = create_stripe_bank_account
+  #   end
+  #
+  #   factory :verified_bank_account do
+  #     after(:create) do |verified_bank_account|
+  #       verification = Verification.new(bank_account: verified_bank_account,
+  #                                       first_deposit: 1,
+  #                                       second_deposit: 1)
+  #       verification.confirm
+  #     end
+  #     verified true
+  #   end
   end
 
   factory :code_review do
@@ -63,6 +77,13 @@ FactoryGirl.define do
     end
   end
 
+  # factory :credit_card do
+  #   student
+  #   after(:build) do |credit_card|
+  #     stripe_credit_card = create_stripe_credit_card
+  #   end
+  # end
+
   factory :grade do
     factory :passing_grade do
       association :score, factory: :passing_score
@@ -80,6 +101,13 @@ FactoryGirl.define do
       credit_card.account_uri = balanced_credit_card.href
     end
   end
+
+  # factory :invalid_credit_card, class: CreditCard do
+  #   student
+  #   after(:build) do |credit_card|
+  #     stripe_credit_card = create_invalid_stripe_credit_card
+  #   end
+  # end
 
   factory :payment do
     association :student, factory: :user_with_verified_bank_account
