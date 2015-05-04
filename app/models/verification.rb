@@ -14,7 +14,8 @@ class Verification
   # def initialize(params={})
   #   @bank_account = params[:bank_account]
   #   unless @bank_account.nil?
-  #     @stripe_bank_account = Stripe::BankAccount.retreive(@bank_account.stripe_token)
+  #   customer = Stripe::Customer.retrieve(customer_id)
+  #     @stripe_bank_account = customer.bank_accounts.retreive(@bank_account.stripe_token)
   #   end
   #   @first_deposit = clean_deposit_input(params[:first_deposit])
   #   @second_deposit = clean_deposit_input(params[:second_deposit])
@@ -24,10 +25,6 @@ class Verification
     verification = @balanced_bank_account.verify
     @bank_account.verification_uri = verification.href
   end
-
-  # def create_test_deposits
-  #   verification = @stripe_bank_account.verify
-  # end
 
   def confirm
     verification_uri = @bank_account.verification_uri
