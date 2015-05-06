@@ -32,7 +32,7 @@ class Cohort < ActiveRecord::Base
   end
 
   def class_dates_until(last_date)
-    (start_date..last_date).select { |date| !date.saturday? && !date.sunday? }
+    (start_date..last_date).select { |date| !date.friday? && !date.saturday? && !date.sunday? }
   end
 
 private
