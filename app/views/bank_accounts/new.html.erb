@@ -26,8 +26,7 @@
     <%= text_field_tag :bank_account_number %>
   </div>
 
-  <%= f.hidden_field :account_uri %>
-  <!-- f.hidden_field :stripe_token  -->
+  <%= f.hidden_field :stripe_token %>
 
   <div><%= f.submit "Verify bank account", class: "btn", id: "account-submit-button" %></div>
 <% end %>
