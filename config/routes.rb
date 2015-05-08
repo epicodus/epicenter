@@ -8,9 +8,7 @@ Rails.application.routes.draw do
   resources :students, only: [:update]
   resources :admins, only: [:update]
   resources :payment_methods, only: [:index, :new]
-  resources :bank_accounts, only: [:new, :create] do
-    resource :verification, only: [:edit, :update]
-  end
+  resources :bank_accounts, only: [:new, :create, :edit, :update]
   resource :credit_card, only: [:new, :create]
   resource :certificate, only: [:show]
   resource :transcript, only: [:show]
