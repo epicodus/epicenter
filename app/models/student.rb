@@ -18,6 +18,16 @@ scope :recurring_active, -> { where(recurring_active: true) }
   has_many :internships, through: :ratings
   belongs_to :primary_payment_method, class_name: 'PaymentMethod'
 
+  def stripe_customer
+    if stripe_customer_id
+      customer = Stripe::Customer.retrieve(stripe_customer_id)
+    else
+      customer = Stripe::Customer.create(description: email)
+      update(stripe_customer_id: customer.id)
+      customer
+    end
+  end
+
   def payment_methods_primary_first_then_pending
     (payment_methods.not_verified_first - [primary_payment_method]).unshift(primary_payment_method).compact
   end
