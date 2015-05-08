@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/zachflower/stripe-ruby.git
+  revision: 176ef92a3515c4b1869a98d126038b2485497cb3
+  specs:
+    stripe (1.21.0)
+      json (~> 1.8.1)
+      rest-client (~> 1.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -340,6 +348,7 @@ DEPENDENCIES
   shoulda-matchers
   simplecov
   spring
+  stripe!
   uglifier
   unicorn
   validate_url
