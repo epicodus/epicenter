@@ -11,37 +11,23 @@ FactoryGirl.define do
     student
   end
 
+
   factory :bank_account do
     student
-
-    after(:build) do |bank_account|
-      balanced_bank_account = create_balanced_bank_account
-      bank_account.account_uri = balanced_bank_account.href
-    end
+    stripe_token({
+      :object => 'bank_account',
+      :country => 'US',
+      :account_number => '000123456789',
+      :routing_number => '110000000'
+    })
 
     factory :verified_bank_account do
-      after(:create) do |verified_bank_account|
-        verification = Verification.new(bank_account: verified_bank_account,
-                                        first_deposit: 1,
-                                        second_deposit: 1)
-        verification.confirm
+      after(:create) do |bank_account|
+        bank_account.student.stripe_customer.sources.data.first.verify(amounts: [32, 45])
+        bank_account.ensure_primary_method_exists
       end
       verified true
     end
-
-  #   after(:build) do |bank_account|
-  #     stripe_bank_account = create_stripe_bank_account
-  #   end
-  #
-  #   factory :verified_bank_account do
-  #     after(:create) do |verified_bank_account|
-  #       verification = Verification.new(bank_account: verified_bank_account,
-  #                                       first_deposit: 1,
-  #                                       second_deposit: 1)
-  #       verification.confirm
-  #     end
-  #     verified true
-  #   end
   end
 
   factory :code_review do
@@ -71,18 +57,14 @@ FactoryGirl.define do
 
   factory :credit_card do
     student
-    after(:build) do |credit_card|
-      balanced_credit_card = create_balanced_credit_card
-      credit_card.account_uri = balanced_credit_card.href
-    end
+    stripe_token({
+      :object => 'card',
+      :number => '4242424242424242',
+      :exp_month => '12',
+      :exp_year => '2020',
+      :cvv => '123'
+    })
   end
-
-  # factory :credit_card do
-  #   student
-  #   after(:build) do |credit_card|
-  #     stripe_credit_card = create_stripe_credit_card
-  #   end
-  # end
 
   factory :grade do
     factory :passing_grade do
@@ -96,18 +78,14 @@ FactoryGirl.define do
 
   factory :invalid_credit_card, class: CreditCard do
     student
-    after(:build) do |credit_card|
-      balanced_credit_card = create_invalid_balanced_credit_card
-      credit_card.account_uri = balanced_credit_card.href
-    end
+    stripe_token({
+      :object => 'card',
+      :number => '4242424242424241',
+      :exp_month => '12',
+      :exp_year => '2020',
+      :cvv => '123'
+    })
   end
-
-  # factory :invalid_credit_card, class: CreditCard do
-  #   student
-  #   after(:build) do |credit_card|
-  #     stripe_credit_card = create_invalid_stripe_credit_card
-  #   end
-  # end
 
   factory :payment do
     association :student, factory: :user_with_verified_bank_account
