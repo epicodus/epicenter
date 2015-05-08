@@ -1,22 +1,8 @@
 class CreditCard < PaymentMethod
-  before_create :get_last_four_string
+  before_create :create_stripe_card
   before_create :set_verified_true
+  after_create :get_last_four_string
   after_create :ensure_primary_method_exists
-
-  def create_stripe_customer
-    token = params[:stripe_token]
-    customer = Stripe::Customer.create(source: token, description: student.email)
-    save_stripe_customer_id(customer.id)
-  end
-
-  def save_stripe_customer_id(customer_id)
-    student.update_attributes(stripe_customer_id: customer_id)
-    student.save
-  end
-
-  def get_stripe_customer_id(user)
-    student.stripe_customer_id
-  end
 
   def calculate_fee(amount)
     ((amount / BigDecimal.new("0.971")) + 30).to_i - amount
@@ -27,11 +13,17 @@ class CreditCard < PaymentMethod
   end
 
 private
+
+  def create_stripe_card
+    student.stripe_customer.sources.create(:source => stripe_token)
+  end
+
   def get_last_four_string
-    customer_id = get_stripe_customer_id(student)
     begin
-      customer = Stripe::Customer.retreive(customer_id)
-      customer.sources.data.retreive(last4)
+      customer = student.stripe_customer
+      if customer.sources.data.first
+        self.last_four_string = customer.sources.data.first.last4
+      end
     rescue Stripe::CardError => exception
       errors.add(:base, exception.message)
       false
