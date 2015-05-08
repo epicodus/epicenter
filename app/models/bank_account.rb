@@ -1,22 +1,9 @@
 class BankAccount < PaymentMethod
+  before_create :create_stripe_bank_account
   before_create :get_last_four_string
-  before_create :create_verification
+  after_update :create_verification
 
-  def create_stripe_customer
-    token = params[:stripe_token]
-    customer = Stripe::Customer.create(source: token, description: student.email)
-    save_stripe_customer_id(customer.id)
-  end
-
-  def save_stripe_customer_id(customer_id)
-    student.update_attributes(stripe_customer_id: customer_id)
-    student.save
-  end
-
-  def get_stripe_customer_id(user)
-    student.stripe_customer_id
-  end
-
+  attr_accessor :first_deposit, :second_deposit
 
   def calculate_fee(amount)
     0
@@ -26,18 +13,32 @@ class BankAccount < PaymentMethod
     "pending"
   end
 
-
 private
+
   def create_verification
-    verification = Verification.new(bank_account: self)
-    verification.create_test_deposits
+    account = student.stripe_customer.sources.data.first
+    begin
+      account.verify(:amounts => [first_deposit.to_s, second_deposit.to_s])
+      self.update!(verified: true)
+      self.ensure_primary_method_exists
+      self.save
+      true
+    rescue Stripe::StripeError => exception
+      errors.add(:base, exception.message)
+      false
+    end
+  end
+
+  def create_stripe_bank_account
+    student.stripe_customer.sources.create(:source => stripe_token)
   end
 
   def get_last_four_string
-    customer_id = get_stripe_customer_id(student)
     begin
-      customer = Stripe::Customer.retreive(customer_id)
-      customer.sources.data.retreive(last4)
+      customer = student.stripe_customer
+      if customer.sources.data.first
+        self.last_four_string = customer.sources.data.first.last4
+      end
     rescue Stripe::StripeError => exception
       errors.add(:base, exception.message)
       false
