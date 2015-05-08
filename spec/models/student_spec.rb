@@ -27,6 +27,38 @@ describe Student do
     expect(student.valid?).to be false
   end
 
+  describe "#stripe_customer" do
+    it "creates a Stripe Customer object for a student" do
+      student = FactoryGirl.create(:student)
+      expect(student.stripe_customer).to be_an_instance_of(Stripe::Customer)
+    end
+
+    it "returns the Stripe Customer object" do
+      student = FactoryGirl.create(:student)
+      expect(student.stripe_customer).to be_an_instance_of(Stripe::Customer)
+    end
+
+    it "returns a Stripe Customer object if one already exists" do
+      student = FactoryGirl.create(:student)
+      first_stripe_customer_return = student.stripe_customer
+      second_stripe_customer_return = student.stripe_customer
+      expect(first_stripe_customer_return.id).to eq second_stripe_customer_return.id
+    end
+  end
+
+  describe "#stripe_customer_id" do
+    it "starts out nil" do
+      student = FactoryGirl.create(:student)
+      expect(student.stripe_customer_id).to be_nil
+    end
+
+    it "is populated when a Stripe Customer object is created" do
+      student = FactoryGirl.create(:student)
+      stripe_customer = student.stripe_customer
+      expect(student.stripe_customer_id).to eq stripe_customer.id
+    end
+  end
+
   describe "#payment_methods" do
     it "returns all the student's bank accounts and credit cards", :vcr do
       student = FactoryGirl.create(:student)
