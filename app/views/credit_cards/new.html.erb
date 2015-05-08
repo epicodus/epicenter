@@ -39,8 +39,7 @@
     <%= text_field_tag :zip_code %>
   </div>
 
-  <%= f.hidden_field :account_uri %>
-  <!-- f.hidden_field :stripe_token -->
+  <%= f.hidden_field :stripe_token %>
 
   <div><%= f.submit "Add credit card", class: "btn", id: "card-submit-button" %></div>
 <% end %>
