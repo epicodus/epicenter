@@ -3,7 +3,7 @@ describe CreditCard do
   it { should have_many :payments }
   it { should validate_presence_of :student_id }
 
-  describe "create Stripe card" do
+  describe "create Stripe card", :vcr do
     context "with a valid number" do
       let(:credit_card) { FactoryGirl.create :credit_card }
 
@@ -36,21 +36,21 @@ describe CreditCard do
   end
 
   describe "#starting_status" do
-    it "returns 'succeeded'" do
+    it "returns 'succeeded'", :vcr do
       credit_card = FactoryGirl.create :credit_card
       expect(credit_card.starting_status).to eq 'succeeded'
     end
   end
 
   describe "#calculate_fee" do
-    it "returns the credit card fees for the amount given" do
+    it "returns the credit card fees for the amount given", :vcr do
       credit_card = FactoryGirl.create :credit_card
       expect(credit_card.calculate_fee(600_00)).to eq 18_21
     end
   end
 
   describe "#verified?" do
-    it "returns true" do
+    it "returns true", :vcr do
       credit_card = FactoryGirl.create :credit_card
       expect(credit_card.verified?).to eq true
     end
