@@ -89,13 +89,13 @@ FactoryGirl.define do
 
   factory :payment do
     association :student, factory: :user_with_verified_bank_account
-    amount 1
+    amount 100
     association :payment_method, factory: :verified_bank_account
   end
 
   factory :payment_with_credit_card, class: Payment do
     association :student, factory: :user_with_credit_card
-    amount 1
+    amount 100
     association :payment_method, factory: :credit_card
   end
 
