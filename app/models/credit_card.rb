@@ -15,7 +15,13 @@ class CreditCard < PaymentMethod
 private
 
   def create_stripe_card
-    student.stripe_customer.sources.create(:source => stripe_token)
+    begin
+      student.stripe_customer.sources.create(:source => stripe_token)
+    rescue Stripe::CardError => exception
+      binding.pry
+      errors.add(:base, exception.message)
+      false
+    end
   end
 
   def get_last_four_string
