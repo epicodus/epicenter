@@ -13,6 +13,11 @@ describe CreditCard do
         expect(stripe_card).to be_an_instance_of(Stripe::Card)
       end
 
+      it "won't save the credit card if it is invalid" do
+        credit_card = FactoryGirl.build(:invalid_credit_card)
+        expect(credit_card.id).to eq nil
+      end
+
       it "sets verified to 'true' before_create" do
         credit_card = FactoryGirl.create(:credit_card)
         expect(credit_card.verified).to eq true
