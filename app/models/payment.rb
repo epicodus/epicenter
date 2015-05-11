@@ -60,9 +60,8 @@ private
   def make_payment
     customer = student.stripe_customer
     self.fee = payment_method.calculate_fee(amount)
-    payment_method.confirm_verification
     begin
-      Stripe::Charge.create(amount: total_amount, currency: 'usd', customer: customer)
+      Stripe::Charge.create(amount: total_amount, currency: 'usd', customer: customer.id)
       self.status = payment_method.starting_status
     rescue Stripe::StripeError => exception
       errors.add(:base, exception.message)
