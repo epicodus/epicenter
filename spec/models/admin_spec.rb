@@ -34,10 +34,6 @@ describe Admin do
       it { is_expected.to not_have_abilities([:create, :update], Payment.new) }
     end
 
-    context 'for verifications', vcr: true do
-      it { is_expected.to not_have_abilities(:update, Verification.new) }
-    end
-
     context 'for cohorts' do
       it { is_expected.to have_abilities(:manage, Cohort.new) }
     end
