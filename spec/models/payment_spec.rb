@@ -29,13 +29,6 @@ describe Payment do
       student.reload
       expect(student.payments).to_not eq []
     end
-
-    it "doesn't make a payment with a bad card", :vcr do
-      student = FactoryGirl.create :user_with_invalid_credit_card
-      student.payments.create(amount: 100, payment_method: student.credit_cards.first)
-      student.reload
-      expect(student.payments).to eq []
-    end
   end
 
   describe '#check_if_paid_up' do

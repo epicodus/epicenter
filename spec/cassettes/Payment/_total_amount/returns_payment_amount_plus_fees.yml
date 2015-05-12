@@ -2,388 +2,728 @@
 http_interactions:
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards
+    uri: https://api.stripe.com/v1/customers
     body:
-      encoding: UTF-8
-      string: '{"number":"4111111111111111","expiration_month":"12","expiration_year":"2020","cvv":"123"}'
+      encoding: US-ASCII
+      string: description=student14%40example.com
     headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
       Accept:
-      - application/vnd.api+json;revision=1.1
+      - "*/*; q=0.5, application/xml"
       Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+      Content-Length:
+      - '35'
   response:
     status:
-      code: 201
-      message: CREATED
+      code: 200
+      message: OK
     headers:
-      Access-Control-Allow-Headers:
-      - Content-Type
+      Server:
+      - nginx
+      Date:
+      - Mon, 11 May 2015 21:01:19 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '1139'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
       Access-Control-Allow-Methods:
-      - POST, OPTIONS
+      - GET, POST, HEAD, OPTIONS, DELETE
       Access-Control-Allow-Origin:
       - "*"
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 07 Nov 2014 17:20:33 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM61363f1c66a211e492f402a1fe53e539
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.39
-      X-Midlr-Version:
-      - '2'
-      X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhSVhQAQhhQEAMCFlVAFEIIFBQCHVANUwRYBFJRAwNSU1IAAwdIQVAOCBtGRlIDAgdTVlQFWgABDghSUFZHFUFXAF8RAWs=
-      Content-Length:
-      - '1266'
-      Connection:
-      - keep-alive
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_0gVvGYQ0zAsPZIpn
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
     body:
       encoding: UTF-8
-      string: |-
+      string: |
         {
-          "cards": [
-            {
-              "links": {
-                "customer": null
-              },
-              "fingerprint": "b3ecb5551877e4c9ee9937f74cffbcfacc388e575cb4c061c30f8a32d340001b",
-              "cvv_result": "Match",
-              "number": "xxxxxxxxxxxx1111",
-              "avs_postal_match": null,
-              "expiration_month": 12,
-              "meta": {},
-              "id": "CC2XZMZSecpGdNXewiWT6es0",
-              "category": "other",
-              "type": "credit",
-              "cvv_match": "yes",
-              "bank_name": "JPMORGAN CHASE BANK, N.A.",
-              "avs_street_match": null,
-              "brand": "Visa",
-              "updated_at": "2014-11-07T17:20:51.901970Z",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": true,
-              "name": null,
-              "expiration_year": 2020,
-              "cvv": "xxx",
-              "is_verified": true,
-              "avs_result": null,
-              "can_credit": false,
-              "href": "/cards/CC2XZMZSecpGdNXewiWT6es0",
-              "created_at": "2014-11-07T17:20:51.901969Z"
-            }
-          ],
-          "links": {
-            "cards.card_holds": "/cards/{cards.id}/card_holds",
-            "cards.customer": "/customers/{cards.customer}",
-            "cards.disputes": "/cards/{cards.id}/disputes",
-            "cards.debits": "/cards/{cards.id}/debits"
-          }
+          "object": "customer",
+          "created": 1431378078,
+          "id": "cus_6DpgU40V48DJaO",
+          "livemode": false,
+          "description": "student14@example.com",
+          "email": null,
+          "delinquent": false,
+          "metadata": {},
+          "subscriptions": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgU40V48DJaO/subscriptions",
+            "data": [],
+            "count": 0
+          },
+          "discount": null,
+          "account_balance": 0,
+          "currency": null,
+          "bank_accounts": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgU40V48DJaO/bank_accounts",
+            "data": [],
+            "count": 0
+          },
+          "default_bank_account": null,
+          "default_source_type": null,
+          "cards": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgU40V48DJaO/cards",
+            "data": [],
+            "count": 0
+          },
+          "default_card": null,
+          "sources": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgU40V48DJaO/sources",
+            "data": [],
+            "count": 0
+          },
+          "default_source": null,
+          "active_card": null,
+          "subscription": null
         }
     http_version: 
-  recorded_at: Fri, 07 Nov 2014 17:20:33 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC2XZMZSecpGdNXewiWT6es0
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 07 Nov 2014 17:20:33 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM61b73f7266a211e484b40230f00c9248
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.39
-      Content-Length:
-      - '564'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "cards": [
-            {
-              "links": {
-                "customer": null
-              },
-              "fingerprint": "b3ecb5551877e4c9ee9937f74cffbcfacc388e575cb4c061c30f8a32d340001b",
-              "cvv_result": "Match",
-              "number": "xxxxxxxxxxxx1111",
-              "avs_postal_match": null,
-              "expiration_month": 12,
-              "meta": {},
-              "id": "CC2XZMZSecpGdNXewiWT6es0",
-              "category": "other",
-              "type": "credit",
-              "cvv_match": "yes",
-              "bank_name": "JPMORGAN CHASE BANK, N.A.",
-              "avs_street_match": null,
-              "brand": "Visa",
-              "updated_at": "2014-11-07T17:20:51.901970Z",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": true,
-              "name": null,
-              "expiration_year": 2020,
-              "cvv": "xxx",
-              "is_verified": true,
-              "avs_result": null,
-              "can_credit": false,
-              "href": "/cards/CC2XZMZSecpGdNXewiWT6es0",
-              "created_at": "2014-11-07T17:20:51.901969Z"
-            }
-          ],
-          "links": {
-            "cards.card_holds": "/cards/{cards.id}/card_holds",
-            "cards.customer": "/customers/{cards.customer}",
-            "cards.disputes": "/cards/{cards.id}/disputes",
-            "cards.debits": "/cards/{cards.id}/debits"
-          }
-        }
-    http_version: 
-  recorded_at: Fri, 07 Nov 2014 17:20:34 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC2XZMZSecpGdNXewiWT6es0
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 07 Nov 2014 17:20:34 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM61f8cb2c66a211e4bc0006429171ffad
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.39
-      Content-Length:
-      - '564'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "cards": [
-            {
-              "links": {
-                "customer": null
-              },
-              "fingerprint": "b3ecb5551877e4c9ee9937f74cffbcfacc388e575cb4c061c30f8a32d340001b",
-              "cvv_result": "Match",
-              "number": "xxxxxxxxxxxx1111",
-              "avs_postal_match": null,
-              "expiration_month": 12,
-              "meta": {},
-              "id": "CC2XZMZSecpGdNXewiWT6es0",
-              "category": "other",
-              "type": "credit",
-              "cvv_match": "yes",
-              "bank_name": "JPMORGAN CHASE BANK, N.A.",
-              "avs_street_match": null,
-              "brand": "Visa",
-              "updated_at": "2014-11-07T17:20:51.901970Z",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": true,
-              "name": null,
-              "expiration_year": 2020,
-              "cvv": "xxx",
-              "is_verified": true,
-              "avs_result": null,
-              "can_credit": false,
-              "href": "/cards/CC2XZMZSecpGdNXewiWT6es0",
-              "created_at": "2014-11-07T17:20:51.901969Z"
-            }
-          ],
-          "links": {
-            "cards.card_holds": "/cards/{cards.id}/card_holds",
-            "cards.customer": "/customers/{cards.customer}",
-            "cards.disputes": "/cards/{cards.id}/disputes",
-            "cards.debits": "/cards/{cards.id}/debits"
-          }
-        }
-    http_version: 
-  recorded_at: Fri, 07 Nov 2014 17:20:34 GMT
+  recorded_at: Mon, 11 May 2015 21:00:52 GMT
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/cards/CC2XZMZSecpGdNXewiWT6es0/debits
+    uri: https://api.stripe.com/v1/customers/cus_6DpgU40V48DJaO/sources
     body:
-      encoding: UTF-8
-      string: '{"amount":61821,"appears_on_statement_as":"Epicodus tuition"}'
+      encoding: US-ASCII
+      string: source[object]=card&source[number]=4242424242424242&source[exp_month]=12&source[exp_year]=2020&source[cvv]=123
     headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
       Accept:
-      - application/vnd.api+json;revision=1.1
+      - "*/*; q=0.5, application/xml"
       Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+      Content-Length:
+      - '110'
   response:
     status:
-      code: 201
-      message: CREATED
+      code: 200
+      message: OK
     headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 11 May 2015 21:01:20 GMT
       Content-Type:
       - application/json
-      Date:
-      - Fri, 07 Nov 2014 17:20:35 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHM622cbedc66a211e49ead06429171ffad
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP25WywsPx8EeGEUdXq7NHPH
-      X-Balanced-Merchant:
-      - TEST-MR25szSXTcDDLogl9uXOlFKV
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.8.39
       Content-Length:
-      - '1085'
+      - '553'
       Connection:
       - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_v0wMPEckJKdrARlr
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
     body:
       encoding: UTF-8
-      string: |-
+      string: |
         {
-          "debits": [
-            {
-              "status": "succeeded",
-              "description": null,
-              "links": {
-                "customer": null,
-                "source": "CC2XZMZSecpGdNXewiWT6es0",
-                "card_hold": "HL2Zk48EB8o20VlMricNvD0h",
-                "order": null,
-                "dispute": null
-              },
-              "updated_at": "2014-11-07T17:20:53.817080Z",
-              "created_at": "2014-11-07T17:20:53.110226Z",
-              "transaction_number": "WVDD-5KB-C18R",
-              "failure_reason": null,
-              "currency": "USD",
-              "amount": 61821,
-              "failure_reason_code": null,
-              "meta": {},
-              "href": "/debits/WD2ZlDsggOUno8uDaWr0KXjf",
-              "appears_on_statement_as": "BAL*Epicodus tuition",
-              "id": "WD2ZlDsggOUno8uDaWr0KXjf"
-            }
-          ],
-          "links": {
-            "debits.customer": "/customers/{debits.customer}",
-            "debits.order": "/orders/{debits.order}",
-            "debits.dispute": "/disputes/{debits.dispute}",
-            "debits.source": "/resources/{debits.source}",
-            "debits.events": "/debits/{debits.id}/events",
-            "debits.refunds": "/debits/{debits.id}/refunds",
-            "debits.card_hold": "/holds/{debits.card_hold}"
-          }
+          "id": "card_6DpgRyVOLLl3uR",
+          "object": "card",
+          "last4": "4242",
+          "brand": "Visa",
+          "funding": "credit",
+          "exp_month": 12,
+          "exp_year": 2020,
+          "fingerprint": "B5I5Hkz6r7cWlvfb",
+          "country": "US",
+          "name": null,
+          "address_line1": null,
+          "address_line2": null,
+          "address_city": null,
+          "address_state": null,
+          "address_zip": null,
+          "address_country": null,
+          "cvc_check": null,
+          "address_line1_check": null,
+          "address_zip_check": null,
+          "dynamic_last4": null,
+          "metadata": {},
+          "customer": "cus_6DpgU40V48DJaO",
+          "type": "Visa"
         }
     http_version: 
-  recorded_at: Fri, 07 Nov 2014 17:20:35 GMT
+  recorded_at: Mon, 11 May 2015 21:00:53 GMT
+- request:
+    method: get
+    uri: https://api.stripe.com/v1/customers/cus_6DpgU40V48DJaO
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 11 May 2015 21:01:20 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '3187'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_iQ8eDKw8eU5lQGLf
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "object": "customer",
+          "created": 1431378078,
+          "id": "cus_6DpgU40V48DJaO",
+          "livemode": false,
+          "description": "student14@example.com",
+          "email": null,
+          "delinquent": false,
+          "metadata": {},
+          "subscriptions": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgU40V48DJaO/subscriptions",
+            "data": [],
+            "count": 0
+          },
+          "discount": null,
+          "account_balance": 0,
+          "currency": null,
+          "bank_accounts": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgU40V48DJaO/bank_accounts",
+            "data": [],
+            "count": 0
+          },
+          "default_bank_account": null,
+          "default_source_type": "card",
+          "cards": {
+            "object": "list",
+            "total_count": 1,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgU40V48DJaO/cards",
+            "data": [
+              {
+                "id": "card_6DpgRyVOLLl3uR",
+                "object": "card",
+                "last4": "4242",
+                "brand": "Visa",
+                "funding": "credit",
+                "exp_month": 12,
+                "exp_year": 2020,
+                "fingerprint": "B5I5Hkz6r7cWlvfb",
+                "country": "US",
+                "name": null,
+                "address_line1": null,
+                "address_line2": null,
+                "address_city": null,
+                "address_state": null,
+                "address_zip": null,
+                "address_country": null,
+                "cvc_check": null,
+                "address_line1_check": null,
+                "address_zip_check": null,
+                "dynamic_last4": null,
+                "metadata": {},
+                "customer": "cus_6DpgU40V48DJaO",
+                "type": "Visa"
+              }
+            ],
+            "count": 1
+          },
+          "default_card": "card_6DpgRyVOLLl3uR",
+          "sources": {
+            "object": "list",
+            "total_count": 1,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgU40V48DJaO/sources",
+            "data": [
+              {
+                "id": "card_6DpgRyVOLLl3uR",
+                "object": "card",
+                "last4": "4242",
+                "brand": "Visa",
+                "funding": "credit",
+                "exp_month": 12,
+                "exp_year": 2020,
+                "fingerprint": "B5I5Hkz6r7cWlvfb",
+                "country": "US",
+                "name": null,
+                "address_line1": null,
+                "address_line2": null,
+                "address_city": null,
+                "address_state": null,
+                "address_zip": null,
+                "address_country": null,
+                "cvc_check": null,
+                "address_line1_check": null,
+                "address_zip_check": null,
+                "dynamic_last4": null,
+                "metadata": {},
+                "customer": "cus_6DpgU40V48DJaO",
+                "type": "Visa"
+              }
+            ],
+            "count": 1
+          },
+          "default_source": "card_6DpgRyVOLLl3uR",
+          "active_card": {
+            "id": "card_6DpgRyVOLLl3uR",
+            "object": "card",
+            "last4": "4242",
+            "brand": "Visa",
+            "funding": "credit",
+            "exp_month": 12,
+            "exp_year": 2020,
+            "fingerprint": "B5I5Hkz6r7cWlvfb",
+            "country": "US",
+            "name": null,
+            "address_line1": null,
+            "address_line2": null,
+            "address_city": null,
+            "address_state": null,
+            "address_zip": null,
+            "address_country": null,
+            "cvc_check": null,
+            "address_line1_check": null,
+            "address_zip_check": null,
+            "dynamic_last4": null,
+            "metadata": {},
+            "customer": "cus_6DpgU40V48DJaO",
+            "type": "Visa"
+          },
+          "subscription": null
+        }
+    http_version: 
+  recorded_at: Mon, 11 May 2015 21:00:54 GMT
+- request:
+    method: get
+    uri: https://api.stripe.com/v1/customers/cus_6DpgU40V48DJaO
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 11 May 2015 21:01:20 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '3187'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_1f8bJ0ODWhqi0SXl
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "object": "customer",
+          "created": 1431378078,
+          "id": "cus_6DpgU40V48DJaO",
+          "livemode": false,
+          "description": "student14@example.com",
+          "email": null,
+          "delinquent": false,
+          "metadata": {},
+          "subscriptions": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgU40V48DJaO/subscriptions",
+            "data": [],
+            "count": 0
+          },
+          "discount": null,
+          "account_balance": 0,
+          "currency": null,
+          "bank_accounts": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgU40V48DJaO/bank_accounts",
+            "data": [],
+            "count": 0
+          },
+          "default_bank_account": null,
+          "default_source_type": "card",
+          "cards": {
+            "object": "list",
+            "total_count": 1,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgU40V48DJaO/cards",
+            "data": [
+              {
+                "id": "card_6DpgRyVOLLl3uR",
+                "object": "card",
+                "last4": "4242",
+                "brand": "Visa",
+                "funding": "credit",
+                "exp_month": 12,
+                "exp_year": 2020,
+                "fingerprint": "B5I5Hkz6r7cWlvfb",
+                "country": "US",
+                "name": null,
+                "address_line1": null,
+                "address_line2": null,
+                "address_city": null,
+                "address_state": null,
+                "address_zip": null,
+                "address_country": null,
+                "cvc_check": null,
+                "address_line1_check": null,
+                "address_zip_check": null,
+                "dynamic_last4": null,
+                "metadata": {},
+                "customer": "cus_6DpgU40V48DJaO",
+                "type": "Visa"
+              }
+            ],
+            "count": 1
+          },
+          "default_card": "card_6DpgRyVOLLl3uR",
+          "sources": {
+            "object": "list",
+            "total_count": 1,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgU40V48DJaO/sources",
+            "data": [
+              {
+                "id": "card_6DpgRyVOLLl3uR",
+                "object": "card",
+                "last4": "4242",
+                "brand": "Visa",
+                "funding": "credit",
+                "exp_month": 12,
+                "exp_year": 2020,
+                "fingerprint": "B5I5Hkz6r7cWlvfb",
+                "country": "US",
+                "name": null,
+                "address_line1": null,
+                "address_line2": null,
+                "address_city": null,
+                "address_state": null,
+                "address_zip": null,
+                "address_country": null,
+                "cvc_check": null,
+                "address_line1_check": null,
+                "address_zip_check": null,
+                "dynamic_last4": null,
+                "metadata": {},
+                "customer": "cus_6DpgU40V48DJaO",
+                "type": "Visa"
+              }
+            ],
+            "count": 1
+          },
+          "default_source": "card_6DpgRyVOLLl3uR",
+          "active_card": {
+            "id": "card_6DpgRyVOLLl3uR",
+            "object": "card",
+            "last4": "4242",
+            "brand": "Visa",
+            "funding": "credit",
+            "exp_month": 12,
+            "exp_year": 2020,
+            "fingerprint": "B5I5Hkz6r7cWlvfb",
+            "country": "US",
+            "name": null,
+            "address_line1": null,
+            "address_line2": null,
+            "address_city": null,
+            "address_state": null,
+            "address_zip": null,
+            "address_country": null,
+            "cvc_check": null,
+            "address_line1_check": null,
+            "address_zip_check": null,
+            "dynamic_last4": null,
+            "metadata": {},
+            "customer": "cus_6DpgU40V48DJaO",
+            "type": "Visa"
+          },
+          "subscription": null
+        }
+    http_version: 
+  recorded_at: Mon, 11 May 2015 21:00:54 GMT
+- request:
+    method: post
+    uri: https://api.stripe.com/v1/charges
+    body:
+      encoding: US-ASCII
+      string: amount=61821&currency=usd&customer=cus_6DpgU40V48DJaO
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+      Content-Length:
+      - '53'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 11 May 2015 21:01:22 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '2110'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_RJ9TJVmF6F9KtDBB
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "ch_6Dphhh9W6yowjF",
+          "object": "charge",
+          "created": 1431378081,
+          "livemode": false,
+          "paid": true,
+          "status": "paid",
+          "amount": 61821,
+          "currency": "usd",
+          "refunded": false,
+          "source": {
+            "id": "card_6DpgRyVOLLl3uR",
+            "object": "card",
+            "last4": "4242",
+            "brand": "Visa",
+            "funding": "credit",
+            "exp_month": 12,
+            "exp_year": 2020,
+            "fingerprint": "B5I5Hkz6r7cWlvfb",
+            "country": "US",
+            "name": null,
+            "address_line1": null,
+            "address_line2": null,
+            "address_city": null,
+            "address_state": null,
+            "address_zip": null,
+            "address_country": null,
+            "cvc_check": null,
+            "address_line1_check": null,
+            "address_zip_check": null,
+            "dynamic_last4": null,
+            "metadata": {},
+            "customer": "cus_6DpgU40V48DJaO",
+            "type": "Visa"
+          },
+          "captured": true,
+          "card": {
+            "id": "card_6DpgRyVOLLl3uR",
+            "object": "card",
+            "last4": "4242",
+            "brand": "Visa",
+            "funding": "credit",
+            "exp_month": 12,
+            "exp_year": 2020,
+            "fingerprint": "B5I5Hkz6r7cWlvfb",
+            "country": "US",
+            "name": null,
+            "address_line1": null,
+            "address_line2": null,
+            "address_city": null,
+            "address_state": null,
+            "address_zip": null,
+            "address_country": null,
+            "cvc_check": null,
+            "address_line1_check": null,
+            "address_zip_check": null,
+            "dynamic_last4": null,
+            "metadata": {},
+            "customer": "cus_6DpgU40V48DJaO",
+            "type": "Visa"
+          },
+          "balance_transaction": "txn_6DphNQyOMIMJ3H",
+          "failure_message": null,
+          "failure_code": null,
+          "amount_refunded": 0,
+          "customer": "cus_6DpgU40V48DJaO",
+          "invoice": null,
+          "description": null,
+          "dispute": null,
+          "metadata": {},
+          "statement_descriptor": null,
+          "fraud_details": {},
+          "receipt_email": null,
+          "receipt_number": null,
+          "shipping": null,
+          "application_fee": null,
+          "refunds": [],
+          "statement_description": null,
+          "fee": 1823,
+          "fee_details": [
+            {
+              "amount": 1823,
+              "currency": "usd",
+              "type": "stripe_fee",
+              "description": "Stripe processing fees",
+              "application": null,
+              "amount_refunded": 0
+            }
+          ]
+        }
+    http_version: 
+  recorded_at: Mon, 11 May 2015 21:00:55 GMT
 - request:
     method: post
     uri: https://api:<MAILGUN_API_KEY>@api.mailgun.net/v2/epicodus.com/messages
     body:
       encoding: US-ASCII
-      string: from=michael%40epicodus.com&to=student105%40example.com&bcc=michael%40epicodus.com&subject=Epicodus%20tuition%20payment%20receipt&text=Hi%20Example%20Brown%2097.%20This%20is%20to%20confirm%20your%20payment%20of%20%24618.21%20for%20Epicodus%20tuition.%20If%20you%20have%20any%20questions%2C%20reply%20to%20this%20email.%20Thanks!
+      string: from=administrator%40school.edu&to=student14%40example.com&bcc=administrator%40school.edu&subject=Epicodus%20tuition%20payment%20receipt&text=Hi%20Example%20Brown%2014.%20This%20is%20to%20confirm%20your%20payment%20of%20%24618.21%20for%20Epicodus%20tuition.%20If%20you%20have%20any%20questions%2C%20reply%20to%20this%20email.%20Thanks!
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
       Accept-Encoding:
       - gzip, deflate
       Content-Length:
-      - '328'
+      - '335'
       Content-Type:
       - application/x-www-form-urlencoded
       User-Agent:
@@ -394,13 +734,13 @@ http_interactions:
       message: OK
     headers:
       Server:
-      - nginx/1.4.7
+      - nginx/1.7.9
       Date:
-      - Fri, 07 Nov 2014 17:20:36 GMT
+      - Mon, 11 May 2015 21:01:22 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '87'
+      - '90'
       Connection:
       - keep-alive
       Content-Disposition:
@@ -417,9 +757,9 @@ http_interactions:
       encoding: UTF-8
       string: |-
         {
-          "message": "Queued. Thank you.",
-          "id": "<20141107172036.727.3062@epicodus.com>"
+          "id": "<20150511210122.84502.85668@epicodus.com>",
+          "message": "Queued. Thank you."
         }
     http_version: 
-  recorded_at: Fri, 07 Nov 2014 17:20:36 GMT
+  recorded_at: Mon, 11 May 2015 21:00:56 GMT
 recorded_with: VCR 2.9.3
