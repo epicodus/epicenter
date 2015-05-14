@@ -14,6 +14,5 @@
 //= require jquery_ujs
 //= require jquery-ui/sortable
 //= require jquery-ui/datepicker
-//= require balanced
 //= require nested_form_fields
 //= require_tree .
