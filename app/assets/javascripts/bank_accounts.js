@@ -5,22 +5,20 @@ $(function() {
     var formData = {
       routing_number: $("input#routing_number").val(),
       account_number: $("input#bank_account_number").val(),
-      name: $("input#name").val()
+      name: $("input#name").val(),
+      country: $("input#country").val()
     };
-
     Stripe.bankAccount.createToken(formData, stripeResponseHandler);
   });
 });
 
 var stripeResponseHandler = function(status, response) {
   if (status === 200) {
-    // var uri = response.bank_account.href;
-    // $("input#bank_account_account_uri").val(uri);
 
     $("input#bank_account_number").val('*********');
     $("input#routing_number").val('*********');
     var token = response.id;
-    $('form#new_bank_account').append($('<input type="hidden" name="stripeToken" />').val(token));
+    $('input#bank_account_stripe_token').val(token);
     $('form#new_bank_account').unbind('submit').submit();
     $('#account-submit-button').val('loading...').attr('disabled', 'disabled');
   } else {
@@ -32,9 +30,10 @@ var stripeResponseHandler = function(status, response) {
         '</ul>' +
       '</div>'
     );
-
-    response.errors.forEach(function(error) {
-      $('.alert-error ul').append('<li>' + error.message + '</li>');
-    });
+    var errorMapping = {
+      "Routing number must have 9 digits": "Invalid routing number."
+    }
+    var errorMessage = errorMapping[response.error.message];
+    $('.alert-error ul').append('<li>' + errorMessage + '</li>');
   }
 };

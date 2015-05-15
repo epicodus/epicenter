@@ -6,10 +6,9 @@
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700" rel="stylesheet" type="text/css">
   <%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
-  <%= javascript_include_tag 'application' %>
   <%= javascript_include_tag "https://js.stripe.com/v2/", "application" %>
+  <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
-  <%= tag :meta, :name => "stripe-key", :content => STRIPE_PUBLIC_KEY %>
 </head>
 <body>
   <div class="container">

@@ -19,9 +19,8 @@ private
     account = student.stripe_customer.sources.data.first
     begin
       account.verify(:amounts => [first_deposit.to_s, second_deposit.to_s])
-      self.update!(verified: true)
-      self.ensure_primary_method_exists
-      self.save
+      update!(verified: true)
+      ensure_primary_method_exists
       true
     rescue Stripe::StripeError => exception
       errors.add(:base, exception.message)
@@ -30,7 +29,12 @@ private
   end
 
   def create_stripe_bank_account
-    student.stripe_customer.sources.create(:source => stripe_token)
+    begin
+      student.stripe_customer.sources.create(:source => stripe_token)
+    rescue Stripe::StripeError => exception
+      errors.add(:base, exception.message)
+      false
+    end
   end
 
   def get_last_four_string

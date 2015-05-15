@@ -1,15 +1,9 @@
-require 'stripe'
+Stripe.api_key = ENV['STRIPE_TEST_API_KEY']
 
-if Rails.env == 'production'
-  Rails.configuration.stripe = {
-    :publishable_key => ENV['STRIPE_PUBLIC_KEY'],
-    :secret_key => ENV['STRIPE_API_KEY']
-  }
-else
-  Rails.configuration.stripe = {
-    :publishable_key => ENV['STRIPE_TEST_PUBLIC_KEY'],
-    :secret_key => ENV['STRIPE_TEST_API_KEY']
-  }
-end
-
-Stripe.api_key = Rails.configuration.stripe[:secret_key]
+# module Stripe
+#   module CertificateBlacklist
+#     def self.check_ssl_cert(uri, ca_file)
+#       true
+#     end
+#   end
+# end
