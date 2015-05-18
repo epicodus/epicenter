@@ -54,7 +54,7 @@ feature 'Student views payment methods page' do
       bank_account = FactoryGirl.create(:verified_bank_account, student: student)
       sign_in student
       visit payment_methods_path
-      expect(page).to have_content "xxxxxx0002"
+      expect(page).to have_content "4242"
       expect(page).to have_content "Bank account"
       expect(page).to have_content "Verified"
       expect(page).to have_button "Make Primary"
