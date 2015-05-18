@@ -13,47 +13,48 @@ feature 'Creating a credit card' do
     end
 
     scenario 'with valid information', :vcr, js: true do
-      fill_in 'Card number', with: '4111111111111111'
+      fill_in 'Card number', with: '4242424242424242'
       fill_in 'Expiration month', with: '12'
-      fill_in 'Expiration year', with: '2020'
-      fill_in 'CVV code', with: '123'
+      fill_in 'Expiration year', with: '2016'
+      fill_in 'CVC code', with: '123'
       fill_in 'Zip code', with: '11211'
       click_on 'Add credit card'
       expect(page).to have_content 'Your credit card has been added.'
     end
 
-    scenario 'with missing account number', js: true do
-      fill_in 'Card number', with: '4111111111111111'
-      fill_in 'Expiration year', with: '2020'
-      fill_in 'CVV code', with: '123'
+    scenario 'with missing account information', js: true do
+      fill_in 'Card number', with: '4012888888881881'
+      fill_in 'Expiration month', with: ' '
+      fill_in 'Expiration year', with: '2016'
+      fill_in 'CVC code', with: '123'
       fill_in 'Zip code', with: '11211'
       click_on 'Add credit card'
       within '.alert-error' do
-        expect(page).to have_content 'Missing field "expiration_month"'
+        expect(page).to have_content 'Cannot be blank.'
       end
     end
 
     scenario 'with invalid account number', js: true do
-      fill_in 'Card number', with: '4111111111111112'
+      fill_in 'Card number', with: '4242424242424241'
       fill_in 'Expiration month', with: '12'
-      fill_in 'Expiration year', with: '2020'
-      fill_in 'CVV code', with: '123'
+      fill_in 'Expiration year', with: '2016'
+      fill_in 'CVC code', with: '123'
       fill_in 'Zip code', with: '11211'
       click_on 'Add credit card'
       within '.alert-error' do
-        expect(page).to have_content 'not a valid credit card number'
+        expect(page).to have_content 'Your card number is incorrect.'
       end
     end
 
-    xscenario 'with a cancelled card, this test depends on fixing https://github.com/oesmith/puffing-billy/issues/79', :vcr, js: true do
+    scenario 'with a cancelled card', js: true do
       fill_in 'Card number', with: '4222222222222220'
       fill_in 'Expiration month', with: '12'
       fill_in 'Expiration year', with: '2020'
-      fill_in 'CVV code', with: '123'
+      fill_in 'CVC code', with: '123'
       fill_in 'Zip code', with: '11211'
       click_on 'Add credit card'
       within '.alert-error' do
-        expect(page).to have_content 'This transaction was declined by the card issuer.'
+        expect(page).to have_content 'Your card was declined.'
       end
     end
   end
