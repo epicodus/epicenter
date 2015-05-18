@@ -1,8 +1,9 @@
 class CreditCard < PaymentMethod
   before_create :create_stripe_card
   before_create :set_verified_true
-  after_create :get_last_four_string
+  before_create :get_last_four_string
   after_create :ensure_primary_method_exists
+
 
   def calculate_fee(amount)
     ((amount / BigDecimal.new("0.971")) + 30).to_i - amount
@@ -18,7 +19,6 @@ private
     begin
       student.stripe_customer.sources.create(:source => stripe_token)
     rescue Stripe::CardError => exception
-      binding.pry
       errors.add(:base, exception.message)
       false
     end
