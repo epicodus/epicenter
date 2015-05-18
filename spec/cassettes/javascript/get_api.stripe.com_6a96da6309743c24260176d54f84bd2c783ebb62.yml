@@ -1,0 +1,29 @@
+---
+:scope: 
+:url: https://api.stripe.com/v1/tokens?bank_account%5Brouting_number%5D=110000000&bank_account%5Baccount_number%5D=+&bank_account%5Bname%5D=Example+Brown+1&bank_account%5Bcountry%5D=US&key=pk_test_k71fNBhNztxvhxRq1PQaL4u5&payment_user_agent=stripe.js%2F6a67cf0&_method=POST
+:body: ''
+:status: 200
+:method: get
+:headers:
+  Server: nginx
+  Date: Fri, 15 May 2015 23:13:12 GMT
+  Content-Type: application/javascript
+  Content-Length: '217'
+  Connection: close
+  Access-Control-Allow-Credentials: 'true'
+  Access-Control-Allow-Methods: GET, POST, HEAD, OPTIONS, DELETE
+  Access-Control-Allow-Origin: "*"
+  Access-Control-Max-Age: '300'
+  Cache-Control: no-cache, no-store
+  Request-Id: req_R7S6WAapbVNCSAH3
+  Stripe-Version: '2012-11-07'
+  Strict-Transport-Security: max-age=31556926; includeSubDomains
+:content: |
+  sjsonp1431731562886({
+    "error": {
+      "type": "invalid_request_error",
+      "message": "Must only use a test bank account number when making transfers or debits in test mode",
+      "param": "bank_account"
+    }
+  }
+  , 400)
