@@ -104,7 +104,7 @@ feature 'Guest not signed in' do
   end
 
   context 'visits edit verification path' do
-    before { visit edit_bank_account_verification_path(1) }
+    before { visit edit_bank_account_path(1) }
     it { should have_content 'You need to sign in' }
   end
 
