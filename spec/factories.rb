@@ -23,7 +23,11 @@ FactoryGirl.define do
 
     factory :verified_bank_account do
       after(:create) do |bank_account|
-        bank_account.student.stripe_customer.sources.data.first.verify(amounts: [32, 45])
+        bank_account.student.stripe_customer.sources.data.each do |payment|
+          if payment.object =='bank_account'
+            payment.verify(amounts: [32, 45])
+          end
+        end
         bank_account.ensure_primary_method_exists
       end
       verified true
