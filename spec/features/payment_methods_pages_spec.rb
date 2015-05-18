@@ -40,7 +40,7 @@ feature 'Student views payment methods page' do
       student = FactoryGirl.create(:user_with_verified_bank_account)
       sign_in student
       visit payment_methods_path
-      expect(page).to have_content "xxxxxx0002"
+      expect(page).to have_content "6789"
       expect(page).to have_content "✓"
       expect(page).to have_content "Bank account"
       expect(page).to have_content "Verified"
