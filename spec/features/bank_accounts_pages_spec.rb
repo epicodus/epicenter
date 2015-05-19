@@ -17,6 +17,7 @@ feature 'Creating a bank account' do
       fill_in 'Routing number', with: '110000000'
       fill_in 'Bank account number', with: '000123456789'
       fill_in 'Country', with: 'US'
+      fill_in 'Currency', with: 'USD'
       click_on 'Verify bank account'
       expect(page).to have_content '2-3 business days'
     end
@@ -25,9 +26,10 @@ feature 'Creating a bank account' do
       fill_in 'Routing number', with: '110000000'
       fill_in 'Bank account number', with: ' '
       fill_in 'Country', with: 'US'
+      fill_in 'Currency', with: 'USD'
       click_on 'Verify bank account'
       within '.alert-error' do
-        expect(page).to have_content 'undefined'
+        expect(page).to have_content 'Cannot be blank.'
       end
     end
 
@@ -35,6 +37,7 @@ feature 'Creating a bank account' do
       fill_in 'Bank account number', with: '000123456789'
       fill_in 'Routing number', with: '12345689'
       fill_in 'Country', with: 'US'
+      fill_in 'Currency', with: 'USD'
       click_on 'Verify bank account'
       within '.alert-error' do
         expect(page).to have_content 'Invalid routing number.'
