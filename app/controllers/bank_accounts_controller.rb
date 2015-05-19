@@ -27,6 +27,6 @@ class BankAccountsController < ApplicationController
 
 private
   def bank_account_params
-    params.require(:bank_account).permit(:first_depost, :second_deposit, :stripe_token)
+    params.require(:bank_account).permit(:first_deposit, :second_deposit, :stripe_token)
   end
 end
