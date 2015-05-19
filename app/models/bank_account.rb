@@ -1,7 +1,7 @@
 class BankAccount < PaymentMethod
   before_create :create_stripe_bank_account
   before_create :get_last_four_string
-  after_update :create_verification
+  after_update :create_verification, unless: 'verified'
 
   attr_accessor :first_deposit, :second_deposit
 
@@ -18,7 +18,7 @@ private
   def create_verification
     account = student.stripe_customer.sources.data.first
     begin
-      account.verify(:amounts => [first_deposit.to_s, second_deposit.to_s])
+      account.verify(:amounts => [first_deposit.to_i, second_deposit.to_i])
       update!(verified: true)
       ensure_primary_method_exists
       true
