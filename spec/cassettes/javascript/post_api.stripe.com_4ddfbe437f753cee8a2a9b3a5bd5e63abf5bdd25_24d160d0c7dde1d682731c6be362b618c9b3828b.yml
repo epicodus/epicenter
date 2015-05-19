@@ -1,34 +1,34 @@
 ---
 :scope: 
-:url: https://api.stripe.com/v1/tokens?bank_account%5Brouting_number%5D=110000000&bank_account%5Baccount_number%5D=000123456789&bank_account%5Bname%5D=Example+Brown+1&bank_account%5Bcountry%5D=US&key=pk_test_k71fNBhNztxvhxRq1PQaL4u5&payment_user_agent=stripe.js%2F6a67cf0&_method=POST
-:body: ''
+:url: https://api.stripe.com/v1/tokens
+:body: bank_account[routing_number]=110000000&bank_account[account_number]=000123456789&bank_account[name]=Example+Brown+1&bank_account[country]=US&bank_account[currency]=USD&key=pk_test_k71fNBhNztxvhxRq1PQaL4u5&payment_user_agent=stripe.js%2F6a67cf0
 :status: 200
-:method: get
+:method: post
 :headers:
   Server: nginx
-  Date: Fri, 15 May 2015 23:32:59 GMT
-  Content-Type: application/javascript
-  Content-Length: '558'
+  Date: Tue, 19 May 2015 16:35:39 GMT
+  Content-Type: application/json
+  Content-Length: '496'
   Connection: close
   Access-Control-Allow-Credentials: 'true'
   Access-Control-Allow-Methods: GET, POST, HEAD, OPTIONS, DELETE
-  Access-Control-Allow-Origin: "*"
+  Access-Control-Allow-Origin: http://127.0.0.1:60892
   Access-Control-Max-Age: '300'
   Cache-Control: no-cache, no-store
-  Request-Id: req_yMtRMzzZuHt1XHFs
+  Request-Id: req_x0vF1mQx7YDmSCpc
   Stripe-Version: '2012-11-07'
   Strict-Transport-Security: max-age=31556926; includeSubDomains
 :content: |
-  sjsonp1431732749876({
-    "id": "btok_6FN26gr4nCfFmk",
+  {
+    "id": "btok_6GlDuxk2mmt8V4",
     "livemode": false,
-    "created": 1431732779,
+    "created": 1432053339,
     "used": false,
     "object": "token",
     "type": "bank_account",
     "bank_account": {
       "object": "bank_account",
-      "id": "ba_6FN2mzeEvADzWv",
+      "id": "ba_6GlDlncCHYQOwL",
       "last4": "6789",
       "country": "US",
       "currency": "usd",
@@ -36,10 +36,8 @@
       "fingerprint": "qw2YdYDmIJUuNi9w",
       "routing_number": "110000000",
       "bank_name": "STRIPE TEST BANK",
-      "default_for_currency": false,
       "disabled": false,
       "validated": false,
       "verified": false
     }
   }
-  , 200)
