@@ -13,11 +13,11 @@ class BankAccountsController < ApplicationController
   end
 
   def edit
-    @bank_account = BankAccount.find(params[:bank_account_id])
+    @bank_account = BankAccount.find(params[:id])
   end
 
   def update
-    @bank_account = BankAccount.find(params[:bank_account_id])
+    @bank_account = BankAccount.find(params[:id])
     if @bank_account.update(bank_account_params)
       redirect_to payment_methods_path, notice: "Your bank account has been confirmed."
     else
