@@ -8,27 +8,32 @@
 
 <p><%= image_tag "check.png" %></p>
 
-<%= render '/layouts/errors', :object => @bank_account%>
+<%= render '/layouts/errors', :object => @bank_account %>
 
-<%= form_for @bank_account do |f| %>
+<%= form_for @bank_account, url: bank_accounts_path do |f| %>
   <div>
     <%= label_tag :name, "Name on account" %>
     <%= text_field_tag :name, nil, autofocus: true %>
   </div>
 
   <div>
-    <%= label_tag :routing_number, "Routing number" %>
+    <%= label_tag :routing_number %>
     <%= text_field_tag :routing_number %>
   </div>
 
   <div>
-    <%= label_tag :bank_account_number, "Bank account number" %>
+    <%= label_tag :bank_account_number %>
     <%= text_field_tag :bank_account_number %>
   </div>
 
   <div>
-    <%= label_tag :country, "Country" %>
+    <%= label_tag :country %>
     <%= text_field_tag :country %>
+  </div>
+
+  <div>
+    <%= label_tag :currency %>
+    <%= text_field_tag :currency %>
   </div>
 
   <%= f.hidden_field :stripe_token %>
