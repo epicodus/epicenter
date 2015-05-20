@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150505232054) do
+ActiveRecord::Schema.define(version: 20150520233623) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,11 +102,12 @@ ActiveRecord::Schema.define(version: 20150505232054) do
     t.integer  "amount"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "payment_uri",       limit: 255
+    t.string   "payment_uri",        limit: 255
     t.integer  "student_id"
-    t.integer  "fee",                           default: 0, null: false
+    t.integer  "fee",                            default: 0, null: false
     t.integer  "payment_method_id"
-    t.string   "status",            limit: 255
+    t.string   "status",             limit: 255
+    t.string   "stripe_transaction"
   end
 
   add_index "payments", ["student_id"], name: "index_payments_on_student_id", using: :btree

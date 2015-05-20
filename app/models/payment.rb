@@ -61,8 +61,9 @@ private
     customer = student.stripe_customer
     self.fee = payment_method.calculate_fee(amount)
     begin
-      Stripe::Charge.create(amount: total_amount, currency: 'usd', customer: customer.id)
+      charge = Stripe::Charge.create(amount: total_amount, currency: 'usd', customer: customer.id)
       self.status = payment_method.starting_status
+      self.stripe_transaction = charge.balance_transaction
     rescue Stripe::StripeError => exception
       errors.add(:base, exception.message)
       false
