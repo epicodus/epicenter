@@ -45,3 +45,39 @@ feature 'Creating a bank account' do
     end
   end
 end
+
+feature 'Verifying a bank account' do
+  context 'as a student' do
+    context 'with correct deposit amounts' do
+      let(:student) { FactoryGirl.create :user_with_unverified_bank_account, plan: plan }
+      let(:plan) { FactoryGirl.create :recurring_plan_with_upfront_payment }
+
+      before do
+        login_as(student, scope: :student)
+        visit payment_methods_path
+        click_on 'Verify Account'
+        fill_in 'First deposit amount', with: 32
+        fill_in 'Second deposit amount', with: 45
+        click_on 'Confirm account'
+      end
+
+      it 'gives the student a confirmation notice and redirects to payments page', :vcr, js: true do
+        expect(page).to have_content 'account has been confirmed'
+        expect(current_path).to eq payment_methods_path
+      end
+    end
+
+    context 'with incorrect deposit amounts' do
+      it 'gives an error notice', :vcr, js: true do
+        student = FactoryGirl.create :user_with_unverified_bank_account
+        login_as(student, scope: :student)
+        visit payment_methods_path
+        click_on 'Verify Account'
+        fill_in 'First deposit amount', with: 16
+        fill_in 'Second deposit amount', with: 78
+        click_on 'Confirm account'
+        expect(page).to have_content 'The amounts provided do not match the amounts that were sent to the bank account.'
+      end
+    end
+  end
+end
