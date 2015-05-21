@@ -1,7 +1,7 @@
 class BankAccount < PaymentMethod
   before_create :create_stripe_bank_account
   before_create :get_last_four_string
-  after_update :create_verification, unless: 'verified'
+  before_update :create_verification, unless: 'verified'
 
   attr_accessor :first_deposit, :second_deposit
 
@@ -22,7 +22,7 @@ private
       update!(verified: true)
       ensure_primary_method_exists
       true
-    rescue Stripe::StripeError => exception
+    rescue Stripe::InvalidRequestError => exception
       errors.add(:base, exception.message)
       false
     end
