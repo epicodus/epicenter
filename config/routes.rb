@@ -39,5 +39,5 @@ Rails.application.routes.draw do
     resources :reviews, only: [:new, :create]
   end
 
-  resources :balanced_callbacks, only: [:create]
+  resources :stripe_callbacks, only: [:create]
 end
