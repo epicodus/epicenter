@@ -6,13 +6,13 @@ describe BankAccount do
   describe "create bank account", :vcr do
     let(:bank_account) { FactoryGirl.create :bank_account }
 
-    it "creates a Stripe bank account" do
+    it "creates a Stripe bank account", :vcr do
       account = FactoryGirl.create(:bank_account)
       stripe_account = account.student.stripe_customer.sources.data.first
       expect(stripe_account).to be_an_instance_of(Stripe::BankAccount)
     end
 
-    it "gets last four digits before_create" do
+    it "gets last four digits before_create", :vcr do
       bank_account = FactoryGirl.create(:bank_account)
       expect(bank_account.last_four_string).to eq "6789"
     end
@@ -21,7 +21,7 @@ describe BankAccount do
   describe "verify Stripe account", :vcr do
     let(:student) { FactoryGirl.create :user_with_verified_bank_account }
 
-    it "verifies a Stripe account after_update" do
+    it "verifies a Stripe account after_update", :vcr do
       bank_account = FactoryGirl.create(:bank_account)
       bank_account.update(first_deposit: 32, second_deposit: 45)
       stripe_account = bank_account.student.stripe_customer.sources.data.first
@@ -29,7 +29,7 @@ describe BankAccount do
     end
   end
 
-  describe "#create_verification" do
+  describe "#create_verification", :vcr do
     it "sets the student's bank_account verified status to true", :vcr do
       student = FactoryGirl.create(:user_with_verified_bank_account)
       expect(student.bank_accounts.first.verified).to be true
