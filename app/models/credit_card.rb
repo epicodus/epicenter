@@ -17,7 +17,8 @@ private
 
   def create_stripe_card
     begin
-      student.stripe_customer.sources.create(:source => stripe_token)
+      card = student.stripe_customer.sources.create(:source => stripe_token)
+      self.stripe_id = card.id
     rescue Stripe::CardError => exception
       errors.add(:base, exception.message)
       false
@@ -27,11 +28,8 @@ private
   def get_last_four_string
     begin
       customer = student.stripe_customer
-      customer.sources.data.each do |data|
-        if data.object == "card"
-          self.last_four_string = data.last4
-        end
-      end
+      stripe_credit_card = customer.cards.retrieve(stripe_id)
+      self.last_four_string = stripe_credit_card.last4
     rescue Stripe::CardError => exception
       errors.add(:base, exception.message)
       false
