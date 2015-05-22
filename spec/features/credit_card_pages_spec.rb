@@ -46,7 +46,7 @@ feature 'Creating a credit card' do
       end
     end
 
-    scenario 'with a cancelled card', js: true do
+    scenario 'with a cancelled card', :vcr, js: true do
       fill_in 'Card number', with: '4222222222222220'
       fill_in 'Expiration month', with: '12'
       fill_in 'Expiration year', with: '2020'

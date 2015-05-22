@@ -7,7 +7,7 @@ describe CreditCard do
     context "with a valid number" do
       let(:credit_card) { FactoryGirl.create :credit_card }
 
-      it "creates a Stripe card for a Stripe customer" do
+      it "creates a Stripe card for a Stripe customer", :vcr do
         credit_card = FactoryGirl.create(:credit_card)
         stripe_card = credit_card.student.stripe_customer.sources.all.first
         expect(stripe_card).to be_an_instance_of(Stripe::Card)
@@ -18,12 +18,12 @@ describe CreditCard do
         expect(credit_card.id).to eq nil
       end
 
-      it "sets verified to 'true' before_create" do
+      it "sets verified to 'true' before_create", :vcr do
         credit_card = FactoryGirl.create(:credit_card)
         expect(credit_card.verified).to eq true
       end
 
-      it "gets last four digits after_create" do
+      it "gets last four digits after_create", :vcr do
         credit_card = FactoryGirl.create(:credit_card)
         expect(credit_card.last_four_string).to eq "4242"
       end
