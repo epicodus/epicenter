@@ -9572,4 +9572,84 @@ http_interactions:
         }
     http_version: 
   recorded_at: Fri, 22 May 2015 17:51:01 GMT
+- request:
+    method: get
+    uri: https://api.stripe.com/v1/tokens?_method=POST&bank_account%5Baccount_number%5D=000123456789&bank_account%5Bcountry%5D=US&bank_account%5Bcurrency%5D=USD&bank_account%5Bname%5D=Example%20Brown%2013&bank_account%5Brouting_number%5D=110000000&callback=sjsonp1432321955691&key=pk_test_k71fNBhNztxvhxRq1PQaL4u5&payment_user_agent=stripe.js/6a67cf0
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Accept:
+      - "*/*"
+      Referer:
+      - http://127.0.0.1:51515/bank_accounts/new
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/538.1 (KHTML, like Gecko)
+        PhantomJS/2.0.0 Safari/538.1
+      Connection:
+      - Keep-Alive
+      Accept-Language:
+      - en-US,*
+      Host:
+      - api.stripe.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 22 May 2015 19:13:10 GMT
+      Content-Type:
+      - application/javascript
+      Content-Length:
+      - '544'
+      Connection:
+      - close
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_3mEaIaoQcNr8Ee6r
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        sjsonp1432321955691({
+          "id": "btok_6HvQOw5sGRpIiA",
+          "livemode": false,
+          "created": 1432321990,
+          "used": false,
+          "object": "token",
+          "type": "bank_account",
+          "bank_account": {
+            "object": "bank_account",
+            "id": "ba_6HvQZ3yqKLNIJq",
+            "last4": "6789",
+            "country": "US",
+            "currency": "usd",
+            "status": "new",
+            "fingerprint": "qw2YdYDmIJUuNi9w",
+            "routing_number": "110000000",
+            "bank_name": "STRIPE TEST BANK",
+            "disabled": false,
+            "validated": false,
+            "verified": false
+          },
+          "client_ip": null
+        }
+        , 200)
+    http_version: 
+  recorded_at: Fri, 22 May 2015 19:12:36 GMT
 recorded_with: VCR 2.9.3

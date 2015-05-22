@@ -1,0 +1,44 @@
+---
+:scope: 
+:url: https://api.stripe.com/v1/tokens
+:body: bank_account[routing_number]=110000000&bank_account[account_number]=000123456789&bank_account[name]=Example+Brown+13&bank_account[country]=US&bank_account[currency]=USD&key=pk_test_k71fNBhNztxvhxRq1PQaL4u5&payment_user_agent=stripe.js%2F6a67cf0
+:status: 200
+:method: post
+:headers:
+  Server: nginx
+  Date: Thu, 14 May 2015 22:16:21 GMT
+  Content-Type: application/json
+  Content-Length: '531'
+  Connection: close
+  Access-Control-Allow-Credentials: 'true'
+  Access-Control-Allow-Methods: GET, POST, HEAD, OPTIONS, DELETE
+  Access-Control-Allow-Origin: http://127.0.0.1:63726
+  Access-Control-Max-Age: '300'
+  Cache-Control: no-cache, no-store
+  Request-Id: req_J3IDxlazgxbVYP0e
+  Stripe-Version: '2012-11-07'
+  Strict-Transport-Security: max-age=31556926; includeSubDomains
+:content: |
+  {
+    "id": "btok_6EyabWSab3I1Fd",
+    "livemode": false,
+    "created": 1431641781,
+    "used": false,
+    "object": "token",
+    "type": "bank_account",
+    "bank_account": {
+      "object": "bank_account",
+      "id": "ba_6EyaL09wIUq0JO",
+      "last4": "6789",
+      "country": "US",
+      "currency": "usd",
+      "status": "new",
+      "fingerprint": "qw2YdYDmIJUuNi9w",
+      "routing_number": "110000000",
+      "bank_name": "STRIPE TEST BANK",
+      "default_for_currency": false,
+      "disabled": false,
+      "validated": false,
+      "verified": false
+    }
+  }
