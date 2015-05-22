@@ -16,7 +16,7 @@ class BankAccount < PaymentMethod
 private
 
   def create_verification
-    account = student.stripe_customer.sources.data.first
+    account = student.stripe_customer.bank_accounts.first
     begin
       account.verify(:amounts => [first_deposit.to_i, second_deposit.to_i])
       update!(verified: true)
@@ -40,8 +40,10 @@ private
   def get_last_four_string
     begin
       customer = student.stripe_customer
-      if customer.sources.data.first
-        self.last_four_string = customer.sources.data.first.last4
+      customer.sources.data.each do |data|
+        if data.object = "bank_account"
+          self.last_four_string = data.last4
+        end
       end
     rescue Stripe::StripeError => exception
       errors.add(:base, exception.message)
