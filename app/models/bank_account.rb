@@ -16,7 +16,8 @@ class BankAccount < PaymentMethod
 private
 
   def create_verification
-    account = student.stripe_customer.bank_accounts.first
+    customer = student.stripe_customer
+    account = customer.bank_accounts.retrieve(stripe_id)
     begin
       account.verify(:amounts => [first_deposit.to_i, second_deposit.to_i])
       update!(verified: true)
@@ -30,7 +31,8 @@ private
 
   def create_stripe_bank_account
     begin
-      student.stripe_customer.sources.create(:source => stripe_token)
+      account = student.stripe_customer.sources.create(:source => stripe_token)
+      self.stripe_id = account.id
     rescue Stripe::StripeError => exception
       errors.add(:base, exception.message)
       false
@@ -40,11 +42,8 @@ private
   def get_last_four_string
     begin
       customer = student.stripe_customer
-      customer.sources.data.each do |data|
-        if data.object = "bank_account"
-          self.last_four_string = data.last4
-        end
-      end
+      stripe_bank_account = customer.bank_accounts.retrieve(stripe_id)
+      self.last_four_string = stripe_bank_account.last4
     rescue Stripe::StripeError => exception
       errors.add(:base, exception.message)
       false
