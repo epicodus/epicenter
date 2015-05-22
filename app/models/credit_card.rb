@@ -27,8 +27,10 @@ private
   def get_last_four_string
     begin
       customer = student.stripe_customer
-      if customer.sources.data.first
-        self.last_four_string = customer.sources.data.first.last4
+      customer.sources.data.each do |data|
+        if data.object == "card"
+          self.last_four_string = data.last4
+        end
       end
     rescue Stripe::CardError => exception
       errors.add(:base, exception.message)
