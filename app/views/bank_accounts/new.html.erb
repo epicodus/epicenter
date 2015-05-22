@@ -28,12 +28,12 @@
 
   <div>
     <%= label_tag :country %>
-    <%= text_field_tag :country %>
+    <%= text_field_tag :country, placeholder = "US" %>
   </div>
 
   <div>
     <%= label_tag :currency %>
-    <%= text_field_tag :currency %>
+    <%= text_field_tag :currency, placeholder = "USD" %>
   </div>
 
   <%= f.hidden_field :stripe_token %>
