@@ -8,16 +8,6 @@ feature 'Student makes an upfront payment' do
       expect(page).to have_content "Thank You! Your upfront payment has been made."
     end
   end
-
-  context 'with an invalid credit card', :vcr do
-    it "shows error message" do
-      student = FactoryGirl.create(:user_with_invalid_credit_card)
-      login_as(student, scope: :student)
-      visit payments_path
-      click_on "Make upfront payment"
-      expect(page).to have_content "R758: Account Frozen. Your request id is"
-    end
-  end
 end
 
 feature 'Student starts recurring payments' do
@@ -28,17 +18,6 @@ feature 'Student starts recurring payments' do
       visit payments_path
       click_on "Start recurring payments"
       expect(page).to have_content "Thank You! Your first recurring payment has been made."
-    end
-  end
-
-  context 'with an invalid credit card', :vcr do
-    it "shows error message" do
-      plan = FactoryGirl.create(:recurring_plan_with_no_upfront_payment)
-      student = FactoryGirl.create(:user_with_invalid_credit_card, plan: plan)
-      login_as(student, scope: :student)
-      visit payments_path
-      click_on "Start recurring payments"
-      expect(page).to have_content "R758: Account Frozen. Your request id is"
     end
   end
 end
