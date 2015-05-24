@@ -11,7 +11,7 @@ class InternshipsController < ApplicationController
   def show
     @internship = Internship.find(params[:id])
     @company = @internship.company
-    @rating = Rating.for(@internship, current_student) if current_student
+    @rating = Rating.for(@internship, current_student)
   end
 
   def new
