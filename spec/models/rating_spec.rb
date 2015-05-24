@@ -15,5 +15,9 @@ describe Rating do
     it 'returns a new instance of Rating if the student has not rated internship' do
       expect(Rating.for(internship, student)).to be_instance_of(Rating)
     end
+
+    it 'returns nil if a student is not logged in' do
+      expect(Rating.for(internship, nil)).to be_nil
+    end
   end
 end
