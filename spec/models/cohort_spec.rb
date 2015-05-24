@@ -12,19 +12,19 @@ describe Cohort do
 
     it 'counts number of days since start of class' do
       travel_to cohort.start_date + 6.days do
-        expect(cohort.number_of_days_since_start).to eq 5
+        expect(cohort.number_of_days_since_start).to eq 4
       end
     end
 
-    it 'does not count weekends' do
+    it 'does not count fridays or weekends' do
       travel_to cohort.start_date + 13.days do
-        expect(cohort.number_of_days_since_start).to eq 10
+        expect(cohort.number_of_days_since_start).to eq 8
       end
     end
 
     it 'does not count days after the class has ended' do
       travel_to cohort.end_date + 60.days do
-        expect(cohort.number_of_days_since_start).to eq 75
+        expect(cohort.number_of_days_since_start).to eq 60
       end
     end
   end
@@ -43,27 +43,27 @@ describe Cohort do
 
   describe '#total_class_days' do
     it 'counts the days of class minus weekends' do
-      cohort = FactoryGirl.create(:cohort, start_date: Date.today, end_date: (Date.today + 2.weeks - 1.day))
-      expect(cohort.total_class_days).to eq 10
+      cohort = FactoryGirl.create(:cohort, start_date: Time.zone.now.to_date, end_date: (Time.zone.now.to_date + 2.weeks - 1.day))
+      expect(cohort.total_class_days).to eq 8
     end
   end
 
   describe '#number_of_days_left' do
     it 'returns the number of days left in the cohort' do
-      monday = Date.today.beginning_of_week
+      monday = Time.zone.now.to_date.beginning_of_week
       friday = monday + 4.days
       next_friday = friday + 1.week
 
       cohort = FactoryGirl.create(:cohort, start_date: monday, end_date: next_friday)
       travel_to friday do
-        expect(cohort.number_of_days_left).to eq 5
+        expect(cohort.number_of_days_left).to eq 4
       end
     end
   end
 
   describe '#progress_percent' do
     it 'returns the percent of how many days have passed' do
-      monday = Date.today.beginning_of_week
+      monday = Time.zone.now.to_date.beginning_of_week
       friday = monday + 4.days
       next_friday = friday + 1.week
 

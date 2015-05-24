@@ -5,7 +5,7 @@ describe AttendanceRecord do
   context 'before create' do
     it 'sets the date property to the current date' do
       attendance_record = FactoryGirl.create(:attendance_record)
-      expect(attendance_record.date).to eq(Date.today)
+      expect(attendance_record.date).to eq(Time.zone.now.to_date)
     end
   end
 
@@ -50,6 +50,39 @@ describe AttendanceRecord do
         on_time_attendance_record = FactoryGirl.create(:attendance_record)
         expect(on_time_attendance_record.tardy).to eq false
       end
+    end
+  end
+
+  describe '#left_early' do
+    let(:end_time) { Time.zone.parse(ENV['CLASS_END_TIME'] ||= '4:30 PM') }
+
+    it 'is true by default' do
+      attendance_record = FactoryGirl.create(:attendance_record)
+      expect(attendance_record.left_early).to eq true
+    end
+
+    it 'is true when a student leaves early' do
+      travel_to end_time - 1.minute do
+        shirker_attendance_record = FactoryGirl.create(:attendance_record)
+        shirker_attendance_record.update({:signing_out => true})
+        expect(shirker_attendance_record.left_early).to eq true
+      end
+    end
+
+    it 'is false when a student leaves after the alloted end time' do
+      travel_to end_time + 1.minute do
+        diligent_attendance_record = FactoryGirl.create(:attendance_record)
+        diligent_attendance_record.update({:signing_out => true})
+        expect(diligent_attendance_record.left_early).to eq false
+      end
+    end
+  end
+
+  describe '#sign_out' do
+    it 'sets time when a student signs out' do
+      attendance_record = FactoryGirl.create(:attendance_record)
+      attendance_record.update({:signing_out => true})
+      expect(attendance_record.signed_out_time.min).to eq Time.now.min
     end
   end
 end

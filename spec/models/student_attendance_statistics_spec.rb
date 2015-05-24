@@ -3,7 +3,7 @@ describe StudentAttendanceStatistics do
   let(:student) { FactoryGirl.create(:student, cohort: cohort) }
 
   describe '#punctuality_hash' do
-    it 'returns a breakdown of how many days a student has been present, absent, and tardy' do
+    it 'returns a breakdown of how many days a student has been present, absent, has left early, and tardy' do
       day_one_before_class_start_time = cohort.start_date
       day_two_after_class_start_time = cohort.start_date + 1.day + 10.hours
       day_four = cohort.start_date + 3.days
@@ -20,7 +20,7 @@ describe StudentAttendanceStatistics do
         FactoryGirl.create(:attendance_record, student: student)
         student_attendance_statistics = StudentAttendanceStatistics.new(student)
         data = student_attendance_statistics.punctuality_hash
-        expect(data).to eq({ 'On time' => 2, 'Tardy' => 1, 'Absent' => 1 })
+        expect(data).to eq({ 'On time' => 0, 'Left early' => 3, 'Tardy' => 1, 'Absent' => 1 })
       end
     end
   end
@@ -50,6 +50,22 @@ describe StudentAttendanceStatistics do
       end
       student_attendance_statistics = StudentAttendanceStatistics.new(student)
       expect(student_attendance_statistics.tardies).to eq [day_one_tardy.to_date, day_two_tardy.to_date]
+    end
+  end
+
+  describe '#left_earlies' do
+    it 'returns a collection of day objects for student leaving class early' do
+      day_one = cohort.start_date.beginning_of_day
+      day_two = day_one + 1.day
+      day_three = day_two + 1.day
+      travel_to day_one do
+        attendance_record = FactoryGirl.create(:attendance_record, student: student)
+        travel 7.hours do
+          attendance_record.update({:signing_out => true})
+          student_attendance_statistics = StudentAttendanceStatistics.new(student)
+          expect(student_attendance_statistics.left_earlies).to eq [day_one.to_date]
+        end
+      end
     end
   end
 

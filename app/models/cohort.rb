@@ -15,7 +15,7 @@ class Cohort < ActiveRecord::Base
   after_destroy :reassign_admin_current_cohorts
 
   def number_of_days_since_start
-    last_date = Date.today <= end_date ? Date.today : end_date
+    last_date = Time.zone.now.to_date <= end_date ? Time.zone.now.to_date : end_date
     class_dates_until(last_date).count
   end
 
@@ -32,7 +32,7 @@ class Cohort < ActiveRecord::Base
   end
 
   def class_dates_until(last_date)
-    (start_date..last_date).select { |date| !date.saturday? && !date.sunday? }
+    (start_date..last_date).select { |date| !date.friday? && !date.saturday? && !date.sunday? }
   end
 
   def internships_sorted_by_interest(current_student)

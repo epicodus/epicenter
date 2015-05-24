@@ -46,6 +46,12 @@ scope :recurring_active, -> { where(recurring_active: true) }
     attendance_records.today.exists?
   end
 
+  def signed_out_today?
+    if signed_in_today?
+      attendance_records.today.first.signed_out_time != nil
+    end
+  end
+
   def next_payment_date
     payments.without_failed.last.created_at + 1.month if recurring_active
   end
@@ -55,11 +61,11 @@ scope :recurring_active, -> { where(recurring_active: true) }
   end
 
   def class_in_session?
-    cohort.start_date <= Date.today && cohort.end_date >= Date.today
+    cohort.start_date <= Time.zone.now.to_date && cohort.end_date >= Time.zone.now.to_date
   end
 
   def class_over?
-    Date.today > cohort.end_date
+    Time.zone.now.to_date > cohort.end_date
   end
 
   def start_recurring_payments
@@ -69,7 +75,7 @@ scope :recurring_active, -> { where(recurring_active: true) }
   end
 
   def on_time_attendances
-    attendance_records.where(tardy: false).count
+    attendance_records.where(tardy: false, left_early: false).count
   end
 
   def tardies
@@ -86,6 +92,10 @@ scope :recurring_active, -> { where(recurring_active: true) }
 
   def self.find_students_by_interest(internship, interest_level)
     internship.students.select { |student| student.try(:find_rating, internship).try(:interest) == interest_level }
+  end
+  
+  def left_earlies
+    attendance_records.where(left_early: true).count
   end
 
 private

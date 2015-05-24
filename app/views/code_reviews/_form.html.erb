@@ -4,7 +4,7 @@
   <%= f.label :title %>
   <%= f.text_field :title %>
 
-  <h3>Requirements</h3>
+  <h3>Objectives</h3>
   <ol id="objective-fields">
     <%= f.nested_fields_for :objectives, wrapper_tag: :li do |ff| %>
       <%= ff.text_field :content %>
