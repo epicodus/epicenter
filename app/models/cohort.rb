@@ -36,7 +36,7 @@ class Cohort < ActiveRecord::Base
   end
 
   def internships_sorted_by_interest(current_student)
-    self.internships.sort_by do |internship|
+    internships.sort_by do |internship|
       rating = current_student.find_rating(internship)
       if rating
         rating.interest
@@ -50,7 +50,7 @@ private
 
   def import_code_reviews
     unless @importing_cohort_id.blank?
-      code_reviews = Cohort.find(@importing_cohort_id).deep_clone(include: { code_reviews: :objectives }).code_reviews
+      self.code_reviews = Cohort.find(@importing_cohort_id).deep_clone(include: { code_reviews: :objectives }).code_reviews
     end
   end
 
