@@ -1,5 +1,5 @@
 class BankAccount < PaymentMethod
-  before_create :create_stripe_bank_account
+  before_create :create_stripe_account
   before_create :get_last_four_string
   before_update :verify_account, unless: 'verified'
 
@@ -24,27 +24,6 @@ private
       ensure_primary_method_exists
       true
     rescue Stripe::InvalidRequestError => exception
-      errors.add(:base, exception.message)
-      false
-    end
-  end
-
-  def create_stripe_bank_account
-    begin
-      account = student.stripe_customer.sources.create(:source => stripe_token)
-      self.stripe_id = account.id
-    rescue Stripe::StripeError => exception
-      errors.add(:base, exception.message)
-      false
-    end
-  end
-
-  def get_last_four_string
-    begin
-      customer = student.stripe_customer
-      stripe_bank_account = customer.bank_accounts.retrieve(stripe_id)
-      self.last_four_string = stripe_bank_account.last4
-    rescue Stripe::StripeError => exception
       errors.add(:base, exception.message)
       false
     end
