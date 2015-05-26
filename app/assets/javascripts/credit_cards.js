@@ -20,7 +20,7 @@ var stripeResponseHandler = function(status, response) {
     $("input#cvc_code").val('***');
     $("input#expiration_month").val('**');
     $("input#expiration_year").val('****');
-    $("input#zip_code").val('*****')
+    $("input#zip_code").val()
     var token = response.id;
     $('input#credit_card_stripe_token').val(token);
     $('form#new_credit_card').unbind('submit').submit();
@@ -36,7 +36,7 @@ var stripeResponseHandler = function(status, response) {
     );
     var errorMapping = {
       "Your card number is incorrect.": "Your card number is incorrect.",
-      "The 'exp_month' parameter should be an integer (instead, is  ).": "Cannot be blank."
+      "The 'exp_month' parameter should be an integer (instead, is  ).": "Enter a valid integer value."
     };
     var errorMessage = errorMapping[response.error.message];
     $('.alert-error ul').append('<li>' + errorMessage + '</li>');
