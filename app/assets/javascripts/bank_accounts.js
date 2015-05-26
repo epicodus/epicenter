@@ -13,12 +13,11 @@ $(function() {
 });
 
 var stripeBankAccountResponseHandler = function(status, response) {
-  debugger;
   if (status === 200) {
     $("input#bank_account_number").val('************');
     $("input#routing_number").val('*********');
-    $("input#country").val('**');
-    $("input#currency").val('***');
+    $("input#country").val();
+    $("input#currency").val();
     var token = response.id;
     $('input#bank_account_stripe_token').val(token);
     $('form#new_bank_account').unbind('submit').submit();
@@ -33,7 +32,7 @@ var stripeBankAccountResponseHandler = function(status, response) {
       '</div>'
     );
     var errorMapping = {
-      "Must only use a test bank account number when making transfers or debits in test mode": "Cannot be blank.",
+      "Must only use a test bank account number when making transfers or debits in test mode": "Invalid bank account number.",
       "Routing number must have 9 digits": "Invalid routing number."
     };
     var errorMessage = errorMapping[response.error.message];
