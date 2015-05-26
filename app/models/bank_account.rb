@@ -1,7 +1,7 @@
 class BankAccount < PaymentMethod
   before_create :create_stripe_bank_account
   before_create :get_last_four_string
-  before_update :create_verification, unless: 'verified'
+  before_update :verify_account, unless: 'verified'
 
   attr_accessor :first_deposit, :second_deposit
 
@@ -15,7 +15,7 @@ class BankAccount < PaymentMethod
 
 private
 
-  def create_verification
+  def verify_account
     customer = student.stripe_customer
     account = customer.bank_accounts.retrieve(stripe_id)
     begin
