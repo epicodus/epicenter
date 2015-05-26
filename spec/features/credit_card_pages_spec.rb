@@ -30,7 +30,7 @@ feature 'Creating a credit card' do
       fill_in 'Zip code', with: '11211'
       click_on 'Add credit card'
       within '.alert-error' do
-        expect(page).to have_content 'Cannot be blank.'
+        expect(page).to have_content 'Enter a valid integer value.'
       end
     end
 
