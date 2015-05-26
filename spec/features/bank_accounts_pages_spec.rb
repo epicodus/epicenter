@@ -29,7 +29,7 @@ feature 'Creating a bank account' do
       fill_in 'Currency', with: 'USD'
       click_on 'Verify bank account'
       within '.alert-error' do
-        expect(page).to have_content 'Cannot be blank.'
+        expect(page).to have_content 'Invalid bank account number.'
       end
     end
 
