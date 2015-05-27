@@ -29,6 +29,18 @@ describe Payment do
       student.reload
       expect(student.payments).to_not eq []
     end
+
+    it "sets the fee for the payment type", :vcr do
+      student = FactoryGirl.create :user_with_verified_bank_account
+      payment = student.payments.create(amount: 100, payment_method: student.bank_accounts.first)
+      expect(payment.fee).to eq 0
+    end
+
+    it "sets the status for the payment type", :vcr do
+      student = FactoryGirl.create :user_with_verified_bank_account
+      payment = student.payments.create(amount: 100, payment_method: student.bank_accounts.first)
+      expect(payment.status).to eq "pending"
+    end
   end
 
   describe '#check_if_paid_up' do
