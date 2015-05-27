@@ -7,41 +7,42 @@
 <%= render '/layouts/errors', :object => @credit_card %>
 
 <%= form_for @credit_card, url: credit_card_path do |f| %>
-  <div  class='form-group'>
-    <%= f.label :name, "Name on card" %>
-    <%= f.text_field :name, nil, autofocus: true %>
+
+  <div>
+    <%= label_tag :name, "Name on card" %>
+    <%= text_field_tag :name %>
   </div>
 
-  <div  class='form-group'>
-    <%= f.label :card_number %>
-    <%= f.text_field :card_number %>
+  <div>
+    <%= label_tag :card_number %>
+    <%= text_field_tag :card_number %>
   </div>
 
   <div class='row'>
     <div class='span2 cc-form'>
-      <%= f.label :expiration_month %>
-      <%= f.text_field :expiration_month %>
+      <%= label_tag :expiration_month %>
+      <%= text_field_tag :expiration_month %>
     </div>
 
     <div class='span2 cc-form'>
-      <%= f.label :expiration_year %>
-      <%= f.text_field :expiration_year %>
+      <%= label_tag :expiration_year %>
+      <%= text_field_tag :expiration_year %>
     </div>
 
     <div class='span2 cc-form'>
-      <%= f.label :cvc_code, "CVC code" %>
-      <%= f.text_field :cvc_code %>
+      <%= label_tag :cvc_code, "CVC code" %>
+      <%= text_field_tag :cvc_code %>
     </div>
   </div>
 
-  <div  class='form-group'>
-    <%= f.label :zip_code %>
-    <%= f.text_field :zip_code %>
+  <div>
+    <%= label_tag :zip_code %>
+    <%= text_field_tag :zip_code %>
   </div>
 
   <%= f.hidden_field :stripe_token %>
 
-  <div class="submit">
+  <div>
     <%= f.submit "Add credit card", class: "btn", id: "card-submit-button" %>
   </div>
 <% end %>
