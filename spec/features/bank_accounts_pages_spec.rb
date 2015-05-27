@@ -22,7 +22,7 @@ feature 'Creating a bank account' do
       expect(page).to have_content '2-3 business days'
     end
 
-    scenario 'with missing account number', js: true do
+    scenario 'with missing account number', :vcr, js: true do
       fill_in 'Routing number', with: '110000000'
       fill_in 'Bank account number', with: ' '
       fill_in 'country', with: 'US'
@@ -33,7 +33,7 @@ feature 'Creating a bank account' do
       end
     end
 
-    scenario 'with invalid routing number', js: true do
+    scenario 'with invalid routing number', :vcr, js: true do
       fill_in 'Bank account number', with: '000123456789'
       fill_in 'Routing number', with: '12345689'
       fill_in 'country', with: 'US'
