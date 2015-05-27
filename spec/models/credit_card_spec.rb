@@ -9,8 +9,14 @@ describe CreditCard do
 
       it "creates a Stripe card for a Stripe customer", :vcr do
         credit_card = FactoryGirl.create(:credit_card)
-        stripe_card = credit_card.student.stripe_customer.sources.all.first
+        stripe_card = credit_card.student.stripe_customer.cards.first
         expect(stripe_card).to be_an_instance_of(Stripe::Card)
+      end
+
+      it "sets the stripe_id for the credit card instance", :vcr do
+        card = FactoryGirl.create(:credit_card)
+        stripe_card = card.student.stripe_customer.cards.first
+        expect(card.stripe_id).to eq stripe_card.id
       end
 
       it "won't save the credit card if it is invalid" do
