@@ -112,5 +112,9 @@ describe Cohort do
       rating_two =  FactoryGirl.create(:rating, internship: internship_two, student: student, interest: '3')
       expect(cohort.internships_sorted_by_interest(student)).to eq([internship_three, internship_one, internship_two])
     end
+
+    it 'returns internships sorted by company name when student is nil' do
+      expect(cohort.internships_sorted_by_interest(nil)).to eq([internship_two, internship_one])
+    end
   end
 end

@@ -173,13 +173,13 @@ ActiveRecord::Schema.define(version: 20150429231911) do
     t.integer  "primary_payment_method_id"
     t.string   "type",                      limit: 255
     t.integer  "current_cohort_id"
-    t.string   "invitation_token",          limit: 255
+    t.string   "invitation_token"
     t.datetime "invitation_created_at"
     t.datetime "invitation_sent_at"
     t.datetime "invitation_accepted_at"
     t.integer  "invitation_limit"
     t.integer  "invited_by_id"
-    t.string   "invited_by_type",           limit: 255
+    t.string   "invited_by_type"
     t.integer  "invitations_count",                     default: 0
   end
 

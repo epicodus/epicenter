@@ -36,13 +36,17 @@ class Cohort < ActiveRecord::Base
   end
 
   def internships_sorted_by_interest(current_student)
-    internships.sort_by do |internship|
-      rating = current_student.find_rating(internship)
-      if rating
-        rating.interest
-      else
-        '0'
+    if current_student
+      internships.sort_by do |internship|
+        rating = current_student.find_rating(internship)
+        if rating
+          rating.interest
+        else
+          '0'
+        end
       end
+    else
+      internships.by_company_name
     end
   end
 
