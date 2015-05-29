@@ -13,7 +13,7 @@ feature 'Creating a bank account' do
       fill_in 'Name on account', with: student.name
     end
 
-    scenario 'with valid information', :vcr do
+    scenario 'with valid information', :vcr, js: true do
       fill_in 'Routing number', with: '110000000'
       fill_in 'Bank account number', with: '000123456789'
       fill_in 'country', with: 'US'
