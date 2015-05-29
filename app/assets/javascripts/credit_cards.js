@@ -38,7 +38,7 @@ var stripeResponseHandler = function(status, response) {
       "Your card number is incorrect.": "Your card number is incorrect.",
       "The 'exp_month' parameter should be an integer (instead, is  ).": "Enter a valid integer value."
     };
-    var errorMessage = errorMapping[response.error.message];
+    var errorMessage = errorMapping[response.error.message] || response.error.message;
     $('.alert-error ul').append('<li>' + errorMessage + '</li>');
   };
 };

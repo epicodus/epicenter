@@ -33,9 +33,10 @@ var stripeBankAccountResponseHandler = function(status, response) {
     );
     var errorMapping = {
       "Must only use a test bank account number when making transfers or debits in test mode": "Invalid bank account number.",
-      "Routing number must have 9 digits": "Invalid routing number."
+      "Routing number must have 9 digits": "Invalid routing number.",
+      "A bank account with that routing number and account number already exists for this customer.": "Please enter a new account."
     };
-    var errorMessage = errorMapping[response.error.message];
+    var errorMessage = errorMapping[response.error.message] || response.error.message;
     $('.alert-error ul').append('<li>' + errorMessage + '</li>');
   };
 };
