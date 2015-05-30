@@ -10,7 +10,7 @@ class Rating < ActiveRecord::Base
     elsif current_student.ratings.where(internship_id: internship.id).any?
       current_student.find_rating(internship)
     else
-      Rating.new
+      current_student.ratings.new
     end
   end
 end

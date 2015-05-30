@@ -140,6 +140,7 @@ feature 'rating an internship' do
   scenario 'a student can rate an internship from the internship page' do
     visit cohort_internship_path(student.cohort, internship_one)
     click_on "High"
+
     expect(page).to have_css 'div.internship-high-interest'
   end
 
