@@ -1,6 +1,6 @@
 <tr>
   <td>
-    <%= student.name %>
+    <%= link_to student.name, student_internships_path(student) %>
   </td>
   <td>
     <%= student.find_rating(internship).notes %>

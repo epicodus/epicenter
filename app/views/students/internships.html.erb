@@ -1,0 +1,17 @@
+<h1>Rated Internships</h1>
+<hr/>
+
+<ul class="company-list">
+  <% @internships.each do |internship| %>
+      <div class="span12 <%= set_internship_background(@student.find_rating(internship)) %>">
+      <div class='internship-list-row row'>
+        <li>
+          <span class='span3'><%= link_to internship.company_name, cohort_internship_path(@student.cohort, internship) %></span>
+          <% if @student.find_rating(internship) %>
+            <span class='span9'><%= @student.find_rating(internship).notes %></span>
+          <% end %>
+        </li>
+      </div>
+    </div>
+  <% end %>
+</ul>
