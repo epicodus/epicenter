@@ -14,6 +14,7 @@ class Ability
       can :create, Review
       can :read, CohortAttendanceStatistics
       can :create, AttendanceRecordAmendment
+      can :read, Student
     elsif user.is_a? Student
       can :read, CodeReview, cohort_id: user.cohort_id
       can :create, Submission, student_id: user.id

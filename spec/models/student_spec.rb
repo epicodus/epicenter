@@ -416,5 +416,9 @@ describe Student do
       it { is_expected.to not_have_abilities([:create, :read, :update, :destroy], Internship.new)}
       it { is_expected.to have_abilities(:read, Internship.new(cohort: student.cohort)) }
     end
+
+    context 'for students' do
+      it { is_expected.to not_have_abilities(:read, Student.new) }
+    end
   end
 end

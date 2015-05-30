@@ -22,6 +22,7 @@
             <li class="new-cohort"><%= link_to '+ Add a class', new_cohort_path %></li>
           </ul>
         </li>
+        <li><%= link_to 'Student Roster', cohort_students_path(current_admin.current_cohort) %></li>
         <li><%= link_to 'Code Reviews', cohort_code_reviews_path(current_admin.current_cohort) %></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
