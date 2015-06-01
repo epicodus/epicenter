@@ -8,6 +8,15 @@ class StudentsController < ApplicationController
     end
   end
 
+  def index
+    @students = current_admin.current_cohort.students
+  end
+
+  def internships
+    @student = Student.find(params[:student_id])
+    @internships = @student.cohort.internships_sorted_by_interest(@student)
+  end
+
 private
   def student_params
     params.require(:student).permit(:primary_payment_method_id)

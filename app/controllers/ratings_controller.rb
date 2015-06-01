@@ -1,12 +1,8 @@
 class RatingsController < ApplicationController
 
   def create
-    rating = current_student.ratings.new(rating_params)
-    if rating.save
-    else
-      rating = Rating.where(internship_id: params[:internship_id], student: current_student).first
-      rating.update(rating_params)
-    end
+    rating = Rating.for(Internship.find(params[:internship_id]), current_student)
+    rating.update(rating_params)
     redirect_to :back
   end
 

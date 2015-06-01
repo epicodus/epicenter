@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   devise_for :student, :controllers => { :invitations => 'invitations', :registrations => 'registrations' }
   devise_for :admins, skip: :registrations
 
-  resources :students, only: [:update]
+  resources :students, only: [:update] do
+    get 'internships', to: 'students#internships'
+  end
   resources :admins, only: [:update]
   resources :payment_methods, only: [:index, :new]
   resources :bank_accounts, only: [:new, :create, :edit, :update]
@@ -21,6 +23,7 @@ Rails.application.routes.draw do
     resources :attendance_statistics, only: [:index]
     resources :code_reviews, only: [:index]
     resources :internships
+    resources :students, only: [:index]
   end
   resources :ratings, only: [:create]
   resources :companies

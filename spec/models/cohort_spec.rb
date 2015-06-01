@@ -93,4 +93,28 @@ describe Cohort do
       expect(admin.current_cohort).to eq another_cohort
     end
   end
+
+  describe '#internships_sorted_by_interest' do
+    let(:cohort) { FactoryGirl.create(:cohort) }
+    let(:student) { FactoryGirl.create(:student, cohort: cohort) }
+    let(:internship_one) { FactoryGirl.create(:internship, cohort: cohort) }
+    let(:internship_two) { FactoryGirl.create(:internship, cohort: cohort) }
+
+    it 'returns a list of internships sorted with higher interest first' do
+      rating_one =  FactoryGirl.create(:rating, internship: internship_one, student: student, interest: '2')
+      rating_two =  FactoryGirl.create(:rating, internship: internship_two, student: student, interest: '1')
+      expect(cohort.internships_sorted_by_interest(student)).to eq([internship_two, internship_one])
+    end
+
+    it 'puts unrated internships at the beginning of the list' do
+      internship_three = FactoryGirl.create(:internship, cohort: cohort)
+      rating_one =  FactoryGirl.create(:rating, internship: internship_one, student: student, interest: '1')
+      rating_two =  FactoryGirl.create(:rating, internship: internship_two, student: student, interest: '3')
+      expect(cohort.internships_sorted_by_interest(student)).to eq([internship_three, internship_one, internship_two])
+    end
+
+    it 'returns internships sorted by company name when student is nil' do
+      expect(cohort.internships_sorted_by_interest(nil)).to eq([internship_two, internship_one])
+    end
+  end
 end

@@ -10,5 +10,6 @@ class Internship < ActiveRecord::Base
   validates :company_id, presence: true, uniqueness: { scope: :cohort_id }
 
   delegate :name, to: :company, prefix: :company
-  
+
+  scope :by_company_name, -> { joins(:company).order("name") }
 end

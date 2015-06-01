@@ -49,6 +49,10 @@ describe Admin do
     context 'for internships' do
       it { is_expected.to have_abilities(:manage, Internship.new) }
     end
+
+    context 'for students' do
+      it { is_expected.to have_abilities(:read, Student.new) }
+    end
   end
 
   it 'is assigned a default current_cohort before creation' do
