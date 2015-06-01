@@ -49,7 +49,7 @@ describe StudentAttendanceStatistics do
         FactoryGirl.create(:attendance_record, student: student)
       end
       student_attendance_statistics = StudentAttendanceStatistics.new(student)
-      expect(student_attendance_statistics.tardies).to eq [day_one_tardy.to_date, day_two_tardy.to_date]
+      expect(student_attendance_statistics.tardies).to match_array [day_one_tardy.to_date, day_two_tardy.to_date]
     end
   end
 

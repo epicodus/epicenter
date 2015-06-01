@@ -5,28 +5,24 @@ $(function() {
     var formData = {
       name: $('input#name').val(),
       number: $('input#card_number').val(),
-      expiration_month: $('input#expiration_month').val(),
-      expiration_year: $('input#expiration_year').val(),
-      cvv: $('input#cvv_code').val(),
-      address: {
-        postal_code: $('input#zip_code').val()
-      }
+      exp_month: $('input#expiration_month').val(),
+      exp_year: $('input#expiration_year').val(),
+      cvc: $('input#cvc_code').val(),
+      address_zip: $('input#zip_code').val(),
     };
-    balanced.card.create(formData, handleResponseCreditCard);
+    Stripe.card.createToken(formData, stripeResponseHandler);
   });
 });
 
-var handleResponseCreditCard = function(response) {
-  if (response.status_code === 201) {
-    var uri = response.cards[0].href;
-    $("input#credit_card_account_uri").val(uri);
-
+var stripeResponseHandler = function(status, response) {
+  if (status === 200) {
     $("input#card_number").val('****************');
-    $("input#cvv_code").val('***');
+    $("input#cvc_code").val('***');
     $("input#expiration_month").val('**');
     $("input#expiration_year").val('****');
-
-
+    $("input#zip_code").val()
+    var token = response.id;
+    $('input#credit_card_stripe_token').val(token);
     $('form#new_credit_card').unbind('submit').submit();
     $('#card-submit-button').val('loading...').attr('disabled', 'disabled');
   } else {
@@ -38,9 +34,11 @@ var handleResponseCreditCard = function(response) {
         '</ul>' +
       '</div>'
     );
-
-    response.errors.forEach(function(error) {
-      $('.alert-error ul').append('<li>' + error.description + '</li>');
-    });
-  }
+    var errorMapping = {
+      "Your card number is incorrect.": "Your card number is incorrect.",
+      "The 'exp_month' parameter should be an integer (instead, is  ).": "Enter a valid integer value."
+    };
+    var errorMessage = errorMapping[response.error.message] || response.error.message;
+    $('.alert-error ul').append('<li>' + errorMessage + '</li>');
+  };
 };

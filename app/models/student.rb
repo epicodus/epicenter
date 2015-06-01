@@ -1,5 +1,5 @@
 class Student < User
-scope :recurring_active, -> { where(recurring_active: true) }
+  scope :recurring_active, -> { where(recurring_active: true) }
   default_scope { order(:name) }
 
   validates :plan_id, presence: true
@@ -17,6 +17,16 @@ scope :recurring_active, -> { where(recurring_active: true) }
   has_many :ratings
   has_many :internships, through: :ratings
   belongs_to :primary_payment_method, class_name: 'PaymentMethod'
+
+  def stripe_customer
+    if stripe_customer_id
+      customer = Stripe::Customer.retrieve(stripe_customer_id)
+    else
+      customer = Stripe::Customer.create(description: email)
+      update(stripe_customer_id: customer.id)
+      customer
+    end
+  end
 
   def payment_methods_primary_first_then_pending
     (payment_methods.not_verified_first - [primary_payment_method]).unshift(primary_payment_method).compact
@@ -93,7 +103,7 @@ scope :recurring_active, -> { where(recurring_active: true) }
   def self.find_students_by_interest(internship, interest_level)
     internship.students.select { |student| student.try(:find_rating, internship).try(:interest) == interest_level }
   end
-  
+
   def left_earlies
     attendance_records.where(left_early: true).count
   end

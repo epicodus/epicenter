@@ -22,7 +22,7 @@ feature 'Viewing payment index page' do
         visit payments_path
         expect(page).to have_content 600.00
         expect(page).to have_content "Pending"
-        expect(page).to have_content "Bank account ending in 0002"
+        expect(page).to have_content "Bank account ending in 6789"
       end
     end
 
@@ -34,7 +34,7 @@ feature 'Viewing payment index page' do
         visit payments_path
         expect(page).to have_content 618.21
         expect(page).to have_content "Succeeded"
-        expect(page).to have_content "Credit card ending in 1111"
+        expect(page).to have_content "Credit card ending in 4242"
       end
     end
 

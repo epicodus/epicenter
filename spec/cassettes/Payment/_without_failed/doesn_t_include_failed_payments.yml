@@ -2,1303 +2,1352 @@
 http_interactions:
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts
+    uri: https://api.stripe.com/v1/customers
     body:
-      encoding: UTF-8
-      string: '{"account_number":"9900000002","account_type":"checking","name":"Johann
-        Bernoulli","routing_number":"021000021"}'
+      encoding: US-ASCII
+      string: description=student5%40example.com
     headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
       Accept:
-      - application/vnd.api+json;revision=1.1
+      - "*/*; q=0.5, application/xml"
       Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+      Content-Length:
+      - '34'
   response:
     status:
-      code: 201
-      message: CREATED
+      code: 200
+      message: OK
     headers:
-      Access-Control-Allow-Headers:
-      - Content-Type
+      Server:
+      - nginx
+      Date:
+      - Mon, 11 May 2015 21:00:42 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '1138'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
       Access-Control-Allow-Methods:
-      - POST, OPTIONS
+      - GET, POST, HEAD, OPTIONS, DELETE
       Access-Control-Allow-Origin:
       - "*"
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 16 Dec 2014 20:11:44 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMc0d78c56855f11e4bf7802a1fe52a36c
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
-      X-Balanced-Merchant:
-      - TEST-MR1lb6D220PWeBKNmZs46597
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.12.16
-      X-Midlr-Version:
-      - '2'
-      X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKDw9UUVsPAgVXU1YDAQZeUh0WAVBQT0ISWw4EDwABC1BSCwICAwIGVBQbQQACVEBVOQ==
-      Content-Length:
-      - '1373'
-      Connection:
-      - keep-alive
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_t4ljrMoaQ03HZjKC
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
     body:
       encoding: UTF-8
-      string: |-
+      string: |
         {
-          "bank_accounts": [
-            {
-              "routing_number": "021000021",
-              "bank_name": "JPMORGAN CHASE BANK",
-              "account_type": "checking",
-              "name": "Johann Bernoulli",
-              "links": {
-                "customer": null,
-                "bank_account_verification": null
-              },
-              "can_credit": true,
-              "created_at": "2014-12-16T20:13:24.521222Z",
-              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-12-16T20:13:24.521223Z",
-              "href": "/bank_accounts/BA5T8gzMEZFkQ7Z0koqd0RAF",
-              "meta": {},
-              "account_number": "xxxxxx0002",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": false,
-              "id": "BA5T8gzMEZFkQ7Z0koqd0RAF"
-            }
-          ],
-          "links": {
-            "bank_accounts.settlements": "/bank_accounts/{bank_accounts.id}/settlements",
-            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}",
-            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
-            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
-            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
-            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications"
-          }
+          "object": "customer",
+          "created": 1431378041,
+          "id": "cus_6DpgUwWjbP1uoB",
+          "livemode": false,
+          "description": "student5@example.com",
+          "email": null,
+          "delinquent": false,
+          "metadata": {},
+          "subscriptions": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgUwWjbP1uoB/subscriptions",
+            "data": [],
+            "count": 0
+          },
+          "discount": null,
+          "account_balance": 0,
+          "currency": null,
+          "bank_accounts": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgUwWjbP1uoB/bank_accounts",
+            "data": [],
+            "count": 0
+          },
+          "default_bank_account": null,
+          "default_source_type": null,
+          "cards": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgUwWjbP1uoB/cards",
+            "data": [],
+            "count": 0
+          },
+          "default_card": null,
+          "sources": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgUwWjbP1uoB/sources",
+            "data": [],
+            "count": 0
+          },
+          "default_source": null,
+          "active_card": null,
+          "subscription": null
         }
     http_version: 
-  recorded_at: Tue, 16 Dec 2014 20:11:44 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA5T8gzMEZFkQ7Z0koqd0RAF
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 16 Dec 2014 20:11:44 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMc1bb094a855f11e4adbd02b12035401b
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
-      X-Balanced-Merchant:
-      - TEST-MR1lb6D220PWeBKNmZs46597
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.12.16
-      Content-Length:
-      - '512'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_accounts": [
-            {
-              "routing_number": "021000021",
-              "bank_name": "JPMORGAN CHASE BANK",
-              "account_type": "checking",
-              "name": "Johann Bernoulli",
-              "links": {
-                "customer": null,
-                "bank_account_verification": null
-              },
-              "can_credit": true,
-              "created_at": "2014-12-16T20:13:24.521222Z",
-              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-12-16T20:13:24.521223Z",
-              "href": "/bank_accounts/BA5T8gzMEZFkQ7Z0koqd0RAF",
-              "meta": {},
-              "account_number": "xxxxxx0002",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": false,
-              "id": "BA5T8gzMEZFkQ7Z0koqd0RAF"
-            }
-          ],
-          "links": {
-            "bank_accounts.settlements": "/bank_accounts/{bank_accounts.id}/settlements",
-            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}",
-            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
-            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
-            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
-            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 16 Dec 2014 20:11:45 GMT
+  recorded_at: Mon, 11 May 2015 21:00:16 GMT
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA5T8gzMEZFkQ7Z0koqd0RAF/verifications
-    body:
-      encoding: UTF-8
-      string: "{}"
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 16 Dec 2014 20:11:54 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMc1f86df8855f11e4ab7e0230f00c9248
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
-      X-Balanced-Merchant:
-      - TEST-MR1lb6D220PWeBKNmZs46597
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.12.16
-      Content-Length:
-      - '599'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_account_verifications": [
-            {
-              "verification_status": "pending",
-              "links": {
-                "bank_account": "BA5T8gzMEZFkQ7Z0koqd0RAF"
-              },
-              "href": "/verifications/BZ624mdJip5eBbirQqKH98xW",
-              "created_at": "2014-12-16T20:13:32.467406Z",
-              "attempts_remaining": 3,
-              "updated_at": "2014-12-16T20:13:33.609531Z",
-              "deposit_status": "succeeded",
-              "attempts": 0,
-              "meta": {},
-              "id": "BZ624mdJip5eBbirQqKH98xW"
-            }
-          ],
-          "links": {
-            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 16 Dec 2014 20:11:55 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA5T8gzMEZFkQ7Z0koqd0RAF
+    uri: https://api.stripe.com/v1/customers/cus_6DpgUwWjbP1uoB/sources
     body:
       encoding: US-ASCII
-      string: ''
+      string: source[object]=bank_account&source[country]=US&source[account_number]=000123456789&source[routing_number]=110000000
     headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
       Accept:
-      - application/vnd.api+json;revision=1.1
+      - "*/*; q=0.5, application/xml"
       Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+      Content-Length:
+      - '115'
   response:
     status:
       code: 200
       message: OK
     headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 11 May 2015 21:00:43 GMT
       Content-Type:
       - application/json
-      Date:
-      - Tue, 16 Dec 2014 20:11:55 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMc835d732855f11e48c5306429171ffad
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
-      X-Balanced-Merchant:
-      - TEST-MR1lb6D220PWeBKNmZs46597
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.12.16
       Content-Length:
-      - '535'
+      - '361'
       Connection:
       - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_accounts": [
-            {
-              "routing_number": "021000021",
-              "bank_name": "JPMORGAN CHASE BANK",
-              "account_type": "checking",
-              "name": "Johann Bernoulli",
-              "links": {
-                "customer": null,
-                "bank_account_verification": "BZ624mdJip5eBbirQqKH98xW"
-              },
-              "can_credit": true,
-              "created_at": "2014-12-16T20:13:24.521222Z",
-              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-12-16T20:13:24.521223Z",
-              "href": "/bank_accounts/BA5T8gzMEZFkQ7Z0koqd0RAF",
-              "meta": {},
-              "account_number": "xxxxxx0002",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": false,
-              "id": "BA5T8gzMEZFkQ7Z0koqd0RAF"
-            }
-          ],
-          "links": {
-            "bank_accounts.settlements": "/bank_accounts/{bank_accounts.id}/settlements",
-            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}",
-            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
-            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
-            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
-            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 16 Dec 2014 20:11:56 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA5T8gzMEZFkQ7Z0koqd0RAF
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 16 Dec 2014 20:11:56 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMc8736b9c855f11e48c5306429171ffad
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
-      X-Balanced-Merchant:
-      - TEST-MR1lb6D220PWeBKNmZs46597
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.12.16
-      Content-Length:
-      - '535'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_accounts": [
-            {
-              "routing_number": "021000021",
-              "bank_name": "JPMORGAN CHASE BANK",
-              "account_type": "checking",
-              "name": "Johann Bernoulli",
-              "links": {
-                "customer": null,
-                "bank_account_verification": "BZ624mdJip5eBbirQqKH98xW"
-              },
-              "can_credit": true,
-              "created_at": "2014-12-16T20:13:24.521222Z",
-              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-12-16T20:13:24.521223Z",
-              "href": "/bank_accounts/BA5T8gzMEZFkQ7Z0koqd0RAF",
-              "meta": {},
-              "account_number": "xxxxxx0002",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": false,
-              "id": "BA5T8gzMEZFkQ7Z0koqd0RAF"
-            }
-          ],
-          "links": {
-            "bank_accounts.settlements": "/bank_accounts/{bank_accounts.id}/settlements",
-            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}",
-            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
-            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
-            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
-            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 16 Dec 2014 20:11:56 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ624mdJip5eBbirQqKH98xW
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 16 Dec 2014 20:11:56 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMc8eded86855f11e48c5306429171ffad
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
-      X-Balanced-Merchant:
-      - TEST-MR1lb6D220PWeBKNmZs46597
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.12.16
-      Content-Length:
-      - '599'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_account_verifications": [
-            {
-              "verification_status": "pending",
-              "links": {
-                "bank_account": "BA5T8gzMEZFkQ7Z0koqd0RAF"
-              },
-              "href": "/verifications/BZ624mdJip5eBbirQqKH98xW",
-              "created_at": "2014-12-16T20:13:32.467406Z",
-              "attempts_remaining": 3,
-              "updated_at": "2014-12-16T20:13:33.609531Z",
-              "deposit_status": "succeeded",
-              "attempts": 0,
-              "meta": {},
-              "id": "BZ624mdJip5eBbirQqKH98xW"
-            }
-          ],
-          "links": {
-            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 16 Dec 2014 20:11:57 GMT
-- request:
-    method: put
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ624mdJip5eBbirQqKH98xW
-    body:
-      encoding: UTF-8
-      string: '{"verification_status":"pending","links":{"bank_account":"BA5T8gzMEZFkQ7Z0koqd0RAF"},"created_at":"2014-12-16T20:13:32.467406Z","attempts_remaining":3,"updated_at":"2014-12-16T20:13:33.609531Z","deposit_status":"succeeded","attempts":0,"meta":{},"id":"BZ624mdJip5eBbirQqKH98xW","amount_1":"1","amount_2":"1"}'
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 16 Dec 2014 20:11:57 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMc9290b32855f11e49c920230f00c9248
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
-      X-Balanced-Merchant:
-      - TEST-MR1lb6D220PWeBKNmZs46597
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.12.16
-      Content-Length:
-      - '601'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_account_verifications": [
-            {
-              "verification_status": "succeeded",
-              "links": {
-                "bank_account": "BA5T8gzMEZFkQ7Z0koqd0RAF"
-              },
-              "href": "/verifications/BZ624mdJip5eBbirQqKH98xW",
-              "created_at": "2014-12-16T20:13:32.467406Z",
-              "attempts_remaining": 2,
-              "updated_at": "2014-12-16T20:13:37.796966Z",
-              "deposit_status": "succeeded",
-              "attempts": 1,
-              "meta": {},
-              "id": "BZ624mdJip5eBbirQqKH98xW"
-            }
-          ],
-          "links": {
-            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 16 Dec 2014 20:11:58 GMT
-- request:
-    method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts
-    body:
-      encoding: UTF-8
-      string: '{"account_number":"9900000002","account_type":"checking","name":"Johann
-        Bernoulli","routing_number":"021000021"}'
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Access-Control-Allow-Headers:
-      - Content-Type
+      Access-Control-Allow-Credentials:
+      - 'true'
       Access-Control-Allow-Methods:
-      - POST, OPTIONS
+      - GET, POST, HEAD, OPTIONS, DELETE
       Access-Control-Allow-Origin:
       - "*"
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 16 Dec 2014 20:11:59 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMc9ffa94e855f11e485c202a1fe53e539
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
-      X-Balanced-Merchant:
-      - TEST-MR1lb6D220PWeBKNmZs46597
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.12.16
-      X-Midlr-Version:
-      - '2'
-      X-Newrelic-App-Data:
-      - PxQFWFNXCQYTUllWAgAAU0YdFhE1AwE2QgNWEVlbQFtcCxYxSBVbDQoZVA4IF0pcXAgEEBhTVggPbldQAQkWDEQRFgFKXVVGVkcVQQFNE1JKAQNYV1IMAwNSVFQHAQJeUh0WAVBQT0ISBw0BAQ4GAAABX1kHVQFVVxQbQQACVEBVOQ==
-      Content-Length:
-      - '1373'
-      Connection:
-      - keep-alive
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_WQBTIBiheiR5ScNV
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
     body:
       encoding: UTF-8
-      string: |-
+      string: |
         {
-          "bank_accounts": [
-            {
-              "routing_number": "021000021",
-              "bank_name": "JPMORGAN CHASE BANK",
-              "account_type": "checking",
-              "name": "Johann Bernoulli",
-              "links": {
-                "customer": null,
-                "bank_account_verification": null
-              },
-              "can_credit": true,
-              "created_at": "2014-12-16T20:13:39.910434Z",
-              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-12-16T20:13:39.910435Z",
-              "href": "/bank_accounts/BA6arm1EGjTahp67POXHSCNL",
-              "meta": {},
-              "account_number": "xxxxxx0002",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": false,
-              "id": "BA6arm1EGjTahp67POXHSCNL"
-            }
-          ],
-          "links": {
-            "bank_accounts.settlements": "/bank_accounts/{bank_accounts.id}/settlements",
-            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}",
-            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
-            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
-            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
-            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications"
-          }
+          "object": "bank_account",
+          "id": "ba_6Dpg8Z2jLpRpx9",
+          "last4": "6789",
+          "country": "US",
+          "currency": "usd",
+          "status": "new",
+          "fingerprint": "qw2YdYDmIJUuNi9w",
+          "routing_number": "110000000",
+          "bank_name": "STRIPE TEST BANK",
+          "metadata": {},
+          "customer": "cus_6DpgUwWjbP1uoB",
+          "disabled": false,
+          "validated": false,
+          "verified": false
         }
     http_version: 
-  recorded_at: Tue, 16 Dec 2014 20:12:00 GMT
+  recorded_at: Mon, 11 May 2015 21:00:16 GMT
 - request:
     method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA6arm1EGjTahp67POXHSCNL
+    uri: https://api.stripe.com/v1/customers/cus_6DpgUwWjbP1uoB
     body:
       encoding: US-ASCII
       string: ''
     headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
       Accept:
-      - application/vnd.api+json;revision=1.1
+      - "*/*; q=0.5, application/xml"
       Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
   response:
     status:
       code: 200
       message: OK
     headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 11 May 2015 21:00:43 GMT
       Content-Type:
       - application/json
-      Date:
-      - Tue, 16 Dec 2014 20:12:01 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMcb0f597e855f11e48c5306429171ffad
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
-      X-Balanced-Merchant:
-      - TEST-MR1lb6D220PWeBKNmZs46597
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.12.16
       Content-Length:
-      - '513'
+      - '2102'
       Connection:
       - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_cnNbKa9Og8RwCljm
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
     body:
       encoding: UTF-8
-      string: |-
+      string: |
         {
-          "bank_accounts": [
-            {
-              "routing_number": "021000021",
-              "bank_name": "JPMORGAN CHASE BANK",
-              "account_type": "checking",
-              "name": "Johann Bernoulli",
-              "links": {
-                "customer": null,
-                "bank_account_verification": null
-              },
-              "can_credit": true,
-              "created_at": "2014-12-16T20:13:39.910434Z",
-              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-12-16T20:13:39.910435Z",
-              "href": "/bank_accounts/BA6arm1EGjTahp67POXHSCNL",
-              "meta": {},
-              "account_number": "xxxxxx0002",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": false,
-              "id": "BA6arm1EGjTahp67POXHSCNL"
-            }
-          ],
-          "links": {
-            "bank_accounts.settlements": "/bank_accounts/{bank_accounts.id}/settlements",
-            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}",
-            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
-            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
-            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
-            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications"
-          }
+          "object": "customer",
+          "created": 1431378041,
+          "id": "cus_6DpgUwWjbP1uoB",
+          "livemode": false,
+          "description": "student5@example.com",
+          "email": null,
+          "delinquent": false,
+          "metadata": {},
+          "subscriptions": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgUwWjbP1uoB/subscriptions",
+            "data": [],
+            "count": 0
+          },
+          "discount": null,
+          "account_balance": 0,
+          "currency": null,
+          "bank_accounts": {
+            "object": "list",
+            "total_count": 1,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgUwWjbP1uoB/bank_accounts",
+            "data": [
+              {
+                "object": "bank_account",
+                "id": "ba_6Dpg8Z2jLpRpx9",
+                "last4": "6789",
+                "country": "US",
+                "currency": "usd",
+                "status": "new",
+                "fingerprint": "qw2YdYDmIJUuNi9w",
+                "routing_number": "110000000",
+                "bank_name": "STRIPE TEST BANK",
+                "metadata": {},
+                "customer": "cus_6DpgUwWjbP1uoB",
+                "disabled": false,
+                "validated": false,
+                "verified": false
+              }
+            ],
+            "count": 1
+          },
+          "default_bank_account": "ba_6Dpg8Z2jLpRpx9",
+          "default_source_type": "bank_account",
+          "cards": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgUwWjbP1uoB/cards",
+            "data": [],
+            "count": 0
+          },
+          "default_card": null,
+          "sources": {
+            "object": "list",
+            "total_count": 1,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgUwWjbP1uoB/sources",
+            "data": [
+              {
+                "object": "bank_account",
+                "id": "ba_6Dpg8Z2jLpRpx9",
+                "last4": "6789",
+                "country": "US",
+                "currency": "usd",
+                "status": "new",
+                "fingerprint": "qw2YdYDmIJUuNi9w",
+                "routing_number": "110000000",
+                "bank_name": "STRIPE TEST BANK",
+                "metadata": {},
+                "customer": "cus_6DpgUwWjbP1uoB",
+                "disabled": false,
+                "validated": false,
+                "verified": false
+              }
+            ],
+            "count": 1
+          },
+          "default_source": "ba_6Dpg8Z2jLpRpx9",
+          "active_card": null,
+          "subscription": null
         }
     http_version: 
-  recorded_at: Tue, 16 Dec 2014 20:12:01 GMT
+  recorded_at: Mon, 11 May 2015 21:00:17 GMT
+- request:
+    method: get
+    uri: https://api.stripe.com/v1/customers/cus_6DpgUwWjbP1uoB
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 11 May 2015 21:00:43 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '2102'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_cmfJlD25LDGyTbfQ
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "object": "customer",
+          "created": 1431378041,
+          "id": "cus_6DpgUwWjbP1uoB",
+          "livemode": false,
+          "description": "student5@example.com",
+          "email": null,
+          "delinquent": false,
+          "metadata": {},
+          "subscriptions": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgUwWjbP1uoB/subscriptions",
+            "data": [],
+            "count": 0
+          },
+          "discount": null,
+          "account_balance": 0,
+          "currency": null,
+          "bank_accounts": {
+            "object": "list",
+            "total_count": 1,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgUwWjbP1uoB/bank_accounts",
+            "data": [
+              {
+                "object": "bank_account",
+                "id": "ba_6Dpg8Z2jLpRpx9",
+                "last4": "6789",
+                "country": "US",
+                "currency": "usd",
+                "status": "new",
+                "fingerprint": "qw2YdYDmIJUuNi9w",
+                "routing_number": "110000000",
+                "bank_name": "STRIPE TEST BANK",
+                "metadata": {},
+                "customer": "cus_6DpgUwWjbP1uoB",
+                "disabled": false,
+                "validated": false,
+                "verified": false
+              }
+            ],
+            "count": 1
+          },
+          "default_bank_account": "ba_6Dpg8Z2jLpRpx9",
+          "default_source_type": "bank_account",
+          "cards": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgUwWjbP1uoB/cards",
+            "data": [],
+            "count": 0
+          },
+          "default_card": null,
+          "sources": {
+            "object": "list",
+            "total_count": 1,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgUwWjbP1uoB/sources",
+            "data": [
+              {
+                "object": "bank_account",
+                "id": "ba_6Dpg8Z2jLpRpx9",
+                "last4": "6789",
+                "country": "US",
+                "currency": "usd",
+                "status": "new",
+                "fingerprint": "qw2YdYDmIJUuNi9w",
+                "routing_number": "110000000",
+                "bank_name": "STRIPE TEST BANK",
+                "metadata": {},
+                "customer": "cus_6DpgUwWjbP1uoB",
+                "disabled": false,
+                "validated": false,
+                "verified": false
+              }
+            ],
+            "count": 1
+          },
+          "default_source": "ba_6Dpg8Z2jLpRpx9",
+          "active_card": null,
+          "subscription": null
+        }
+    http_version: 
+  recorded_at: Mon, 11 May 2015 21:00:17 GMT
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA6arm1EGjTahp67POXHSCNL/verifications
-    body:
-      encoding: UTF-8
-      string: "{}"
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 201
-      message: CREATED
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 16 Dec 2014 20:12:15 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMcba94624855f11e49c920230f00c9248
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
-      X-Balanced-Merchant:
-      - TEST-MR1lb6D220PWeBKNmZs46597
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.12.16
-      Content-Length:
-      - '599'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_account_verifications": [
-            {
-              "verification_status": "pending",
-              "links": {
-                "bank_account": "BA6arm1EGjTahp67POXHSCNL"
-              },
-              "href": "/verifications/BZ6ocXqca6MfDfKoPXeWZKzm",
-              "created_at": "2014-12-16T20:13:52.150903Z",
-              "attempts_remaining": 3,
-              "updated_at": "2014-12-16T20:13:53.572179Z",
-              "deposit_status": "succeeded",
-              "attempts": 0,
-              "meta": {},
-              "id": "BZ6ocXqca6MfDfKoPXeWZKzm"
-            }
-          ],
-          "links": {
-            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 16 Dec 2014 20:12:15 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA6arm1EGjTahp67POXHSCNL
+    uri: https://api.stripe.com/v1/customers/cus_6DpgUwWjbP1uoB/bank_accounts/ba_6Dpg8Z2jLpRpx9/verify
     body:
       encoding: US-ASCII
-      string: ''
+      string: amounts[]=32&amounts[]=45
     headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
       Accept:
-      - application/vnd.api+json;revision=1.1
+      - "*/*; q=0.5, application/xml"
       Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+      Content-Length:
+      - '25'
   response:
     status:
       code: 200
       message: OK
     headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 11 May 2015 21:00:44 GMT
       Content-Type:
       - application/json
-      Date:
-      - Tue, 16 Dec 2014 20:12:16 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMd4399d98855f11e49dde06429171ffad
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
-      X-Balanced-Merchant:
-      - TEST-MR1lb6D220PWeBKNmZs46597
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.12.16
       Content-Length:
-      - '537'
+      - '365'
       Connection:
       - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_4rXqKlXFn96T9ccg
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
     body:
       encoding: UTF-8
-      string: |-
+      string: |
         {
-          "bank_accounts": [
-            {
-              "routing_number": "021000021",
-              "bank_name": "JPMORGAN CHASE BANK",
-              "account_type": "checking",
-              "name": "Johann Bernoulli",
-              "links": {
-                "customer": null,
-                "bank_account_verification": "BZ6ocXqca6MfDfKoPXeWZKzm"
-              },
-              "can_credit": true,
-              "created_at": "2014-12-16T20:13:39.910434Z",
-              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-12-16T20:13:39.910435Z",
-              "href": "/bank_accounts/BA6arm1EGjTahp67POXHSCNL",
-              "meta": {},
-              "account_number": "xxxxxx0002",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": false,
-              "id": "BA6arm1EGjTahp67POXHSCNL"
-            }
-          ],
-          "links": {
-            "bank_accounts.settlements": "/bank_accounts/{bank_accounts.id}/settlements",
-            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}",
-            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
-            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
-            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
-            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications"
-          }
+          "object": "bank_account",
+          "id": "ba_6Dpg8Z2jLpRpx9",
+          "last4": "6789",
+          "country": "US",
+          "currency": "usd",
+          "status": "verified",
+          "fingerprint": "qw2YdYDmIJUuNi9w",
+          "routing_number": "110000000",
+          "bank_name": "STRIPE TEST BANK",
+          "metadata": {},
+          "customer": "cus_6DpgUwWjbP1uoB",
+          "disabled": false,
+          "validated": false,
+          "verified": true
         }
     http_version: 
-  recorded_at: Tue, 16 Dec 2014 20:12:17 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA6arm1EGjTahp67POXHSCNL
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 16 Dec 2014 20:12:18 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMd52250b0855f11e485a702b12035401b
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
-      X-Balanced-Merchant:
-      - TEST-MR1lb6D220PWeBKNmZs46597
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.12.16
-      Content-Length:
-      - '537'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_accounts": [
-            {
-              "routing_number": "021000021",
-              "bank_name": "JPMORGAN CHASE BANK",
-              "account_type": "checking",
-              "name": "Johann Bernoulli",
-              "links": {
-                "customer": null,
-                "bank_account_verification": "BZ6ocXqca6MfDfKoPXeWZKzm"
-              },
-              "can_credit": true,
-              "created_at": "2014-12-16T20:13:39.910434Z",
-              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-12-16T20:13:39.910435Z",
-              "href": "/bank_accounts/BA6arm1EGjTahp67POXHSCNL",
-              "meta": {},
-              "account_number": "xxxxxx0002",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": false,
-              "id": "BA6arm1EGjTahp67POXHSCNL"
-            }
-          ],
-          "links": {
-            "bank_accounts.settlements": "/bank_accounts/{bank_accounts.id}/settlements",
-            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}",
-            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
-            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
-            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
-            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 16 Dec 2014 20:12:18 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ6ocXqca6MfDfKoPXeWZKzm
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 16 Dec 2014 20:12:19 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMd5ed0148855f11e485a702b12035401b
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
-      X-Balanced-Merchant:
-      - TEST-MR1lb6D220PWeBKNmZs46597
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.12.16
-      Content-Length:
-      - '599'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_account_verifications": [
-            {
-              "verification_status": "pending",
-              "links": {
-                "bank_account": "BA6arm1EGjTahp67POXHSCNL"
-              },
-              "href": "/verifications/BZ6ocXqca6MfDfKoPXeWZKzm",
-              "created_at": "2014-12-16T20:13:52.150903Z",
-              "attempts_remaining": 3,
-              "updated_at": "2014-12-16T20:13:53.572179Z",
-              "deposit_status": "succeeded",
-              "attempts": 0,
-              "meta": {},
-              "id": "BZ6ocXqca6MfDfKoPXeWZKzm"
-            }
-          ],
-          "links": {
-            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 16 Dec 2014 20:12:20 GMT
-- request:
-    method: put
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/verifications/BZ6ocXqca6MfDfKoPXeWZKzm
-    body:
-      encoding: UTF-8
-      string: '{"verification_status":"pending","links":{"bank_account":"BA6arm1EGjTahp67POXHSCNL"},"created_at":"2014-12-16T20:13:52.150903Z","attempts_remaining":3,"updated_at":"2014-12-16T20:13:53.572179Z","deposit_status":"succeeded","attempts":0,"meta":{},"id":"BZ6ocXqca6MfDfKoPXeWZKzm","amount_1":"1","amount_2":"1"}'
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 16 Dec 2014 20:12:21 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMd704d1c8855f11e4ab7e0230f00c9248
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-5-17
-      X-Balanced-Marketplace:
-      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
-      X-Balanced-Merchant:
-      - TEST-MR1lb6D220PWeBKNmZs46597
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.12.16
-      Content-Length:
-      - '601'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_account_verifications": [
-            {
-              "verification_status": "succeeded",
-              "links": {
-                "bank_account": "BA6arm1EGjTahp67POXHSCNL"
-              },
-              "href": "/verifications/BZ6ocXqca6MfDfKoPXeWZKzm",
-              "created_at": "2014-12-16T20:13:52.150903Z",
-              "attempts_remaining": 2,
-              "updated_at": "2014-12-16T20:14:01.178129Z",
-              "deposit_status": "succeeded",
-              "attempts": 1,
-              "meta": {},
-              "id": "BZ6ocXqca6MfDfKoPXeWZKzm"
-            }
-          ],
-          "links": {
-            "bank_account_verifications.bank_account": "/bank_accounts/{bank_account_verifications.bank_account}"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 16 Dec 2014 20:12:21 GMT
-- request:
-    method: get
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA6arm1EGjTahp67POXHSCNL
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
-      Accept:
-      - application/vnd.api+json;revision=1.1
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Tue, 16 Dec 2014 20:12:21 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMd79ef97e855f11e4ab7e0230f00c9248
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
-      X-Balanced-Merchant:
-      - TEST-MR1lb6D220PWeBKNmZs46597
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.12.16
-      Content-Length:
-      - '539'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: |-
-        {
-          "bank_accounts": [
-            {
-              "routing_number": "021000021",
-              "bank_name": "JPMORGAN CHASE BANK",
-              "account_type": "checking",
-              "name": "Johann Bernoulli",
-              "links": {
-                "customer": null,
-                "bank_account_verification": "BZ6ocXqca6MfDfKoPXeWZKzm"
-              },
-              "can_credit": true,
-              "created_at": "2014-12-16T20:13:39.910434Z",
-              "fingerprint": "2ef53fa3f76e47c5930f77fe0a59aa103b5abfd5622f08305b786808ec574a1e",
-              "updated_at": "2014-12-16T20:14:01.174392Z",
-              "href": "/bank_accounts/BA6arm1EGjTahp67POXHSCNL",
-              "meta": {},
-              "account_number": "xxxxxx0002",
-              "address": {
-                "city": null,
-                "line2": null,
-                "line1": null,
-                "state": null,
-                "postal_code": null,
-                "country_code": null
-              },
-              "can_debit": true,
-              "id": "BA6arm1EGjTahp67POXHSCNL"
-            }
-          ],
-          "links": {
-            "bank_accounts.settlements": "/bank_accounts/{bank_accounts.id}/settlements",
-            "bank_accounts.bank_account_verification": "/verifications/{bank_accounts.bank_account_verification}",
-            "bank_accounts.debits": "/bank_accounts/{bank_accounts.id}/debits",
-            "bank_accounts.customer": "/customers/{bank_accounts.customer}",
-            "bank_accounts.credits": "/bank_accounts/{bank_accounts.id}/credits",
-            "bank_accounts.bank_account_verifications": "/bank_accounts/{bank_accounts.id}/verifications"
-          }
-        }
-    http_version: 
-  recorded_at: Tue, 16 Dec 2014 20:12:21 GMT
+  recorded_at: Mon, 11 May 2015 21:00:18 GMT
 - request:
     method: post
-    uri: https://<BALANCED_API_KEY>:@api.balancedpayments.com/bank_accounts/BA6arm1EGjTahp67POXHSCNL/debits
+    uri: https://api.stripe.com/v1/customers
     body:
-      encoding: UTF-8
-      string: '{"amount":1,"appears_on_statement_as":"Epicodus tuition"}'
+      encoding: US-ASCII
+      string: description=student6%40example.com
     headers:
-      User-Agent:
-      - balanced-ruby/1.1.1
-      Content-Type:
-      - application/json;revision=1.1
       Accept:
-      - application/vnd.api+json;revision=1.1
+      - "*/*; q=0.5, application/xml"
       Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+      Content-Length:
+      - '34'
   response:
     status:
-      code: 201
-      message: CREATED
+      code: 200
+      message: OK
     headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 11 May 2015 21:00:44 GMT
       Content-Type:
       - application/json
-      Date:
-      - Tue, 16 Dec 2014 20:12:23 GMT
-      Server:
-      - ngx_openresty/1.2.6.3
-      X-Balanced-Guru:
-      - OHMd7d87564855f11e49dde06429171ffad
-      X-Balanced-Host:
-      - bapi-integration-prod-8u30f7-10-3-4-8
-      X-Balanced-Marketplace:
-      - TEST-MP1mjbKr3ZseFeWrJb4R03lj
-      X-Balanced-Merchant:
-      - TEST-MR1lb6D220PWeBKNmZs46597
-      X-Balanced-Revision:
-      - '1.1'
-      X-Balanced-Software-Build:
-      - 1.12.16
       Content-Length:
-      - '1059'
+      - '1138'
       Connection:
       - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_z09XNnDjhmP0pPF3
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
     body:
       encoding: UTF-8
-      string: |-
+      string: |
         {
-          "debits": [
-            {
-              "status": "succeeded",
-              "description": null,
-              "links": {
-                "customer": null,
-                "source": "BA6arm1EGjTahp67POXHSCNL",
-                "card_hold": null,
-                "order": null,
-                "dispute": null
-              },
-              "updated_at": "2014-12-16T20:14:04.062693Z",
-              "created_at": "2014-12-16T20:14:02.100564Z",
-              "transaction_number": "WIPF-WSC-ZYAD",
-              "failure_reason": null,
-              "currency": "USD",
-              "amount": 1,
-              "failure_reason_code": null,
-              "meta": {},
-              "href": "/debits/WD6zoFNNXs0mD9vWbeVOZKa9",
-              "appears_on_statement_as": "BAL*Epicodus tuition",
-              "id": "WD6zoFNNXs0mD9vWbeVOZKa9"
-            }
-          ],
-          "links": {
-            "debits.customer": "/customers/{debits.customer}",
-            "debits.order": "/orders/{debits.order}",
-            "debits.dispute": "/disputes/{debits.dispute}",
-            "debits.source": "/resources/{debits.source}",
-            "debits.events": "/debits/{debits.id}/events",
-            "debits.refunds": "/debits/{debits.id}/refunds",
-            "debits.card_hold": "/holds/{debits.card_hold}"
-          }
+          "object": "customer",
+          "created": 1431378044,
+          "id": "cus_6DpgfY9uTbhvf4",
+          "livemode": false,
+          "description": "student6@example.com",
+          "email": null,
+          "delinquent": false,
+          "metadata": {},
+          "subscriptions": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgfY9uTbhvf4/subscriptions",
+            "data": [],
+            "count": 0
+          },
+          "discount": null,
+          "account_balance": 0,
+          "currency": null,
+          "bank_accounts": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgfY9uTbhvf4/bank_accounts",
+            "data": [],
+            "count": 0
+          },
+          "default_bank_account": null,
+          "default_source_type": null,
+          "cards": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgfY9uTbhvf4/cards",
+            "data": [],
+            "count": 0
+          },
+          "default_card": null,
+          "sources": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgfY9uTbhvf4/sources",
+            "data": [],
+            "count": 0
+          },
+          "default_source": null,
+          "active_card": null,
+          "subscription": null
         }
     http_version: 
-  recorded_at: Tue, 16 Dec 2014 20:12:24 GMT
+  recorded_at: Mon, 11 May 2015 21:00:18 GMT
+- request:
+    method: post
+    uri: https://api.stripe.com/v1/customers/cus_6DpgfY9uTbhvf4/sources
+    body:
+      encoding: US-ASCII
+      string: source[object]=bank_account&source[country]=US&source[account_number]=000123456789&source[routing_number]=110000000
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+      Content-Length:
+      - '115'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 11 May 2015 21:00:45 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '361'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_BO5LsNzUorqLrcyA
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "object": "bank_account",
+          "id": "ba_6DpgSXpz72SgjY",
+          "last4": "6789",
+          "country": "US",
+          "currency": "usd",
+          "status": "new",
+          "fingerprint": "qw2YdYDmIJUuNi9w",
+          "routing_number": "110000000",
+          "bank_name": "STRIPE TEST BANK",
+          "metadata": {},
+          "customer": "cus_6DpgfY9uTbhvf4",
+          "disabled": false,
+          "validated": false,
+          "verified": false
+        }
+    http_version: 
+  recorded_at: Mon, 11 May 2015 21:00:19 GMT
+- request:
+    method: get
+    uri: https://api.stripe.com/v1/customers/cus_6DpgfY9uTbhvf4
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 11 May 2015 21:00:45 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '2102'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_c6xHgXkHgOUhIoty
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "object": "customer",
+          "created": 1431378044,
+          "id": "cus_6DpgfY9uTbhvf4",
+          "livemode": false,
+          "description": "student6@example.com",
+          "email": null,
+          "delinquent": false,
+          "metadata": {},
+          "subscriptions": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgfY9uTbhvf4/subscriptions",
+            "data": [],
+            "count": 0
+          },
+          "discount": null,
+          "account_balance": 0,
+          "currency": null,
+          "bank_accounts": {
+            "object": "list",
+            "total_count": 1,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgfY9uTbhvf4/bank_accounts",
+            "data": [
+              {
+                "object": "bank_account",
+                "id": "ba_6DpgSXpz72SgjY",
+                "last4": "6789",
+                "country": "US",
+                "currency": "usd",
+                "status": "new",
+                "fingerprint": "qw2YdYDmIJUuNi9w",
+                "routing_number": "110000000",
+                "bank_name": "STRIPE TEST BANK",
+                "metadata": {},
+                "customer": "cus_6DpgfY9uTbhvf4",
+                "disabled": false,
+                "validated": false,
+                "verified": false
+              }
+            ],
+            "count": 1
+          },
+          "default_bank_account": "ba_6DpgSXpz72SgjY",
+          "default_source_type": "bank_account",
+          "cards": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgfY9uTbhvf4/cards",
+            "data": [],
+            "count": 0
+          },
+          "default_card": null,
+          "sources": {
+            "object": "list",
+            "total_count": 1,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgfY9uTbhvf4/sources",
+            "data": [
+              {
+                "object": "bank_account",
+                "id": "ba_6DpgSXpz72SgjY",
+                "last4": "6789",
+                "country": "US",
+                "currency": "usd",
+                "status": "new",
+                "fingerprint": "qw2YdYDmIJUuNi9w",
+                "routing_number": "110000000",
+                "bank_name": "STRIPE TEST BANK",
+                "metadata": {},
+                "customer": "cus_6DpgfY9uTbhvf4",
+                "disabled": false,
+                "validated": false,
+                "verified": false
+              }
+            ],
+            "count": 1
+          },
+          "default_source": "ba_6DpgSXpz72SgjY",
+          "active_card": null,
+          "subscription": null
+        }
+    http_version: 
+  recorded_at: Mon, 11 May 2015 21:00:19 GMT
+- request:
+    method: get
+    uri: https://api.stripe.com/v1/customers/cus_6DpgfY9uTbhvf4
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 11 May 2015 21:00:46 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '2102'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_njm2OT2Lj7w0mDhn
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "object": "customer",
+          "created": 1431378044,
+          "id": "cus_6DpgfY9uTbhvf4",
+          "livemode": false,
+          "description": "student6@example.com",
+          "email": null,
+          "delinquent": false,
+          "metadata": {},
+          "subscriptions": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgfY9uTbhvf4/subscriptions",
+            "data": [],
+            "count": 0
+          },
+          "discount": null,
+          "account_balance": 0,
+          "currency": null,
+          "bank_accounts": {
+            "object": "list",
+            "total_count": 1,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgfY9uTbhvf4/bank_accounts",
+            "data": [
+              {
+                "object": "bank_account",
+                "id": "ba_6DpgSXpz72SgjY",
+                "last4": "6789",
+                "country": "US",
+                "currency": "usd",
+                "status": "new",
+                "fingerprint": "qw2YdYDmIJUuNi9w",
+                "routing_number": "110000000",
+                "bank_name": "STRIPE TEST BANK",
+                "metadata": {},
+                "customer": "cus_6DpgfY9uTbhvf4",
+                "disabled": false,
+                "validated": false,
+                "verified": false
+              }
+            ],
+            "count": 1
+          },
+          "default_bank_account": "ba_6DpgSXpz72SgjY",
+          "default_source_type": "bank_account",
+          "cards": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgfY9uTbhvf4/cards",
+            "data": [],
+            "count": 0
+          },
+          "default_card": null,
+          "sources": {
+            "object": "list",
+            "total_count": 1,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgfY9uTbhvf4/sources",
+            "data": [
+              {
+                "object": "bank_account",
+                "id": "ba_6DpgSXpz72SgjY",
+                "last4": "6789",
+                "country": "US",
+                "currency": "usd",
+                "status": "new",
+                "fingerprint": "qw2YdYDmIJUuNi9w",
+                "routing_number": "110000000",
+                "bank_name": "STRIPE TEST BANK",
+                "metadata": {},
+                "customer": "cus_6DpgfY9uTbhvf4",
+                "disabled": false,
+                "validated": false,
+                "verified": false
+              }
+            ],
+            "count": 1
+          },
+          "default_source": "ba_6DpgSXpz72SgjY",
+          "active_card": null,
+          "subscription": null
+        }
+    http_version: 
+  recorded_at: Mon, 11 May 2015 21:00:19 GMT
+- request:
+    method: post
+    uri: https://api.stripe.com/v1/customers/cus_6DpgfY9uTbhvf4/bank_accounts/ba_6DpgSXpz72SgjY/verify
+    body:
+      encoding: US-ASCII
+      string: amounts[]=32&amounts[]=45
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+      Content-Length:
+      - '25'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 11 May 2015 21:00:46 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '365'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_GQijy8lAI3YPoJ9e
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "object": "bank_account",
+          "id": "ba_6DpgSXpz72SgjY",
+          "last4": "6789",
+          "country": "US",
+          "currency": "usd",
+          "status": "verified",
+          "fingerprint": "qw2YdYDmIJUuNi9w",
+          "routing_number": "110000000",
+          "bank_name": "STRIPE TEST BANK",
+          "metadata": {},
+          "customer": "cus_6DpgfY9uTbhvf4",
+          "disabled": false,
+          "validated": false,
+          "verified": true
+        }
+    http_version: 
+  recorded_at: Mon, 11 May 2015 21:00:20 GMT
+- request:
+    method: get
+    uri: https://api.stripe.com/v1/customers/cus_6DpgUwWjbP1uoB
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 11 May 2015 21:00:46 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '2110'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_n41jRYUrmOAnsgQd
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "object": "customer",
+          "created": 1431378041,
+          "id": "cus_6DpgUwWjbP1uoB",
+          "livemode": false,
+          "description": "student5@example.com",
+          "email": null,
+          "delinquent": false,
+          "metadata": {},
+          "subscriptions": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgUwWjbP1uoB/subscriptions",
+            "data": [],
+            "count": 0
+          },
+          "discount": null,
+          "account_balance": 0,
+          "currency": null,
+          "bank_accounts": {
+            "object": "list",
+            "total_count": 1,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgUwWjbP1uoB/bank_accounts",
+            "data": [
+              {
+                "object": "bank_account",
+                "id": "ba_6Dpg8Z2jLpRpx9",
+                "last4": "6789",
+                "country": "US",
+                "currency": "usd",
+                "status": "verified",
+                "fingerprint": "qw2YdYDmIJUuNi9w",
+                "routing_number": "110000000",
+                "bank_name": "STRIPE TEST BANK",
+                "metadata": {},
+                "customer": "cus_6DpgUwWjbP1uoB",
+                "disabled": false,
+                "validated": false,
+                "verified": true
+              }
+            ],
+            "count": 1
+          },
+          "default_bank_account": "ba_6Dpg8Z2jLpRpx9",
+          "default_source_type": "bank_account",
+          "cards": {
+            "object": "list",
+            "total_count": 0,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgUwWjbP1uoB/cards",
+            "data": [],
+            "count": 0
+          },
+          "default_card": null,
+          "sources": {
+            "object": "list",
+            "total_count": 1,
+            "has_more": false,
+            "url": "/v1/customers/cus_6DpgUwWjbP1uoB/sources",
+            "data": [
+              {
+                "object": "bank_account",
+                "id": "ba_6Dpg8Z2jLpRpx9",
+                "last4": "6789",
+                "country": "US",
+                "currency": "usd",
+                "status": "verified",
+                "fingerprint": "qw2YdYDmIJUuNi9w",
+                "routing_number": "110000000",
+                "bank_name": "STRIPE TEST BANK",
+                "metadata": {},
+                "customer": "cus_6DpgUwWjbP1uoB",
+                "disabled": false,
+                "validated": false,
+                "verified": true
+              }
+            ],
+            "count": 1
+          },
+          "default_source": "ba_6Dpg8Z2jLpRpx9",
+          "active_card": null,
+          "subscription": null
+        }
+    http_version: 
+  recorded_at: Mon, 11 May 2015 21:00:20 GMT
+- request:
+    method: post
+    uri: https://api.stripe.com/v1/charges
+    body:
+      encoding: US-ASCII
+      string: amount=100&currency=usd&customer=cus_6DpgUwWjbP1uoB
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+      Content-Length:
+      - '51'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 11 May 2015 21:00:47 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '1083'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_yCnUchtm9J86Xnae
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "py_6DpgvKTKNr5Ks7",
+          "object": "charge",
+          "created": 1431378047,
+          "livemode": false,
+          "paid": false,
+          "status": "pending",
+          "amount": 100,
+          "currency": "usd",
+          "refunded": false,
+          "source": {
+            "object": "bank_account",
+            "id": "ba_6Dpg8Z2jLpRpx9",
+            "last4": "6789",
+            "country": "US",
+            "currency": "usd",
+            "status": "verified",
+            "fingerprint": "qw2YdYDmIJUuNi9w",
+            "routing_number": "110000000",
+            "bank_name": "STRIPE TEST BANK",
+            "metadata": {},
+            "customer": "cus_6DpgUwWjbP1uoB",
+            "disabled": false,
+            "validated": false,
+            "verified": true
+          },
+          "captured": true,
+          "card": null,
+          "balance_transaction": "txn_6Dpgl8MqFfR9i6",
+          "failure_message": null,
+          "failure_code": null,
+          "amount_refunded": 0,
+          "customer": "cus_6DpgUwWjbP1uoB",
+          "invoice": null,
+          "description": null,
+          "dispute": null,
+          "metadata": {},
+          "statement_descriptor": null,
+          "fraud_details": {},
+          "receipt_email": null,
+          "receipt_number": null,
+          "shipping": null,
+          "application_fee": null,
+          "refunds": [],
+          "statement_description": null
+        }
+    http_version: 
+  recorded_at: Mon, 11 May 2015 21:00:21 GMT
 - request:
     method: post
     uri: https://api:<MAILGUN_API_KEY>@api.mailgun.net/v2/epicodus.com/messages
     body:
       encoding: US-ASCII
-      string: from=michael%40epicodus.com&to=student1%40example.com&bcc=michael%40epicodus.com&subject=Epicodus%20tuition%20payment%20receipt&text=Hi%20Example%20Brown%201.%20This%20is%20to%20confirm%20your%20payment%20of%20%240.01%20for%20Epicodus%20tuition.%20If%20you%20have%20any%20questions%2C%20reply%20to%20this%20email.%20Thanks!
+      string: from=administrator%40school.edu&to=student5%40example.com&bcc=administrator%40school.edu&subject=Epicodus%20tuition%20payment%20receipt&text=Hi%20Example%20Brown%205.%20This%20is%20to%20confirm%20your%20payment%20of%20%241.00%20for%20Epicodus%20tuition.%20If%20you%20have%20any%20questions%2C%20reply%20to%20this%20email.%20Thanks!
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
       Accept-Encoding:
       - gzip, deflate
       Content-Length:
-      - '323'
+      - '331'
       Content-Type:
       - application/x-www-form-urlencoded
       User-Agent:
@@ -1309,9 +1358,9 @@ http_interactions:
       message: OK
     headers:
       Server:
-      - nginx/1.4.7
+      - nginx/1.7.9
       Date:
-      - Tue, 16 Dec 2014 20:12:24 GMT
+      - Mon, 11 May 2015 21:00:48 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -1332,24 +1381,24 @@ http_interactions:
       encoding: UTF-8
       string: |-
         {
-          "message": "Queued. Thank you.",
-          "id": "<20141216201224.81001.90014@epicodus.com>"
+          "id": "<20150511210048.84482.51401@epicodus.com>",
+          "message": "Queued. Thank you."
         }
     http_version: 
-  recorded_at: Tue, 16 Dec 2014 20:12:24 GMT
+  recorded_at: Mon, 11 May 2015 21:00:22 GMT
 - request:
     method: post
     uri: https://api:<MAILGUN_API_KEY>@api.mailgun.net/v2/epicodus.com/messages
     body:
       encoding: US-ASCII
-      string: from=michael%40epicodus.com&to=student1%40example.com&bcc=michael%40epicodus.com&subject=Epicodus%20payment%20failure%20notice&text=Hi%20Example%20Brown%201.%20This%20is%20to%20notify%20you%20that%20a%20recent%20payment%20you%20made%20for%20Epicodus%20tuition%20has%20failed.%20Please%20reply%20to%20this%20email%20so%20we%20can%20sort%20it%20out%20together.%20Thanks!
+      string: from=administrator%40school.edu&to=student5%40example.com&bcc=administrator%40school.edu&subject=Epicodus%20payment%20failure%20notice&text=Hi%20Example%20Brown%205.%20This%20is%20to%20notify%20you%20that%20a%20recent%20payment%20you%20made%20for%20Epicodus%20tuition%20has%20failed.%20Please%20reply%20to%20this%20email%20so%20we%20can%20sort%20it%20out%20together.%20Thanks!
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
       Accept-Encoding:
       - gzip, deflate
       Content-Length:
-      - '368'
+      - '376'
       Content-Type:
       - application/x-www-form-urlencoded
       User-Agent:
@@ -1360,9 +1409,9 @@ http_interactions:
       message: OK
     headers:
       Server:
-      - nginx/1.4.7
+      - nginx/1.7.9
       Date:
-      - Tue, 16 Dec 2014 20:14:37 GMT
+      - Mon, 11 May 2015 21:00:48 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -1383,9 +1432,301 @@ http_interactions:
       encoding: UTF-8
       string: |-
         {
-          "message": "Queued. Thank you.",
-          "id": "<20141216201437.18163.37072@epicodus.com>"
+          "id": "<20150511210048.98679.89153@epicodus.com>",
+          "message": "Queued. Thank you."
         }
     http_version: 
-  recorded_at: Tue, 16 Dec 2014 20:14:37 GMT
+  recorded_at: Mon, 11 May 2015 21:00:22 GMT
+- request:
+    method: get
+    uri: https://api.stripe.com/v1/customers/cus_6DpgUwWjbP1uoB/bank_accounts/ba_6Dpg8Z2jLpRpx9
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 22 May 2015 18:59:14 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '365'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_k8uaraIL384k1kkW
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "object": "bank_account",
+          "id": "ba_6Dpg8Z2jLpRpx9",
+          "last4": "6789",
+          "country": "US",
+          "currency": "usd",
+          "status": "verified",
+          "fingerprint": "qw2YdYDmIJUuNi9w",
+          "routing_number": "110000000",
+          "bank_name": "STRIPE TEST BANK",
+          "metadata": {},
+          "customer": "cus_6DpgUwWjbP1uoB",
+          "disabled": false,
+          "validated": false,
+          "verified": true
+        }
+    http_version: 
+  recorded_at: Fri, 22 May 2015 18:58:39 GMT
+- request:
+    method: get
+    uri: https://api.stripe.com/v1/customers/cus_6DpgfY9uTbhvf4/bank_accounts/ba_6DpgSXpz72SgjY
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 22 May 2015 18:59:14 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '365'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_Y1Clf4VVTA5wNSGH
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "object": "bank_account",
+          "id": "ba_6DpgSXpz72SgjY",
+          "last4": "6789",
+          "country": "US",
+          "currency": "usd",
+          "status": "verified",
+          "fingerprint": "qw2YdYDmIJUuNi9w",
+          "routing_number": "110000000",
+          "bank_name": "STRIPE TEST BANK",
+          "metadata": {},
+          "customer": "cus_6DpgfY9uTbhvf4",
+          "disabled": false,
+          "validated": false,
+          "verified": true
+        }
+    http_version: 
+  recorded_at: Fri, 22 May 2015 18:58:39 GMT
+- request:
+    method: get
+    uri: https://api.stripe.com/v1/customers/cus_6DpgUwWjbP1uoB/sources/ba_6Dpg8Z2jLpRpx9
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Wed, 27 May 2015 21:15:14 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '365'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_vRVL8r4asikk7cML
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "object": "bank_account",
+          "id": "ba_6Dpg8Z2jLpRpx9",
+          "last4": "6789",
+          "country": "US",
+          "currency": "usd",
+          "status": "verified",
+          "fingerprint": "qw2YdYDmIJUuNi9w",
+          "routing_number": "110000000",
+          "bank_name": "STRIPE TEST BANK",
+          "metadata": {},
+          "customer": "cus_6DpgUwWjbP1uoB",
+          "disabled": false,
+          "validated": false,
+          "verified": true
+        }
+    http_version: 
+  recorded_at: Wed, 27 May 2015 21:14:36 GMT
+- request:
+    method: get
+    uri: https://api.stripe.com/v1/customers/cus_6DpgfY9uTbhvf4/sources/ba_6DpgSXpz72SgjY
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer sk_test_u5dKMdTr4HfllPjVyIYQg9Qx
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.0 p0 (2014-12-25)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        Nuatus-iMac.local 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05
+        PDT 2015; root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"Nuatus-iMac.local"}'
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Wed, 27 May 2015 21:15:15 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '365'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_kaqqwZF4rDtiNR5s
+      Stripe-Version:
+      - '2012-11-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "object": "bank_account",
+          "id": "ba_6DpgSXpz72SgjY",
+          "last4": "6789",
+          "country": "US",
+          "currency": "usd",
+          "status": "verified",
+          "fingerprint": "qw2YdYDmIJUuNi9w",
+          "routing_number": "110000000",
+          "bank_name": "STRIPE TEST BANK",
+          "metadata": {},
+          "customer": "cus_6DpgfY9uTbhvf4",
+          "disabled": false,
+          "validated": false,
+          "verified": true
+        }
+    http_version: 
+  recorded_at: Wed, 27 May 2015 21:14:36 GMT
 recorded_with: VCR 2.9.3

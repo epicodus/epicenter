@@ -32,17 +32,20 @@ VCR.configure do |config|
   config.cassette_library_dir = 'spec/cassettes'
   config.default_cassette_options = { :record => :new_episodes }
   config.hook_into :webmock
+  config.ignore_localhost = true
   config.configure_rspec_metadata!
   config.allow_http_connections_when_no_cassette = true
-  config.filter_sensitive_data('<BALANCED_API_KEY>') { ENV['BALANCED_API_KEY'] }
+  config.filter_sensitive_data('<STRIPE_API_KEY>') { ENV['STRIPE_API_KEY'] }
+  config.filter_sensitive_data('<STRIPE_PUBLIC_KEY>') { ENV['STRIPE_PUBLIC_KEY']}
   config.filter_sensitive_data('<MAILGUN_API_KEY>') { ENV['MAILGUN_API_KEY'] }
 end
 
 Billy.configure do |c|
   c.cache = true
   c.persist_cache = true
+  # c.non_whitelisted_requests_disabled = true
   c.dynamic_jsonp = true
-  c.dynamic_jsonp_keys = ["callback", "data"] # data is a blunt instrument; should be "data"["meta"]
+  c.dynamic_jsonp_keys = ["callback", "stripe_xdm_c", "stripe_xdm_e", "timestamp"]
   c.cache_path = 'spec/cassettes/javascript/'
   c.non_successful_error_level = :warn
 end

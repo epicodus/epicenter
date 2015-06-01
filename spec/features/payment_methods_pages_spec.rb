@@ -14,7 +14,7 @@ feature 'Student views payment methods page' do
       student = FactoryGirl.create(:user_with_unverified_bank_account)
       sign_in student
       visit payment_methods_path
-      expect(page).to have_content "xxxxxx0002"
+      expect(page).to have_content "Bank account 6789"
       expect(page).to have_content "Bank account"
       expect(page).to have_link "Verify Account"
       expect(page).to_not have_button "Make Primary"
@@ -28,7 +28,7 @@ feature 'Student views payment methods page' do
       student = FactoryGirl.create(:user_with_credit_card)
       sign_in student
       visit payment_methods_path
-      expect(page).to have_content "xxxxxxxxxxxx1111"
+      expect(page).to have_content "4242"
       expect(page).to have_content "✓"
       expect(page).to have_content "Credit card"
       expect(page).to have_content "Verified"
@@ -40,7 +40,7 @@ feature 'Student views payment methods page' do
       student = FactoryGirl.create(:user_with_verified_bank_account)
       sign_in student
       visit payment_methods_path
-      expect(page).to have_content "xxxxxx0002"
+      expect(page).to have_content "6789"
       expect(page).to have_content "✓"
       expect(page).to have_content "Bank account"
       expect(page).to have_content "Verified"
@@ -54,7 +54,7 @@ feature 'Student views payment methods page' do
       bank_account = FactoryGirl.create(:verified_bank_account, student: student)
       sign_in student
       visit payment_methods_path
-      expect(page).to have_content "xxxxxx0002"
+      expect(page).to have_content "4242"
       expect(page).to have_content "Bank account"
       expect(page).to have_content "Verified"
       expect(page).to have_button "Make Primary"

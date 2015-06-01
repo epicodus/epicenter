@@ -1,15 +1,9 @@
 class BankAccount < PaymentMethod
+  before_create :create_stripe_account
   before_create :get_last_four_string
-  before_create :create_verification
+  before_update :verify_account, unless: 'verified'
 
-  def fetch_balanced_account
-    begin
-      Balanced::BankAccount.fetch(account_uri)
-    rescue Balanced::Error => exception
-      errors.add(:base, exception.description)
-      false
-    end
-  end
+  attr_accessor :first_deposit, :second_deposit
 
   def calculate_fee(amount)
     0
@@ -19,17 +13,18 @@ class BankAccount < PaymentMethod
     "pending"
   end
 
-
 private
-  def create_verification
-    verification = Verification.new(bank_account: self)
-    verification.create_test_deposits
-  end
 
-  def get_last_four_string
-    if balanced_account = fetch_balanced_account
-      self.last_four_string = balanced_account.account_number
-    else
+  def verify_account
+    customer = student.stripe_customer
+    account = customer.bank_accounts.retrieve(stripe_id)
+    begin
+      account.verify(:amounts => [first_deposit.to_i, second_deposit.to_i])
+      update!(verified: true)
+      ensure_primary_method_exists
+      true
+    rescue Stripe::InvalidRequestError => exception
+      errors.add(:base, exception.message)
       false
     end
   end

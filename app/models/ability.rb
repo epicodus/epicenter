@@ -19,11 +19,11 @@ class Ability
       can :create, Submission, student_id: user.id
       can :update, Submission, student_id: user.id
       can :create, BankAccount
+      can :update, BankAccount
       can :read, Cohort, id: user.cohort_id
       can :create, CreditCard
       can :create, Payment, student_id: user.id, payment_method: { student_id: user.id }
       can :read, Payment, student_id: user.id
-      can :update, Verification, bank_account: { student_id: user.id }
       can :read, StudentAttendanceStatistics, student: user
       can :read, Internship, cohort_id: user.cohort_id
     else
