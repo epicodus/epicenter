@@ -108,6 +108,10 @@ class Student < User
     attendance_records.where(left_early: true).count
   end
 
+  def internships_sorted_by_interest
+    cohort.internships_sorted_by_interest(self)
+  end
+
 private
 
   def primary_payment_method_belongs_to_student
