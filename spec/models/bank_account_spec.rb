@@ -3,27 +3,6 @@ describe BankAccount do
   it { should belong_to :student }
   it { should have_many :payments }
 
-  describe "create bank account", :vcr, js: true do
-    let(:bank_account) { FactoryGirl.create :bank_account }
-
-    it "creates a Stripe bank account", :vcr, js: true do
-      account = FactoryGirl.create(:bank_account)
-      stripe_account = account.student.stripe_customer.bank_accounts.first
-      expect(stripe_account).to be_an_instance_of(Stripe::BankAccount)
-    end
-
-    it "sets the stripe_id for the bank account instance", :vcr, js: true do
-      account = FactoryGirl.create(:bank_account)
-      stripe_account = account.student.stripe_customer.bank_accounts.first
-      expect(account.stripe_id).to eq stripe_account.id
-    end
-
-    it "gets last four digits before_create", :vcr, js: true do
-      bank_account = FactoryGirl.create(:bank_account)
-      expect(bank_account.last_four_string).to eq "6789"
-    end
-  end
-
   describe "verify Stripe account", :vcr, js: true do
     let(:student) { FactoryGirl.create :user_with_verified_bank_account }
 
