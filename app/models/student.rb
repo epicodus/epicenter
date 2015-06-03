@@ -18,6 +18,7 @@ scope :recurring_active, -> { where(recurring_active: true) }
   has_many :internships, through: :ratings
   belongs_to :primary_payment_method, class_name: 'PaymentMethod'
 
+
   def payment_methods_primary_first_then_pending
     (payment_methods.not_verified_first - [primary_payment_method]).unshift(primary_payment_method).compact
   end
@@ -96,6 +97,10 @@ scope :recurring_active, -> { where(recurring_active: true) }
 
   def left_earlies
     attendance_records.where(left_early: true).count
+  end
+
+  def internships_sorted_by_interest
+    cohort.internships_sorted_by_interest(self)
   end
 
 private
