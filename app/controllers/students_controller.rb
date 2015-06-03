@@ -1,4 +1,13 @@
 class StudentsController < ApplicationController
+  def index
+    @students = current_admin.current_cohort.students
+  end
+
+  def show
+    @student = Student.find(params[:id])
+    @internships = @student.internships_sorted_by_interest
+  end
+
   def update
     @student = current_user
     if @student.update(student_params)
@@ -6,15 +15,6 @@ class StudentsController < ApplicationController
     else
       redirect_to :back, alert: "There was an error."
     end
-  end
-
-  def index
-    @students = current_admin.current_cohort.students
-  end
-
-  def internships
-    @student = Student.find(params[:student_id])
-    @internships = @student.cohort.internships_sorted_by_interest(@student)
   end
 
 private
