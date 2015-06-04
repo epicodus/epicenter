@@ -1,4 +1,7 @@
 class PaymentMethod < ActiveRecord::Base
+  before_create :create_stripe_account
+  before_create :get_last_four_string
+
   scope :not_verified_first, -> { order(verified: :desc) }
 
   validates :student_id, presence: true
@@ -11,6 +14,8 @@ class PaymentMethod < ActiveRecord::Base
   def ensure_primary_method_exists
     student.update(primary_payment_method: self) if !student.primary_payment_method
   end
+
+private
 
   def create_stripe_account
     begin

@@ -1,7 +1,5 @@
 class CreditCard < PaymentMethod
-  before_create :create_stripe_account
   before_create :set_verified_true
-  before_create :get_last_four_string
   after_create :ensure_primary_method_exists
 
 

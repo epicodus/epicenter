@@ -1,6 +1,4 @@
 class BankAccount < PaymentMethod
-  before_create :create_stripe_account
-  before_create :get_last_four_string
   before_update :verify_account, unless: 'verified'
 
   attr_accessor :first_deposit, :second_deposit
