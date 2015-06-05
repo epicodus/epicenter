@@ -1,11 +1,7 @@
 class InternshipsController < ApplicationController
   def index
     @cohort = Cohort.find(params[:cohort_id])
-    if current_student
-      @internships = @cohort.internships_sorted_by_interest(current_student)
-    else
-      @internships = @cohort.internships
-    end
+    @internships = @cohort.internships_sorted_by_interest(current_student)
   end
 
   def show
