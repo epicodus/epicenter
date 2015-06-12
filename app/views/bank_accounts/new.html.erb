@@ -6,6 +6,11 @@
   deposits, you can return to this site to start your payments.
 </p>
 
+<p>
+  Currently only US bank accounts are supported. For payments from foreign
+  accounts, please contact us. Thanks!
+</p>
+
 <p><%= image_tag "check.png" %></p>
 
 <%= render '/layouts/errors', :object => @bank_account %>
@@ -27,13 +32,11 @@
   </div>
 
   <div>
-    <%= label_tag :country, "Two character country code" %>
-    <%= text_field_tag :country, value = "US"  %>
+    <%= hidden_field_tag :country, value = "US"  %>
   </div>
 
   <div>
-    <%= label_tag :currency, "Three character currency code" %>
-    <%= text_field_tag :currency, value = "USD" %>
+    <%= hidden_field_tag :currency, value = "USD" %>
   </div>
 
   <%= f.hidden_field :stripe_token %>
