@@ -41,4 +41,9 @@ Rails.application.routes.draw do
   end
 
   resources :stripe_callbacks, only: [:create]
+
+  resources :signatures, only: [:create]
+  resources :enrollment_agreement
+  resources :code_of_conduct
+  resources :refund_policy
 end
