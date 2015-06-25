@@ -1,7 +1,7 @@
 class Transcript
   TARDY_WEIGHT = 0.5
 
-  attr_reader :student
+  attr_accessor :student
 
   def initialize(student)
     @student = student

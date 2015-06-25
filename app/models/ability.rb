@@ -27,6 +27,7 @@ class Ability
       can :read, Payment, student_id: user.id
       can :read, StudentAttendanceStatistics, student: user
       can :read, Internship, cohort_id: user.cohort_id
+      can :read, Transcript, student: user
     else
       raise CanCan::AccessDenied.new("You need to sign in.", :manage, :all)
     end
