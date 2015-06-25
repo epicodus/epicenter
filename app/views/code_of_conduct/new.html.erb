@@ -1,0 +1,11 @@
+<script type="text/javascript" src="//s3.amazonaws.com/cdn.hellofax.com/js/embedded.js"></script>
+<script type="text/javascript">
+    HelloSign.init('<%= ENV['HELLO_SIGN_CLIENT_ID'] %>');
+    HelloSign.open({
+        url: '<%= @sign_url %>',
+        allowCancel: false,
+        redirectUrl: 'https://7555b89e.ngrok.com/refund_policy/new'
+    });
+</script>
+
+<%= link_to 'Proceed to Refund Policy', new_refund_policy_path %>
