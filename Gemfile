@@ -20,6 +20,7 @@ gem 'cancancan'
 gem 'jquery-ui-rails'
 gem 'validate_url'
 gem 'gravatarify'
+gem 'hellosign-ruby-sdk'
 
 group :development do
   gem 'spring'
