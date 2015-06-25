@@ -28,6 +28,7 @@ class Ability
       can :read, StudentAttendanceStatistics, student: user
       can :read, Internship, cohort_id: user.cohort_id
       can :read, Transcript, student: user
+      can :read, :certificate
     else
       raise CanCan::AccessDenied.new("You need to sign in.", :manage, :all)
     end
