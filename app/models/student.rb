@@ -17,6 +17,7 @@ class Student < User
   has_many :ratings
   has_many :internships, through: :ratings
   belongs_to :primary_payment_method, class_name: 'PaymentMethod'
+  has_many :signatures
 
   def stripe_customer
     if stripe_customer_id

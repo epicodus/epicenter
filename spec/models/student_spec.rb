@@ -11,6 +11,7 @@ describe Student do
   it { should have_many :attendance_records }
   it { should belong_to :cohort }
   it { should belong_to(:primary_payment_method).class_name('PaymentMethod') }
+  it { should have_many :signatures }
 
   describe "default scope" do
     it "alphabetizes the students by name" do
