@@ -15,7 +15,7 @@ private
           name: student.name
         }
       ],
-      files: [@file]
+      file_url: [@file]
     )
     signature_id = signature_request.signatures.first.data['signature_id']
     signature_request_id = signature_request.data['signature_request_id']
