@@ -17,9 +17,7 @@ private
       ],
       file_url: [@file]
     )
-    signature_id = signature_request.signatures.first.data['signature_id']
-    signature_request_id = signature_request.data['signature_request_id']
-    self.signature_request_id = signature_request_id
-    self.sign_url = client.get_embedded_sign_url(signature_id: signature_id).sign_url
+    self.signature_request_id = signature_request.data['signature_request_id']
+    self.sign_url = client.get_embedded_sign_url(signature_id: signature_request.signatures.first.data['signature_id']).sign_url
   end
 end

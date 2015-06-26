@@ -6,7 +6,8 @@
         allowCancel: false,
         messageListener: function(eventData) {
           if (eventData.event == HelloSign.EVENT_SIGNED) {
-            document.location = "<%= url_for(controller: 'payment_methods', action: 'new') %>"
+            document.location = "<%= url_for(controller: @controller_for_next_page, action: 'new') %>"
+
           }
         }
     });
