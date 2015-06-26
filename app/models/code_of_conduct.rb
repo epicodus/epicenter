@@ -7,7 +7,7 @@ private
 
   def create_signature_request
     @subject = 'Sign to accept the Epicodus Code of Conduct'
-    @file = 'http://investors.shopify.com/files/doc_downloads/test.pdf'
+    @file = ENV['CODE_OF_CONDUCT_DOCUMENT_URL']
     super
   end
 end

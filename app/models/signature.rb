@@ -6,7 +6,7 @@ private
   def create_signature_request
     client = HelloSign::Client.new
     signature_request = client.create_embedded_signature_request(
-      test_mode: 1,
+      test_mode: ENV['HELLO_SIGN_TEST_MODE'],
       client_id: ENV['HELLO_SIGN_CLIENT_ID'],
       subject: @subject,
       signers: [

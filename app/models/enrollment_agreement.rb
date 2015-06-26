@@ -7,7 +7,7 @@ private
 
   def create_signature_request
     @subject = 'Sign to accept the Epicodus Enrollment Agreement'
-    @file = 'http://investors.shopify.com/files/doc_downloads/test.pdf'
+    @file = ENV['ENROLLMENT_AGREEMENT_DOCUMENT_URL']
     super
   end
 end

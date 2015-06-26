@@ -7,7 +7,7 @@ private
 
   def create_signature_request
     @subject = 'Sign to accept the Epicodus Refund Policy'
-    @file = 'http://investors.shopify.com/files/doc_downloads/test.pdf'
+    @file = ENV['REFUND_POLICY_DOCUMENT_URL']
     super
   end
 end
