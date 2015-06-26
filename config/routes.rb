@@ -43,7 +43,7 @@ Rails.application.routes.draw do
   resources :stripe_callbacks, only: [:create]
 
   resources :signatures, only: [:create]
-  resources :enrollment_agreement
-  resources :code_of_conduct
-  resources :refund_policy
+  resources :enrollment_agreement, only: [:new]
+  resources :code_of_conduct, only: [:new]
+  resources :refund_policy, only: [:new]
 end
