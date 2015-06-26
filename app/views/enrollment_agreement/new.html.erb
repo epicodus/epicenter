@@ -4,8 +4,10 @@
     HelloSign.open({
         url: '<%= @sign_url %>',
         allowCancel: false,
-        redirectUrl: 'https://7555b89e.ngrok.com/payment_methods/new'
+        messageListener: function(eventData) {
+          if (eventData.event == HelloSign.EVENT_SIGNED) {
+            document.location = "<%= url_for(controller: 'payment_methods', action: 'new') %>"
+          }
+        }
     });
 </script>
-
-<%= link_to 'Proceed to Payment Methods', new_payment_method_path  %>

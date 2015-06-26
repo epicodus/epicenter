@@ -4,8 +4,10 @@
     HelloSign.open({
         url: '<%= @sign_url %>',
         allowCancel: false,
-        redirectUrl: 'https://7555b89e.ngrok.com/enrollment_agreement/new'
+        messageListener: function(eventData) {
+          if (eventData.event == HelloSign.EVENT_SIGNED) {
+            document.location = "<%= url_for(controller: 'enrollment_agreement', action: 'new') %>"
+          }
+        }
     });
 </script>
-
-<%= link_to 'Proceed to Enrollment Agreement', new_enrollment_agreement_path  %>

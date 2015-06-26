@@ -4,8 +4,10 @@
     HelloSign.open({
         url: '<%= @sign_url %>',
         allowCancel: false,
-        redirectUrl: 'https://7555b89e.ngrok.com/refund_policy/new'
+        messageListener: function(eventData) {
+          if (eventData.event == HelloSign.EVENT_SIGNED) {
+            document.location = "<%= url_for(controller: 'refund_policy', action: 'new') %>"
+          }
+        }
     });
 </script>
-
-<%= link_to 'Proceed to Refund Policy', new_refund_policy_path %>
