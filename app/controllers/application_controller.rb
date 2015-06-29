@@ -24,7 +24,7 @@ protected
     if user.is_a? Admin
       cohort_code_reviews_path(user.current_cohort)
     elsif user.is_a? Student
-      user.class_in_session? ? cohort_code_reviews_path(user.cohort) : proper_payments_path(user)
+      user.class_in_session? ? cohort_code_reviews_path(user.cohort) : new_code_of_conduct_path
     end
   end
 
