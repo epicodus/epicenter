@@ -16,17 +16,14 @@ include ActiveSupport::Testing::TimeHelpers
 
 Capybara.register_driver :poltergeist_billy_custom do |app|
   options = {
-    debug: true,
-    extensions: ["http://s3.amazonaws.com/cdn.hellofax.com/js/embedded.js"],
     phantomjs_options: [
-      '--ignore-ssl-errors=yes',
-      "--proxy=#{Billy.proxy.host}:#{Billy.proxy.port}",
+      '--ignore-ssl-errors=yes'
     ]
   }
   Capybara::Poltergeist::Driver.new(app, options)
 end
 
-Capybara.javascript_driver = :poltergeist_billy_custom
+Capybara.javascript_driver = :poltergeist_billy
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 

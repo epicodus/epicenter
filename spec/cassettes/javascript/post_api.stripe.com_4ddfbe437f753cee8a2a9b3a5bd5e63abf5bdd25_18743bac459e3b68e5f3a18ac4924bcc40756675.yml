@@ -1,0 +1,56 @@
+---
+:scope: 
+:url: https://api.stripe.com/v1/tokens
+:body: key=pk_test_k71fNBhNztxvhxRq1PQaL4u5&payment_user_agent=stripe.js%2F6a67cf0&card[name]=Example+Brown+56&card[number]=4222222222222220&card[exp_month]=12&card[exp_year]=2020&card[cvc]=123&card[address_zip]=11211
+:status: 200
+:method: post
+:headers:
+  Server: nginx
+  Date: Fri, 22 May 2015 19:13:27 GMT
+  Content-Type: application/json
+  Content-Length: '778'
+  Connection: close
+  Access-Control-Allow-Credentials: 'true'
+  Access-Control-Allow-Methods: GET, POST, HEAD, OPTIONS, DELETE
+  Access-Control-Allow-Origin: https://js.stripe.com
+  Access-Control-Max-Age: '300'
+  Cache-Control: no-cache, no-store
+  Request-Id: req_sp6CC4RlZL8HTWHT
+  Stripe-Version: '2012-11-07'
+  Timing-Allow-Origin: https://js.stripe.com
+  Strict-Transport-Security: max-age=31556926; includeSubDomains
+:content: |
+  {
+    "id": "tok_6HvRck5v8x1USr",
+    "livemode": false,
+    "created": 1432322007,
+    "used": false,
+    "object": "token",
+    "type": "card",
+    "card": {
+      "id": "card_6HvR2YExDwjrN2",
+      "object": "card",
+      "last4": "2220",
+      "brand": "Visa",
+      "funding": "credit",
+      "exp_month": 12,
+      "exp_year": 2020,
+      "country": "DO",
+      "name": "Example Brown 55",
+      "address_line1": null,
+      "address_line2": null,
+      "address_city": null,
+      "address_state": null,
+      "address_zip": "11211",
+      "address_country": null,
+      "cvc_check": null,
+      "address_line1_check": null,
+      "address_zip_check": null,
+      "dynamic_last4": null,
+      "metadata": {},
+      "fingerprint": "SzDsK6pRTqrUlI4A",
+      "type": "Visa",
+      "customer": null
+    },
+    "client_ip": "67.5.174.24"
+  }
