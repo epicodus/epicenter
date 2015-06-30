@@ -49,6 +49,7 @@ group :test do
   gem 'puffing-billy'
   gem 'simplecov', require: false
   gem 'coveralls', require: false
+  gem 'capybara-webkit'
 end
 
 group :production do
