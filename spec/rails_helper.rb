@@ -16,6 +16,7 @@ include ActiveSupport::Testing::TimeHelpers
 
 Capybara.register_driver :poltergeist_billy_custom do |app|
   options = {
+    timeout: 100,
     phantomjs_options: [
       '--ignore-ssl-errors=yes'
     ]
