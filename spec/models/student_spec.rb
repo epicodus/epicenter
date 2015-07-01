@@ -13,6 +13,40 @@ describe Student do
   it { should belong_to(:primary_payment_method).class_name('PaymentMethod') }
   it { should have_many :signatures }
 
+  describe "updating close.io" do
+    let(:student) { FactoryGirl.create(:student) }
+
+    it "updates the record when there are enough signatures and a payment has been made", :vcr do
+      FactoryGirl.create_list(:completed_signature, 3, student: student)
+      allow(student).to receive(:total_paid).and_return(100)
+      close_io_client = Closeio::Client.new(ENV['CLOSE_IO_API_KEY'])
+      allow(student).to receive(:close_io_client).and_return(close_io_client)
+      lead_id = close_io_client.list_leads('email:"test@test.com"').data.first.id
+      expect(close_io_client).to receive(:update_lead).with(lead_id, { status: "Accepted" })
+      student.update_close_io({ status: 'Accepted' })
+    end
+
+    it "fails to update the record when there are not enough signatures", :vcr do
+      FactoryGirl.create_list(:completed_signature, 2, student: student)
+      allow(student).to receive(:total_paid).and_return(100)
+      close_io_client = Closeio::Client.new(ENV['CLOSE_IO_API_KEY'])
+      allow(student).to receive(:close_io_client).and_return(close_io_client)
+      lead_id = close_io_client.list_leads('email:"test@test.com"').data.first.id
+      expect(close_io_client).to_not receive(:update_lead).with(lead_id, { status: "Accepted" })
+      student.update_close_io({ status: 'Accepted' })
+    end
+
+    it "fails to update the record when no payment has been made", :vcr do
+      FactoryGirl.create_list(:completed_signature, 3, student: student)
+      allow(student).to receive(:total_paid).and_return(0)
+      close_io_client = Closeio::Client.new(ENV['CLOSE_IO_API_KEY'])
+      allow(student).to receive(:close_io_client).and_return(close_io_client)
+      lead_id = close_io_client.list_leads('email:"test@test.com"').data.first.id
+      expect(close_io_client).to_not receive(:update_lead).with(lead_id, { status: "Accepted" })
+      student.update_close_io({ status: 'Accepted' })
+    end
+  end
+
   describe "default scope" do
     it "alphabetizes the students by name" do
       student1 = FactoryGirl.create(:student, name: "Bob Test")

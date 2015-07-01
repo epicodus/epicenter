@@ -162,6 +162,14 @@ FactoryGirl.define do
     end
   end
 
+  factory :signature do
+    student
+
+    factory :completed_signature do
+      is_complete true
+    end
+  end
+
   factory :student do
     cohort
     association :plan, factory: :recurring_plan_with_upfront_payment
