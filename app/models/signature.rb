@@ -4,8 +4,7 @@ class Signature < ActiveRecord::Base
 private
 
   def create_signature_request
-    client = HelloSign::Client.new
-    signature_request = client.create_embedded_signature_request(
+    signature_request = HelloSign.create_embedded_signature_request(
       test_mode: ENV['HELLO_SIGN_TEST_MODE'],
       client_id: ENV['HELLO_SIGN_CLIENT_ID'],
       subject: @subject,
@@ -18,6 +17,6 @@ private
       file_url: [@file]
     )
     self.signature_request_id = signature_request.data['signature_request_id']
-    self.sign_url = client.get_embedded_sign_url(signature_id: signature_request.signatures.first.data['signature_id']).sign_url
+    self.sign_url = HelloSign.get_embedded_sign_url(signature_id: signature_request.signatures.first.data['signature_id']).sign_url
   end
 end
