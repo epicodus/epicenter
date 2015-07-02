@@ -24,7 +24,19 @@ protected
     if user.is_a? Admin
       cohort_code_reviews_path(user.current_cohort)
     elsif user.is_a? Student
-      user.class_in_session? ? cohort_code_reviews_path(user.cohort) : new_code_of_conduct_path
+      user.class_in_session? ? cohort_code_reviews_path(user.cohort) : signatures_check_path(user)
+    end
+  end
+
+  def signatures_check_path(user)
+    if user.completed_signatures == 3
+      proper_payments_path(user)
+    elsif user.completed_signatures == 2
+      new_enrollment_agreement_path
+    elsif user.completed_signatures == 1
+      new_refund_policy_path
+    elsif user.completed_signatures == 0
+      new_code_of_conduct_path
     end
   end
 
