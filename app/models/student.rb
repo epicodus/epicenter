@@ -19,6 +19,17 @@ class Student < User
   belongs_to :primary_payment_method, class_name: 'PaymentMethod'
   has_many :signatures
 
+  def update_close_io(info)
+    lead = close_io_client.list_leads('email:' + email)
+    if lead_exists?(lead) && enrollment_complete?
+     close_io_client.update_lead(lead.data.first.id, info)
+    end
+  end
+
+  def completed_signatures
+    signatures.where(is_complete: true).count
+  end
+
   def stripe_customer
     if stripe_customer_id
       customer = Stripe::Customer.retrieve(stripe_customer_id)
@@ -114,6 +125,17 @@ class Student < User
   end
 
 private
+  def lead_exists?(lead)
+    lead.total_results == 1
+  end
+
+  def enrollment_complete?
+    signatures.where(is_complete: true).count > 2 && total_paid > 0
+  end
+
+  def close_io_client
+    @close_io_client ||= Closeio::Client.new(ENV['CLOSE_IO_API_KEY'])
+  end
 
   def primary_payment_method_belongs_to_student
     if primary_payment_method && primary_payment_method.student != self

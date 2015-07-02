@@ -14,9 +14,9 @@ describe Student do
   it { should have_many :signatures }
 
   describe "updating close.io" do
-    let(:student) { FactoryGirl.create(:student) }
+    let(:student) { FactoryGirl.create(:student, email: 'test@test.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY']) }
-    let(:lead_id) { close_io_client.list_leads('email:"test@test.com"').data.first.id }
+    let(:lead_id) { close_io_client.list_leads('email:' + student.email).data.first.id }
 
     before do
       allow(student).to receive(:close_io_client).and_return(close_io_client)
@@ -41,6 +41,14 @@ describe Student do
       allow(student).to receive(:total_paid).and_return(0)
       expect(close_io_client).to_not receive(:update_lead).with(lead_id, { status: "Accepted" })
       student.update_close_io({ status: 'Accepted' })
+    end
+  end
+
+  describe "#completed_signatures" do
+    it "returns the number of completed signatures for a student" do
+      student = FactoryGirl.create(:student)
+      FactoryGirl.create_list(:completed_signature, 3, student: student)
+      expect(student.completed_signatures).to eq 3
     end
   end
 
