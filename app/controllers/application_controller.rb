@@ -29,7 +29,7 @@ protected
   end
 
   def signatures_check_path(user)
-    if user.before_hello_sign == false
+    if user.before_hello_sign == nil
       if user.completed_signatures == 3
         proper_payments_path(user)
       elsif user.completed_signatures == 2

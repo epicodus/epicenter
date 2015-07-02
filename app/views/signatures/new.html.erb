@@ -4,7 +4,7 @@
     HelloSign.open({
         url: '<%= @sign_url %>',
         allowCancel: false,
-        skipDomainVerification: true, // ONLY FOR TESTING
+        // skipDomainVerification: true, // ONLY FOR TESTING
         messageListener: function(eventData) {
           if (eventData.event == HelloSign.EVENT_SIGNED) {
             document.location = "<%= url_for(controller: @controller_for_next_page, action: 'new') %>"
@@ -12,3 +12,11 @@
         }
     });
 </script>
+
+<% if current_page?(new_code_of_conduct_path) %>
+  <div class="signature-loading">Loading Refund Policy...</div>
+<% elsif current_page?(new_refund_policy_path) %>
+  <div class="signature-loading">Loading Enrollment Agreement...</div>
+<% elsif current_page?(new_enrollment_agreement_path) %>
+  <div class="signature-loading">Loading Payment Options...</div>
+<% end %>
