@@ -29,14 +29,18 @@ protected
   end
 
   def signatures_check_path(user)
-    if user.completed_signatures == 3
+    if user.before_hello_sign == false
+      if user.completed_signatures == 3
+        proper_payments_path(user)
+      elsif user.completed_signatures == 2
+        new_enrollment_agreement_path
+      elsif user.completed_signatures == 1
+        new_refund_policy_path
+      elsif user.completed_signatures == 0
+        new_code_of_conduct_path
+      end
+    else
       proper_payments_path(user)
-    elsif user.completed_signatures == 2
-      new_enrollment_agreement_path
-    elsif user.completed_signatures == 1
-      new_refund_policy_path
-    elsif user.completed_signatures == 0
-      new_code_of_conduct_path
     end
   end
 
