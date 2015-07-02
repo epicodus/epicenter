@@ -13,7 +13,12 @@
 </head>
 <body>
   <div class="container">
-    <%= render 'layouts/navbar' unless current_page?(certificate_path) || current_page?(transcript_path) || current_page?(attendance_path) %>
+    <%= render 'layouts/navbar' unless current_page?(new_code_of_conduct_path) ||
+                                       current_page?(new_refund_policy_path) ||
+                                       current_page?(new_enrollment_agreement_path) ||
+                                       current_page?(certificate_path) ||
+                                       current_page?(transcript_path) ||
+                                       current_page?(attendance_path) %>
     <%= flash_notice(flash) do %>
       <%= flash[:notice] %>
       <%= flash[:alert] %>
