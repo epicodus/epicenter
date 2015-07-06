@@ -21,7 +21,7 @@ gem 'jquery-ui-rails'
 gem 'validate_url'
 gem 'gravatarify'
 gem 'hellosign-ruby-sdk'
-gem 'closeio', '~> 2.0', github: 'chrisjoywebb/closeio'
+gem 'closeio', '~> 2.0'
 
 group :development do
   gem 'spring'

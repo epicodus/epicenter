@@ -15,7 +15,7 @@ describe Student do
 
   describe "updating close.io" do
     let(:student) { FactoryGirl.create(:student, email: 'test@test.com') }
-    let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY']) }
+    let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
     let(:lead_id) { close_io_client.list_leads('email:' + student.email).data.first.id }
 
     before do
