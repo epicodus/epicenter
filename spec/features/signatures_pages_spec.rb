@@ -2,11 +2,10 @@ feature 'document signing for new students' do
   let(:student) { FactoryGirl.create(:student) }
 
   before :each do
-    custom_capybara_driver
     login_as(student, scope: :student)
   end
 
-  scenario 'signing the code of conduct', js: true do
+  xscenario 'signing the code of conduct', js: true do
     visit new_code_of_conduct_path
     within_frame 'hsEmbeddedFrame' do
       create_hello_sign_signature
@@ -14,7 +13,7 @@ feature 'document signing for new students' do
     end
   end
 
-  scenario 'signing the refund policy', js: true do
+  xscenario 'signing the refund policy', js: true do
     visit new_refund_policy_path
     within_frame 'hsEmbeddedFrame' do
       create_hello_sign_signature
@@ -22,7 +21,7 @@ feature 'document signing for new students' do
     end
   end
 
-  scenario 'signing the enrollment agreement', js: true do
+  xscenario 'signing the enrollment agreement', js: true do
     visit new_enrollment_agreement_path
     within_frame 'hsEmbeddedFrame' do
       create_hello_sign_signature

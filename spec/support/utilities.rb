@@ -17,8 +17,3 @@ def create_hello_sign_signature
   execute_script("$('.m-sig-modal').css('display','none')")
   click_on 'I agree'
 end
-
-def custom_capybara_driver
-  include Capybara::DSL
-  Capybara.current_driver = :poltergeist_billy_custom
-end

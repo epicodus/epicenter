@@ -14,16 +14,6 @@ Warden.test_mode!
 
 include ActiveSupport::Testing::TimeHelpers
 
-Capybara.register_driver :poltergeist_billy_custom do |app|
-  options = {
-    timeout: 100,
-    phantomjs_options: [
-      '--ignore-ssl-errors=yes'
-    ]
-  }
-  Capybara::Poltergeist::Driver.new(app, options)
-end
-
 Capybara.javascript_driver = :poltergeist_billy
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
