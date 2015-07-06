@@ -1,4 +1,14 @@
 GIT
+  remote: git://github.com/chrisjoywebb/closeio.git
+  revision: 37df52a19ea794e94b958d1d766eadd2416fe75d
+  specs:
+    closeio (2.4.0)
+      faraday
+      faraday_middleware
+      hashie
+      json
+
+GIT
   remote: git://github.com/zachflower/stripe-ruby.git
   revision: 176ef92a3515c4b1869a98d126038b2485497cb3
   specs:
@@ -69,11 +79,6 @@ GEM
       json
     chartkick (1.3.2)
     cliver (0.3.2)
-    closeio (2.3.1)
-      faraday
-      faraday_middleware
-      hashie
-      json
     coderay (1.1.0)
     coffee-script (2.4.1)
       coffee-script-source
@@ -323,7 +328,7 @@ DEPENDENCIES
   capybara
   capybara-webkit
   chartkick
-  closeio (~> 2.0)
+  closeio (~> 2.0)!
   coffee-script
   coveralls
   database_cleaner
