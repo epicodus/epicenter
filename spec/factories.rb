@@ -165,7 +165,18 @@ FactoryGirl.define do
   factory :signature do
     student
 
-    factory :completed_signature do
+    factory :completed_code_of_conduct do
+      type CodeOfConduct
+      is_complete true
+    end
+
+    factory :completed_refund_policy do
+      type RefundPolicy
+      is_complete true
+    end
+
+    factory :completed_enrollment_agreement do
+      type EnrollmentAgreement
       is_complete true
     end
   end

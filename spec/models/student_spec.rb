@@ -45,10 +45,10 @@ describe Student do
   end
 
   describe "#completed_signatures" do
-    it "returns the number of completed signatures for a student" do
+    it "returns the number of completed signatures of a particular type for a student" do
       student = FactoryGirl.create(:student)
-      FactoryGirl.create_list(:completed_signature, 3, student: student)
-      expect(student.completed_signatures).to eq 3
+      FactoryGirl.create(:completed_code_of_conduct, student: student)
+      expect(student.completed_signatures(CodeOfConduct)).to eq 1
     end
   end
 

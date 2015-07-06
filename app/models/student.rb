@@ -26,8 +26,8 @@ class Student < User
     end
   end
 
-  def completed_signatures
-    signatures.where(is_complete: true).count
+  def completed_signatures(signature_type)
+    signatures.where(type: signature_type, is_complete: true).count
   end
 
   def stripe_customer
