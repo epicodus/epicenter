@@ -42,7 +42,7 @@ feature "Student signs in while class is not in session" do
   let(:future_cohort) { FactoryGirl.create(:future_cohort) }
   let(:student) { FactoryGirl.create(:student, cohort: future_cohort) }
 
-  context "before adding a payment method" do
+  context "before adding a payment method", :vcr do
     it "takes them to the page to choose payment method" do
       sign_in(student)
       visit new_payment_method_path
