@@ -1,3 +1,3 @@
 describe RefundPolicy do
-  it_behaves_like 'signature', '1d3c82eb6d94291a1f0e1542d53a072b72f3bae1'
+  it_behaves_like 'signature', 'f5c49214f08e5311c64b8a633cf3c1a2'
 end

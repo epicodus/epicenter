@@ -1,3 +1,3 @@
 describe EnrollmentAgreement do
-  it_behaves_like 'signature', 'a3171184026ad863ad64d16e70fdb746f1097110'
+  it_behaves_like 'signature', 'ab7bafb664f09422d32900f7e45dc57c'
 end

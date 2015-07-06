@@ -16,7 +16,7 @@ private
       ],
       file_url: [@file]
     )
-    self.signature_request_id = signature_request.data['signature_request_id']
+    self.signature_request_id = signature_request.data['signatures'].first['signature_id']
     self.sign_url = HelloSign.get_embedded_sign_url(signature_id: signature_request.signatures.first.data['signature_id']).sign_url
   end
 end
