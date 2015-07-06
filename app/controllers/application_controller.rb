@@ -30,13 +30,13 @@ protected
 
   def signatures_check_path(user)
     if user.before_hello_sign == nil
-      if user.completed_signatures == 3
+      if user.completed_signatures(EnrollmentAgreement) == 1
         proper_payments_path(user)
-      elsif user.completed_signatures == 2
+      elsif user.completed_signatures(RefundPolicy) == 1
         new_enrollment_agreement_path
-      elsif user.completed_signatures == 1
+      elsif user.completed_signatures(CodeOfConduct) == 1
         new_refund_policy_path
-      elsif user.completed_signatures == 0
+      elsif user.completed_signatures(CodeOfConduct) == 0
         new_code_of_conduct_path
       end
     else
