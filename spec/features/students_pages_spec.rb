@@ -45,6 +45,7 @@ feature "Student signs in while class is not in session" do
   context "before adding a payment method" do
     it "takes them to the page to choose payment method" do
       sign_in(student)
+      visit new_payment_method_path
       expect(page).to have_content "How would you like to make payments"
     end
   end
@@ -53,6 +54,7 @@ feature "Student signs in while class is not in session" do
     it "takes them to the payment methods page", :vcr do
       bank_account = FactoryGirl.create(:bank_account, student: student)
       sign_in student
+      visit payment_methods_path
       expect(page).to have_content "Your payment methods"
       expect(page).to have_link "Verify Account"
     end
@@ -62,6 +64,7 @@ feature "Student signs in while class is not in session" do
     it "shows them their payment history" do
       verified_bank_account = FactoryGirl.create(:verified_bank_account, student: student)
       sign_in(student)
+      visit payments_path
       expect(page).to have_content "Your payments"
     end
   end
@@ -70,6 +73,7 @@ feature "Student signs in while class is not in session" do
     it "shows them their payment history" do
       credit_card = FactoryGirl.create(:credit_card, student: student)
       sign_in(student)
+      visit payments_path
       expect(page).to have_content "Your payments"
     end
   end
