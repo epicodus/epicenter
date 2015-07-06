@@ -23,21 +23,26 @@ describe Student do
     end
 
     it "updates the record when there are enough signatures and a payment has been made", :vcr do
-      FactoryGirl.create_list(:completed_signature, 3, student: student)
+      FactoryGirl.create(:completed_code_of_conduct, student: student)
+      FactoryGirl.create(:completed_refund_policy, student: student)
+      FactoryGirl.create(:completed_enrollment_agreement, student: student)
       allow(student).to receive(:total_paid).and_return(100)
       expect(close_io_client).to receive(:update_lead).with(lead_id, { status: "Accepted" })
       student.update_close_io({ status: 'Accepted' })
     end
 
     it "fails to update the record when there are not enough signatures", :vcr do
-      FactoryGirl.create_list(:completed_signature, 2, student: student)
+      FactoryGirl.create(:completed_code_of_conduct, student: student)
+      FactoryGirl.create(:completed_refund_policy, student: student)
       allow(student).to receive(:total_paid).and_return(100)
       expect(close_io_client).to_not receive(:update_lead).with(lead_id, { status: "Accepted" })
       student.update_close_io({ status: 'Accepted' })
     end
 
     it "fails to update the record when no payment has been made", :vcr do
-      FactoryGirl.create_list(:completed_signature, 3, student: student)
+      FactoryGirl.create(:completed_code_of_conduct, student: student)
+      FactoryGirl.create(:completed_refund_policy, student: student)
+      FactoryGirl.create(:completed_enrollment_agreement, student: student)
       allow(student).to receive(:total_paid).and_return(0)
       expect(close_io_client).to_not receive(:update_lead).with(lead_id, { status: "Accepted" })
       student.update_close_io({ status: 'Accepted' })
