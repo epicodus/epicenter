@@ -10,7 +10,6 @@ class SignaturesController < ApplicationController
     if event_type == 'signature_request_signed'
       signature_request_id = response['signature_request']['signature_request_id']
       signature = Signature.find_by(signature_request_id: signature_request_id)
-      signature.update(is_complete: true)
     else
       render json: { title: 'Hello API Event Received' }
     end
