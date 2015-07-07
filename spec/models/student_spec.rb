@@ -49,11 +49,16 @@ describe Student do
     end
   end
 
-  describe "#completed_signatures" do
-    it "returns the number of completed signatures of a particular type for a student" do
+  describe "#signed?" do
+    it "returns true if a signature has been signed" do
       student = FactoryGirl.create(:student)
       FactoryGirl.create(:completed_code_of_conduct, student: student)
-      expect(student.completed_signatures(CodeOfConduct)).to eq 1
+      expect(student.signed?(CodeOfConduct)).to eq true
+    end
+
+    it "returns false if a signature has not been signed" do
+      student = FactoryGirl.create(:student)
+      expect(student.signed?(RefundPolicy)).to be false
     end
   end
 
