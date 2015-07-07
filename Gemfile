@@ -21,7 +21,7 @@ gem 'jquery-ui-rails'
 gem 'validate_url'
 gem 'gravatarify'
 gem 'hellosign-ruby-sdk'
-gem 'closeio', '~> 2.0'
+gem 'closeio'
 
 group :development do
   gem 'spring'
@@ -49,7 +49,6 @@ group :test do
   gem 'puffing-billy'
   gem 'simplecov', require: false
   gem 'coveralls', require: false
-  gem 'capybara-webkit'
 end
 
 group :production do
