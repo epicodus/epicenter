@@ -29,16 +29,14 @@ protected
   end
 
   def signatures_check_path(user)
-    if user.before_hello_sign == nil
-      if user.signed?(EnrollmentAgreement)
-        proper_payments_path(user)
-      elsif user.signed?(RefundPolicy)
-        new_enrollment_agreement_path
-      elsif user.signed?(CodeOfConduct)
-        new_refund_policy_path
-      else
-        new_code_of_conduct_path
-      end
+    if user.signed?(EnrollmentAgreement)
+      proper_payments_path(user)
+    elsif user.signed?(RefundPolicy)
+      new_enrollment_agreement_path
+    elsif user.signed?(CodeOfConduct)
+      new_refund_policy_path
+    elsif user.signed?(nil)
+      new_code_of_conduct_path
     else
       proper_payments_path(user)
     end
