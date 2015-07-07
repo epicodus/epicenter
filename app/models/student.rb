@@ -27,7 +27,11 @@ class Student < User
   end
 
   def signed?(signature_model)
-    signatures.where(type: signature_model, is_complete: true).count == 1
+    if signature_model.nil?
+      true
+    else
+      signatures.where(type: signature_model, is_complete: true).count == 1
+    end
   end
 
   def stripe_customer
