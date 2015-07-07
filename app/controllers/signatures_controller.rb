@@ -1,10 +1,10 @@
 class SignaturesController < ApplicationController
-  include SignatureParamsHelper
+  include SignatureUpdater
 
   protect_from_forgery except: [:create]
 
   def new(signed_signature_model, signature_model, controller_for_next_page)
-    check_signature_params
+    update_signature_request
     if current_user.signed?(signed_signature_model)
       signature = signature_model.create(student_id: current_student.id)
       @sign_url = signature.sign_url

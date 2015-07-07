@@ -1,10 +1,10 @@
 class PaymentMethodsController < ApplicationController
-  include SignatureParamsHelper
+  include SignatureUpdater
 
   before_filter :authenticate_student!
 
   def new
-    check_signature_params
+    update_signature_request
   end
 
   def index
