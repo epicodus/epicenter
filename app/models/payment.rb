@@ -30,7 +30,7 @@ private
   end
 
   def update_close_io
-    student.update_close_io({ status: 'Enrolled', 'custom.amount_paid': amount })
+    student.update_close_io
   end
 
   def check_if_paid_up

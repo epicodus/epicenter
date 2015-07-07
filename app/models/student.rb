@@ -19,10 +19,10 @@ class Student < User
   belongs_to :primary_payment_method, class_name: 'PaymentMethod'
   has_many :signatures
 
-  def update_close_io(info)
+  def update_close_io
     lead = close_io_client.list_leads('email:' + email)
-    if lead_exists?(lead) && enrollment_complete?
-     close_io_client.update_lead(lead.data.first.id, info)
+    if close_io_lead_exists?(lead) && enrollment_complete?
+     close_io_client.update_lead(lead.data.first.id, { status: 'Enrolled', 'custom.amount_paid': total_paid })
     end
   end
 
@@ -129,7 +129,7 @@ class Student < User
   end
 
 private
-  def lead_exists?(lead)
+  def close_io_lead_exists?(lead)
     lead.total_results == 1
   end
 
