@@ -11,6 +11,7 @@ class Payment < ActiveRecord::Base
 
   before_create :make_payment, :send_payment_receipt
   after_create :check_if_paid_up
+  after_create :update_close_io
   after_update :send_payment_failure_notice, if: ->(payment) { payment.status == "failed" }
   after_update :switch_recurring_off, if: ->(payment) { payment.status == "failed" }
 
@@ -26,6 +27,10 @@ private
     if student && student.total_paid + amount.to_i > student.plan.total_amount
       errors.add(:amount, 'exceeds the outstanding balance.')
     end
+  end
+
+  def update_close_io
+    student.update_close_io({ status: 'Enrolled', 'custom.amount_paid': amount })
   end
 
   def check_if_paid_up

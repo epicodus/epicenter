@@ -134,7 +134,7 @@ private
   end
 
   def close_io_client
-    @close_io_client ||= Closeio::Client.new(ENV['CLOSE_IO_API_KEY'])
+    @close_io_client ||= Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false)
   end
 
   def primary_payment_method_belongs_to_student

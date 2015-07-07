@@ -1678,4 +1678,45 @@ http_interactions:
         }
     http_version: 
   recorded_at: Wed, 27 May 2015 21:14:47 GMT
+- request:
+    method: get
+    uri: https://d4c96097c868b567203546e7220ecd2341f008f2943aceddc522322d:@app.close.io/api/v1/lead/?query=email:student198@example.com
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      User-Agent:
+      - Faraday v0.9.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 07 Jul 2015 17:42:46 GMT
+      Server:
+      - ElasticWWW
+      Set-Cookie:
+      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Length:
+      - '51'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"has_more": false, "total_results": 0, "data": []}'
+    http_version: 
+  recorded_at: Tue, 07 Jul 2015 17:42:46 GMT
 recorded_with: VCR 2.9.3

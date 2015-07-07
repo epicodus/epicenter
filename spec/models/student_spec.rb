@@ -27,8 +27,8 @@ describe Student do
       FactoryGirl.create(:completed_refund_policy, student: student)
       FactoryGirl.create(:completed_enrollment_agreement, student: student)
       allow(student).to receive(:total_paid).and_return(100)
-      expect(close_io_client).to receive(:update_lead).with(lead_id, { status: "Accepted" })
-      student.update_close_io({ status: 'Accepted' })
+      expect(close_io_client).to receive(:update_lead).with(lead_id, { status: "Accepted", 'custom.amount_paid': student.total_paid })
+      student.update_close_io({ status: "Accepted", 'custom.amount_paid': student.total_paid })
     end
 
     it "fails to update the record when there are not enough signatures", :vcr do
