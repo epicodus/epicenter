@@ -1,10 +1,8 @@
 class RefundPolicyController < SignaturesController
+  include SignatureParamsHelper
 
   def new
-    if params.has_key?(:sig_id)
-      code_of_conduct_signature = Signature.find_by(signature_request_id: params[:sig_id])
-      code_of_conduct_signature.update(is_complete: true)
-    end
+    check_signature_params
     if current_student.completed_signatures(CodeOfConduct) == 1
       signature = RefundPolicy.create(student_id: current_student.id)
       @sign_url = signature.sign_url

@@ -1,11 +1,10 @@
 class PaymentMethodsController < ApplicationController
+  include SignatureParamsHelper
+
   before_filter :authenticate_student!
 
   def new
-    if params.has_key?(:sig_id)
-      enrollment_agreement_signature = Signature.find_by(signature_request_id: params[:sig_id])
-      enrollment_agreement_signature.update(is_complete: true)
-    end
+    check_signature_params
   end
 
   def index
