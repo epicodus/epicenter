@@ -20,10 +20,10 @@ class Student < User
   has_many :signatures
 
   def update_close_io
-    lead = close_io_client.list_leads('email:' + email)
-    if close_io_lead_exists?(lead) && enrollment_complete?
-     close_io_client.update_lead(lead.data.first.id, { status: 'Enrolled', 'custom.amount_paid': total_paid })
-   else
+    if close_io_lead_exists? && enrollment_complete?
+      id = close_io_client.list_leads('email:' + email).data.first.id
+      close_io_client.update_lead(id, { status: 'Enrolled', 'custom.amount_paid': total_paid })
+    elsif !close_io_lead_exists?
      raise "The Close.io lead for #{email} was not found."
     end
   end
@@ -131,7 +131,8 @@ class Student < User
   end
 
 private
-  def close_io_lead_exists?(lead)
+  def close_io_lead_exists?
+    lead = close_io_client.list_leads('email:' + email)
     lead.total_results == 1
   end
 

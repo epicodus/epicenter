@@ -32,18 +32,20 @@ describe Student do
     end
 
     it "fails to update the record when there are not enough signatures", :vcr do
+      student.update(email: 'fake@fake.com')
       FactoryGirl.create(:completed_code_of_conduct, student: student)
       FactoryGirl.create(:completed_refund_policy, student: student)
       allow(student).to receive(:total_paid).and_return(100)
-      expect { student.update_close_io }.to raise_error(RuntimeError, 'The Close.io lead for test@test.com was not found.')
+      expect { student.update_close_io }.to raise_error(RuntimeError, 'The Close.io lead for fake@fake.com was not found.')
     end
 
     it "fails to update the record when no payment has been made", :vcr do
+      student.update(email: 'fake@fake.com')
       FactoryGirl.create(:completed_code_of_conduct, student: student)
       FactoryGirl.create(:completed_refund_policy, student: student)
       FactoryGirl.create(:completed_enrollment_agreement, student: student)
       allow(student).to receive(:total_paid).and_return(0)
-      expect { student.update_close_io }.to raise_error(RuntimeError, 'The Close.io lead for test@test.com was not found.')
+      expect { student.update_close_io }.to raise_error(RuntimeError, 'The Close.io lead for fake@fake.com was not found.')
     end
   end
 
