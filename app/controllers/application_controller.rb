@@ -35,7 +35,7 @@ protected
       new_enrollment_agreement_path
     elsif user.signed?(CodeOfConduct)
       new_refund_policy_path
-    elsif user.signed?(nil)
+    elsif user.signed?(CodeOfConduct) == false
       new_code_of_conduct_path
     else
       proper_payments_path(user)
