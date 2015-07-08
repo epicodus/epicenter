@@ -136,7 +136,7 @@ describe Student do
 
   describe ".recurring_active" do
     it "only includes users that are recurring_active", :vcr do
-      recurring_active_user = FactoryGirl.create(:user_with_recurring_active)
+      recurring_active_user = FactoryGirl.create(:user_with_recurring_active, email: 'test@test.com')
       non_recurring_active_user  = FactoryGirl.create(:user_with_verified_bank_account)
       expect(Student.recurring_active).to eq [recurring_active_user]
     end
@@ -155,7 +155,7 @@ describe Student do
     end
 
     it "is false if student has made any payments" do
-      student = FactoryGirl.create :user_with_upfront_payment
+      student = FactoryGirl.create :user_with_upfront_payment, email: 'test@test.com'
       expect(student.upfront_payment_due?).to be false
     end
   end
@@ -177,19 +177,19 @@ describe Student do
 
     it "is false if student does not have a plan with recurring payments" do
       plan = FactoryGirl.create(:upfront_payment_only_plan)
-      student = FactoryGirl.create(:user_with_upfront_payment, plan: plan)
+      student = FactoryGirl.create(:user_with_upfront_payment, plan: plan, email: 'test@test.com')
       expect(student.ready_to_start_recurring_payments?).to be false
     end
 
     it "is false if recurring is active" do
-      student = FactoryGirl.create(:user_with_recurring_active)
+      student = FactoryGirl.create(:user_with_recurring_active, email: 'test@test.com')
       expect(student.ready_to_start_recurring_payments?).to be false
     end
   end
 
   describe "#make_upfront_payment", :vcr do
     it "makes a payment for the upfront amount of the student's plan" do
-      student = FactoryGirl.create(:user_with_verified_bank_account)
+      student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com')
       student.make_upfront_payment
       expect(student.payments.first.amount).to eq student.plan.upfront_amount
     end
@@ -197,13 +197,13 @@ describe Student do
 
   describe "#start_recurring_payments", :vcr do
     it "makes a payment for the recurring amount of the users's plan" do
-      student = FactoryGirl.create(:user_with_verified_bank_account)
+      student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com')
       student.start_recurring_payments
       expect(student.payments.first.amount).to eq student.plan.recurring_amount
     end
 
     it 'sets the bank account to be recurring_active' do
-      student = FactoryGirl.create(:user_with_verified_bank_account)
+      student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com')
       student.start_recurring_payments
       expect(student.recurring_active).to eq true
     end
@@ -361,14 +361,14 @@ describe Student do
 
   describe "#next_payment_date", :vcr do
     it "returns nil if recurring_active is not true" do
-      student = FactoryGirl.create(:user_with_upfront_payment)
+      student = FactoryGirl.create(:user_with_upfront_payment, email: 'test@test.com')
       expect(student.next_payment_date).to eq nil
     end
 
     it "returns the next payment date if recurring_active is true" do
       student = nil
       travel_to(Date.parse("January 5, 2014")) do
-        student = FactoryGirl.create(:user_with_recurring_active)
+        student = FactoryGirl.create(:user_with_recurring_active, email: 'test@test.com')
       end
       expect(student.next_payment_date.to_date).to eq Date.parse("February 5, 2014")
     end
@@ -376,14 +376,14 @@ describe Student do
 
   describe '#total_paid', :vcr do
     it 'sums all of the students payments' do
-      student = FactoryGirl.create(:user_with_credit_card)
+      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       FactoryGirl.create(:payment, student: student, amount: 200_00)
       FactoryGirl.create(:payment, student: student, amount: 200_00)
       expect(student.total_paid).to eq 400_00
     end
 
     it 'does not include failed payments' do
-      student = FactoryGirl.create(:user_with_credit_card)
+      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       FactoryGirl.create(:payment, student: student, amount: 200_00)
       failed_payment = FactoryGirl.create(:payment, student: student, amount: 200_00)
       failed_payment.update(status: 'failed')
