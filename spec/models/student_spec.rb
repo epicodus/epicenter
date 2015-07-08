@@ -50,14 +50,18 @@ describe Student do
   end
 
   describe "#signed?" do
+    let(:student) { FactoryGirl.create(:student) }
+
     it "returns true if a signature has been signed" do
-      student = FactoryGirl.create(:student)
       FactoryGirl.create(:completed_code_of_conduct, student: student)
       expect(student.signed?(CodeOfConduct)).to eq true
     end
 
+    it "returns true if a signature is nil" do
+      expect(student.signed?(nil)).to eq true
+    end
+
     it "returns false if a signature has not been signed" do
-      student = FactoryGirl.create(:student)
       expect(student.signed?(RefundPolicy)).to be false
     end
   end
