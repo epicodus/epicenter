@@ -1,6 +1,6 @@
 class AddCompletedSignaturesToUsersFromBeforeHelloSign < ActiveRecord::Migration
   def change
-    User.all.each do |user|
+    Student.all.each do |user|
       code_of_conduct = Signature.create(
         student_id: user.id,
         signature_request_id: 'before_hello_sign',
