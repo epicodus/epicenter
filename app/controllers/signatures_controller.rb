@@ -13,13 +13,4 @@ class SignaturesController < ApplicationController
       @controller_for_next_page = controller_for_next_page
     end
   end
-
-  def create
-    response = JSON.parse(params['json'])
-    event_type = response['event']['event_type']
-    if event_type == 'signature_request_signed'
-      signature_request_id = response['signature_request']['signature_request_id']
-      signature = Signature.find_by(signature_request_id: signature_request_id)
-    end
-  end
 end
