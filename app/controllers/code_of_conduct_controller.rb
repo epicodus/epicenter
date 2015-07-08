@@ -1,7 +1,6 @@
 class CodeOfConductController < SignaturesController
 
   def new
-    controller_for_next_page = 'refund_policy'
-    super(nil, CodeOfConduct, controller_for_next_page)
+    super(nil, CodeOfConduct, 'refund_policy')
   end
 end
