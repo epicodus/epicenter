@@ -51,5 +51,5 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :recurring_payments_option, only: [:index]
+  resources :payment_options, only: [:new, :create]
 end
