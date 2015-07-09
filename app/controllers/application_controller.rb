@@ -29,8 +29,10 @@ protected
   end
 
   def signatures_check_path(user)
-    if user.signed?(EnrollmentAgreement)
+    if user.signed?(PromissoryNote)
       proper_payments_path(user)
+    elsif user.signed?(EnrollmentAgreement)
+      recurring_payments_option_index_path
     elsif user.signed?(RefundPolicy)
       new_enrollment_agreement_path
     elsif user.signed?(CodeOfConduct)
