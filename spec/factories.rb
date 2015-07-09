@@ -179,6 +179,11 @@ FactoryGirl.define do
       type EnrollmentAgreement
       is_complete true
     end
+
+    factory :completed_promissory_note do
+      type PromissoryNote
+      is_complete true
+    end
   end
 
   factory :student do
