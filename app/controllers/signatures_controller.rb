@@ -3,7 +3,7 @@ class SignaturesController < ApplicationController
 
   protect_from_forgery except: [:create]
 
-  def new(signed_signature_model, signature_model, controller_for_next_page)
+  def new(signed_signature_model, signature_model, controller_for_next_page, controller_action)
     update_signature_request
     if current_student.signed?(signature_model)
       redirect_to root_path
@@ -12,6 +12,7 @@ class SignaturesController < ApplicationController
       signature = signature_model.create(student_id: current_student.id)
       @sign_url = signature.sign_url
       @controller_for_next_page = controller_for_next_page
+      @controller_action = controller_action
     end
   end
 end
