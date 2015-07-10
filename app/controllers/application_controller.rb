@@ -8,8 +8,11 @@ class ApplicationController < ActionController::Base
 
 protected
   def configure_permitted_params
+    devise_parameter_sanitizer.for(:invite) do |u|
+      u.permit(:email, :cohort_id)
+    end
     devise_parameter_sanitizer.for(:accept_invitation) do |u|
-      u.permit(:name, :email, :cohort_id, :current_cohort_id, :plan_id, :password, :password_confirmation,
+      u.permit(:name, :email, :current_cohort_id, :plan_id, :password, :password_confirmation,
              :invitation_token)
     end
     devise_parameter_sanitizer.for(:account_update) do |u|
@@ -29,10 +32,12 @@ protected
   end
 
   def signatures_check_path(user)
-    if user.signed?(PromissoryNote)
+    if !user.plan.recurring? && user.signed_main_documents?
       proper_payments_path(user)
-    elsif user.signed?(EnrollmentAgreement)
-      recurring_payments_option_index_path
+    elsif user.plan.recurring? && user.signed?(PromissoryNote)
+      proper_payments_path(user)
+    elsif user.plan.recurring? && !user.signed?(PromissoryNote) && user.signed_main_documents?
+      new_promissory_note_path
     elsif user.signed?(RefundPolicy)
       new_enrollment_agreement_path
     elsif user.signed?(CodeOfConduct)
