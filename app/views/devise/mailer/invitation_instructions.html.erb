@@ -1,13 +1,46 @@
-<p><%= "Hi #{@resource.email}" %></p>
-
 <% if @resource.is_a?(Admin) %>
-<p><%= "You have been invited to create an admin account at #{root_url}. Lucky you!" %></p>
+  <p><%= "Hi #{@resource.email}" %></p>
+  <p><%= "You have been invited to create an admin account at #{root_url}. Lucky you!" %></p>
 <% else %>
-<p><%= "I'm really happy to have you joining us at Epicodus! As your acceptance email indicated,
-        you will need to create an account at #{root_url} to finish your enrollment and pay your tuition." %></p>
+  <p><%= "Hi #{@resource.email}. I'm really happy to tell you that you're accepted to Epicodus!" %></p>
+
+  <p>The next step is to read and sign our code of conduct, refund policy, and enrollment agreement, and then pay your tuition.</p>
+
+  <p>Click <%= link_to "here", accept_invitation_url(@resource, :invitation_token => @token) %> to enroll and complete these steps.</p>
+
+  <p>
+    To reserve your spot in the class, we need to receive your signed enrollment agreement and first tuition payment within the next seven days, as well as the promissory note if applicable. Verifying your bank account on the payments site can take up to four days, so please start that process as soon as possible. If I haven't heard from you within a week, we’ll open your spot up. If you decide you don’t want to enroll in Epicodus, I’d very much appreciate you telling me as soon as you make up your mind so we can offer your place to someone else.
+  </p>
+
+  <p>Now, on to the fun stuff!</p>
+
+  <p>
+    We'd love for you to get engaged with your fellow students and Epicodus alumni. Take a look at epicodus.switchboardhq.com and make an account! On Epicodus Switchboard, you either "ask" for or "offer" whatever matters to you. If you are interested in coordinating housing with other students, please start by posing an "ask" and watch the conversation grow from there!
+  </p>
+
+  <p>
+    For your pre-class homework, take a look at <%= link_to 'www.learnhowtoprogram.com/table-of-contents', 'http://www.learnhowtoprogram.com/table-of-contents' %>. Go through "Pre-work: Web pages, command line, and reading" and the pre-work section for your class (eg, "PHP pre-work"). You'll notice that a couple of the lessons ask you to go through some materials on Treehouse; if you don't already have an account, I'll send you an invite after you enroll. (If you already have an account, I will invite you using your_address+treehouse@your_email.com). The weekend before class starts, you'll have a few videos to watch as well. If you finish everything early and want some more practice, most students' weakest area is HTML and CSS, and I'd recommend filling your extra time by going through <%= link_to 'htmlandcssbook.com', 'http://htmlandcssbook.com'%>. Unfortunately, neither I nor your teachers will have the time to help you individually with your homework before class, but you can use the Switchboard to ask each other questions and offer advice.
+  </p>
+
+  <p>
+    We're going to have an orientation from noon to 3pm the day before class starts, so keep that time free. Our attendance policy is that you should not miss class (or be late or leave early) unless you are sick, have a personal emergency, an important personal event (wedding, funeral, etc), or a trip you'd already booked before being accepted to Epicodus. The only holidays we observe are Martin Luther King, Jr. Day, Memorial Day, July 3, Labor Day, and Veterans Day.
+  </p>
+
+  <p>
+    If you haven't already, I'd strongly encourage you to check out our frequently asked questions page at <%= link_to 'www.epicodus.com/faq/', 'http://www.epicodus.com/faq/'%>.
+  </p>
+
+  <p>
+    Finally, if you want to get plugged into the Portland tech community, pretty much every tech event around town is listed at <%= link_to 'calagator.org', 'http://calagator.org' %>. Check it out!
+  </p>
+
+  <p>Thanks so much, <%= "#{@resource.email}" %>! We're really excited to have you at Epicodus.</p>
 <% end %>
 
-<p><%= link_to "Accept Invitation", accept_invitation_url(@resource, :invitation_token => @token) %></p>
+<% if @resource.is_a?(Admin) %>
+  <p><%= link_to "Accept Invitation", accept_invitation_url(@resource, :invitation_token => @token) %></p>
+<% end %>
 
-<p><%= "If you do not want to accept the invitation, please ignore this email.<br>
-        Your account won't be created until you access the link above and set your information." %></p>
+<p>If you do not want to accept the invitation, please ignore this email.</p>
+
+<p>Your account won't be created until you access the link above and set your information.</p>
