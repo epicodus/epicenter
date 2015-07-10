@@ -36,6 +36,10 @@ class Student < User
     end
   end
 
+  def signed_main_documents?
+    signed?(CodeOfConduct) && signed?(RefundPolicy) && signed?(EnrollmentAgreement)
+  end
+
   def stripe_customer
     if stripe_customer_id
       customer = Stripe::Customer.retrieve(stripe_customer_id)

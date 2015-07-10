@@ -66,6 +66,23 @@ describe Student do
     end
   end
 
+  describe "#signed_main_documents?" do
+    let(:student) { FactoryGirl.create(:student) }
+
+    it "returns true if all 3 main documents have been signed" do
+      FactoryGirl.create(:completed_code_of_conduct, student: student)
+      FactoryGirl.create(:completed_refund_policy, student: student)
+      FactoryGirl.create(:completed_enrollment_agreement, student: student)
+      expect(student.signed_main_documents?).to eq true
+    end
+
+    it "returns false if all 3 main documents have not been signed" do
+      FactoryGirl.create(:completed_code_of_conduct, student: student)
+      FactoryGirl.create(:completed_refund_policy, student: student)
+      expect(student.signed_main_documents?).to eq false
+    end
+  end
+
   describe "default scope" do
     it "alphabetizes the students by name" do
       student1 = FactoryGirl.create(:student, name: "Bob Test")
