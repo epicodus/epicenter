@@ -45,6 +45,7 @@ feature "Student signs in while class is not in session" do
       FactoryGirl.create(:completed_code_of_conduct, student: student)
       FactoryGirl.create(:completed_refund_policy, student: student)
       FactoryGirl.create(:completed_enrollment_agreement, student: student)
+      FactoryGirl.create(:completed_promissory_note, student: student)
       sign_in(student)
       visit new_payment_method_path
       expect(page).to have_content "How would you like to make payments"
