@@ -60,8 +60,10 @@ feature 'Inviting new users' do
   let(:admin) { FactoryGirl.create(:admin) }
 
   scenario 'admin sends invitation to a student' do
+    cohort = FactoryGirl.build(:cohort)
     login_as(admin, scope: :admin)
     visit new_student_invitation_path
+    select cohort.description, from: 'student_cohort_id'
     fill_in 'Email', with: 'newstudent@example.com'
     click_on 'Send an invitation'
     expect(page).to have_content "An invitation email has been sent to newstudent@example.com"
