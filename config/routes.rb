@@ -50,6 +50,4 @@ Rails.application.routes.draw do
       resources :refund_policy, only: [:new]
     end
   end
-
-  resources :payment_options, only: [:new, :create]
 end

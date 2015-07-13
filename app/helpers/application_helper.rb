@@ -10,7 +10,6 @@ module ApplicationHelper
     current_page?(new_refund_policy_path) ||
     current_page?(new_enrollment_agreement_path) ||
     current_page?(new_promissory_note_path) ||
-    current_page?(new_payment_option_path) ||
     current_page?(certificate_path) ||
     current_page?(transcript_path) ||
     current_page?(attendance_path)
