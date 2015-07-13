@@ -245,6 +245,15 @@ FactoryGirl.define do
       end
 
     end
+
+    factory :user_with_all_documents_signed do
+      after(:create) do |student|
+        create(:completed_code_of_conduct, student: student)
+        create(:completed_refund_policy, student: student)
+        create(:completed_enrollment_agreement, student: student)
+        create(:completed_promissory_note, student: student)
+      end
+    end
   end
 
   factory :submission do

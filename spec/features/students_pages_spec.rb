@@ -42,10 +42,7 @@ feature "Student signs in while class is not in session" do
 
   context "before adding a payment method" do
     it "takes them to the page to choose payment method" do
-      FactoryGirl.create(:completed_code_of_conduct, student: student)
-      FactoryGirl.create(:completed_refund_policy, student: student)
-      FactoryGirl.create(:completed_enrollment_agreement, student: student)
-      FactoryGirl.create(:completed_promissory_note, student: student)
+      student = FactoryGirl.create(:user_with_all_documents_signed)
       sign_in(student)
       visit new_payment_method_path
       expect(page).to have_content "How would you like to make payments"
