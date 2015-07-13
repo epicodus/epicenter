@@ -15,4 +15,8 @@ class SignaturesController < ApplicationController
       @controller_action = controller_action
     end
   end
+
+  def create
+    render json: { response: 'Hello API Event Received' }
+  end
 end
