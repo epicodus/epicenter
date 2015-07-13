@@ -1,8 +1,8 @@
 <% if @resource.is_a?(Admin) %>
-  <p><%= "Hi #{@resource.email}" %></p>
+  <p><%= "Hi #{@resource.name}" %></p>
   <p><%= "You have been invited to create an admin account at #{root_url}. Lucky you!" %></p>
 <% else %>
-  <p><%= "Hi #{@resource.email}. I'm really happy to tell you that you're accepted to Epicodus!" %></p>
+  <p><%= "Hi #{@resource.name}. I'm really happy to tell you that you're accepted to Epicodus!" %></p>
 
   <p>The next step is to read and sign our code of conduct, refund policy, and enrollment agreement, and then pay your tuition.</p>
 
@@ -34,7 +34,7 @@
     Finally, if you want to get plugged into the Portland tech community, pretty much every tech event around town is listed at <%= link_to 'calagator.org', 'http://calagator.org' %>. Check it out!
   </p>
 
-  <p>Thanks so much, <%= "#{@resource.email}" %>! We're really excited to have you at Epicodus.</p>
+  <p>Thanks so much, <%= "#{@resource.name}" %>! We're really excited to have you at Epicodus.</p>
 <% end %>
 
 <% if @resource.is_a?(Admin) %>

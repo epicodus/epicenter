@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
 protected
   def configure_permitted_params
     devise_parameter_sanitizer.for(:invite) do |u|
-      u.permit(:email, :cohort_id)
+      u.permit(:name, :email, :cohort_id)
     end
     devise_parameter_sanitizer.for(:accept_invitation) do |u|
       u.permit(:name, :email, :current_cohort_id, :plan_id, :password, :password_confirmation,
