@@ -7,7 +7,6 @@ feature 'Student signs up via invitation' do
     visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
     fill_in 'Name', with: 'Ryan Larson'
     select student.plan.name, from: 'student_plan_id'
-    select student.cohort.description, from: 'student_cohort_id'
     fill_in 'Password', with: 'password'
     fill_in 'Password confirmation', with: 'password'
     click_on 'Submit'
@@ -19,7 +18,6 @@ feature 'Student signs up via invitation' do
     visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
     fill_in 'Name', with: ''
     select student.plan.name, from: 'student_plan_id'
-    select student.cohort.description, from: 'student_cohort_id'
     click_on 'Submit'
     expect(page).to have_content 'error'
   end
@@ -44,7 +42,9 @@ feature "Student signs in while class is not in session" do
 
   context "before adding a payment method" do
     it "takes them to the page to choose payment method" do
+      student = FactoryGirl.create(:user_with_all_documents_signed)
       sign_in(student)
+      visit new_payment_method_path
       expect(page).to have_content "How would you like to make payments"
     end
   end
@@ -53,6 +53,7 @@ feature "Student signs in while class is not in session" do
     it "takes them to the payment methods page", :vcr do
       bank_account = FactoryGirl.create(:bank_account, student: student)
       sign_in student
+      visit payment_methods_path
       expect(page).to have_content "Your payment methods"
       expect(page).to have_link "Verify Account"
     end
@@ -62,6 +63,7 @@ feature "Student signs in while class is not in session" do
     it "shows them their payment history" do
       verified_bank_account = FactoryGirl.create(:verified_bank_account, student: student)
       sign_in(student)
+      visit payments_path
       expect(page).to have_content "Your payments"
     end
   end
@@ -70,6 +72,7 @@ feature "Student signs in while class is not in session" do
     it "shows them their payment history" do
       credit_card = FactoryGirl.create(:credit_card, student: student)
       sign_in(student)
+      visit payments_path
       expect(page).to have_content "Your payments"
     end
   end

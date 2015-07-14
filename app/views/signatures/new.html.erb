@@ -1,0 +1,16 @@
+<script type="text/javascript" src="//s3.amazonaws.com/cdn.hellofax.com/js/embedded.js"></script>
+<script type="text/javascript">
+    HelloSign.init('<%= ENV['HELLO_SIGN_CLIENT_ID'] %>');
+    HelloSign.open({
+        url: '<%= @sign_url %>',
+        allowCancel: false,
+        // skipDomainVerification: true, // ONLY FOR TESTING
+        messageListener: function(eventData) {
+          if (eventData.event == HelloSign.EVENT_SIGNED) {
+            document.location = "<%= url_for(action: @controller_action, controller: @controller_for_next_page) %>?signature_request_id=" + eventData.signature_id
+          }
+        }
+    });
+</script>
+
+<div class="signature-loading">Loading document...</div>

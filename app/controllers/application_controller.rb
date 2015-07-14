@@ -8,8 +8,11 @@ class ApplicationController < ActionController::Base
 
 protected
   def configure_permitted_params
+    devise_parameter_sanitizer.for(:invite) do |u|
+      u.permit(:name, :email, :cohort_id)
+    end
     devise_parameter_sanitizer.for(:accept_invitation) do |u|
-      u.permit(:name, :email, :cohort_id, :current_cohort_id, :plan_id, :password, :password_confirmation,
+      u.permit(:name, :email, :current_cohort_id, :plan_id, :password, :password_confirmation,
              :invitation_token)
     end
     devise_parameter_sanitizer.for(:account_update) do |u|
@@ -24,7 +27,25 @@ protected
     if user.is_a? Admin
       cohort_code_reviews_path(user.current_cohort)
     elsif user.is_a? Student
-      user.class_in_session? ? cohort_code_reviews_path(user.cohort) : proper_payments_path(user)
+      user.class_in_session? ? cohort_code_reviews_path(user.cohort) : signatures_check_path(user)
+    end
+  end
+
+  def signatures_check_path(user)
+    if !user.plan.recurring? && user.signed_main_documents?
+      proper_payments_path(user)
+    elsif user.plan.recurring? && user.signed?(PromissoryNote)
+      proper_payments_path(user)
+    elsif user.plan.recurring? && !user.signed?(PromissoryNote) && user.signed_main_documents?
+      new_promissory_note_path
+    elsif user.signed?(RefundPolicy)
+      new_enrollment_agreement_path
+    elsif user.signed?(CodeOfConduct)
+      new_refund_policy_path
+    elsif !user.signed?(CodeOfConduct)
+      new_code_of_conduct_path
+    else
+      proper_payments_path(user)
     end
   end
 

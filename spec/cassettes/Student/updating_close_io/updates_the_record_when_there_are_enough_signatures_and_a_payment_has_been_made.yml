@@ -1,0 +1,389 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://d4c96097c868b567203546e7220ecd2341f008f2943aceddc522322d:@app.close.io/api/v1/lead/?query=email:%22test@test.com%22
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      User-Agent:
+      - Faraday v0.9.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 01 Jul 2015 18:18:42 GMT
+      Server:
+      - ElasticWWW
+      Set-Cookie:
+      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Length:
+      - '616'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "display_name":
+        "TEST TEST", "addresses": [], "name": "TEST TEST", "contacts": [{"name": "TEST
+        TEST", "title": "", "date_updated": "2015-06-30T17:44:58.672000+00:00", "phones":
+        [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "id":
+        "cont_lGPYfvRMszgKcjpML3aAdTPxiJ1JLgQTyWvB9e4w2oS", "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE",
+        "urls": [], "date_created": "2015-06-30T17:44:58.672000+00:00", "emails":
+        [{"type": "office", "email": "test@test.com"}], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}],
+        "updated_by_name": "Michael Kaiser-Nyman", "created_by_name": "Michael Kaiser-Nyman",
+        "status_id": "stat_4GWsgkXaNRgwZI2UQTUxCnB273flKYxOivRLiMx0X4g", "html_url":
+        "https://app.close.io/lead/lead_uRGdf2h3prNy7yTGrlhY8Y8Xgtva1zSOixZ5jNVrsBt/",
+        "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "custom":
+        {"amount_owed": 1000}, "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE",
+        "date_updated": "2015-07-01T17:37:02.098000+00:00", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "opportunities": [], "url": "http://www.test.com", "status_label": "Accepted",
+        "date_created": "2015-06-30T17:44:58.678000+00:00", "id": "lead_uRGdf2h3prNy7yTGrlhY8Y8Xgtva1zSOixZ5jNVrsBt",
+        "description": ""}]}'
+    http_version: 
+  recorded_at: Wed, 01 Jul 2015 18:18:42 GMT
+- request:
+    method: get
+    uri: https://d4c96097c868b567203546e7220ecd2341f008f2943aceddc522322d:@app.close.io/api/v1/lead/?query=email:%22test@test.com%22
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      User-Agent:
+      - Faraday v0.9.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 01 Jul 2015 18:18:43 GMT
+      Server:
+      - ElasticWWW
+      Set-Cookie:
+      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Length:
+      - '616'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "display_name":
+        "TEST TEST", "addresses": [], "name": "TEST TEST", "contacts": [{"name": "TEST
+        TEST", "title": "", "date_updated": "2015-06-30T17:44:58.672000+00:00", "phones":
+        [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "id":
+        "cont_lGPYfvRMszgKcjpML3aAdTPxiJ1JLgQTyWvB9e4w2oS", "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE",
+        "urls": [], "date_created": "2015-06-30T17:44:58.672000+00:00", "emails":
+        [{"type": "office", "email": "test@test.com"}], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}],
+        "updated_by_name": "Michael Kaiser-Nyman", "created_by_name": "Michael Kaiser-Nyman",
+        "status_id": "stat_4GWsgkXaNRgwZI2UQTUxCnB273flKYxOivRLiMx0X4g", "html_url":
+        "https://app.close.io/lead/lead_uRGdf2h3prNy7yTGrlhY8Y8Xgtva1zSOixZ5jNVrsBt/",
+        "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "custom":
+        {"amount_owed": 1000}, "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE",
+        "date_updated": "2015-07-01T17:37:02.098000+00:00", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "opportunities": [], "url": "http://www.test.com", "status_label": "Accepted",
+        "date_created": "2015-06-30T17:44:58.678000+00:00", "id": "lead_uRGdf2h3prNy7yTGrlhY8Y8Xgtva1zSOixZ5jNVrsBt",
+        "description": ""}]}'
+    http_version: 
+  recorded_at: Wed, 01 Jul 2015 18:18:43 GMT
+- request:
+    method: post
+    uri: https://api.stripe.com/v1/customers
+    body:
+      encoding: US-ASCII
+      string: description=student2%40example.com
+    headers:
+      Accept:
+      - "*/*; q=0.5, application/xml"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Stripe/v1 RubyBindings/1.21.0
+      Authorization:
+      - Bearer <STRIPE_API_KEY>
+      Content-Type:
+      - application/x-www-form-urlencoded
+      X-Stripe-Client-User-Agent:
+      - '{"bindings_version":"1.21.0","lang":"ruby","lang_version":"2.2.2 p95 (2015-04-13)","platform":"x86_64-darwin14","engine":"ruby","publisher":"stripe","uname":"Darwin
+        chris-imac 14.3.0 Darwin Kernel Version 14.3.0: Mon Mar 23 11:59:05 PDT 2015;
+        root:xnu-2782.20.48~5/RELEASE_X86_64 x86_64","hostname":"chris-imac"}'
+      Content-Length:
+      - '34'
+  response:
+    status:
+      code: 401
+      message: Unauthorized
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Wed, 01 Jul 2015 18:26:51 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '124'
+      Connection:
+      - keep-alive
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_6WtiiT4IQxYeXF
+      Stripe-Version:
+      - '2015-06-15'
+      Www-Authenticate:
+      - Bearer realm="Stripe"
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "error": {
+            "type": "invalid_request_error",
+            "message": "Invalid API Key provided: my_fake_******_***_key"
+          }
+        }
+    http_version: 
+  recorded_at: Wed, 01 Jul 2015 18:26:51 GMT
+- request:
+    method: get
+    uri: https://d4c96097c868b567203546e7220ecd2341f008f2943aceddc522322d:@app.close.io/api/v1/lead/?query=email:student1@example.com
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      User-Agent:
+      - Faraday v0.9.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 02 Jul 2015 17:17:26 GMT
+      Server:
+      - ElasticWWW
+      Set-Cookie:
+      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Length:
+      - '51'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"has_more": false, "total_results": 0, "data": []}'
+    http_version: 
+  recorded_at: Thu, 02 Jul 2015 17:17:25 GMT
+- request:
+    method: get
+    uri: https://d4c96097c868b567203546e7220ecd2341f008f2943aceddc522322d:@app.close.io/api/v1/lead/?query=email:test@test.com
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      User-Agent:
+      - Faraday v0.9.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 02 Jul 2015 17:26:24 GMT
+      Server:
+      - ElasticWWW
+      Set-Cookie:
+      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Length:
+      - '616'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "display_name":
+        "TEST TEST", "addresses": [], "name": "TEST TEST", "contacts": [{"name": "TEST
+        TEST", "title": "", "date_updated": "2015-06-30T17:44:58.672000+00:00", "phones":
+        [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "id":
+        "cont_lGPYfvRMszgKcjpML3aAdTPxiJ1JLgQTyWvB9e4w2oS", "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE",
+        "urls": [], "date_created": "2015-06-30T17:44:58.672000+00:00", "emails":
+        [{"type": "office", "email": "test@test.com"}], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}],
+        "updated_by_name": "Michael Kaiser-Nyman", "created_by_name": "Michael Kaiser-Nyman",
+        "status_id": "stat_4GWsgkXaNRgwZI2UQTUxCnB273flKYxOivRLiMx0X4g", "html_url":
+        "https://app.close.io/lead/lead_uRGdf2h3prNy7yTGrlhY8Y8Xgtva1zSOixZ5jNVrsBt/",
+        "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "custom":
+        {"amount_owed": 1000}, "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE",
+        "date_updated": "2015-07-01T17:37:02.098000+00:00", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "opportunities": [], "url": "http://www.test.com", "status_label": "Accepted",
+        "date_created": "2015-06-30T17:44:58.678000+00:00", "id": "lead_uRGdf2h3prNy7yTGrlhY8Y8Xgtva1zSOixZ5jNVrsBt",
+        "description": ""}]}'
+    http_version: 
+  recorded_at: Thu, 02 Jul 2015 17:26:23 GMT
+- request:
+    method: get
+    uri: https://d4c96097c868b567203546e7220ecd2341f008f2943aceddc522322d:@app.close.io/api/v1/lead/?query=email:test@test.com
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      User-Agent:
+      - Faraday v0.9.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 02 Jul 2015 17:26:24 GMT
+      Server:
+      - ElasticWWW
+      Set-Cookie:
+      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Length:
+      - '616'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "display_name":
+        "TEST TEST", "addresses": [], "name": "TEST TEST", "contacts": [{"name": "TEST
+        TEST", "title": "", "date_updated": "2015-06-30T17:44:58.672000+00:00", "phones":
+        [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "id":
+        "cont_lGPYfvRMszgKcjpML3aAdTPxiJ1JLgQTyWvB9e4w2oS", "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE",
+        "urls": [], "date_created": "2015-06-30T17:44:58.672000+00:00", "emails":
+        [{"type": "office", "email": "test@test.com"}], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}],
+        "updated_by_name": "Michael Kaiser-Nyman", "created_by_name": "Michael Kaiser-Nyman",
+        "status_id": "stat_4GWsgkXaNRgwZI2UQTUxCnB273flKYxOivRLiMx0X4g", "html_url":
+        "https://app.close.io/lead/lead_uRGdf2h3prNy7yTGrlhY8Y8Xgtva1zSOixZ5jNVrsBt/",
+        "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "custom":
+        {"amount_owed": 1000}, "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE",
+        "date_updated": "2015-07-01T17:37:02.098000+00:00", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "opportunities": [], "url": "http://www.test.com", "status_label": "Accepted",
+        "date_created": "2015-06-30T17:44:58.678000+00:00", "id": "lead_uRGdf2h3prNy7yTGrlhY8Y8Xgtva1zSOixZ5jNVrsBt",
+        "description": ""}]}'
+    http_version: 
+  recorded_at: Thu, 02 Jul 2015 17:26:24 GMT
+- request:
+    method: get
+    uri: https://d4c96097c868b567203546e7220ecd2341f008f2943aceddc522322d:@app.close.io/api/v1/lead/?query=email:test@test.com
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      User-Agent:
+      - Faraday v0.9.1
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 08 Jul 2015 22:05:51 GMT
+      Server:
+      - ElasticWWW
+      Set-Cookie:
+      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Length:
+      - '628'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "display_name":
+        "TEST TEST", "addresses": [], "name": "TEST TEST", "contacts": [{"name": "TEST
+        TEST", "title": "", "date_updated": "2015-06-30T17:44:58.672000+00:00", "phones":
+        [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "id":
+        "cont_lGPYfvRMszgKcjpML3aAdTPxiJ1JLgQTyWvB9e4w2oS", "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE",
+        "urls": [], "date_created": "2015-06-30T17:44:58.672000+00:00", "emails":
+        [{"type": "office", "email": "test@test.com"}], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}],
+        "updated_by_name": "Michael Kaiser-Nyman", "created_by_name": "Michael Kaiser-Nyman",
+        "status_id": "stat_IAcdBqZZTAul6vK2srakLxAyd8Kem3ALHW6MBg12ntc", "html_url":
+        "https://app.close.io/lead/lead_uRGdf2h3prNy7yTGrlhY8Y8Xgtva1zSOixZ5jNVrsBt/",
+        "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "custom":
+        {"amount_owed": 1000, "amount_paid": 200}, "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE",
+        "date_updated": "2015-07-07T20:37:12.254000+00:00", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "opportunities": [], "url": "http://www.test.com", "status_label": "Enrolled",
+        "date_created": "2015-06-30T17:44:58.678000+00:00", "id": "lead_uRGdf2h3prNy7yTGrlhY8Y8Xgtva1zSOixZ5jNVrsBt",
+        "description": ""}]}'
+    http_version: 
+  recorded_at: Wed, 08 Jul 2015 22:05:51 GMT
+recorded_with: VCR 2.9.3

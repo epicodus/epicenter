@@ -1,7 +1,7 @@
 feature 'Student makes an upfront payment' do
   context 'with a valid credit card', :vcr do
     it "shows successful payment message" do
-      student = FactoryGirl.create(:user_with_credit_card)
+      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       login_as(student, scope: :student)
       visit payments_path
       click_on "Make upfront payment"
@@ -13,7 +13,7 @@ end
 feature 'Student starts recurring payments' do
   context 'with a valid bank account', :vcr do
     it "shows successful payment message" do
-      student = FactoryGirl.create(:user_with_upfront_payment)
+      student = FactoryGirl.create(:user_with_upfront_payment, email: 'test@test.com')
       login_as(student, scope: :student)
       visit payments_path
       click_on "Start recurring payments"

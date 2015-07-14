@@ -16,8 +16,8 @@ feature 'Viewing payment index page' do
 
     context 'after a payment has been made with bank account', :vcr do
       it 'shows payment history with correct charge and status' do
-        payment = FactoryGirl.create(:payment, amount: 600_00)
-        student = payment.student
+        student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com')
+        payment = FactoryGirl.create(:payment, amount: 600_00, student: student)
         login_as(student, scope: :student)
         visit payments_path
         expect(page).to have_content 600.00
@@ -28,8 +28,8 @@ feature 'Viewing payment index page' do
 
     context 'after a payment has been made with credit card', :vcr do
       it 'shows payment history with correct charge and status' do
-        payment = FactoryGirl.create(:payment_with_credit_card, amount: 600_00)
-        student = payment.student
+        student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
+        payment = FactoryGirl.create(:payment_with_credit_card, amount: 600_00, student: student)
         login_as(student, scope: :student)
         visit payments_path
         expect(page).to have_content 618.21
@@ -41,7 +41,7 @@ feature 'Viewing payment index page' do
     context 'with upfront payment due using a bank account', :vcr do
       it 'only shows a link to make an upfront payment with correct amount' do
         plan = FactoryGirl.create(:recurring_plan_with_upfront_payment, upfront_amount: 200_00)
-        student = FactoryGirl.create(:user_with_verified_bank_account, plan: plan)
+        student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com', plan: plan)
         login_as(student, scope: :student)
         visit payments_path
         expect(page).to have_button('Make upfront payment of $200.00')
@@ -84,7 +84,7 @@ feature 'Viewing payment index page' do
 
     context 'with recurring payments active', :vcr do
       it "doesn't show a link to start recurring payments" do
-        student = FactoryGirl.create(:user_with_recurring_active)
+        student = FactoryGirl.create(:user_with_recurring_active, email: 'test@test.com')
         login_as(student, scope: :student)
         visit payments_path
         expect(page).to_not have_button('Start recurring payments')

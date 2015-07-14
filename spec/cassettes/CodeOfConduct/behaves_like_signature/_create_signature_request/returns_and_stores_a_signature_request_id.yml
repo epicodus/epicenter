@@ -1,0 +1,115 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://abd3d7ff691632daef7257fb38fd686e62b93dc88eb225def4bbb776851bd73d:@api.hellosign.com/v3/signature_request/create_embedded
+    body:
+      encoding: UTF-8
+      string: client_id=477ccaec4fb05b2b0b4034e8f83c2ef4&file_url%5B%5D=http%3A%2F%2Finvestors.shopify.com%2Ffiles%2Fdoc_downloads%2Ftest.pdf&signers%5B0%5D%5Bemail_address%5D=student1%40example.com&signers%5B0%5D%5Bname%5D=Example+Brown+1&subject=Sign+to+accept+the+Epicodus+Code+of+Conduct&test_mode=1
+    headers:
+      User-Agent:
+      - hellosign-ruby-sdk/3.0.21
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Headers:
+      - Authorization, Origin, X-Requested-With, Content-Type, Accept
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 26 Jun 2015 18:12:05 GMT
+      P3p:
+      - CP="NOP3PPOLICY"
+      Server:
+      - Apache
+      User-Agent:
+      - HelloSign API
+      X-Content-Type-Options:
+      - nosniff
+      X-Ratelimit-Limit:
+      - '50'
+      X-Ratelimit-Limit-Remaining:
+      - '48'
+      X-Ratelimit-Reset:
+      - '1435342326'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '1092'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |2-
+
+        {"signature_request":{"signature_request_id":"3a5c805d9976097847da7355afc54043ed7b2688","title":"Sign to accept the Epicodus Code of Conduct","original_title":"Sign to accept the Epicodus Code of Conduct","subject":"Sign to accept the Epicodus Code of Conduct","message":null,"test_mode":true,"metadata":{},"is_complete":false,"has_error":false,"custom_fields":[],"response_data":[],"signing_url":null,"signing_redirect_url":null,"final_copy_uri":"\/v3\/signature_request\/final_copy\/3a5c805d9976097847da7355afc54043ed7b2688","files_url":"https:\/\/api.hellosign.com\/\/v3\/signature_request\/files\/3a5c805d9976097847da7355afc54043ed7b2688","details_url":"https:\/\/www.hellosign.com\/home\/manage?guid=3a5c805d9976097847da7355afc54043ed7b2688","requester_email_address":"chris@epicodus.com","signatures":[{"signature_id":"d32ff1d275f2e6d7af7bd8c8f923c0e3","has_pin":false,"signer_email_address":"student1@example.com","signer_name":"Example Brown 1","order":null,"status_code":"awaiting_signature","signed_at":null,"last_viewed_at":null,"last_reminded_at":null}],"cc_email_addresses":[]}}
+    http_version: 
+  recorded_at: Fri, 26 Jun 2015 18:12:07 GMT
+- request:
+    method: get
+    uri: https://abd3d7ff691632daef7257fb38fd686e62b93dc88eb225def4bbb776851bd73d:@api.hellosign.com/v3/embedded/sign_url/d32ff1d275f2e6d7af7bd8c8f923c0e3
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - hellosign-ruby-sdk/3.0.21
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Headers:
+      - Authorization, Origin, X-Requested-With, Content-Type, Accept
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 26 Jun 2015 18:12:09 GMT
+      P3p:
+      - CP="NOP3PPOLICY"
+      Server:
+      - Apache
+      User-Agent:
+      - HelloSign API
+      X-Content-Type-Options:
+      - nosniff
+      X-Ratelimit-Limit:
+      - '500'
+      X-Ratelimit-Limit-Remaining:
+      - '498'
+      X-Ratelimit-Reset:
+      - '1435342329'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '187'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |2-
+
+        {"embedded":{"sign_url":"https:\/\/www.hellosign.com\/editor\/embeddedSign?signature_id=d32ff1d275f2e6d7af7bd8c8f923c0e3&token=298e3660a492eba3b3ca49b6604f9613","expires_at":1435345929}}
+    http_version: 
+  recorded_at: Fri, 26 Jun 2015 18:12:08 GMT
+recorded_with: VCR 2.9.3

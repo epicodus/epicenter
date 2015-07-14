@@ -20,12 +20,15 @@ gem 'cancancan'
 gem 'jquery-ui-rails'
 gem 'validate_url'
 gem 'gravatarify'
+gem 'hellosign-ruby-sdk'
+gem 'closeio'
 
 group :development do
   gem 'spring'
   gem 'better_errors'
   gem 'binding_of_caller'
   gem 'quiet_assets'
+  gem "letter_opener"
 end
 
 group :test, :development do

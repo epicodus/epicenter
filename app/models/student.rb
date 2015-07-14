@@ -17,6 +17,28 @@ class Student < User
   has_many :ratings
   has_many :internships, through: :ratings
   belongs_to :primary_payment_method, class_name: 'PaymentMethod'
+  has_many :signatures
+
+  def update_close_io
+    if close_io_lead_exists? && enrollment_complete?
+      id = close_io_client.list_leads('email:' + email).data.first.id
+      close_io_client.update_lead(id, { status: 'Enrolled', 'custom.amount_paid': total_paid })
+    elsif !close_io_lead_exists?
+     raise "The Close.io lead for #{email} was not found."
+    end
+  end
+
+  def signed?(signature_model)
+    if signature_model.nil?
+      true
+    else
+      signatures.where(type: signature_model, is_complete: true).count == 1
+    end
+  end
+
+  def signed_main_documents?
+    signed?(CodeOfConduct) && signed?(RefundPolicy) && signed?(EnrollmentAgreement)
+  end
 
   def stripe_customer
     if stripe_customer_id
@@ -113,6 +135,18 @@ class Student < User
   end
 
 private
+  def close_io_lead_exists?
+    lead = close_io_client.list_leads('email:' + email)
+    lead.total_results == 1
+  end
+
+  def enrollment_complete?
+    signatures.where(is_complete: true).count > 2 && total_paid > 0
+  end
+
+  def close_io_client
+    @close_io_client ||= Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false)
+  end
 
   def primary_payment_method_belongs_to_student
     if primary_payment_method && primary_payment_method.student != self

@@ -11,6 +11,77 @@ describe Student do
   it { should have_many :attendance_records }
   it { should belong_to :cohort }
   it { should belong_to(:primary_payment_method).class_name('PaymentMethod') }
+  it { should have_many :signatures }
+
+  describe "updating close.io" do
+    let(:student) { FactoryGirl.create(:student, email: 'test@test.com') }
+    let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
+    let(:lead_id) { close_io_client.list_leads('email:' + student.email).data.first.id }
+
+    before do
+      allow(student).to receive(:close_io_client).and_return(close_io_client)
+    end
+
+    it "updates the record when there are enough signatures and a payment has been made", :vcr do
+      FactoryGirl.create(:completed_code_of_conduct, student: student)
+      FactoryGirl.create(:completed_refund_policy, student: student)
+      FactoryGirl.create(:completed_enrollment_agreement, student: student)
+      allow(student).to receive(:total_paid).and_return(100)
+      expect(close_io_client).to receive(:update_lead).with(lead_id, { status: "Enrolled", 'custom.amount_paid': student.total_paid })
+      student.update_close_io
+    end
+
+    it "fails to update the record when there are not enough signatures", :vcr do
+      student.update(email: 'fake@fake.com')
+      FactoryGirl.create(:completed_code_of_conduct, student: student)
+      FactoryGirl.create(:completed_refund_policy, student: student)
+      allow(student).to receive(:total_paid).and_return(100)
+      expect { student.update_close_io }.to raise_error(RuntimeError, 'The Close.io lead for fake@fake.com was not found.')
+    end
+
+    it "fails to update the record when no payment has been made", :vcr do
+      student.update(email: 'fake@fake.com')
+      FactoryGirl.create(:completed_code_of_conduct, student: student)
+      FactoryGirl.create(:completed_refund_policy, student: student)
+      FactoryGirl.create(:completed_enrollment_agreement, student: student)
+      allow(student).to receive(:total_paid).and_return(0)
+      expect { student.update_close_io }.to raise_error(RuntimeError, 'The Close.io lead for fake@fake.com was not found.')
+    end
+  end
+
+  describe "#signed?" do
+    let(:student) { FactoryGirl.create(:student) }
+
+    it "returns true if a signature has been signed" do
+      FactoryGirl.create(:completed_code_of_conduct, student: student)
+      expect(student.signed?(CodeOfConduct)).to eq true
+    end
+
+    it "returns true if a signature is nil" do
+      expect(student.signed?(nil)).to eq true
+    end
+
+    it "returns false if a signature has not been signed" do
+      expect(student.signed?(RefundPolicy)).to be false
+    end
+  end
+
+  describe "#signed_main_documents?" do
+    let(:student) { FactoryGirl.create(:student) }
+
+    it "returns true if all 3 main documents have been signed" do
+      FactoryGirl.create(:completed_code_of_conduct, student: student)
+      FactoryGirl.create(:completed_refund_policy, student: student)
+      FactoryGirl.create(:completed_enrollment_agreement, student: student)
+      expect(student.signed_main_documents?).to eq true
+    end
+
+    it "returns false if all 3 main documents have not been signed" do
+      FactoryGirl.create(:completed_code_of_conduct, student: student)
+      FactoryGirl.create(:completed_refund_policy, student: student)
+      expect(student.signed_main_documents?).to eq false
+    end
+  end
 
   describe "default scope" do
     it "alphabetizes the students by name" do
@@ -82,7 +153,7 @@ describe Student do
 
   describe ".recurring_active" do
     it "only includes users that are recurring_active", :vcr do
-      recurring_active_user = FactoryGirl.create(:user_with_recurring_active)
+      recurring_active_user = FactoryGirl.create(:user_with_recurring_active, email: 'test@test.com')
       non_recurring_active_user  = FactoryGirl.create(:user_with_verified_bank_account)
       expect(Student.recurring_active).to eq [recurring_active_user]
     end
@@ -101,7 +172,7 @@ describe Student do
     end
 
     it "is false if student has made any payments" do
-      student = FactoryGirl.create :user_with_upfront_payment
+      student = FactoryGirl.create :user_with_upfront_payment, email: 'test@test.com'
       expect(student.upfront_payment_due?).to be false
     end
   end
@@ -123,19 +194,19 @@ describe Student do
 
     it "is false if student does not have a plan with recurring payments" do
       plan = FactoryGirl.create(:upfront_payment_only_plan)
-      student = FactoryGirl.create(:user_with_upfront_payment, plan: plan)
+      student = FactoryGirl.create(:user_with_upfront_payment, plan: plan, email: 'test@test.com')
       expect(student.ready_to_start_recurring_payments?).to be false
     end
 
     it "is false if recurring is active" do
-      student = FactoryGirl.create(:user_with_recurring_active)
+      student = FactoryGirl.create(:user_with_recurring_active, email: 'test@test.com')
       expect(student.ready_to_start_recurring_payments?).to be false
     end
   end
 
   describe "#make_upfront_payment", :vcr do
     it "makes a payment for the upfront amount of the student's plan" do
-      student = FactoryGirl.create(:user_with_verified_bank_account)
+      student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com')
       student.make_upfront_payment
       expect(student.payments.first.amount).to eq student.plan.upfront_amount
     end
@@ -143,13 +214,13 @@ describe Student do
 
   describe "#start_recurring_payments", :vcr do
     it "makes a payment for the recurring amount of the users's plan" do
-      student = FactoryGirl.create(:user_with_verified_bank_account)
+      student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com')
       student.start_recurring_payments
       expect(student.payments.first.amount).to eq student.plan.recurring_amount
     end
 
     it 'sets the bank account to be recurring_active' do
-      student = FactoryGirl.create(:user_with_verified_bank_account)
+      student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com')
       student.start_recurring_payments
       expect(student.recurring_active).to eq true
     end
@@ -307,14 +378,14 @@ describe Student do
 
   describe "#next_payment_date", :vcr do
     it "returns nil if recurring_active is not true" do
-      student = FactoryGirl.create(:user_with_upfront_payment)
+      student = FactoryGirl.create(:user_with_upfront_payment, email: 'test@test.com')
       expect(student.next_payment_date).to eq nil
     end
 
     it "returns the next payment date if recurring_active is true" do
       student = nil
       travel_to(Date.parse("January 5, 2014")) do
-        student = FactoryGirl.create(:user_with_recurring_active)
+        student = FactoryGirl.create(:user_with_recurring_active, email: 'test@test.com')
       end
       expect(student.next_payment_date.to_date).to eq Date.parse("February 5, 2014")
     end
@@ -322,14 +393,14 @@ describe Student do
 
   describe '#total_paid', :vcr do
     it 'sums all of the students payments' do
-      student = FactoryGirl.create(:user_with_credit_card)
+      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       FactoryGirl.create(:payment, student: student, amount: 200_00)
       FactoryGirl.create(:payment, student: student, amount: 200_00)
       expect(student.total_paid).to eq 400_00
     end
 
     it 'does not include failed payments' do
-      student = FactoryGirl.create(:user_with_credit_card)
+      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       FactoryGirl.create(:payment, student: student, amount: 200_00)
       failed_payment = FactoryGirl.create(:payment, student: student, amount: 200_00)
       failed_payment.update(status: 'failed')

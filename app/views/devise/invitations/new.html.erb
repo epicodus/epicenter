@@ -2,10 +2,21 @@
 
 <%= form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => {:method => :post} do |f| %>
   <%= devise_error_messages! %>
+  <p>
+    <%= f.label :cohort_id %>
+    <%= f.select(:cohort_id, Cohort.all.collect {|c| [ c.description, c.id ] }) %>
+  </p>
+
+  <p>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </p>
 
 <% resource.class.invite_key_fields.each do |field| -%>
-  <p><%= f.label field %><br />
-  <%= f.text_field field %></p>
+  <p>
+    <%= f.label field %>
+    <%= f.text_field field %>
+  </p>
 <% end -%>
 
   <p><%= f.submit t("devise.invitations.new.submit_button") %></p>

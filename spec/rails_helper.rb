@@ -38,6 +38,12 @@ VCR.configure do |config|
   config.filter_sensitive_data('<STRIPE_API_KEY>') { ENV['STRIPE_API_KEY'] }
   config.filter_sensitive_data('<STRIPE_PUBLIC_KEY>') { ENV['STRIPE_PUBLIC_KEY']}
   config.filter_sensitive_data('<MAILGUN_API_KEY>') { ENV['MAILGUN_API_KEY'] }
+  config.filter_sensitive_data('<HELLO_SIGN_API_KEY>') { ENV['HELLO_SIGN_API_KEY'] }
+  config.filter_sensitive_data('<HELLO_SIGN_CLIENT_ID>') { ENV['HELLO_SIGN_CLIENT_ID'] }
+  config.filter_sensitive_data('<CODE_OF_CONDUCT_DOCUMENT_URL>') { ENV['CODE_OF_CONDUCT_DOCUMENT_URL'] }
+  config.filter_sensitive_data('<REFUND_POLICY_DOCUMENT_URL>') { ENV['REFUND_POLICY_DOCUMENT_URL'] }
+  config.filter_sensitive_data('<ENROLLMENT_AGREEMENT_DOCUMENT_URL>') { ENV['ENROLLMENT_AGREEMENT_DOCUMENT_URL'] }
+  config.filter_sensitive_data('<PROMISSORY_NOTE_DOCUMENT_URL>') { ENV['PROMISSORY_NOTE_DOCUMENT_URL'] }
 end
 
 Billy.configure do |c|
