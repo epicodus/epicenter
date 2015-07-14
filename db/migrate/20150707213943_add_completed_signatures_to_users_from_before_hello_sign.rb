@@ -21,6 +21,13 @@ class AddCompletedSignaturesToUsersFromBeforeHelloSign < ActiveRecord::Migration
         is_complete: true
       )
       enrollment_agreement.update(type: EnrollmentAgreement)
+
+      promissory_note = Signature.create(
+        student_id: user.id,
+        signature_request_id: 'before_hello_sign',
+        is_complete: true
+      )
+      promissory_note.update(type: PromissoryNote)
     end
   end
 end
