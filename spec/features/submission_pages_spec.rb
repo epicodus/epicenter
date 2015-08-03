@@ -1,6 +1,6 @@
 feature 'index page' do
   let(:code_review) { FactoryGirl.create(:code_review) }
-  let(:student) { FactoryGirl.create(:student) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
   context 'as a student' do
     before { login_as(student, scope: :student) }

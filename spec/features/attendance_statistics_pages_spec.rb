@@ -31,7 +31,7 @@ feature 'attendance statistics page' do
   end
 
   context 'when signed in as a student' do
-    let(:student) { FactoryGirl.create(:student) }
+    let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
     before { login_as(student, scope: :student) }
 
     scenario 'you are not authorized' do

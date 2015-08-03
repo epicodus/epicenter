@@ -112,4 +112,55 @@ http_interactions:
         {"embedded":{"sign_url":"https:\/\/www.hellosign.com\/editor\/embeddedSign?signature_id=2f995df55d7557f30e8aaefa06190d88&token=1779949fc321c279135a13fc21b61649","expires_at":1435346102}}
     http_version: 
   recorded_at: Fri, 26 Jun 2015 18:15:01 GMT
+- request:
+    method: post
+    uri: https://api.hellosign.com/v3/signature_request/create_embedded
+    body:
+      encoding: UTF-8
+      string: client_id=&file_url%5B%5D=&signers%5B0%5D%5Bemail_address%5D=student187%40example.com&signers%5B0%5D%5Bname%5D=Example+Brown+195&subject=Sign+to+accept+the+Epicodus+Refund+Policy&test_mode=
+    headers:
+      User-Agent:
+      - hellosign-ruby-sdk/3.0.21
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 401
+      message: Unauthorized
+    headers:
+      Access-Control-Allow-Headers:
+      - Authorization, Origin, X-Requested-With, Content-Type, Accept
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 03 Aug 2015 18:35:06 GMT
+      P3p:
+      - CP="NOP3PPOLICY"
+      Server:
+      - Apache
+      User-Agent:
+      - HelloSign API
+      Www-Authenticate:
+      - Basic realm="API"
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '97'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"error":{"error_msg":"Unauthorized user. No credentials supplied.","error_name":"unauthorized"}}'
+    http_version: 
+  recorded_at: Mon, 03 Aug 2015 18:35:05 GMT
 recorded_with: VCR 2.9.3

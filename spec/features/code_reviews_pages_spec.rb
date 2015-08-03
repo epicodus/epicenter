@@ -7,7 +7,7 @@ feature 'index page' do
   end
 
   context 'when visiting as a student' do
-    let(:student) { FactoryGirl.create(:student, cohort: code_review.cohort) }
+    let(:student) { FactoryGirl.create(:user_with_all_documents_signed, cohort: code_review.cohort) }
     before { login_as(student, scope: :student) }
 
     scenario "but isn't this student's cohort" do
@@ -122,7 +122,7 @@ feature 'show page' do
   end
 
   context 'when visiting as a student' do
-    let(:student) { FactoryGirl.create(:student, cohort: code_review.cohort) }
+    let(:student) { FactoryGirl.create(:user_with_all_documents_signed, cohort: code_review.cohort) }
     before { login_as(student, scope: :student) }
     subject { page }
 
@@ -247,7 +247,7 @@ feature 'creating an code_review' do
   end
 
   context 'as a student' do
-    let(:student) { FactoryGirl.create(:student) }
+    let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
     scenario 'you are not authorized' do
       login_as(student, scope: :student)
@@ -306,7 +306,7 @@ feature 'editing an code_review' do
   end
 
   context 'as a student' do
-    let(:student) { FactoryGirl.create(:student) }
+    let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
     scenario 'you are not authorized' do
       login_as(student, scope: :student)

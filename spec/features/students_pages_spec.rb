@@ -1,6 +1,6 @@
 feature 'Student signs up via invitation' do
 
-  let(:student) { FactoryGirl.create(:student) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
   scenario 'with valid information', js: true do
     student.invite!
@@ -79,7 +79,7 @@ feature "Student signs in while class is not in session" do
 end
 
 feature "Student visits homepage after logged in" do
-  let(:student) { FactoryGirl.create(:student) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
   it "takes them to the correct path" do
     sign_in(student)
@@ -89,7 +89,7 @@ feature "Student visits homepage after logged in" do
 end
 
 feature "Student signs in while class is in session" do
-  let(:student) { FactoryGirl.create(:student) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
   it "takes them to the code reviews page" do
     sign_in(student)

@@ -1,5 +1,5 @@
 feature "creating an attendance record amendment" do
-  let(:student) { FactoryGirl.create(:student) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
   scenario "when a new record needs to be created" do
     admin = FactoryGirl.create(:admin, current_cohort: student.cohort)

@@ -7,7 +7,7 @@ feature 'index page' do
     end
 
     scenario 'logged in as student' do
-      student = FactoryGirl.create(:student)
+      student = FactoryGirl.create(:user_with_all_documents_signed)
       login_as(student, scope: :student)
       visit companies_path
       expect(page).to have_content 'You are not authorized to access this page'
@@ -113,4 +113,3 @@ feature "deleting a company" do
     end
   end
 end
-

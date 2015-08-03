@@ -5,7 +5,7 @@ feature 'creating a cohort' do
   end
 
   scenario 'as as a student' do
-    student = FactoryGirl.create(:student)
+    student = FactoryGirl.create(:user_with_all_documents_signed)
     login_as(student, scope: :student)
     visit new_cohort_path
     expect(page).to have_content 'not authorized'
@@ -61,7 +61,7 @@ feature 'editing a cohort' do
   end
 
   scenario 'as as a student' do
-    student = FactoryGirl.create(:student)
+    student = FactoryGirl.create(:user_with_all_documents_signed)
     login_as(student, scope: :student)
     visit edit_cohort_path(cohort)
     expect(page).to have_content 'not authorized'

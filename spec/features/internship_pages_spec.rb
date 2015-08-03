@@ -1,7 +1,7 @@
 feature 'index page' do
 
   context "as a student" do
-    let(:student) { FactoryGirl.create(:student) }
+    let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
     let!(:internship) { FactoryGirl.create(:internship, cohort_id: student.cohort.id) }
     before { login_as(student, scope: :student) }
 

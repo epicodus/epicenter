@@ -1,5 +1,5 @@
 feature 'student attendance statistics page' do
-  let(:student) { FactoryGirl.create(:student) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
   before { login_as(student, scope: :student) }
 
   scenario 'student navigates through navbar link' do

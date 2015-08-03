@@ -43,7 +43,7 @@ feature 'destroying an attendance record' do
 end
 
 feature 'only allow admins to view attendance sign-in page' do
-  let!(:student) { FactoryGirl.create(:student) }
+  let!(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
   scenario "guest tries to view sign-in page" do
     visit attendance_path
