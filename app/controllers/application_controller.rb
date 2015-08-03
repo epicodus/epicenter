@@ -27,7 +27,11 @@ protected
     if user.is_a? Admin
       cohort_code_reviews_path(user.current_cohort)
     elsif user.is_a? Student
-      user.class_in_session? ? cohort_code_reviews_path(user.cohort) : signatures_check_path(user)
+      if (user.class_in_session? && !user.plan.recurring? && user.signed_main_documents?) || (user.class_in_session? && user.plan.recurring? && user.signed_main_documents? && user.signed?(PromissoryNote))
+        cohort_code_reviews_path(user.cohort)
+      else
+        signatures_check_path(user)
+      end
     end
   end
 
