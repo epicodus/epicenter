@@ -22,7 +22,7 @@ class Student < User
   def update_close_io
     if close_io_lead_exists? && enrollment_complete?
       id = close_io_client.list_leads('email:' + email).data.first.id
-      close_io_client.update_lead(id, { status: 'Enrolled', 'custom.amount_paid': total_paid })
+      close_io_client.update_lead(id, { status: 'Enrolled', 'custom.Amount paid': total_paid / 100 })
     elsif !close_io_lead_exists?
      raise "The Close.io lead for #{email} was not found."
     end

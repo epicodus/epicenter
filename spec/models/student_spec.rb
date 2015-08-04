@@ -26,8 +26,8 @@ describe Student do
       FactoryGirl.create(:completed_code_of_conduct, student: student)
       FactoryGirl.create(:completed_refund_policy, student: student)
       FactoryGirl.create(:completed_enrollment_agreement, student: student)
-      allow(student).to receive(:total_paid).and_return(100)
-      expect(close_io_client).to receive(:update_lead).with(lead_id, { status: "Enrolled", 'custom.amount_paid': student.total_paid })
+      allow(student).to receive(:total_paid).and_return(340000)
+      expect(close_io_client).to receive(:update_lead).with(lead_id, { status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 })
       student.update_close_io
     end
 
