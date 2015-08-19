@@ -179,11 +179,6 @@ FactoryGirl.define do
       type EnrollmentAgreement
       is_complete true
     end
-
-    factory :completed_promissory_note do
-      type PromissoryNote
-      is_complete true
-    end
   end
 
   factory :student do
@@ -251,7 +246,6 @@ FactoryGirl.define do
         create(:completed_code_of_conduct, student: student)
         create(:completed_refund_policy, student: student)
         create(:completed_enrollment_agreement, student: student)
-        create(:completed_promissory_note, student: student)
       end
     end
   end

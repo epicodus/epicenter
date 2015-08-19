@@ -44,7 +44,6 @@ Rails.application.routes.draw do
 
   resources :signatures, only: [:create] do
     collection do
-      resources :promissory_note, only: [:new, :create]
       resources :enrollment_agreement, only: [:new]
       resources :code_of_conduct, only: [:new]
       resources :refund_policy, only: [:new]

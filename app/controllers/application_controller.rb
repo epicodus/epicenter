@@ -27,7 +27,7 @@ protected
     if user.is_a? Admin
       cohort_code_reviews_path(user.current_cohort)
     elsif user.is_a? Student
-      if (user.class_in_session? && !user.plan.recurring? && user.signed_main_documents?) || (user.class_in_session? && user.plan.recurring? && user.signed_main_documents? && user.signed?(PromissoryNote))
+      if user.class_in_session? && user.signed_main_documents?
         cohort_code_reviews_path(user.cohort)
       else
         signatures_check_path(user)
@@ -36,12 +36,8 @@ protected
   end
 
   def signatures_check_path(user)
-    if !user.plan.recurring? && user.signed_main_documents?
+    if user.signed_main_documents?
       proper_payments_path(user)
-    elsif user.plan.recurring? && user.signed?(PromissoryNote)
-      proper_payments_path(user)
-    elsif user.plan.recurring? && !user.signed?(PromissoryNote) && user.signed_main_documents?
-      new_promissory_note_path
     elsif user.signed?(RefundPolicy)
       new_enrollment_agreement_path
     elsif user.signed?(CodeOfConduct)
