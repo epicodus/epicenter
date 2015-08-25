@@ -3,6 +3,10 @@ class AttendanceRecordAmendmentsController < ApplicationController
 
   def new
     @attendance_record_amendment = AttendanceRecordAmendment.new
+    if params.has_key?(:student)
+      @student = Student.find(params[:student])
+      @day = params[:day]
+    end
   end
 
   def create

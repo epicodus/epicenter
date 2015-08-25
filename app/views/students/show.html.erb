@@ -1,17 +1,57 @@
-<h1>Rated Internships</h1>
-<hr/>
-
-<ul class="company-list">
-  <% @internships.each do |internship| %>
-      <div class="span12 <%= set_internship_background(@student.find_rating(internship)) %>">
-      <div class='internship-list-row row'>
-        <li>
-          <span class='span3'><%= link_to internship.company_name, cohort_internship_path(@student.cohort, internship) %></span>
-          <% if @student.find_rating(internship) %>
-            <span class='span9'><%= @student.find_rating(internship).notes %></span>
-          <% end %>
-        </li>
-      </div>
-    </div>
-  <% end %>
+<h1><%= @student.name %></h1>
+<h4><%= @student.email %></h4>
+<hr>
+<ul class="nav nav-tabs">
+  <li class="active student-attendance-header">
+    <a>Attendance</a>
+  </li>
+  <li class="student-internships-header">
+    <a>Rated Internships</a>
+  </li>
 </ul>
+
+
+<div class="student-internships">
+  <ul class="company-list">
+    <% @internships.each do |internship| %>
+        <div class="span12 <%= set_internship_background(@student.find_rating(internship)) %>">
+        <div class='internship-list-row row'>
+          <li>
+            <span class='span3'><%= link_to internship.company_name, cohort_internship_path(@student.cohort, internship) %></span>
+            <% if @student.find_rating(internship) %>
+              <span class='span9'><%= @student.find_rating(internship).notes %></span>
+            <% end %>
+          </li>
+        </div>
+      </div>
+    <% end %>
+  </ul>
+</div>
+
+<div class="student-attendance">
+  <% @student.cohort.list_class_days.each do |day| %>
+    <% if day != nil && day <= Date.today %>
+      <table class='table span6'>
+          <tr>
+            <td>
+              <%= day.to_formatted_s(:long) %>
+            </td>
+            <td>
+              <% if @student.attendance_records.where(date: day).first == nil %>
+                <span class="btn btn-danger" disabled>Absent</span>
+              <% elsif @student.attendance_records.where(date: day).first.tardy %>
+                <span class="btn btn-warning" disabled>Tardy</span>
+              <% elsif @student.attendance_records.where(date: day).first.left_early %>
+                <span class="btn btn-warning" disabled>Left early</span>
+              <% else %>
+                <span class="btn btn-success" disabled>On time</span>
+              <% end %>
+            </td>
+            <td>
+              <span class="pull-right"><%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day)  %></span>
+            </td>
+          </tr>
+      </table>
+    <% end %>
+  <% end %>
+</div>
