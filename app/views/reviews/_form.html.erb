@@ -2,11 +2,11 @@
   <%= form_for [@submission, @review], remote: true do |f| %>
     <%= f.nested_fields_for :grades, wrapper_tag: :div do |ff| %>
       <div class="row">
-        <div class="span9">
+        <div class="span8">
           <%= ff.object.objective.content if ff.object.objective %>
         </div>
-        <div class="span3">
-          <%= ff.collection_select :score_id, Score.all, :id, :description, prompt: "Please select" %>
+        <div class="span4">
+          <%= ff.collection_select :score_id, Score.all, :id, :description, { prompt: "Please select" }, { class: "span4" } %>
         </div>
       </div>
       <%= ff.hidden_field :objective_id %>
