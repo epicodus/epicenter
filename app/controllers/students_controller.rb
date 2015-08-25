@@ -1,4 +1,7 @@
 class StudentsController < ApplicationController
+
+  before_filter :authenticate_admin!
+
   def index
     @students = current_admin.current_cohort.students
   end
