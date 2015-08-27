@@ -26,6 +26,30 @@ class Student < User
   def attendance_record_on_day(day)
     attendance_records.find_by(date: day)
   end
+  
+  def total_grade_score
+    score = 0
+    submissions.each do |submission|
+      submission.reviews.each do |review|
+        review.grades.each do |grade|
+          score += grade.score.value
+        end
+      end
+    end
+    score
+  end
+
+  def similar_grade_students
+    grade_students = []
+    Student.all.each do |student|
+      if similar_grade_scores(student, 1.1, 0.9) && student.cohort == cohort
+        grade_students.push(student)
+      elsif total_grade_score == 0
+        grade_students.push(student)
+      end
+    end
+    grade_students
+  end
 
   def update_close_io
     if close_io_lead_exists? && enrollment_complete?
@@ -143,6 +167,10 @@ class Student < User
   end
 
 private
+  def similar_grade_scores(student, score_ceiling, score_floor)
+    student.total_grade_score <= score_ceiling * total_grade_score && student.total_grade_score >= score_floor * total_grade_score
+  end
+
   def close_io_lead_exists?
     lead = close_io_client.list_leads('email:' + email)
     lead.total_results == 1
