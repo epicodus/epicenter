@@ -1,4 +1,13 @@
-<h1>Available Internships</h1>
+<h1>
+  Available Internships
+  <% if current_admin %>
+    <span class="pull-right">
+      <%= link_to new_cohort_internship_path(@cohort) do %>
+        <h4 class="span3 text-success">+ New Internship</h4>
+      <% end %>
+    </span>
+  <% end %>
+</h1>
 <hr/>
 
 <ul class="company-list">
@@ -21,9 +30,9 @@
               <div class='pull-right'>
                 <%= label_tag :notes %>
                 <% if current_student.ratings.where(internship_id: internship.id).empty? %>
-                  <%= text_area_tag :notes, nil, rows: 1 %>
+                  <%= text_area_tag :notes, nil, rows: 8, required: true, minlength: 10 %>
                 <% else %>
-                  <%= text_area_tag :notes, current_student.find_rating(internship).notes, rows: 1 %>
+                  <%= text_area_tag :notes, current_student.find_rating(internship).notes, rows: 8, required: true, minlength: 10 %>
                 <% end %>
               </div>
               <%= hidden_field_tag :internship_id, internship.id %>
@@ -40,8 +49,3 @@
     </div>
   <% end %>
 </ul>
-<% if current_admin %>
-  <%= link_to new_cohort_internship_path(@cohort) do %>
-    <h4 class="span3 text-success">+ New Internship</h4>
-  <% end %>
-<% end %>
