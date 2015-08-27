@@ -42,9 +42,7 @@ class Student < User
   def similar_grade_students
     grade_students = []
     Student.all.each do |student|
-      if similar_grade_scores(student, 1.1, 0.9) && student.cohort == cohort
-        grade_students.push(student)
-      elsif total_grade_score == 0
+      if same_cohort_similar_grades(student)
         grade_students.push(student)
       end
     end
@@ -167,6 +165,10 @@ class Student < User
   end
 
 private
+  def same_cohort_similar_grades(student)
+    student.cohort == cohort && student != self && (similar_grade_scores(student, 1.1, 0.9) || total_grade_score == 0)
+  end
+
   def similar_grade_scores(student, score_ceiling, score_floor)
     student.total_grade_score <= score_ceiling * total_grade_score && student.total_grade_score >= score_floor * total_grade_score
   end

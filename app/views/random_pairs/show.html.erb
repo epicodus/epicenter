@@ -1,3 +1,6 @@
-<h2>Your random pair for <%= Date.today.to_formatted_s(:long) %> is:</h2>
-
-<h3><%= @random_pair.name %></h3>
+<% if @random_pair %>
+  <h2>Your random pair for <%= Date.today.to_formatted_s(:long) %> is:</h2>
+  <h3><%= @random_pair.name %></h3>
+<% else %>
+  No random pair available just yet!
+<% end %>
