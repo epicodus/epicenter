@@ -1,4 +1,11 @@
-<h1>Partner Companies</h1>
+<h1>
+  Partner Companies
+  <span class="pull-right">
+    <%= link_to new_company_path do %>
+      <h4 class="span3 text-success">+ New Company</h4>
+    <% end %>
+  </span>
+</h1>
 <hr/>
 
 <ul class="company-list">
@@ -14,6 +21,3 @@
     </div>
   <% end %>
 </ul>
-<%= link_to new_company_path do %>
-  <h4 class="span3 text-success">+ New Company</h4>
-<% end %>
