@@ -1,8 +1,6 @@
 describe Company do
   it { should have_many :internships }
   it { should validate_presence_of :name }
-  it { should validate_presence_of :contact_phone }
-  it { should validate_presence_of :contact_email }
   it { should validate_presence_of :website }
   it { should validate_uniqueness_of :name }
 

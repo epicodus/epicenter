@@ -51,8 +51,7 @@ feature "creating a new company" do
       visit companies_path
       click_link "+ New Company"
       fill_in "Company Name", with: "New Company"
-      fill_in "Phone Number", with: "555-555-5555"
-      fill_in "Email", with: "test@test.com"
+      fill_in "Website", with: "www.newcompany.com"
       click_on "Create Company"
       expect(page).to have_content "New Company"
     end
@@ -63,8 +62,7 @@ feature "creating a new company" do
       visit companies_path
       click_link "+ New Company"
       fill_in "Company Name", with: ""
-      fill_in "Phone Number", with: "555-555-5555"
-      fill_in "Email", with: "test@test.com"
+      fill_in "Website", with: "www.newcompany.com"
       click_on "Create Company"
       expect(page).to have_content "Company Name"
     end

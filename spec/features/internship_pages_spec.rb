@@ -110,6 +110,8 @@ end
 feature 'show page' do
   let(:admin) { FactoryGirl.create(:admin) }
 
+  before { login_as(admin, scope: :admin) }
+
   scenario 'you can navigate to the show page from the index' do
     internship = FactoryGirl.create(:internship)
     visit cohort_internships_path(internship.cohort)
