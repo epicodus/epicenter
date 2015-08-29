@@ -50,6 +50,7 @@ group :test do
   gem 'puffing-billy'
   gem 'simplecov', require: false
   gem 'coveralls', require: false
+  gem 'timecop'
 end
 
 group :production do
