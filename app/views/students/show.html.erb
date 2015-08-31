@@ -1,5 +1,4 @@
 <h1><%= @student.name %></h1>
-<h4><%= @student.email %></h4>
 <hr>
 <ul class="nav nav-tabs">
   <li class="active student-attendance-header">
@@ -31,27 +30,27 @@
 <div class="student-attendance">
   <% @student.cohort.list_class_days.each do |day| %>
     <% if day != nil && day <= Date.today %>
-      <table class='table span6'>
-          <tr>
-            <td>
+      <ul class='span7 unstyled'>
+          <li>
+            <span class="span2">
               <%= day.to_formatted_s(:long) %>
-            </td>
-            <td>
+            </span>
+            <span>
               <% if @student.attendance_records.where(date: day).first == nil %>
-                <span class="btn btn-danger" disabled>Absent</span>
+                <span class="btn btn-danger span3" disabled>Absent</span>
               <% elsif @student.attendance_records.where(date: day).first.tardy %>
-                <span class="btn btn-warning" disabled>Tardy</span>
+                <span class="btn btn-warning span3" disabled>Tardy</span>
               <% elsif @student.attendance_records.where(date: day).first.left_early %>
-                <span class="btn btn-warning" disabled>Left early</span>
+                <span class="btn btn-warning span3" disabled>Left early</span>
               <% else %>
-                <span class="btn btn-success" disabled>On time</span>
+                <span class="btn btn-success span3" disabled>On time</span>
               <% end %>
-            </td>
-            <td>
-              <span class="pull-right"><%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day)  %></span>
-            </td>
-          </tr>
-      </table>
+            </span>
+            <span class="pull-right">
+              <%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day), class: 'unstyled-link'  %>
+            </span>
+          </li>
+      </ul>
     <% end %>
   <% end %>
 </div>
