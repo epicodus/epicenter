@@ -1,6 +1,8 @@
 class StudentsController < ApplicationController
 
-  before_filter :authenticate_admin!
+  include AuthenticationHelper
+  
+  before_filter :authenticate_student_and_admin
 
   def index
     @students = current_admin.current_cohort.students

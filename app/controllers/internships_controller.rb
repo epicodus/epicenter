@@ -1,5 +1,7 @@
 class InternshipsController < ApplicationController
 
+  include AuthenticationHelper
+
   before_filter :authenticate_student_and_admin
 
   def index
@@ -56,12 +58,7 @@ class InternshipsController < ApplicationController
 
 
 private
-  def authenticate_student_and_admin
-    redirect_to root_path unless student_signed_in? or admin_signed_in?
-  end
-
   def internship_params
     params.require(:internship).permit(:company_id, :description, :ideal_intern, :clearance_required, :clearance_description)
   end
-
 end
