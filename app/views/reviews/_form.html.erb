@@ -6,7 +6,7 @@
           <%= ff.object.objective.content if ff.object.objective %>
         </div>
         <div class="span4">
-          <%= ff.collection_select :score_id, Score.all, :id, :description, { prompt: "Please select" }, { class: "span4" } %>
+          <%= ff.collection_select :score_id, Score.all, :id, :description, {}, { class: "span4" } %>
         </div>
       </div>
       <%= ff.hidden_field :objective_id %>
