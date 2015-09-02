@@ -10,7 +10,7 @@
 
 <ul class="company-list">
   <% @companies.each_with_index do |company, index| %>
-    <div class='list-row list-link row'>
+    <div class='row'>
       <li>
         <%= link_to company.name, company %>
         <span class='update-company btn-group'>
