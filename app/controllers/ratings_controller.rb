@@ -1,7 +1,7 @@
 class RatingsController < ApplicationController
 
   def create
-    @rating = Rating.for(Internship.find(params[:internship_id]), current_student)
+    @rating = Rating.for(Internship.find(params[:rating][:internship_id]), current_student)
     if @rating.update(rating_params)
       redirect_to cohort_internships_path(current_student.cohort)
     else
@@ -15,6 +15,6 @@ class RatingsController < ApplicationController
   private
 
   def rating_params
-    { interest: params[:rating][:interest].to_i, internship_id: params[:internship_id], notes: params[:notes] }
+    { interest: params[:rating][:interest].to_i, internship_id: params[:rating][:internship_id], notes: params[:rating][:notes] }
   end
 end
