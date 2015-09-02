@@ -141,29 +141,27 @@ feature 'rating an internship' do
 
   scenario 'a student can rate an internship from the internship page' do
     visit cohort_internship_path(student.cohort, internship_one)
-    click_on "High"
-
+    choose "rating_interest_1"
+    fill_in 'notes', with: 'New note about the internship.'
+    click_on "Submit"
     expect(page).to have_css 'div.internship-high-interest'
   end
 
   scenario 'a student can update an internship with a new rating from the internship page' do
     visit cohort_internship_path(student.cohort, internship_one)
-    click_on "Medium"
-    click_on "Low"
+    choose "rating_interest_1"
+    choose "rating_interest_3"
+    fill_in 'notes', with: 'New note about the internship.'
+    click_on "Submit"
     expect(page).to have_css 'div.internship-low-interest'
   end
 
   scenario 'a student can rate an internship from the internships index page' do
     visit cohort_internships_path(student.cohort)
-    click_on "Medium"
+    choose "rating_interest_2"
+    fill_in 'notes', with: 'New note about the internship.'
+    click_on "Submit"
     expect(page).to have_css 'div.internship-medium-interest'
-  end
-
-  scenario 'a student can add notes to a rating' do
-    visit cohort_internship_path(student.cohort, internship_one)
-    fill_in 'notes', with: 'New note'
-    click_on 'High'
-    expect(page).to have_content 'New note'
   end
 end
 
