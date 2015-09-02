@@ -1,4 +1,4 @@
-<div class="span12 <%= set_internship_background(@rating) %>">
+<div class="<%= set_internship_background(@rating) %>">
   <h1><%= @company.name %></h1>
 </div>
 <table class="table table-rating">
@@ -34,19 +34,18 @@
 
 <% if @rating %>
   <%= form_for Rating.new do |f| %>
-      <%= hidden_field_tag :internship_id, @internship.id %>
-      <%= f.label :interest, 'High', class: 'radio inline' %>
-      <%= f.radio_button :interest, 1 %>
-      <%= f.label :interest, 'Medium', class: 'radio inline' %>
-      <%= f.radio_button :interest, 2 %>
-      <%= f.label :interest, 'Low', class: 'radio inline' %>
-      <%= f.radio_button :interest, 3 %>
-      <% if current_student.ratings.where(internship_id: @internship.id).empty? %>
-        <%= text_area_tag :notes, nil, required: true, minlength: 10, placeholder: "Notes", class: 'large-text-area' %>
-      <% else %>
-        <%= text_area_tag :notes, current_student.find_rating(@internship).notes, required: true, minlength: 10, class: 'large-text-area' %>
-      <% end %>
-
+    <%= f.hidden_field :internship_id, value: @internship.id %>
+    <%= f.label :interest, 'High', class: 'radio inline' %>
+    <%= f.radio_button :interest, 1 %>
+    <%= f.label :interest, 'Medium', class: 'radio inline' %>
+    <%= f.radio_button :interest, 2 %>
+    <%= f.label :interest, 'Low', class: 'radio inline' %>
+    <%= f.radio_button :interest, 3 %>
+    <% if current_student.ratings.where(internship_id: @internship.id).empty? %>
+      <%= f.text_area :notes, value: nil, required: true, minlength: 10, placeholder: "Notes", class: 'large-text-area' %>
+    <% else %>
+      <%= f.text_area :notes, value: current_student.find_rating(@internship).notes, required: true, minlength: 10, class: 'large-text-area' %>
+    <% end %>
     <%= f.submit 'Submit', class: 'btn btn-primary' %>
   <% end %>
 <% end %>
