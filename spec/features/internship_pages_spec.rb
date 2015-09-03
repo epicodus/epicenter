@@ -142,7 +142,7 @@ feature 'rating an internship' do
   scenario 'a student can rate an internship from the internship page' do
     visit cohort_internship_path(student.cohort, internship_one)
     choose "rating_interest_1"
-    fill_in 'notes', with: 'New note about the internship.'
+    fill_in 'rating_notes', with: 'New note about the internship.'
     click_on "Submit"
     expect(page).to have_css 'div.internship-high-interest'
   end
@@ -151,7 +151,7 @@ feature 'rating an internship' do
     visit cohort_internship_path(student.cohort, internship_one)
     choose "rating_interest_1"
     choose "rating_interest_3"
-    fill_in 'notes', with: 'New note about the internship.'
+    fill_in 'rating_notes', with: 'New note about the internship.'
     click_on "Submit"
     expect(page).to have_css 'div.internship-low-interest'
   end
@@ -159,7 +159,7 @@ feature 'rating an internship' do
   scenario 'a student can rate an internship from the internships index page' do
     visit cohort_internships_path(student.cohort)
     choose "rating_interest_2"
-    fill_in 'notes', with: 'New note about the internship.'
+    fill_in 'rating_notes', with: 'New note about the internship.'
     click_on "Submit"
     expect(page).to have_css 'div.internship-medium-interest'
   end
