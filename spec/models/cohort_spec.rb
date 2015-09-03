@@ -7,6 +7,18 @@ describe Cohort do
   it { should validate_presence_of :start_date }
   it { should validate_presence_of :end_date }
 
+  describe '#attendance_for_today' do
+    let(:cohort) { FactoryGirl.create(:cohort) }
+    let(:student) { FactoryGirl.create(:student, cohort: cohort) }
+    let(:student_2) { FactoryGirl.create(:student, cohort: cohort) }
+    let(:attendance_record) { FactoryGirl.create(:attendance_record, student: student, date: Date.today) }
+    let(:attendance_record_2) { FactoryGirl.create(:attendance_record, student: student_2, date: Date.today) }
+
+    it "returns the cohort's attendance records for the current day" do
+      expect(cohort.attendance_for_today).to eq [attendance_record, attendance_record_2]
+    end
+  end
+
   describe '#list_class_days' do
     let(:cohort) { FactoryGirl.create(:cohort) }
 

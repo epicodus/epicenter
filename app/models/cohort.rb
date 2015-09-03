@@ -16,6 +16,10 @@ class Cohort < ActiveRecord::Base
   before_create :import_code_reviews
   after_destroy :reassign_admin_current_cohorts
 
+  def attendance_for_today
+    attendance_records.where(date: Date.today)
+  end
+
   def list_class_days
     (start_date..end_date).select { |date| date if !date.saturday? && !date.sunday? }
   end
