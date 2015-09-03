@@ -3,17 +3,15 @@ class AttendanceRecordAmendmentsController < ApplicationController
 
   def new
     @attendance_record_amendment = AttendanceRecordAmendment.new
-    if params.has_key?(:student)
-      @student = Student.find(params[:student])
-      @day = params[:day]
-    end
+    @attendance_record_amendment.student_id = params[:student]
+    @attendance_record_amendment.date = params[:day]
   end
 
   def create
     @attendance_record_amendment = AttendanceRecordAmendment.new(attendance_record_amendment_params)
     if @attendance_record_amendment.save
       student = Student.find(params[:attendance_record_amendment][:student_id])
-      redirect_to new_attendance_record_amendment_path, notice: "#{student.name}'s attendance record has been amended."
+      redirect_to student_path(student), notice: "#{student.name}'s attendance record has been amended."
     else
       render :new
     end
