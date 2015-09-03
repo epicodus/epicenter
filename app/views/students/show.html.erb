@@ -11,20 +11,20 @@
 
 
 <div class="student-internships">
-  <ul class="company-list">
+  <span class="company-list">
     <% @internships.each do |internship| %>
-        <div class="span12 <%= set_internship_background(@student.find_rating(internship)) %>">
+      <div class="<%= set_internship_background(@student.find_rating(internship)) %>">
         <div class='internship-list-row row'>
           <li>
-            <span class='span3'><%= link_to internship.company_name, cohort_internship_path(@student.cohort, internship) %></span>
+            <h3 class='span3'><%= link_to internship.company_name, cohort_internship_path(@student.cohort, internship) %></h3>
             <% if @student.find_rating(internship) %>
-              <span class='span9'><%= @student.find_rating(internship).notes %></span>
+              <p class='span9'><%= @student.find_rating(internship).notes %></p>
             <% end %>
           </li>
         </div>
       </div>
     <% end %>
-  </ul>
+  </span>
 </div>
 
 <div class="student-attendance">

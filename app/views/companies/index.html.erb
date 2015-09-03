@@ -12,7 +12,7 @@
   <% @companies.each_with_index do |company, index| %>
     <div class='row'>
       <li>
-        <%= link_to company.name, company %>
+        <h3><%= link_to company.name, company %></h3>
         <span class='update-company btn-group'>
           <%= link_to 'Edit', edit_company_path(company), class: 'btn btn-warning' %>
           <%= link_to 'Delete', company_path(company), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
