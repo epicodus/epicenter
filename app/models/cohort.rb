@@ -14,6 +14,10 @@ class Cohort < ActiveRecord::Base
   before_create :import_code_reviews
   after_destroy :reassign_admin_current_cohorts
 
+  def list_class_days
+    (start_date..end_date).select { |date| date if !date.saturday? && !date.sunday? }
+  end
+
   def number_of_days_since_start
     last_date = Time.zone.now.to_date <= end_date ? Time.zone.now.to_date : end_date
     class_dates_until(last_date).count

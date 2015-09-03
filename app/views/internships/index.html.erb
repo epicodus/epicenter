@@ -1,47 +1,59 @@
-<h1>Available Internships</h1>
+<h1>
+  Available Internships
+  <% if current_admin %>
+    <span class="pull-right">
+      <%= link_to new_cohort_internship_path(@cohort) do %>
+        <h4 class="span3 text-success">+ New Internship</h4>
+      <% end %>
+    </span>
+  <% end %>
+</h1>
+
+<% if current_student %>
+  <p>You may only rank 5 companies as "Low" interest.</p>
+<% end %>
+
 <hr/>
+
+<%= render 'layouts/errors', object: @rating %>
 
 <ul class="company-list">
   <% @internships.each do |internship| %>
+    <div class='row'>
     <% if current_student %>
-      <div class="span12 <%= set_internship_background(current_student.find_rating(internship)) %>">
+      <div class="<%= set_internship_background(current_student.find_rating(internship)) %>">
+        <div class='internship-list-row row'>
     <% else %>
-      <div class='span12'>
+      <div>
+        <div>
     <% end %>
-      <div class='internship-list-row row'>
         <li>
-          <span class='span3'><%= link_to internship.company_name, cohort_internship_path(@cohort, internship) %></span>
-          <% if current_admin %>
-            <div class='update-company btn-group'>
-              <%= link_to 'Edit', edit_cohort_internship_path(internship.cohort, internship), class: 'btn btn-warning' %>
-              <%= link_to 'Delete', cohort_internship_path(@cohort, internship), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
-            </div>
-          <% elsif current_student %>
-            <%= form_tag('/ratings', method: :post, class: 'form-inline') do |f| %>
-              <div class='pull-right'>
-                <%= label_tag :notes %>
+          <h3><%= link_to internship.company_name, cohort_internship_path(@cohort, internship) %></h3>
+            <% if current_admin %>
+              <span class='update-company btn-group'>
+                <%= link_to 'Edit', edit_cohort_internship_path(internship.cohort, internship), class: 'btn btn-warning' %>
+                <%= link_to 'Delete', cohort_internship_path(@cohort, internship), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+              </span>
+            <% elsif current_student %>
+              <%= form_for Rating.new do |f| %>
+                <%= f.hidden_field :internship_id, value: internship.id %>
+                <%= f.label :interest, 'High', class: 'radio inline' %>
+                <%= f.radio_button :interest, 1 %>
+                <%= f.label :interest, 'Medium', class: 'radio inline' %>
+                <%= f.radio_button :interest, 2 %>
+                <%= f.label :interest, 'Low', class: 'radio inline' %>
+                <%= f.radio_button :interest, 3 %>
                 <% if current_student.ratings.where(internship_id: internship.id).empty? %>
-                  <%= text_area_tag :notes, nil, rows: 1 %>
+                  <%= f.text_area :notes, value: nil, required: true, minlength: 10, placeholder: "Notes", class: 'large-text-area' %>
                 <% else %>
-                  <%= text_area_tag :notes, current_student.find_rating(internship).notes, rows: 1 %>
+                  <%= f.text_area :notes, value: current_student.find_rating(internship).notes, required: true, minlength: 10, class: 'large-text-area' %>
                 <% end %>
-              </div>
-              <%= hidden_field_tag :internship_id, internship.id %>
-
-              <div class='update-company btn-group span3 pull-right'>
-                <%= submit_tag 'High', class: 'btn btn-success', name: 'commit[1]'  %>
-                <%= submit_tag 'Medium', class: 'btn btn-warning', name: 'commit[2]' %>
-                <%= submit_tag 'Low', class: 'btn btn-danger', name: 'commit[3]' %>
-              </div>
+                <%= f.submit 'Submit', class: 'btn btn-primary' %>
+              <% end %>
             <% end %>
-          <% end %>
         </li>
       </div>
     </div>
+  </div>
   <% end %>
 </ul>
-<% if current_admin %>
-  <%= link_to new_cohort_internship_path(@cohort) do %>
-    <h4 class="span3 text-success">+ New Internship</h4>
-  <% end %>
-<% end %>

@@ -1,11 +1,18 @@
-<h1>Partner Companies</h1>
+<h1>
+  Partner Companies
+  <span class="pull-right">
+    <%= link_to new_company_path do %>
+      <h4 class="span3 text-success">+ New Company</h4>
+    <% end %>
+  </span>
+</h1>
 <hr/>
 
 <ul class="company-list">
   <% @companies.each_with_index do |company, index| %>
-    <div class='list-row list-link row'>
+    <div class='row'>
       <li>
-        <%= link_to company.name, company %>
+        <h3><%= link_to company.name, company %></h3>
         <span class='update-company btn-group'>
           <%= link_to 'Edit', edit_company_path(company), class: 'btn btn-warning' %>
           <%= link_to 'Delete', company_path(company), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
@@ -14,6 +21,3 @@
     </div>
   <% end %>
 </ul>
-<%= link_to new_company_path do %>
-  <h4 class="span3 text-success">+ New Company</h4>
-<% end %>

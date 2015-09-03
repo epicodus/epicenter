@@ -1,4 +1,9 @@
 class InternshipsController < ApplicationController
+
+  include AuthenticationHelper
+
+  before_filter :authenticate_student_and_admin
+
   def index
     @cohort = Cohort.find(params[:cohort_id])
     @internships = @cohort.internships_sorted_by_interest(current_student)
@@ -53,9 +58,7 @@ class InternshipsController < ApplicationController
 
 
 private
-
   def internship_params
     params.require(:internship).permit(:company_id, :description, :ideal_intern, :clearance_required, :clearance_description)
   end
-
 end

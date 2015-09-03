@@ -1,11 +1,7 @@
 <h1><%= "#{current_admin.current_cohort.description} student roster" %></h1>
 
-<% @students.each do |student| %>
-<table class='table table-striped span8'>
-  <tr>
-    <td>
-      <%= link_to student.name, student, class: "unstyled-link" %>
-    </td>
-  </tr>
-</table>
-<% end %>
+<ul class='unstyled'>
+  <% @students.each do |student| %>
+    <li><%= link_to student.name, student, class: "unstyled-link" %></li>
+  <% end %>
+</ul>
