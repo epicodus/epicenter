@@ -15,12 +15,7 @@ class Cohort < ActiveRecord::Base
   after_destroy :reassign_admin_current_cohorts
 
   def list_class_days
-    date_range = start_date..end_date
-    date_range.map do |date|
-      if !date.saturday? && !date.sunday?
-        date 
-      end
-    end
+    (start_date..end_date).select { |date| date if !date.saturday? && !date.sunday? }
   end
 
   def number_of_days_since_start

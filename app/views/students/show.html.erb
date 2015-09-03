@@ -29,7 +29,7 @@
 
 <div class="student-attendance">
   <% @student.cohort.list_class_days.each do |day| %>
-    <% if day != nil && day <= Date.today %>
+    <% if day <= Date.today %>
       <ul class='span7 unstyled'>
           <li>
             <span class="span2">
