@@ -6,8 +6,7 @@ class RandomPairsController < ApplicationController
 
   def show
     if is_weekday?
-      @grade_students = current_student.similar_grade_students
-      @random_pair = @grade_students.sample(rand(@grade_students.count)).first
+      @random_pairs = current_student.random_pairs
     else
       redirect_to root_path
     end

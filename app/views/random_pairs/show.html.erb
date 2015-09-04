@@ -1,6 +1,9 @@
-<% if @random_pair %>
-  <h2>Your random pair for <%= Date.today.to_formatted_s(:long) %> is:</h2>
-  <h3><%= @random_pair.name %></h3>
+<h1>Random Pairs</h1>
+<% if @random_pairs %>
+  <h3>Try pairing with one of these students today:</h3>
+  <% @random_pairs.each do |pair| %>
+    <p><%= pair.name %></p>
+  <% end %>
 <% else %>
   No random pair available just yet!
 <% end %>
