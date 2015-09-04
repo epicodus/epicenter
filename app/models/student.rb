@@ -26,27 +26,17 @@ class Student < User
   def attendance_record_on_day(day)
     attendance_records.find_by(date: day)
   end
-  
-  def total_grade_score
-    score = 0
-    submissions.each do |submission|
-      submission.reviews.each do |review|
-        review.grades.each do |grade|
-          score += grade.score.value
-        end
-      end
-    end
-    score
+
+  def random_pairs
+    similar_grade_students.sample(5)
+  end
+
+  def latest_total_grade_score
+    most_recent_submission_grades.try(:inject, 0) { |score, grade| score += grade.score.value }
   end
 
   def similar_grade_students
-    grade_students = []
-    Student.all.each do |student|
-      if same_cohort_similar_grades(student)
-        grade_students.push(student)
-      end
-    end
-    grade_students
+    same_cohort.keep_if { |student| similar_grades?(student) || latest_total_grade_score == 0 }
   end
 
   def update_close_io
@@ -165,12 +155,16 @@ class Student < User
   end
 
 private
-  def same_cohort_similar_grades(student)
-    student.cohort == cohort && student != self && (similar_grade_scores(student, 1.1, 0.9) || total_grade_score == 0)
+  def same_cohort
+    cohort.students - [self]
   end
 
-  def similar_grade_scores(student, score_ceiling, score_floor)
-    student.total_grade_score <= score_ceiling * total_grade_score && student.total_grade_score >= score_floor * total_grade_score
+  def most_recent_submission_grades
+    submissions.last.try(:reviews).try(:first).try(:grades)
+  end
+
+  def similar_grades?(student)
+    student.latest_total_grade_score.try(:between?, 0.9 * latest_total_grade_score, 1.1 * latest_total_grade_score)
   end
 
   def close_io_lead_exists?

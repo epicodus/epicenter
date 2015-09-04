@@ -37,6 +37,70 @@ describe Student do
       expect(student.attendance_record_on_day(attendance_record.date)).to eq attendance_record
     end
   end
+  
+  describe "#random_pairs" do
+    let(:cohort) { FactoryGirl.create(:cohort) }
+    let(:student) { FactoryGirl.create(:student, cohort: cohort) }
+
+    before do
+      FactoryGirl.create_list(:student, 50, cohort: cohort)
+    end
+
+    it "returns random pair suggestions based on the total score for the most recent code review" do
+
+      expect(student.random_pairs). to eq []
+    end
+  end
+
+  describe "#latest_total_grade_score" do
+    let(:student) { FactoryGirl.create(:student) }
+    let(:submission) { FactoryGirl.create(:submission, student: student) }
+
+    before do
+      mailgun_client = spy("mailgun client")
+      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+    end
+
+    it 'returns nil when a student has not submitted a code review' do
+      expect(student.latest_total_grade_score).to eq nil
+    end
+
+    it 'returns a total grade score for the latest code review when a student has received a grade' do
+      FactoryGirl.create(:passing_review, student: student, submission: submission)
+      expect(student.latest_total_grade_score).to eq 3
+    end
+
+    it 'returns an aggregate total grade score for the latest code review when a student has received multiple grades' do
+      review = FactoryGirl.create(:passing_review, student: student, submission: submission)
+      objective = FactoryGirl.create(:objective)
+      FactoryGirl.create(:failing_grade, review: review, objective: objective )
+      expect(student.latest_total_grade_score).to eq 4
+    end
+  end
+
+  describe "#similar_grade_students" do
+    let(:cohort) { FactoryGirl.create(:cohort) }
+    let(:student) { FactoryGirl.create(:student, cohort: cohort) }
+    let(:student_2) { FactoryGirl.create(:student, cohort: cohort) }
+    let(:student_3) { FactoryGirl.create(:student, cohort: cohort) }
+    let(:student_4) { FactoryGirl.create(:student, cohort: cohort) }
+
+    it "returns all cohort students when the current student has a total grade score of 0" do
+      allow(student).to receive(:latest_total_grade_score).and_return(0)
+      allow(student_2).to receive(:latest_total_grade_score).and_return(47)
+      allow(student_3).to receive(:latest_total_grade_score).and_return(58)
+      allow(student_4).to receive(:latest_total_grade_score).and_return(0)
+      expect(student.similar_grade_students).to eq [student_2, student_3, student_4]
+    end
+
+    it "returns all students with similar grades when the current student has a total grade score greater than 0" do
+      allow(student).to receive(:latest_total_grade_score).and_return(44)
+      allow(student_2).to receive(:latest_total_grade_score).and_return(45)
+      allow(student_3).to receive(:latest_total_grade_score).and_return(58)
+      allow(student_4).to receive(:latest_total_grade_score).and_return(42)
+      expect(student).to receive(:similar_grade_students).and_return(student_2, student_4)
+    end
+  end
 
   describe "updating close.io" do
     let(:student) { FactoryGirl.create(:student, email: 'test@test.com') }
