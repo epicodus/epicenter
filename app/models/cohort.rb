@@ -21,7 +21,7 @@ class Cohort < ActiveRecord::Base
   end
 
   def list_class_days
-    (start_date..end_date).select { |date| date if !date.saturday? && !date.sunday? }
+    (start_date..end_date).select { |date| date if !date.friday? && !date.saturday? && !date.sunday? }
   end
 
   def number_of_days_since_start
