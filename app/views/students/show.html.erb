@@ -32,8 +32,11 @@
     <% if day <= Date.today %>
       <ul class='span12 unstyled'>
           <li>
-            <span class="span3">
-              <%= day.to_formatted_s(:long) %>
+            <span class="span1">
+              <%= day.strftime("%A") %>
+            </span>
+            <span class="span2">
+              <%= day.strftime("%B %d, %Y") %>
             </span>
             <span>
               <% if @student.attendance_record_on_day(day) == nil %>
