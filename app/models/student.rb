@@ -35,10 +35,6 @@ class Student < User
     most_recent_submission_grades.try(:inject, 0) { |score, grade| score += grade.score.value }
   end
 
-  def similar_grade_students
-    same_cohort.keep_if { |student| similar_grades?(student) || latest_total_grade_score == 0 }
-  end
-
   def update_close_io
     if close_io_lead_exists? && enrollment_complete?
       id = close_io_client.list_leads('email:' + email).data.first.id
@@ -155,6 +151,10 @@ class Student < User
   end
 
 private
+  def similar_grade_students
+    same_cohort.keep_if { |student| similar_grades?(student) || latest_total_grade_score == 0 }
+  end
+
   def same_cohort
     cohort.students - [self]
   end

@@ -40,15 +40,40 @@ describe Student do
   
   describe "#random_pairs" do
     let(:cohort) { FactoryGirl.create(:cohort) }
-    let(:student) { FactoryGirl.create(:student, cohort: cohort) }
+    let(:student_1) { FactoryGirl.create(:student, cohort: cohort) }
+    let(:student_2) { FactoryGirl.create(:student, cohort: cohort) }
+    let(:student_3) { FactoryGirl.create(:student, cohort: cohort) }
+    let(:student_4) { FactoryGirl.create(:student, cohort: cohort) }
+    let(:submission_1) { FactoryGirl.create(:submission, student: student_1) }
+    let(:submission_2) { FactoryGirl.create(:submission, student: student_2) }
+    let(:submission_3) { FactoryGirl.create(:submission, student: student_3) }
+    let(:submission_4) { FactoryGirl.create(:submission, student: student_4) }
+    let(:review_1) { FactoryGirl.create(:passing_review, submission: submission_1) }
+    let(:review_2) { FactoryGirl.create(:passing_review, submission: submission_2) }
+    let(:review_3) { FactoryGirl.create(:passing_review, submission: submission_3) }
+    let(:review_4) { FactoryGirl.create(:passing_review, submission: submission_4) }
+    let(:objective) { FactoryGirl.create(:objective) }
 
     before do
-      FactoryGirl.create_list(:student, 50, cohort: cohort)
+      mailgun_client = spy("mailgun client")
+      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+
+      FactoryGirl.create(:passing_grade, review: review_2, objective: objective )
+      FactoryGirl.create(:passing_grade, review: review_2, objective: objective )
+      FactoryGirl.create(:passing_grade, review: review_3, objective: objective )
+      FactoryGirl.create(:failing_grade, review: review_4, objective: objective )
+      FactoryGirl.create(:passing_grade, review: review_4, objective: objective )
+      FactoryGirl.create(:passing_grade, review: review_4, objective: objective )
+    end
+
+    it "returns all cohort students when the current student has a total grade score of 0" do
+      allow(student_1).to receive(:latest_total_grade_score).and_return(0)
+      expect(student_1.random_pairs).to include student_2, student_3, student_4
     end
 
     it "returns random pair suggestions based on the total score for the most recent code review" do
-
-      expect(student.random_pairs). to eq []
+      allow(student_1).to receive(:latest_total_grade_score).and_return(10)
+      expect(student_1.random_pairs).to include student_2, student_4
     end
   end
 
@@ -75,30 +100,6 @@ describe Student do
       objective = FactoryGirl.create(:objective)
       FactoryGirl.create(:failing_grade, review: review, objective: objective )
       expect(student.latest_total_grade_score).to eq 4
-    end
-  end
-
-  describe "#similar_grade_students" do
-    let(:cohort) { FactoryGirl.create(:cohort) }
-    let(:student) { FactoryGirl.create(:student, cohort: cohort) }
-    let(:student_2) { FactoryGirl.create(:student, cohort: cohort) }
-    let(:student_3) { FactoryGirl.create(:student, cohort: cohort) }
-    let(:student_4) { FactoryGirl.create(:student, cohort: cohort) }
-
-    it "returns all cohort students when the current student has a total grade score of 0" do
-      allow(student).to receive(:latest_total_grade_score).and_return(0)
-      allow(student_2).to receive(:latest_total_grade_score).and_return(47)
-      allow(student_3).to receive(:latest_total_grade_score).and_return(58)
-      allow(student_4).to receive(:latest_total_grade_score).and_return(0)
-      expect(student.similar_grade_students).to eq [student_2, student_3, student_4]
-    end
-
-    it "returns all students with similar grades when the current student has a total grade score greater than 0" do
-      allow(student).to receive(:latest_total_grade_score).and_return(44)
-      allow(student_2).to receive(:latest_total_grade_score).and_return(45)
-      allow(student_3).to receive(:latest_total_grade_score).and_return(58)
-      allow(student_4).to receive(:latest_total_grade_score).and_return(42)
-      expect(student).to receive(:similar_grade_students).and_return(student_2, student_4)
     end
   end
 
