@@ -1,16 +1,18 @@
 <h1>
   Code Reviews
+  <% if current_admin %>
+    <span class="pull-right">
+      <%= link_to new_code_review_path do %>
+        <h4 class="span3 text-success">+ New code review</h4>
+      <% end %>
+    </span>
+  <% end %>
 </h1>
+
 <% if can? :manage, CodeReview %>
   <%= form_tag update_multiple_code_reviews_path, method: :patch, class: 'update-multiple-code-reviews' do %>
     <div class="sortable-code-reviews">
       <%= render @code_reviews %>
-
-      <div class='list-row row'>
-        <%= link_to new_code_review_path do %>
-          <h4 class="span3 text-success">+ Add a code review</h4>
-        <% end %>
-      </div>
     </div>
 
     <%= submit_tag 'Save order', class: "btn btn-warning pull-right" %>
