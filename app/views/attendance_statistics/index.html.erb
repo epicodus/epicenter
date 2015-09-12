@@ -2,10 +2,10 @@
 
 <ul class="nav nav-tabs">
   <li class="active class-attendance-header">
-    <a>Class Statistics</a>
+    <a>Cohort statistics</a>
   </li>
   <li class="day-attendance-header">
-    <a>Attendance for <%= Date.today.to_formatted_s(:long) %></a>
+    <a>Attendance by day</a>
   </li>
 </ul>
 
@@ -34,23 +34,34 @@
 </div>
 
 <div class="day-stats">
-  <% @cohort.attendance_for_today.each do |attendance_record| %>
-    <ul class="span8 unstyled">
-        <li>
-            <span class="span3"><%= link_to attendance_record.student.name, attendance_record.student, class: 'unstyled-link' %></span>
-            <span>
-              <% if attendance_record.tardy %>
-                <span class="btn btn-warning span3" disabled>Tardy</span>
-              <% elsif attendance_record.left_early %>
-                <span class="btn btn-warning span3" disabled>Left early</span>
-              <% else %>
-                <span class="btn btn-success span3" disabled>On time</span>
-              <% end %>
-            </span>
-            <span class="pull-right">
-              <%= link_to 'Edit', new_attendance_record_amendment_path(student: attendance_record.student, day: attendance_record.date), class: 'unstyled-link'  %>
-            </span>
-        </li>
-    </ul>
+  <%= form_for :attendance_records, url: cohort_attendance_statistics_path(@cohort), html: { method: :post } do |f| %>
+    <%= f.collection_select :day, @class_days, :strftime, :strftime, {  prompt: 'Select a day' }, class: 'attendance-day' %>
+    <p>
+      <%= f.submit 'Submit', class: 'btn btn-primary' %>
+    </p>
+  <% end %>
+
+  <% if @day %>
+    <h3><%= @cohort.description %></h3>
+    <h3>Attendance for <%= @day.strftime("%A %B %d, %Y") %></h3>
+    <% @cohort.attendance_for_day(@day).each do |attendance_record| %>
+      <ul class="span8 unstyled">
+          <li>
+              <span class="span3"><%= link_to attendance_record.student.name, attendance_record.student, class: 'unstyled-link' %></span>
+              <span>
+                <% if attendance_record.tardy %>
+                  <span class="btn btn-warning span3" disabled>Tardy</span>
+                <% elsif attendance_record.left_early %>
+                  <span class="btn btn-warning span3" disabled>Left early</span>
+                <% else %>
+                  <span class="btn btn-success span3" disabled>On time</span>
+                <% end %>
+              </span>
+              <span class="pull-right">
+                <%= link_to 'Edit', new_attendance_record_amendment_path(student: attendance_record.student, day: attendance_record.date), class: 'unstyled-link'  %>
+              </span>
+          </li>
+      </ul>
+    <% end %>
   <% end %>
 </div>

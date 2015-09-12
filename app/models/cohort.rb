@@ -16,8 +16,8 @@ class Cohort < ActiveRecord::Base
   before_create :import_code_reviews
   after_destroy :reassign_admin_current_cohorts
 
-  def attendance_for_today
-    attendance_records.where(date: Date.today)
+  def attendance_for_day(day)
+    attendance_records.where(date: day)
   end
 
   def list_class_days
