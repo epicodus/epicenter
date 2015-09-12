@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   resources :attendance_records, only: [:create, :update, :destroy]
   resources :attendance_record_amendments, only: [:new, :create]
   resources :cohorts, except: [:show, :index] do
-    resources :attendance_statistics, only: [:index]
+    resources :attendance_statistics, only: [:index, :create]
     resources :code_reviews, only: [:index]
     resources :internships
     resources :students, only: [:index]
