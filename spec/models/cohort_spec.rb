@@ -7,15 +7,16 @@ describe Cohort do
   it { should validate_presence_of :start_date }
   it { should validate_presence_of :end_date }
 
-  describe '#attendance_for_today' do
+  describe '#attendance_for_day' do
     let(:cohort) { FactoryGirl.create(:cohort) }
     let(:student) { FactoryGirl.create(:student, cohort: cohort) }
     let(:student_2) { FactoryGirl.create(:student, cohort: cohort) }
     let(:attendance_record) { FactoryGirl.create(:attendance_record, student: student, date: Date.today) }
     let(:attendance_record_2) { FactoryGirl.create(:attendance_record, student: student_2, date: Date.today) }
+    let(:attendance_record_3) { FactoryGirl.create(:attendance_record, student: student_2, date: Date.yesterday) }
 
     it "returns the cohort's attendance records for the current day" do
-      expect(cohort.attendance_for_today).to eq [attendance_record, attendance_record_2]
+      expect(cohort.attendance_for_day(Date.today)).to eq [attendance_record, attendance_record_2]
     end
   end
 
@@ -25,7 +26,7 @@ describe Cohort do
     it 'returns a list of class days with weekend days nil' do
       cohort.start_date = Date.new(2015, 8, 31)
       cohort.end_date = Date.new(2015, 9, 7)
-      expect(cohort.list_class_days).to eq [cohort.start_date, cohort.start_date + 1, cohort.start_date + 2, cohort.start_date + 3, cohort.start_date + 4, cohort.start_date + 7]
+      expect(cohort.list_class_days).to eq [cohort.start_date, cohort.start_date + 1, cohort.start_date + 2, cohort.start_date + 3, cohort.start_date + 7]
     end
   end
 
