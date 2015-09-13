@@ -42,7 +42,6 @@
   <% end %>
 
   <% if @day %>
-    <h3><%= @cohort.description %></h3>
     <h3>Attendance for <%= @day.strftime("%A %B %d, %Y") %></h3>
     <% @cohort.attendance_for_day(@day).each do |attendance_record| %>
       <ul class="span8 unstyled">
