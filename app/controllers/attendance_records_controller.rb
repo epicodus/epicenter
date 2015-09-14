@@ -18,7 +18,7 @@ class AttendanceRecordsController < ApplicationController
                   data: {method: :delete})
       redirect_to attendance_path
     else
-      # flash[:alert] = "Something went wrong: " + @attendance_record.errors.full_messages.join(", ")
+      flash[:alert] = "Something went wrong: " + @attendance_records.first.errors.full_messages.join(", ")
       redirect_to attendance_path
     end
   end
