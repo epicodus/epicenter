@@ -1,4 +1,9 @@
-<h2>New Code Review</h2>
+<div class="well">
+  <h2>New Code Review</h2>
+  <%= render 'form', code_review: @code_review %>
+</div>
 
-<%= render 'form', code_review: @code_review %>
-<%= render 'copy_form', code_review: @code_review %>
+<div class="well">
+  <h2>Copy existing code review</h2>
+  <%= render 'copy_form', code_review: @code_review %>
+</div>
