@@ -15,10 +15,8 @@
   <% end %>
 </div>
 
-<hr>
-
 <div class="row">
-  <%= div_for @students, class: 'well span2' do |student| %>
+  <%= div_for @students, class: 'student-attendance-div well span2' do |student| %>
     <h2><%= student.name %></h2>
     <% if student.signed_in_today? %>
       <p class="text-success"><span class="check">&#x2713;</span> Signed in</p>
