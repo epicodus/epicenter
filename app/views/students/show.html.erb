@@ -28,27 +28,28 @@
 </div>
 
 <div class="student-attendance">
-  <% @student.cohort.list_class_days.each do |day| %>
+  <% @student.cohort.list_class_days.reverse.each do |day| %>
     <% if day <= Date.today %>
-      <ul class='span7 unstyled'>
+      <ul class='span12 unstyled'>
           <li>
-            <span class="span2">
+            <span class="span3">
               <%= day.to_formatted_s(:long) %>
             </span>
             <span>
-              <% if @student.attendance_records.where(date: day).first == nil %>
+              <% if @student.attendance_record_on_day(day) == nil %>
                 <span class="btn btn-danger span3" disabled>Absent</span>
-              <% elsif @student.attendance_records.where(date: day).first.tardy %>
+              <% elsif @student.attendance_record_on_day(day).tardy %>
                 <span class="btn btn-warning span3" disabled>Tardy</span>
-              <% elsif @student.attendance_records.where(date: day).first.left_early %>
+              <% elsif @student.attendance_record_on_day(day).left_early %>
                 <span class="btn btn-warning span3" disabled>Left early</span>
               <% else %>
                 <span class="btn btn-success span3" disabled>On time</span>
               <% end %>
             </span>
-            <span class="pull-right">
+            <span class="span2">
               <%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day), class: 'unstyled-link'  %>
             </span>
+            <span class="3"><%= @student.pair_on_day(day) ? @student.pair_on_day(day).name : 'Solo' %></span>
           </li>
       </ul>
     <% end %>
