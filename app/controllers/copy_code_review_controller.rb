@@ -10,6 +10,9 @@ class CopyCodeReviewController < ApplicationController
     if @copy_code_review.save
       flash[:notice] = "Code review successfully copied."
       redirect_to cohort_code_reviews_path(current_cohort)
+    else
+      flash[:alert] = "Code review not copied."
+      redirect_to cohort_code_reviews_path(current_cohort)
     end
   end
 end
