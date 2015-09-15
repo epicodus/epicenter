@@ -9,12 +9,11 @@ class AttendanceRecordsController < ApplicationController
     attendance_records = params[:pair_ids].map do |pair_id|
       { student_id: pair_id, pair_id: (params[:pair_ids] - [pair_id]).first }
     end
-    @attendance_records = AttendanceRecord.create(attendance_records)
-    if @attendance_records.all?(&:save)
+    if @attendance_records = AttendanceRecord.create(attendance_records)
       student_names = @attendance_records.map { |attendance_record| attendance_record.student.name }
       flash[:notice] = "Welcome #{student_names.join(' and ')}."
       flash[:secure] =  view_context.link_to("Wrong student?",
-                  destroy_multiple_attendance_records_path(ids: @attendance_records.map { |i| i.id }),
+                  destroy_multiple_attendance_records_path(ids: @attendance_records.map(&:id)),
                   data: {method: :delete})
       redirect_to attendance_path
     else
@@ -41,7 +40,8 @@ class AttendanceRecordsController < ApplicationController
 
   def destroy_multiple
     AttendanceRecord.destroy(params[:ids])
-    redirect_to attendance_path, alert: "Attendance records have been deleted."
+    flash[:alert] = params[:ids].count == 1 ? "Attendance record has been deleted." : "Attendance records have been deleted."
+    redirect_to attendance_path
   end
 
 private
