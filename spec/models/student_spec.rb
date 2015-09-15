@@ -13,6 +13,31 @@ describe Student do
   it { should belong_to(:primary_payment_method).class_name('PaymentMethod') }
   it { should have_many :signatures }
 
+  describe "#pair_on_day" do
+    let(:cohort) { FactoryGirl.create(:cohort) }
+    let(:student_1) { FactoryGirl.create(:student, cohort: cohort) }
+    let(:student_2) { FactoryGirl.create(:student, cohort: cohort) }
+
+    it "returns the pair partner" do
+      attendance_record = FactoryGirl.create(:attendance_record, student: student_1, pair_id: student_2.id)
+      expect(student_1.pair_on_day(attendance_record.date)).to eq student_2
+    end
+
+    it "returns nil if a student has no pair for the day" do
+      attendance_record_1 = FactoryGirl.create(:attendance_record, student: student_1)
+      expect(student_1.pair_on_day(attendance_record_1.date)).to eq nil
+    end
+  end
+
+  describe "#attendance_record_on_day" do
+    let(:student) { FactoryGirl.create(:student) }
+    let(:attendance_record) { FactoryGirl.create(:attendance_record, student: student) }
+
+    it "returns the student's attendance record for the specified day" do
+      expect(student.attendance_record_on_day(attendance_record.date)).to eq attendance_record
+    end
+  end
+
   describe "updating close.io" do
     let(:student) { FactoryGirl.create(:student, email: 'test@test.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }

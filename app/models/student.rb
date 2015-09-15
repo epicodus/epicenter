@@ -19,6 +19,14 @@ class Student < User
   belongs_to :primary_payment_method, class_name: 'PaymentMethod'
   has_many :signatures
 
+  def pair_on_day(day)
+    Student.find_by_id(attendance_record_on_day(day).try(:pair_id))
+  end
+
+  def attendance_record_on_day(day)
+    attendance_records.where(date: day).first
+  end
+
   def update_close_io
     if close_io_lead_exists? && enrollment_complete?
       id = close_io_client.list_leads('email:' + email).data.first.id
