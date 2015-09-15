@@ -6,20 +6,20 @@ feature 'viewing the random pair page' do
   let(:saturday) { monday + 5.days }
 
   scenario 'viewing the random pair page as a guest' do
-    visit random_pair_path
+    visit random_pairs_path
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 
   scenario 'viewing the random pair page as an admin' do
     login_as(admin, scope: :admin)
-    visit random_pair_path
+    visit random_pairs_path
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 
   scenario 'viewing the random pair page on a weekend as a current student' do
     login_as(student, scope: :student)
     travel_to saturday do
-      visit random_pair_path
+      visit random_pairs_path
       expect(current_path).to eql cohort_code_reviews_path(student.cohort)
     end
   end
@@ -27,8 +27,8 @@ feature 'viewing the random pair page' do
   scenario 'viewing the random pair page on a weekday' do
     login_as(student, scope: :student)
     travel_to friday do
-      visit random_pair_path
-      expect(current_path).to eql random_pair_path
+      visit random_pairs_path
+      expect(current_path).to eql random_pairs_path
     end
   end
 end
