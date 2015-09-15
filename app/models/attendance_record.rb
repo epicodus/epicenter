@@ -3,6 +3,7 @@ class AttendanceRecord < ActiveRecord::Base
   scope :today, -> { where(date: Time.zone.now.to_date) }
   validates :student_id, presence: true, uniqueness: { scope: :date }
   validates :date, presence: true
+  validates :pair_id, uniqueness: { scope: [:student_id, :date] }
 
   before_validation :set_date_and_tardiness
   before_update :sign_out, if: :signing_out
