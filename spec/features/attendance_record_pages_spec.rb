@@ -56,3 +56,41 @@ feature 'only allow admins to view attendance sign-in page' do
     expect(page).to have_content "You are not authorized to access this page."
   end
 end
+
+feature 'pair log in for attendance page' do
+  let(:cohort) { FactoryGirl.create(:cohort) }
+  let(:admin) { FactoryGirl.create(:admin, current_cohort: cohort) }
+  let!(:student_1) { FactoryGirl.create(:user_with_all_documents_signed, cohort: cohort) }
+  let!(:student_2) { FactoryGirl.create(:user_with_all_documents_signed, cohort: cohort) }
+  before { login_as(admin, scope: :admin) }
+
+  scenario 'students successfully log in as a pair' do
+    visit attendance_path
+    select student_1.name, from: 'pair_1'
+    select student_2.name, from: 'pair_2'
+    click_button 'Pair log in'
+    expect(page).to have_content "Welcome #{student_1.name} and #{student_2.name}."
+  end
+
+  scenario 'students try to pair with same student twice' do
+    visit attendance_path
+    select student_1.name, from: 'pair_1'
+    select student_1.name, from: 'pair_2'
+    click_button 'Pair log in'
+    expect(page).to have_content "Cannot add the same student twice."
+  end
+end
+
+feature 'student logging out on attendance page' do
+  let(:admin) { FactoryGirl.create(:admin) }
+  let!(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+
+  before { login_as(admin, scope: :admin) }
+
+  scenario 'student successfully logs out' do
+    visit attendance_path
+    click_button("I'm soloing")
+    click_button("I'm leaving")
+    expect(page).to have_content "#{student.name} successfully updated."
+  end
+end
