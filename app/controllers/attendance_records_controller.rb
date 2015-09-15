@@ -3,21 +3,27 @@ class AttendanceRecordsController < ApplicationController
 
   def index
     @students = current_admin.current_cohort.students.order(:name)
+    @students_not_signed_in = @students - Student.find(AttendanceRecord.today.map(&:student_id))
   end
 
   def create
     attendance_records = params[:pair_ids].map do |pair_id|
       { student_id: pair_id, pair_id: (params[:pair_ids] - [pair_id]).first }
     end
-    if @attendance_records = AttendanceRecord.create(attendance_records)
-      student_names = @attendance_records.map { |attendance_record| attendance_record.student.name }
-      flash[:notice] = "Welcome #{student_names.join(' and ')}."
-      flash[:secure] =  view_context.link_to("Wrong student?",
-                  destroy_multiple_attendance_records_path(ids: @attendance_records.map(&:id)),
-                  data: {method: :delete})
-      redirect_to attendance_path
+    if params[:pair_ids].uniq.count > 1 || params[:pair_ids].count == 1
+      if @attendance_records = AttendanceRecord.create(attendance_records)
+        student_names = @attendance_records.map { |attendance_record| attendance_record.student.name }
+        flash[:notice] = "Welcome #{student_names.join(' and ')}."
+        flash[:secure] =  view_context.link_to("Wrong student?",
+                    destroy_multiple_attendance_records_path(ids: @attendance_records.map(&:id)),
+                    data: {method: :delete})
+        redirect_to attendance_path
+      else
+        flash[:alert] = "Something went wrong: " + @attendance_records.first.errors.full_messages.join(", ")
+        redirect_to attendance_path
+      end
     else
-      flash[:alert] = "Something went wrong: " + @attendance_records.first.errors.full_messages.join(", ")
+      flash[:alert] = "Cannot add the same student twice."
       redirect_to attendance_path
     end
   end
@@ -41,6 +47,6 @@ class AttendanceRecordsController < ApplicationController
 private
 
   def attendance_record_params
-    params.require(:attendance_record).permit(:signing_out, :student_id)
+    params.require(:attendance_record).permit(:signing_out, :student_id, :pair_ids)
   end
 end
