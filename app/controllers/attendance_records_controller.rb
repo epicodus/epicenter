@@ -32,12 +32,6 @@ class AttendanceRecordsController < ApplicationController
     end
   end
 
-  def destroy
-    @attendance_record = AttendanceRecord.find(params[:id])
-    @attendance_record.destroy
-    redirect_to attendance_path, alert: "Attendance record has been deleted."
-  end
-
   def destroy_multiple
     AttendanceRecord.destroy(params[:ids])
     flash[:alert] = params[:ids].count == 1 ? "Attendance record has been deleted." : "Attendance records have been deleted."
