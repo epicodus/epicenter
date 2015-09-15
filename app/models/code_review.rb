@@ -13,6 +13,16 @@ class CodeReview < ActiveRecord::Base
 
   before_create :set_number
 
+  def duplicate_code_review_and_objectives(cohort)
+    copy_code_review = self.dup
+    copy_code_review.cohort = cohort
+    objectives.each do |objective|
+      objective = objective.dup
+      copy_code_review.objectives.push(objective)
+    end
+    copy_code_review
+  end
+
   def submission_for(student)
     submissions.find_by(student: student)
   end
