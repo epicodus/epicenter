@@ -37,7 +37,7 @@ feature 'destroying an attendance record' do
     FactoryGirl.create(:student, cohort: admin.current_cohort)
     visit attendance_path
     click_button("I'm soloing")
-    click_link("Wrong student?")
+    click_link("Not you?")
     expect(page).to have_content 'Attendance record has been deleted'
   end
 end
