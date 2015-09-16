@@ -20,11 +20,11 @@ class Student < User
   has_many :signatures
 
   def pair_on_day(day)
-    Student.find_by_id(attendance_record_on_day(day).try(:pair_id))
+    Student.find_by(id: attendance_record_on_day(day).try(:pair_id)) # using find_by so that nil is returned instead of raising exception if there is no pair
   end
 
   def attendance_record_on_day(day)
-    attendance_records.where(date: day).first
+    attendance_records.find_by(date: day)
   end
 
   def update_close_io

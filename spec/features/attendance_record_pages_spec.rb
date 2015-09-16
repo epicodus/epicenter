@@ -77,7 +77,7 @@ feature 'pair log in for attendance page' do
     select student_1.name, from: 'pair_1'
     select student_1.name, from: 'pair_2'
     click_button 'Pair log in'
-    expect(page).to have_content "Cannot add the same student twice."
+    expect(page).to have_content "Something went wrong: Pair cannot be yourself."
   end
 end
 
