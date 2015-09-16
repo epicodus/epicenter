@@ -9,7 +9,7 @@ describe CodeReview do
   it 'duplicates a code review and its objectives' do
     cohort = FactoryGirl.create(:cohort)
     code_review = FactoryGirl.create(:code_review)
-    copy_code_review = code_review.duplicate_code_review_and_objectives(cohort)
+    copy_code_review = code_review.duplicate_code_review(cohort)
     expect(copy_code_review.save).to be true
   end
 
