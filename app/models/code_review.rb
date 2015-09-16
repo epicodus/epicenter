@@ -14,9 +14,8 @@ class CodeReview < ActiveRecord::Base
   before_create :set_number
 
   def duplicate_code_review(cohort)
-    copy_code_review = self.dup
+    copy_code_review = self.deep_clone include: :objectives
     copy_code_review.cohort = cohort
-    duplicate_objectives(copy_code_review)
     copy_code_review
   end
 
@@ -37,13 +36,6 @@ class CodeReview < ActiveRecord::Base
   end
 
 private
-
-  def duplicate_objectives(code_review)
-    objectives.each do |objective|
-      objective = objective.dup
-      code_review.objectives.push(objective)
-    end
-  end
 
   def set_number
     self.number = cohort.code_reviews.pluck(:number).last.to_i + 1
