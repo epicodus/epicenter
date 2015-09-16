@@ -8,7 +8,7 @@
 
 <div class="pair-sign-in well">
   <h2>Pair log in</h2>
-  <%= form_for AttendanceRecord.new do |f| %>
+  <%= form_for AttendanceRecord.new, url: pair_attendance_records_path do |f| %>
     <%= select_tag "pair_ids[]", options_from_collection_for_select(@students_not_signed_in, :id, :name), { prompt: 'Select pair', required: true, id: 'pair_1' } %>
     <%= select_tag "pair_ids[]", options_from_collection_for_select(@students_not_signed_in, :id, :name), { prompt: 'Select pair', required: true, id: 'pair_2' } %>
     <p><%= f.submit "Pair log in", class: 'btn btn-success' %></p>
@@ -24,14 +24,14 @@
           <p class="text-success"><span class="check">&#x2713;</span> Signed out</p>
         <% else %>
           <%= form_for student.attendance_records.today.first do |f| %>
-            <%= hidden_field_tag "pair_ids[]", student.id %>
+            <%= f.hidden_field :student_id, value: student.id %>
             <%= f.hidden_field :signing_out, value: true %>
             <%= f.submit "I'm leaving", class: 'btn btn-warning' %>
           <% end %>
         <% end %>
     <% else %>
       <%= form_for AttendanceRecord.new do |f| %>
-        <%= hidden_field_tag "pair_ids[]", student.id %>
+        <%= f.hidden_field :student_id, value: student.id %>
         <%= f.submit "I'm soloing", class: 'btn btn-primary' %>
       <% end %>
     <% end %>
