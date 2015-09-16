@@ -315,3 +315,14 @@ feature 'editing an code_review' do
     end
   end
 end
+
+feature 'copying an exiting code review' do
+  let(:admin) { FactoryGirl.create(:admin) }
+  let(:code_review) { FactoryGirl.create(:code_review) }
+
+  scenario 'successful copy of code review' do
+    visit new_code_review_path
+    select code_review.title, from: 'code_review_id'
+    expect(page).to have_content 'Code review successfully copied.'
+  end
+end
