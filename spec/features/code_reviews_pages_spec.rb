@@ -318,11 +318,14 @@ end
 
 feature 'copying an exiting code review' do
   let(:admin) { FactoryGirl.create(:admin) }
-  let(:code_review) { FactoryGirl.create(:code_review) }
+
+  before { login_as(admin, scope: :admin) }
 
   scenario 'successful copy of code review' do
+    code_review = FactoryGirl.create(:code_review, cohort: admin.current_cohort)
     visit new_code_review_path
     select code_review.title, from: 'code_review_id'
+    click_button 'Copy'
     expect(page).to have_content 'Code review successfully copied.'
   end
 end
