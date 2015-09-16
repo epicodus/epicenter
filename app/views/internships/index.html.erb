@@ -1,11 +1,7 @@
 <h1>
   Available Internships
-  <% if current_admin %>
-    <span class="pull-right">
-      <%= link_to new_cohort_internship_path(@cohort) do %>
-        <h4 class="span3 text-success">+ New Internship</h4>
-      <% end %>
-    </span>
+  <% if can? :manage, Internship %>
+    <%= link_to '+ New Internship', new_cohort_internship_path(@cohort), class: 'text-success new-link' %>
   <% end %>
 </h1>
 

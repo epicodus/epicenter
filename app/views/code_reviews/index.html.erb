@@ -1,11 +1,7 @@
 <h1>
   Code Reviews
-  <% if current_admin %>
-    <span class="pull-right">
-      <%= link_to new_code_review_path do %>
-        <h4 class="span3 text-success">+ New code review</h4>
-      <% end %>
-    </span>
+  <% if can? :manage, CodeReview %>
+    <%= link_to '+ New Code Review', new_code_review_path, class: 'text-success new-link' %>
   <% end %>
 </h1>
 

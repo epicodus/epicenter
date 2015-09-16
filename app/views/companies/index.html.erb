@@ -1,10 +1,8 @@
 <h1>
   Partner Companies
-  <span class="pull-right">
-    <%= link_to new_company_path do %>
-      <h4 class="span3 text-success">+ New Company</h4>
-    <% end %>
-  </span>
+  <% if can? :manage, Company %>
+    <%= link_to '+ New Company', new_company_path, class: 'text-success new-link' %>
+  <% end %>
 </h1>
 <hr/>
 
