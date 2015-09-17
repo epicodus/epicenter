@@ -316,7 +316,7 @@ feature 'editing an code_review' do
   end
 end
 
-feature 'copying an exiting code review' do
+feature 'copying an existing code review' do
   let(:admin) { FactoryGirl.create(:admin) }
 
   before { login_as(admin, scope: :admin) }
