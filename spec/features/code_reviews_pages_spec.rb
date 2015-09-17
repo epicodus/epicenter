@@ -59,7 +59,7 @@ feature 'index page' do
 
     scenario 'has a link to create a new code review' do
       visit cohort_code_reviews_path(code_review.cohort)
-      click_on 'New code review'
+      click_on 'New Code Review'
       expect(page).to have_content 'New Code Review'
     end
 
