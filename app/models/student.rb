@@ -83,7 +83,7 @@ class Student < User
   end
 
   def signed_in_today?
-    attendance_records.today.exists?
+    attendance_records.select { |attendance_record| attendance_record.date == Date.today }.any? # needs to be refactored; this is more efficient than using the today scope for attendance records, but not an ideal solution
   end
 
   def signed_out_today?
