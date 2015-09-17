@@ -22,7 +22,7 @@ class PairAttendanceRecordsController < ApplicationController
 
   def destroy_multiple
     AttendanceRecord.destroy(params[:ids])
-    flash[:alert] = params[:ids].count == 1 ? "Attendance record has been deleted." : "Attendance records have been deleted."
+    flash[:alert] = 'Attendance record'.pluralize(params[:ids].count) + " has".pluralize(params[:ids].count) + " been deleted."
     redirect_to attendance_path
   end
 
