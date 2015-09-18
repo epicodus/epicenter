@@ -5,10 +5,6 @@ class CodeReviewsController < ApplicationController
     cohort = Cohort.find(params[:cohort_id])
     @code_reviews = cohort.code_reviews
     authorize! :read, cohort # I don't know what this is necessary. Should be handled by authorize_resource above.
-    @header = 'Code Reviews'
-    @class = CodeReview
-    @category = 'Code Review'
-    @category_path = new_code_review_path
   end
 
   def new

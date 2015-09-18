@@ -1,6 +1,6 @@
 <div class="row">
-  <h1 class="category-header span6"><%= @header %></h1>
-  <% if can? :manage, @class %>
-    <%= link_to '+ New ' + @category, @category_path, class: 'text-success new-link' %>
+  <h1 class="category-header span6"><%= header %></h1>
+  <% if can? :manage, class_to_manage %>
+    <%= link_to '+ New ' + category, category_path, class: 'text-success new-link' %>
   <% end %>
 </div>

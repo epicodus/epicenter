@@ -4,10 +4,6 @@ class CompaniesController < ApplicationController
 
   def index
     @companies = Company.all
-    @header = 'Partner Companies'
-    @class = Company
-    @category = 'Company'
-    @category_path = new_company_path
   end
 
   def show

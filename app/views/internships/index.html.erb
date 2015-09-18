@@ -1,4 +1,4 @@
-<%= render 'layouts/category_header' %>
+<%= render partial: 'layouts/category_header', locals: { header: 'Available Internships', class_to_manage: Internship, category: 'Internship', category_path: new_cohort_internship_path(@cohort) } %>
 
 <% if current_student %>
   <p>You may only rank 5 companies as "Low" interest.</p>

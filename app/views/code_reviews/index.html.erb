@@ -1,4 +1,4 @@
-<%= render 'layouts/category_header' %>
+<%= render partial: 'layouts/category_header', locals: { header: 'Code Reviews', class_to_manage: CodeReview, category: 'Code Review', category_path: new_code_review_path } %>
 
 <% if can? :manage, CodeReview %>
   <%= form_tag update_multiple_code_reviews_path, method: :patch, class: 'update-multiple-code-reviews' do %>
