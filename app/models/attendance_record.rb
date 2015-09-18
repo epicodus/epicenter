@@ -3,12 +3,21 @@ class AttendanceRecord < ActiveRecord::Base
   scope :today, -> { where(date: Time.zone.now.to_date) }
   validates :student_id, presence: true, uniqueness: { scope: :date }
   validates :date, presence: true
+  validates :pair_id, uniqueness: { scope: [:student_id, :date] }
+  validate :pair_is_not_self
 
   before_validation :set_date_and_tardiness
   before_update :sign_out, if: :signing_out
   belongs_to :student
 
 private
+
+  def pair_is_not_self
+    if pair_id == student_id
+      errors.add(:pair_id, "cannot be yourself.")
+      false
+    end
+  end
 
   def sign_out
     class_end_time = Time.zone.parse(ENV['CLASS_END_TIME'] ||= '4:30 PM')

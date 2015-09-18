@@ -6,26 +6,34 @@
   </div>
 </div>
 
+<div class="pair-sign-in well">
+  <h2>Pair log in</h2>
+  <%= form_for AttendanceRecord.new, url: pair_attendance_records_path do |f| %>
+    <%= select_tag "pair_ids[]", options_from_collection_for_select(@students_not_signed_in, :id, :name), { prompt: 'Select pair', required: true, id: 'pair_1' } %>
+    <%= select_tag "pair_ids[]", options_from_collection_for_select(@students_not_signed_in, :id, :name), { prompt: 'Select pair', required: true, id: 'pair_2' } %>
+    <p><%= f.submit "Pair log in", class: 'btn btn-success' %></p>
+  <% end %>
+</div>
+
 <div class="row">
-  <%= div_for @students, class: 'well span3' do |student| %>
+  <%= div_for @students, class: 'student-attendance-div well span2' do |student| %>
+    <h2><%= student.name %></h2>
     <% if student.signed_in_today? %>
-      <p class="text-success pull-right"><span class="check">&#x2713;</span> Signed in</p>
+      <p class="text-success"><span class="check">&#x2713;</span> Signed in</p>
         <% if student.signed_out_today? %>
-          <p class="text-success pull-right"><span class="check">&#x2713;</span> Signed out</p>
+          <p class="text-success"><span class="check">&#x2713;</span> Signed out</p>
         <% else %>
           <%= form_for student.attendance_records.today.first do |f| %>
             <%= f.hidden_field :student_id, value: student.id %>
             <%= f.hidden_field :signing_out, value: true %>
-            <%= f.submit "I'm leaving", class: 'btn btn-primary pull-right' %>
+            <%= f.submit "I'm leaving", class: 'btn btn-warning' %>
           <% end %>
         <% end %>
     <% else %>
       <%= form_for AttendanceRecord.new do |f| %>
         <%= f.hidden_field :student_id, value: student.id %>
-        <%= f.submit "I'm here", class: 'btn btn-primary pull-right' %>
+        <%= f.submit "I'm soloing", class: 'btn btn-primary' %>
       <% end %>
     <% end %>
-    <%= gravatar_tag student.email, :size => 85, :html => { :class => 'img-rounded' }, :default => "http://placehold.it/85&text=%20" %>
-    <h2><%= student.name %></h2>
   <% end %>
 </div>

@@ -2,6 +2,14 @@ describe AttendanceRecord do
   it { should belong_to :student }
   it { should validate_presence_of :student_id }
 
+  describe "validates uniqueness of pair_id to student_id and day" do
+    it do
+      FactoryGirl.create(:attendance_record)
+      FactoryGirl.create(:student)
+      should validate_uniqueness_of(:pair_id).scoped_to([:student_id, :date])
+    end
+  end
+
   context 'before create' do
     it 'sets the date property to the current date' do
       attendance_record = FactoryGirl.create(:attendance_record)

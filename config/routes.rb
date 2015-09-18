@@ -49,4 +49,10 @@ Rails.application.routes.draw do
       resources :refund_policy, only: [:new]
     end
   end
+
+  resources :pair_attendance_records, only: [:create] do
+    collection do
+      delete :destroy_multiple, :path => ''
+    end
+  end
 end
