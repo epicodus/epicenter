@@ -7,7 +7,7 @@ class PairAttendanceRecordsController < ApplicationController
         pair_id: params[:pair_ids].reverse.slice(params[:pair_ids].index(pair_id))
       })
     end
-    if @attendance_records.each { |record| record.save } && @attendance_records.first.id != nil
+    if @attendance_records.all? { |record| record.save }
       student_names = @attendance_records.map { |attendance_record| attendance_record.student.name }
       flash[:notice] = "Welcome #{student_names.join(' and ')}."
       flash[:secure] =  view_context.link_to("Wrong student?",
