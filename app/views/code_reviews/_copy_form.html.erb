@@ -1,4 +1,4 @@
-<%= form_for code_review, url: code_review_copy_index_path, html: { method: :post } do |f| %>
+<%= form_for code_review, url: code_review_copy_path, html: { method: :post } do |f| %>
   <%= grouped_collection_select(:code_review, :id, Cohort.with_code_reviews, :code_reviews, :description, :id, :title) %>
 
   <div class="submit">

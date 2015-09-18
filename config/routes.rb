@@ -50,5 +50,5 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :code_review_copy, only: [:create]
+  resource :code_review_copy, only: [:create]
 end
