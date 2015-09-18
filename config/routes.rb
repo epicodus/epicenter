@@ -50,5 +50,11 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :pair_attendance_records, only: [:create] do
+    collection do
+      delete :destroy_multiple, :path => ''
+    end
+  end
+  
   resource :code_review_copy, only: [:create]
 end
