@@ -6,6 +6,13 @@ describe CodeReview do
   it { should belong_to :cohort }
   it { should accept_nested_attributes_for :objectives }
 
+  it 'duplicates a code review and its objectives' do
+    cohort = FactoryGirl.create(:cohort)
+    code_review = FactoryGirl.create(:code_review)
+    copy_code_review = code_review.duplicate_code_review(cohort)
+    expect(copy_code_review.save).to be true
+  end
+
   it 'validates presence of at least one objective' do
     code_review = FactoryGirl.build(:code_review)
     code_review.save

@@ -1,13 +1,4 @@
-<h1>
-  Available Internships
-  <% if current_admin %>
-    <span class="pull-right">
-      <%= link_to new_cohort_internship_path(@cohort) do %>
-        <h4 class="span3 text-success">+ New Internship</h4>
-      <% end %>
-    </span>
-  <% end %>
-</h1>
+<%= render partial: 'layouts/category_header', locals: { header: 'Available Internships', class_to_manage: Internship, category: 'Internship', category_path: new_cohort_internship_path(@cohort) } %>
 
 <% if current_student %>
   <p>You may only rank 5 companies as "Low" interest.</p>

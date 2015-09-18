@@ -13,6 +13,12 @@ class CodeReview < ActiveRecord::Base
 
   before_create :set_number
 
+  def duplicate_code_review(cohort)
+    copy_code_review = self.deep_clone include: :objectives
+    copy_code_review.cohort = cohort
+    copy_code_review
+  end
+
   def submission_for(student)
     submissions.find_by(student: student)
   end

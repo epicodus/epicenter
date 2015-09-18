@@ -1,11 +1,4 @@
-<h1>
-  Partner Companies
-  <span class="pull-right">
-    <%= link_to new_company_path do %>
-      <h4 class="span3 text-success">+ New Company</h4>
-    <% end %>
-  </span>
-</h1>
+<%= render partial: 'layouts/category_header', locals: { header: 'Partner Companies', class_to_manage: Company, category: 'Company', category_path: new_company_path } %>
 <hr/>
 
 <ul class="company-list">

@@ -55,4 +55,6 @@ Rails.application.routes.draw do
       delete :destroy_multiple, :path => ''
     end
   end
+  
+  resource :code_review_copy, only: [:create]
 end

@@ -59,7 +59,7 @@ feature 'index page' do
 
     scenario 'has a link to create a new code review' do
       visit cohort_code_reviews_path(code_review.cohort)
-      click_on 'Add a code review'
+      click_on 'New Code Review'
       expect(page).to have_content 'New Code Review'
     end
 
@@ -313,5 +313,19 @@ feature 'editing an code_review' do
       visit edit_code_review_path(code_review)
       expect(page).to have_content 'not authorized'
     end
+  end
+end
+
+feature 'copying an existing code review' do
+  let(:admin) { FactoryGirl.create(:admin) }
+
+  before { login_as(admin, scope: :admin) }
+
+  scenario 'successful copy of code review' do
+    code_review = FactoryGirl.create(:code_review, cohort: admin.current_cohort)
+    visit new_code_review_path
+    select code_review.title, from: 'code_review_id'
+    click_button 'Copy'
+    expect(page).to have_content 'Code review successfully copied.'
   end
 end
