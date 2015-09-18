@@ -7,6 +7,10 @@ class InternshipsController < ApplicationController
   def index
     @cohort = Cohort.find(params[:cohort_id])
     @internships = @cohort.internships_sorted_by_interest(current_student)
+    @header = 'Available Internships'
+    @class = Internship
+    @category = 'Internship'
+    @category_path = new_cohort_internship_path(@cohort)
   end
 
   def show

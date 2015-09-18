@@ -1,9 +1,4 @@
-<h1>
-  Code Reviews
-  <% if can? :manage, CodeReview %>
-    <%= link_to '+ New Code Review', new_code_review_path, class: 'text-success new-link' %>
-  <% end %>
-</h1>
+<%= render 'layouts/category_header' %>
 
 <% if can? :manage, CodeReview %>
   <%= form_tag update_multiple_code_reviews_path, method: :patch, class: 'update-multiple-code-reviews' do %>

@@ -1,9 +1,4 @@
-<h1>
-  Available Internships
-  <% if can? :manage, Internship %>
-    <%= link_to '+ New Internship', new_cohort_internship_path(@cohort), class: 'text-success new-link' %>
-  <% end %>
-</h1>
+<%= render 'layouts/category_header' %>
 
 <% if current_student %>
   <p>You may only rank 5 companies as "Low" interest.</p>

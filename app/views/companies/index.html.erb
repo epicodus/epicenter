@@ -1,9 +1,4 @@
-<h1>
-  Partner Companies
-  <% if can? :manage, Company %>
-    <%= link_to '+ New Company', new_company_path, class: 'text-success new-link' %>
-  <% end %>
-</h1>
+<%= render 'layouts/category_header' %>
 <hr/>
 
 <ul class="company-list">
