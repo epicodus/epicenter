@@ -16,7 +16,6 @@ class AttendanceStatisticsController < ApplicationController
 
   def create
     cohort = Cohort.find(params[:cohort_id])
-    day = params[:attendance_records][:day]
-    redirect_to cohort_attendance_statistics_path(cohort, day: day)
+    redirect_to cohort_attendance_statistics_path(cohort, day: params[:attendance_records][:day])
   end
 end

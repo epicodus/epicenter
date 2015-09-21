@@ -8,8 +8,8 @@ class AttendanceRecordAmendmentsController < ApplicationController
   end
 
   def create
-    attendance_record_amendment = AttendanceRecordAmendment.new(attendance_record_amendment_params)
-    if attendance_record_amendment.save
+    @attendance_record_amendment = AttendanceRecordAmendment.new(attendance_record_amendment_params)
+    if @attendance_record_amendment.save
       student = Student.find(params[:attendance_record_amendment][:student_id])
       check_referring_url(student)
     else
