@@ -6,8 +6,4 @@ module AttendanceHelper
   def day_value
     @day ||= Date.today
   end
-
-  def past_and_present_class_days
-    @cohort.list_class_days.select { |day| day if day <= Date.today  }
-  end
 end

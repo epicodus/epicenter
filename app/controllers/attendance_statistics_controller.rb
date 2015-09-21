@@ -20,4 +20,10 @@ class AttendanceStatisticsController < ApplicationController
     @day = params[:attendance_records][:day]
     redirect_to cohort_attendance_statistics_path(@cohort, day: @day)
   end
+
+private
+
+  def past_and_present_class_days
+    @cohort.list_class_days.select { |day| day if day <= Date.today  }
+  end
 end
