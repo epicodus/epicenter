@@ -43,22 +43,25 @@
 
   <% if @day %>
     <h3>Attendance for <%= @day.strftime("%A %B %d, %Y") %></h3>
-    <% @cohort.attendance_for_day(@day).each do |attendance_record| %>
-      <ul class="span8 unstyled">
+    <% @cohort.students.each do |student| %>
+      <ul class="span12 unstyled">
           <li>
-              <span class="span3"><%= link_to attendance_record.student.name, attendance_record.student, class: 'unstyled-link' %></span>
+              <span class="span3"><%= link_to student.name, student, class: 'unstyled-link' %></span>
               <span>
-                <% if attendance_record.tardy %>
+                <% if !student.attendance_record_on_day(@day) %>
+                  <span class="btn btn-danger span3" disabled>Absent</span>
+                <% elsif student.attendance_record_on_day(@day).tardy %>
                   <span class="btn btn-warning span3" disabled>Tardy</span>
-                <% elsif attendance_record.left_early %>
+                <% elsif student.attendance_record_on_day(@day).left_early %>
                   <span class="btn btn-warning span3" disabled>Left early</span>
                 <% else %>
                   <span class="btn btn-success span3" disabled>On time</span>
                 <% end %>
               </span>
-              <span class="pull-right">
-                <%= link_to 'Edit', new_attendance_record_amendment_path(student: attendance_record.student, day: attendance_record.date), class: 'unstyled-link'  %>
+              <span class="span2">
+                <%= link_to 'Edit', new_attendance_record_amendment_path(student: student, day: @day), class: 'unstyled-link'  %>
               </span>
+              <span><%= student.pair_on_day(@day) ? student.pair_on_day(@day).name : 'Solo' %></span>
           </li>
       </ul>
     <% end %>

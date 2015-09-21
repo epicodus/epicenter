@@ -52,7 +52,7 @@
             <span class="span2">
               <%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day), class: 'unstyled-link'  %>
             </span>
-            <span class="3"><%= @student.pair_on_day(day) ? @student.pair_on_day(day).name : 'Solo' %></span>
+            <span><%= @student.pair_on_day(day) ? @student.pair_on_day(day).name : 'Solo' %></span>
           </li>
       </ul>
     <% end %>
