@@ -6,9 +6,7 @@ class AttendanceStatisticsController < ApplicationController
     @cohort = Cohort.find(params[:cohort_id])
     @attendance_statistic = CohortAttendanceStatistics.new(@cohort)
     @class_days = @cohort.list_class_days
-    if params[:day]
-      @day = Date.parse(params[:day])
-    end
+    @day = Date.parse(params[:day]) if params[:day]
   end
 
   def show
