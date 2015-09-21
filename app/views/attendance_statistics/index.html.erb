@@ -1,11 +1,11 @@
 <h1 class="page-header">Attendance statistics</h1>
 
 <ul class="nav nav-tabs">
-  <li class="active class-attendance-header">
-    <a>Cohort statistics</a>
-  </li>
-  <li class="day-attendance-header">
+  <li class="active day-attendance-header">
     <a>Attendance by day</a>
+  </li>
+  <li class="class-attendance-header">
+    <a>Cohort statistics</a>
   </li>
 </ul>
 
@@ -35,14 +35,12 @@
 
 <div class="day-stats">
   <%= form_for :attendance_records, url: cohort_attendance_statistics_path(@cohort), html: { method: :post } do |f| %>
-    <%= f.collection_select :day, @class_days, :strftime, :strftime, {  prompt: 'Select a day' }, class: 'attendance-day' %>
-    <p>
-      <%= f.submit 'Submit', class: 'btn btn-primary' %>
-    </p>
+    <%= f.select :day, options_for_select(formatted_class_days, selected: day_value), {}, { class: 'span3' } %>
+    <p><%= f.submit 'Submit', class: 'btn btn-primary' %></p>
   <% end %>
 
-  <% if @day %>
     <h3>Attendance for <%= @day.strftime("%A %B %d, %Y") %></h3>
+    <hr>
     <% @cohort.students.each do |student| %>
       <ul class="span12 unstyled">
           <li>
@@ -59,11 +57,10 @@
                 <% end %>
               </span>
               <span class="span2">
-                <%= link_to 'Edit', new_attendance_record_amendment_path(student: student, day: @day), class: 'unstyled-link'  %>
+                <%= link_to 'Edit', new_attendance_record_amendment_path(student: student, day: @day, attendance_statistics: true), class: 'unstyled-link'  %>
               </span>
               <span><%= student.pair_on_day(@day) ? student.pair_on_day(@day).name : 'Solo' %></span>
           </li>
       </ul>
     <% end %>
-  <% end %>
 </div>

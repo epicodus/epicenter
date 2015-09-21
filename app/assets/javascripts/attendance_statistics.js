@@ -1,5 +1,5 @@
 $(function() {
-  $('.day-stats').hide();
+  $('.class-stats').hide();
 
   $('.day-attendance-header').click(function() {
     $('.class-stats').hide();
@@ -14,11 +14,4 @@ $(function() {
     $('.class-attendance-header').addClass("active");
     $('.day-attendance-header').removeClass("active");
   });
-
-  if (window.location.href.indexOf("?day=") > -1) {
-    $('.class-stats').hide();
-    $('.day-stats').show();
-    $('.class-attendance-header').removeClass("active");
-    $('.day-attendance-header').addClass("active");
-  }
 });
