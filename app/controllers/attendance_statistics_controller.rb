@@ -7,7 +7,6 @@ class AttendanceStatisticsController < ApplicationController
   def index
     @cohort = Cohort.find(params[:cohort_id])
     @attendance_statistic = CohortAttendanceStatistics.new(@cohort)
-    @class_days = past_and_present_class_days
     @day = Date.parse(params[:day]) if params[:day]
   end
 
@@ -16,14 +15,8 @@ class AttendanceStatisticsController < ApplicationController
   end
 
   def create
-    @cohort = Cohort.find(params[:cohort_id])
-    @day = params[:attendance_records][:day]
-    redirect_to cohort_attendance_statistics_path(@cohort, day: @day)
-  end
-
-private
-
-  def past_and_present_class_days
-    @cohort.list_class_days.select { |day| day if day <= Date.today  }
+    cohort = Cohort.find(params[:cohort_id])
+    day = params[:attendance_records][:day]
+    redirect_to cohort_attendance_statistics_path(cohort, day: day)
   end
 end
