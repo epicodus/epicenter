@@ -2,10 +2,12 @@ class AttendanceStatisticsController < ApplicationController
   authorize_resource :cohort_attendance_statistics, only: :index
   authorize_resource :student_attendance_statistics, only: :show
 
+  include AttendanceHelper
+
   def index
     @cohort = Cohort.find(params[:cohort_id])
     @attendance_statistic = CohortAttendanceStatistics.new(@cohort)
-    @class_days = @cohort.list_class_days
+    @class_days = past_and_present_class_days
     @day = Date.parse(params[:day]) if params[:day]
   end
 
