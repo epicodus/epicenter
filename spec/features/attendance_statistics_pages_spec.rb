@@ -19,7 +19,6 @@ feature 'attendance statistics page' do
       student = FactoryGirl.create(:student, cohort: cohort)
       FactoryGirl.create(:attendance_record, student: student)
       visit cohort_attendance_statistics_path(cohort)
-      find('.class-attendance-header').click
       expect(page).to have_content 'Number of students present'
     end
 
