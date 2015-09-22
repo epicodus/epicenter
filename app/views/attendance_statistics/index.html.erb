@@ -1,66 +1,23 @@
 <h1 class="page-header">Attendance statistics</h1>
 
-<ul class="nav nav-tabs">
-  <li class="active day-attendance-header">
-    <a>Attendance by day</a>
-  </li>
-  <li class="class-attendance-header">
-    <a>Cohort statistics</a>
-  </li>
-</ul>
+<%= line_chart @attendance_statistic.daily_presence,
+      library: {
+        hAxis: { format: "MMM d" },
+        title: 'Number of students present',
+        chartArea: { left: 20, top: 20, right: 20, width: '95%', height: '75%' },
+        colors: ['#2980b9']
+      } %>
 
-<div class="class-stats">
-  <%= line_chart @attendance_statistic.daily_presence,
-        library: {
-          hAxis: { format: "MMM d" },
-          title: 'Number of students present',
-          chartArea: { left: 20, top: 20, right: 20, width: '95%', height: '75%' },
-          colors: ['#2980b9']
-        } %>
-
-  <h3>Students</h3>
-  <%= bar_chart @attendance_statistic.student_attendance_data, stacked: true,
-        library: {
-          height: @cohort.students.length * 50,
-          hAxis: {
-            baseline: 'transparent',
-            textStyle: { color: 'transparent' }
-          },
-          chartArea: { left: 150, top: 20, right: 0, width: '100%', height: "90%" },
-          bar: { groupWidth: '60%' },
-          legend: { position: 'none' },
-          colors: ['#06BA63', '#F9DF74', '#F9DF74', '#D1495B']
-        } %>
-</div>
-
-<div class="day-stats">
-  <%= form_for :attendance_records, url: cohort_attendance_statistics_path(@cohort), html: { method: :post } do |f| %>
-    <%= f.select :day, options_for_select(formatted_class_days, selected: day_value), {}, { class: 'span3' } %>
-    <p><%= f.submit 'Submit', class: 'btn btn-primary' %></p>
-  <% end %>
-
-    <h3>Attendance for <%= @day.strftime("%A %B %d, %Y") %></h3>
-    <hr>
-    <% @cohort.students.each do |student| %>
-      <ul class="span12 unstyled">
-          <li>
-              <span class="span3"><%= link_to student.name, student, class: 'unstyled-link' %></span>
-              <span>
-                <% if !student.attendance_record_on_day(@day) %>
-                  <span class="btn btn-danger span3" disabled>Absent</span>
-                <% elsif student.attendance_record_on_day(@day).tardy %>
-                  <span class="btn btn-warning span3" disabled>Tardy</span>
-                <% elsif student.attendance_record_on_day(@day).left_early %>
-                  <span class="btn btn-warning span3" disabled>Left early</span>
-                <% else %>
-                  <span class="btn btn-success span3" disabled>On time</span>
-                <% end %>
-              </span>
-              <span class="span2">
-                <%= link_to 'Edit', new_attendance_record_amendment_path(student: student, day: @day, attendance_statistics: true), class: 'unstyled-link'  %>
-              </span>
-              <span><%= student.pair_on_day(@day) ? student.pair_on_day(@day).name : 'Solo' %></span>
-          </li>
-      </ul>
-    <% end %>
-</div>
+<h3>Students</h3>
+<%= bar_chart @attendance_statistic.student_attendance_data, stacked: true,
+      library: {
+        height: @cohort.students.length * 50,
+        hAxis: {
+          baseline: 'transparent',
+          textStyle: { color: 'transparent' }
+        },
+        chartArea: { left: 150, top: 20, right: 0, width: '100%', height: "90%" },
+        bar: { groupWidth: '60%' },
+        legend: { position: 'none' },
+        colors: ['#06BA63', '#F9DF74', '#F9DF74', '#D1495B']
+      } %>
