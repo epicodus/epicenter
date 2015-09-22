@@ -15,7 +15,7 @@ feature 'attendance statistics page' do
       expect(page).to have_content 'Attendance by day'
     end
 
-    scenario 'retreiving attendance records for a specific day', js: true do
+    scenario 'retreiving attendance records for a specific day' do
       today = Date.new(2015, 9, 23)
       allow(Date).to receive(:today).and_return(today)
       cohort.start_date = today - 1
