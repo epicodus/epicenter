@@ -7,7 +7,6 @@ class AttendanceStatisticsController < ApplicationController
   def index
     @cohort = Cohort.find(params[:cohort_id])
     @attendance_statistic = CohortAttendanceStatistics.new(@cohort)
-    @day = Date.parse(params[:day]) if params[:day]
   end
 
   def show
