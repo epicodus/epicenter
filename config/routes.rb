@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     resources :code_reviews, only: [:index]
     resources :internships
     resources :students, only: [:index]
+    resource :day_attendance_records, only: [:show]
   end
   resources :ratings, only: [:create]
   resources :companies
@@ -55,6 +56,6 @@ Rails.application.routes.draw do
       delete :destroy_multiple, :path => ''
     end
   end
-  
+
   resource :code_review_copy, only: [:create]
 end
