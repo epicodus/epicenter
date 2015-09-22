@@ -10,7 +10,7 @@
 <h3>Students</h3>
 <%= bar_chart @attendance_statistic.student_attendance_data, stacked: true,
       library: {
-        height: @cohort.students.length * 50,
+        height: @attendance_statistic.cohort.students.length * 50,
         hAxis: {
           baseline: 'transparent',
           textStyle: { color: 'transparent' }

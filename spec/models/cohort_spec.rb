@@ -7,13 +7,26 @@ describe Cohort do
   it { should validate_presence_of :start_date }
   it { should validate_presence_of :end_date }
 
+  describe '#past_and_present_class_days' do
+    let(:cohort) { FactoryGirl.create(:cohort) }
+    let!(:today) { Date.new(2015, 9, 23) }
+
+    before { allow(Date).to receive(:today).and_return(today) }
+
+    it 'returns a list of class days that are past or present' do
+      cohort.start_date = today - 1
+      cohort.end_date = today + 1
+      expect(cohort.past_and_present_class_days).to eq [cohort.start_date, today]
+    end
+  end
+
   describe '#list_class_days' do
     let(:cohort) { FactoryGirl.create(:cohort) }
 
     it 'returns a list of class days with weekend days nil' do
       cohort.start_date = Date.new(2015, 8, 31)
       cohort.end_date = Date.new(2015, 9, 7)
-      expect(cohort.list_class_days).to eq [cohort.start_date, cohort.start_date + 1, cohort.start_date + 2, cohort.start_date + 3, cohort.start_date + 4, cohort.start_date + 7]
+      expect(cohort.list_class_days).to eq [cohort.start_date, cohort.start_date + 1, cohort.start_date + 2, cohort.start_date + 3, cohort.start_date + 7]
     end
   end
 
