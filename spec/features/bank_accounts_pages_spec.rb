@@ -13,14 +13,14 @@ feature 'Creating a bank account' do
       fill_in 'Name on account', with: student.name
     end
 
-    scenario 'with valid information', :vcr, js: true do
+    xscenario 'with valid information', :vcr, js: true do
       fill_in 'Routing number', with: '110000000'
       fill_in 'Bank account number', with: '000123456789'
       click_on 'Verify bank account'
       expect(page).to have_content '2-3 business days'
     end
 
-    scenario 'with missing account number', js: true do
+    xscenario 'with missing account number', :vcr, js: true do
       fill_in 'Routing number', with: '110000000'
       fill_in 'Bank account number', with: ' '
       click_on 'Verify bank account'
@@ -29,7 +29,7 @@ feature 'Creating a bank account' do
       end
     end
 
-    scenario 'with invalid routing number', js: true do
+    xscenario 'with invalid routing number', :vcr, js: true do
       fill_in 'Bank account number', with: '000123456789'
       fill_in 'Routing number', with: '12345689'
       click_on 'Verify bank account'
