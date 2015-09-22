@@ -11,7 +11,7 @@ class AttendanceRecordAmendmentsController < ApplicationController
     @attendance_record_amendment = AttendanceRecordAmendment.new(attendance_record_amendment_params)
     if @attendance_record_amendment.save
       student = Student.find(params[:attendance_record_amendment][:student_id])
-      check_referring_url(student)
+      redirect_appropriately(student)
     else
       render :new
     end
@@ -23,7 +23,7 @@ private
     params.require(:attendance_record_amendment).permit(:student_id, :status, :date)
   end
 
-  def check_referring_url(student)
+  def redirect_appropriately(student)
     if request.referer.include?('attendance_statistics')
       day = params[:attendance_record_amendment][:date]
       redirect_to cohort_day_attendance_records_path(student.cohort, day: day), notice: "#{student.name}'s attendance record has been amended."
