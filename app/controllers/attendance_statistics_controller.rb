@@ -5,8 +5,7 @@ class AttendanceStatisticsController < ApplicationController
   include AttendanceHelper
 
   def index
-    @cohort = Cohort.find(params[:cohort_id])
-    @attendance_statistic = CohortAttendanceStatistics.new(@cohort)
+    @attendance_statistic = CohortAttendanceStatistics.new(params[:cohort_id])
   end
 
   def show

@@ -1,8 +1,8 @@
 class CohortAttendanceStatistics
   attr_reader :cohort
 
-  def initialize(cohort)
-    @cohort = cohort
+  def initialize(cohort_id)
+    @cohort = Cohort.find(cohort_id)
   end
 
   def daily_presence
