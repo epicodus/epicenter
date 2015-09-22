@@ -12,7 +12,7 @@ feature 'Creating a credit card' do
       fill_in 'Name on card', with: student.name
     end
 
-    scenario 'with valid information', :vcr, js: true do
+    xscenario 'with valid information', :vcr, js: true do
       fill_in 'Card number', with: '4242424242424242'
       fill_in 'Expiration month', with: '12'
       fill_in 'Expiration year', with: '2016'
