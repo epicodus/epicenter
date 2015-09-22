@@ -1,7 +1,7 @@
 describe CohortAttendanceStatistics do
   it 'initializes with a cohort' do
     cohort = FactoryGirl.create(:cohort)
-    cohort_attendance_statistics = CohortAttendanceStatistics.new(cohort)
+    cohort_attendance_statistics = CohortAttendanceStatistics.new(cohort.id)
     expect(cohort_attendance_statistics.cohort).to eq cohort
   end
 
@@ -21,7 +21,7 @@ describe CohortAttendanceStatistics do
         FactoryGirl.create(:attendance_record, student: cohort.students.first)
       end
 
-      cohort_attendance_statistics = CohortAttendanceStatistics.new(cohort)
+      cohort_attendance_statistics = CohortAttendanceStatistics.new(cohort.id)
       expect(cohort_attendance_statistics.daily_presence).to eq({
         day_one => 2,
         day_two => 1
@@ -31,7 +31,7 @@ describe CohortAttendanceStatistics do
 
   describe '#student_attendance_data' do
     let(:cohort) { FactoryGirl.create(:cohort) }
-    let(:cohort_attendance_statistics) { CohortAttendanceStatistics.new(cohort) }
+    let(:cohort_attendance_statistics) { CohortAttendanceStatistics.new(cohort.id) }
     let!(:first_student) { FactoryGirl.create(:student, name: 'Amo', cohort: cohort) }
     let!(:second_student) { FactoryGirl.create(:student, name: 'Catherine', cohort: cohort) }
 
