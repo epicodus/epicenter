@@ -22,7 +22,7 @@ Rails.application.routes.draw do
     resources :code_reviews, only: [:index]
     resources :internships
     resources :students, only: [:index]
-    resource :day_attendance_records, only: [:show]
+    resources :day_attendance_records, only: [:index]
   end
   resources :ratings, only: [:create]
   resources :companies
