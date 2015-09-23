@@ -4,6 +4,6 @@ module AttendanceHelper
   end
 
   def day_value
-    @day ||= Date.today
+    @day ||= Time.zone.now.to_date
   end
 end
