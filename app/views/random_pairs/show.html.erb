@@ -2,7 +2,7 @@
 <% if @random_pairs.empty? %>
   No random pairs available just yet!
 <% else %>
-  <h3>Try pairing with one of these students today:</h3>
+  <h3>Try pairing with one of these students:</h3>
   <% @random_pairs.each do |pair| %>
     <p><%= pair.name %></p>
   <% end %>

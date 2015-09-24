@@ -18,23 +18,7 @@ feature 'viewing the random pair page' do
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 
-  scenario 'viewing the random pair page on a weekend as a current student' do
-    login_as(student, scope: :student)
-    travel_to saturday do
-      visit random_pairs_path
-      expect(current_path).to eql cohort_code_reviews_path(student.cohort)
-    end
-  end
-
-  scenario 'visiting the random pair page on a weekday' do
-    login_as(student, scope: :student)
-    travel_to friday do
-      visit random_pairs_path
-      expect(current_path).to eql random_pairs_path
-    end
-  end
-
-  scenario 'viewing random pairs on a weekday' do
+  scenario 'viewing random pairs' do
     allow(student).to receive(:random_pairs).and_return [student_3, student_2]
     login_as(student, scope: :student)
     travel_to friday do
