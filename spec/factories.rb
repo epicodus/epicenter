@@ -248,6 +248,33 @@ FactoryGirl.define do
         create(:completed_enrollment_agreement, student: student)
       end
     end
+
+    factory :user_with_score_of_10 do
+      after(:create) do |student|
+        submission = create(:submission, student: student)
+        review = create(:passing_review, submission: submission)
+        create(:passing_grade, review: review, objective: review.submission.code_review.objectives.first)
+        create(:passing_grade, review: review, objective: review.submission.code_review.objectives.first)
+        create(:failing_grade, review: review, objective: review.submission.code_review.objectives.first)
+      end
+    end
+
+    factory :user_with_score_of_9 do
+      after(:create) do |student|
+        submission = create(:submission, student: student)
+        review = create(:passing_review, submission: submission)
+        create(:passing_grade, review: review, objective: review.submission.code_review.objectives.first)
+        create(:passing_grade, review: review, objective: review.submission.code_review.objectives.first)
+      end
+    end
+
+    factory :user_with_score_of_6 do
+      after(:create) do |student|
+        submission = create(:submission, student: student)
+        review = create(:passing_review, submission: submission)
+        create(:passing_grade, review: review, objective: review.submission.code_review.objectives.first)
+      end
+    end
   end
 
   factory :submission do

@@ -39,45 +39,18 @@ describe Student do
   end
 
   describe "#random_pairs" do
-    let(:cohort) { FactoryGirl.create(:cohort) }
-    let(:current_student) { FactoryGirl.create(:student, cohort: cohort) }
-    let(:student_with_high_score) { FactoryGirl.create(:student, cohort: cohort) }
-    let(:student_with_low_score_1) { FactoryGirl.create(:student, cohort: cohort) }
-    let(:student_with_high_score_and_before_starting_point) { FactoryGirl.create(:student, cohort: cohort) }
-    let(:student_with_low_score_and_before_starting_point) { FactoryGirl.create(:student, cohort: cohort) }
-    let(:student_with_low_score_2) { FactoryGirl.create(:student, cohort: cohort) }
-    let(:student_with_low_score_3) { FactoryGirl.create(:student, cohort: cohort) }
-    let(:submission_1) { FactoryGirl.create(:submission, student: current_student) }
-    let(:submission_2) { FactoryGirl.create(:submission, student: student_with_high_score) }
-    let(:submission_3) { FactoryGirl.create(:submission, student: student_with_low_score_1) }
-    let(:submission_4) { FactoryGirl.create(:submission, student: student_with_high_score_and_before_starting_point) }
-    let(:submission_5) { FactoryGirl.create(:submission, student: student_with_low_score_and_before_starting_point) }
-    let(:submission_6) { FactoryGirl.create(:submission, student: student_with_low_score_2) }
-    let(:submission_7) { FactoryGirl.create(:submission, student: student_with_low_score_3) }
-    let(:review_1) { FactoryGirl.create(:passing_review, submission: submission_1) }
-    let(:review_2) { FactoryGirl.create(:passing_review, submission: submission_2) }
-    let(:review_3) { FactoryGirl.create(:passing_review, submission: submission_3) }
-    let(:review_4) { FactoryGirl.create(:passing_review, submission: submission_4) }
-    let(:review_5) { FactoryGirl.create(:passing_review, submission: submission_5) }
-    let(:review_6) { FactoryGirl.create(:passing_review, submission: submission_6) }
-    let(:review_7) { FactoryGirl.create(:passing_review, submission: submission_7) }
-    let(:objective) { FactoryGirl.create(:objective) }
-
     before do
       mailgun_client = spy("mailgun client")
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
-
-      FactoryGirl.create(:passing_grade, review: review_1, objective: objective )
-      FactoryGirl.create(:passing_grade, review: review_2, objective: objective )
-      FactoryGirl.create(:passing_grade, review: review_2, objective: objective )
-      FactoryGirl.create(:passing_grade, review: review_3, objective: objective )
-      FactoryGirl.create(:failing_grade, review: review_4, objective: objective )
-      FactoryGirl.create(:passing_grade, review: review_4, objective: objective )
-      FactoryGirl.create(:passing_grade, review: review_4, objective: objective )
-      FactoryGirl.create(:passing_grade, review: review_5, objective: objective )
-      FactoryGirl.create(:passing_grade, review: review_6, objective: objective )
-      FactoryGirl.create(:passing_grade, review: review_7, objective: objective )
     end
+
+    let!(:current_student) { FactoryGirl.create(:user_with_score_of_10) }
+    let!(:student_with_high_score) { FactoryGirl.create(:user_with_score_of_9, cohort: current_student.cohort) }
+    let!(:student_with_low_score_1) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
+    let!(:student_with_high_score_and_before_starting_point) { FactoryGirl.create(:user_with_score_of_10, cohort: current_student.cohort) }
+    let!(:student_with_low_score_and_before_starting_point) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
+    let!(:student_with_low_score_2) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
+    let!(:student_with_low_score_3) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
 
     it "returns random pair suggestions when the student has a total grade score of 0" do
       allow(current_student).to receive(:latest_total_grade_score).and_return(0)
