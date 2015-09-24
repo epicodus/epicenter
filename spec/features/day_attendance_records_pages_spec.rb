@@ -1,5 +1,6 @@
 feature 'attendance statistics page' do
   let(:cohort) { FactoryGirl.create(:cohort) }
+  let(:monday) { Time.zone.now.to_date.beginning_of_week }
 
   scenario 'not signed in' do
     visit cohort_day_attendance_records_path(cohort)
@@ -16,13 +17,11 @@ feature 'attendance statistics page' do
     end
 
     scenario 'retreiving attendance records for a specific day' do
-      today = Date.new(2015, 9, 23)
-      allow(Date).to receive(:today).and_return(today)
-      cohort.start_date = today - 1
-      cohort.end_date = today + 1
-      visit cohort_day_attendance_records_path(cohort)
-      click_button 'Submit'
-      expect(page).to have_content "Attendance for #{today.strftime("%A %B %d, %Y")}"
+      travel_to monday do
+        visit cohort_day_attendance_records_path(cohort)
+        click_button 'Submit'
+        expect(page).to have_content "Attendance for #{monday.strftime("%A %B %d, %Y")}"
+      end
     end
   end
 end
