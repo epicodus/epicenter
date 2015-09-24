@@ -32,12 +32,10 @@ class Student < User
   def random_pairs
     distance_until_end = similar_grade_students.length - random_starting_point
     if distance_until_end >= NUMBER_OF_RANDOM_PAIRS
-      pairs = similar_grade_students[random_starting_point, NUMBER_OF_RANDOM_PAIRS]
+      similar_grade_students[random_starting_point, NUMBER_OF_RANDOM_PAIRS]
     else
-      pairs = similar_grade_students[random_starting_point, NUMBER_OF_RANDOM_PAIRS] + similar_grade_students[0, NUMBER_OF_RANDOM_PAIRS - distance_until_end]
-      pairs = pairs.uniq
+      (similar_grade_students[random_starting_point, NUMBER_OF_RANDOM_PAIRS] + similar_grade_students[0, NUMBER_OF_RANDOM_PAIRS - distance_until_end]).uniq
     end
-    pairs
   end
 
   def latest_total_grade_score
