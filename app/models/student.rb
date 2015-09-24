@@ -19,6 +19,8 @@ class Student < User
   belongs_to :primary_payment_method, class_name: 'PaymentMethod'
   has_many :signatures
 
+  NUMBER_OF_RANDOM_PAIRS = 5
+
   def pair_on_day(day)
     Student.find_by(id: attendance_record_on_day(day).try(:pair_id)) # using find_by so that nil is returned instead of raising exception if there is no pair
   end
@@ -28,7 +30,14 @@ class Student < User
   end
 
   def random_pairs
-    similar_grade_students.sample(5)
+    distance_until_end = similar_grade_students.length - random_starting_point
+    if distance_until_end >= NUMBER_OF_RANDOM_PAIRS
+      pairs = similar_grade_students[random_starting_point, NUMBER_OF_RANDOM_PAIRS]
+    else
+      pairs = similar_grade_students[random_starting_point, NUMBER_OF_RANDOM_PAIRS] + similar_grade_students[0, NUMBER_OF_RANDOM_PAIRS - distance_until_end]
+      pairs = pairs.uniq
+    end
+    pairs
   end
 
   def latest_total_grade_score
@@ -151,6 +160,14 @@ class Student < User
   end
 
 private
+  def random_starting_point
+    begin
+      Time.zone.today.day.to_i % similar_grade_students.count
+    rescue ZeroDivisionError
+      0
+    end
+  end
+
   def similar_grade_students
     same_cohort.keep_if { |student| similar_grades?(student) || latest_total_grade_score == 0 }
   end
