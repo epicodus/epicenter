@@ -3,9 +3,6 @@ feature 'viewing the random pair page' do
   let(:student_2) { FactoryGirl.create(:student) }
   let(:student_3) { FactoryGirl.create(:student) }
   let(:admin) { FactoryGirl.create(:admin) }
-  let(:monday) { Time.zone.now.to_date.beginning_of_week }
-  let(:friday) { monday + 4.days }
-  let(:saturday) { monday + 5.days }
 
   scenario 'viewing the random pair page as a guest' do
     visit random_pairs_path
@@ -21,9 +18,14 @@ feature 'viewing the random pair page' do
   scenario 'viewing random pairs' do
     allow(student).to receive(:random_pairs).and_return [student_3, student_2]
     login_as(student, scope: :student)
-    travel_to friday do
-      visit random_pairs_path
-      expect(page).to have_content student_2.name && student_3.name
-    end
+    visit random_pairs_path
+    expect(page).to have_content student_2.name && student_3.name
+  end
+
+  scenario 'viewing random pairs page when no random pairs are available' do
+    allow(student).to receive(:random_pairs).and_return []
+    login_as(student, scope: :student)
+    visit random_pairs_path
+    expect(page).to have_content 'No random pairs available just yet!'
   end
 end
