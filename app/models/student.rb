@@ -179,7 +179,11 @@ private
   end
 
   def similar_grades?(student)
-    student.latest_total_grade_score.try(:between?, 0.9 * latest_total_grade_score, 1.1 * latest_total_grade_score)
+    begin
+      student.latest_total_grade_score.try(:between?, 0.9 * latest_total_grade_score, 1.1 * latest_total_grade_score)
+    rescue TypeError
+      false
+    end
   end
 
   def close_io_lead_exists?

@@ -80,6 +80,24 @@ describe Student do
       allow(current_student).to receive(:random_starting_point).and_return(8)
       expect(current_student.random_pairs).to include student_2, student_3, student_10_after_starting_point, student_11_after_starting_point, student_12_after_starting_point
     end
+
+    it "returns an empty array when there are multiple students in a cohort with nil grade scores" do
+      new_cohort = FactoryGirl.create(:cohort)
+      current_student.cohort = new_cohort
+      student_2.cohort = new_cohort
+      allow(current_student).to receive(:latest_total_grade_score).and_return(nil)
+      allow(student_2).to receive(:latest_total_grade_score).and_return(nil)
+      expect(current_student.random_pairs).to eq []
+    end
+
+    it "returns an empty array when the current student has a nil grade score and other students have a grade score value" do
+      new_cohort = FactoryGirl.create(:cohort)
+      current_student.cohort = new_cohort
+      student_2.cohort = new_cohort
+      allow(current_student).to receive(:latest_total_grade_score).and_return(nil)
+      allow(student_2).to receive(:latest_total_grade_score).and_return(3)
+      expect(current_student.random_pairs).to eq []
+    end
   end
 
   describe "#latest_total_grade_score" do
