@@ -1,7 +1,7 @@
 feature 'viewing the random pair page' do
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
-  let(:student_2) { FactoryGirl.create(:student) }
-  let(:student_3) { FactoryGirl.create(:student) }
+  let(:current_student) { FactoryGirl.create(:user_with_all_documents_signed) }
+  let(:pair_1) { FactoryGirl.create(:student) }
+  let(:pair_2) { FactoryGirl.create(:student) }
   let(:admin) { FactoryGirl.create(:admin) }
 
   scenario 'viewing the random pair page as a guest' do
@@ -16,16 +16,16 @@ feature 'viewing the random pair page' do
   end
 
   scenario 'viewing random pairs' do
-    allow(student).to receive(:random_pairs).and_return [student_3, student_2]
-    login_as(student, scope: :student)
+    allow(current_student).to receive(:random_pairs).and_return [pair_2, pair_1]
+    login_as(current_student, scope: :student)
     visit random_pairs_path
-    expect(page).to have_content student_2.name && student_3.name
+    expect(page).to have_content pair_1.name && pair_2.name
   end
 
   scenario 'viewing random pairs page when no random pairs are available' do
-    allow(student).to receive(:random_pairs).and_return []
-    login_as(student, scope: :student)
+    allow(current_student).to receive(:random_pairs).and_return []
+    login_as(current_student, scope: :student)
     visit random_pairs_path
-    expect(page).to have_content 'No random pairs available just yet!'
+    expect(page).to have_content 'No pair suggestions available just yet!'
   end
 end

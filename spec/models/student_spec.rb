@@ -57,34 +57,32 @@ describe Student do
     let!(:student_11_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
     let!(:student_12_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
 
+    it "returns an empty array when there are no other students in a cohort" do
+      new_cohort = FactoryGirl.create(:cohort)
+      current_student.update(cohort: new_cohort)
+      expect(current_student.random_pairs).to eq []
+    end
+
     it "returns random pairs based on student total grade score for the most recent code review and distance_until_end is more than the number of pairs" do
       allow(current_student).to receive(:latest_total_grade_score).and_return(10)
       allow(current_student).to receive(:random_starting_point).and_return(1)
-      expect(current_student.random_pairs).to include student_3, student_4, student_5, student_6, student_7_after_starting_point
+      expect(current_student.random_pairs).to eq [student_3, student_4, student_5, student_6, student_7_after_starting_point]
     end
 
     it "returns random pairs based on student total grade score for the most recent code review and distance_until_end is less than the number of pairs" do
       allow(current_student).to receive(:latest_total_grade_score).and_return(10)
       allow(current_student).to receive(:random_starting_point).and_return(5)
-      expect(current_student.random_pairs).to include student_2, student_3, student_4, student_5, student_7_after_starting_point
+      expect(current_student.random_pairs).to eq [student_7_after_starting_point, student_2, student_3, student_4, student_5]
     end
 
     it "returns random pairs when the student total grade score is nil and distance_until_end is less than the number of pairs" do
       allow(current_student).to receive(:random_starting_point).and_return(8)
-      expect(current_student.random_pairs).to include student_2, student_3, student_10_after_starting_point, student_11_after_starting_point, student_12_after_starting_point
-    end
-
-    it "returns an empty array when there are multiple students in a cohort with nil grade scores" do
-      new_cohort = FactoryGirl.create(:cohort)
-      current_student.cohort = new_cohort
-      student_2.cohort = new_cohort
-      allow(student_2).to receive(:latest_total_grade_score).and_return(nil)
-      expect(current_student.random_pairs).to eq []
+      expect(current_student.random_pairs).to eq [student_10_after_starting_point, student_11_after_starting_point, student_12_after_starting_point, student_2, student_3]
     end
 
     it "returns random pairs when the student total grade score is nil and distance_until_end is more than the number of pairs" do
       allow(current_student).to receive(:random_starting_point).and_return(6)
-      expect(current_student.random_pairs).to include student_8, student_9, student_10_after_starting_point, student_11_after_starting_point, student_12_after_starting_point
+      expect(current_student.random_pairs).to eq [student_8, student_9, student_10_after_starting_point, student_11_after_starting_point, student_12_after_starting_point]
     end
   end
 
