@@ -19,12 +19,27 @@ class Student < User
   belongs_to :primary_payment_method, class_name: 'PaymentMethod'
   has_many :signatures
 
+  NUMBER_OF_RANDOM_PAIRS = 5
+
   def pair_on_day(day)
     Student.find_by(id: attendance_record_on_day(day).try(:pair_id)) # using find_by so that nil is returned instead of raising exception if there is no pair
   end
 
   def attendance_record_on_day(day)
     attendance_records.find_by(date: day)
+  end
+
+  def random_pairs
+    distance_until_end = similar_grade_students.length - random_starting_point
+    if distance_until_end >= NUMBER_OF_RANDOM_PAIRS
+      similar_grade_students[random_starting_point, NUMBER_OF_RANDOM_PAIRS]
+    else
+      (similar_grade_students[random_starting_point, NUMBER_OF_RANDOM_PAIRS] + similar_grade_students[0, NUMBER_OF_RANDOM_PAIRS - distance_until_end]).uniq
+    end
+  end
+
+  def latest_total_grade_score
+    @latest_total_grade_score ||= most_recent_submission_grades.try(:inject, 0) { |score, grade| score += grade.score.value }
   end
 
   def update_close_io
@@ -143,6 +158,34 @@ class Student < User
   end
 
 private
+  def random_starting_point
+    begin
+      Time.zone.today.day.to_i % similar_grade_students.count
+    rescue ZeroDivisionError
+      0
+    end
+  end
+
+  def similar_grade_students
+    @similar_grade_students ||= same_cohort.to_a.keep_if { |student| similar_grades?(student) || latest_total_grade_score == nil }
+  end
+
+  def same_cohort
+    cohort.students.where.not(id: id)
+  end
+
+  def most_recent_submission_grades
+    submissions.last.try(:reviews).try(:first).try(:grades)
+  end
+
+  def similar_grades?(student)
+    begin
+      student.latest_total_grade_score.try(:between?, 0.9 * latest_total_grade_score, 1.1 * latest_total_grade_score)
+    rescue TypeError
+      true
+    end
+  end
+
   def close_io_lead_exists?
     lead = close_io_client.list_leads('email:' + email)
     lead.total_results == 1

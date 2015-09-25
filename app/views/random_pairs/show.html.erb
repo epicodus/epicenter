@@ -1,0 +1,9 @@
+<h1>Pair suggestions</h1>
+<% if @random_pairs.empty? %>
+  No pair suggestions available just yet!
+<% else %>
+  <h3>Try pairing with one of these students:</h3>
+  <% @random_pairs.each do |pair| %>
+    <p><%= pair.name %></p>
+  <% end %>
+<% end %>

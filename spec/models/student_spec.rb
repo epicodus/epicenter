@@ -38,6 +38,80 @@ describe Student do
     end
   end
 
+  describe "#random_pairs" do
+    before do
+      mailgun_client = spy("mailgun client")
+      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+    end
+
+    let!(:current_student) { FactoryGirl.create(:student) }
+    let!(:student_2) { FactoryGirl.create(:user_with_score_of_9, cohort: current_student.cohort) }
+    let!(:student_3) { FactoryGirl.create(:user_with_score_of_10, cohort: current_student.cohort) }
+    let!(:student_4) { FactoryGirl.create(:user_with_score_of_10, cohort: current_student.cohort) }
+    let!(:student_5) { FactoryGirl.create(:user_with_score_of_10, cohort: current_student.cohort) }
+    let!(:student_6) { FactoryGirl.create(:user_with_score_of_10, cohort: current_student.cohort) }
+    let!(:student_7_after_starting_point) { FactoryGirl.create(:user_with_score_of_10, cohort: current_student.cohort) }
+    let!(:student_8) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
+    let!(:student_9) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
+    let!(:student_10_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
+    let!(:student_11_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
+    let!(:student_12_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
+
+    it "returns an empty array when there are no other students in a cohort" do
+      new_cohort = FactoryGirl.create(:cohort)
+      current_student.update(cohort: new_cohort)
+      expect(current_student.random_pairs).to eq []
+    end
+
+    it "returns random pairs based on student total grade score for the most recent code review and distance_until_end is more than the number of pairs" do
+      allow(current_student).to receive(:latest_total_grade_score).and_return(10)
+      allow(current_student).to receive(:random_starting_point).and_return(1)
+      expect(current_student.random_pairs).to eq [student_3, student_4, student_5, student_6, student_7_after_starting_point]
+    end
+
+    it "returns random pairs based on student total grade score for the most recent code review and distance_until_end is less than the number of pairs" do
+      allow(current_student).to receive(:latest_total_grade_score).and_return(10)
+      allow(current_student).to receive(:random_starting_point).and_return(5)
+      expect(current_student.random_pairs).to eq [student_7_after_starting_point, student_2, student_3, student_4, student_5]
+    end
+
+    it "returns random pairs when the student total grade score is nil and distance_until_end is less than the number of pairs" do
+      allow(current_student).to receive(:random_starting_point).and_return(8)
+      expect(current_student.random_pairs).to eq [student_10_after_starting_point, student_11_after_starting_point, student_12_after_starting_point, student_2, student_3]
+    end
+
+    it "returns random pairs when the student total grade score is nil and distance_until_end is more than the number of pairs" do
+      allow(current_student).to receive(:random_starting_point).and_return(6)
+      expect(current_student.random_pairs).to eq [student_8, student_9, student_10_after_starting_point, student_11_after_starting_point, student_12_after_starting_point]
+    end
+  end
+
+  describe "#latest_total_grade_score" do
+    let(:student) { FactoryGirl.create(:student) }
+    let(:submission) { FactoryGirl.create(:submission, student: student) }
+
+    before do
+      mailgun_client = spy("mailgun client")
+      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+    end
+
+    it 'returns nil when a student has not submitted a code review' do
+      expect(student.latest_total_grade_score).to eq nil
+    end
+
+    it 'returns a total grade score for the latest code review when a student has received a grade' do
+      FactoryGirl.create(:passing_review, student: student, submission: submission)
+      expect(student.latest_total_grade_score).to eq 3
+    end
+
+    it 'returns an aggregate total grade score for the latest code review when a student has received multiple grades' do
+      review = FactoryGirl.create(:passing_review, student: student, submission: submission)
+      objective = FactoryGirl.create(:objective)
+      FactoryGirl.create(:failing_grade, review: review, objective: objective )
+      expect(student.latest_total_grade_score).to eq 4
+    end
+  end
+
   describe "updating close.io" do
     let(:student) { FactoryGirl.create(:student, email: 'test@test.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
