@@ -167,7 +167,7 @@ private
   end
 
   def similar_grade_students
-    @similar_grade_students ||= same_cohort.to_a.keep_if { |student| similar_grades?(student) || latest_total_grade_score == 0 }
+    @similar_grade_students ||= same_cohort.to_a.keep_if { |student| similar_grades?(student) || latest_total_grade_score == nil }
   end
 
   def same_cohort
@@ -182,7 +182,7 @@ private
     begin
       student.latest_total_grade_score.try(:between?, 0.9 * latest_total_grade_score, 1.1 * latest_total_grade_score)
     rescue TypeError
-      false
+      true
     end
   end
 

@@ -44,7 +44,7 @@ describe Student do
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
     end
 
-    let!(:current_student) { FactoryGirl.create(:user_with_score_of_10) }
+    let!(:current_student) { FactoryGirl.create(:student) }
     let!(:student_2) { FactoryGirl.create(:user_with_score_of_9, cohort: current_student.cohort) }
     let!(:student_3) { FactoryGirl.create(:user_with_score_of_10, cohort: current_student.cohort) }
     let!(:student_4) { FactoryGirl.create(:user_with_score_of_10, cohort: current_student.cohort) }
@@ -56,12 +56,6 @@ describe Student do
     let!(:student_10_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
     let!(:student_11_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
     let!(:student_12_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
-
-    xit "returns random pairs when the student total grade score is 0 and distance_until_end is more than the number of pairs" do
-      allow(current_student).to receive(:latest_total_grade_score).and_return(0)
-      allow(current_student).to receive(:random_starting_point).and_return(6)
-      expect(current_student.random_pairs).to include student_8, student_9, student_10_after_starting_point, student_11_after_starting_point, student_12_after_starting_point
-    end
 
     it "returns random pairs based on student total grade score for the most recent code review and distance_until_end is more than the number of pairs" do
       allow(current_student).to receive(:latest_total_grade_score).and_return(10)
@@ -75,8 +69,7 @@ describe Student do
       expect(current_student.random_pairs).to include student_2, student_3, student_4, student_5, student_7_after_starting_point
     end
 
-    it "returns random pairs when the student total grade score is 0 and distance_until_end is less than the number of pairs" do
-      allow(current_student).to receive(:latest_total_grade_score).and_return(0)
+    it "returns random pairs when the student total grade score is nil and distance_until_end is less than the number of pairs" do
       allow(current_student).to receive(:random_starting_point).and_return(8)
       expect(current_student.random_pairs).to include student_2, student_3, student_10_after_starting_point, student_11_after_starting_point, student_12_after_starting_point
     end
@@ -85,18 +78,13 @@ describe Student do
       new_cohort = FactoryGirl.create(:cohort)
       current_student.cohort = new_cohort
       student_2.cohort = new_cohort
-      allow(current_student).to receive(:latest_total_grade_score).and_return(nil)
       allow(student_2).to receive(:latest_total_grade_score).and_return(nil)
       expect(current_student.random_pairs).to eq []
     end
 
-    it "returns an empty array when the current student has a nil grade score and other students have a grade score value" do
-      new_cohort = FactoryGirl.create(:cohort)
-      current_student.cohort = new_cohort
-      student_2.cohort = new_cohort
-      allow(current_student).to receive(:latest_total_grade_score).and_return(nil)
-      allow(student_2).to receive(:latest_total_grade_score).and_return(3)
-      expect(current_student.random_pairs).to eq []
+    it "returns random pairs when the student total grade score is nil and distance_until_end is more than the number of pairs" do
+      allow(current_student).to receive(:random_starting_point).and_return(6)
+      expect(current_student.random_pairs).to include student_8, student_9, student_10_after_starting_point, student_11_after_starting_point, student_12_after_starting_point
     end
   end
 
