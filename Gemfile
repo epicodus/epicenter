@@ -22,6 +22,7 @@ gem 'validate_url'
 gem 'gravatarify'
 gem 'hellosign-ruby-sdk'
 gem 'closeio'
+gem 'bootstrap-datepicker-rails'
 
 group :development do
   gem 'spring'

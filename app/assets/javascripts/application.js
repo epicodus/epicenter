@@ -13,6 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui/sortable
-//= require jquery-ui/datepicker
 //= require nested_form_fields
+//= require bootstrap-datepicker
 //= require_tree .
