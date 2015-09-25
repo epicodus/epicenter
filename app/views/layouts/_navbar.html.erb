@@ -2,7 +2,7 @@
   <div class="navbar-inner">
     <ul class="nav pull-right">
       <% if current_student %>
-        <li><%= link_to 'Random pairs', random_pairs_path %></li>
+        <li><%= link_to 'Pair suggestions', random_pairs_path %></li>
         <li><%= link_to 'Internships', cohort_internships_path(current_student.cohort) %>
         <li><%= link_to 'Payments', payments_path %></li>
         <li><%= link_to 'Code Reviews', cohort_code_reviews_path(current_student.cohort) %></li>
