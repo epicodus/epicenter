@@ -39,7 +39,7 @@ class Student < User
   end
 
   def latest_total_grade_score
-    most_recent_submission_grades.try(:inject, 0) { |score, grade| score += grade.score.value }
+    @latest_total_grade_score ||= most_recent_submission_grades.try(:inject, 0) { |score, grade| score += grade.score.value }
   end
 
   def update_close_io
@@ -167,11 +167,11 @@ private
   end
 
   def similar_grade_students
-    same_cohort.keep_if { |student| similar_grades?(student) || latest_total_grade_score == 0 }
+    @similar_grade_students ||= same_cohort.to_a.keep_if { |student| similar_grades?(student) || latest_total_grade_score == 0 }
   end
 
   def same_cohort
-    cohort.students - [self]
+    cohort.students.where.not(id: id)
   end
 
   def most_recent_submission_grades

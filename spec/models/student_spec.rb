@@ -45,29 +45,40 @@ describe Student do
     end
 
     let!(:current_student) { FactoryGirl.create(:user_with_score_of_10) }
-    let!(:student_with_high_score) { FactoryGirl.create(:user_with_score_of_9, cohort: current_student.cohort) }
-    let!(:student_with_low_score_1) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
-    let!(:student_with_high_score_and_before_starting_point) { FactoryGirl.create(:user_with_score_of_10, cohort: current_student.cohort) }
-    let!(:student_with_low_score_and_before_starting_point) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
-    let!(:student_with_low_score_2) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
-    let!(:student_with_low_score_3) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
+    let!(:student_2) { FactoryGirl.create(:user_with_score_of_9, cohort: current_student.cohort) }
+    let!(:student_3) { FactoryGirl.create(:user_with_score_of_10, cohort: current_student.cohort) }
+    let!(:student_4) { FactoryGirl.create(:user_with_score_of_10, cohort: current_student.cohort) }
+    let!(:student_5) { FactoryGirl.create(:user_with_score_of_10, cohort: current_student.cohort) }
+    let!(:student_6) { FactoryGirl.create(:user_with_score_of_10, cohort: current_student.cohort) }
+    let!(:student_7_after_starting_point) { FactoryGirl.create(:user_with_score_of_10, cohort: current_student.cohort) }
+    let!(:student_8) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
+    let!(:student_9) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
+    let!(:student_10_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
+    let!(:student_11_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
+    let!(:student_12_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
 
-    it "returns random pair suggestions when the student has a total grade score of 0" do
+    xit "returns random pairs when the student total grade score is 0 and distance_until_end is more than the number of pairs" do
       allow(current_student).to receive(:latest_total_grade_score).and_return(0)
-      allow(current_student).to receive(:random_starting_point).and_return(4)
-      expect(current_student.random_pairs).to_not include current_student, student_with_low_score_and_before_starting_point
+      allow(current_student).to receive(:random_starting_point).and_return(6)
+      expect(current_student.random_pairs).to include student_8, student_9, student_10_after_starting_point, student_11_after_starting_point, student_12_after_starting_point
     end
 
-    it "returns random pair suggestions based on the total score for the most recent code review" do
+    it "returns random pairs based on student total grade score for the most recent code review and distance_until_end is more than the number of pairs" do
       allow(current_student).to receive(:latest_total_grade_score).and_return(10)
-      allow(current_student).to receive(:random_starting_point).and_return(0)
-      expect(current_student.random_pairs).to include student_with_high_score, student_with_high_score_and_before_starting_point
+      allow(current_student).to receive(:random_starting_point).and_return(1)
+      expect(current_student.random_pairs).to include student_3, student_4, student_5, student_6, student_7_after_starting_point
     end
 
-    it "returns random pair suggestions when the student has a total grade score of 0" do
+    it "returns random pairs based on student total grade score for the most recent code review and distance_until_end is less than the number of pairs" do
+      allow(current_student).to receive(:latest_total_grade_score).and_return(10)
+      allow(current_student).to receive(:random_starting_point).and_return(5)
+      expect(current_student.random_pairs).to include student_2, student_3, student_4, student_5, student_7_after_starting_point
+    end
+
+    it "returns random pairs when the student total grade score is 0 and distance_until_end is less than the number of pairs" do
       allow(current_student).to receive(:latest_total_grade_score).and_return(0)
-      allow(current_student).to receive(:random_starting_point).and_return(3)
-      expect(current_student.random_pairs).to_not include current_student, student_with_high_score_and_before_starting_point
+      allow(current_student).to receive(:random_starting_point).and_return(8)
+      expect(current_student.random_pairs).to include student_2, student_3, student_10_after_starting_point, student_11_after_starting_point, student_12_after_starting_point
     end
   end
 
