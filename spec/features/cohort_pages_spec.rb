@@ -30,7 +30,7 @@ feature 'creating a cohort' do
     scenario 'from scratch' do
       visit new_cohort_path
       fill_in 'Description', with: 'Ruby/Rails - Summer 2015'
-      fill_in 'Class days', with: '2015-09-06,2015-09-07,2015-09-08'
+      find(:xpath, "//input[@id='cohort_class_days']").set "2015-09-06,2015-09-07,2015-09-08"
       click_on 'Create Cohort'
       expect(page).to have_content 'Class has been created'
       expect(page).to have_content 'Code Reviews'
@@ -41,7 +41,7 @@ feature 'creating a cohort' do
       code_review = FactoryGirl.create(:code_review, cohort: previous_cohort)
       visit new_cohort_path
       fill_in 'Description', with: 'Ruby/Rails - Summer 2015'
-      fill_in 'Class days', with: '2015-09-06,2015-09-07,2015-09-08'
+      find(:xpath, "//input[@id='cohort_class_days']").set "2015-09-06,2015-09-07,2015-09-08"
       select previous_cohort.description, from: 'Import code reviews from previous cohort'
       click_on 'Create Cohort'
       expect(page).to have_content 'Class has been created'
@@ -85,7 +85,7 @@ feature 'editing a cohort' do
     scenario 'with valid input' do
       visit edit_cohort_path(cohort)
       fill_in 'Description', with: 'PHP/Drupal - Summer 2015'
-      fill_in 'Class days', with: '2015-09-06,2015-09-07,2015-09-08'
+      find(:xpath, "//input[@id='cohort_class_days']").set "2015-09-06,2015-09-07,2015-09-08"
       click_on 'Update Cohort'
       expect(page).to have_content "PHP/Drupal - Summer 2015 has been updated"
       expect(page).to have_content 'Code Reviews'
