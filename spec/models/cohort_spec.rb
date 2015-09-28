@@ -20,6 +20,32 @@ describe Cohort do
     end
   end
 
+  describe "validation that sets the cohort start and end days" do
+    let(:cohort) { FactoryGirl.build(:cohort) }
+
+    it "receives set_start_and_end_dates before saving" do
+      expect(cohort).to receive(:set_start_and_end_dates)
+      cohort.save
+    end
+
+    it "returns a valid start date when set_start_and_end_dates is successful" do
+      cohort.send(:set_start_and_end_dates)
+      cohort.save
+      expect(cohort.start_date).to eq Date.parse(cohort.class_days.split(',').first)
+    end
+
+    it "returns a valid end date when set_start_and_end_dates is successful" do
+      cohort.send(:set_start_and_end_dates)
+      cohort.save
+      expect(cohort.end_date).to eq Date.parse(cohort.class_days.split(',').last)
+    end
+
+    it "returns a valid end date when set_start_and_end_dates is successful" do
+      cohort.assign_attributes(class_days: nil)
+      expect { cohort.save }.to raise_error NoMethodError
+    end
+  end
+
   describe '#past_and_present_class_days' do
     let(:cohort) { FactoryGirl.create(:cohort) }
     let(:monday) { Time.zone.now.to_date.beginning_of_week }
