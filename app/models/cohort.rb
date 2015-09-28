@@ -5,11 +5,14 @@ class Cohort < ActiveRecord::Base
   validates :description, presence: true
   validates :start_date, presence: true
   validates :end_date, presence: true
+  validates :class_days, presence: true
 
   has_many :students
   has_many :attendance_records, through: :students
   has_many :code_reviews
   has_many :internships
+
+  serialize :class_days
 
   attr_accessor :importing_cohort_id
 
