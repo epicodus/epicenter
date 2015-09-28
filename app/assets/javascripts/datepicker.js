@@ -5,4 +5,8 @@ $(function() {
     todayHighlight: true,
     daysOfWeekDisabled: '0,6'
   });
+
+  $(".datepicker").on("changeDate", function(event) {
+    $("#cohort_class_days").val($(".datepicker").datepicker('getFormattedDate'));
+  });
 });
