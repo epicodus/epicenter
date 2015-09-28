@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 20150928162200) do
     t.date     "end_date"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "class_days"
+    t.text     "class_days"
   end
 
   add_index "cohorts", ["start_date"], name: "index_cohorts_on_start_date", using: :btree
