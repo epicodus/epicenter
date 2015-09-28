@@ -7,6 +7,8 @@ class CohortsController < ApplicationController
 
   def create
     @cohort = Cohort.new(cohort_params)
+    @cohort.start_date = @cohort.class_days.split(",").first
+    @cohort.end_date = @cohort.class_days.split(",").last
     if @cohort.save
       current_admin.update(current_cohort: @cohort)
       redirect_to cohort_code_reviews_path(@cohort), notice: 'Class has been created!'
@@ -37,6 +39,6 @@ class CohortsController < ApplicationController
 private
 
   def cohort_params
-    params.require(:cohort).permit(:description, :start_date, :end_date, :importing_cohort_id)
+    params.require(:cohort).permit(:description, :start_date, :end_date, :class_days, :importing_cohort_id)
   end
 end
