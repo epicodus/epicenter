@@ -1,6 +1,6 @@
 <h1>Edit <%= @cohort.description %></h1>
 
-<p>Start date: <%= @cohort.start_date.strftime("%B %d, %Y, %A") %></p>
-<p>End date: <%= @cohort.end_date.strftime("%B %d, %Y, %A") %></p>
+<p>Start date: <%= @cohort.start_date.strftime("%A, %B %d, %Y") %></p>
+<p>End date: <%= @cohort.end_date.strftime("%A, %B %d, %Y") %></p>
 
 <%= render 'form', cohort: @cohort %>
