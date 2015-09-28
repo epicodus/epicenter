@@ -5,7 +5,7 @@ class Cohort < ActiveRecord::Base
   validates :description, presence: true
   validates :start_date, presence: true
   validates :end_date, presence: true
-  validates :class_days, presence: true
+  before_validation :set_start_and_end_dates
 
   has_many :students
   has_many :attendance_records, through: :students
@@ -64,6 +64,12 @@ class Cohort < ActiveRecord::Base
   end
 
 private
+
+  def set_start_and_end_dates
+    formatted_class_days = class_days.split(",").map { |day| Date.parse(day) }
+    self.start_date = formatted_class_days.sort.first
+    self.end_date = formatted_class_days.sort.last
+  end
 
   def import_code_reviews
     unless @importing_cohort_id.blank?
