@@ -2,5 +2,6 @@
 
 <p>Start date: <%= @cohort.start_date.strftime("%A, %B %d, %Y") %></p>
 <p>End date: <%= @cohort.end_date.strftime("%A, %B %d, %Y") %></p>
+<hr>
 
 <%= render 'form', cohort: @cohort %>
