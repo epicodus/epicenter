@@ -20,7 +20,7 @@ describe Cohort do
     end
   end
 
-  describe "validation that sets the cohort start and end days" do
+  describe "#set_start_and_end_dates" do
     let(:cohort) { FactoryGirl.build(:cohort) }
 
     it "receives set_start_and_end_dates before saving" do
@@ -40,7 +40,7 @@ describe Cohort do
       expect(cohort.end_date).to eq Date.parse(cohort.class_days.split(',').last)
     end
 
-    it "returns a valid end date when set_start_and_end_dates is successful" do
+    it "raises an error when class_days is nil" do
       cohort.assign_attributes(class_days: nil)
       expect { cohort.save }.to raise_error NoMethodError
     end
