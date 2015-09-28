@@ -3,9 +3,22 @@ describe Cohort do
   it { should have_many(:attendance_records).through(:students) }
   it { should have_many :code_reviews }
   it { should have_many :internships}
-  it { should validate_presence_of :description }
-  it { should validate_presence_of :start_date }
-  it { should validate_presence_of :end_date }
+
+  describe "validates presence of attributes" do
+    let(:cohort) { FactoryGirl.create(:cohort) }
+
+    it "validates #description" do
+      expect(cohort.description).to be cohort.description
+    end
+
+    it "validates #start_date" do
+      expect(cohort.start_date).to be cohort.start_date
+    end
+
+    it "validates #end_date" do
+      expect(cohort.end_date).to be cohort.end_date
+    end
+  end
 
   describe '#past_and_present_class_days' do
     let(:cohort) { FactoryGirl.create(:cohort) }
@@ -69,7 +82,7 @@ describe Cohort do
 
   describe '#total_class_days' do
     it 'counts the days of class minus weekends' do
-      cohort = FactoryGirl.create(:cohort, start_date: Time.zone.now.to_date, end_date: (Time.zone.now.to_date + 2.weeks - 1.day))
+      cohort = FactoryGirl.create(:cohort, class_days: (Time.zone.now.to_date..(Time.zone.now.to_date + 2.weeks - 1.day)).to_a.map { |day| day.to_s }.join(','))
       expect(cohort.total_class_days).to eq 8
     end
   end
@@ -80,7 +93,7 @@ describe Cohort do
       friday = monday + 4.days
       next_friday = friday + 1.week
 
-      cohort = FactoryGirl.create(:cohort, start_date: monday, end_date: next_friday)
+      cohort = FactoryGirl.create(:cohort, class_days: (monday..next_friday).to_a.map { |day| day.to_s }.join(','))
       travel_to friday do
         expect(cohort.number_of_days_left).to eq 4
       end
@@ -93,7 +106,7 @@ describe Cohort do
       friday = monday + 4.days
       next_friday = friday + 1.week
 
-      cohort = FactoryGirl.create(:cohort, start_date: monday, end_date: next_friday)
+      cohort = FactoryGirl.create(:cohort, class_days: (monday..next_friday).to_a.map { |day| day.to_s }.join(','))
       travel_to friday do
         expect(cohort.progress_percent).to eq 50.0
       end
@@ -102,8 +115,8 @@ describe Cohort do
 
   describe 'default scope order' do
     it 'orders the cohort by start date by default' do
-      cohort = FactoryGirl.create(:cohort, start_date: '2015-01-01', end_date: '2015-01-02')
-      cohort2 = FactoryGirl.create(:cohort, start_date: '2014-01-01', end_date: '2014-01-01')
+      cohort = FactoryGirl.create(:cohort, class_days: '2015-01-01, 2015-01-02')
+      cohort2 = FactoryGirl.create(:cohort, class_days: '2014-01-01, 2014-01-01')
       expect(Cohort.all).to eq [cohort2, cohort]
     end
   end

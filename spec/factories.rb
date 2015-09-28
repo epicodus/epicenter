@@ -45,17 +45,14 @@ FactoryGirl.define do
 
   factory :cohort do
     description 'Current cohort'
-    start_date Time.zone.now.to_date.beginning_of_week
-    end_date (Time.zone.now.to_date + 14.weeks).end_of_week - 2.days
+    class_days (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 14.weeks).end_of_week - 2.days).to_a.map { |day| day.to_s }.join(',')
 
     factory :past_cohort do
-      start_date 125.days.ago.beginning_of_week
-      end_date 20.days.ago.end_of_week - 2.days
+      class_days ((Time.zone.now.to_date - 18.weeks).beginning_of_week..(Time.zone.now.to_date - 3.weeks).end_of_week - 2.days).to_a.map { |day| day.to_s }.join(',')
     end
 
     factory :future_cohort do
-      start_date (Time.zone.now.to_date + 4.weeks).beginning_of_week
-      end_date (Time.zone.now.to_date + 15.weeks).beginning_of_week
+      class_days ((Time.zone.now.to_date + 4.weeks).beginning_of_week..(Time.zone.now.to_date + 15.weeks).beginning_of_week).to_a.map { |day| day.to_s }.join(',')
     end
   end
 
