@@ -2,7 +2,9 @@
 
 <p>Start date: <%= @cohort.start_date.strftime("%A, %B %d, %Y") %></p>
 <p>End date: <%= @cohort.end_date.strftime("%A, %B %d, %Y") %></p>
-<p><%= @cohort.class_days.split(',').count %> class days</p>
+<% if @cohort.class_days %>
+  <p><%= @cohort.class_days.split(',').count %> class days</p>
+<% end %>
 <hr>
 
 <%= render 'form', cohort: @cohort %>
