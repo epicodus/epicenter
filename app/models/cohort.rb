@@ -66,8 +66,8 @@ class Cohort < ActiveRecord::Base
 private
 
   def set_start_and_end_dates
-    self.start_date = class_days.split(",").map { |day| Date.parse(day) }.sort.first
-    self.end_date = class_days.split(",").map { |day| Date.parse(day) }.sort.last
+    self.start_date = class_days.split(",").select { |day| Date.parse(day) if !Date.parse(day).friday? && !Date.parse(day).saturday? && !Date.parse(day).sunday? }.sort.first
+    self.end_date = class_days.split(",").select { |day| Date.parse(day) if !Date.parse(day).friday? && !Date.parse(day).saturday? && !Date.parse(day).sunday? }.sort.last
   end
 
   def import_code_reviews
