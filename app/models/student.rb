@@ -165,6 +165,10 @@ class Student < User
     attendance_records.where(left_early: true).count
   end
 
+  def left_earlies_for_cohort
+    attendance_records.where("date between ? and ?", cohort.start_date, cohort.end_date).where(left_early: true).count
+  end
+
   def internships_sorted_by_interest
     cohort.internships_sorted_by_interest(self)
   end

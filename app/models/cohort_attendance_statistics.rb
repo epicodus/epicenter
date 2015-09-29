@@ -22,7 +22,7 @@ class CohortAttendanceStatistics
       {
         name: "Left early",
         data: students.map do |user|
-          [user.name, user.left_earlies]
+          [user.name, user.left_earlies_for_cohort]
         end
       },
 

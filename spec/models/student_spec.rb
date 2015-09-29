@@ -521,6 +521,24 @@ describe Student do
         end
       end
     end
+
+    describe '#left_earlies_for_cohort' do
+      it 'counts the number of days the student has left early (failed to sign out) for a particular cohort' do
+        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day - 5, 8, 55, 00) do
+          attendance_record_for_other_cohort = FactoryGirl.create(:attendance_record, student: student)
+          travel 7.hours do
+            attendance_record_for_other_cohort.update({ signing_out: true })
+          end
+        end
+        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 8, 55, 00) do
+          attendance_record = FactoryGirl.create(:attendance_record, student: student)
+          travel 7.hours do
+            attendance_record.update({ signing_out: true })
+            expect(student.left_earlies_for_cohort).to eq 1
+          end
+        end
+      end
+    end
   end
 
   describe "#next_payment_date", :vcr do
