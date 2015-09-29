@@ -133,16 +133,8 @@ class Student < User
     attendance_records.where(tardy: false, left_early: false).count
   end
 
-  def on_time_attendances_for_cohort
-    attendance_records.where("date between ? and ?", cohort.start_date, cohort.end_date).where(tardy: false, left_early: false).count
-  end
-
   def tardies
     attendance_records.where(tardy: true).count
-  end
-
-  def tardies_for_cohort
-    attendance_records.where("date between ? and ?", cohort.start_date, cohort.end_date).where(tardy: true).count
   end
 
   def absences
@@ -151,6 +143,10 @@ class Student < User
 
   def absences_for_cohort
     cohort.number_of_days_since_start - attendance_records.where("date between ? and ?", cohort.start_date, cohort.end_date).count
+  end
+
+  def attendance_records_for_current_cohort(attributes)
+    attendance_records.where("date between ? and ?", cohort.start_date, cohort.end_date).where(attributes).count
   end
 
   def find_rating(internship)
@@ -163,10 +159,6 @@ class Student < User
 
   def left_earlies
     attendance_records.where(left_early: true).count
-  end
-
-  def left_earlies_for_cohort
-    attendance_records.where("date between ? and ?", cohort.start_date, cohort.end_date).where(left_early: true).count
   end
 
   def internships_sorted_by_interest

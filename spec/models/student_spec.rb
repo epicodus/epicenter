@@ -441,7 +441,7 @@ describe Student do
       end
     end
 
-    describe '#on_time_attendances_for_cohort' do
+    describe '#attendance_records_for_current_cohort' do
       it 'counts the number of days the student has been on time to class for a particular cohort' do
         travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day - 5, 8, 55, 00) do
           attendance_record_for_other_cohort = FactoryGirl.create(:attendance_record, student: student)
@@ -453,7 +453,37 @@ describe Student do
           attendance_record = FactoryGirl.create(:attendance_record, student: student)
           travel 15.hours do
             attendance_record.update({ signing_out: true })
-            expect(student.on_time_attendances_for_cohort).to eq 1
+            expect(student.attendance_records_for_current_cohort(tardy: false, left_early: false)).to eq 1
+          end
+        end
+      end
+
+      it 'counts the number of days the student has been tardy for a particular cohort' do
+        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day - 5, 9, 10, 00, Time.zone.formatted_offset) do
+          FactoryGirl.create(:attendance_record, student: student)
+          travel 1.day
+          FactoryGirl.create(:attendance_record, student: student)
+        end
+        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 9, 10, 00, Time.zone.formatted_offset) do
+          FactoryGirl.create(:attendance_record, student: student)
+          travel 1.day
+          FactoryGirl.create(:attendance_record, student: student)
+          expect(student.attendance_records_for_current_cohort(tardy: true)).to eq 2
+        end
+      end
+
+      it 'counts the number of days the student has left early (failed to sign out) for a particular cohort' do
+        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day - 5, 8, 55, 00) do
+          attendance_record_for_other_cohort = FactoryGirl.create(:attendance_record, student: student)
+          travel 7.hours do
+            attendance_record_for_other_cohort.update({ signing_out: true })
+          end
+        end
+        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 8, 55, 00) do
+          attendance_record = FactoryGirl.create(:attendance_record, student: student)
+          travel 7.hours do
+            attendance_record.update({ signing_out: true })
+            expect(student.attendance_records_for_current_cohort(left_early: true)).to eq 1
           end
         end
       end
@@ -466,22 +496,6 @@ describe Student do
           travel 1.day
           FactoryGirl.create(:attendance_record, student: student)
           expect(student.tardies).to eq 2
-        end
-      end
-    end
-
-    describe '#tardies_for_cohort' do
-      it 'counts the number of days the student has been tardy for a particular cohort' do
-        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day - 5, 9, 10, 00, Time.zone.formatted_offset) do
-          FactoryGirl.create(:attendance_record, student: student)
-          travel 1.day
-          FactoryGirl.create(:attendance_record, student: student)
-        end
-        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 9, 10, 00, Time.zone.formatted_offset) do
-          FactoryGirl.create(:attendance_record, student: student)
-          travel 1.day
-          FactoryGirl.create(:attendance_record, student: student)
-          expect(student.tardies_for_cohort).to eq 2
         end
       end
     end
@@ -517,24 +531,6 @@ describe Student do
           travel 7.hours do
             attendance_record.update({:signing_out => true})
             expect(student.left_earlies).to eq 1
-          end
-        end
-      end
-    end
-
-    describe '#left_earlies_for_cohort' do
-      it 'counts the number of days the student has left early (failed to sign out) for a particular cohort' do
-        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day - 5, 8, 55, 00) do
-          attendance_record_for_other_cohort = FactoryGirl.create(:attendance_record, student: student)
-          travel 7.hours do
-            attendance_record_for_other_cohort.update({ signing_out: true })
-          end
-        end
-        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 8, 55, 00) do
-          attendance_record = FactoryGirl.create(:attendance_record, student: student)
-          travel 7.hours do
-            attendance_record.update({ signing_out: true })
-            expect(student.left_earlies_for_cohort).to eq 1
           end
         end
       end
