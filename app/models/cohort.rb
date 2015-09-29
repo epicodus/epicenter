@@ -20,11 +20,7 @@ class Cohort < ActiveRecord::Base
   after_destroy :reassign_admin_current_cohorts
 
   def past_and_present_class_days
-    list_class_days.select { |day| day if day <= Time.zone.now.to_date  }
-  end
-
-  def list_class_days
-    (start_date..end_date).select { |date| date if !date.friday? && !date.saturday? && !date.sunday? }
+    class_days.select { |day| day if day <= Time.zone.now.to_date  }
   end
 
   def number_of_days_since_start

@@ -50,16 +50,6 @@ describe Cohort do
     end
   end
 
-  describe '#list_class_days' do
-    let(:cohort) { FactoryGirl.create(:cohort) }
-
-    it 'returns a list of class days with weekend days nil' do
-      cohort.start_date = Date.new(2015, 8, 31)
-      cohort.end_date = Date.new(2015, 9, 7)
-      expect(cohort.list_class_days).to eq [cohort.start_date, cohort.start_date + 1, cohort.start_date + 2, cohort.start_date + 3, cohort.start_date + 7]
-    end
-  end
-
   describe '#number_of_days_since_start' do
     let(:cohort) { FactoryGirl.create(:cohort) }
 
