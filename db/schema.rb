@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150928231316) do
+ActiveRecord::Schema.define(version: 20150929234517) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,8 @@ ActiveRecord::Schema.define(version: 20150928231316) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "class_days"
+    t.string   "start_time"
+    t.string   "end_time"
   end
 
   add_index "cohorts", ["start_date"], name: "index_cohorts_on_start_date", using: :btree
