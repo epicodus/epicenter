@@ -20,7 +20,7 @@ class Cohort < ActiveRecord::Base
   after_destroy :reassign_admin_current_cohorts
 
   def past_and_present_class_days
-    class_days.select { |day| day if day <= Time.zone.now.to_date  }
+    class_days.select { |day| day <= Time.zone.now.to_date  }
   end
 
   def number_of_days_since_start
@@ -62,8 +62,8 @@ class Cohort < ActiveRecord::Base
 private
 
   def set_start_and_end_dates
-    self.start_date = class_days.select { |day| day if !day.friday? && !day.saturday? && !day.sunday? }.sort.first
-    self.end_date = class_days.select { |day| day if !day.friday? && !day.saturday? && !day.sunday? }.sort.last
+    self.start_date = class_days.select { |day| !day.friday? && !day.saturday? && !day.sunday? }.sort.first
+    self.end_date = class_days.select { |day| !day.friday? && !day.saturday? && !day.sunday? }.sort.last
   end
 
   def import_code_reviews
