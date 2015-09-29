@@ -86,7 +86,7 @@ describe Cohort do
 
   describe '#total_class_days' do
     it 'counts the days of class minus weekends' do
-      cohort = FactoryGirl.create(:cohort, class_days: (Time.zone.now.to_date..(Time.zone.now.to_date + 2.weeks - 1.day)).map { |day| day })
+      cohort = FactoryGirl.create(:cohort, class_days: (Time.zone.now.to_date..(Time.zone.now.to_date + 2.weeks - 1.day)).select { |day| day if !day.friday? && !day.saturday? && !day.sunday? })
       expect(cohort.total_class_days).to eq 8
     end
   end
@@ -97,7 +97,7 @@ describe Cohort do
       friday = monday + 4.days
       next_friday = friday + 1.week
 
-      cohort = FactoryGirl.create(:cohort, class_days: (monday..next_friday).map { |day| day })
+      cohort = FactoryGirl.create(:cohort, class_days: (monday..next_friday).select { |day| day if !day.friday? && !day.saturday? && !day.sunday? })
       travel_to friday do
         expect(cohort.number_of_days_left).to eq 4
       end
@@ -110,7 +110,7 @@ describe Cohort do
       friday = monday + 4.days
       next_friday = friday + 1.week
 
-      cohort = FactoryGirl.create(:cohort, class_days: (monday..next_friday).map { |day| day })
+      cohort = FactoryGirl.create(:cohort, class_days: (monday..next_friday).select { |day| day if !day.friday? && !day.saturday? && !day.sunday? })
       travel_to friday do
         expect(cohort.progress_percent).to eq 50.0
       end
