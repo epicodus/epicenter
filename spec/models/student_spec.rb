@@ -441,6 +441,24 @@ describe Student do
       end
     end
 
+    describe '#on_time_attendances_for_cohort' do
+      it 'counts the number of days the student has been on time to class for a particular cohort' do
+        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day - 5, 8, 55, 00) do
+          attendance_record_for_other_cohort = FactoryGirl.create(:attendance_record, student: student)
+          travel 15.hours do
+            attendance_record_for_other_cohort.update({ signing_out:true })
+          end
+        end
+        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 8, 55, 00) do
+          attendance_record = FactoryGirl.create(:attendance_record, student: student)
+          travel 15.hours do
+            attendance_record.update({ signing_out: true })
+            expect(student.on_time_attendances_for_cohort).to eq 1
+          end
+        end
+      end
+    end
+
     describe '#tardies' do
       it 'counts the number of days the student has been tardy' do
         travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 9, 10, 00, Time.zone.formatted_offset) do
@@ -452,12 +470,42 @@ describe Student do
       end
     end
 
+    describe '#tardies_for_cohort' do
+      it 'counts the number of days the student has been tardy for a particular cohort' do
+        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day - 5, 9, 10, 00, Time.zone.formatted_offset) do
+          FactoryGirl.create(:attendance_record, student: student)
+          travel 1.day
+          FactoryGirl.create(:attendance_record, student: student)
+        end
+        travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 9, 10, 00, Time.zone.formatted_offset) do
+          FactoryGirl.create(:attendance_record, student: student)
+          travel 1.day
+          FactoryGirl.create(:attendance_record, student: student)
+          expect(student.tardies_for_cohort).to eq 2
+        end
+      end
+    end
+
     describe '#absences' do
       it 'counts the number of days the student has been absent' do
         travel_to cohort.start_date do
           travel 1.day
           FactoryGirl.create(:attendance_record, student: student)
           expect(student.absences).to eq 1
+        end
+      end
+    end
+
+    describe '#absences_for_cohort' do
+      it 'counts the number of days the student has been absent for a particular cohort' do
+        travel_to cohort.start_date - 5 do
+          travel 1.day
+          FactoryGirl.create(:attendance_record, student: student)
+        end
+        travel_to cohort.start_date do
+          travel 1.day
+          FactoryGirl.create(:attendance_record, student: student)
+          expect(student.absences_for_cohort).to eq 1
         end
       end
     end

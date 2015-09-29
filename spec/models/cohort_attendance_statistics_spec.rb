@@ -13,6 +13,10 @@ describe CohortAttendanceStatistics do
       day_one = cohort.start_date
       day_two = cohort.start_date + 1.day
 
+      travel_to day_one - 5 do
+        cohort.students.each { |student| FactoryGirl.create(:attendance_record, student: student) }
+      end
+
       travel_to day_one do
         cohort.students.each { |student| FactoryGirl.create(:attendance_record, student: student) }
       end

@@ -6,7 +6,7 @@ class CohortAttendanceStatistics
   end
 
   def daily_presence
-    @cohort.attendance_records.unscope(:order).group(:date).count
+    @cohort.attendance_records.where("date between ? and ?", @cohort.start_date, @cohort.end_date).unscope(:order).group(:date).count
   end
 
   def student_attendance_data
@@ -15,7 +15,7 @@ class CohortAttendanceStatistics
       {
         name: "On time",
         data: students.map do |user|
-          [user.name, user.on_time_attendances]
+          [user.name, user.on_time_attendances_for_cohort]
         end
       },
 
@@ -29,14 +29,14 @@ class CohortAttendanceStatistics
       {
         name: "Tardy",
         data: students.map do |user|
-          [user.name, user.tardies]
+          [user.name, user.tardies_for_cohort]
         end
       },
 
       {
         name: "Absent",
         data: students.map do |user|
-          [user.name, user.absences]
+          [user.name, user.absences_for_cohort]
         end
       }
     ]

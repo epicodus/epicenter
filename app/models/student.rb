@@ -133,12 +133,24 @@ class Student < User
     attendance_records.where(tardy: false, left_early: false).count
   end
 
+  def on_time_attendances_for_cohort
+    attendance_records.where("date between ? and ?", cohort.start_date, cohort.end_date).where(tardy: false, left_early: false).count
+  end
+
   def tardies
     attendance_records.where(tardy: true).count
   end
 
+  def tardies_for_cohort
+    attendance_records.where("date between ? and ?", cohort.start_date, cohort.end_date).where(tardy: true).count
+  end
+
   def absences
     cohort.number_of_days_since_start - attendance_records.count
+  end
+
+  def absences_for_cohort
+    cohort.number_of_days_since_start - attendance_records.where("date between ? and ?", cohort.start_date, cohort.end_date).count
   end
 
   def find_rating(internship)
