@@ -41,7 +41,7 @@ class Cohort < ActiveRecord::Base
   end
 
   def class_dates_until(last_date)
-    (start_date..last_date).select { |date| !date.friday? && !date.saturday? && !date.sunday? }
+    class_days.select { |date| date <= last_date }
   end
 
   def internships_sorted_by_interest(current_student)
