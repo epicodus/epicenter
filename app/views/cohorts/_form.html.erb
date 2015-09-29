@@ -10,7 +10,7 @@
 
   <%= f.label :class_days %>
   <div class="datepicker">
-    <%= f.hidden_field :class_days, required: true %>
+    <%= f.hidden_field :class_days, value: @cohort.class_days.join(','), required: true %>
   </div>
 
   <% unless cohort.persisted? %>
