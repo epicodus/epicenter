@@ -37,6 +37,7 @@ class CohortsController < ApplicationController
 private
 
   def cohort_params
-    params.require(:cohort).permit(:description, :class_days, :importing_cohort_id)
+    params[:cohort][:class_days] = params[:cohort][:class_days].split(',').map { |day| Date.parse(day) }
+    params.require(:cohort).permit(:description, :importing_cohort_id, class_days: [])
   end
 end
