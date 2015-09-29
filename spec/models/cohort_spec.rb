@@ -34,22 +34,6 @@ describe Cohort do
     end
   end
 
-  describe '#past_and_present_class_days' do
-    let(:cohort) { FactoryGirl.create(:cohort) }
-    let(:monday) { Time.zone.now.to_date.beginning_of_week }
-    let(:tuesday) { monday + 1.days }
-    let(:today) { monday + 2.days }
-    let(:thursday) { monday + 3.days }
-
-    it 'returns a list of class days that are past or present' do
-      cohort.start_date = monday
-      cohort.end_date = thursday
-      travel_to today do
-        expect(cohort.past_and_present_class_days).to eq [monday, tuesday, today]
-      end
-    end
-  end
-
   describe '#number_of_days_since_start' do
     let(:cohort) { FactoryGirl.create(:cohort) }
 
