@@ -8,15 +8,15 @@ describe Cohort do
     let(:cohort) { FactoryGirl.create(:cohort) }
 
     it "validates #description" do
-      expect(cohort.description).to be cohort.description
+      expect(cohort.description).to eq cohort.description
     end
 
     it "validates #start_date" do
-      expect(cohort.start_date).to be cohort.start_date
+      expect(cohort.start_date).to eq cohort.start_date
     end
 
     it "validates #end_date" do
-      expect(cohort.end_date).to be cohort.end_date
+      expect(cohort.end_date).to eq cohort.end_date
     end
   end
 
@@ -25,12 +25,12 @@ describe Cohort do
 
     it "returns a valid start date when set_start_and_end_dates is successful" do
       cohort.save
-      expect(cohort.start_date).to eq Date.parse(cohort.class_days.first.to_s)
+      expect(cohort.start_date).to eq cohort.class_days.first
     end
 
     it "returns a valid end date when set_start_and_end_dates is successful" do
       cohort.save
-      expect(cohort.end_date).to eq Date.parse(cohort.class_days.last.to_s)
+      expect(cohort.end_date).to eq cohort.class_days.last
     end
   end
 
@@ -96,7 +96,7 @@ describe Cohort do
 
   describe '#total_class_days' do
     it 'counts the days of class minus weekends' do
-      cohort = FactoryGirl.create(:cohort, class_days: (Time.zone.now.to_date..(Time.zone.now.to_date + 2.weeks - 1.day)).to_a.map { |day| day })
+      cohort = FactoryGirl.create(:cohort, class_days: (Time.zone.now.to_date..(Time.zone.now.to_date + 2.weeks - 1.day)).map { |day| day })
       expect(cohort.total_class_days).to eq 8
     end
   end
@@ -107,7 +107,7 @@ describe Cohort do
       friday = monday + 4.days
       next_friday = friday + 1.week
 
-      cohort = FactoryGirl.create(:cohort, class_days: (monday..next_friday).to_a.map { |day| day })
+      cohort = FactoryGirl.create(:cohort, class_days: (monday..next_friday).map { |day| day })
       travel_to friday do
         expect(cohort.number_of_days_left).to eq 4
       end
@@ -120,7 +120,7 @@ describe Cohort do
       friday = monday + 4.days
       next_friday = friday + 1.week
 
-      cohort = FactoryGirl.create(:cohort, class_days: (monday..next_friday).to_a.map { |day| day })
+      cohort = FactoryGirl.create(:cohort, class_days: (monday..next_friday).map { |day| day })
       travel_to friday do
         expect(cohort.progress_percent).to eq 50.0
       end
