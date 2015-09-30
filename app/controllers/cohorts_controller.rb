@@ -38,6 +38,6 @@ private
 
   def cohort_params
     params[:cohort][:class_days] = params[:cohort][:class_days].split(',').map { |day| Date.parse(day) }
-    params.require(:cohort).permit(:description, :importing_cohort_id, class_days: [])
+    params.require(:cohort).permit(:description, :importing_cohort_id, :start_time, :end_time, class_days: [])
   end
 end
