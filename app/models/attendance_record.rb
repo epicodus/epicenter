@@ -20,7 +20,7 @@ private
   end
 
   def sign_out
-    class_end_time = Time.zone.parse(ENV['CLASS_END_TIME'] ||= '4:30 PM')
+    class_end_time = Time.zone.parse(student.cohort.end_time ||= '4:30 PM')
     current_time = Time.zone.now
     self.left_early = current_time < class_end_time
     self.signed_out_time = current_time
@@ -28,7 +28,7 @@ private
 
   def sign_in
     if self.tardy.nil?
-      class_late_time = Time.zone.parse(ENV['CLASS_START_TIME'] ||= '9:05 AM')
+      class_late_time = Time.zone.parse(student.cohort.start_time ||= '9:05 AM')
       current_time = Time.zone.now
       self.tardy = current_time >= class_late_time
       self.left_early = true

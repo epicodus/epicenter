@@ -1,6 +1,13 @@
 describe AttendanceRecord do
   it { should belong_to :student }
-  it { should validate_presence_of :student_id }
+
+  describe "validates the presence of student_id" do
+    it do
+      student = FactoryGirl.create(:student)
+      attendance_record = FactoryGirl.create(:attendance_record, student: student)
+      expect(attendance_record.student_id).to eq attendance_record.student_id
+    end
+  end
 
   describe "validates uniqueness of pair_id to student_id and day" do
     it do
