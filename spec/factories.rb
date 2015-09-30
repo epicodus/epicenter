@@ -58,8 +58,8 @@ FactoryGirl.define do
     end
 
     factory :part_time_cohort do
-      start_time '6:05 PM'
-      end_time '8:30 PM'
+      start_time '6:20 PM'
+      end_time '8:40 PM'
     end
   end
 
