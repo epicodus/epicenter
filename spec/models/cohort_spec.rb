@@ -5,31 +5,30 @@ describe Cohort do
   it { should have_many :internships}
 
   describe "validates presence of attributes" do
-    let(:cohort) { FactoryGirl.create(:cohort) }
-
-    it "validates #description" do
-      expect(cohort.description).to eq cohort.description
+    it "validates the presence of description" do
+      cohort = FactoryGirl.build(:cohort, description: nil)
+      expect(cohort).to_not be_valid
     end
 
-    it "validates #start_date" do
-      expect(cohort.start_date).to eq cohort.start_date
+    it "validates the presence of start_date" do
+      cohort = FactoryGirl.build(:cohort, class_days: nil)
+      expect(cohort.start_date).to eq nil
     end
 
-    it "validates #end_date" do
-      expect(cohort.end_date).to eq cohort.end_date
+    it "validates the presence of end_date" do
+      cohort = FactoryGirl.build(:cohort, class_days: nil)
+      expect(cohort.end_date).to eq nil
     end
   end
 
-  describe "returns start and end dates after successfully saving" do
-    let(:cohort) { FactoryGirl.build(:cohort) }
+  describe "sets start and end dates from class_days" do
+    let(:cohort) { FactoryGirl.create(:cohort) }
 
     it "returns a valid start date when set_start_and_end_dates is successful" do
-      cohort.save
       expect(cohort.start_date).to eq cohort.class_days.first
     end
 
     it "returns a valid end date when set_start_and_end_dates is successful" do
-      cohort.save
       expect(cohort.end_date).to eq cohort.class_days.last
     end
   end
