@@ -444,9 +444,9 @@ describe Student do
     describe '#attendance_records_for_current_cohort' do
       it 'counts the number of days the student has been on time to class for a particular cohort' do
         travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day - 5, 8, 55, 00) do
-          attendance_record_for_other_cohort = FactoryGirl.create(:attendance_record, student: student)
+          attendance_record_outside_current_cohort_date_range = FactoryGirl.create(:attendance_record, student: student)
           travel 15.hours do
-            attendance_record_for_other_cohort.update({ signing_out:true })
+            attendance_record_outside_current_cohort_date_range.update({ signing_out:true })
           end
         end
         travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 8, 55, 00) do
@@ -474,9 +474,9 @@ describe Student do
 
       it 'counts the number of days the student has left early (failed to sign out) for a particular cohort' do
         travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day - 5, 8, 55, 00) do
-          attendance_record_for_other_cohort = FactoryGirl.create(:attendance_record, student: student)
+          attendance_record_outside_current_cohort_date_range = FactoryGirl.create(:attendance_record, student: student)
           travel 7.hours do
-            attendance_record_for_other_cohort.update({ signing_out: true })
+            attendance_record_outside_current_cohort_date_range.update({ signing_out: true })
           end
         end
         travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 8, 55, 00) do
