@@ -23,6 +23,7 @@ gem 'gravatarify'
 gem 'hellosign-ruby-sdk'
 gem 'closeio'
 gem 'bootstrap-datepicker-rails'
+gem 'jquery-timepicker-rails'
 
 group :development do
   gem 'spring'
