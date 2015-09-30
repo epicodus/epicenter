@@ -60,7 +60,7 @@ describe AttendanceRecord do
 
     it 'is true if the student checks in after the start of class' do
       travel_to start_time + 1.minute do
-        tardy_attendance_record = FactoryGirl.create(:attendance_record, student: student)
+        tardy_attendance_record = FactoryGirl.create(:attendance_record)
         expect(tardy_attendance_record.tardy).to eq true
       end
     end
@@ -96,7 +96,7 @@ describe AttendanceRecord do
     let(:part_time_end_time) { Time.zone.parse(part_time_cohort.end_time) }
 
     it 'is true by default' do
-      attendance_record = FactoryGirl.create(:attendance_record, student: student)
+      attendance_record = FactoryGirl.create(:attendance_record)
       expect(attendance_record.left_early).to eq true
     end
 
