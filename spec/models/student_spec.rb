@@ -510,7 +510,7 @@ describe Student do
       end
     end
 
-    describe '#absences_for_cohort' do
+    describe '#absences_for_current_cohort' do
       it 'counts the number of days the student has been absent for a particular cohort' do
         travel_to cohort.start_date - 5 do
           travel 1.day
@@ -519,7 +519,7 @@ describe Student do
         travel_to cohort.start_date do
           travel 1.day
           FactoryGirl.create(:attendance_record, student: student)
-          expect(student.absences_for_cohort).to eq 1
+          expect(student.absences_for_current_cohort).to eq 1
         end
       end
     end

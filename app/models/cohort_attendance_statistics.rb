@@ -36,7 +36,7 @@ class CohortAttendanceStatistics
       {
         name: "Absent",
         data: students.map do |user|
-          [user.name, user.absences_for_cohort]
+          [user.name, user.absences_for_current_cohort]
         end
       }
     ]

@@ -141,7 +141,7 @@ class Student < User
     cohort.number_of_days_since_start - attendance_records.count
   end
 
-  def absences_for_cohort
+  def absences_for_current_cohort
     cohort.number_of_days_since_start - attendance_records.where("date between ? and ?", cohort.start_date, cohort.end_date).count
   end
 
