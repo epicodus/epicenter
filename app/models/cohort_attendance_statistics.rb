@@ -15,21 +15,21 @@ class CohortAttendanceStatistics
       {
         name: "On time",
         data: students.map do |user|
-          [user.name, user.attendance_records_for_current_cohort(tardy: false, left_early: false)]
+          [user.name, user.attendance_records_for_current_cohort(:on_time)]
         end
       },
 
       {
         name: "Left early",
         data: students.map do |user|
-          [user.name, user.attendance_records_for_current_cohort(left_early: true)]
+          [user.name, user.attendance_records_for_current_cohort(:left_early)]
         end
       },
 
       {
         name: "Tardy",
         data: students.map do |user|
-          [user.name, user.attendance_records_for_current_cohort(tardy: true)]
+          [user.name, user.attendance_records_for_current_cohort(:tardy)]
         end
       },
 

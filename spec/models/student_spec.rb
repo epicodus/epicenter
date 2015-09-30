@@ -453,7 +453,7 @@ describe Student do
           attendance_record = FactoryGirl.create(:attendance_record, student: student)
           travel 15.hours do
             attendance_record.update({ signing_out: true })
-            expect(student.attendance_records_for_current_cohort(tardy: false, left_early: false)).to eq 1
+            expect(student.attendance_records_for_current_cohort(:on_time)).to eq 1
           end
         end
       end
@@ -468,7 +468,7 @@ describe Student do
           FactoryGirl.create(:attendance_record, student: student)
           travel 1.day
           FactoryGirl.create(:attendance_record, student: student)
-          expect(student.attendance_records_for_current_cohort(tardy: true)).to eq 2
+          expect(student.attendance_records_for_current_cohort(:tardy)).to eq 2
         end
       end
 
@@ -483,7 +483,7 @@ describe Student do
           attendance_record = FactoryGirl.create(:attendance_record, student: student)
           travel 7.hours do
             attendance_record.update({ signing_out: true })
-            expect(student.attendance_records_for_current_cohort(left_early: true)).to eq 1
+            expect(student.attendance_records_for_current_cohort(:left_early)).to eq 1
           end
         end
       end

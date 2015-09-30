@@ -145,7 +145,11 @@ class Student < User
     cohort.number_of_days_since_start - attendance_records.where("date between ? and ?", cohort.start_date, cohort.end_date).count
   end
 
-  def attendance_records_for_current_cohort(attributes)
+  def attendance_records_for_current_cohort(attendance_status)
+    attributes = { tardy: { tardy: true },
+                   left_early: { left_early: true },
+                   on_time: { tardy: false, left_early: false }
+                 }[attendance_status]
     attendance_records.where("date between ? and ?", cohort.start_date, cohort.end_date).where(attributes).count
   end
 
