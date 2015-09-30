@@ -19,6 +19,16 @@ describe Cohort do
       cohort = FactoryGirl.build(:cohort, class_days: nil)
       expect(cohort.end_date).to eq nil
     end
+
+    it "validates the presence of start_time" do
+      cohort = FactoryGirl.build(:cohort, start_time: nil)
+      expect(cohort.start_time).to eq nil
+    end
+
+    it "validates the presence of end_time" do
+      cohort = FactoryGirl.build(:cohort, end_time: nil)
+      expect(cohort.end_time).to eq nil
+    end
   end
 
   describe "sets start and end dates from class_days" do
