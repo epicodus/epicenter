@@ -51,12 +51,10 @@ describe AttendanceRecord do
   end
 
   describe '#tardy' do
-    let(:cohort) { FactoryGirl.create(:cohort) }
-    let(:student) { FactoryGirl.create(:student, cohort: cohort) }
-    let(:start_time) { Time.zone.parse(cohort.start_time) }
-    let(:part_time_cohort) { FactoryGirl.create(:part_time_cohort) }
-    let(:part_time_student) { FactoryGirl.create(:student, cohort: part_time_cohort) }
-    let(:part_time_start_time) { Time.zone.parse(part_time_cohort.start_time) }
+    let(:student) { FactoryGirl.create(:student) }
+    let(:start_time) { Time.zone.parse(student.cohort.start_time) }
+    let(:part_time_student) { FactoryGirl.create(:part_time_student) }
+    let(:part_time_start_time) { Time.zone.parse(part_time_student.cohort.start_time) }
 
     it 'is true if the student checks in after the start of class' do
       travel_to start_time + 1.minute do
@@ -88,12 +86,10 @@ describe AttendanceRecord do
   end
 
   describe '#left_early' do
-    let(:cohort) { FactoryGirl.create(:cohort) }
-    let(:student) { FactoryGirl.create(:student, cohort: cohort) }
-    let(:end_time) { Time.zone.parse(cohort.end_time) }
-    let(:part_time_cohort) { FactoryGirl.create(:part_time_cohort) }
-    let(:part_time_student) { FactoryGirl.create(:student, cohort: part_time_cohort) }
-    let(:part_time_end_time) { Time.zone.parse(part_time_cohort.end_time) }
+    let(:student) { FactoryGirl.create(:student) }
+    let(:end_time) { Time.zone.parse(student.cohort.end_time) }
+    let(:part_time_student) { FactoryGirl.create(:part_time_student) }
+    let(:part_time_end_time) { Time.zone.parse(part_time_student.cohort.end_time) }
 
     it 'is true by default' do
       attendance_record = FactoryGirl.create(:attendance_record)
