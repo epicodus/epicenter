@@ -56,7 +56,7 @@ describe CohortAttendanceStatistics do
     end
 
     it 'returns data for tardy students' do
-      start_time = Time.zone.parse(ENV['CLASS_START_TIME'] ||= '9:05 AM')
+      start_time = Time.zone.parse(cohort.start_time)
 
       travel_to start_time + 1.minute do
         cohort.students.each { |student| FactoryGirl.create(:attendance_record, student: student) }
@@ -67,8 +67,8 @@ describe CohortAttendanceStatistics do
     end
 
     it 'returns data for early leaving students' do
-      start_time = Time.zone.parse(ENV['CLASS_START_TIME'] ||= '9:05 AM')
-      end_time = Time.zone.parse(ENV['CLASS_END_TIME'] ||= '4:30 PM' )
+      start_time = Time.zone.parse(cohort.start_time)
+      end_time = Time.zone.parse(cohort.end_time)
 
       travel_to start_time - 1.minute do
         cohort.students.each { |student| FactoryGirl.create(:attendance_record, student: student) }
