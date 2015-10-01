@@ -58,7 +58,7 @@ describe CohortAttendanceStatistics do
     it 'returns data for tardy students' do
       start_time = Time.zone.parse(cohort.start_time)
 
-      travel_to start_time + 1.minute do
+      travel_to start_time + 20.minute do
         cohort.students.each { |student| FactoryGirl.create(:attendance_record, student: student) }
         tardy_data = cohort_attendance_statistics.student_attendance_data[2]
         expect(tardy_data[:name]).to eq 'Tardy'

@@ -20,7 +20,7 @@ private
   end
 
   def sign_out
-    class_end_time = Time.zone.parse(student.cohort.end_time)
+    class_end_time = Time.zone.parse(student.cohort.end_time) - 20.minutes
     current_time = Time.zone.now
     self.left_early = current_time < class_end_time
     self.signed_out_time = current_time
@@ -28,7 +28,7 @@ private
 
   def sign_in
     if self.tardy.nil?
-      class_late_time = Time.zone.parse(student.cohort.start_time)
+      class_late_time = Time.zone.parse(student.cohort.start_time) + 20.minutes
       current_time = Time.zone.now
       self.tardy = current_time >= class_late_time
       self.left_early = true
