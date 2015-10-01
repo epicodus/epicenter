@@ -6,9 +6,6 @@ class AddClassDaysForExistingCohorts < ActiveRecord::Migration
   end
 
   def down
-    Cohort.all.each do |cohort|
-      cohort.assign_attributes(class_days: nil)
-      cohort.save(validate: false)
-    end
+    Cohort.update_all(class_days: nil)
   end
 end
