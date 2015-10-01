@@ -129,28 +129,21 @@ class Student < User
     payment
   end
 
-  def on_time_attendances
-    attendance_records.where(tardy: false, left_early: false).count
-  end
-
-  def tardies
-    attendance_records.where(tardy: true).count
-  end
-
-  def absences
-    cohort.number_of_days_since_start - attendance_records.count
-  end
-
-  def absences_for_current_cohort
-    cohort.number_of_days_since_start - attendance_records.where("date between ? and ?", cohort.start_date, cohort.end_date).count
-  end
-
-  def attendance_records_for_current_cohort(attendance_status)
+  def attendance_records_for(status, filtered_cohort=nil)
     attributes = { tardy: { tardy: true },
                    left_early: { left_early: true },
                    on_time: { tardy: false, left_early: false }
-                 }[attendance_status]
-    attendance_records.where("date between ? and ?", cohort.start_date, cohort.end_date).where(attributes).count
+                 }[status]
+    results = attendance_records.where(attributes)
+    if filtered_cohort
+      results.where("date between ? and ?", filtered_cohort.start_date, filtered_cohort.end_date).count
+    elsif filtered_cohort && status == :absent
+      filtered_cohort.number_of_days_since_start - results.count
+    elsif status == :absent
+      cohort.number_of_days_since_start - attendance_records.count
+    else
+      results.count
+    end
   end
 
   def find_rating(internship)
@@ -159,10 +152,6 @@ class Student < User
 
   def self.find_students_by_interest(internship, interest_level)
     internship.students.select { |student| student.try(:find_rating, internship).try(:interest) == interest_level }
-  end
-
-  def left_earlies
-    attendance_records.where(left_early: true).count
   end
 
   def internships_sorted_by_interest
