@@ -2,7 +2,7 @@ class CohortsController < ApplicationController
   authorize_resource
 
   def new
-    @cohort = Cohort.new
+    @cohort = Cohort.new(start_time: "9:00 AM", end_time: "5:00 PM")
   end
 
   def create
