@@ -10,33 +10,33 @@ class CohortAttendanceStatistics
   end
 
   def student_attendance_data
-    students = @cohort.students.sort_by(&:absences).reverse
+    students = @cohort.students.sort_by { |student| student.attendance_records_for(:absent) }.reverse
     [
       {
         name: "On time",
         data: students.map do |user|
-          [user.name, user.attendance_records_for_current_cohort(:on_time)]
+          [user.name, user.attendance_records_for(:on_time)]
         end
       },
 
       {
         name: "Left early",
         data: students.map do |user|
-          [user.name, user.attendance_records_for_current_cohort(:left_early)]
+          [user.name, user.attendance_records_for(:left_early)]
         end
       },
 
       {
         name: "Tardy",
         data: students.map do |user|
-          [user.name, user.attendance_records_for_current_cohort(:tardy)]
+          [user.name, user.attendance_records_for(:tardy)]
         end
       },
 
       {
         name: "Absent",
         data: students.map do |user|
-          [user.name, user.absences_for_current_cohort]
+          [user.name, user.attendance_records_for(:absent)]
         end
       }
     ]

@@ -7,10 +7,10 @@ class StudentAttendanceStatistics
 
   def punctuality_hash
     {
-      'On time'    => @student.on_time_attendances,
-      'Left early' => @student.left_earlies,
-      'Tardy'      => @student.tardies,
-      'Absent'     => @student.absences
+      'On time'    => @student.attendance_records_for(:on_time),
+      'Left early' => @student.attendance_records_for(:left_early),
+      'Tardy'      => @student.attendance_records_for(:tardy),
+      'Absent'     => @student.attendance_records_for(:absent)
     }
   end
 
