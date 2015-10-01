@@ -6,7 +6,8 @@ class AttendanceRecord < ActiveRecord::Base
   validates :pair_id, uniqueness: { scope: [:student_id, :date] }
   validate :pair_is_not_self
 
-  before_validation :set_date_and_tardiness
+  before_validation :set_date
+  before_validation :sign_in
   before_update :sign_out, if: :signing_out
   belongs_to :student
 
@@ -37,10 +38,5 @@ private
 
   def set_date
     self.date = Time.zone.now.to_date if self.date.nil?
-  end
-
-  def set_date_and_tardiness
-    sign_in
-    set_date
   end
 end
