@@ -22,12 +22,12 @@ describe Cohort do
 
     it "validates the presence of start_time" do
       cohort = FactoryGirl.build(:cohort, start_time: nil)
-      expect(cohort.start_time).to eq nil
+      expect(cohort).to_not be_valid
     end
 
     it "validates the presence of end_time" do
       cohort = FactoryGirl.build(:cohort, end_time: nil)
-      expect(cohort.end_time).to eq nil
+      expect(cohort).to_not be_valid
     end
   end
 

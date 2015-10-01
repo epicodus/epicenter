@@ -43,6 +43,8 @@ feature 'creating a cohort' do
       code_review = FactoryGirl.create(:code_review, cohort: previous_cohort)
       visit new_cohort_path
       fill_in 'Description', with: 'Ruby/Rails - Summer 2015'
+      fill_in 'Start time', with: '9:00 AM'
+      fill_in 'End time', with: '5:00 PM'
       find(:xpath, "//input[@id='cohort_class_days']").set "2015-09-06,2015-09-07,2015-09-08"
       select previous_cohort.description, from: 'Import code reviews from previous cohort'
       click_on 'Create Cohort'

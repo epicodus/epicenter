@@ -46,8 +46,8 @@ FactoryGirl.define do
   factory :cohort do
     description 'Current cohort'
     class_days (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 14.weeks).end_of_week - 3.days).select { |day| day if !day.friday? && !day.saturday? && !day.sunday? }
-    start_time '9:05 AM'
-    end_time '4:30 PM'
+    start_time '9:00 AM'
+    end_time '5:00 PM'
 
     factory :past_cohort do
       class_days ((Time.zone.now.to_date - 18.weeks).beginning_of_week..(Time.zone.now.to_date - 3.weeks).end_of_week - 3.days).select { |day| day if !day.friday? && !day.saturday? && !day.sunday? }
@@ -58,8 +58,8 @@ FactoryGirl.define do
     end
 
     factory :part_time_cohort do
-      start_time '6:20 PM'
-      end_time '8:40 PM'
+      start_time '6:00 PM'
+      end_time '9:00 PM'
     end
   end
 
