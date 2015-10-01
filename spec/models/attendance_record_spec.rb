@@ -63,14 +63,14 @@ describe AttendanceRecord do
       end
     end
 
-    it 'is true for a student in a part-time class' do
+    it 'is true if the part-time student checks in after the start of class' do
       travel_to part_time_start_time + 20.minute do
         tardy_attendance_record = FactoryGirl.create(:attendance_record, student: part_time_student)
         expect(tardy_attendance_record.tardy).to eq true
       end
     end
 
-    it 'is false for a student in a part-time class' do
+    it 'is false if the part-time student checks in before the start of class' do
       travel_to part_time_start_time - 1.minute do
         on_time_attendance_record = FactoryGirl.create(:attendance_record, student: part_time_student)
         expect(on_time_attendance_record.tardy).to eq false

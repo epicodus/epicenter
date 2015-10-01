@@ -4,7 +4,7 @@ describe Cohort do
   it { should have_many :code_reviews }
   it { should have_many :internships}
 
-  describe "validates presence of attributes" do
+  describe "validations" do
     it "validates the presence of description" do
       cohort = FactoryGirl.build(:cohort, description: nil)
       expect(cohort).to_not be_valid
