@@ -30,6 +30,8 @@ feature 'creating a cohort' do
     scenario 'from scratch' do
       visit new_cohort_path
       fill_in 'Description', with: 'Ruby/Rails - Summer 2015'
+      fill_in 'Start time', with: '9:00 AM'
+      fill_in 'End time', with: '5:00 PM'
       find(:xpath, "//input[@id='cohort_class_days']").set "2015-09-06,2015-09-07,2015-09-08"
       click_on 'Create Cohort'
       expect(page).to have_content 'Class has been created'
@@ -85,6 +87,8 @@ feature 'editing a cohort' do
     scenario 'with valid input' do
       visit edit_cohort_path(cohort)
       fill_in 'Description', with: 'PHP/Drupal - Summer 2015'
+      fill_in 'Start time', with: '9:00 AM'
+      fill_in 'End time', with: '5:00 PM'
       find(:xpath, "//input[@id='cohort_class_days']").set "2015-09-06,2015-09-07,2015-09-08"
       click_on 'Update Cohort'
       expect(page).to have_content "PHP/Drupal - Summer 2015 has been updated"
