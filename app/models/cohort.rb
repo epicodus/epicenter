@@ -5,24 +5,21 @@ class Cohort < ActiveRecord::Base
   validates :description, presence: true
   validates :start_date, presence: true
   validates :end_date, presence: true
+  validates :start_time, presence: true
+  validates :end_time, presence: true
+  before_validation :set_start_and_end_dates
 
   has_many :students
   has_many :attendance_records, through: :students
   has_many :code_reviews
   has_many :internships
 
+  serialize :class_days, Array
+
   attr_accessor :importing_cohort_id
 
   before_create :import_code_reviews
   after_destroy :reassign_admin_current_cohorts
-
-  def past_and_present_class_days
-    list_class_days.select { |day| day if day <= Time.zone.now.to_date  }
-  end
-
-  def list_class_days
-    (start_date..end_date).select { |date| date if !date.friday? && !date.saturday? && !date.sunday? }
-  end
 
   def number_of_days_since_start
     last_date = Time.zone.now.to_date <= end_date ? Time.zone.now.to_date : end_date
@@ -42,7 +39,7 @@ class Cohort < ActiveRecord::Base
   end
 
   def class_dates_until(last_date)
-    (start_date..last_date).select { |date| !date.friday? && !date.saturday? && !date.sunday? }
+    class_days.select { |day| day <= last_date }
   end
 
   def internships_sorted_by_interest(current_student)
@@ -61,6 +58,11 @@ class Cohort < ActiveRecord::Base
   end
 
 private
+
+  def set_start_and_end_dates
+    self.start_date = class_days.select { |day| !day.friday? && !day.saturday? && !day.sunday? }.sort.first
+    self.end_date = class_days.select { |day| !day.friday? && !day.saturday? && !day.sunday? }.sort.last
+  end
 
   def import_code_reviews
     unless @importing_cohort_id.blank?

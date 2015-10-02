@@ -45,17 +45,21 @@ FactoryGirl.define do
 
   factory :cohort do
     description 'Current cohort'
-    start_date Time.zone.now.to_date.beginning_of_week
-    end_date (Time.zone.now.to_date + 14.weeks).end_of_week - 2.days
+    class_days (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 14.weeks).end_of_week - 3.days).select { |day| day if !day.friday? && !day.saturday? && !day.sunday? }
+    start_time '9:00 AM'
+    end_time '5:00 PM'
 
     factory :past_cohort do
-      start_date 125.days.ago.beginning_of_week
-      end_date 20.days.ago.end_of_week - 2.days
+      class_days ((Time.zone.now.to_date - 18.weeks).beginning_of_week..(Time.zone.now.to_date - 3.weeks).end_of_week - 3.days).select { |day| day if !day.friday? && !day.saturday? && !day.sunday? }
     end
 
     factory :future_cohort do
-      start_date (Time.zone.now.to_date + 4.weeks).beginning_of_week
-      end_date (Time.zone.now.to_date + 15.weeks).beginning_of_week
+      class_days ((Time.zone.now.to_date + 4.weeks).beginning_of_week..(Time.zone.now.to_date + 15.weeks).beginning_of_week).select { |day| day if !day.friday? && !day.saturday? && !day.sunday? }
+    end
+
+    factory :part_time_cohort do
+      start_time '6:00 PM'
+      end_time '9:00 PM'
     end
   end
 
@@ -188,6 +192,10 @@ FactoryGirl.define do
     sequence(:email) { |n| "student#{n}@example.com" }
     password "password"
     password_confirmation "password"
+
+    factory :part_time_student do
+      association :cohort, factory: :part_time_cohort
+    end
 
     factory :user_with_unverified_bank_account do
       after(:create) do |student|

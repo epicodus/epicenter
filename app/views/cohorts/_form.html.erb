@@ -4,20 +4,19 @@
   <div class="row">
     <div class="span12">
       <%= f.label :description %>
-      <%= f.text_field :description, class: 'span12' %>
+      <%= f.text_field :description, class: 'span6' %>
     </div>
   </div>
 
-  <div class="row">
-    <div class="span6">
-      <%= f.label :start_date %>
-      <%= f.text_field :start_date, class: 'datepicker span6' %>
-    </div>
+  <%= f.label :start_time %>
+  <%= f.text_field :start_time, value: @cohort.start_time, class: 'timepicker span2', required: true %>
 
-    <div class="span6">
-      <%= f.label :end_date %>
-      <%= f.text_field :end_date, class: 'datepicker span6' %>
-    </div>
+  <%= f.label :end_time %>
+  <%= f.text_field :end_time, value: @cohort.end_time, class: 'timepicker span2', required: true %>
+
+  <%= f.label :class_days %>
+  <div class="datepicker">
+    <%= f.hidden_field :class_days, value: @cohort.class_days.join(','), required: true %>
   </div>
 
   <% unless cohort.persisted? %>

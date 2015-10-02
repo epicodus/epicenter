@@ -13,6 +13,10 @@ describe CohortAttendanceStatistics do
       day_one = cohort.start_date
       day_two = cohort.start_date + 1.day
 
+      travel_to day_one - 5 do
+        cohort.students.each { |student| FactoryGirl.create(:attendance_record, student: student) }
+      end
+
       travel_to day_one do
         cohort.students.each { |student| FactoryGirl.create(:attendance_record, student: student) }
       end
@@ -52,9 +56,9 @@ describe CohortAttendanceStatistics do
     end
 
     it 'returns data for tardy students' do
-      start_time = Time.zone.parse(ENV['CLASS_START_TIME'] ||= '9:05 AM')
+      start_time = Time.zone.parse(cohort.start_time)
 
-      travel_to start_time + 1.minute do
+      travel_to start_time + 20.minute do
         cohort.students.each { |student| FactoryGirl.create(:attendance_record, student: student) }
         tardy_data = cohort_attendance_statistics.student_attendance_data[2]
         expect(tardy_data[:name]).to eq 'Tardy'
@@ -63,8 +67,8 @@ describe CohortAttendanceStatistics do
     end
 
     it 'returns data for early leaving students' do
-      start_time = Time.zone.parse(ENV['CLASS_START_TIME'] ||= '9:05 AM')
-      end_time = Time.zone.parse(ENV['CLASS_END_TIME'] ||= '4:30 PM' )
+      start_time = Time.zone.parse(cohort.start_time)
+      end_time = Time.zone.parse(cohort.end_time)
 
       travel_to start_time - 1.minute do
         cohort.students.each { |student| FactoryGirl.create(:attendance_record, student: student) }

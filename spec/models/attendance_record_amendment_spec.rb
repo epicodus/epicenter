@@ -40,7 +40,7 @@ describe AttendanceRecordAmendment do
       FactoryGirl.create(:attendance_record, student: student, date: Time.zone.now.to_date, tardy: true)
       attendance_record_amendment = AttendanceRecordAmendment.new(student_id: student.id, date: Time.zone.now.to_date, status: 'On time')
       attendance_record_amendment.save
-      expect(student.tardies).to eq 0
+      expect(student.attendance_records_for(:tardy)).to eq 0
     end
 
     it 'destroys an existing attendance record for the given date if the status is "Absent"' do

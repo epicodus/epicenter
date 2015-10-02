@@ -15,8 +15,8 @@ class Transcript
 
   def attendance_score
     cohort_days = @student.cohort.total_class_days
-    absences_penalty = @student.absences
-    tardies_penalty = @student.tardies * TARDY_WEIGHT
+    absences_penalty = @student.attendance_records_for(:absent)
+    tardies_penalty = @student.attendance_records_for(:tardy) * TARDY_WEIGHT
     (cohort_days - (absences_penalty + tardies_penalty)) / cohort_days
   end
 

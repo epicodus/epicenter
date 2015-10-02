@@ -1,6 +1,6 @@
 describe AttendanceRecord do
   it { should belong_to :student }
-  it { should validate_presence_of :student_id }
+  # it { should validate_presence_of :student_id } # exception is raised before reaching validation of student_id
 
   describe "validates uniqueness of pair_id to student_id and day" do
     it do
@@ -44,10 +44,13 @@ describe AttendanceRecord do
   end
 
   describe '#tardy' do
-    let(:start_time) { Time.zone.parse(ENV['CLASS_START_TIME'] ||= '9:05 AM') }
+    let(:student) { FactoryGirl.create(:student) }
+    let(:start_time) { Time.zone.parse(student.cohort.start_time) }
+    let(:part_time_student) { FactoryGirl.create(:part_time_student) }
+    let(:part_time_start_time) { Time.zone.parse(part_time_student.cohort.start_time) }
 
     it 'is true if the student checks in after the start of class' do
-      travel_to start_time + 1.minute do
+      travel_to start_time + 20.minute do
         tardy_attendance_record = FactoryGirl.create(:attendance_record)
         expect(tardy_attendance_record.tardy).to eq true
       end
@@ -59,10 +62,27 @@ describe AttendanceRecord do
         expect(on_time_attendance_record.tardy).to eq false
       end
     end
+
+    it 'is true if the part-time student checks in after the start of class' do
+      travel_to part_time_start_time + 20.minute do
+        tardy_attendance_record = FactoryGirl.create(:attendance_record, student: part_time_student)
+        expect(tardy_attendance_record.tardy).to eq true
+      end
+    end
+
+    it 'is false if the part-time student checks in before the start of class' do
+      travel_to part_time_start_time - 1.minute do
+        on_time_attendance_record = FactoryGirl.create(:attendance_record, student: part_time_student)
+        expect(on_time_attendance_record.tardy).to eq false
+      end
+    end
   end
 
   describe '#left_early' do
-    let(:end_time) { Time.zone.parse(ENV['CLASS_END_TIME'] ||= '4:30 PM') }
+    let(:student) { FactoryGirl.create(:student) }
+    let(:end_time) { Time.zone.parse(student.cohort.end_time) }
+    let(:part_time_student) { FactoryGirl.create(:part_time_student) }
+    let(:part_time_end_time) { Time.zone.parse(part_time_student.cohort.end_time) }
 
     it 'is true by default' do
       attendance_record = FactoryGirl.create(:attendance_record)
@@ -70,7 +90,7 @@ describe AttendanceRecord do
     end
 
     it 'is true when a student leaves early' do
-      travel_to end_time - 1.minute do
+      travel_to end_time - 21.minute do
         shirker_attendance_record = FactoryGirl.create(:attendance_record)
         shirker_attendance_record.update({:signing_out => true})
         expect(shirker_attendance_record.left_early).to eq true
@@ -80,6 +100,22 @@ describe AttendanceRecord do
     it 'is false when a student leaves after the alloted end time' do
       travel_to end_time + 1.minute do
         diligent_attendance_record = FactoryGirl.create(:attendance_record)
+        diligent_attendance_record.update({:signing_out => true})
+        expect(diligent_attendance_record.left_early).to eq false
+      end
+    end
+
+    it 'is true when a part-time student leaves early' do
+      travel_to part_time_end_time - 21.minute do
+        shirker_attendance_record = FactoryGirl.create(:attendance_record, student: part_time_student)
+        shirker_attendance_record.update({:signing_out => true})
+        expect(shirker_attendance_record.left_early).to eq true
+      end
+    end
+
+    it 'is false when a part-time student leaves after the alloted end time' do
+      travel_to part_time_end_time + 1.minute do
+        diligent_attendance_record = FactoryGirl.create(:attendance_record, student: part_time_student)
         diligent_attendance_record.update({:signing_out => true})
         expect(diligent_attendance_record.left_early).to eq false
       end

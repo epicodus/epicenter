@@ -31,7 +31,7 @@ describe Transcript do
       day_two = day_one + 1.day
       day_three = day_two + 1.day
 
-      student.cohort.update(end_date: day_three)
+      student.cohort.update(class_days: (day_one..day_three).map { |day| day })
 
       travel_to day_one.beginning_of_day do
         FactoryGirl.create(:attendance_record, student: student)

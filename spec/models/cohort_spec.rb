@@ -3,33 +3,43 @@ describe Cohort do
   it { should have_many(:attendance_records).through(:students) }
   it { should have_many :code_reviews }
   it { should have_many :internships}
-  it { should validate_presence_of :description }
-  it { should validate_presence_of :start_date }
-  it { should validate_presence_of :end_date }
 
-  describe '#past_and_present_class_days' do
-    let(:cohort) { FactoryGirl.create(:cohort) }
-    let(:monday) { Time.zone.now.to_date.beginning_of_week }
-    let(:tuesday) { monday + 1.days }
-    let(:today) { monday + 2.days }
-    let(:thursday) { monday + 3.days }
+  describe "validations" do
+    it "validates the presence of description" do
+      cohort = FactoryGirl.build(:cohort, description: nil)
+      expect(cohort).to_not be_valid
+    end
 
-    it 'returns a list of class days that are past or present' do
-      cohort.start_date = monday
-      cohort.end_date = thursday
-      travel_to today do
-        expect(cohort.past_and_present_class_days).to eq [monday, tuesday, today]
-      end
+    it "validates the presence of start_date" do
+      cohort = FactoryGirl.build(:cohort, class_days: nil)
+      expect(cohort.start_date).to eq nil
+    end
+
+    it "validates the presence of end_date" do
+      cohort = FactoryGirl.build(:cohort, class_days: nil)
+      expect(cohort.end_date).to eq nil
+    end
+
+    it "validates the presence of start_time" do
+      cohort = FactoryGirl.build(:cohort, start_time: nil)
+      expect(cohort).to_not be_valid
+    end
+
+    it "validates the presence of end_time" do
+      cohort = FactoryGirl.build(:cohort, end_time: nil)
+      expect(cohort).to_not be_valid
     end
   end
 
-  describe '#list_class_days' do
+  describe "sets start and end dates from class_days" do
     let(:cohort) { FactoryGirl.create(:cohort) }
 
-    it 'returns a list of class days with weekend days nil' do
-      cohort.start_date = Date.new(2015, 8, 31)
-      cohort.end_date = Date.new(2015, 9, 7)
-      expect(cohort.list_class_days).to eq [cohort.start_date, cohort.start_date + 1, cohort.start_date + 2, cohort.start_date + 3, cohort.start_date + 7]
+    it "returns a valid start date when set_start_and_end_dates is successful" do
+      expect(cohort.start_date).to eq cohort.class_days.first
+    end
+
+    it "returns a valid end date when set_start_and_end_dates is successful" do
+      expect(cohort.end_date).to eq cohort.class_days.last
     end
   end
 
@@ -69,7 +79,7 @@ describe Cohort do
 
   describe '#total_class_days' do
     it 'counts the days of class minus weekends' do
-      cohort = FactoryGirl.create(:cohort, start_date: Time.zone.now.to_date, end_date: (Time.zone.now.to_date + 2.weeks - 1.day))
+      cohort = FactoryGirl.create(:cohort, class_days: (Time.zone.now.to_date..(Time.zone.now.to_date + 2.weeks - 1.day)).select { |day| day if !day.friday? && !day.saturday? && !day.sunday? })
       expect(cohort.total_class_days).to eq 8
     end
   end
@@ -80,7 +90,7 @@ describe Cohort do
       friday = monday + 4.days
       next_friday = friday + 1.week
 
-      cohort = FactoryGirl.create(:cohort, start_date: monday, end_date: next_friday)
+      cohort = FactoryGirl.create(:cohort, class_days: (monday..next_friday).select { |day| day if !day.friday? && !day.saturday? && !day.sunday? })
       travel_to friday do
         expect(cohort.number_of_days_left).to eq 4
       end
@@ -93,7 +103,7 @@ describe Cohort do
       friday = monday + 4.days
       next_friday = friday + 1.week
 
-      cohort = FactoryGirl.create(:cohort, start_date: monday, end_date: next_friday)
+      cohort = FactoryGirl.create(:cohort, class_days: (monday..next_friday).select { |day| day if !day.friday? && !day.saturday? && !day.sunday? })
       travel_to friday do
         expect(cohort.progress_percent).to eq 50.0
       end
@@ -102,8 +112,8 @@ describe Cohort do
 
   describe 'default scope order' do
     it 'orders the cohort by start date by default' do
-      cohort = FactoryGirl.create(:cohort, start_date: '2015-01-01', end_date: '2015-01-02')
-      cohort2 = FactoryGirl.create(:cohort, start_date: '2014-01-01', end_date: '2014-01-01')
+      cohort = FactoryGirl.create(:cohort, class_days: [Date.new(2015, 1, 1), Date.new(2015, 1, 2)])
+      cohort2 = FactoryGirl.create(:cohort, class_days: [Date.new(2014, 1, 1), Date.new(2014, 1, 2)])
       expect(Cohort.all).to eq [cohort2, cohort]
     end
   end
