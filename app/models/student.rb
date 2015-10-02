@@ -135,10 +135,11 @@ class Student < User
                    on_time: { tardy: false, left_early: false }
                  }[status]
     results = attendance_records.where(attributes)
-    if filtered_cohort
-      results.where("date between ? and ?", filtered_cohort.start_date, filtered_cohort.end_date).count
-    elsif filtered_cohort && status == :absent
-      filtered_cohort.number_of_days_since_start - results.count
+    filtered_results = results.where("date between ? and ?", filtered_cohort.try(:start_date), filtered_cohort.try(:end_date))
+    if filtered_cohort && status == :absent
+      filtered_cohort.number_of_days_since_start - filtered_results.count
+    elsif filtered_cohort
+      filtered_results.count
     elsif status == :absent
       cohort.number_of_days_since_start - attendance_records.count
     else
