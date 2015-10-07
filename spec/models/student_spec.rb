@@ -1,6 +1,5 @@
 describe Student do
   it { should validate_presence_of :plan_id }
-  # it { should validate_presence_of :cohort_id }
   it { should have_many :bank_accounts }
   it { should have_many :payment_methods }
   it { should have_many :credit_cards }
@@ -13,10 +12,10 @@ describe Student do
   it { should belong_to(:primary_payment_method).class_name('PaymentMethod') }
   it { should have_many :signatures }
 
-  # it "validates that a student is created with an assigned cohort" do
-  #   student = FactoryGirl.create(:student, cohort: nil)
-  #   expect(student.valid?).to be false
-  # end
+  it "validates that a student is created with an assigned cohort" do
+    student = FactoryGirl.build(:student, cohort: nil)
+    expect(student.valid?).to be false
+  end
 
   describe "#cohort" do
     let(:first_cohort) { FactoryGirl.create(:past_cohort) }
