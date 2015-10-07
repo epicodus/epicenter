@@ -1,6 +1,6 @@
 describe Student do
   it { should validate_presence_of :plan_id }
-  it { should validate_presence_of :cohort_id }
+  # it { should validate_presence_of :cohort_id }
   it { should have_many :bank_accounts }
   it { should have_many :payment_methods }
   it { should have_many :credit_cards }
@@ -9,9 +9,41 @@ describe Student do
   it { should have_many(:internships).through(:ratings) }
   it { should belong_to :plan }
   it { should have_many :attendance_records }
-  it { should belong_to :cohort }
+  it { should have_many(:cohorts).through(:enrollments) }
   it { should belong_to(:primary_payment_method).class_name('PaymentMethod') }
   it { should have_many :signatures }
+
+  # it "validates that a student is created with an assigned cohort" do
+  #   student = FactoryGirl.create(:student, cohort: nil)
+  #   expect(student.valid?).to be false
+  # end
+
+  describe "#cohort" do
+    let(:first_cohort) { FactoryGirl.create(:past_cohort) }
+    let(:second_cohort) { FactoryGirl.create(:cohort) }
+    let(:third_cohort) { FactoryGirl.create(:future_cohort) }
+    let(:student) { FactoryGirl.create(:student, cohorts: [first_cohort, second_cohort, third_cohort]) }
+
+    it 'returns the upcoming cohort when a student has enrolled, but class has not started' do
+      travel_to first_cohort.start_date - 1
+      expect(student.cohort).to eq first_cohort
+    end
+
+    it 'returns the current cohort when class is in session' do
+      travel_to first_cohort.start_date
+      expect(student.cohort).to eq first_cohort
+    end
+
+    it 'returns the next cohort when a student is in between cohorts' do
+      travel_to second_cohort.end_date + 1
+      expect(student.cohort).to eq third_cohort
+    end
+
+    it 'returns the last cohort when a student is no longer enrolled' do
+      travel_to third_cohort.end_date + 1
+      expect(student.cohort).to eq third_cohort
+    end
+  end
 
   describe "#pair_on_day" do
     let(:cohort) { FactoryGirl.create(:cohort) }
@@ -468,7 +500,7 @@ describe Student do
     end
 
     it 'counts the number of days the student has been on time to class for a particular cohort' do
-      travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day - 5, 8, 55, 00) do
+      travel_to (cohort.start_date - 5).to_time.change({ hour: 8, min: 55 }) do
         attendance_record_outside_current_cohort_date_range = FactoryGirl.create(:attendance_record, student: student)
         travel 15.hours do
           attendance_record_outside_current_cohort_date_range.update({ signing_out:true })
@@ -484,7 +516,7 @@ describe Student do
     end
 
     it 'counts the number of days the student has been tardy for a particular cohort' do
-      travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day - 5, 9, 10, 00, Time.zone.formatted_offset) do
+      travel_to (cohort.start_date - 5).to_time.change({ hour: 9, min: 10 }) do
         FactoryGirl.create(:attendance_record, student: student)
         travel 1.day
         FactoryGirl.create(:attendance_record, student: student)
@@ -498,7 +530,7 @@ describe Student do
     end
 
     it 'counts the number of days the student has left early (failed to sign out) for a particular cohort' do
-      travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day - 5, 8, 55, 00) do
+      travel_to (cohort.start_date - 5).to_time.change({ hour: 8, min: 55 }) do
         attendance_record_outside_current_cohort_date_range = FactoryGirl.create(:attendance_record, student: student)
         travel 7.hours do
           attendance_record_outside_current_cohort_date_range.update({ signing_out: true })
