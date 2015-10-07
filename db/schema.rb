@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151001161327) do
+ActiveRecord::Schema.define(version: 20151005235618) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,13 @@ ActiveRecord::Schema.define(version: 20151001161327) do
     t.string   "contact_phone", limit: 255
     t.string   "contact_email", limit: 255
     t.string   "contact_title", limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "enrollments", force: :cascade do |t|
+    t.integer  "cohort_id"
+    t.integer  "student_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -182,7 +189,7 @@ ActiveRecord::Schema.define(version: 20151001161327) do
     t.string   "name",                      limit: 255
     t.integer  "plan_id"
     t.boolean  "recurring_active"
-    t.integer  "cohort_id"
+    t.integer  "old_cohort_id"
     t.integer  "primary_payment_method_id"
     t.string   "type",                      limit: 255
     t.integer  "current_cohort_id"
