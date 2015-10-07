@@ -37,8 +37,14 @@ class Student < User
   end
 
   def cohort=(new_cohort)
-    new_cohort = Cohort.find(new_cohort) if new_cohort.class != Cohort
-    cohorts.push(new_cohort)
+    if new_cohort.nil?
+      # do nothing
+    elsif new_cohort.class == Cohort
+      cohorts.push(new_cohort)
+    else
+      new_cohort = Cohort.find(new_cohort)
+      cohorts.push(new_cohort)
+    end
   end
 
   def cohort_id=(new_cohort_id)
