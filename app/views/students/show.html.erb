@@ -7,8 +7,23 @@
   <li class="student-internships-header">
     <a>Rated Internships</a>
   </li>
+  <li class="student-cohorts-header">
+    <a>Cohorts</a>
+  </li>
 </ul>
 
+<div class="student-cohorts">
+  <%= form_for @student, method: :patch do |f| %>
+    <%= render 'layouts/errors', object: @student %>
+    <%= f.collection_select :cohort_id, Cohort.all.reverse, :id, :description, { selected: nil }, { class: 'span4' } %>
+    <p><%= f.submit 'Add cohort', class: 'btn btn-primary' %></p>
+  <% end %>
+
+  <h3>Cohorts</h3>
+  <% @student.cohorts.each do |cohort| %>
+    <span><%= cohort.description %></span>
+  <% end %>
+</div>
 
 <div class="student-internships">
   <span class="company-list">
