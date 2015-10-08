@@ -15,7 +15,7 @@
 <div class="student-cohorts">
   <%= form_for @student, method: :patch do |f| %>
     <%= render 'layouts/errors', object: @student %>
-    <%= f.collection_select :cohort_id, Cohort.all.reverse, :id, :description, { selected: nil }, { class: 'span4' } %>
+    <%= f.collection_select :cohort_id, @student.other_cohorts.reverse, :id, :description, { selected: nil }, { class: 'span4' } %>
     <p><%= f.submit 'Add cohort', class: 'btn btn-primary' %></p>
   <% end %>
 
