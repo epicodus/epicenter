@@ -14,13 +14,20 @@ class StudentsController < ApplicationController
   end
 
   def update
-    @student = current_user if current_student
-    @student = Student.find(params[:id]) if current_admin
-    if @student.update(student_params)
-      redirect_to :back, notice: "Primary payment method has been updated." if current_student
-      redirect_to :back, notice: "#{@student.name}'s cohorts have been updated" if current_admin
-    else
-      redirect_to :back, alert: "There was an error."
+    if current_admin
+      student = Student.find(params[:id])
+      if student.update(student_params)
+        redirect_to :back, notice: "Cohorts for #{student.name} have been updated"
+      else
+        redirect_to :back, alert: "There was an error."
+      end
+    elsif current_student
+      student = current_user
+      if student.update(student_params)
+        redirect_to :back, notice: "Primary payment method has been updated."
+      else
+        redirect_to :back, alert: "There was an error."
+      end
     end
   end
 
