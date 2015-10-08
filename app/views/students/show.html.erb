@@ -43,7 +43,7 @@
 </div>
 
 <div class="student-attendance">
-  <% @student.cohort.class_dates_until(Time.zone.now.to_date).reverse.each do |day| %>
+  <% @student.cohort.class_dates_until(Time.zone.now.to_date).sort.reverse.each do |day| %>
     <ul class='span12 unstyled'>
         <li>
           <span class="span1">
