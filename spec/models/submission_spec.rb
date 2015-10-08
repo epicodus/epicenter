@@ -45,7 +45,7 @@ describe Submission do
     end
   end
 
-  describe '#latest_review', :vcr do
+  xdescribe '#latest_review', :vcr do
     it 'returns the latest review for this submission' do
       submission = FactoryGirl.create(:submission)
       review = FactoryGirl.create(:review, submission: submission)
@@ -60,15 +60,6 @@ describe Submission do
       second_submission = FactoryGirl.create(:submission)
       first_submission.touch # updates the updated_at field to simulate resubmission
       expect(Submission.all).to eq [second_submission, first_submission]
-    end
-  end
-
-  describe 'latest_review', :vcr do
-    it 'returns the most recent review for this submissions' do
-      submission = FactoryGirl.create(:submission)
-      first_review = FactoryGirl.create(:passing_review, submission: submission)
-      second_review = FactoryGirl.create(:passing_review, submission: submission)
-      expect(submission.latest_review).to eq second_review
     end
   end
 

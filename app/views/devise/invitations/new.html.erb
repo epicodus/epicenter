@@ -2,10 +2,13 @@
 
 <%= form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => {:method => :post} do |f| %>
   <%= devise_error_messages! %>
-  <p>
-    <%= f.label :cohort_id %>
-    <%= f.select(:cohort_id, Cohort.all.collect {|c| [ c.description, c.id ] }) %>
-  </p>
+
+  <% if resource.is_a?(Student) %>
+    <p>
+      <%= f.label :cohort_id %>
+      <%= f.select(:cohort_id, Cohort.all.collect {|c| [ c.description, c.id ] }) %>
+    </p>
+  <% end %>
 
   <p>
     <%= f.label :name %>

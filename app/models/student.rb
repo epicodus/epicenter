@@ -3,11 +3,12 @@ class Student < User
   default_scope { order(:name) }
 
   validates :plan_id, presence: true
-  validates :cohort_id, presence: true
   validate :primary_payment_method_belongs_to_student
+  validate :student_has_cohort
 
   belongs_to :plan
-  belongs_to :cohort
+  has_many :enrollments
+  has_many :cohorts, through: :enrollments
   has_many :bank_accounts
   has_many :credit_cards
   has_many :payments
@@ -20,6 +21,35 @@ class Student < User
   has_many :signatures
 
   NUMBER_OF_RANDOM_PAIRS = 5
+
+  def cohort
+    if cohort_in_session
+      cohort_in_session
+    elsif next_cohort
+      next_cohort
+    else
+      cohorts.last
+    end
+  end
+
+  def cohort_id
+    cohort.try(:id)
+  end
+
+  def cohort=(new_cohort)
+    if new_cohort.nil?
+      # do nothing
+    elsif new_cohort.class == Cohort
+      cohorts.push(new_cohort)
+    else
+      new_cohort = Cohort.find(new_cohort)
+      cohorts.push(new_cohort)
+    end
+  end
+
+  def cohort_id=(new_cohort_id)
+    cohorts.push(Cohort.find(new_cohort_id))
+  end
 
   def pair_on_day(day)
     Student.find_by(id: attendance_record_on_day(day).try(:pair_id)) # using find_by so that nil is returned instead of raising exception if there is no pair
@@ -160,6 +190,22 @@ class Student < User
   end
 
 private
+
+  def next_cohort
+    @next_cohort ||= cohorts.where('start_date > ?', Time.zone.now.to_date).first
+  end
+
+  def cohort_in_session
+    @cohort_in_session ||= cohorts.where('start_date <= ? AND end_date >= ?', Time.zone.now.to_date, Time.zone.now.to_date).first
+  end
+
+  def student_has_cohort
+    unless cohort.present?
+      errors.add(:cohort, "cannot be blank")
+      false
+    end
+  end
+
   def random_starting_point
     begin
       Time.zone.today.day.to_i % similar_grade_students.count
