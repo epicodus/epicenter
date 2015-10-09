@@ -119,7 +119,7 @@ feature 'adding another cohort for a student' do
 
   scenario 'as an admin' do
     visit student_path(student)
-    find('.student-cohorts-header').click
+    find('.student-nav li.student-cohorts').click
     select other_cohort.description, from: 'student_cohort_id'
     click_on 'Add cohort'
     expect(page).to have_content other_cohort.description

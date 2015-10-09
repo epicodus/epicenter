@@ -1,31 +1,15 @@
 $(function() {
-  $('.student-internships').hide();
-  $('.student-cohorts').hide();
+  $('div').find('div.' + $('.student-nav li:first').attr('class')).show();
+  $('div').find('div.' + $('.student-nav li:first').attr('class')).siblings('.student-div').hide();
+  $('.student-nav li:first').addClass("active");
 
-  $('.student-internships-header').click(function() {
-    $('.student-attendance').hide();
-    $('.student-cohorts').hide();
-    $('.student-internships').show();
-    $('.student-attendance-header').removeClass("active");
-    $('.student-cohorts-header').removeClass("active");
-    $('.student-internships-header').addClass("active");
-  });
-
-  $('.student-attendance-header').click(function() {
-    $('.student-internships').hide();
-    $('.student-cohorts').hide();
-    $('.student-attendance').show();
-    $('.student-attendance-header').addClass("active");
-    $('.student-internships-header').removeClass("active");
-    $('.student-cohorts-header').removeClass("active");
-  });
-
-  $('.student-cohorts-header').click(function() {
-    $('.student-internships').hide();
-    $('.student-attendance').hide();
-    $('.student-cohorts').show();
-    $('.student-cohorts-header').addClass("active");
-    $('.student-attendance-header').removeClass("active");
-    $('.student-internships-header').removeClass("active");
+  $('.student-nav li').each(function() {
+    $(this).click(function() {
+      var matchingDiv = $('div').find('div.' + $(this).attr('class'));
+      matchingDiv.show();
+      matchingDiv.siblings('.student-div').hide();
+      $(this).addClass('active');
+      $(this).siblings().removeClass('active');
+    });
   });
 });

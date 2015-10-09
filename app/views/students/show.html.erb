@@ -1,18 +1,18 @@
 <h1><%= @student.name %></h1>
 <hr>
-<ul class="nav nav-tabs">
-  <li class="active student-attendance-header">
+<ul class="student-nav nav nav-tabs">
+  <li class="student-attendance">
     <a>Attendance</a>
   </li>
-  <li class="student-internships-header">
+  <li class="student-internships">
     <a>Rated Internships</a>
   </li>
-  <li class="student-cohorts-header">
+  <li class="student-cohorts">
     <a>Cohorts</a>
   </li>
 </ul>
 
-<div class="student-cohorts">
+<div class="student-div student-cohorts">
   <%= form_for @student, method: :patch do |f| %>
     <%= render 'layouts/errors', object: @student %>
     <%= f.collection_select :cohort_id, @student.other_cohorts.reverse, :id, :description, { include_blank: 'Please select a cohort' }, { class: 'span4', required: true } %>
@@ -25,7 +25,7 @@
   <% end %>
 </div>
 
-<div class="student-internships">
+<div class="student-div student-internships">
   <span class="company-list">
     <% @internships.each do |internship| %>
       <div class="<%= set_internship_background(@student.find_rating(internship)) %>">
@@ -42,7 +42,7 @@
   </span>
 </div>
 
-<div class="student-attendance">
+<div class="student-div student-attendance">
   <% @student.cohort.class_dates_until(Time.zone.now.to_date).sort.reverse.each do |day| %>
     <ul class='span12 unstyled'>
         <li>
