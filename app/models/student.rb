@@ -22,6 +22,10 @@ class Student < User
 
   NUMBER_OF_RANDOM_PAIRS = 5
 
+  def other_cohorts
+    Cohort.where.not(id: cohorts.map(&:id))
+  end
+
   def cohort
     if cohort_in_session
       cohort_in_session

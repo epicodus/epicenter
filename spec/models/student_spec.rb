@@ -17,6 +17,17 @@ describe Student do
     expect(student.valid?).to be false
   end
 
+  describe "#other_cohorts" do
+    let!(:first_cohort) { FactoryGirl.create(:past_cohort) }
+    let!(:second_cohort) { FactoryGirl.create(:cohort) }
+    let!(:third_cohort) { FactoryGirl.create(:future_cohort) }
+    let(:student) { FactoryGirl.create(:student, cohort: first_cohort) }
+
+    it 'returns cohorts that a student is not enrolled in' do
+      expect(student.other_cohorts).to eq [second_cohort, third_cohort]
+    end
+  end
+
   describe "#cohort" do
     let(:first_cohort) { FactoryGirl.create(:past_cohort) }
     let(:second_cohort) { FactoryGirl.create(:cohort) }

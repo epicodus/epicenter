@@ -110,3 +110,18 @@ feature 'deleting a cohort' do
     expect(page).to have_content "#{cohort.description} has been deleted"
   end
 end
+
+feature 'adding another cohort for a student' do
+  let(:student) { FactoryGirl.create(:student) }
+  let!(:other_cohort) { FactoryGirl.create(:cohort, description: 'Other cohort') }
+  let(:admin) { FactoryGirl.create(:admin) }
+  before { login_as(admin, scope: :admin) }
+
+  scenario 'as an admin' do
+    visit student_path(student)
+    find('.student-nav li.student-cohorts').click
+    select other_cohort.description, from: 'student_cohort_id'
+    click_on 'Add cohort'
+    expect(page).to have_content other_cohort.description
+  end
+end
