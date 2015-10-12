@@ -1,8 +1,0 @@
-<h1>Edit <%= @cohort.description %></h1>
-
-<p>Start date: <%= @cohort.start_date.strftime("%A, %B %d, %Y") %></p>
-<p>End date: <%= @cohort.end_date.strftime("%A, %B %d, %Y") %></p>
-<p><%= @cohort.class_days.count %> class <%= 'day'.pluralize(@cohort.class_days.count) %></p>
-<hr>
-
-<%= render 'form', cohort: @cohort %>

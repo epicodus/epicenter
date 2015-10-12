@@ -1,4 +1,4 @@
-class Cohort < ActiveRecord::Base
+class Course < ActiveRecord::Base
   default_scope { order(:start_date) }
   scope :with_code_reviews, -> { includes(:code_reviews).where.not(code_reviews: { id: nil }) }
 
@@ -17,10 +17,10 @@ class Cohort < ActiveRecord::Base
 
   serialize :class_days, Array
 
-  attr_accessor :importing_cohort_id
+  attr_accessor :importing_course_id
 
   before_create :import_code_reviews
-  after_destroy :reassign_admin_current_cohorts
+  after_destroy :reassign_admin_current_courses
 
   def number_of_days_since_start
     last_date = Time.zone.now.to_date <= end_date ? Time.zone.now.to_date : end_date
@@ -66,12 +66,12 @@ private
   end
 
   def import_code_reviews
-    unless @importing_cohort_id.blank?
-      self.code_reviews = Cohort.find(@importing_cohort_id).deep_clone(include: { code_reviews: :objectives }).code_reviews
+    unless @importing_course_id.blank?
+      self.code_reviews = Course.find(@importing_course_id).deep_clone(include: { code_reviews: :objectives }).code_reviews
     end
   end
 
-  def reassign_admin_current_cohorts
-    Admin.where(current_cohort_id: self.id).update_all(current_cohort_id: Cohort.last.id)
+  def reassign_admin_current_courses
+    Admin.where(current_course_id: self.id).update_all(current_course_id: Course.last.id)
   end
 end

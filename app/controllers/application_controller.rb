@@ -4,31 +4,31 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :configure_permitted_params, if: :devise_controller?
 
-  helper_method :current_user, :current_cohort
+  helper_method :current_user, :current_course
 
 protected
   def configure_permitted_params
     devise_parameter_sanitizer.for(:invite) do |u|
-      u.permit(:name, :email, :cohort_id)
+      u.permit(:name, :email, :course_id)
     end
     devise_parameter_sanitizer.for(:accept_invitation) do |u|
-      u.permit(:name, :email, :current_cohort_id, :plan_id, :password, :password_confirmation,
+      u.permit(:name, :email, :current_course_id, :plan_id, :password, :password_confirmation,
              :invitation_token)
     end
     devise_parameter_sanitizer.for(:account_update) do |u|
-      u.permit(:plan_id, :cohort_id, :name, :email, :password, :password_confirmation, :current_password)
+      u.permit(:plan_id, :course_id, :name, :email, :password, :password_confirmation, :current_password)
     end
     devise_parameter_sanitizer.for(:sign_up) do |u|
-      u.permit(:plan_id, :cohort_id, :name, :email, :password, :password_confirmation)
+      u.permit(:plan_id, :course_id, :name, :email, :password, :password_confirmation)
     end
   end
 
   def after_sign_in_path_for(user)
     if user.is_a? Admin
-      cohort_code_reviews_path(user.current_cohort)
+      course_code_reviews_path(user.current_course)
     elsif user.is_a? Student
       if user.class_in_session? && user.signed_main_documents?
-        cohort_code_reviews_path(user.cohort)
+        course_code_reviews_path(user.course)
       else
         signatures_check_path(user)
       end
@@ -63,11 +63,11 @@ protected
     current_student || current_admin
   end
 
-  def current_cohort
+  def current_course
     if current_student
-      current_student.cohort
+      current_student.course
     elsif current_admin
-      current_admin.current_cohort
+      current_admin.current_course
     end
   end
   #authenticate_inviter is used to restrict who can send invitations. We are overriding the devise default

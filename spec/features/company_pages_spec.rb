@@ -15,7 +15,7 @@ feature 'index page' do
   end
 
   context "as an admin" do
-    let(:cohort) { FactoryGirl.create(:cohort) }
+    let(:course) { FactoryGirl.create(:course) }
     let(:admin) { FactoryGirl.create(:admin) }
     let!(:company) { FactoryGirl.create(:company) }
     let!(:other_company) { FactoryGirl.create(:company) }
@@ -41,7 +41,7 @@ feature 'index page' do
 end
 
 feature "creating a new company" do
-  let(:cohort) { FactoryGirl.create(:cohort) }
+  let(:course) { FactoryGirl.create(:course) }
   let(:admin) { FactoryGirl.create(:admin) }
   before { login_as(admin, scope: :admin) }
 
@@ -70,7 +70,7 @@ feature "creating a new company" do
 end
 
 feature "editing a company" do
-  let(:cohort) { FactoryGirl.create(:cohort) }
+  let(:course) { FactoryGirl.create(:course) }
   let(:admin) { FactoryGirl.create(:admin) }
   let!(:company) { FactoryGirl.create(:company) }
   before { login_as(admin, scope: :admin) }
@@ -97,7 +97,7 @@ feature "editing a company" do
 end
 
 feature "deleting a company" do
-  let(:cohort) { FactoryGirl.create(:cohort) }
+  let(:course) { FactoryGirl.create(:course) }
   let(:admin) { FactoryGirl.create(:admin) }
   let!(:company) { FactoryGirl.create(:company) }
   before { login_as(admin, scope: :admin) }

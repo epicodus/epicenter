@@ -1,11 +1,11 @@
 class StudentsController < ApplicationController
 
   include AuthenticationHelper
-  
+
   before_filter :authenticate_student_and_admin
 
   def index
-    @students = current_admin.current_cohort.students
+    @students = current_admin.current_course.students
   end
 
   def show
@@ -17,7 +17,7 @@ class StudentsController < ApplicationController
     if current_admin
       student = Student.find(params[:id])
       if student.update(student_params)
-        redirect_to :back, notice: "Cohorts for #{student.name} have been updated"
+        redirect_to :back, notice: "Courses for #{student.name} have been updated"
       else
         redirect_to :back, alert: "There was an error."
       end
@@ -33,6 +33,6 @@ class StudentsController < ApplicationController
 
 private
   def student_params
-    params.require(:student).permit(:primary_payment_method_id, :cohort_id)
+    params.require(:student).permit(:primary_payment_method_id, :course_id)
   end
 end

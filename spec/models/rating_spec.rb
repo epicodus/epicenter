@@ -24,7 +24,7 @@ describe Rating do
 
   describe 'for' do
     let(:student) { FactoryGirl.create(:student) }
-    let(:internship) { FactoryGirl.create(:internship, cohort: student.cohort) }
+    let(:internship) { FactoryGirl.create(:internship, course: student.course) }
 
     it "returns the student's rating of the internship if it exists" do
       rating = FactoryGirl.create(:rating, student: student, internship: internship)

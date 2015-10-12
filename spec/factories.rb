@@ -4,7 +4,7 @@ FactoryGirl.define do
     sequence(:email) { |n| "admin#{n}@example.com" }
     password "password"
     password_confirmation "password"
-    association :current_cohort, factory: :cohort
+    association :current_course, factory: :course
   end
 
   factory :attendance_record do
@@ -36,28 +36,28 @@ FactoryGirl.define do
 
   factory :code_review do
     sequence(:title) { |n| "code_review #{n}" }
-    cohort
+    course
 
     before(:create) do |code_review|
       code_review.objectives << build(:objective)
     end
   end
 
-  factory :cohort do
-    description 'Current cohort'
+  factory :course do
+    description 'Current course'
     class_days (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 14.weeks).end_of_week - 3.days).select { |day| day if !day.friday? && !day.saturday? && !day.sunday? }
     start_time '9:00 AM'
     end_time '5:00 PM'
 
-    factory :past_cohort do
+    factory :past_course do
       class_days ((Time.zone.now.to_date - 18.weeks).beginning_of_week..(Time.zone.now.to_date - 3.weeks).end_of_week - 3.days).select { |day| day if !day.friday? && !day.saturday? && !day.sunday? }
     end
 
-    factory :future_cohort do
+    factory :future_course do
       class_days ((Time.zone.now.to_date + 4.weeks).beginning_of_week..(Time.zone.now.to_date + 15.weeks).beginning_of_week).select { |day| day if !day.friday? && !day.saturday? && !day.sunday? }
     end
 
-    factory :part_time_cohort do
+    factory :part_time_course do
       start_time '6:00 PM'
       end_time '9:00 PM'
     end
@@ -186,7 +186,7 @@ FactoryGirl.define do
   end
 
   factory :student do
-    cohort
+    course
     association :plan, factory: :recurring_plan_with_upfront_payment
     sequence(:name) { |n| "Example Brown #{n}" }
     sequence(:email) { |n| "student#{n}@example.com" }
@@ -194,7 +194,7 @@ FactoryGirl.define do
     password_confirmation "password"
 
     factory :part_time_student do
-      association :cohort, factory: :part_time_cohort
+      association :course, factory: :part_time_course
     end
 
     factory :user_with_unverified_bank_account do
@@ -304,7 +304,7 @@ FactoryGirl.define do
 
   factory :internship do
     company
-    cohort
+    course
     description "You will write awesome software here!"
     ideal_intern 'Somebody who writes awesome software!'
     clearance_required true

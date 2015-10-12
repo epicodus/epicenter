@@ -10,8 +10,8 @@ feature "viewing transcript" do
 
   context "after class ends" do
     it "allows student to view their transcript" do
-      cohort = FactoryGirl.create(:past_cohort)
-      student = FactoryGirl.create(:student, cohort: cohort)
+      course = FactoryGirl.create(:past_course)
+      student = FactoryGirl.create(:student, course: course)
       login_as(student, scope: :student)
       visit edit_student_registration_path
       click_link "View transcript"
@@ -20,10 +20,10 @@ feature "viewing transcript" do
     end
 
     it 'shows a breakdown of how they did on each code review', :vcr do
-      cohort = FactoryGirl.create(:past_cohort)
-      student = FactoryGirl.create(:student, cohort: cohort)
-      code_review = FactoryGirl.create(:code_review, cohort: cohort)
-      not_submitted_code_review = FactoryGirl.create(:code_review, cohort: cohort)
+      course = FactoryGirl.create(:past_course)
+      student = FactoryGirl.create(:student, course: course)
+      code_review = FactoryGirl.create(:code_review, course: course)
+      not_submitted_code_review = FactoryGirl.create(:code_review, course: course)
       submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
       review = FactoryGirl.create(:passing_review, submission: submission)
 
@@ -34,8 +34,8 @@ feature "viewing transcript" do
     end
 
     it 'shows a summary of their attendance record' do
-      cohort = FactoryGirl.create(:past_cohort)
-      student = FactoryGirl.create(:student, cohort: cohort)
+      course = FactoryGirl.create(:past_course)
+      student = FactoryGirl.create(:student, course: course)
       login_as(student, scope: :student)
       visit transcript_path
       expect(page).to have_content "#{student.name} was present 0% - 5% of the time"

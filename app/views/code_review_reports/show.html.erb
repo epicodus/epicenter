@@ -11,7 +11,7 @@
   </thead>
 
   <tbody>
-    <% @cohort.students.sort_by { |student| @code_review.latest_total_score_for(student) }.reverse.each do |student| %>
+    <% @course.students.sort_by { |student| @code_review.latest_total_score_for(student) }.reverse.each do |student| %>
       <tr>
         <td><%= student.name %></td>
         <% @code_review.objectives.each do |objective| %>

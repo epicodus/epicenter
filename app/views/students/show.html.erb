@@ -7,21 +7,21 @@
   <li class="student-internships">
     <a>Rated Internships</a>
   </li>
-  <li class="student-cohorts">
-    <a>Cohorts</a>
+  <li class="student-courses">
+    <a>Courses</a>
   </li>
 </ul>
 
-<div class="student-div student-cohorts">
+<div class="student-div student-courses">
   <%= form_for @student, method: :patch do |f| %>
     <%= render 'layouts/errors', object: @student %>
-    <%= f.collection_select :cohort_id, @student.other_cohorts.reverse, :id, :description, { include_blank: 'Please select a cohort' }, { class: 'span4', required: true } %>
-    <p><%= f.submit 'Add cohort', class: 'btn btn-primary' %></p>
+    <%= f.collection_select :course_id, @student.other_courses.reverse, :id, :description, { include_blank: 'Please select a course' }, { class: 'span4', required: true } %>
+    <p><%= f.submit 'Add course', class: 'btn btn-primary' %></p>
   <% end %>
 
-  <h3>Cohorts</h3>
-  <% @student.cohorts.each do |cohort| %>
-    <p><%= cohort.description %></p>
+  <h3>Courses</h3>
+  <% @student.courses.each do |course| %>
+    <p><%= course.description %></p>
   <% end %>
 </div>
 
@@ -31,7 +31,7 @@
       <div class="<%= set_internship_background(@student.find_rating(internship)) %>">
         <div class='internship-list-row row'>
           <li>
-            <h3 class='span3'><%= link_to internship.company_name, cohort_internship_path(@student.cohort, internship) %></h3>
+            <h3 class='span3'><%= link_to internship.company_name, course_internship_path(@student.course, internship) %></h3>
             <% if @student.find_rating(internship) %>
               <p class='span9'><%= @student.find_rating(internship).notes %></p>
             <% end %>
@@ -43,7 +43,7 @@
 </div>
 
 <div class="student-div student-attendance">
-  <% @student.cohort.class_dates_until(Time.zone.now.to_date).sort.reverse.each do |day| %>
+  <% @student.course.class_dates_until(Time.zone.now.to_date).sort.reverse.each do |day| %>
     <ul class='span12 unstyled'>
         <li>
           <span class="span1">

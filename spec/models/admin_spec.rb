@@ -1,5 +1,5 @@
 describe Admin do
-  it { should belong_to :current_cohort }
+  it { should belong_to :current_course }
 
   describe "abilities" do
     let(:admin) { FactoryGirl.create(:admin) }
@@ -18,8 +18,8 @@ describe Admin do
       it { is_expected.to have_abilities([:create], Review.new) }
     end
 
-    context 'for cohort_attendance_statistics' do
-      it { is_expected.to have_abilities(:read, CohortAttendanceStatistics) }
+    context 'for course_attendance_statistics' do
+      it { is_expected.to have_abilities(:read, CourseAttendanceStatistics) }
     end
 
     context 'for bank_accounts' do
@@ -34,8 +34,8 @@ describe Admin do
       it { is_expected.to not_have_abilities([:create, :update], Payment.new) }
     end
 
-    context 'for cohorts' do
-      it { is_expected.to have_abilities(:manage, Cohort.new) }
+    context 'for courses' do
+      it { is_expected.to have_abilities(:manage, Course.new) }
     end
 
     context 'for attendance record amendments' do
@@ -55,10 +55,10 @@ describe Admin do
     end
   end
 
-  it 'is assigned a default current_cohort before creation' do
-    FactoryGirl.create(:cohort)
-    admin = FactoryGirl.build(:admin, current_cohort: nil)
+  it 'is assigned a default current_course before creation' do
+    FactoryGirl.create(:course)
+    admin = FactoryGirl.build(:admin, current_course: nil)
     admin.save
-    expect(admin.current_cohort).to be_a Cohort
+    expect(admin.current_course).to be_a Course
   end
 end

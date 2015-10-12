@@ -7,6 +7,6 @@ $(function() {
   });
 
   $(".datepicker").on("changeDate", function(event) {
-    $("#cohort_class_days").val($(".datepicker").datepicker('getFormattedDate'));
+    $("#course_class_days").val($(".datepicker").datepicker('getFormattedDate'));
   });
 });

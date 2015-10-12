@@ -4,11 +4,11 @@ class Student < User
 
   validates :plan_id, presence: true
   validate :primary_payment_method_belongs_to_student
-  validate :student_has_cohort
+  validate :student_has_course
 
   belongs_to :plan
   has_many :enrollments
-  has_many :cohorts, through: :enrollments
+  has_many :courses, through: :enrollments
   has_many :bank_accounts
   has_many :credit_cards
   has_many :payments
@@ -22,37 +22,37 @@ class Student < User
 
   NUMBER_OF_RANDOM_PAIRS = 5
 
-  def other_cohorts
-    Cohort.where.not(id: cohorts.map(&:id))
+  def other_courses
+    Course.where.not(id: courses.map(&:id))
   end
 
-  def cohort
-    if cohort_in_session
-      cohort_in_session
-    elsif next_cohort
-      next_cohort
+  def course
+    if course_in_session
+      course_in_session
+    elsif next_course
+      next_course
     else
-      cohorts.last
+      courses.last
     end
   end
 
-  def cohort_id
-    cohort.try(:id)
+  def course_id
+    course.try(:id)
   end
 
-  def cohort=(new_cohort)
-    if new_cohort.nil?
+  def course=(new_course)
+    if new_course.nil?
       # do nothing
-    elsif new_cohort.class == Cohort
-      cohorts.push(new_cohort)
+    elsif new_course.class == Course
+      courses.push(new_course)
     else
-      new_cohort = Cohort.find(new_cohort)
-      cohorts.push(new_cohort)
+      new_course = Course.find(new_course)
+      courses.push(new_course)
     end
   end
 
-  def cohort_id=(new_cohort_id)
-    cohorts.push(Cohort.find(new_cohort_id))
+  def course_id=(new_course_id)
+    courses.push(Course.find(new_course_id))
   end
 
   def pair_on_day(day)
@@ -150,11 +150,11 @@ class Student < User
   end
 
   def class_in_session?
-    cohort.start_date <= Time.zone.now.to_date && cohort.end_date >= Time.zone.now.to_date
+    course.start_date <= Time.zone.now.to_date && course.end_date >= Time.zone.now.to_date
   end
 
   def class_over?
-    Time.zone.now.to_date > cohort.end_date
+    Time.zone.now.to_date > course.end_date
   end
 
   def start_recurring_payments
@@ -163,19 +163,19 @@ class Student < User
     payment
   end
 
-  def attendance_records_for(status, filtered_cohort=nil)
+  def attendance_records_for(status, filtered_course=nil)
     attributes = { tardy: { tardy: true },
                    left_early: { left_early: true },
                    on_time: { tardy: false, left_early: false }
                  }[status]
     results = attendance_records.where(attributes)
-    filtered_results = results.where("date between ? and ?", filtered_cohort.try(:start_date), filtered_cohort.try(:end_date))
-    if filtered_cohort && status == :absent
-      filtered_cohort.number_of_days_since_start - filtered_results.count
-    elsif filtered_cohort
+    filtered_results = results.where("date between ? and ?", filtered_course.try(:start_date), filtered_course.try(:end_date))
+    if filtered_course && status == :absent
+      filtered_course.number_of_days_since_start - filtered_results.count
+    elsif filtered_course
       filtered_results.count
     elsif status == :absent
-      cohort.number_of_days_since_start - attendance_records.count
+      course.number_of_days_since_start - attendance_records.count
     else
       results.count
     end
@@ -190,22 +190,22 @@ class Student < User
   end
 
   def internships_sorted_by_interest
-    cohort.internships_sorted_by_interest(self)
+    course.internships_sorted_by_interest(self)
   end
 
 private
 
-  def next_cohort
-    @next_cohort ||= cohorts.where('start_date > ?', Time.zone.now.to_date).first
+  def next_course
+    @next_course ||= courses.where('start_date > ?', Time.zone.now.to_date).first
   end
 
-  def cohort_in_session
-    @cohort_in_session ||= cohorts.where('start_date <= ? AND end_date >= ?', Time.zone.now.to_date, Time.zone.now.to_date).first
+  def course_in_session
+    @course_in_session ||= courses.where('start_date <= ? AND end_date >= ?', Time.zone.now.to_date, Time.zone.now.to_date).first
   end
 
-  def student_has_cohort
-    unless cohort.present?
-      errors.add(:cohort, "cannot be blank")
+  def student_has_course
+    unless course.present?
+      errors.add(:course, "cannot be blank")
       false
     end
   end
@@ -219,11 +219,11 @@ private
   end
 
   def similar_grade_students
-    @similar_grade_students ||= same_cohort.to_a.keep_if { |student| similar_grades?(student) || latest_total_grade_score == nil }
+    @similar_grade_students ||= same_course.to_a.keep_if { |student| similar_grades?(student) || latest_total_grade_score == nil }
   end
 
-  def same_cohort
-    cohort.students.where.not(id: id)
+  def same_course
+    course.students.where.not(id: id)
   end
 
   def most_recent_submission_grades

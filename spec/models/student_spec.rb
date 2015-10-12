@@ -8,57 +8,57 @@ describe Student do
   it { should have_many(:internships).through(:ratings) }
   it { should belong_to :plan }
   it { should have_many :attendance_records }
-  it { should have_many(:cohorts).through(:enrollments) }
+  it { should have_many(:courses).through(:enrollments) }
   it { should belong_to(:primary_payment_method).class_name('PaymentMethod') }
   it { should have_many :signatures }
 
-  it "validates that a student is created with an assigned cohort" do
-    student = FactoryGirl.build(:student, cohort: nil)
+  it "validates that a student is created with an assigned course" do
+    student = FactoryGirl.build(:student, course: nil)
     expect(student.valid?).to be false
   end
 
-  describe "#other_cohorts" do
-    let!(:first_cohort) { FactoryGirl.create(:past_cohort) }
-    let!(:second_cohort) { FactoryGirl.create(:cohort) }
-    let!(:third_cohort) { FactoryGirl.create(:future_cohort) }
-    let(:student) { FactoryGirl.create(:student, cohort: first_cohort) }
+  describe "#other_courses" do
+    let!(:first_course) { FactoryGirl.create(:past_course) }
+    let!(:second_course) { FactoryGirl.create(:course) }
+    let!(:third_course) { FactoryGirl.create(:future_course) }
+    let(:student) { FactoryGirl.create(:student, course: first_course) }
 
-    it 'returns cohorts that a student is not enrolled in' do
-      expect(student.other_cohorts).to eq [second_cohort, third_cohort]
+    it 'returns courses that a student is not enrolled in' do
+      expect(student.other_courses).to eq [second_course, third_course]
     end
   end
 
-  describe "#cohort" do
-    let(:first_cohort) { FactoryGirl.create(:past_cohort) }
-    let(:second_cohort) { FactoryGirl.create(:cohort) }
-    let(:third_cohort) { FactoryGirl.create(:future_cohort) }
-    let(:student) { FactoryGirl.create(:student, cohorts: [first_cohort, second_cohort, third_cohort]) }
+  describe "#course" do
+    let(:first_course) { FactoryGirl.create(:past_course) }
+    let(:second_course) { FactoryGirl.create(:course) }
+    let(:third_course) { FactoryGirl.create(:future_course) }
+    let(:student) { FactoryGirl.create(:student, courses: [first_course, second_course, third_course]) }
 
-    it 'returns the upcoming cohort when a student has enrolled, but class has not started' do
-      travel_to first_cohort.start_date - 1
-      expect(student.cohort).to eq first_cohort
+    it 'returns the upcoming course when a student has enrolled, but class has not started' do
+      travel_to first_course.start_date - 1
+      expect(student.course).to eq first_course
     end
 
-    it 'returns the current cohort when class is in session' do
-      travel_to first_cohort.start_date
-      expect(student.cohort).to eq first_cohort
+    it 'returns the current course when class is in session' do
+      travel_to first_course.start_date
+      expect(student.course).to eq first_course
     end
 
-    it 'returns the next cohort when a student is in between cohorts' do
-      travel_to second_cohort.end_date + 1
-      expect(student.cohort).to eq third_cohort
+    it 'returns the next course when a student is in between courses' do
+      travel_to second_course.end_date + 1
+      expect(student.course).to eq third_course
     end
 
-    it 'returns the last cohort when a student is no longer enrolled' do
-      travel_to third_cohort.end_date + 1
-      expect(student.cohort).to eq third_cohort
+    it 'returns the last course when a student is no longer enrolled' do
+      travel_to third_course.end_date + 1
+      expect(student.course).to eq third_course
     end
   end
 
   describe "#pair_on_day" do
-    let(:cohort) { FactoryGirl.create(:cohort) }
-    let(:student_1) { FactoryGirl.create(:student, cohort: cohort) }
-    let(:student_2) { FactoryGirl.create(:student, cohort: cohort) }
+    let(:course) { FactoryGirl.create(:course) }
+    let(:student_1) { FactoryGirl.create(:student, course: course) }
+    let(:student_2) { FactoryGirl.create(:student, course: course) }
 
     it "returns the pair partner" do
       attendance_record = FactoryGirl.create(:attendance_record, student: student_1, pair_id: student_2.id)
@@ -87,21 +87,21 @@ describe Student do
     end
 
     let!(:current_student) { FactoryGirl.create(:student) }
-    let!(:student_2) { FactoryGirl.create(:user_with_score_of_9, cohort: current_student.cohort) }
-    let!(:student_3) { FactoryGirl.create(:user_with_score_of_10, cohort: current_student.cohort) }
-    let!(:student_4) { FactoryGirl.create(:user_with_score_of_10, cohort: current_student.cohort) }
-    let!(:student_5) { FactoryGirl.create(:user_with_score_of_10, cohort: current_student.cohort) }
-    let!(:student_6) { FactoryGirl.create(:user_with_score_of_10, cohort: current_student.cohort) }
-    let!(:student_7_after_starting_point) { FactoryGirl.create(:user_with_score_of_10, cohort: current_student.cohort) }
-    let!(:student_8) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
-    let!(:student_9) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
-    let!(:student_10_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
-    let!(:student_11_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
-    let!(:student_12_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, cohort: current_student.cohort) }
+    let!(:student_2) { FactoryGirl.create(:user_with_score_of_9, course: current_student.course) }
+    let!(:student_3) { FactoryGirl.create(:user_with_score_of_10, course: current_student.course) }
+    let!(:student_4) { FactoryGirl.create(:user_with_score_of_10, course: current_student.course) }
+    let!(:student_5) { FactoryGirl.create(:user_with_score_of_10, course: current_student.course) }
+    let!(:student_6) { FactoryGirl.create(:user_with_score_of_10, course: current_student.course) }
+    let!(:student_7_after_starting_point) { FactoryGirl.create(:user_with_score_of_10, course: current_student.course) }
+    let!(:student_8) { FactoryGirl.create(:user_with_score_of_6, course: current_student.course) }
+    let!(:student_9) { FactoryGirl.create(:user_with_score_of_6, course: current_student.course) }
+    let!(:student_10_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, course: current_student.course) }
+    let!(:student_11_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, course: current_student.course) }
+    let!(:student_12_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, course: current_student.course) }
 
-    it "returns an empty array when there are no other students in a cohort" do
-      new_cohort = FactoryGirl.create(:cohort)
-      current_student.update(cohort: new_cohort)
+    it "returns an empty array when there are no other students in a course" do
+      new_course = FactoryGirl.create(:course)
+      current_student.update(course: new_course)
       expect(current_student.random_pairs).to eq []
     end
 
@@ -424,55 +424,55 @@ describe Student do
   end
 
   describe '#class_in_session?' do
-    let(:cohort) { FactoryGirl.create(:cohort) }
-    let(:student) { FactoryGirl.create(:student, cohort: cohort) }
+    let(:course) { FactoryGirl.create(:course) }
+    let(:student) { FactoryGirl.create(:student, course: course) }
 
     it 'returns false for a date before class starts' do
-      travel_to cohort.start_date.to_date - 1.day do
+      travel_to course.start_date.to_date - 1.day do
         expect(student.class_in_session?).to eq false
       end
     end
 
     it 'returns false for a date after class ends' do
-      travel_to cohort.end_date.to_date + 1.day do
+      travel_to course.end_date.to_date + 1.day do
         expect(student.class_in_session?).to eq false
       end
     end
 
     it 'returns true for a date during class' do
-      travel_to cohort.start_date.to_date do
+      travel_to course.start_date.to_date do
         expect(student.class_in_session?).to eq true
       end
 
-      travel_to cohort.start_date.to_date + 2.weeks do
+      travel_to course.start_date.to_date + 2.weeks do
         expect(student.class_in_session?).to eq true
       end
     end
   end
 
   describe '#class_over?' do
-    let(:cohort) { FactoryGirl.create(:cohort) }
-    let(:student) { FactoryGirl.create(:student, cohort: cohort) }
+    let(:course) { FactoryGirl.create(:course) }
+    let(:student) { FactoryGirl.create(:student, course: course) }
 
     it 'returns false before class is over' do
-      travel_to cohort.end_date.to_date - 5.days do
+      travel_to course.end_date.to_date - 5.days do
         expect(student.class_over?).to eq false
       end
     end
 
     it 'returns true after class ends' do
-      travel_to cohort.end_date.to_date + 1.day do
+      travel_to course.end_date.to_date + 1.day do
         expect(student.class_over?).to eq true
       end
     end
   end
 
   describe '#attendance_records_for' do
-    let(:cohort) { FactoryGirl.create(:cohort) }
-    let(:student) { FactoryGirl.create(:student, cohort: cohort) }
+    let(:course) { FactoryGirl.create(:course) }
+    let(:student) { FactoryGirl.create(:student, course: course) }
 
     it 'counts the number of days the student has been on time to class' do
-      travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 8, 55, 00) do
+      travel_to Time.new(course.start_date.year, course.start_date.month, course.start_date.day, 8, 55, 00) do
         attendance_record = FactoryGirl.create(:attendance_record, student: student)
         travel 15.hours do
           attendance_record.update({:signing_out => true})
@@ -482,7 +482,7 @@ describe Student do
     end
 
     it 'counts the number of days the student has been tardy' do
-      travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 9, 10, 00, Time.zone.formatted_offset) do
+      travel_to Time.new(course.start_date.year, course.start_date.month, course.start_date.day, 9, 10, 00, Time.zone.formatted_offset) do
         FactoryGirl.create(:attendance_record, student: student)
         travel 1.day
         FactoryGirl.create(:attendance_record, student: student)
@@ -491,7 +491,7 @@ describe Student do
     end
 
     it 'counts the number of days the student has left early (failed to sign out)' do
-      travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 8, 55, 00) do
+      travel_to Time.new(course.start_date.year, course.start_date.month, course.start_date.day, 8, 55, 00) do
         attendance_record = FactoryGirl.create(:attendance_record, student: student)
         travel 7.hours do
           attendance_record.update({:signing_out => true})
@@ -500,7 +500,7 @@ describe Student do
       end
     end
     it 'counts the number of days the student has been absent' do
-      travel_to cohort.start_date do
+      travel_to course.start_date do
         travel 1.day
         FactoryGirl.create(:attendance_record, student: student)
         travel 2.day
@@ -509,61 +509,61 @@ describe Student do
       end
     end
 
-    it 'counts the number of days the student has been on time to class for a particular cohort' do
-      travel_to (cohort.start_date - 5).to_time.change({ hour: 8, min: 55 }) do
-        attendance_record_outside_current_cohort_date_range = FactoryGirl.create(:attendance_record, student: student)
+    it 'counts the number of days the student has been on time to class for a particular course' do
+      travel_to (course.start_date - 5).to_time.change({ hour: 8, min: 55 }) do
+        attendance_record_outside_current_course_date_range = FactoryGirl.create(:attendance_record, student: student)
         travel 15.hours do
-          attendance_record_outside_current_cohort_date_range.update({ signing_out:true })
+          attendance_record_outside_current_course_date_range.update({ signing_out:true })
         end
       end
-      travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 8, 55, 00) do
+      travel_to Time.new(course.start_date.year, course.start_date.month, course.start_date.day, 8, 55, 00) do
         attendance_record = FactoryGirl.create(:attendance_record, student: student)
         travel 15.hours do
           attendance_record.update({ signing_out: true })
-          expect(student.attendance_records_for(:on_time, student.cohort)).to eq 1
+          expect(student.attendance_records_for(:on_time, student.course)).to eq 1
         end
       end
     end
 
-    it 'counts the number of days the student has been tardy for a particular cohort' do
-      travel_to (cohort.start_date - 5).to_time.change({ hour: 9, min: 10 }) do
+    it 'counts the number of days the student has been tardy for a particular course' do
+      travel_to (course.start_date - 5).to_time.change({ hour: 9, min: 10 }) do
         FactoryGirl.create(:attendance_record, student: student)
         travel 1.day
         FactoryGirl.create(:attendance_record, student: student)
       end
-      travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 9, 10, 00, Time.zone.formatted_offset) do
+      travel_to Time.new(course.start_date.year, course.start_date.month, course.start_date.day, 9, 10, 00, Time.zone.formatted_offset) do
         FactoryGirl.create(:attendance_record, student: student)
         travel 1.day
         FactoryGirl.create(:attendance_record, student: student)
-        expect(student.attendance_records_for(:tardy, student.cohort)).to eq 2
+        expect(student.attendance_records_for(:tardy, student.course)).to eq 2
       end
     end
 
-    it 'counts the number of days the student has left early (failed to sign out) for a particular cohort' do
-      travel_to (cohort.start_date - 5).to_time.change({ hour: 8, min: 55 }) do
-        attendance_record_outside_current_cohort_date_range = FactoryGirl.create(:attendance_record, student: student)
+    it 'counts the number of days the student has left early (failed to sign out) for a particular course' do
+      travel_to (course.start_date - 5).to_time.change({ hour: 8, min: 55 }) do
+        attendance_record_outside_current_course_date_range = FactoryGirl.create(:attendance_record, student: student)
         travel 7.hours do
-          attendance_record_outside_current_cohort_date_range.update({ signing_out: true })
+          attendance_record_outside_current_course_date_range.update({ signing_out: true })
         end
       end
-      travel_to Time.new(cohort.start_date.year, cohort.start_date.month, cohort.start_date.day, 8, 55, 00) do
+      travel_to Time.new(course.start_date.year, course.start_date.month, course.start_date.day, 8, 55, 00) do
         attendance_record = FactoryGirl.create(:attendance_record, student: student)
         travel 7.hours do
           attendance_record.update({ signing_out: true })
-          expect(student.attendance_records_for(:left_early, student.cohort)).to eq 1
+          expect(student.attendance_records_for(:left_early, student.course)).to eq 1
         end
       end
     end
 
-    it 'counts the number of days the student has been absent for a particular cohort' do
-      travel_to cohort.start_date - 5 do
+    it 'counts the number of days the student has been absent for a particular course' do
+      travel_to course.start_date - 5 do
         travel 1.day
         FactoryGirl.create(:attendance_record, student: student)
       end
-      travel_to cohort.start_date do
+      travel_to course.start_date do
         travel 1.day
         FactoryGirl.create(:attendance_record, student: student)
-        expect(student.attendance_records_for(:absent, student.cohort)).to eq 1
+        expect(student.attendance_records_for(:absent, student.course)).to eq 1
       end
     end
   end
@@ -611,7 +611,7 @@ describe Student do
 
   describe 'find_students_by_interest' do
     let(:student) { FactoryGirl.create(:student) }
-    let(:internship) { FactoryGirl.create(:internship, cohort: student.cohort) }
+    let(:internship) { FactoryGirl.create(:internship, course: student.course) }
 
     it 'returns an array of students in an internship that share an interest level in that internship' do
       FactoryGirl.create(:rating, interest: '1', internship: internship, student: student)
@@ -633,7 +633,7 @@ describe Student do
     subject { Ability.new(student) }
 
     context 'for code reviews' do
-      it { is_expected.to have_abilities(:read, CodeReview.new(cohort: student.cohort)) }
+      it { is_expected.to have_abilities(:read, CodeReview.new(course: student.course)) }
       it { is_expected.to not_have_abilities(:read, CodeReview.new) }
     end
 
@@ -648,8 +648,8 @@ describe Student do
       it { is_expected.to not_have_abilities([:create, :read, :update, :destroy], Review.new) }
     end
 
-    context 'for cohort_attendance_statistics' do
-      it { is_expected.to not_have_abilities(:read, CohortAttendanceStatistics) }
+    context 'for course_attendance_statistics' do
+      it { is_expected.to not_have_abilities(:read, CourseAttendanceStatistics) }
     end
 
     context 'for student_attendance_statistics' do
@@ -700,7 +700,7 @@ describe Student do
 
     context 'for internships' do
       it { is_expected.to not_have_abilities([:create, :read, :update, :destroy], Internship.new)}
-      it { is_expected.to have_abilities(:read, Internship.new(cohort: student.cohort)) }
+      it { is_expected.to have_abilities(:read, Internship.new(course: student.course)) }
     end
 
     context 'for students' do

@@ -5,8 +5,8 @@ class InternshipsController < ApplicationController
   before_filter :authenticate_student_and_admin
 
   def index
-    @cohort = Cohort.find(params[:cohort_id])
-    @internships = @cohort.internships_sorted_by_interest(current_student)
+    @course = Course.find(params[:course_id])
+    @internships = @course.internships_sorted_by_interest(current_student)
   end
 
   def show
@@ -16,44 +16,44 @@ class InternshipsController < ApplicationController
   end
 
   def new
-    @cohort = Cohort.find(params[:cohort_id])
+    @course = Course.find(params[:course_id])
     @internship = Internship.new
   end
 
   def create
-    @cohort = Cohort.find(params[:cohort_id])
-    @internship = @cohort.internships.new(internship_params)
+    @course = Course.find(params[:course_id])
+    @internship = @course.internships.new(internship_params)
 
     if @internship.save
       flash[:notice] = "Internship added"
-      redirect_to cohort_internships_path(@cohort)
+      redirect_to course_internships_path(@course)
     else
       render :new
     end
   end
 
   def edit
-    @cohort = Cohort.find(params[:cohort_id])
+    @course = Course.find(params[:course_id])
     @internship = Internship.find(params[:id])
   end
 
   def update
-    @cohort = Cohort.find(params[:cohort_id])
+    @course = Course.find(params[:course_id])
     @internship = Internship.find(params[:id])
     if @internship.update(internship_params)
       flash[:notice] = 'Internship updated'
-      redirect_to cohort_internships_path(@cohort)
+      redirect_to course_internships_path(@course)
     else
       render :edit
     end
   end
 
   def destroy
-    cohort = Cohort.find(params[:cohort_id])
+    course = Course.find(params[:course_id])
     internship = Internship.find(params[:id])
     internship.destroy
     flash[:alert] = "Internship deleted"
-    redirect_to cohort_internships_path(cohort)
+    redirect_to course_internships_path(course)
   end
 
 

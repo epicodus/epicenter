@@ -37,8 +37,8 @@ end
 
 feature "Student signs in while class is not in session" do
 
-  let(:future_cohort) { FactoryGirl.create(:future_cohort) }
-  let(:student) { FactoryGirl.create(:student, cohort: future_cohort) }
+  let(:future_course) { FactoryGirl.create(:future_course) }
+  let(:student) { FactoryGirl.create(:student, course: future_course) }
 
   context "before adding a payment method" do
     it "takes them to the page to choose payment method" do
@@ -93,7 +93,7 @@ feature "Student signs in while class is in session" do
 
   it "takes them to the code reviews page" do
     sign_in(student)
-    expect(current_path).to eq cohort_code_reviews_path(student.cohort)
+    expect(current_path).to eq course_code_reviews_path(student.course)
     expect(page).to have_content "Code Reviews"
   end
 end

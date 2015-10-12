@@ -1,0 +1,8 @@
+<h1>Edit <%= @course.description %></h1>
+
+<p>Start date: <%= @course.start_date.strftime("%A, %B %d, %Y") %></p>
+<p>End date: <%= @course.end_date.strftime("%A, %B %d, %Y") %></p>
+<p><%= @course.class_days.count %> class <%= 'day'.pluralize(@course.class_days.count) %></p>
+<hr>
+
+<%= render 'form', course: @course %>
