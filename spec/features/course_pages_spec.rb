@@ -18,7 +18,7 @@ feature 'creating a course' do
     scenario 'navigation to course#new page', js: true do
       visit root_path
       click_on admin.current_course.description
-      click_on 'Add a class'
+      click_on 'Add a course'
       expect(page).to have_content 'New course'
     end
     scenario 'with invalid input' do
