@@ -1,8 +1,8 @@
 feature 'attendance statistics page' do
-  let!(:cohort) { FactoryGirl.create(:cohort) }
+  let!(:course) { FactoryGirl.create(:course) }
 
   scenario 'not signed in' do
-    visit cohort_attendance_statistics_path(cohort)
+    visit course_attendance_statistics_path(course)
     expect(page).to have_content 'need to sign in'
   end
 
@@ -11,21 +11,21 @@ feature 'attendance statistics page' do
     before { login_as(admin, scope: :admin) }
 
     scenario 'is navigable through "attendance/statistics"' do
-      visit cohort_attendance_statistics_path(cohort)
+      visit course_attendance_statistics_path(course)
       expect(page).to have_content 'Attendance statistics'
     end
 
     scenario 'shows number of attendances chart', js: true do
-      student = FactoryGirl.create(:student, cohort: cohort)
+      student = FactoryGirl.create(:student, course: course)
       FactoryGirl.create(:attendance_record, student: student)
-      visit cohort_attendance_statistics_path(cohort)
+      visit course_attendance_statistics_path(course)
       expect(page).to have_content 'Number of students present'
     end
 
     scenario 'shows chart of breakdown of student attendances', js: true do
-      student = FactoryGirl.create(:student, cohort: cohort)
+      student = FactoryGirl.create(:student, course: course)
       FactoryGirl.create(:attendance_record, student: student)
-      visit cohort_attendance_statistics_path(cohort)
+      visit course_attendance_statistics_path(course)
       expect(page).to have_content student.name
     end
   end
@@ -35,7 +35,7 @@ feature 'attendance statistics page' do
     before { login_as(student, scope: :student) }
 
     scenario 'you are not authorized' do
-      visit cohort_attendance_statistics_path(cohort)
+      visit course_attendance_statistics_path(course)
       expect(page).to have_content 'not authorized'
     end
   end

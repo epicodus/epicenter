@@ -18,39 +18,39 @@ feature 'Admin signs in' do
   end
 end
 
-feature 'Changing current cohort', js: true do
+feature 'Changing current course', js: true do
   let(:admin) { FactoryGirl.create(:admin) }
 
-  scenario 'admin selects a cohort from the drop down' do
-    cohort = FactoryGirl.create(:cohort, description: 'Winter 2015')
-    cohort2 = FactoryGirl.create(:cohort, description: 'Spring 2015')
+  scenario 'admin selects a course from the drop down' do
+    course = FactoryGirl.create(:course, description: 'Winter 2015')
+    course2 = FactoryGirl.create(:course, description: 'Spring 2015')
     login_as(admin, scope: :admin)
     visit root_path
-    click_link admin.current_cohort.description
-    click_link cohort2.description
-    expect(page).to have_content "You have switched to #{cohort2.description}"
+    click_link admin.current_course.description
+    click_link course2.description
+    expect(page).to have_content "You have switched to #{course2.description}"
   end
 
-  context 'when viewing a cohort attendance statistics page' do
-    it 'redirects them to the attendance statistics for their current cohort' do
-      cohort = FactoryGirl.create(:cohort, description: 'Winter 2015')
-      student = FactoryGirl.create(:student, cohort: cohort)
+  context 'when viewing a course attendance statistics page' do
+    it 'redirects them to the attendance statistics for their current course' do
+      course = FactoryGirl.create(:course, description: 'Winter 2015')
+      student = FactoryGirl.create(:student, course: course)
       login_as(admin, scope: :admin)
-      visit cohort_attendance_statistics_path(admin.current_cohort)
+      visit course_attendance_statistics_path(admin.current_course)
       expect(page).to have_content student.name
-      click_link admin.current_cohort.description
+      click_link admin.current_course.description
       expect(page).to have_content student.name
     end
   end
 
-  context 'when viewing a cohort code review page' do
-    it 'redirects them to the code reviews for their current cohort' do
-      cohort = FactoryGirl.create(:cohort, description: 'Winter 2015')
-      code_review = FactoryGirl.create(:code_review, cohort: cohort)
+  context 'when viewing a course code review page' do
+    it 'redirects them to the code reviews for their current course' do
+      course = FactoryGirl.create(:course, description: 'Winter 2015')
+      code_review = FactoryGirl.create(:code_review, course: course)
       login_as(admin, scope: :admin)
-      visit cohort_code_reviews_path(admin.current_cohort)
+      visit course_code_reviews_path(admin.current_course)
       expect(page).to have_content code_review.title
-      click_link admin.current_cohort.description
+      click_link admin.current_course.description
       expect(page).to have_content code_review.title
     end
   end
@@ -60,10 +60,10 @@ feature 'Inviting new users' do
   let(:admin) { FactoryGirl.create(:admin) }
 
   scenario 'admin sends invitation to a student' do
-    cohort = FactoryGirl.build(:cohort)
+    course = FactoryGirl.build(:course)
     login_as(admin, scope: :admin)
     visit new_student_invitation_path
-    select cohort.description, from: 'student_cohort_id'
+    select course.description, from: 'student_course_id'
     fill_in 'Email', with: 'newstudent@example.com'
     click_on 'Send an invitation'
     expect(page).to have_content "An invitation email has been sent to newstudent@example.com"

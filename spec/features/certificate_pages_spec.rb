@@ -10,8 +10,8 @@ feature "print completion certificate" do
 
   context "after class ends" do
     it "allows student to print certificate" do
-      cohort = FactoryGirl.create(:past_cohort)
-      student = FactoryGirl.create(:student, cohort: cohort)
+      course = FactoryGirl.create(:past_course)
+      student = FactoryGirl.create(:student, course: course)
       login_as(student, scope: :student)
       visit edit_student_registration_path
       click_link "View certificate of completion"

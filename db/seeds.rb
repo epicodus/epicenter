@@ -12,14 +12,14 @@ plans.each do |name, upfront_amount, recurring_amount, total_amount|
 end
 
 
-#Cohorts / Classes
+#Courses / Classes
 
-cohorts = [
+courses = [
   ["Spring 2014", Date.parse("January 17, 2014"), Date.parse("January 18, 2014")],
   ["Summer 2014", Date.parse("January 17, 2014"), Date.parse("January 18, 2014")],
   ["Winter 2015", Date.parse("January 17, 2014"), Date.parse("January 18, 2014")],
 ]
 
-cohorts.each do |description, start_date, end_date|
-  Cohort.create(description: description, start_date: start_date, end_date: end_date)
+courses.each do |description, start_date, end_date|
+  Course.create(description: description, start_date: start_date, end_date: end_date)
 end

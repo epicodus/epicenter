@@ -1,15 +1,15 @@
 describe CodeReview do
   it { should validate_presence_of :title }
-  it { should validate_presence_of :cohort }
+  it { should validate_presence_of :course }
   it { should have_many :objectives }
   it { should have_many :submissions }
-  it { should belong_to :cohort }
+  it { should belong_to :course }
   it { should accept_nested_attributes_for :objectives }
 
   it 'duplicates a code review and its objectives' do
-    cohort = FactoryGirl.create(:cohort)
+    course = FactoryGirl.create(:course)
     code_review = FactoryGirl.create(:code_review)
-    copy_code_review = code_review.duplicate_code_review(cohort)
+    copy_code_review = code_review.duplicate_code_review(course)
     expect(copy_code_review.save).to be true
   end
 
@@ -21,13 +21,13 @@ describe CodeReview do
 
   it 'assigns an order number before creation (defaulted to last)' do
     code_review = FactoryGirl.create(:code_review)
-    next_code_review = FactoryGirl.create(:code_review, cohort: code_review.cohort)
+    next_code_review = FactoryGirl.create(:code_review, course: code_review.course)
     expect(next_code_review.number).to eq 2
   end
 
   describe '.default_scope' do
     let(:second_code_review) { FactoryGirl.create(:code_review) }
-    let(:first_code_review) { FactoryGirl.create(:code_review, cohort: second_code_review.cohort) }
+    let(:first_code_review) { FactoryGirl.create(:code_review, course: second_code_review.course) }
 
     it 'orders code reviews by their number, ascending' do
       first_code_review.update_attribute(:number, 1)

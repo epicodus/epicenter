@@ -1,4 +1,4 @@
-<%= render partial: 'layouts/category_header', locals: { header: 'Available Internships', class_to_manage: Internship, category: 'Internship', category_path: new_cohort_internship_path(@cohort) } %>
+<%= render partial: 'layouts/category_header', locals: { header: 'Available Internships', class_to_manage: Internship, category: 'Internship', category_path: new_course_internship_path(@course) } %>
 
 <% if current_student %>
   <p>You may only rank 5 companies as "Low" interest.</p>
@@ -19,11 +19,11 @@
         <div>
     <% end %>
         <li>
-          <h3><%= link_to internship.company_name, cohort_internship_path(@cohort, internship) %></h3>
+          <h3><%= link_to internship.company_name, course_internship_path(@course, internship) %></h3>
             <% if current_admin %>
               <span class='update-company btn-group'>
-                <%= link_to 'Edit', edit_cohort_internship_path(internship.cohort, internship), class: 'btn btn-warning' %>
-                <%= link_to 'Delete', cohort_internship_path(@cohort, internship), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+                <%= link_to 'Edit', edit_course_internship_path(internship.course, internship), class: 'btn btn-warning' %>
+                <%= link_to 'Delete', course_internship_path(@course, internship), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
               </span>
             <% elsif current_student %>
               <%= form_for Rating.new do |f| %>

@@ -2,30 +2,30 @@ feature 'index page' do
   let!(:code_review) { FactoryGirl.create(:code_review) }
 
   scenario 'not logged in' do
-    visit cohort_code_reviews_path(code_review.cohort)
+    visit course_code_reviews_path(code_review.course)
     expect(page).to have_content 'need to sign in'
   end
 
   context 'when visiting as a student' do
-    let(:student) { FactoryGirl.create(:user_with_all_documents_signed, cohort: code_review.cohort) }
+    let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: code_review.course) }
     before { login_as(student, scope: :student) }
 
-    scenario "but isn't this student's cohort" do
-      another_cohort = FactoryGirl.create(:cohort)
-      visit cohort_code_reviews_path(another_cohort)
+    scenario "but isn't this student's course" do
+      another_course = FactoryGirl.create(:course)
+      visit course_code_reviews_path(another_course)
       expect(page).to have_content 'not authorized'
     end
 
     scenario 'shows all code reviews' do
-      another_code_review = FactoryGirl.create(:code_review, title: 'another_code_review', cohort: code_review.cohort)
-      visit cohort_code_reviews_path(code_review.cohort)
+      another_code_review = FactoryGirl.create(:code_review, title: 'another_code_review', course: code_review.course)
+      visit course_code_reviews_path(code_review.course)
       expect(page).to have_content code_review.title
       expect(page).to have_content another_code_review.title
     end
 
     scenario 'shows if the student has submitted an code_review' do
       FactoryGirl.create(:submission, code_review: code_review, student: student)
-      visit cohort_code_reviews_path(code_review.cohort)
+      visit course_code_reviews_path(code_review.course)
       expect(page).to have_content 'Submitted'
       expect(page).to_not have_content 'Not submitted'
     end
@@ -33,20 +33,20 @@ feature 'index page' do
     scenario 'shows if the code_review has been graded', :vcr do
       submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
       FactoryGirl.create(:passing_review, submission: submission)
-      visit cohort_code_reviews_path(code_review.cohort)
+      visit course_code_reviews_path(code_review.course)
       expect(page).to have_content 'Reviewed'
       expect(page).to_not have_content 'Submitted'
     end
 
     scenario 'links to code_review show page' do
-      visit cohort_code_reviews_path(code_review.cohort)
+      visit course_code_reviews_path(code_review.course)
       click_link code_review.title
       expect(page).to have_content code_review.title
       expect(page).to have_content code_review.objectives.first.content
     end
 
     scenario 'does not have button to save order of code reviews' do
-      visit cohort_code_reviews_path(code_review.cohort)
+      visit course_code_reviews_path(code_review.course)
       expect(page).to_not have_button 'Save order'
     end
   end
@@ -58,32 +58,32 @@ feature 'index page' do
     before { login_as(admin, scope: :admin) }
 
     scenario 'has a link to create a new code review' do
-      visit cohort_code_reviews_path(code_review.cohort)
+      visit course_code_reviews_path(code_review.course)
       click_on 'New Code Review'
       expect(page).to have_content 'New Code Review'
     end
 
     scenario 'shows the number of submissions needing review for each code_review' do
       FactoryGirl.create(:submission, code_review: code_review)
-      visit cohort_code_reviews_path(code_review.cohort)
+      visit course_code_reviews_path(code_review.course)
       expect(page).to have_content '1 new submission'
     end
 
     scenario 'admin clicks on number of submission badge and is taken to submissions index of that code_review' do
       FactoryGirl.create(:submission, code_review: code_review)
-      visit cohort_code_reviews_path(code_review.cohort)
+      visit course_code_reviews_path(code_review.course)
       click_link '1 new submission'
       expect(page).to have_content "Submissions for #{code_review.title}"
     end
 
     scenario 'has a button to save order of code reviews' do
-      visit cohort_code_reviews_path(code_review.cohort)
+      visit course_code_reviews_path(code_review.course)
       expect(page).to have_button 'Save order'
     end
 
     scenario 'changes lesson order' do
-      another_assesment = FactoryGirl.create(:code_review, cohort: code_review.cohort)
-      visit cohort_code_reviews_path(code_review.cohort)
+      another_assesment = FactoryGirl.create(:code_review, course: code_review.course)
+      visit course_code_reviews_path(code_review.course)
       click_on 'Save order'
       expect(page).to have_content 'Order has been saved'
     end
@@ -122,13 +122,13 @@ feature 'show page' do
   end
 
   context 'when visiting as a student' do
-    let(:student) { FactoryGirl.create(:user_with_all_documents_signed, cohort: code_review.cohort) }
+    let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: code_review.course) }
     before { login_as(student, scope: :student) }
     subject { page }
 
-    scenario "but this code review is not part of your cohort" do
-      code_review_of_another_cohort = FactoryGirl.create(:code_review)
-      visit code_review_path(code_review_of_another_cohort)
+    scenario "but this code review is not part of your course" do
+      code_review_of_another_course = FactoryGirl.create(:code_review)
+      visit code_review_path(code_review_of_another_course)
       expect(page).to have_content 'not authorized'
     end
 
@@ -322,7 +322,7 @@ feature 'copying an existing code review' do
   before { login_as(admin, scope: :admin) }
 
   scenario 'successful copy of code review' do
-    code_review = FactoryGirl.create(:code_review, cohort: admin.current_cohort)
+    code_review = FactoryGirl.create(:code_review, course: admin.current_course)
     visit new_code_review_path
     select code_review.title, from: 'code_review_id'
     click_button 'Copy'

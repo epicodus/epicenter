@@ -3,10 +3,10 @@ class RatingsController < ApplicationController
   def create
     @rating = Rating.for(Internship.find(params[:rating][:internship_id]), current_student)
     if @rating.update(rating_params)
-      redirect_to cohort_internships_path(current_student.cohort)
+      redirect_to course_internships_path(current_student.course)
     else
-      @cohort = current_student.cohort
-      @internships = @cohort.internships_sorted_by_interest(current_student)
+      @course = current_student.course
+      @internships = @course.internships_sorted_by_interest(current_student)
       render 'internships/index'
     end
   end

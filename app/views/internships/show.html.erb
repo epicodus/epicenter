@@ -53,13 +53,13 @@
 <% if current_admin %>
   <ul class='nav nav-pills'>
     <li class='<%= 'active' if params[:tab].nil? %>'>
-      <%= link_to "Highly interested students", cohort_internship_path(@internship.cohort, @internship), class: 'unstyled-link' %>
+      <%= link_to "Highly interested students", course_internship_path(@internship.course, @internship), class: 'unstyled-link' %>
     </li>
     <li class='<%= 'active' if params[:tab] == 'medium' %>'>
-      <%= link_to "Moderately interested students", cohort_internship_path(@internship.cohort, @internship, tab: 'medium'), class: 'unstyled-link' %>
+      <%= link_to "Moderately interested students", course_internship_path(@internship.course, @internship, tab: 'medium'), class: 'unstyled-link' %>
     </li>
     <li class='<%= 'active' if params[:tab] == 'low' %>'>
-      <%= link_to "Not interested students", cohort_internship_path(@internship.cohort, @internship, tab: 'low'), class: 'unstyled-link' %>
+      <%= link_to "Not interested students", course_internship_path(@internship.course, @internship, tab: 'low'), class: 'unstyled-link' %>
     </li>
   </ul>
 

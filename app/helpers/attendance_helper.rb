@@ -1,6 +1,6 @@
 module AttendanceHelper
   def formatted_class_days
-    @cohort.class_dates_until(Time.zone.now.to_date).map { |day| [day.strftime("%B %d, %Y, %A"), day] }
+    @course.class_dates_until(Time.zone.now.to_date).map { |day| [day.strftime("%B %d, %Y, %A"), day] }
   end
 
   def day_value

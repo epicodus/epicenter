@@ -1,8 +1,8 @@
 describe 'student list' do
   it 'should list students in alphabetical order' do
     admin = FactoryGirl.create(:admin)
-    student = FactoryGirl.create(:student, cohort: admin.current_cohort, name: 'zelda')
-    another_student = FactoryGirl.create(:student, cohort: admin.current_cohort, name: 'annie')
+    student = FactoryGirl.create(:student, course: admin.current_course, name: 'zelda')
+    another_student = FactoryGirl.create(:student, course: admin.current_course, name: 'annie')
     login_as(admin, scope: :admin)
     visit attendance_path
     within first("div.student") do
@@ -16,7 +16,7 @@ feature 'creating an attendance record' do
   before { login_as(admin, scope: :admin) }
 
   scenario 'correctly' do
-    FactoryGirl.create(:student, cohort: admin.current_cohort)
+    FactoryGirl.create(:student, course: admin.current_course)
     visit attendance_path
     click_button("I'm soloing")
     expect(page).to have_content "Welcome"
@@ -34,7 +34,7 @@ feature 'destroying an attendance record' do
   before { login_as(admin, scope: :admin) }
 
   scenario 'after accidentally creating one' do
-    FactoryGirl.create(:student, cohort: admin.current_cohort)
+    FactoryGirl.create(:student, course: admin.current_course)
     visit attendance_path
     click_button("I'm soloing")
     click_link("Not you?")
@@ -58,10 +58,10 @@ feature 'only allow admins to view attendance sign-in page' do
 end
 
 feature 'pair log in for attendance page' do
-  let(:cohort) { FactoryGirl.create(:cohort) }
-  let(:admin) { FactoryGirl.create(:admin, current_cohort: cohort) }
-  let!(:student_1) { FactoryGirl.create(:user_with_all_documents_signed, cohort: cohort) }
-  let!(:student_2) { FactoryGirl.create(:user_with_all_documents_signed, cohort: cohort) }
+  let(:course) { FactoryGirl.create(:course) }
+  let(:admin) { FactoryGirl.create(:admin, current_course: course) }
+  let!(:student_1) { FactoryGirl.create(:user_with_all_documents_signed, course: course) }
+  let!(:student_2) { FactoryGirl.create(:user_with_all_documents_signed, course: course) }
   before { login_as(admin, scope: :admin) }
 
   scenario 'students successfully log in as a pair' do
@@ -98,11 +98,11 @@ end
 feature "admin viewing an individual student's attendance" do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:student) { FactoryGirl.create(:student) }
-  let!(:attendance_record) { FactoryGirl.create(:attendance_record, student: student, date: student.cohort.start_date + 3) }
+  let!(:attendance_record) { FactoryGirl.create(:attendance_record, student: student, date: student.course.start_date + 3) }
   before { login_as(admin, scope: :admin) }
 
   scenario "an admin can view attendance records for an individual student" do
-    travel_to student.cohort.start_date + 3
+    travel_to student.course.start_date + 3
     visit student_path(student)
     expect(page).to have_content attendance_record.date.strftime("%B %d, %Y")
   end

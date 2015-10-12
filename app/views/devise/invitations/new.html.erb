@@ -5,8 +5,8 @@
 
   <% if resource.is_a?(Student) %>
     <p>
-      <%= f.label :cohort_id %>
-      <%= f.select(:cohort_id, Cohort.all.collect {|c| [ c.description, c.id ] }) %>
+      <%= f.label :course_id %>
+      <%= f.select(:course_id, Course.all.collect {|c| [ c.description, c.id ] }) %>
     </p>
   <% end %>
 

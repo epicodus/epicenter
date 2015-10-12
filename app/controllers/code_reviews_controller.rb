@@ -2,9 +2,9 @@ class CodeReviewsController < ApplicationController
   authorize_resource
 
   def index
-    cohort = Cohort.find(params[:cohort_id])
-    @code_reviews = cohort.code_reviews
-    authorize! :read, cohort # I don't know what this is necessary. Should be handled by authorize_resource above.
+    course = Course.find(params[:course_id])
+    @code_reviews = course.code_reviews
+    authorize! :read, course # I don't know what this is necessary. Should be handled by authorize_resource above.
   end
 
   def new
@@ -43,7 +43,7 @@ class CodeReviewsController < ApplicationController
   def destroy
     @code_review = CodeReview.find(params[:id])
     @code_review.destroy
-    redirect_to cohort_code_reviews_path(current_admin.current_cohort), alert: "#{@code_review.title} has been deleted."
+    redirect_to course_code_reviews_path(current_admin.current_course), alert: "#{@code_review.title} has been deleted."
   end
 
   def update_multiple
@@ -54,6 +54,6 @@ class CodeReviewsController < ApplicationController
 private
 
   def code_review_params
-    params.require(:code_review).permit(:title, :section, :url, objectives_attributes: [:id, :content, :_destroy]).merge(cohort_id: current_admin.current_cohort.id)
+    params.require(:code_review).permit(:title, :section, :url, objectives_attributes: [:id, :content, :_destroy]).merge(course_id: current_admin.current_course.id)
   end
 end

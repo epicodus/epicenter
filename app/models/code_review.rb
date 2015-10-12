@@ -2,20 +2,20 @@ class CodeReview < ActiveRecord::Base
   default_scope { order(:number) }
 
   validates :title, presence: true
-  validates :cohort, presence: true
+  validates :course, presence: true
   validate :presence_of_objectives
 
   has_many :objectives
   has_many :submissions
-  belongs_to :cohort
+  belongs_to :course
 
   accepts_nested_attributes_for :objectives, reject_if: :attributes_blank?, allow_destroy: true
 
   before_create :set_number
 
-  def duplicate_code_review(cohort)
+  def duplicate_code_review(course)
     copy_code_review = self.deep_clone include: :objectives
-    copy_code_review.cohort = cohort
+    copy_code_review.course = course
     copy_code_review
   end
 
@@ -38,7 +38,7 @@ class CodeReview < ActiveRecord::Base
 private
 
   def set_number
-    self.number = cohort.code_reviews.pluck(:number).last.to_i + 1
+    self.number = course.code_reviews.pluck(:number).last.to_i + 1
   end
 
   def presence_of_objectives

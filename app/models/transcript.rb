@@ -8,16 +8,16 @@ class Transcript
   end
 
   def passing_code_reviews
-    @student.cohort.code_reviews.select do |code_review|
+    @student.course.code_reviews.select do |code_review|
       code_review.expectations_met_by? @student
     end
   end
 
   def attendance_score
-    cohort_days = @student.cohort.total_class_days
+    course_days = @student.course.total_class_days
     absences_penalty = @student.attendance_records_for(:absent)
     tardies_penalty = @student.attendance_records_for(:tardy) * TARDY_WEIGHT
-    (cohort_days - (absences_penalty + tardies_penalty)) / cohort_days
+    (course_days - (absences_penalty + tardies_penalty)) / course_days
   end
 
   def bottom_of_percentile_range

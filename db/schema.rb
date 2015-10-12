@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151005235618) do
+ActiveRecord::Schema.define(version: 20151012164122) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,22 +35,9 @@ ActiveRecord::Schema.define(version: 20151005235618) do
     t.string   "title",      limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "cohort_id"
+    t.integer  "course_id"
     t.integer  "number"
   end
-
-  create_table "cohorts", force: :cascade do |t|
-    t.string   "description", limit: 255
-    t.date     "start_date"
-    t.date     "end_date"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "class_days"
-    t.string   "start_time"
-    t.string   "end_time"
-  end
-
-  add_index "cohorts", ["start_date"], name: "index_cohorts_on_start_date", using: :btree
 
   create_table "companies", force: :cascade do |t|
     t.string   "name",          limit: 255
@@ -65,8 +52,21 @@ ActiveRecord::Schema.define(version: 20151005235618) do
     t.datetime "updated_at"
   end
 
+  create_table "courses", force: :cascade do |t|
+    t.string   "description", limit: 255
+    t.date     "start_date"
+    t.date     "end_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.text     "class_days"
+    t.string   "start_time"
+    t.string   "end_time"
+  end
+
+  add_index "courses", ["start_date"], name: "index_courses_on_start_date", using: :btree
+
   create_table "enrollments", force: :cascade do |t|
-    t.integer  "cohort_id"
+    t.integer  "course_id"
     t.integer  "student_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -82,7 +82,7 @@ ActiveRecord::Schema.define(version: 20151005235618) do
 
   create_table "internships", force: :cascade do |t|
     t.integer  "company_id"
-    t.integer  "cohort_id"
+    t.integer  "course_id"
     t.text     "description"
     t.text     "ideal_intern"
     t.boolean  "clearance_required"
@@ -189,10 +189,10 @@ ActiveRecord::Schema.define(version: 20151005235618) do
     t.string   "name",                      limit: 255
     t.integer  "plan_id"
     t.boolean  "recurring_active"
-    t.integer  "old_cohort_id"
+    t.integer  "old_course_id"
     t.integer  "primary_payment_method_id"
     t.string   "type",                      limit: 255
-    t.integer  "current_cohort_id"
+    t.integer  "current_course_id"
     t.string   "invitation_token",          limit: 255
     t.datetime "invitation_created_at"
     t.datetime "invitation_sent_at"

@@ -2,7 +2,7 @@
   <h1>Certificate of Completion for Epicodus</h1>
 
   <h2>Intensive Web Development</h2>
-  <h3><%= @student.cohort.end_date.strftime('%B %d, %Y') %></h3>
+  <h3><%= @student.course.end_date.strftime('%B %d, %Y') %></h3>
 
   <p>
     <strong><%= @student.name %></strong> has completed Epicodus's Intensive Web
@@ -14,5 +14,3 @@
 
   <p><strong>Michael Kaiser-Nyman, President</strong></p>
 </div>
-
-

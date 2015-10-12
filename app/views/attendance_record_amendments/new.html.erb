@@ -8,7 +8,7 @@
       <div class="row">
         <div class="span8">
           <%= f.label :student_id %>
-          <%= f.collection_select :student_id, current_cohort.students, :id, :name, {}, { class: "span8" } %>
+          <%= f.collection_select :student_id, current_course.students, :id, :name, {}, { class: "span8" } %>
         </div>
         <div class="span4">
           <%= f.label :date %>

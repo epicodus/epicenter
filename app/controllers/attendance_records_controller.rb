@@ -2,7 +2,7 @@ class AttendanceRecordsController < ApplicationController
   authorize_resource
 
   def index
-    @students = current_admin.current_cohort.students.includes(:attendance_records)
+    @students = current_admin.current_course.students.includes(:attendance_records)
     @students_not_signed_in = @students - Student.find(AttendanceRecord.today.map(&:student_id))
   end
 

@@ -10,7 +10,7 @@ feature 'student attendance statistics page' do
 
   context 'within the pie graph', js: true do
     scenario 'student has been on time' do
-      before_class_start_time = student.cohort.start_date.beginning_of_day
+      before_class_start_time = student.course.start_date.beginning_of_day
       travel_to before_class_start_time do
         attendance_record = FactoryGirl.create(:attendance_record, student: student)
         travel 18.hours do
@@ -23,7 +23,7 @@ feature 'student attendance statistics page' do
     end
 
     scenario 'student has been late' do
-      after_class_start_time = student.cohort.start_date.beginning_of_day + 10.hours
+      after_class_start_time = student.course.start_date.beginning_of_day + 10.hours
       travel_to after_class_start_time do
         FactoryGirl.create(:attendance_record, student: student)
       end
@@ -32,7 +32,7 @@ feature 'student attendance statistics page' do
     end
 
     scenario 'student has been absent' do
-      travel_to student.cohort.start_date do
+      travel_to student.course.start_date do
         visit attendance_statistics_path
         expect(page).to have_content 'Absent'
       end
@@ -41,7 +41,7 @@ feature 'student attendance statistics page' do
 
   context 'within attendance alerts section' do
     it 'shows days students have been late' do
-      after_class_start_time = student.cohort.start_date.beginning_of_day + 10.hours
+      after_class_start_time = student.course.start_date.beginning_of_day + 10.hours
       formatted_after_class_start_time = after_class_start_time.strftime("%A, %B %-d")
       travel_to after_class_start_time do
         FactoryGirl.create(:attendance_record, student: student)
@@ -51,7 +51,7 @@ feature 'student attendance statistics page' do
     end
 
     it 'shows days students have been absent' do
-      first_day_of_class = student.cohort.start_date
+      first_day_of_class = student.course.start_date
       second_day_of_class = first_day_of_class + 1.day
       formatted_absent_day = first_day_of_class.strftime("%A, %B %-d")
       travel_to second_day_of_class do

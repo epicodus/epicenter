@@ -15,7 +15,7 @@ class StudentAttendanceStatistics
   end
 
   def days_remaining
-    @student.cohort.number_of_days_left
+    @student.course.number_of_days_left
   end
 
   def tardies
@@ -27,7 +27,7 @@ class StudentAttendanceStatistics
   end
 
   def absences
-    class_dates_so_far = student.cohort.class_dates_until(Time.zone.now.to_date)
+    class_dates_so_far = student.course.class_dates_until(Time.zone.now.to_date)
     student_attendance_record_dates = student.attendance_records.pluck(:date)
     class_dates_so_far - student_attendance_record_dates
   end
