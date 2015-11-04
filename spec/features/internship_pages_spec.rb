@@ -240,3 +240,21 @@ feature "admin viewing a student's internship page" do
     expect(page).to have_content internship.description
   end
 end
+
+feature 'viewing the January internships navbar link' do
+  let(:non_interning_student) { FactoryGirl.create(:user_with_all_documents_signed) }
+  let(:ruby_course) { FactoryGirl.create(:course, description: 'January 2016 Internships - Ruby')}
+  let(:interning_student) { FactoryGirl.create(:user_with_all_documents_signed, course: ruby_course) }
+
+  scenario 'a student interning in January can see the navbar link' do
+    login_as(interning_student, scope: :student)
+    visit root_path
+    expect(page).to have_content 'January 2016 Internships'
+  end
+
+  scenario 'a student not interning in January cannot see the navbar link' do
+    login_as(non_interning_student, scope: :student)
+    visit root_path
+    expect(page).to_not have_content 'January 2016 Internships'
+  end
+end

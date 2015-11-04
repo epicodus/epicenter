@@ -2,6 +2,13 @@
   <div class="navbar-inner">
     <ul class="nav pull-right">
       <% if current_student %>
+        <% if current_student.courses.include?(ruby_january_internship_course) %>
+          <li><%= link_to 'January 2016 Internships', course_internships_path(ruby_january_internship_course) %></li>
+        <% elsif current_student.courses.include?(php_january_internship_course) %>
+          <li><%= link_to 'January 2016 Internships', course_internships_path(ruby_php_january_internship_course) %></li>
+        <% elsif current_student.courses.include?(java_january_internship_course) %>
+          <li><%= link_to 'January 2016 Internships', course_internships_path(ruby_java_january_internship_course) %></li>
+        <% end %>
         <li><%= link_to 'Pair suggestions', random_pairs_path %></li>
         <li><%= link_to 'Internships', course_internships_path(current_student.course) %>
         <li><%= link_to 'Payments', payments_path %></li>
