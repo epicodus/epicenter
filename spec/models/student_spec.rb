@@ -482,7 +482,7 @@ describe Student do
     end
 
     it 'counts the number of days the student has been tardy' do
-      travel_to Time.new(course.start_date.year, course.start_date.month, course.start_date.day, 9, 10, 00, Time.zone.formatted_offset) do
+      travel_to Time.new(course.start_date.year, course.start_date.month, course.start_date.day, 9, 20, 00, Time.zone.formatted_offset) do
         FactoryGirl.create(:attendance_record, student: student)
         travel 1.day
         FactoryGirl.create(:attendance_record, student: student)
@@ -531,7 +531,7 @@ describe Student do
         travel 1.day
         FactoryGirl.create(:attendance_record, student: student)
       end
-      travel_to Time.new(course.start_date.year, course.start_date.month, course.start_date.day, 9, 10, 00, Time.zone.formatted_offset) do
+      travel_to Time.new(course.start_date.year, course.start_date.month, course.start_date.day, 9, 20, 00, Time.zone.formatted_offset) do
         FactoryGirl.create(:attendance_record, student: student)
         travel 1.day
         FactoryGirl.create(:attendance_record, student: student)
