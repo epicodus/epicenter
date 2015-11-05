@@ -150,7 +150,11 @@ class Student < User
   end
 
   def class_in_session?
-    course.start_date <= Time.zone.now.to_date && course.end_date >= Time.zone.now.to_date
+    if courses.any?
+      course.start_date <= Time.zone.now.to_date && course.end_date >= Time.zone.now.to_date
+    else
+      false
+    end
   end
 
   def class_over?
