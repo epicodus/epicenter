@@ -1,78 +1,25 @@
 <h1><%= @student.name %></h1>
 <hr>
-<ul class="student-nav nav nav-tabs">
-  <li class="student-attendance">
-    <a>Attendance</a>
-  </li>
-  <li class="student-internships">
-    <a>Rated Internships</a>
-  </li>
-  <li class="student-courses">
-    <a>Courses</a>
-  </li>
-</ul>
+<% if @student.courses.any? %>
+  <ul class="student-nav nav nav-tabs">
+    <li class="student-attendance">
+      <a>Attendance</a>
+    </li>
+    <li class="student-internships">
+      <a>Rated Internships</a>
+    </li>
+    <li class="student-courses">
+      <a>Courses</a>
+    </li>
+  </ul>
 
-<div class="student-div student-courses">
-  <%= form_for @student, method: :patch do |f| %>
-    <%= render 'layouts/errors', object: @student %>
-    <%= f.collection_select :course_id, @student.other_courses.reverse, :id, :description, { include_blank: 'Please select a course' }, { class: 'span4', required: true } %>
-    <p><%= f.submit 'Add course', class: 'btn btn-primary' %></p>
-  <% end %>
+  <%= render 'students/student_courses' %>
 
-  <h3>Courses</h3>
-  <% @student.courses.each do |course| %>
-    <p class="row" id="student-course-<%= course.id %>">
-      <span class="span4"><%= course.description %></span>
-      <% if @student.courses.count > 1 %>
-        <%= link_to 'Delete', enrollment_path(course_id: course.id), data: { method: :delete, confirm: 'Are you sure?' }, class: 'unstyled-link' %>
-      <% end %>
-    </p>
-  <% end %>
-</div>
+  <%= render 'students/student_internships' %>
 
-<div class="student-div student-internships">
-  <span class="company-list">
-    <% @internships.each do |internship| %>
-      <div class="<%= set_internship_background(@student.find_rating(internship)) %>">
-        <div class='internship-list-row row'>
-          <li>
-            <h3 class='span3'><%= link_to internship.company_name, course_internship_path(@student.course, internship) %></h3>
-            <% if @student.find_rating(internship) %>
-              <p class='span9'><%= @student.find_rating(internship).notes %></p>
-            <% end %>
-          </li>
-        </div>
-      </div>
-    <% end %>
-  </span>
-</div>
+  <%= render 'students/student_attendance' %>
 
-<div class="student-div student-attendance">
-  <% @student.course.class_dates_until(Time.zone.now.to_date).sort.reverse.each do |day| %>
-    <ul class='span12 unstyled'>
-        <li>
-          <span class="span1">
-            <%= day.strftime("%A") %>
-          </span>
-          <span class="span2">
-            <%= day.strftime("%B %d, %Y") %>
-          </span>
-          <span>
-            <% if @student.attendance_record_on_day(day) == nil %>
-              <span class="btn btn-danger span3" disabled>Absent</span>
-            <% elsif @student.attendance_record_on_day(day).tardy %>
-              <span class="btn btn-warning span3" disabled>Tardy</span>
-            <% elsif @student.attendance_record_on_day(day).left_early %>
-              <span class="btn btn-warning span3" disabled>Left early</span>
-            <% else %>
-              <span class="btn btn-success span3" disabled>On time</span>
-            <% end %>
-          </span>
-          <span class="span2">
-            <%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day), class: 'unstyled-link'  %>
-          </span>
-          <span><%= @student.pair_on_day(day) ? @student.pair_on_day(day).name : 'Solo' %></span>
-        </li>
-    </ul>
-  <% end %>
-</div>
+<% else %>
+  <h2><%= @student.name %> is not enrolled in any courses.</h2>
+  <%= render 'students/student_courses' %>
+<% end %>

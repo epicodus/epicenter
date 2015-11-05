@@ -1,0 +1,17 @@
+<div class="student-div student-courses">
+  <%= form_for @student, method: :patch do |f| %>
+    <%= render 'layouts/errors', object: @student %>
+    <%= f.collection_select :course_id, @student.other_courses.reverse, :id, :description, { include_blank: 'Please select a course' }, { class: 'span4', required: true } %>
+    <p><%= f.submit 'Add course', class: 'btn btn-primary' %></p>
+  <% end %>
+
+  <% if @student.courses.any? %>
+    <h3>Courses</h3>
+  <% end %>
+  <% @student.courses.each do |course| %>
+    <p class="row" id="student-course-<%= course.id %>">
+      <span class="span4"><%= course.description %></span>
+      <%= link_to 'Withdraw', enrollment_path(course_id: course.id), data: { method: :delete, confirm: 'Are you sure?' }, class: 'unstyled-link' %>
+    </p>
+  <% end %>
+</div>

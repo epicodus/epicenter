@@ -1,0 +1,29 @@
+<div class="student-div student-attendance">
+  <% @student.course.class_dates_until(Time.zone.now.to_date).sort.reverse.each do |day| %>
+    <ul class='span12 unstyled'>
+        <li>
+          <span class="span1">
+            <%= day.strftime("%A") %>
+          </span>
+          <span class="span2">
+            <%= day.strftime("%B %d, %Y") %>
+          </span>
+          <span>
+            <% if @student.attendance_record_on_day(day) == nil %>
+              <span class="btn btn-danger span3" disabled>Absent</span>
+            <% elsif @student.attendance_record_on_day(day).tardy %>
+              <span class="btn btn-warning span3" disabled>Tardy</span>
+            <% elsif @student.attendance_record_on_day(day).left_early %>
+              <span class="btn btn-warning span3" disabled>Left early</span>
+            <% else %>
+              <span class="btn btn-success span3" disabled>On time</span>
+            <% end %>
+          </span>
+          <span class="span2">
+            <%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day), class: 'unstyled-link'  %>
+          </span>
+          <span><%= @student.pair_on_day(day) ? @student.pair_on_day(day).name : 'Solo' %></span>
+        </li>
+    </ul>
+  <% end %>
+</div>
