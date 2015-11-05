@@ -102,8 +102,8 @@ end
 
   feature 'viewing the student page' do
     let(:admin) { FactoryGirl.create(:admin) }
-    let!(:course) { FactoryGirl.create(:course) }
-    let!(:student) { FactoryGirl.create(:student, course: course) }
+    let(:student) { FactoryGirl.create(:student) }
+    let(:unenrolled_student) { FactoryGirl.create(:unenrolled_student) }
 
     before { login_as(admin, scope: :admin) }
 
@@ -115,9 +115,7 @@ end
     end
 
     scenario 'when a student is not enrolled in any courses' do
-      enrollment = Enrollment.find_by(student_id: student.id, course_id: course.id)
-      enrollment.destroy
-      visit student_path(student)
-      expect(page).to have_content "#{student.name} is not enrolled in any courses."
+      visit student_path(unenrolled_student)
+      expect(page).to have_content "#{unenrolled_student.name} is not enrolled in any courses."
     end
   end
