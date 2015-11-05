@@ -7,7 +7,6 @@ class Payment < ActiveRecord::Base
   validates :amount, presence: true
   validates :student_id, presence: true
   validates :payment_method, presence: true
-  validate :ensure_payment_isnt_over_balance, on: :create
 
   before_create :make_payment, :send_payment_receipt
   after_create :check_if_paid_up
@@ -23,12 +22,6 @@ class Payment < ActiveRecord::Base
   end
 
 private
-  def ensure_payment_isnt_over_balance
-    if student && student.total_paid + amount.to_i > student.plan.total_amount
-      errors.add(:amount, 'exceeds the outstanding balance.')
-    end
-  end
-
   def update_close_io
     student.update_close_io
   end
