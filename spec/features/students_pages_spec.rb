@@ -86,6 +86,14 @@ feature "Student visits homepage after logged in" do
     visit root_path
     expect(current_path).to_not eq root_path
   end
+
+  it "takes them to the correct path when they are not enrolled in any courses" do
+    enrollment = Enrollment.find_by(student_id: student.id)
+    enrollment.destroy
+    sign_in(student)
+    visit root_path
+    expect(current_path).to_not eq root_path
+  end
 end
 
 feature "Student signs in while class is in session" do
