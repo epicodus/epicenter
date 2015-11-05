@@ -137,7 +137,7 @@ feature 'deleting a course for a student' do
     visit student_path(student)
     find('.student-nav li.student-courses').click
     within "#student-course-#{other_course.id}" do
-      click_on 'Delete'
+      click_on 'Withdraw'
     end
     expect(page).to have_content "#{other_course.description} has been removed"
   end

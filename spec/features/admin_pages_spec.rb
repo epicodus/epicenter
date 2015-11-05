@@ -99,3 +99,25 @@ feature 'Admin signs up via invitation' do
     expect(page).to have_content 'error'
   end
 end
+
+  feature 'viewing the student page' do
+    let(:admin) { FactoryGirl.create(:admin) }
+    let!(:course) { FactoryGirl.create(:course) }
+    let!(:student) { FactoryGirl.create(:student, course: course) }
+
+    before { login_as(admin, scope: :admin) }
+
+    scenario 'when a student is enrolled in a course' do
+      visit student_path(student)
+      expect(page).to have_content 'Attendance'
+      expect(page).to have_content 'Rated Internships'
+      expect(page).to have_content 'Courses'
+    end
+
+    scenario 'when a student is not enrolled in any courses' do
+      enrollment = Enrollment.find_by(student_id: student.id, course_id: course.id)
+      enrollment.destroy
+      visit student_path(student)
+      expect(page).to have_content "#{student.name} is not enrolled in any courses."
+    end
+  end
