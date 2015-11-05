@@ -21,7 +21,12 @@
 
   <h3>Courses</h3>
   <% @student.courses.each do |course| %>
-    <p><%= course.description %></p>
+    <p class="row" id="student-course-<%= course.id %>">
+      <span class="span4"><%= course.description %></span>
+      <% if @student.courses.count > 1 %>
+        <%= link_to 'Delete', enrollment_path(course_id: course.id), data: { method: :delete, confirm: 'Are you sure?' }, class: 'unstyled-link' %>
+      <% end %>
+    </p>
   <% end %>
 </div>
 

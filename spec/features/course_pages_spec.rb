@@ -125,3 +125,20 @@ feature 'adding another course for a student' do
     expect(page).to have_content other_course.description
   end
 end
+
+feature 'deleting a course for a student' do
+  let(:student) { FactoryGirl.create(:student) }
+  let!(:other_course) { FactoryGirl.create(:course, description: 'Other course') }
+  let(:admin) { FactoryGirl.create(:admin) }
+  before { login_as(admin, scope: :admin) }
+
+  scenario 'as an admin' do
+    student.update(course: other_course)
+    visit student_path(student)
+    find('.student-nav li.student-courses').click
+    within "#student-course-#{other_course.id}" do
+      click_on 'Delete'
+    end
+    expect(page).to have_content "#{other_course.description} has been removed"
+  end
+end
