@@ -60,32 +60,6 @@ describe Payment do
     end
   end
 
-  describe '#ensure_payment_isnt_over_balance' do
-    it 'does not save if payment amount exceeds outstanding balance', :vcr do
-      plan = FactoryGirl.create(:recurring_plan_with_upfront_payment, total_amount: 5000_00)
-      student = FactoryGirl.create(:user_with_credit_card, plan: plan, email: 'test@test.com')
-      payment = student.payments.new(amount: 5100_00, payment_method: student.credit_cards.first)
-      expect(payment.valid?).to be false
-      expect(payment.errors.messages[:amount]).to include('exceeds the outstanding balance.')
-    end
-
-    it 'allows a previous payment to be updated', :vcr do
-      plan = FactoryGirl.create(:recurring_plan_with_upfront_payment, total_amount: 5000_00)
-      student = FactoryGirl.create(:user_with_verified_bank_account, plan: plan, email: 'test@test.com')
-      payment = student.payments.create(amount: 5000_00, payment_method: student.bank_accounts.first)
-      expect(payment.update(status: "failed")).to be true
-    end
-
-    it 'does not include failed payments', :vcr do
-      plan = FactoryGirl.create(:recurring_plan_with_upfront_payment, total_amount: 5000_00)
-      student = FactoryGirl.create(:user_with_verified_bank_account, plan: plan, email: 'test@test.com')
-      failed_payment = student.payments.create(amount: 5000_00, payment_method: student.bank_accounts.first)
-      failed_payment.update(status: "failed")
-      new_payment = student.payments.new(amount: 5000_00, payment_method: student.bank_accounts.first)
-      expect(new_payment.valid?).to be true
-    end
-  end
-
   describe '#total_amount' do
     it 'returns payment amount plus fees', :vcr do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
