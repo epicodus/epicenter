@@ -59,5 +59,5 @@ Rails.application.routes.draw do
 
   resource :code_review_copy, only: [:create]
   resource :random_pairs, only: [:show]
-  resources :enrollments, only: [:destroy]
+  resources :enrollments, only: [:create, :destroy]
 end
