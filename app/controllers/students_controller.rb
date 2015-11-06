@@ -6,6 +6,7 @@ class StudentsController < ApplicationController
 
   def index
     @students = current_admin.current_course.students
+    @enrollment = Enrollment.new
   end
 
   def show
