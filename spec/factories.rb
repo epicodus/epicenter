@@ -193,6 +193,16 @@ FactoryGirl.define do
     password "password"
     password_confirmation "password"
 
+    factory :unenrolled_student do
+      after(:create) do |student|
+        create(:completed_code_of_conduct, student: student)
+        create(:completed_refund_policy, student: student)
+        create(:completed_enrollment_agreement, student: student)
+        enrollment = Enrollment.find_by(student_id: student.id)
+        enrollment.destroy
+      end
+    end
+
     factory :part_time_student do
       association :course, factory: :part_time_course
     end

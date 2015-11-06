@@ -22,6 +22,10 @@ class Course < ActiveRecord::Base
   before_create :import_code_reviews
   after_destroy :reassign_admin_current_courses
 
+  def other_students
+    Student.where.not(id: students.map(&:id))
+  end
+
   def number_of_days_since_start
     last_date = Time.zone.now.to_date <= end_date ? Time.zone.now.to_date : end_date
     class_dates_until(last_date).count

@@ -1,5 +1,6 @@
 class Student < User
   scope :recurring_active, -> { where(recurring_active: true) }
+  scope :with_actived_accounts, -> { where('sign_in_count > ?', 0 ) }
   default_scope { order(:name) }
 
   validates :plan_id, presence: true
@@ -150,7 +151,11 @@ class Student < User
   end
 
   def class_in_session?
-    course.start_date <= Time.zone.now.to_date && course.end_date >= Time.zone.now.to_date
+    if courses.any?
+      course.start_date <= Time.zone.now.to_date && course.end_date >= Time.zone.now.to_date
+    else
+      false
+    end
   end
 
   def class_over?

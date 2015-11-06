@@ -15,7 +15,7 @@ class Ability
       can :read, CourseAttendanceStatistics
       can :create, AttendanceRecordAmendment
       can :read, Student
-    elsif user.is_a? Student
+    elsif user.is_a?(Student) && user.courses.any?
       can :read, CodeReview, course_id: user.course_id
       can :create, Submission, student_id: user.id
       can :update, Submission, student_id: user.id
@@ -29,6 +29,12 @@ class Ability
       can :read, Internship, course_id: user.course_id
       can :read, Transcript, student: user
       can :read, :certificate
+    elsif user.is_a?(Student) && user.courses.empty?
+      can :create, BankAccount
+      can :update, BankAccount
+      can :create, CreditCard
+      can :create, Payment, student_id: user.id, payment_method: { student_id: user.id }
+      can :read, Payment, student_id: user.id
     else
       raise CanCan::AccessDenied.new("You need to sign in.", :manage, :all)
     end

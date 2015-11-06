@@ -117,3 +117,24 @@ feature 'Guest not signed in' do
     it { should have_content 'You need to sign in' }
   end
 end
+
+feature 'unenrolled student signs in' do
+  let(:student) { FactoryGirl.create(:unenrolled_student) }
+
+  before { login_as(student, scope: :student) }
+
+  it "takes them to the correct path" do
+    visit root_path
+    expect(current_path).to_not eq root_path
+  end
+
+  it 'student can view the payments page' do
+    visit payments_path
+    expect(page).to have_content 'Your payment methods'
+  end
+
+  it 'student can view the profile page' do
+    visit edit_student_registration_path(student)
+    expect(page).to have_content 'Profile'
+  end
+end

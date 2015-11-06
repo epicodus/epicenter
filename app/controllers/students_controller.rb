@@ -6,11 +6,11 @@ class StudentsController < ApplicationController
 
   def index
     @students = current_admin.current_course.students
+    @enrollment = Enrollment.new
   end
 
   def show
     @student = Student.find(params[:id])
-    @internships = @student.internships_sorted_by_interest
   end
 
   def update
