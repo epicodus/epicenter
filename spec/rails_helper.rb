@@ -54,3 +54,10 @@ Billy.configure do |c|
   c.cache_path = 'spec/cassettes/javascript/'
   c.non_successful_error_level = :warn
 end
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end

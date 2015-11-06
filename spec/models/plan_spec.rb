@@ -4,9 +4,6 @@ describe Plan do
   it { should validate_presence_of :recurring_amount }
   it { should validate_presence_of :upfront_amount }
   it { should validate_presence_of :total_amount }
-  it { should validate_numericality_of :upfront_amount }
-  it { should validate_numericality_of :recurring_amount }
-  it { should validate_numericality_of :total_amount }
 
   describe "#recurring?" do
     it "returns true if the plan is recurring" do

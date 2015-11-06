@@ -54,7 +54,7 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
-    bootstrap-datepicker-rails (1.4.0)
+    bootstrap-datepicker-rails (1.5.0)
       railties (>= 3.0)
     bugsnag (2.8.12)
       json (~> 1.7, >= 1.7.7)
@@ -140,7 +140,7 @@ GEM
     gravatarify (3.1.1)
     groupdate (2.5.0)
       activesupport (>= 3)
-    hashdiff (0.2.2)
+    hashdiff (0.2.3)
     hashie (3.4.3)
     hellosign-ruby-sdk (3.2.5)
       faraday
@@ -273,8 +273,8 @@ GEM
       rspec-support (~> 3.3.0)
     rspec-support (3.3.0)
     safe_yaml (1.0.4)
-    shoulda-matchers (2.8.0)
-      activesupport (>= 3.0.0)
+    shoulda-matchers (3.0.1)
+      activesupport (>= 4.0.0)
     simplecov (0.10.0)
       docile (~> 1.1.0)
       json (~> 1.8)
@@ -301,17 +301,17 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.1)
-    unicorn (4.9.0)
+    unicorn (5.0.0)
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
     validate_url (1.0.2)
       activemodel (>= 3.0.0)
       addressable
-    vcr (2.9.3)
+    vcr (3.0.0)
     warden (1.2.3)
       rack (>= 1.0)
-    webmock (1.22.2)
+    webmock (1.22.3)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
@@ -364,7 +364,7 @@ DEPENDENCIES
   rails_12factor
   redcarpet
   rspec-rails
-  shoulda-matchers (~> 2.8.0)
+  shoulda-matchers
   simplecov
   spring
   stripe!
