@@ -31,6 +31,16 @@ describe Course do
     end
   end
 
+  describe "#other_students" do
+    let(:course) { FactoryGirl.create(:course) }
+    let(:student) { FactoryGirl.create(:student, course: course) }
+    let(:other_student) { FactoryGirl.create(:student) }
+
+    it 'returns students that are not enrolled in a course' do
+      expect(course.other_students).to eq [other_student]
+    end
+  end
+
   describe "sets start and end dates from class_days" do
     let(:course) { FactoryGirl.create(:course) }
 
