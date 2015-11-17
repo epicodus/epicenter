@@ -1,12 +1,12 @@
 $(function() {
-  $('.datepicker').datepicker({
+  $('.custom-datepicker').datepicker({
     format: "yyyy-mm-dd",
     multidate: true,
     todayHighlight: true,
     daysOfWeekDisabled: '0,5,6'
   });
 
-  $(".datepicker").on("changeDate", function(event) {
-    $("#course_class_days").val($(".datepicker").datepicker('getFormattedDate'));
+  $(".custom-datepicker").on("changeDate", function(event) {
+    $("#course_class_days").val($(".custom-datepicker").datepicker('getFormattedDate'));
   });
 });
