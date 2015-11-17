@@ -27,15 +27,18 @@ feature 'creating a course' do
       expect(page).to have_content "can't be blank"
     end
 
-    scenario 'from scratch' do
-      visit new_course_path
-      fill_in 'Description', with: 'Ruby/Rails - Summer 2015'
-      fill_in 'Start time', with: '9:00 AM'
-      fill_in 'End time', with: '5:00 PM'
-      find(:xpath, "//input[@id='course_class_days']").set "2015-09-06,2015-09-07,2015-09-08"
-      click_on 'Create Course'
-      expect(page).to have_content 'Class has been created'
-      expect(page).to have_content 'Code Reviews'
+    scenario 'from scratch', js: true do
+      travel_to Date.parse('November 16, 2015') do
+        visit new_course_path
+        fill_in 'Description', with: 'Ruby/Rails - Summer 2015'
+        fill_in 'Start time', with: '9:00 AM'
+        fill_in 'End time', with: '5:00 PM'
+        find('td', text: 16).click
+        find('td', text: 19).click
+        click_on 'Create Course'
+        expect(page).to have_content 'Class has been created'
+        expect(page).to have_content 'Code Reviews'
+      end
     end
 
     scenario 'cloned from another course' do

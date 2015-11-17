@@ -15,7 +15,7 @@
   <%= f.text_field :end_time, value: @course.end_time, class: 'timepicker span2', required: true %>
 
   <%= f.label :class_days %>
-  <div class="datepicker">
+  <div class="custom-datepicker">
     <%= f.hidden_field :class_days, value: @course.class_days.join(','), required: true %>
   </div>
 
