@@ -46,7 +46,7 @@
     <% else %>
       <%= f.text_area :notes, value: current_student.find_rating(@internship).notes, required: true, minlength: 10, class: 'large-text-area' %>
     <% end %>
-    <%= f.submit 'Submit', class: 'btn btn-primary' %>
+    <%= f.submit 'Submit', class: 'btn btn-info' %>
   <% end %>
 <% end %>
 

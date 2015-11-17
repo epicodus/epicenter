@@ -2,7 +2,7 @@
   <%= form_for @student, method: :patch do |f| %>
     <%= render 'layouts/errors', object: @student %>
     <%= f.collection_select :course_id, @student.other_courses.reverse, :id, :description, { include_blank: 'Please select a course' }, { class: 'span4', required: true } %>
-    <p><%= f.submit 'Add course', class: 'btn btn-primary' %></p>
+    <p><%= f.submit 'Add course', class: 'btn btn-info' %></p>
   <% end %>
 
   <% if @student.courses.any? %>

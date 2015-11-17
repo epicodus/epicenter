@@ -2,5 +2,5 @@
   <div class="span4"><%= submission.student.name %></div>
   <div class="span2"><%= link_to 'view code', submission.link, target: '_blank' %></div>
   <div class="span2 offset3"><%= time_ago_in_words(submission.updated_at) %> ago</div>
-  <div class="span1"><%= link_to 'Review', new_submission_review_path(submission), remote: true, class: 'new_review_link btn btn-primary btn-small' %></div>
+  <div class="span1"><%= link_to 'Review', new_submission_review_path(submission), remote: true, class: 'new_review_link btn btn-info btn-small' %></div>
 <% end %>

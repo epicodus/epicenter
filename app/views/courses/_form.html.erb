@@ -32,7 +32,7 @@
 
   <div class="row">
     <div class="col-md-4 btn-group">
-      <%= f.submit nil, class: "btn btn-primary" %>
+      <%= f.submit nil, class: "btn btn-info" %>
       <%= link_to "Delete", course_path(course), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-danger' if course.persisted? %>
     </div>
   </div>

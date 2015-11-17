@@ -48,7 +48,7 @@
           </td>
           <td>
             <% unless payment_method.verified? %>
-              <%= link_to 'Verify Account', edit_bank_account_path(payment_method), class: 'btn btn-primary verify-button-link' %>
+              <%= link_to 'Verify Account', edit_bank_account_path(payment_method), class: 'btn btn-info verify-button-link' %>
             <% else %>
               Verified
             <% end %>
