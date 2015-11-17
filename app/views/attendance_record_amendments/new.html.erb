@@ -1,27 +1,27 @@
 <h1>Amend student attendance record</h1>
 
 <div class="row">
-  <div class="span8 offset2">
+  <div class="col-md-8 col-md-offset-2">
 
     <%= form_for @attendance_record_amendment do |f| %>
       <%= render 'layouts/errors', object: @attendance_record_amendment %>
       <div class="row">
-        <div class="span8">
+        <div class="col-md-8">
           <%= f.label :student_id %>
-          <%= f.collection_select :student_id, current_course.students, :id, :name, {}, { class: "span8" } %>
+          <%= f.collection_select :student_id, current_course.students, :id, :name, {}, { class: "col-md-8" } %>
         </div>
-        <div class="span4">
+        <div class="col-md-4">
           <%= f.label :date %>
           <%= f.text_field :date, class: 'custom-datepicker span4' %>
         </div>
-        <div class="span4">
+        <div class="col-md-4">
           <%= f.label :status %>
-          <%= f.select :status, options_for_select(["On time", "Tardy", "Left early", "Absent"]), {}, { class: "span4" } %>
+          <%= f.select :status, options_for_select(["On time", "Tardy", "Left early", "Absent"]), {}, { class: "col-md-4" } %>
         </div>
       </div>
 
       <div class="row">
-        <div class="span8">
+        <div class="col-md-8">
           <%= f.submit "Submit", class: 'btn btn-primary pull-right' %>
         </div>
       </div>
