@@ -2,7 +2,7 @@
 
 <%= form_for :attendance_records, url: course_attendance_statistics_path(@course), html: { method: :post } do |f| %>
   <%= f.select :day, options_for_select(formatted_class_days, selected: day_value), {}, { class: 'form-control col-md-3' } %>
-  <p><%= f.submit 'Submit', class: 'btn btn-primary' %></p>
+  <p><%= f.submit 'Submit', class: 'btn btn-info' %></p>
 <% end %>
 
 <h3>Attendance for <%= @day.strftime("%A %B %d, %Y") %></h3>
