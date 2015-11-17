@@ -4,23 +4,23 @@
   <%= devise_error_messages! %>
 
   <% if resource.is_a?(Student) %>
-    <p>
+    <div class="form-group">
       <%= f.label :course_id %>
       <%= f.select(:course_id, Course.all.collect {|c| [ c.description, c.id ] }) %>
-    </p>
+    </div>
   <% end %>
 
-  <p>
+  <div class="form-group">
     <%= f.label :name %>
     <%= f.text_field :name %>
-  </p>
+  </div>
 
 <% resource.class.invite_key_fields.each do |field| -%>
-  <p>
+  <div class="form-group">
     <%= f.label field %>
     <%= f.text_field field %>
-  </p>
+  </div>
 <% end -%>
 
-  <p><%= f.submit t("devise.invitations.new.submit_button") %></p>
+  <%= f.submit t("devise.invitations.new.submit_button"), class: "btn btn-default" %>
 <% end %>
