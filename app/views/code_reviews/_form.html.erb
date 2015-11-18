@@ -2,16 +2,17 @@
   <%= render 'layouts/errors', object: code_review %>
 
   <%= f.label :title %>
-  <%= f.text_field :title %>
+  <%= f.text_field :title, class: "form-control" %>
 
   <h3>Objectives</h3>
-  <ol id="objective-fields">
-    <%= f.nested_fields_for :objectives, wrapper_tag: :li do |ff| %>
-      <%= ff.text_field :content, class: 'col-md-11' %>
-      <%= ff.remove_nested_fields_link %>
-    <% end %>
-  </ol>
+    <ul id="objective-fields" class="list-unstyled">
+      <%= f.nested_fields_for :objectives, wrapper_tag: :li do |ff| %>
+        <%= ff.text_field :content, class: 'form-control' %>
+        <%= ff.remove_nested_fields_link %>
+      <% end %>
+    </ul>
   <%= f.add_nested_fields_link :objectives %>
+
 
   <div class="submit">
     <%= f.submit nil, class: 'btn btn-info' %>
