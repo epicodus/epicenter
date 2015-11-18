@@ -1,9 +1,9 @@
-<div class="panel">
+<div class="">
   <div class="panel-heading">
     <%= render partial: 'layouts/category_header', locals: { header: 'Code Reviews', class_to_manage: CodeReview, category: 'Code Review', category_path: new_code_review_path } %>
   </div>
 
-  <div class="panel-body">
+  <div class="">
     <% if can? :manage, CodeReview %>
       <%= form_tag update_multiple_code_reviews_path, method: :patch, class: 'update-multiple-code-reviews' do %>
         <div class="sortable-code-reviews">
