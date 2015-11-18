@@ -1,28 +1,30 @@
 <h1>Amend student attendance record</h1>
 
 <div class="row">
-  <div class="col-md-8 col-md-offset-2">
+  <div class="col-xs-8 col-xs-offset-2">
 
     <%= form_for @attendance_record_amendment do |f| %>
       <%= render 'layouts/errors', object: @attendance_record_amendment %>
       <div class="row">
-        <div class="col-md-8 form-group">
+        <div class="col-xs-8 form-group">
           <%= f.label :student_id %>
-          <%= f.collection_select :student_id, current_course.students, :id, :name, {}, { class: "col-md-8" } %>
-        </div>
-        <div class="col-md-4">
-          <%= f.label :date %>
-          <%= f.text_field :date, class: 'custom-datepicker span4' %>
-        </div>
-        <div class="col-md-4">
-          <%= f.label :status %>
-          <%= f.select :status, options_for_select(["On time", "Tardy", "Left early", "Absent"]), {}, { class: "col-md-4" } %>
+          <%= f.collection_select :student_id, current_course.students, :id, :name, {}, { class: "col-xs-8 form-control" } %>
         </div>
       </div>
+        <div class="row">
+          <div class="col-xs-4 form-group">
+            <%= f.label :date %>
+            <%= f.text_field :date, class: 'custom-datepicker col-xs-4 form-control' %>
+          </div>
+          <div class="col-xs-4 form-group">
+            <%= f.label :status %>
+            <%= f.select :status, options_for_select(["On time", "Tardy", "Left early", "Absent"]), {}, { class: "col-xs-4 form-control" } %>
+          </div>
+        </div>
 
       <div class="row">
-        <div class="col-md-8">
-          <%= f.submit "Submit", class: 'btn btn-info pull-right' %>
+        <div class="col-xs-8">
+          <%= f.submit "Submit", class: 'btn btn-info btn-block' %>
         </div>
       </div>
     <% end %>
