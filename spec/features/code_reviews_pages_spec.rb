@@ -226,14 +226,14 @@ feature 'creating an code_review' do
 
     context 'with objectives' do
       scenario 'form defaults with 3 objective fields' do
-        within('ol#objective-fields') do
+        within('ul#objective-fields') do
           expect(page).to have_selector('li', count: 3)
         end
       end
 
       scenario 'allows more objectives to be added', js: true do
         click_link 'Add Objective'
-        within('ol#objective-fields') do
+        within('ul#objective-fields') do
           expect(page).to have_selector('li', count: 4)
         end
       end
@@ -287,7 +287,7 @@ feature 'editing an code_review' do
 
     scenario 'removing objectives', js: true do
       objective_count = code_review.objectives.count
-      within('ol#objective-fields') do
+      within('ul#objective-fields') do
         first(:link, 'x').click
       end
       click_button 'Update Code review'
@@ -297,7 +297,7 @@ feature 'editing an code_review' do
     scenario 'adding objectives', js: true do
       objective_count = code_review.objectives.count
       click_link 'Add Objective'
-      within('ol#objective-fields') do
+      within('ul#objective-fields') do
         all('input').last.set 'The last objective'
       end
       click_button 'Update Code review'
