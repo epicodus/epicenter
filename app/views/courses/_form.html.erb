@@ -2,18 +2,18 @@
   <%= render 'layouts/errors', object: course %>
 
   <div class="row">
-    <div class="col-md-12 form-group">
+    <div class="col-xs-12 form-group">
       <%= f.label :description %>
-      <%= f.text_field :description, class: 'col-md-6' %>
+      <%= f.text_field :description, class: 'col-xs-6' %>
     </div>
   </div>
   <div class="form-group">
     <%= f.label :start_time %>
-    <%= f.text_field :start_time, value: @course.start_time, class: 'timepicker col-md-2', required: true %>
+    <%= f.text_field :start_time, value: @course.start_time, class: 'timepicker col-xs-2', required: true %>
   </div>
   <div class="form-group">
     <%= f.label :end_time %>
-    <%= f.text_field :end_time, value: @course.end_time, class: 'timepicker col-md-2', required: true %>
+    <%= f.text_field :end_time, value: @course.end_time, class: 'timepicker col-xs-2', required: true %>
   </div>
 
   <%= f.label :class_days %>
@@ -23,15 +23,15 @@
 
   <% unless course.persisted? %>
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-xs-4">
         <%= f.label :importing_course_id, 'Import code reviews from previous course' %>
-        <%= f.collection_select :importing_course_id, Course.all, :id, :description, { :include_blank => "Do not import any assessment" }, class: 'col-md-4' %>
+        <%= f.collection_select :importing_course_id, Course.all, :id, :description, { :include_blank => "Do not import any assessment" }, class: 'col-xs-4' %>
       </div>
     </div>
   <% end %>
 
   <div class="row">
-    <div class="col-md-4 btn-group">
+    <div class="col-xs-4 btn-group">
       <%= f.submit nil, class: "btn btn-info" %>
       <%= link_to "Delete", course_path(course), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-danger' if course.persisted? %>
     </div>

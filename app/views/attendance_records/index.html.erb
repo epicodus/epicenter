@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-xs-12">
     <header>
       <h1><%= current_course.description %> Student Sign-in </h1>
     </header>
@@ -10,10 +10,10 @@
   <h2>Pair log in</h2>
   <%= form_for AttendanceRecord.new, url: pair_attendance_records_path do |f| %>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-xs-6">
         <%= select_tag "pair_ids[]", options_from_collection_for_select(@students_not_signed_in, :id, :name), { prompt: 'Select pair', required: true, id: 'pair_1', class: "form-control" }%>
       </div>
-      <div class="col-md-6">
+      <div class="col-xs-6">
         <%= select_tag "pair_ids[]", options_from_collection_for_select(@students_not_signed_in, :id, :name), { prompt: 'Select pair', required: true, id: 'pair_2', class: "form-control" } %>
       </div>
     </div>
@@ -22,7 +22,7 @@
 </div>
 
 <div class="row">
-  <%= div_for @students, class: 'student-attendance-div well col-md-2' do |student| %>
+  <%= div_for @students, class: 'student-attendance-div well col-xs-2' do |student| %>
     <h2><%= student.name %></h2>
     <% if student.signed_in_today? %>
       <p class="text-success"><span class="check">&#x2713;</span> Signed in</p>
