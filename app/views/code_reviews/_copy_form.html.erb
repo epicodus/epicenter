@@ -1,11 +1,15 @@
 <%= form_for code_review, url: code_review_copy_path, html: { method: :post } do |f| %>
   <div class="input-group">
+<<<<<<< 7846dc25633b5772cf2be1a31d5c5a5096237583
 <<<<<<< a212de5ba19c6c6eb0722c70a99eeed2400c2351
     <%= grouped_collection_select(:code_review, :id, Course.with_code_reviews, :code_reviews, :description, :id, :title, {}, { class: "form-control" }) %>
     <span class="input-group-btn">
       <%= f.submit 'Copy', class: 'btn btn-info submit' %>
 =======
     <%= grouped_collection_select(:code_review, :id, Course.with_code_reviews, :code_reviews, :description, :id, :title, {}, {class: "col-md-8 form-control"}) %>
+=======
+    <%= grouped_collection_select(:code_review, :id, Course.with_code_reviews, :code_reviews, :description, :id, :title, {}, {class: "col-xs-8 form-control"}) %>
+>>>>>>> change col-md to col-xs
     <span class="input-group-btn">
       <%= f.submit 'Copy', class: 'btn btn-warning submit' %>
 >>>>>>> move commits from master to feature branch

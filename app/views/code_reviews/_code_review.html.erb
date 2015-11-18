@@ -1,4 +1,5 @@
 <div class="code-review">
+<<<<<<< 7846dc25633b5772cf2be1a31d5c5a5096237583
   <% if can? :manage, CodeReview %>
     <div class='row well'>
   <% else %>
@@ -8,6 +9,14 @@
       <p><%= link_to code_review.title, code_review %></p>
     </div>
     <div class="col-xs-6">
+=======
+  <div class='list-row list-link row'>
+    <div class="col-xs-8">
+      <h4><%= link_to code_review.title, code_review %></h4>
+    </div>
+
+    <div class="col-xs-4">
+>>>>>>> change col-md to col-xs
       <% if current_student %>
         <span class="code-review-status">
           <% if code_review.submission_for(current_student).nil? %>
