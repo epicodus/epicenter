@@ -1,23 +1,21 @@
-<div class="span12">
-  <%= form_for [@submission, @review], remote: true do |f| %>
+<%= form_for [@submission, @review], remote: true do |f| %>
+  <div class="jumbotron">
     <%= f.nested_fields_for :grades, wrapper_tag: :div do |ff| %>
       <div class="row">
-        <div class="span8">
+        <div class="col-xs-8">
           <%= ff.object.objective.content if ff.object.objective %>
         </div>
-        <div class="span4">
-          <%= ff.collection_select :score_id, Score.all, :id, :description, {}, { class: "span4" } %>
+        <div class="col-xs-4">
+          <%= ff.collection_select :score_id, Score.all, :id, :description, {}, { class: "form-control" } %>
         </div>
       </div>
       <%= ff.hidden_field :objective_id %>
     <% end %>
-
-    <%= f.label :note %>
-    <%= f.text_area :note, class: 'span12', rows: 5 %>
-
-    <div class="buttons">
+    <%= f.label :note, class: 'col-sm-2 control-label' %>
+    <%= f.text_area :note, rows: 5, class: 'form-control' %>
+    <div class="">
       <%= f.submit nil, class: "btn btn-info" %>
       <button type="button" class="cancel btn btn-warning">Cancel</button>
     </div>
-  <% end %>
-</div>
+  </div>
+<% end %>
