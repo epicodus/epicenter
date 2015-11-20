@@ -1,6 +1,8 @@
-<%= div_for submission, class: 'list-row row' do %>
-  <div class="span4"><%= submission.student.name %></div>
-  <div class="span2"><%= link_to 'view code', submission.link, target: '_blank' %></div>
-  <div class="span2 offset3"><%= time_ago_in_words(submission.updated_at) %> ago</div>
-  <div class="span1"><%= link_to 'Review', new_submission_review_path(submission), remote: true, class: 'new_review_link btn btn-info btn-small' %></div>
+<%= div_for submission, class: 'well' do %>
+  <div class="row">
+    <div class="col-xs-4"><b><%= submission.student.name %></b></div>
+    <div class="col-xs-2"><b><%= link_to 'view code', submission.link, target: '_blank' %></b></div>
+    <div class="col-xs-2"><%= time_ago_in_words(submission.updated_at) %> ago</div>
+    <div class="col-xs-2"><%= link_to 'Review', new_submission_review_path(submission), remote: true, class: 'new_review_link btn btn-info btn-small' %></div>
+  </div>
 <% end %>
