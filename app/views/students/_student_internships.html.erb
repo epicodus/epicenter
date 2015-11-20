@@ -1,19 +1,12 @@
 <div class="student-div student-internships">
   <ul class="list-group">
     <% @student.internships_sorted_by_interest.each do |internship| %>
-<<<<<<< a756a0eb91b3dacaeed054c3f4f9c4e389b6b9ad
       <li class="list-group-item">
         <div class='row'>
             <div class='col-xs-3'>
               <%= link_to internship.company_name, course_internship_path(@student.course, internship) %>
               <%= render 'internships/rating_label', rating: @student.find_rating(internship) %>
             </div>
-=======
-      <div class="<%= set_internship_background(@student.find_rating(internship)) %>">
-        <div class='row'>
-          <li>
-            <h3 class='col-xs-4'><%= link_to internship.company_name, course_internship_path(@student.course, internship) %></h3>
->>>>>>> students views
             <% if @student.find_rating(internship) %>
               <p class='col-xs-8'><%= @student.find_rating(internship).notes %></p>
             <% end %>

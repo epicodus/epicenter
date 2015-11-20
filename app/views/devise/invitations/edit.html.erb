@@ -1,16 +1,9 @@
 <h2><%= t 'devise.invitations.edit.header' %></h2>
 <div class='row'>
-<<<<<<< 7846dc25633b5772cf2be1a31d5c5a5096237583
   <div class='col-xs-6'>
     <%= form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put } do |f| %>
       <%= devise_error_messages! %>
       <%= f.hidden_field :invitation_token %>
-=======
-  <div class='col-xs-9'>
-  <%= form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => { :method => :put } do |f| %>
-    <%= devise_error_messages! %>
-    <%= f.hidden_field :invitation_token %>
->>>>>>> change col-md to col-xs
 
       <div class="form-group">
         <%= f.label :name %>

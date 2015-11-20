@@ -2,51 +2,8 @@
 
 <p>After entering your credit card information, you can start making payments.</p>
 
-<<<<<<< 7846dc25633b5772cf2be1a31d5c5a5096237583
 <div class="row">
   <div class="col-xs-6">
     <%= render 'form' %>
-=======
-<%= render '/layouts/errors', :object => @credit_card %>
-
-<%= form_for @credit_card, url: credit_card_path do |f| %>
-
-  <div class="form-group">
-    <%= label_tag :name, "Name on card" %>
-    <%= text_field_tag :name %>
-  </div>
-
-  <div class="form-group">
-    <%= label_tag :card_number %>
-    <%= text_field_tag :card_number %>
-  </div>
-
-  <div class='row'>
-    <div class='col-xs-2 form-group cc-form'>
-      <%= label_tag :expiration_month %>
-      <%= text_field_tag :expiration_month %>
-    </div>
-
-    <div class='col-xs-2 form-group cc-form'>
-      <%= label_tag :expiration_year %>
-      <%= text_field_tag :expiration_year %>
-    </div>
-
-    <div class='col-xs-2 form-group cc-form'>
-      <%= label_tag :cvc_code, "CVC code" %>
-      <%= text_field_tag :cvc_code %>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <%= label_tag :zip_code %>
-    <%= text_field_tag :zip_code %>
-  </div>
-
-  <%= f.hidden_field :stripe_token %>
-
-  <div>
-    <%= f.submit "Add credit card", class: "btn", id: "card-submit-button" %>
->>>>>>> change col-md to col-xs
   </div>
 </div>
