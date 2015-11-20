@@ -1,26 +1,36 @@
 <h2><%= t "devise.invitations.new.header" %></h2>
 
-<%= form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => {:method => :post} do |f| %>
+<%= form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => {:method => :post, class: 'form-horizontal'} do |f| %>
   <%= devise_error_messages! %>
 
   <% if resource.is_a?(Student) %>
     <div class="form-group">
-      <%= f.label :course_id %>
-      <%= f.select(:course_id, Course.all.collect {|c| [ c.description, c.id ] }) %>
+      <%= f.label :course_id, class: "col-sm-2 control-label" %>
+      <div class="col-sm-6">
+        <%= f.select(:course_id, Course.all.collect {|c| [ c.description, c.id ] }, {}, {class: "form-control"}) %>
+      </div>
     </div>
   <% end %>
 
   <div class="form-group">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
+    <%= f.label :name, class: "col-sm-2 control-label" %>
+    <div class="col-sm-6">
+      <%= f.text_field :name, class: "form-control" %>
+    </div>
   </div>
 
 <% resource.class.invite_key_fields.each do |field| -%>
   <div class="form-group">
-    <%= f.label field %>
-    <%= f.text_field field %>
+    <%= f.label field, class: "col-sm-2 control-label" %>
+    <div class="col-sm-6">
+      <%= f.text_field field, class: "form-control" %>
+    </div>
   </div>
 <% end -%>
 
-  <%= f.submit t("devise.invitations.new.submit_button"), class: "btn btn-default" %>
+<div class="form-group">
+  <div class="col-sm-offset-2 col-sm-6">
+    <%= f.submit t("devise.invitations.new.submit_button"), class: "btn btn-default" %>
+  </div>
+</div>
 <% end %>
