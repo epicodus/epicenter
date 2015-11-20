@@ -123,7 +123,7 @@ feature 'adding another course for a student' do
 
   scenario 'as an admin on the individual student page' do
     visit student_path(student)
-    find('.student-nav li.student-courses').click
+    find('#student-nav li.student-courses').click
     select other_course.description, from: 'student_course_id'
     click_on 'Add course'
     expect(page).to have_content other_course.description
@@ -146,7 +146,7 @@ feature 'deleting a course for a student' do
   scenario 'as an admin' do
     student.update(course: other_course)
     visit student_path(student)
-    find('.student-nav li.student-courses').click
+    find('#student-nav li.student-courses').click
     within "#student-course-#{other_course.id}" do
       click_on 'Withdraw'
     end
