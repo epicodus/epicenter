@@ -1,7 +1,7 @@
 <%= render partial: 'layouts/category_header', locals: { header: 'Available Internships', class_to_manage: Internship, category: 'Internship', category_path: new_course_internship_path(@course) } %>
 
 <% if current_student %>
-  <p>You may only rank 5 companies as "Low" interest.</p>
+  <p class="text-danger">* You may only rank 5 companies as "Low" interest.</p>
 <% end %>
 
 <hr/>
@@ -26,20 +26,36 @@
                 <%= link_to 'Delete', course_internship_path(@course, internship), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
               </span>
             <% elsif current_student %>
-              <%= form_for Rating.new do |f| %>
+              <%= form_for Rating.new, html: { class: 'form-horizontal' } do |f| %>
                 <%= f.hidden_field :internship_id, value: internship.id %>
-                <%= f.label :interest, 'High', class: 'radio inline' %>
-                <%= f.radio_button :interest, 1 %>
-                <%= f.label :interest, 'Medium', class: 'radio inline' %>
-                <%= f.radio_button :interest, 2 %>
-                <%= f.label :interest, 'Low', class: 'radio inline' %>
-                <%= f.radio_button :interest, 3 %>
+                <div class='form-group'>
+                  <div class="col-xs-8">
+                    <%= f.label :interest, 'High', class: 'radio-inline' %>
+                    <%= f.radio_button :interest, 1 %>
+                    <%= f.label :interest, 'Medium', class: 'radio-inline' %>
+                    <%= f.radio_button :interest, 2 %>
+                    <%= f.label :interest, 'Low', class: 'radio-inline' %>
+                    <%= f.radio_button :interest, 3 %>
+                  </div>
+                </div>
                 <% if current_student.ratings.where(internship_id: internship.id).empty? %>
-                  <%= f.text_area :notes, value: nil, required: true, minlength: 10, placeholder: "Notes", class: 'large-text-area' %>
+                  <div class="form-group">
+                    <div class="col-xs-8">
+                      <%= f.text_area :notes, value: nil, required: true, minlength: 10, placeholder: "Notes", rows: 6, class: 'form-control' %>
+                    </div>
+                  </div>
                 <% else %>
-                  <%= f.text_area :notes, value: current_student.find_rating(internship).notes, required: true, minlength: 10, class: 'large-text-area' %>
+                  <div class="form-group">
+                    <div class="col-xs-8">
+                      <%= f.text_area :notes, value: current_student.find_rating(internship).notes, required: true, minlength: 10, rows: 6, class: 'form-control' %>
+                    </div>
+                  </div>
                 <% end %>
-                <%= f.submit 'Submit', class: 'btn btn-info' %>
+                  <div class="form-group">
+                    <div class="col-xs-8">
+                    <%= f.submit 'Submit', class: 'btn btn-info' %>
+                    </div>
+                  </div>
               <% end %>
             <% end %>
         </li>
