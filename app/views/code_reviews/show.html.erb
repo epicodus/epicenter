@@ -15,11 +15,10 @@
     <%= render @submission.latest_review.grades %>
   </table>
 <% else %>
-  <ul class="unstyled objectives">
+  <ul class="list-unstyled">
     <%= render @code_review.objectives %>
   </ul>
 <% end %>
-
 
 <% if @submission.needs_review? %>
   <hr>
