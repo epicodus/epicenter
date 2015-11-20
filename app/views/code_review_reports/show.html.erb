@@ -4,19 +4,21 @@
   <thead>
     <tr>
       <th></th>
-      <% @code_review.objectives.each do |objective| %>
-        <th><%= objective.content %></th>
-      <% end %>
+      <th>
+        Total Score
+      </th>
+      <th>
+        Notes
+      </th>
+      <!-- objective content -->
     </tr>
   </thead>
 
   <tbody>
-    <% @course.students.sort_by { |student| @code_review.latest_total_score_for(student) }.reverse.each do |student| %>
+    <% @course.students.each do |student| %>
       <tr>
         <td><%= student.name %></td>
-        <% @code_review.objectives.each do |objective| %>
-          <td><%= objective.score_for(student) %></td>
-        <% end %>
+        <!-- objective score -->
         <td><%= @code_review.latest_total_score_for(student) %></td>
         <td>
           <%= @code_review.submission_for(student).try(:reviews).try(:last).try(:note) %>
