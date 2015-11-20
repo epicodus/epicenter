@@ -1,7 +1,7 @@
 <div class="<%= set_internship_background(@rating) %>">
   <h1><%= @company.name %></h1>
 </div>
-<table class="table table-rating">
+<table class="table">
   <tr>
     <th>Company info:</th>
     <td>
@@ -33,18 +33,24 @@
 </table>
 
 <% if @rating %>
-  <%= form_for Rating.new do |f| %>
-    <%= f.hidden_field :internship_id, value: @internship.id %>
-    <%= f.label :interest, 'High', class: 'radio inline' %>
-    <%= f.radio_button :interest, 1 %>
-    <%= f.label :interest, 'Medium', class: 'radio inline' %>
+  <%= form_for Rating.new, html: { class: 'form-horizontal' } do |f| %>
+    <div class='form-group'>
+      <%= f.hidden_field :internship_id, value: @internship.id %>
+      <%= f.label :interest, 'High', class: 'radio-inline' %>
+      <%= f.radio_button :interest, 1 %>
+    <%= f.label :interest, 'Medium', class: 'radio-inline' %>
     <%= f.radio_button :interest, 2 %>
-    <%= f.label :interest, 'Low', class: 'radio inline' %>
+    <%= f.label :interest, 'Low', class: 'radio-inline' %>
     <%= f.radio_button :interest, 3 %>
+    </div>
     <% if current_student.ratings.where(internship_id: @internship.id).empty? %>
-      <%= f.text_area :notes, value: nil, required: true, minlength: 10, placeholder: "Notes", class: 'large-text-area' %>
+    <div class='form-group'>
+      <%= f.text_area :notes, value: nil, minlength: 10, rows: 6, placeholder: "Notes", class: 'form-control' %>
+    </div>
     <% else %>
-      <%= f.text_area :notes, value: current_student.find_rating(@internship).notes, required: true, minlength: 10, class: 'large-text-area' %>
+    <div class='form-group'>
+      <%= f.text_area :notes, value: current_student.find_rating(@internship).notes, required: true, minlength: 10, rows: 6, class: 'form-control' %>
+    </div>
     <% end %>
     <%= f.submit 'Submit', class: 'btn btn-info' %>
   <% end %>
@@ -53,21 +59,23 @@
 <% if current_admin %>
   <ul class='nav nav-pills'>
     <li class='<%= 'active' if params[:tab].nil? %>'>
-      <%= link_to "Highly interested students", course_internship_path(@internship.course, @internship), class: 'unstyled-link' %>
+      <%= link_to "Highly interested students", course_internship_path(@internship.course, @internship) %>
     </li>
     <li class='<%= 'active' if params[:tab] == 'medium' %>'>
-      <%= link_to "Moderately interested students", course_internship_path(@internship.course, @internship, tab: 'medium'), class: 'unstyled-link' %>
+      <%= link_to "Moderately interested students", course_internship_path(@internship.course, @internship, tab: 'medium') %>
     </li>
     <li class='<%= 'active' if params[:tab] == 'low' %>'>
-      <%= link_to "Not interested students", course_internship_path(@internship.course, @internship, tab: 'low'), class: 'unstyled-link' %>
+      <%= link_to "Not interested students", course_internship_path(@internship.course, @internship, tab: 'low') %>
     </li>
   </ul>
 
-  <table class='table table-striped span8'>
-    <tr>
-      <th>Student Name</th>
-      <th>Notes</th>
-    </tr>
+  <table class='table table-striped'>
+    <thead>
+      <tr>
+        <th>Student Name</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
     <% if params[:tab].nil? %>
       <% Student.find_students_by_interest(@internship, '1').each do |student| %>
         <%= render 'student_row', student: student, internship: @internship %>
