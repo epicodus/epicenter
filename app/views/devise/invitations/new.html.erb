@@ -5,31 +5,31 @@
 
   <% if resource.is_a?(Student) %>
     <div class="form-group">
-      <%= f.label :course_id, class: "col-sm-2 control-label" %>
-      <div class="col-sm-6">
+      <%= f.label :course_id, class: "col-xs-2 control-label" %>
+      <div class="col-xs-6">
         <%= f.select(:course_id, Course.all.collect {|c| [ c.description, c.id ] }, {}, {class: "form-control"}) %>
       </div>
     </div>
   <% end %>
 
   <div class="form-group">
-    <%= f.label :name, class: "col-sm-2 control-label" %>
-    <div class="col-sm-6">
+    <%= f.label :name, class: "col-xs-2 control-label" %>
+    <div class="col-xs-6">
       <%= f.text_field :name, class: "form-control" %>
     </div>
   </div>
 
 <% resource.class.invite_key_fields.each do |field| -%>
   <div class="form-group">
-    <%= f.label field, class: "col-sm-2 control-label" %>
-    <div class="col-sm-6">
+    <%= f.label field, class: "col-xs-2 control-label" %>
+    <div class="col-xs-6">
       <%= f.text_field field, class: "form-control" %>
     </div>
   </div>
 <% end -%>
 
 <div class="form-group">
-  <div class="col-sm-offset-2 col-sm-6">
+  <div class="col-xs-offset-2 col-xs-6">
     <%= f.submit t("devise.invitations.new.submit_button"), class: "btn btn-default" %>
   </div>
 </div>
