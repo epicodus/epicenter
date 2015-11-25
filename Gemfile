@@ -27,7 +27,6 @@ gem 'jquery-timepicker-rails'
 gem 'bootswatch-rails'
 gem 'bootstrap-sass'
 gem 'sass-rails'
-gem 'font-awesome-sass'
 
 group :development do
   gem 'spring'

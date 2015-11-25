@@ -1,5 +1,8 @@
-<div class="<%= set_internship_background(@rating) %>">
-  <h1><%= @company.name %></h1>
+<div>
+  <h1>
+    <%= @company.name %>
+    <%= render 'internships/rating_label', object: @rating %>
+  </h1>
 </div>
 <table class="table">
   <tr>

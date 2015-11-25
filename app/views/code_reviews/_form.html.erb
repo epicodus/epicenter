@@ -1,4 +1,4 @@
-<%= form_for code_review, html: { class: 'code-review-form' } do |f| %>
+<%= form_for code_review do |f| %>
   <%= render 'layouts/errors', object: code_review %>
 
   <%= f.label :title %>
@@ -11,8 +11,9 @@
         <%= ff.remove_nested_fields_link %>
       <% end %>
     </ul>
-  <%= f.add_nested_fields_link :objectives %>
-
+    <div class="form-group">
+      <%= f.add_nested_fields_link :objectives, 'Add Objective', class: 'btn btn-primary' %>
+    </div>
 
   <div class="submit">
     <%= f.submit nil, class: 'btn btn-info' %>

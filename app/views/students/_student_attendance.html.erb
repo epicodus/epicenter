@@ -10,11 +10,11 @@
           </span>
           <span>
             <% if @student.attendance_record_on_day(day) == nil %>
-              <span class="btn btn-danger col-xs-3" disabled>Absent</span>
+              <span class="btn btn-primary col-xs-3" disabled>Absent</span>
             <% elsif @student.attendance_record_on_day(day).tardy %>
-              <span class="btn btn-warning col-xs-3" disabled>Tardy</span>
+              <span class="btn btn-danger col-xs-3" disabled>Tardy</span>
             <% elsif @student.attendance_record_on_day(day).left_early %>
-              <span class="btn btn-warning col-xs-3" disabled>Left early</span>
+              <span class="btn btn-danger col-xs-3" disabled>Left early</span>
             <% else %>
               <span class="btn btn-success col-xs-3" disabled>On time</span>
             <% end %>
