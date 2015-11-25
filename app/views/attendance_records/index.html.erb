@@ -6,14 +6,14 @@
   </div>
 </div>
 
-<div class="pair-sign-in well">
+<div class="well">
   <h2>Pair log in</h2>
   <%= form_for AttendanceRecord.new, url: pair_attendance_records_path do |f| %>
-    <div class="row">
+    <div class="row form-group">
       <div class="col-xs-6">
         <%= select_tag "pair_ids[]", options_from_collection_for_select(@students_not_signed_in, :id, :name), { prompt: 'Select pair', required: true, id: 'pair_1', class: "form-control" }%>
       </div>
-      <div class="col-xs-6">
+      <div class="col-xs-6 form-group">
         <%= select_tag "pair_ids[]", options_from_collection_for_select(@students_not_signed_in, :id, :name), { prompt: 'Select pair', required: true, id: 'pair_2', class: "form-control" } %>
       </div>
     </div>
@@ -22,24 +22,26 @@
 </div>
 
 <div class="row">
-  <%= div_for @students, class: 'student-attendance-div well col-xs-2' do |student| %>
-    <h2><%= student.name %></h2>
-    <% if student.signed_in_today? %>
-      <p class="text-success"><span class="check">&#x2713;</span> Signed in</p>
-        <% if student.signed_out_today? %>
-          <p class="text-success"><span class="check">&#x2713;</span> Signed out</p>
-        <% else %>
-          <%= form_for student.attendance_records.today.first do |f| %>
-            <%= f.hidden_field :student_id, value: student.id %>
-            <%= f.hidden_field :signing_out, value: true %>
-            <%= f.submit "I'm leaving", class: 'btn btn-warning' %>
+  <div class="col-xs-12">
+    <%= div_for @students, class: 'student-attendance-div well col-xs-2' do |student| %>
+      <h3><%= student.name %></h3>
+      <% if student.signed_in_today? %>
+        <p class="text-success"><span class="check">&#x2713;</span> Signed in</p>
+          <% if student.signed_out_today? %>
+            <p class="text-success"><span class="check">&#x2713;</span> Signed out</p>
+          <% else %>
+            <%= form_for student.attendance_records.today.first do |f| %>
+              <%= f.hidden_field :student_id, value: student.id %>
+              <%= f.hidden_field :signing_out, value: true %>
+              <%= f.submit "I'm leaving", class: 'btn btn-danger' %>
+            <% end %>
           <% end %>
+      <% else %>
+        <%= form_for AttendanceRecord.new do |f| %>
+          <%= f.hidden_field :student_id, value: student.id %>
+          <%= f.submit "I'm soloing", class: 'btn btn-info' %>
         <% end %>
-    <% else %>
-      <%= form_for AttendanceRecord.new do |f| %>
-        <%= f.hidden_field :student_id, value: student.id %>
-        <%= f.submit "I'm soloing", class: 'btn btn-info' %>
       <% end %>
     <% end %>
-  <% end %>
+  </div>
 </div>

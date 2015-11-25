@@ -2,7 +2,7 @@
   <div class="input-group">
     <%= grouped_collection_select(:code_review, :id, Course.with_code_reviews, :code_reviews, :description, :id, :title, {}, {class: "col-xs-8 form-control"}) %>
     <span class="input-group-btn">
-      <%= f.submit 'Copy', class: 'btn btn-warning submit' %>
+      <%= f.submit 'Copy', class: 'btn btn-info submit' %>
     </span>
   </div>
 
