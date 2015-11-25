@@ -329,3 +329,30 @@ feature 'copying an existing code review' do
     expect(page).to have_content 'Code review successfully copied.'
   end
 end
+
+feature 'view the Code Reviews tab' do
+  before do
+    mailgun_client = spy("mailgun client")
+    allow(Mailgun::Client).to receive(:new) { mailgun_client }
+  end
+
+  let(:admin) { FactoryGirl.create(:admin) }
+  let(:student) { FactoryGirl.create(:user_with_score_of_6) }
+
+
+  before { login_as(admin, scope: :admin) }
+
+  scenario 'student should have pass' do
+    visit student_path(student)
+    find('.student-nav li.student-code-reviews').click
+    expect(page).to have_content "Pass"
+  end
+
+
+  scenario 'a modal appears with notes' do
+    visit student_path(student)
+    find('.student-nav li.student-code-reviews').click
+    click_link 'Notes'
+    expect(page).to have_content("Great job!")
+  end
+end
