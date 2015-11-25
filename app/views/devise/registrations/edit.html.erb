@@ -11,41 +11,43 @@
 
     <div class="form-group">
       <%= f.label :name, class: 'col-xs-2 control-label' %>
-      <div class="col-xs-6">
+      <div class="col-xs-7">
         <%= f.text_field :name, autofocus: true, class: 'form-control' %>
       </div>
     </div>
 
     <div class="form-group">
       <%= f.label :email, class: 'col-xs-2 control-label' %>
-      <div class="col-xs-6">
+      <div class="col-xs-7">
         <%= f.email_field :email, autofocus: true, class: 'form-control' %>
       </div>
     </div>
 
     <div class="form-group">
-      <%= f.label :password, 'New password', class: 'col-xs-2 control-label' %> <i>(leave blank if you don't want to change it)</i>
-      <div class="col-xs-6">
+      <%= f.label :password, 'New password', class: 'col-xs-2 control-label' %>
+      <div class="col-xs-7">
+        <i>(leave blank if you don't want to change it)</i>
         <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
       </div>
     </div>
 
     <div class="form-group">
       <%= f.label :password_confirmation, 'New password confirmation', class: 'col-xs-2 control-label' %>
-      <div class="col-xs-6">
+      <div class="col-xs-7">
         <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control' %>
       </div>
     </div>
 
     <div class="form-group">
-      <%= f.label :current_password, class: 'col-xs-2 control-label' %> <i>(we need your current password to confirm your changes)</i>
-      <div class="col-xs-6">
+      <%= f.label :current_password, class: 'col-xs-2 control-label' %>
+      <div class="col-xs-7">
+        <i>(we need your current password to confirm your changes)</i>
         <%= f.password_field :current_password, autocomplete: "off", class: 'form-control' %>
       </div>
     </div>
 
     <div class="form-group">
-      <div class="col-xs-offset-2 col-xs-6">
+      <div class="col-xs-offset-2 col-xs-7">
         <%= f.submit "Update", class: 'btn btn-large btn-info' %>
       </div>
     </div>
