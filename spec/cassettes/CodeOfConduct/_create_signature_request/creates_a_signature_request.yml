@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: https://abd3d7ff691632daef7257fb38fd686e62b93dc88eb225def4bbb776851bd73d:@api.hellosign.com/v3/signature_request/create_embedded
+    uri: https://<HELLO_SIGN_API_KEY>:@api.hellosign.com/v3/signature_request/create_embedded
     body:
       encoding: ASCII-8BIT
       string: !binary |-
@@ -424,7 +424,7 @@ http_interactions:
   recorded_at: Thu, 25 Jun 2015 16:54:26 GMT
 - request:
     method: get
-    uri: https://abd3d7ff691632daef7257fb38fd686e62b93dc88eb225def4bbb776851bd73d:@api.hellosign.com/v3/embedded/sign_url/f0fe229420c4ccbc16fcec76702fc30b
+    uri: https://<HELLO_SIGN_API_KEY>:@api.hellosign.com/v3/embedded/sign_url/f0fe229420c4ccbc16fcec76702fc30b
     body:
       encoding: US-ASCII
       string: ''
