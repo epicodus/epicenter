@@ -32,6 +32,7 @@ class Submission < ActiveRecord::Base
     latest_review.try(:meets_expectations?)
   end
 
+
 private
 
   def mark_as_needing_review
