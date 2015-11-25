@@ -1,37 +1,38 @@
 <%= form_for course do |f| %>
   <%= render 'layouts/errors', object: course %>
 
-  <div class="row">
-    <div class="span12">
-      <%= f.label :description %>
-      <%= f.text_field :description, class: 'span6' %>
-    </div>
+  <div class="form-group">
+    <%= f.label :description %>
+    <%= f.text_field :description, class: 'form-control' %>
   </div>
 
-  <%= f.label :start_time %>
-  <%= f.text_field :start_time, value: @course.start_time, class: 'timepicker span2', required: true %>
+  <div class="form-group">
+    <%= f.label :start_time %>
+    <%= f.text_field :start_time, value: @course.start_time, class: 'timepicker form-control', required: true %>
+  </div>
 
-  <%= f.label :end_time %>
-  <%= f.text_field :end_time, value: @course.end_time, class: 'timepicker span2', required: true %>
+  <div class="form-group">
+    <%= f.label :end_time %>
+    <%= f.text_field :end_time, value: @course.end_time, class: 'timepicker form-control', required: true %>
+  </div>
 
-  <%= f.label :class_days %>
-  <div class="custom-datepicker">
-    <%= f.hidden_field :class_days, value: @course.class_days.join(','), required: true %>
+  <div class="form-group">
+    <%= f.label :class_days %>
+    <div class="custom-datepicker">
+      <%= f.hidden_field :class_days, value: @course.class_days.join(','), required: true %>
+    </div>
   </div>
 
   <% unless course.persisted? %>
-    <div class="row">
-      <div class="span4">
-        <%= f.label :importing_course_id, 'Import code reviews from previous course' %>
-        <%= f.collection_select :importing_course_id, Course.all, :id, :description, { :include_blank => "Do not import any assessment" }, class: 'span4' %>
-      </div>
+    <div class="form-group">
+      <%= f.label :importing_course_id, 'Import code reviews from previous course' %>
+      <%= f.collection_select :importing_course_id, Course.all, :id, :description, { :include_blank => "Do not import any assessment" }, class: 'form-control' %>
     </div>
   <% end %>
 
-  <div class="row">
-    <div class="span4 btn-group">
-      <%= f.submit nil, class: 'btn btn-primary' %>
-      <%= link_to "Delete", course_path(course), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-danger' if course.persisted? %>
-    </div>
+  <div class="form-group">
+    <%= f.submit nil, class: "btn btn-info" %>
   </div>
+
+  <%= link_to "Delete", course_path(course), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-primary' if course.persisted? %>
 <% end %>

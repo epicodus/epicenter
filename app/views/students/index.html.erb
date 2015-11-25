@@ -1,14 +1,21 @@
-<h1><%= "#{current_admin.current_course.description} student roster" %></h1>
-
-<ul class='unstyled'>
+<h1><%= "#{current_admin.current_course.description}" %> student roster</h1>
+<%= form_for @enrollment, html: { class: 'form-horizontal' } do |f| %>
+  <div class="row">
+    <div class="col-xs-4">
+      <%= render 'layouts/errors', object: @enrollment %>
+      <%= f.hidden_field :course_id, value: current_course.id %>
+      <div class="input-group">
+        <%= f.collection_select :student_id, current_course.other_students.with_actived_accounts, :id, :name, { include_blank: 'Add a student to this course' }, { class: 'form-control', required: true } %>
+        <span class="input-group-btn">
+          <%= f.submit 'Add student', class: 'btn btn-info' %>
+        </span>
+      </div>
+    </div>
+  </div>
+<% end %>
+<hr>
+<ul class='list-unstyled'>
   <% @students.each do |student| %>
-    <li><%= link_to student.name, student, class: "unstyled-link" %></li>
+    <li><%= link_to student.name, student, class: "" %></li>
   <% end %>
 </ul>
-
-<%= form_for @enrollment do |f| %>
-  <%= render 'layouts/errors', object: @enrollment %>
-  <%= f.hidden_field :course_id, value: current_course.id %>
-  <%= f.collection_select :student_id, current_course.other_students.with_actived_accounts, :id, :name, { include_blank: 'Add a student to this course' }, { class: 'span4', required: true } %>
-  <p><%= f.submit 'Add student', class: 'btn btn-primary' %></p>
-<% end %>

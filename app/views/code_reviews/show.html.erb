@@ -2,8 +2,8 @@
   <%= @code_review.title %>
   <% if current_admin %>
     <div class="btn-group pull-right">
-      <%= link_to 'Edit', edit_code_review_path(@code_review), class: 'btn btn-warning' %>
-      <%= link_to 'Delete', @code_review, data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-danger' %>
+      <%= link_to 'Edit', edit_code_review_path(@code_review), class: 'btn btn-info' %>
+      <%= link_to 'Delete', @code_review, data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
       <%= link_to 'New', new_code_review_path, class: 'btn btn-success' %>
     </div>
   <% end %>
@@ -15,11 +15,10 @@
     <%= render @submission.latest_review.grades %>
   </table>
 <% else %>
-  <ul class="unstyled objectives">
+  <ul class="list-unstyled">
     <%= render @code_review.objectives %>
   </ul>
 <% end %>
-
 
 <% if @submission.needs_review? %>
   <hr>
@@ -34,4 +33,8 @@
 
 <hr>
 
-<%= render 'submissions/form' %>
+<div class="row">
+  <div class="col-xs-6">
+    <%= render 'submissions/form' %>
+  </div>
+</div>

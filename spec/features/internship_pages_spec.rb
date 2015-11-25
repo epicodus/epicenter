@@ -144,7 +144,7 @@ feature 'rating an internship' do
     choose "rating_interest_1"
     fill_in 'rating_notes', with: 'New note about the internship.'
     click_on "Submit"
-    expect(page).to have_css 'div.internship-high-interest'
+    expect(page).to have_css 'span.btn-success'
   end
 
   scenario 'a student can update an internship with a new rating from the internship page' do
@@ -153,7 +153,7 @@ feature 'rating an internship' do
     choose "rating_interest_3"
     fill_in 'rating_notes', with: 'New note about the internship.'
     click_on "Submit"
-    expect(page).to have_css 'div.internship-low-interest'
+    expect(page).to have_css 'span.btn-primary'
   end
 
   scenario 'a student can rate an internship from the internships index page' do
@@ -161,7 +161,7 @@ feature 'rating an internship' do
     choose "rating_interest_2"
     fill_in 'rating_notes', with: 'New note about the internship.'
     click_on "Submit"
-    expect(page).to have_css 'div.internship-medium-interest'
+    expect(page).to have_css 'span.btn-danger'
   end
 end
 
@@ -231,7 +231,7 @@ feature "admin viewing a student's internship page" do
   scenario "rated internships display their correct background color" do
     rating = FactoryGirl.create(:rating, interest: '3', student: student, internship: internship)
     visit student_path(student)
-    expect(page).to have_css 'div.internship-low-interest'
+    expect(page).to have_css 'span.btn-primary'
   end
 
   scenario "an admin can navigate through to an internship's show page" do

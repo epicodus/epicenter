@@ -24,6 +24,9 @@ gem 'hellosign-ruby-sdk'
 gem 'closeio'
 gem 'bootstrap-datepicker-rails'
 gem 'jquery-timepicker-rails'
+gem 'bootswatch-rails'
+gem 'bootstrap-sass'
+gem 'sass-rails'
 
 group :development do
   gem 'spring'

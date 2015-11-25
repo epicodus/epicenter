@@ -1,15 +1,5 @@
 $(function() {
   $('div.sortable-code-reviews').sortable({
-    axis: 'y',
-    items: "> div.code-review",
-    forcePlaceholderSize: true,
-    cursor: 'move',
-    start: function(event, ui) {
-      ui.item.addClass('moving-list-link');
-    },
-    stop: function(event, ui) {
-      ui.item.removeClass('moving-list-link');
-    }
   });
 
   $('form.update-multiple-code-reviews').submit(function(event) {

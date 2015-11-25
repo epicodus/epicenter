@@ -4,18 +4,10 @@
   <table class="table table-hover">
     <thead>
       <tr>
-        <th>
-          Primary
-        </th>
-        <th>
-          Type
-        </th>
-        <th>
-          Number
-        </th>
-        <th>
-          Status
-        </th>
+        <th>Primary</th>
+        <th>Type</th>
+        <th>Number</th>
+        <th>Status</th>
       </tr>
     </thead>
     <tbody>
@@ -48,7 +40,7 @@
           </td>
           <td>
             <% unless payment_method.verified? %>
-              <%= link_to 'Verify Account', edit_bank_account_path(payment_method), class: 'btn btn-primary verify-button-link' %>
+              <%= link_to 'Verify Account', edit_bank_account_path(payment_method), class: 'btn btn-info verify-button-link' %>
             <% else %>
               Verified
             <% end %>
@@ -64,5 +56,5 @@
 <% if @primary_payment_method %>
   <p class='new-method-links'><%= link_to 'Make or review payments', payments_path %></p>
 <% end %>
-<p class='new-method-links'><%= link_to '+ Add credit card', new_credit_card_path %></p>
-<p class='new-method-links'><%= link_to '+ Add bank account', new_bank_account_path %></p>
+<p class='new-method-links'><%= link_to 'Add credit card', new_credit_card_path %></p>
+<p class='new-method-links'><%= link_to 'Add bank account', new_bank_account_path %></p>

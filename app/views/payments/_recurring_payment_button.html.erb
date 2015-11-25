@@ -1,5 +1,5 @@
 <div class="action-buttons">
   <%= form_for @payment, url: recurring_payments_path do |f| %>
-    <%= f.submit "Start recurring payments of #{number_to_currency(@payment.amount / 100.00)}", data: { confirm: "Start recurring payments?" }, class: 'btn btn-large btn-primary' %>
+    <%= f.submit "Start recurring payments of #{number_to_currency(@payment.amount / 100.00)}", data: { confirm: "Start recurring payments?" }, class: 'btn btn-info' %>
   <% end %>
 </div>

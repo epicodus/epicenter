@@ -1,7 +1,9 @@
 <%= form_for [@code_review, @submission] do |f| %>
   <%= render 'layouts/errors', object: @submission %>
   <%= f.hidden_field :needs_review, value: true %>
-  <%= f.label :link, 'Link to Github repository' %>
-  <%= f.text_field :link, class: 'full-width', placeholder: 'http://github.com/your-username/your-repository' %>
-  <%= f.submit @submission.new_record? ? 'Submit' : 'Resubmit', class: 'btn btn-primary pull-right' %>
+    <div class="form-group">
+      <%= f.label :link, 'Link to Github repository' %>
+      <%= f.text_field :link, class: 'form-control', placeholder: 'http://github.com/your-username/your-repository' %>
+    </div>
+    <%= f.submit @submission.new_record? ? 'Submit' : 'Resubmit', class: 'btn btn-info' %>
 <% end %>

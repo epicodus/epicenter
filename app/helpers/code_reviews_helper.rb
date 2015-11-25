@@ -9,7 +9,7 @@ module CodeReviewsHelper
   def tr_for_grade(grade, &block)
     case grade.score.value
     when 1
-      score_class = 'error'
+      score_class = 'danger'
     when 2
       score_class = 'warning'
     else

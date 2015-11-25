@@ -1,7 +1,7 @@
 #Payment Plans
 
 plans = [
-  ["Spring 2014 loan", 0, 625_00, 5000_00],
+  ["Spring 2015 loan", 0, 625_00, 5000_00],
   ["Summer 2014 loan", 0, 600_00, 5000_00],
   ["Winter 2015 loan", 200_00, 600_00, 5000_00],
   ["Winter 2015 up-front", 3400_00, 0, 3400_00]
@@ -15,11 +15,11 @@ end
 #Courses / Classes
 
 courses = [
-  ["Spring 2014", Date.parse("January 17, 2014"), Date.parse("January 18, 2014")],
-  ["Summer 2014", Date.parse("January 17, 2014"), Date.parse("January 18, 2014")],
-  ["Winter 2015", Date.parse("January 17, 2014"), Date.parse("January 18, 2014")],
+  ["Spring 2014", [Date.parse("November 16, 2015"), Date.parse("November 17, 2015")], Time.parse("09:00:00 AM"), Time.parse("17:00:00 PM")],
+  ["Summer 2015", [Date.parse("November 16, 2015"), Date.parse("November 17, 2015")], Time.parse("09:00:00 AM"), Time.parse("17:00:00 PM")],
+  ["Winter 2015", [Date.parse("November 16, 2015"), Date.parse("November 17, 2015")], Time.parse("09:00:00 AM"), Time.parse("17:00:00 PM")]
 ]
 
-courses.each do |description, start_date, end_date|
-  Course.create(description: description, start_date: start_date, end_date: end_date)
+courses.each do |description, class_days, start_time, end_time|
+  Course.create!(description: description, class_days: class_days, start_time: start_time, end_time: end_time)
 end
