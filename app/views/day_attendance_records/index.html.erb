@@ -1,14 +1,23 @@
 <h1 class="page-header">Attendance by day</h1>
 
 <%= form_for :attendance_records, url: course_attendance_statistics_path(@course), html: { method: :post } do |f| %>
-  <%= f.select :day, options_for_select(formatted_class_days, selected: day_value), {}, { class: 'form-control col-xs-3' } %>
-  <p><%= f.submit 'Submit', class: 'btn btn-info' %></p>
+
+  <div class="row">
+    <div class="col-xs-4">
+      <div class="input-group">
+        <%= f.select :day, options_for_select(formatted_class_days, selected: day_value), {}, { class: 'form-control' } %>
+        <span class="input-group-btn">
+          <%= f.submit 'Submit', class: 'btn btn-info' %>
+        </span>
+      </div>
+    </div>
+  </div>
 <% end %>
 
 <h3>Attendance for <%= @day.strftime("%A %B %d, %Y") %></h3>
 <hr>
 <% @course.students.each do |student| %>
-  <ul class="col-xs-12 unstyled">
+  <ul class="col-xs-12 list-unstyled">
       <li>
           <span class="col-xs-3"><%= link_to student.name, student, class: 'unstyled-link' %></span>
           <span>

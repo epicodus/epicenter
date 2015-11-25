@@ -1,11 +1,13 @@
-<div class="col-xs-8 col-xs-offset-2">
-  <h1>New Code Review</h1>
-  <%= render 'form', code_review: @code_review %>
+<div class="row">
+  <div class="col-xs-6">
+    <h1>New Code Review</h1>
+    <%= render 'form', code_review: @code_review %>
+  </div>
 </div>
 
-
-<div class="col-xs-8 col-xs-offset-2">
-  <hr>
-  <h3>Copy existing code review</h3>
-  <%= render 'copy_form', code_review: @code_review %>
+<div class="row">
+  <div class="col-xs-6">
+    <h3>Copy existing code review</h3>
+    <%= render 'copy_form', code_review: @code_review %>
+  </div>
 </div>

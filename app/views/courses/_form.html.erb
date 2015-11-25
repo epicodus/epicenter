@@ -30,7 +30,9 @@
     </div>
   <% end %>
 
-  <%= f.submit nil, class: "btn btn-info" %>
-  <br>
+  <div class="form-group">
+    <%= f.submit nil, class: "btn btn-info" %>
+  </div>
+
   <%= link_to "Delete", course_path(course), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-primary' if course.persisted? %>
 <% end %>

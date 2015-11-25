@@ -8,20 +8,22 @@
 
 <%= render 'layouts/errors', object: @rating %>
 
-<ul class="company-list">
+<ul class="list-unstyled">
   <% @internships.each do |internship| %>
     <li>
       <p>
-        <%= link_to internship.company_name, course_internship_path(@course, internship), class: 'company-name' %>
+        <%= link_to internship.company_name, course_internship_path(@course, internship) %>
         <% if current_student %>
           <%= render 'internships/rating_label', object: current_student.find_rating(internship) %>
         <% end %>
       </p>
       <% if current_admin %>
-        <span class='update-company btn-group'>
+        <span class='btn-group'>
           <%= link_to 'Edit', edit_course_internship_path(internship.course, internship), class: 'btn btn-info' %>
           <%= link_to 'Delete', course_internship_path(@course, internship), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
         </span>
+        <br>
+        <br>
       <% elsif current_student %>
         <%= form_for Rating.new, html: { class: 'form-horizontal' } do |f| %>
           <%= f.hidden_field :internship_id, value: internship.id %>
