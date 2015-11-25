@@ -1,9 +1,7 @@
 <%= form_for code_review do |f| %>
   <%= render 'layouts/errors', object: code_review %>
-
   <%= f.label :title %>
   <%= f.text_field :title, class: "form-control" %>
-
   <h3>Objectives</h3>
     <ul id="objective-fields" class="list-unstyled">
       <%= f.nested_fields_for :objectives, wrapper_tag: :li do |ff| %>
@@ -14,8 +12,5 @@
     <div class="form-group">
       <%= f.add_nested_fields_link :objectives, 'Add Objective', class: 'btn btn-primary' %>
     </div>
-
-  <div class="submit">
     <%= f.submit nil, class: 'btn btn-info' %>
-  </div>
 <% end %>

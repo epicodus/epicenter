@@ -2,7 +2,7 @@
   <% @student.course.class_dates_until(Time.zone.now.to_date).sort.reverse.each do |day| %>
     <ul class='col-xs-12 list-unstyled'>
         <li>
-          <span class="col-xs-1">
+          <span class="col-xs-2">
             <%= day.strftime("%A") %>
           </span>
           <span class="col-xs-2">
