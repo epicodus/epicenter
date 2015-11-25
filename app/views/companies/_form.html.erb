@@ -1,6 +1,5 @@
-<div class="form-horizontal">
-  <%= form_for @company do |f| %>
-    <%= render 'layouts/errors', object: @company %>
+<%= form_for @company do |f| %>
+  <%= render 'layouts/errors', object: @company %>
 
   <div class='form-group'>
     <%= f.label :name, "Company Name" %>
