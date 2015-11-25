@@ -1,0 +1,17 @@
+<%= form_for Rating.new do |f| %>
+  <div class='form-group'>
+    <%= f.hidden_field :internship_id, value: object.id %>
+    <%= f.label :interest, 'High', class: 'radio-inline' %>
+    <%= f.radio_button :interest, 1 %>
+    <%= f.label :interest, 'Medium', class: 'radio-inline' %>
+    <%= f.radio_button :interest, 2 %>
+    <%= f.label :interest, 'Low', class: 'radio-inline' %>
+    <%= f.radio_button :interest, 3 %>
+  </div>
+  <div class='form-group'>
+    <%= f.text_area :notes, value: current_student.try(:find_rating, object).try(:notes), minlength: 10, rows: 6, placeholder: "Notes", class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.submit 'Submit', class: 'btn btn-info' %>
+  </div>
+<% end %>
