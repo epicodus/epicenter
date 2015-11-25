@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: post
-    uri: https://abd3d7ff691632daef7257fb38fd686e62b93dc88eb225def4bbb776851bd73d:@api.hellosign.com/v3/signature_request/create_embedded
+    uri: https://<HELLO_SIGN_API_KEY>:@api.hellosign.com/v3/signature_request/create_embedded
     body:
       encoding: UTF-8
-      string: client_id=477ccaec4fb05b2b0b4034e8f83c2ef4&file_url%5B%5D=http%3A%2F%2Finvestors.shopify.com%2Ffiles%2Fdoc_downloads%2Ftest.pdf&signers%5B0%5D%5Bemail_address%5D=student3%40example.com&signers%5B0%5D%5Bname%5D=Example+Brown+3&subject=Sign+to+accept+the+Epicodus+Code+of+Conduct&test_mode=1
+      string: client_id=<HELLO_SIGN_CLIENT_ID>&file_url%5B%5D=http%3A%2F%2Finvestors.shopify.com%2Ffiles%2Fdoc_downloads%2Ftest.pdf&signers%5B0%5D%5Bemail_address%5D=student3%40example.com&signers%5B0%5D%5Bname%5D=Example+Brown+3&subject=Sign+to+accept+the+Epicodus+Code+of+Conduct&test_mode=1
     headers:
       User-Agent:
       - hellosign-ruby-sdk/3.0.21
@@ -59,7 +59,7 @@ http_interactions:
   recorded_at: Fri, 26 Jun 2015 18:14:56 GMT
 - request:
     method: get
-    uri: https://abd3d7ff691632daef7257fb38fd686e62b93dc88eb225def4bbb776851bd73d:@api.hellosign.com/v3/embedded/sign_url/f5c49214f08e5311c64b8a633cf3c1a2
+    uri: https://<HELLO_SIGN_API_KEY>:@api.hellosign.com/v3/embedded/sign_url/f5c49214f08e5311c64b8a633cf3c1a2
     body:
       encoding: US-ASCII
       string: ''
