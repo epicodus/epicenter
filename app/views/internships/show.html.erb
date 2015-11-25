@@ -36,27 +36,11 @@
 </table>
 
 <% if @rating %>
-  <%= form_for Rating.new, html: { class: 'form-horizontal' } do |f| %>
-    <div class='form-group'>
-      <%= f.hidden_field :internship_id, value: @internship.id %>
-      <%= f.label :interest, 'High', class: 'radio-inline' %>
-      <%= f.radio_button :interest, 1 %>
-    <%= f.label :interest, 'Medium', class: 'radio-inline' %>
-    <%= f.radio_button :interest, 2 %>
-    <%= f.label :interest, 'Low', class: 'radio-inline' %>
-    <%= f.radio_button :interest, 3 %>
+  <div class="row">
+    <div class="col-xs-6">
+      <%= render 'rating_form', object: @internship %>
     </div>
-    <% if current_student.ratings.where(internship_id: @internship.id).empty? %>
-    <div class='form-group'>
-      <%= f.text_area :notes, value: nil, minlength: 10, rows: 6, placeholder: "Notes", class: 'form-control' %>
-    </div>
-    <% else %>
-    <div class='form-group'>
-      <%= f.text_area :notes, value: current_student.find_rating(@internship).notes, required: true, minlength: 10, rows: 6, class: 'form-control' %>
-    </div>
-    <% end %>
-    <%= f.submit 'Submit', class: 'btn btn-info' %>
-  <% end %>
+  </div>
 <% end %>
 
 <% if current_admin %>

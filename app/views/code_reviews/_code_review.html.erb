@@ -4,14 +4,12 @@
   <% else %>
     <div class='row'>
   <% end %>
-    <div class="col-xs-8">
-      <h4><%= link_to code_review.title, code_review %></h4>
+    <div class="col-xs-6">
+      <p><%= link_to code_review.title, code_review %></p>
     </div>
-
-    <div class="col-xs-4">
+    <div class="col-xs-6">
       <% if current_student %>
-
-        <span class="pull-right code-review-status">
+        <span class="code-review-status">
           <% if code_review.submission_for(current_student).nil? %>
             Not submitted
           <% elsif code_review.submission_for(current_student).has_been_reviewed? %>
@@ -20,15 +18,12 @@
             Submitted - Pending review
           <% end %>
         </span>
-
       <% elsif current_admin %>
         <%= link_to 'Grades report', code_review_report_path(code_review) %>
         <%= submissions_count_badge(code_review) %>
-
         <%= fields_for 'code_reviews[]', code_review do |f| %>
           <%= f.hidden_field :number, class: 'code-review-number' %>
         <% end %>
-
       <% end %>
     </div>
   </div>

@@ -25,37 +25,11 @@
         <br>
         <br>
       <% elsif current_student %>
-        <%= form_for Rating.new, html: { class: 'form-horizontal' } do |f| %>
-          <%= f.hidden_field :internship_id, value: internship.id %>
-          <div class='form-group'>
-            <div class="col-xs-8">
-              <%= f.label :interest, 'High', class: 'radio-inline' %>
-              <%= f.radio_button :interest, 1 %>
-              <%= f.label :interest, 'Medium', class: 'radio-inline' %>
-              <%= f.radio_button :interest, 2 %>
-              <%= f.label :interest, 'Low', class: 'radio-inline' %>
-              <%= f.radio_button :interest, 3 %>
-            </div>
+        <div class="row">
+          <div class="col-xs-6">
+            <%= render 'rating_form', object: internship %>
           </div>
-          <% if current_student.ratings.where(internship_id: internship.id).empty? %>
-            <div class="form-group">
-              <div class="col-xs-8">
-                <%= f.text_area :notes, value: nil, required: true, minlength: 10, placeholder: "Notes", rows: 6, class: 'form-control' %>
-              </div>
-            </div>
-          <% else %>
-            <div class="form-group">
-              <div class="col-xs-8">
-                <%= f.text_area :notes, value: current_student.find_rating(internship).notes, required: true, minlength: 10, rows: 6, class: 'form-control' %>
-              </div>
-            </div>
-          <% end %>
-            <div class="form-group">
-              <div class="col-xs-8">
-              <%= f.submit 'Submit', class: 'btn btn-info' %>
-              </div>
-            </div>
-        <% end %>
+        </div>
       <% end %>
     </li>
   <% end %>
