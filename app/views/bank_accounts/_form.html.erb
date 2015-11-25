@@ -1,0 +1,24 @@
+
+<%= form_for @bank_account, url: bank_accounts_path do |f| %>
+  <%= render '/layouts/errors', object: @bank_account %>
+  <div class="form-group">
+    <%= label_tag :name, "Name on account" %>
+    <%= text_field_tag :name, nil, { autofocus: true, class: 'form-control' } %>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag :routing_number %>
+    <%= text_field_tag :routing_number, nil, { class: 'form-control' } %>
+  </div>
+
+  <div class="form-group">
+    <%= label_tag :bank_account_number %>
+    <%= text_field_tag :bank_account_number, nil, { class: 'form-control' } %>
+  </div>
+
+  <%= hidden_field_tag :country, value = "US"  %>
+  <%= hidden_field_tag :currency, value = "USD" %>
+  <%= f.hidden_field :stripe_token %>
+
+  <%= f.submit "Verify bank account", class: "btn btn-info", id: "account-submit-button" %>
+<% end %>

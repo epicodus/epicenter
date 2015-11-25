@@ -5,4 +5,8 @@
 <p><%= @course.class_days.count %> class <%= 'day'.pluralize(@course.class_days.count) %></p>
 <hr>
 
-<%= render 'form', course: @course %>
+<div class="row">
+  <div class="col-xs-6">
+    <%= render 'form', course: @course %>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<%= form_for AttendanceRecord.new, url: pair_attendance_records_path do |f| %>
+  <div class="form-group">
+    <%= select_tag "pair_ids[]", options_from_collection_for_select(@students_not_signed_in, :id, :name), { prompt: 'Select pair', required: true, id: 'pair_1', class: "form-control" }%>
+  </div>
+
+  <div class="form-group">
+    <%= select_tag "pair_ids[]", options_from_collection_for_select(@students_not_signed_in, :id, :name), { prompt: 'Select pair', required: true, id: 'pair_2', class: "form-control" } %>
+  </div>
+
+  <%= f.submit "Pair log in", class: 'btn btn-success' %>
+<% end %>

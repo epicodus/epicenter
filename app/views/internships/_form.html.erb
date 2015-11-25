@@ -1,44 +1,30 @@
 
-<%= form_for [@course, @internship], html: { class: 'form-horizontal' } do |f| %>
+<%= form_for [@course, @internship] do |f| %>
   <%= render 'layouts/errors', object: @internship %>
   <div class='form-group'>
-    <%= f.label :description, "Internship description", class: "col-xs-4 control-label" %>
-    <div class="col-xs-8">
-      <%= f.text_area :description, rows: 6, class: "form-control" %>
-    </div>
+    <%= f.label :description, "Internship description" %>
+    <%= f.text_area :description, rows: 6, class: "form-control" %>
   </div>
   <div class='form-group'>
-    <%= f.label :ideal_intern, class: "col-xs-4 control-label" %>
-    <div class="col-xs-8">
-      <%= f.text_area :ideal_intern, rows: 6, class: "form-control" %>
-    </div>
+    <%= f.label :ideal_intern %>
+    <%= f.text_area :ideal_intern, rows: 6, class: "form-control" %>
   </div>
   <div class='form-group'>
-    <div class="col-xs-3 col-xs-offset-1">
-      <%= f.label :clearance_required do %>
-        Clearance Required ?
-      <% end %>
-    </div>
-    <div class="col-xs-7">
-      <%= f.check_box :clearance_required %>
-    </div>
+    <%= f.label :clearance_required do %>
+      Clearance Required ?
+    <% end %>
+    <%= f.check_box :clearance_required %>
   </div>
   <div class='form-group'>
-    <%= f.label :clearance_description, class: "col-xs-4 control-label" %>
-    <div class="col-xs-8">
-      <%= f.text_area :clearance_description, rows: 6, class: "form-control" %>
-    </div>
+    <%= f.label :clearance_description %>
+    <%= f.text_area :clearance_description, rows: 6, class: "form-control" %>
   </div>
   <div class='form-group'>
-    <%= f.label :company_id, class: "col-xs-4 control-label" %>
-    <div class="col-xs-8">
-      <%= f.collection_select :company_id, Company.all, :id, :name, { prompt: "Please select a company." }, { class: "form-control" } %>
-    </div>
+    <%= f.label :company_id %>
+    <%= f.collection_select :company_id, Company.all, :id, :name, { prompt: "Please select a company." }, { class: "form-control" } %>
   </div>
   <div class="form-group">
-    <div class="col-xs-8 col-xs-offset-4">
-      <%= f.submit nil, class: 'btn btn-primary' %>
-      <%= link_to 'Cancel', course_internships_path, class: 'btn btn-default' %>
-    </div>
+    <%= f.submit nil, class: 'btn btn-primary' %>
+    <%= link_to 'Cancel', course_internships_path, class: 'btn btn-default' %>
   </div>
 <% end %>
