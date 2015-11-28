@@ -16,4 +16,5 @@
 //= require nested_form_fields
 //= require bootstrap-datepicker
 //= require jquery.timepicker.js
+//= require bootstrap-sprockets
 //= require_tree .
