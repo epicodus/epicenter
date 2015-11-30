@@ -6,7 +6,6 @@ class InternshipsController < ApplicationController
 
   def index
     @course = Course.find(params[:course_id])
-    @internships = @course.internships_sorted_by_interest(current_student)
   end
 
   def show

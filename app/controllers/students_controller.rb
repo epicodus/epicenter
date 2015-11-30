@@ -22,8 +22,7 @@ class StudentsController < ApplicationController
         redirect_to :back, alert: "There was an error."
       end
     elsif current_student
-      student = current_user
-      if student.update(student_params)
+      if current_student.update(student_params)
         redirect_to :back, notice: "Primary payment method has been updated."
       else
         redirect_to :back, alert: "There was an error."
@@ -33,6 +32,8 @@ class StudentsController < ApplicationController
 
 private
   def student_params
-    params.require(:student).permit(:primary_payment_method_id, :course_id)
+    params.require(:student).permit(:primary_payment_method_id,
+                                    :course_id,
+                                    ratings_attributes: [:id, :interest, :internship_id, :notes])
   end
 end
