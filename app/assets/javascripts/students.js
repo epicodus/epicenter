@@ -1,7 +1,7 @@
 $(function() {
-  $('div').find('div.' + $('.student-nav li:first').attr('class')).show();  // shows the content of the first tab
-  $('div').find('div.' + $('.student-nav li:first').attr('class')).siblings('.student-div').hide();  // hides the content of all the other tabs
-  $('.student-nav li:first').addClass("active");  // sets the first tabs class to 'active'
+  $('div').find('div.' + $('#student-nav li:first').attr('class')).show();  // shows the content of the first tab
+  $('div').find('div.' + $('#student-nav li:first').attr('class')).siblings('.student-div').hide();  // hides the content of all the other tabs
+  $('#student-nav li:first').addClass("active");  // sets the first tabs class to 'active'
 
   $('#student-nav li').each(function() {
     $(this).click(function() {
