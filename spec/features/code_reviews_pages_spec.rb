@@ -344,14 +344,14 @@ feature 'view the Code Reviews tab' do
 
   scenario 'student should have pass' do
     visit student_path(student)
-    find('.student-nav li.student-code-reviews').click
+    find('#student-nav li.student-code-reviews').click
     expect(page).to have_content "Pass"
   end
 
 
   scenario 'a modal appears with notes' do
     visit student_path(student)
-    find('.student-nav li.student-code-reviews').click
+    find('#student-nav li.student-code-reviews').click
     click_link 'Notes'
     expect(page).to have_content("Great job!")
   end
