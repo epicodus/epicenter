@@ -325,6 +325,10 @@ FactoryGirl.define do
     student
     internship
     notes 'This one looks great!'
-    interest '1'
+    interest 1
+
+    factory :low_rating do
+      interest 3
+    end
   end
 end

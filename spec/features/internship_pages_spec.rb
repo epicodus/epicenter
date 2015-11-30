@@ -136,32 +136,63 @@ end
 
 feature 'rating an internship' do
   let(:student) { FactoryGirl.create(:student) }
-  let!(:internship_one) { FactoryGirl.create(:internship, course: student.course) }
+  let!(:low_rated_internship_1) { FactoryGirl.create(:internship, course: student.course) }
+  let!(:low_rated_internship_2) { FactoryGirl.create(:internship, course: student.course) }
+  let!(:low_rated_internship_3) { FactoryGirl.create(:internship, course: student.course) }
+  let!(:low_rated_internship_4) { FactoryGirl.create(:internship, course: student.course) }
+  let!(:low_rated_internship_5) { FactoryGirl.create(:internship, course: student.course) }
+  let!(:unrated_internship) { FactoryGirl.create(:internship, course: student.course) }
+  let!(:low_rating_1) { FactoryGirl.create(:low_rating, internship: low_rated_internship_1, student: student)}
+  let!(:low_rating_2) { FactoryGirl.create(:low_rating, internship: low_rated_internship_2, student: student)}
+  let!(:low_rating_3) { FactoryGirl.create(:low_rating, internship: low_rated_internship_3, student: student)}
+  let!(:low_rating_4) { FactoryGirl.create(:low_rating, internship: low_rated_internship_4, student: student)}
+  let!(:low_rating_5) { FactoryGirl.create(:low_rating, internship: low_rated_internship_5, student: student)}
   before { login_as(student, scope: :student) }
 
   scenario 'a student can rate an internship from the internship page' do
-    visit course_internship_path(student.course, internship_one)
-    choose "rating_interest_1"
-    fill_in 'rating_notes', with: 'New note about the internship.'
-    click_on "Submit"
-    expect(page).to have_css 'span.btn-success'
+    visit course_internship_path(student.course, low_rated_internship_1)
+    choose "High"
+    fill_in 'Notes: minimum 10 characters', with: 'New note about the internship.'
+    click_on "Submit rating"
+    expect(page).to have_field('student_ratings_attributes_0_interest_1', checked: true)
   end
 
   scenario 'a student can update an internship with a new rating from the internship page' do
-    visit course_internship_path(student.course, internship_one)
-    choose "rating_interest_1"
-    choose "rating_interest_3"
-    fill_in 'rating_notes', with: 'New note about the internship.'
-    click_on "Submit"
-    expect(page).to have_css 'span.btn-primary'
+    visit course_internship_path(student.course, low_rated_internship_1)
+    choose "High"
+    fill_in 'Notes: minimum 10 characters', with: 'Old note.'
+    click_on "Submit rating"
+    choose "Low"
+    fill_in 'Notes: minimum 10 characters', with: 'New note.'
+    click_on "Submit rating"
+    selected_radio_button = find('#student_ratings_attributes_0_interest_3')
+    expect(selected_radio_button).to be_checked
   end
 
   scenario 'a student can rate an internship from the internships index page' do
     visit course_internships_path(student.course)
-    choose "rating_interest_2"
-    fill_in 'rating_notes', with: 'New note about the internship.'
-    click_on "Submit"
-    expect(page).to have_css 'span.btn-danger'
+    within ".internship_#{low_rated_internship_1.id}" do
+      choose "Medium"
+      fill_in 'Notes: minimum 10 characters', with: 'Note about the first internship.'
+    end
+    within ".internship_#{low_rated_internship_2.id}" do
+      choose "High"
+      fill_in 'Notes: minimum 10 characters', with: 'Note about the second internship.'
+    end
+    click_on "Submit ratings"
+    within ".internship_#{low_rated_internship_2.id}" do
+      internship_2_selected_radio_button = find('#student_ratings_attributes_1_interest_1')
+      expect(internship_2_selected_radio_button).to be_checked
+    end
+  end
+
+  scenario 'a student cannot rate five internships as low' do
+    visit course_internships_path(student.course)
+    within ".internship_#{unrated_internship.id}" do
+      fill_in 'Notes: minimum 10 characters', with: 'Note about the sixth internship.'
+      choose "Low"
+    end
+    expect(page).to have_content 'You may only rank 5 companies as "Low" interest.'
   end
 end
 
