@@ -30,11 +30,12 @@
   <%= form_for current_student do |f| %>
     <div class="row">
       <div class="col-xs-6">
+        <p class="pull-right character-count"></p>
         <%= render 'rating_form', object: @internship, f: f %>
       </div>
     </div>
     <div class="form-group">
-      <%= f.submit 'Submit rating', class: 'btn btn-info' %>
+      <%= f.submit 'Submit rating', class: 'btn btn-info', id: 'rating-button' %>
     </div>
   <% end %>
 <% end %>
