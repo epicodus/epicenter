@@ -21,6 +21,8 @@ class Student < User
   belongs_to :primary_payment_method, class_name: 'PaymentMethod'
   has_many :signatures
 
+  accepts_nested_attributes_for :ratings
+
   NUMBER_OF_RANDOM_PAIRS = 5
 
   def other_courses
