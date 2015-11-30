@@ -1,8 +1,5 @@
 <div>
-  <h1>
-    <%= @company.name %>
-    <%= render 'internships/rating_label', object: @rating %>
-  </h1>
+  <h1><%= @company.name %></h1>
 </div>
 <table class="table">
   <tr>
@@ -15,32 +12,31 @@
   </tr>
   <tr>
     <th>Internship description:</th>
-    <td>
-      <%= @internship.description %>
-    </td>
+    <td><%= @internship.description %></td>
   </tr>
   <tr>
     <th>Ideal intern:</th>
-    <td>
-      <%= @internship.ideal_intern %>
-    </td>
+    <td><%= @internship.ideal_intern %></td>
   </tr>
   <% if @internship.clearance_required %>
     <tr>
       <th>Clearance description</th>
-      <td>
-        <%= @internship.clearance_description %>
-      </td>
+      <td><%= @internship.clearance_description %></td>
     </tr>
   <% end %>
 </table>
 
 <% if @rating %>
-  <div class="row">
-    <div class="col-xs-6">
-      <%= render 'rating_form', object: @internship %>
+  <%= form_for current_student do |f| %>
+    <div class="row">
+      <div class="col-xs-6">
+        <%= render 'rating_form', object: @internship, f: f %>
+      </div>
     </div>
-  </div>
+    <div class="form-group">
+      <%= f.submit 'Submit rating', class: 'btn btn-info' %>
+    </div>
+  <% end %>
 <% end %>
 
 <% if current_admin %>
