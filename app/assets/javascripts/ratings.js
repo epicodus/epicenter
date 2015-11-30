@@ -5,15 +5,17 @@ $(function() {
 
     if ($(this).val().length < 10) {
       $(this).parent().addClass('has-error');
-      $('.fixed-ratings-button').attr('disabled', true);
+      $('#fixed-ratings-button').attr('disabled', true);
+      $('#rating-button').attr('disabled', true);
     } else if ($(this).val().length > 9) {
       $(this).parent().removeClass('has-error');
-      $('.fixed-ratings-button').attr('disabled', false);
+      $('#fixed-ratings-button').attr('disabled', false);
+      $('#rating-button').attr('disabled', false);
     }
 
     if (!$(this).val() && $(this).parent().hasClass('has-error')) {
       $(this).parent().removeClass('has-error');
-      $('.fixed-ratings-button').attr('disabled', false);
+      $('#fixed-ratings-button').attr('disabled', false);
     }
   });
 
