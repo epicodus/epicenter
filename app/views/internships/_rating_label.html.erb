@@ -1,11 +1,11 @@
-<span>
+<div>
   <% if object %>
     <% if object.interest == "1" %>
-      Your rating: <span class="btn-xs btn-success" disabled>High</span>
+      <span class="btn-xs btn-success" disabled>High</span>
     <% elsif object.interest == "2" %>
-      Your rating: <span class="btn-xs btn-danger" disabled>Medium</span>
+      <span class="btn-xs btn-danger" disabled>Medium</span>
     <% elsif object.interest == "3" %>
-      Your rating: <span class="btn-xs btn-primary" disabled>Low</span>
+      <span class="btn-xs btn-primary" disabled>Low</span>
     <% end %>
   <% end %>
-</span>
+</div>

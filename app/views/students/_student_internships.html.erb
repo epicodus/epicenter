@@ -3,7 +3,7 @@
     <% @student.internships_sorted_by_interest.each do |internship| %>
       <li class="list-group-item">
         <div class='row'>
-            <div class='col-xs-4'>
+            <div class='col-xs-3'>
               <%= link_to internship.company_name, course_internship_path(@student.course, internship) %>
               <%= render 'internships/rating_label', object: @student.find_rating(internship) %>
             </div>
