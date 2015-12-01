@@ -1,7 +1,7 @@
 $(function() {
   $('.rating-text-area').keyup(function() {
     text_length = $(this).val().length;
-    $(this).closest('li').find('p').html(text_length + ' characters');
+    $(this).closest('div.row').find('p.character-count').html(text_length + ' characters');
 
     if ($(this).val().length < 10) {
       $(this).parent().addClass('has-error');
