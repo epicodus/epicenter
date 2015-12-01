@@ -171,16 +171,16 @@ feature 'rating an internship' do
 
   scenario 'a student can rate an internship from the internships index page' do
     visit course_internships_path(student.course)
-    within ".internship_#{low_rated_internship_1.id}" do
+    within "#internship_#{low_rated_internship_1.id}" do
       choose "Medium"
       fill_in 'Notes: minimum 10 characters', with: 'Note about the first internship.'
     end
-    within ".internship_#{low_rated_internship_2.id}" do
+    within "#internship_#{low_rated_internship_2.id}" do
       choose "High"
       fill_in 'Notes: minimum 10 characters', with: 'Note about the second internship.'
     end
     click_on "Submit ratings"
-    within ".internship_#{low_rated_internship_2.id}" do
+    within "#internship_#{low_rated_internship_2.id}" do
       internship_2_selected_radio_button = find('#student_ratings_attributes_1_interest_1')
       expect(internship_2_selected_radio_button).to be_checked
     end
@@ -188,7 +188,7 @@ feature 'rating an internship' do
 
   scenario 'a student cannot rate five internships as low' do
     visit course_internships_path(student.course)
-    within ".internship_#{unrated_internship.id}" do
+    within "#internship_#{unrated_internship.id}" do
       fill_in 'Notes: minimum 10 characters', with: 'Note about the sixth internship.'
       choose "Low"
     end
