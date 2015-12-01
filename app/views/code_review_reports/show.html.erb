@@ -4,25 +4,17 @@
   <thead>
     <tr>
       <th></th>
-      <th>
-        Total Score
-      </th>
-      <th>
-        Notes
-      </th>
-      <!-- objective content -->
+      <th>Total Score</th>
+      <th>Notes</th>
     </tr>
   </thead>
 
   <tbody>
-    <% @course.students.each do |student| %>
+    <% @course.students.sort_by { |student| @code_review.latest_total_score_for(student) }.reverse.each do |student| %>
       <tr>
-        <td><%= student.name %></td>
-        <!-- objective score -->
+        <td class="col-xs-2"><%= link_to student.name, student_path(student) %></td>
         <td><%= @code_review.latest_total_score_for(student) %></td>
-        <td>
-          <%= @code_review.submission_for(student).try(:reviews).try(:last).try(:note) %>
-        </td>
+        <td><%= @code_review.submission_for(student).try(:reviews).try(:last).try(:note) %></td>
       </tr>
     <% end %>
   </tbody>
