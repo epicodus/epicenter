@@ -22,17 +22,28 @@ class StudentsController < ApplicationController
         redirect_to :back, alert: "There was an error."
       end
     elsif current_student
-      student = current_user
-      if student.update(student_params)
-        redirect_to :back, notice: "Primary payment method has been updated."
+      if current_student.update(student_params)
+        if request.referer.include?('internships')
+          redirect_to :back, notice: "Ratings have been updated."
+        else
+          redirect_to :back, notice: "Primary payment method has been updated."
+        end
       else
-        redirect_to :back, alert: "There was an error."
+        if request.referer.include?('internships')
+          @course = Course.find(Rails.application.routes.recognize_path(request.referrer)[:course_id])
+          render 'internships/index'
+        else
+          @payments = current_student.payments
+          render 'payments/index'
+        end
       end
     end
   end
 
 private
   def student_params
-    params.require(:student).permit(:primary_payment_method_id, :course_id)
+    params.require(:student).permit(:primary_payment_method_id,
+                                    :course_id,
+                                    ratings_attributes: [:id, :interest, :internship_id, :notes])
   end
 end

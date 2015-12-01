@@ -1,10 +1,10 @@
 <div>
-  <% if object %>
-    <% if object.interest == "1" %>
+  <% if rating %>
+    <% if rating.interest == "1" %>
       <span class="btn-xs btn-success" disabled>High</span>
-    <% elsif object.interest == "2" %>
+    <% elsif rating.interest == "2" %>
       <span class="btn-xs btn-danger" disabled>Medium</span>
-    <% elsif object.interest == "3" %>
+    <% elsif rating.interest == "3" %>
       <span class="btn-xs btn-primary" disabled>Low</span>
     <% end %>
   <% end %>

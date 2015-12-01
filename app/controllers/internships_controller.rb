@@ -6,13 +6,10 @@ class InternshipsController < ApplicationController
 
   def index
     @course = Course.find(params[:course_id])
-    @internships = @course.internships_sorted_by_interest(current_student)
   end
 
   def show
     @internship = Internship.find(params[:id])
-    @company = @internship.company
-    @rating = Rating.for(@internship, current_student)
   end
 
   def new

@@ -52,9 +52,9 @@ class Course < ActiveRecord::Base
       internships.sort_by do |internship|
         rating = current_student.find_rating(internship)
         if rating
-          rating.interest
+          rating.interest.to_i
         else
-          '0'
+          0
         end
       end
     else
