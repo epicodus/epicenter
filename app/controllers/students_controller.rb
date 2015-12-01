@@ -30,7 +30,7 @@ class StudentsController < ApplicationController
         end
       else
         if request.referer.include?('internships')
-          @course = Course.find(URI(request.referer).path.split('/')[2])
+          @course = Course.find(Rails.application.routes.recognize_path(request.referrer)[:course_id])
           render 'internships/index'
         else
           @payments = current_student.payments
