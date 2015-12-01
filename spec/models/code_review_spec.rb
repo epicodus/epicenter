@@ -6,11 +6,6 @@ describe CodeReview do
   it { should belong_to :course }
   it { should accept_nested_attributes_for :objectives }
 
-  it 'determines total available points for a code review' do
-    code_review = FactoryGirl.create(:code_review)
-    expect(code_review.total_points_available).to eq 3
-  end
-
   it 'duplicates a code review and its objectives' do
     course = FactoryGirl.create(:course)
     code_review = FactoryGirl.create(:code_review)
