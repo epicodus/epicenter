@@ -154,7 +154,8 @@ feature 'rating an internship' do
     choose "High"
     fill_in 'Notes: minimum 10 characters', with: 'New note about the internship.'
     click_on "Submit rating"
-    expect(page).to have_field('student_ratings_attributes_0_interest_1', checked: true)
+    selected_radio_button = find('#student_ratings_attributes_0_interest_1')
+    expect(selected_radio_button).to be_checked
   end
 
   scenario 'a student can update an internship with a new rating from the internship page' do
