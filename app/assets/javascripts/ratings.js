@@ -1,7 +1,7 @@
 $(function() {
   $('.rating-text-area').keyup(function() {
     text_length = $(this).val().length;
-    $(this).parent().parent().find('p').html(text_length + ' characters');
+    $(this).closest('li').find('p').html(text_length + ' characters');
 
     if ($(this).val().length < 10) {
       $(this).parent().addClass('has-error');
@@ -16,6 +16,7 @@ $(function() {
     if (!$(this).val() && $(this).parent().hasClass('has-error')) {
       $(this).parent().removeClass('has-error');
       $('#fixed-ratings-button').attr('disabled', false);
+      $('#rating-button').attr('disabled', false);
     }
   });
 
@@ -28,10 +29,10 @@ $(function() {
   });
 
   $('input:text, textarea').change(function() {
-    $(this).parent().parent().find($('input:radio')).attr('required', true)
+    $(this).closest('li').find($('input:radio')).attr('required', true)
   });
 
   $('input:radio').change(function() {
-    $(this).parent().parent().parent().find($('input:text, textarea')).attr('required', true);
+    $(this).closest('li').find($('input:text, textarea')).attr('required', true);
   });
 });
