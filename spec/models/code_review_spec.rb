@@ -6,11 +6,6 @@ describe CodeReview do
   it { should belong_to :course }
   it { should accept_nested_attributes_for :objectives }
 
-  it 'determines total available points for a code review' do
-    code_review = FactoryGirl.create(:code_review)
-    expect(code_review.total_points_available).to eq 3
-  end
-
   it 'duplicates a code review and its objectives' do
     course = FactoryGirl.create(:course)
     code_review = FactoryGirl.create(:code_review)
@@ -28,6 +23,13 @@ describe CodeReview do
     code_review = FactoryGirl.create(:code_review)
     next_code_review = FactoryGirl.create(:code_review, course: code_review.course)
     expect(next_code_review.number).to eq 2
+  end
+
+  describe 'total_points_available' do
+    it 'determines total available points for a code review' do
+      code_review = FactoryGirl.create(:code_review)
+      expect(code_review.total_points_available).to eq 3
+    end
   end
 
   describe '.default_scope' do
