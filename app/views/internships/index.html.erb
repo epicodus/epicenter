@@ -6,20 +6,18 @@
 
 <hr>
 
-<%= render 'layouts/errors', object: @rating %>
-
 <% if current_student %>
   <%= form_for current_student do |f| %>
     <div class="row">
       <div class="col-xs-6">
         <ul class="list-unstyled">
           <% @course.internships_sorted_by_interest(current_student).each do |internship| %>
-            <li class="internship_<%= internship.id %>">
+            <li id="internship_<%= internship.id %>">
               <p><%= link_to internship.company_name, course_internship_path(@course, internship) %></p>
               <div class="row">
                 <div class="col-xs-12">
                   <p class="pull-right character-count"></p>
-                  <%= render 'rating_form', object: internship, f: f %>
+                  <%= render 'rating_form', rating: Rating.find_by(internship_id: internship.id, student_id: current_student.id), internship: internship, f: f %>
                 </div>
               </div>
             </li>
