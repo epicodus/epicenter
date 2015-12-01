@@ -1,13 +1,13 @@
 <div>
-  <h1><%= @company.name %></h1>
+  <h1><%= @internship.company.name %></h1>
 </div>
 <table class="table">
   <tr>
     <th>Company info:</th>
     <td>
-      <%= link_to @company.website, @company.website %><br>
-      <%= @company.address %><br><br>
-      <%= @company.description %>
+      <%= link_to @internship.company.website, @internship.company.website %><br>
+      <%= @internship.company.address %><br><br>
+      <%= @internship.company.description %>
     </td>
   </tr>
   <tr>
@@ -26,12 +26,12 @@
   <% end %>
 </table>
 
-<% if @rating %>
+<% if Rating.for(@internship, current_student) %>
   <%= form_for current_student do |f| %>
     <div class="row">
       <div class="col-xs-6">
         <p class="pull-right character-count"></p>
-        <%= render 'rating_form', object: @internship, f: f %>
+        <%= render 'rating_form', rating: Rating.for(@internship, current_student), internship: @internship, f: f %>
       </div>
     </div>
     <div class="form-group">

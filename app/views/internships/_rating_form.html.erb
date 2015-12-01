@@ -1,20 +1,22 @@
-<%= ratings_fields(object, f) do |ff| %>
+<%= f.fields_for :ratings, rating ||= Rating.new do |ff| %>
   <div class='btn-group form-group' data-toggle='buttons'>
-    <% if current_student.try(:find_rating, object).try(:interest) == '1' %>
+    <% if current_student.find_rating(internship).try(:interest) == '1' %>
       <label class="btn btn-success active">
     <% else %>
       <label class="btn btn-success">
     <% end %>
       <%= ff.radio_button :interest, 1 %> High
     </label>
-    <% if current_student.try(:find_rating, object).try(:interest) == '2' %>
+
+    <% if current_student.find_rating(internship).try(:interest) == '2' %>
       <label class="btn btn-danger active">
     <% else %>
       <label class="btn btn-danger">
     <% end %>
       <%= ff.radio_button :interest, 2 %> Medium
     </label>
-    <% if current_student.try(:find_rating, object).try(:interest) == '3' %>
+
+    <% if current_student.find_rating(internship).try(:interest) == '3' %>
       <label class="btn btn-primary active">
     <% else %>
       <label class="btn btn-primary">
@@ -23,9 +25,9 @@
     </label>
   </div>
 
-  <%= ff.hidden_field :internship_id, value: object.id %>
+  <%= ff.hidden_field :internship_id, value: internship.id %>
 
   <div class='form-group'>
-    <%= ff.text_area :notes, value: current_student.try(:find_rating, object).try(:notes), rows: 6, placeholder: "Notes: minimum 10 characters", class: 'rating-text-area form-control' %>
+    <%= ff.text_area :notes, rows: 6, placeholder: "Notes: minimum 10 characters", class: 'rating-text-area form-control' %>
   </div>
 <% end %>
