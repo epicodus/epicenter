@@ -6,6 +6,7 @@
     <% end %>
       <%= ff.radio_button :interest, 1 %> High
     </label>
+
     <% if current_student.find_rating(internship).try(:interest) == '2' %>
       <label class="btn btn-danger active">
     <% else %>
@@ -13,6 +14,7 @@
     <% end %>
       <%= ff.radio_button :interest, 2 %> Medium
     </label>
+
     <% if current_student.find_rating(internship).try(:interest) == '3' %>
       <label class="btn btn-primary active">
     <% else %>
