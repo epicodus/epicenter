@@ -23,9 +23,19 @@ class StudentsController < ApplicationController
       end
     elsif current_student
       if current_student.update(student_params)
-        redirect_to :back, notice: "Primary payment method has been updated."
+        if request.referer.include?('internships')
+          redirect_to :back, notice: "Ratings have been updated."
+        else
+          redirect_to :back, notice: "Primary payment method has been updated."
+        end
       else
-        redirect_to :back, alert: "There was an error."
+        if request.referer.include?('internships')
+          @course = Course.find(URI(request.referer).path.split('/')[2])
+          render 'internships/index'
+        else
+          @payments = current_student.payments
+          render 'payments/index'
+        end
       end
     end
   end
