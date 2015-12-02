@@ -20,6 +20,11 @@
       </div>
 
       <div class="form-group">
+        <%= f.label :plan_id, "Payment Plan" %>
+        <%= f.select(:plan_id, Plan.all.collect {|p| [ p.name, p.id ] }, {}, class: 'form-control') %>
+      </div>
+
+      <div class="form-group">
         <%= f.label :password, 'New password' %>
           <i>(leave blank if you don't want to change it)</i>
           <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
