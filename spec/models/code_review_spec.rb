@@ -25,6 +25,13 @@ describe CodeReview do
     expect(next_code_review.number).to eq 2
   end
 
+  describe 'total_points_available' do
+    it 'multiplies the number of objectives by 3' do
+      code_review = FactoryGirl.create(:code_review, objectives: [FactoryGirl.create(:objective)])
+      expect(code_review.total_points_available).to eq 6
+    end
+  end
+
   describe '.default_scope' do
     let(:second_code_review) { FactoryGirl.create(:code_review) }
     let(:first_code_review) { FactoryGirl.create(:code_review, course: second_code_review.course) }

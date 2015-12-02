@@ -13,6 +13,10 @@ class CodeReview < ActiveRecord::Base
 
   before_create :set_number
 
+  def total_points_available
+    objectives.length * 3
+  end
+
   def duplicate_code_review(course)
     copy_code_review = self.deep_clone include: :objectives
     copy_code_review.course = course

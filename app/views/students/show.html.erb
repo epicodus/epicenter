@@ -5,6 +5,9 @@
     <li class="student-attendance">
       <a>Attendance</a>
     </li>
+    <li class="student-code-reviews">
+      <a>Code Reviews</a>
+    </li>
     <li class="student-internships">
       <a>Rated Internships</a>
     </li>
@@ -15,9 +18,12 @@
 
   <%= render 'students/student_courses' %>
 
+  <%= render 'students/student_code_reviews' %>
+
   <%= render 'students/student_internships' %>
 
   <%= render 'students/student_attendance' %>
+
 
 <% else %>
   <h2><%= @student.name %> is not enrolled in any courses.</h2>

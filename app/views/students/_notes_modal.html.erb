@@ -1,0 +1,19 @@
+<% @student.submissions.each do |submission| %>
+  <div class="modal fade notes-modal" data-backdrop="static" id="<%= submission.id %>">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>Notes</h4>
+        </div>
+        <div class="modal-body">
+          <% submission.reviews.each do |review| %>
+            <%= review.note %>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

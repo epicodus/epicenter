@@ -110,6 +110,7 @@ feature 'viewing the student page' do
   scenario 'when a student is enrolled in a course' do
     visit student_path(student)
     expect(page).to have_content 'Attendance'
+    expect(page).to have_content 'Code Reviews'
     expect(page).to have_content 'Rated Internships'
     expect(page).to have_content 'Courses'
   end
