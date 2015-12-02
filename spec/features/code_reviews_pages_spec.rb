@@ -342,14 +342,14 @@ feature 'view the Code Reviews tab' do
 
   before { login_as(admin, scope: :admin) }
 
-  scenario 'student should have pass' do
+  scenario 'an instructor looks at a code review and sees whether a student passed' do
     visit student_path(student)
     find('#student-nav li.student-code-reviews').click
     expect(page).to have_content "Pass"
   end
 
 
-  scenario 'a modal appears with notes' do
+  scenario 'a user clicks on notes and a modal opens' do
     visit student_path(student)
     find('#student-nav li.student-code-reviews').click
     click_link 'Notes'
