@@ -26,9 +26,9 @@ describe CodeReview do
   end
 
   describe 'total_points_available' do
-    it 'determines total available points for a code review' do
-      code_review = FactoryGirl.create(:code_review)
-      expect(code_review.total_points_available).to eq 3
+    it 'multiplies the number of objectives by 3' do
+      code_review = FactoryGirl.create(:code_review, objectives: [FactoryGirl.create(:objective)])
+      expect(code_review.total_points_available).to eq 6
     end
   end
 
