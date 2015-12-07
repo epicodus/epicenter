@@ -1,54 +1,54 @@
 <h1 class="text-center">Queue</h1>
 <% if @tickets.any? %>
-	<h3>
-		<%= @tickets.count %> <%= 'ticket'.pluralize(@tickets.count) %>
-		<span class="pull-right"><%= Time.zone.now.to_date.strftime("%A, %B %d, %Y") %></span>
-	</h3>
-	<hr>
+  <h3>
+    <%= @tickets.count %> <%= 'ticket'.pluralize(@tickets.count) %>
+    <span class="pull-right"><%= Time.zone.now.to_date.strftime("%A, %B %d, %Y") %></span>
+  </h3>
+  <hr>
 <% else %>
-	<h3 class="text-center">There are not currently any tickets. Well done!</h3>
+  <h3 class="text-center">There are not currently any tickets. Well done!</h3>
 <% end %>
 
 
 <div class='row'>
-	<div class='col-xs-8 col-xs-offset-2' id='ticket-list'>
-		<% @tickets.each do |ticket| %>
-			<div class="panel panel-info ticket" id="ticket-<%= ticket.id %>">
-				<div class="panel-heading">
-					<h3 class="panel-title">
-						<p class='ticket-number'>
-							Ticket #<%= ticket.id %>
-		  				<span class='pull-right'><%= ticket.course.description %></span>
-						</p>
-					</h3>
-				</div>
+  <div class='col-xs-8 col-xs-offset-2' id='ticket-list'>
+    <% @tickets.each do |ticket| %>
+      <div class="panel panel-info ticket" id="ticket-<%= ticket.id %>">
+        <div class="panel-heading">
+          <h3 class="panel-title">
+          <p class='ticket-number'>
+            Ticket #<%= ticket.id %>
+            <span class='pull-right'><%= ticket.course.description %></span>
+          </p>
+          </h3>
+        </div>
 
-				<div class="panel-body">
-					<p><%= time_ago_in_words(ticket.created_at) %> ago</p>
-					<div class="ticket-note" id="ticket-<%= ticket.id %>-note">
-						<div class="row">
-							<div class="col-xs-5">
-								<%= label_tag :students %>
-								<p><%= ticket.student_names %></p>
-							</div>
+        <div class="panel-body">
+          <p><%= time_ago_in_words(ticket.created_at) %> ago</p>
+          <div class="ticket-note" id="ticket-<%= ticket.id %>-note">
+            <div class="row">
+              <div class="col-xs-5">
+                <%= label_tag :students %>
+                <p><%= ticket.student_names %></p>
+              </div>
 
-							<div class="col-xs-5">
-								<%= label_tag :location %>
-								<p><%= ticket.location %></p>
-							</div>
+              <div class="col-xs-5">
+                <%= label_tag :location %>
+                <p><%= ticket.location %></p>
+              </div>
 
-							<% if current_admin %>
-								<div class="col-xs-2">
-									<%= link_to 'Close ticket', ticket, data: { method: :delete }, class: 'btn btn-default pull-right' %>
-								</div>
-							<% end %>
-						</div>
+              <% if current_admin %>
+                <div class="col-xs-2">
+                  <%= link_to 'Close ticket', ticket, data: { method: :delete }, class: 'btn btn-default pull-right' %>
+                </div>
+              <% end %>
+            </div>
 
-						<%= label_tag :note %>
-						<p><%= ticket.note %></p>
-					</div>
-				</div>
-			</div>
-		<% end %>
-	</div>
+            <%= label_tag :note %>
+            <p><%= ticket.note %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 </div>
