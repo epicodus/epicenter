@@ -1,4 +1,5 @@
-<h1><%= "#{current_admin.current_course.description}" %> student roster</h1>
+<h1><%= "#{current_admin.current_course.description} student roster" %></h1>
+
 <%= form_for @enrollment, html: { class: 'form-horizontal' } do |f| %>
   <div class="row">
     <div class="col-xs-4">
@@ -13,9 +14,38 @@
     </div>
   </div>
 <% end %>
-<hr>
-<ul class='list-unstyled'>
-  <% @students.each do |student| %>
-    <li><%= link_to student.name, student, class: "" %></li>
-  <% end %>
-</ul>
+
+  <table class="table table-striped table-responsive">
+    <thead>
+      <tr>
+        <th>Student Name</th>
+        <th>Absence score</th>
+          <% current_course.code_reviews.each do |code_review| %>
+            <th>
+              <%= code_review.title %>
+            </th>
+          <% end %>
+      </tr>
+    </thead>
+    <tbody>
+    <% @students.each do |student| %>
+      <tr>
+        <td><%= link_to student.name, student, class: "unstyled-link" %></td>
+        <td>
+          <p class="<%= attendance_notice(student) %>">
+            <%= student.attendance_score(current_course, current_course.number_of_days_since_start) %> %
+          </p>
+        </td>
+          <% current_course.code_reviews.each do |code_review| %>
+            <% if code_review.submission_for(student).nil? %>
+              <td><p class="text-danger">Missing</p></td>
+            <% elsif code_review.submission_for(student).has_been_reviewed? %>
+              <td><p class="text-default">Reviewed</p></td>
+            <% else %>
+              <td><p class="text-warning">Pending</p></td>
+            <% end %>
+          <% end %>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
