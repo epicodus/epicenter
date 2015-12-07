@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   root 'static_pages#index'
-<<<<<<< 591e9123a7344bf5389d26bb777ed0311342d31f
   get 'sign_out', to: 'attendance_sign_out#new'
   get 'welcome', to: 'static_pages#show'
   get 'attendance', to: 'attendance_records#index', as: 'attendance'

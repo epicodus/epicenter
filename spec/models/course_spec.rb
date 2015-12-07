@@ -3,6 +3,7 @@ describe Course do
   it { should have_many(:attendance_records).through(:students) }
   it { should have_many :code_reviews }
   it { should have_many :internships}
+  it { should have_many :tickets}
 
   describe "validations" do
     it "validates the presence of description" do
@@ -50,6 +51,15 @@ describe Course do
     it 'returns false if the course is not in session' do
       future_course = FactoryGirl.create(:course, class_days: [Time.zone.now.beginning_of_week + 1.week, Time.zone.now.end_of_week + 1.week - 2.days])
       expect(future_course.in_session?).to eq false
+    end
+  end
+
+  describe '#in_session' do
+    let(:in_session_course) { FactoryGirl.create(:course) }
+    let(:past_course) { FactoryGirl.create(:past_course) }
+
+    it 'returns courses that are in session' do
+      expect(Course.in_session).to eq [in_session_course]
     end
   end
 
