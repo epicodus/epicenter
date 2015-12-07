@@ -2,7 +2,6 @@ Rails.application.routes.draw do
   root 'static_pages#index'
   get 'sign_out', to: 'attendance_sign_out#new'
   get 'welcome', to: 'static_pages#show'
-  get 'attendance', to: 'attendance_records#index', as: 'attendance'
   get 'queue', to: 'tickets#index'
   get 'help', to: 'tickets#new'
 
