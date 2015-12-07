@@ -12,6 +12,10 @@ module ApplicationHelper
     current_page?(certificate_path) ||
     current_page?(transcript_path) ||
     current_page?(welcome_path) ||
-    current_page?(student_session_path)
+    current_page?(student_session_path) ||
+    current_page?(attendance_path) ||
+    current_page?(queue_path) ||
+    current_page?(help_path) ||
+    current_page?(ticket_path)
   end
 end
