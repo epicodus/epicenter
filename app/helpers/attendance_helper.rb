@@ -9,7 +9,7 @@ module AttendanceHelper
 
   def attendance_notice(student)
     if student.attendance_score(current_course, current_course.number_of_days_since_start) >= 8
-      'text-error'
+      'text-danger'
     else
       nil
     end
