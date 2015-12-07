@@ -23,6 +23,13 @@ FactoryGirl.define do
       left_early true
     end
   end
+  
+  factory :ticket do
+    course
+    sequence(:student_names) { |n| "Example Students #{n} and #{n + 1}" }
+    note 'Need some help over here!'
+    location 'Next to the window'
+  end
 
   factory :bank_account do
     student
