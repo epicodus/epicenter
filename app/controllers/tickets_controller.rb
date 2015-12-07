@@ -36,6 +36,6 @@ class TicketsController < ApplicationController
 	private
 
 	def ticket_params
-		params.require(:ticket).permit(:course_id, :student_names, :note, :location, :open)
+		params.require(:ticket).permit(:course_id, :student_names, :note, :location)
 	end
 end

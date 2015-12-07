@@ -5,7 +5,6 @@ class CreateTickets < ActiveRecord::Migration
       t.string :student_names
       t.text :note
       t.string :location
-      t.boolean :open, default: true
 
       t.timestamps
     end

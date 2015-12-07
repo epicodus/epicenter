@@ -9,6 +9,6 @@ class Ticket < ActiveRecord::Base
 	validates :location, presence: true
 
 	def other_open_tickets
-		Ticket.where.not(id: id).where(open: true)
+		Ticket.where.not(id: id)
 	end
 end
