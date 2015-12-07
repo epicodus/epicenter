@@ -1,7 +1,11 @@
-<h1><%= "#{current_admin.current_course.description}" %> student roster</h1>
-<%= form_for @enrollment, html: { class: 'form-horizontal' } do |f| %>
+<h1>
+  <%= "#{current_admin.current_course.description}" %> student roster
+  <%= link_to "Edit #{current_course.description}", edit_course_path(current_admin.current_course), class: 'btn btn-sm btn-success' %>
+</h1>
+
+<%= form_for @enrollment do |f| %>
   <div class="row">
-    <div class="col-xs-4">
+    <div class="col-xs-5">
       <%= render 'layouts/errors', object: @enrollment %>
       <%= f.hidden_field :course_id, value: current_course.id %>
       <div class="input-group">
