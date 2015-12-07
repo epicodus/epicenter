@@ -1,0 +1,23 @@
+<%= form_for Ticket.new do |f| %>
+	<%= render 'layouts/errors', object: Ticket.new %>
+
+  <div class="form-group">
+    <%= f.text_field :student_names, class: 'form-control', required: true, placeholder: 'Your names' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.text_field :location, class: 'form-control', required: true, placeholder: 'Your location in the room' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.collection_select :course_id, Course.in_session, :id, :description, { prompt: 'Your course' }, { class: 'form-control', required: true } %>
+  </div>
+
+  <div class="form-group">
+    <%= f.text_area :note, class: 'form-control', rows: 10, required: true, placeholder: "A description of the issue that you're having." %>
+  </div>
+
+	<div class="form-group">
+		<%= f.submit 'Submit request', class: "btn btn-info", id: 'ticket-button' %>
+	</div>
+<% end %>

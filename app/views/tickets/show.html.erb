@@ -1,0 +1,41 @@
+<div class="row">
+	<div class="col-xs-12">
+
+		<div class="panel panel-info">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<p class='ticket-number'>
+						Ticket #<%= @ticket.id %>
+						<span class='pull-right'><%= @ticket.course.description %></span>
+					</p>
+				</h3>
+			</div>
+
+			<div class="panel-body">
+				<p><%= time_ago_in_words(@ticket.created_at) %> ago</p>
+					<div class="row">
+						<div class="col-xs-5">
+							<%= label_tag :students %>
+							<p><%= @ticket.student_names %></p>
+						</div>
+
+						<div class="col-xs-5">
+							<%= label_tag :location %>
+							<p><%= @ticket.location %></p>
+						</div>
+
+						<div class="col-xs-2">
+							<%= link_to "Nevermind, we've got it", @ticket, data: { method: :delete }, class: 'btn btn-default pull-right' %>
+						</div>
+					</div>
+
+					<%= label_tag :note %>
+					<p><%= @ticket.note %></p>
+			</div>
+		</div>
+
+		<div class="text-center">
+			<%= link_to 'Visit the queue', queue_path %>
+		</div>
+	</div>
+</div>
