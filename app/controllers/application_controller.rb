@@ -25,7 +25,7 @@ protected
 
   def after_sign_in_path_for(user)
     if user.is_a? Admin
-      course_code_reviews_path(user.current_course)
+      course_students_path(user.current_course)
     elsif user.is_a? Student
       if user.class_in_session? && user.signed_main_documents?
         course_code_reviews_path(user.course)
