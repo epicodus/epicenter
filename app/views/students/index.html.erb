@@ -1,7 +1,8 @@
-<h1>
-  <%= "#{current_admin.current_course.description}" %> student roster
-  <%= link_to "Edit #{current_course.description}", edit_course_path(current_admin.current_course), class: 'btn btn-sm btn-success' %>
-</h1>
+<h1><%= "#{current_admin.current_course.description}" %> student roster</h1>
+
+<div class="form-group">
+  <%= link_to "Edit #{current_course.description}", edit_course_path(current_admin.current_course), class: 'btn btn-success' %>
+</div>
 
 <%= form_for @enrollment do |f| %>
   <div class="row">
