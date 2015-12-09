@@ -1,6 +1,7 @@
 <%= f.fields_for :ratings, rating ||= Rating.new do |ff| %>
   <div class='btn-group form-group' data-toggle='buttons'>
     <% if current_student.find_rating(internship).try(:interest) == '1' %>
+      <label class="btn btn-success active">
     <% else %>
       <label class="btn btn-success">
     <% end %>

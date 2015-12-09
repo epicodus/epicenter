@@ -250,7 +250,6 @@ feature "admin viewing a student's internship page" do
 
   scenario "an admin can navigate to a student's internship page from the student list" do
     visit root_path
-    click_link "Student Roster"
     click_link student.name
     expect(page).to have_content internship.company_name
   end
