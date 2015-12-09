@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151012164122) do
+ActiveRecord::Schema.define(version: 20151209212526) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -172,6 +172,21 @@ ActiveRecord::Schema.define(version: 20151012164122) do
     t.datetime "updated_at"
     t.boolean  "needs_review"
   end
+
+  add_index "submissions", ["code_review_id"], name: "index_submissions_on_code_review_id", using: :btree
+  add_index "submissions", ["student_id"], name: "index_submissions_on_student_id", using: :btree
+
+  create_table "tickets", force: :cascade do |t|
+    t.integer  "course_id"
+    t.string   "student_names"
+    t.text     "note"
+    t.string   "location"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "deleted_at"
+  end
+
+  add_index "tickets", ["deleted_at"], name: "index_tickets_on_deleted_at", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                     limit: 255, default: "", null: false
