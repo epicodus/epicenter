@@ -1,7 +1,6 @@
 class StudentsController < ApplicationController
 
   include AuthenticationHelper
-  include AttendanceHelper
 
   before_filter :authenticate_student_and_admin
 

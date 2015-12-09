@@ -6,12 +6,4 @@ module AttendanceHelper
   def day_value
     @day ||= Time.zone.now.to_date
   end
-
-  def attendance_notice(student)
-    if student.attendance_score(current_course, current_course.number_of_days_since_start) >= 8
-      'text-danger'
-    else
-      nil
-    end
-  end
 end
