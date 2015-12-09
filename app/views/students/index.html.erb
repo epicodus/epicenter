@@ -1,7 +1,12 @@
 <h1><%= "#{current_admin.current_course.description}" %> student roster</h1>
-<%= form_for @enrollment, html: { class: 'form-horizontal' } do |f| %>
+
+<div class="form-group">
+  <%= link_to "Edit #{current_course.description}", edit_course_path(current_admin.current_course), class: 'btn btn-success' %>
+</div>
+
+<%= form_for @enrollment do |f| %>
   <div class="row">
-    <div class="col-xs-4">
+    <div class="col-xs-5">
       <%= render 'layouts/errors', object: @enrollment %>
       <%= f.hidden_field :course_id, value: current_course.id %>
       <div class="input-group">
@@ -18,11 +23,9 @@
   <thead>
     <tr>
       <th>Student Name</th>
-      <th>Absence score</th>
+      <th>Absence Score</th>
         <% current_course.code_reviews.each do |code_review| %>
-          <th>
-            <%= code_review.title %>
-          </th>
+          <th><%= code_review.title %></th>
         <% end %>
     </tr>
   </thead>
@@ -31,7 +34,11 @@
     <tr>
       <td><%= link_to student.name, student, class: "unstyled-link" %></td>
       <td>
-        <p class="<%= attendance_notice(student) %>">
+        <% if student.absence_percentage_above?(current_course) %>
+            <p class="text-danger">
+          <% else %>
+            <p>
+        <% end %>
           <%= student.attendance_score(current_course, current_course.number_of_days_since_start) %> %
         </p>
       </td>

@@ -25,12 +25,21 @@ class Student < User
 
   NUMBER_OF_RANDOM_PAIRS = 5
   TARDY_WEIGHT = 0.5
+  ABSENCE_PERCENTAGE_LIMIT = 8
 
   def attendance_score(current_course, current_course_days)
-    absences_penalty = attendance_records_for(:absent, current_course)
-    tardies_penalty = attendance_records_for(:tardy, current_course) * TARDY_WEIGHT
-    left_earlies_penalty = attendance_records_for(:left_early, current_course) * TARDY_WEIGHT
-    (((absences_penalty + tardies_penalty + left_earlies_penalty) / current_course_days).to_f.round(2) * 100).round
+    begin
+      absences_penalty = attendance_records_for(:absent, current_course)
+      tardies_penalty = (attendance_records_for(:tardy, current_course) * TARDY_WEIGHT)
+      left_earlies_penalty = attendance_records_for(:left_early, current_course) * TARDY_WEIGHT
+      (((absences_penalty + tardies_penalty + left_earlies_penalty) / current_course_days).to_f.round(2) * 100).round
+    rescue FloatDomainError
+      0
+    end
+  end
+
+  def absence_percentage_above?(current_course)
+    attendance_score(current_course, current_course.number_of_days_since_start) >= ABSENCE_PERCENTAGE_LIMIT
   end
 
   def other_courses
