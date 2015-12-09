@@ -71,6 +71,10 @@ class Student < User
     courses.push(Course.find(new_course_id))
   end
 
+  def submission_for(code_review)
+    submissions.find { |submission| submission.code_review_id == code_review.id }
+  end
+
   def pair_on_day(day)
     Student.find_by(id: attendance_record_on_day(day).try(:pair_id)) # using find_by so that nil is returned instead of raising exception if there is no pair
   end

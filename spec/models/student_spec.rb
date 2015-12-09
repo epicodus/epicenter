@@ -475,6 +475,17 @@ describe Student do
     end
   end
 
+  describe '#submission_for' do
+    let(:student) { FactoryGirl.create(:student) }
+    let(:code_review_1) { FactoryGirl.create(:code_review, course: student.course) }
+    let(:code_review_2) { FactoryGirl.create(:code_review, course: student.course) }
+    let!(:submission_1) { FactoryGirl.create(:submission, student: student, code_review: code_review_1) }
+
+    it 'returns a student submission for a particular code review' do
+      expect(student.submission_for(code_review_1)).to eq submission_1
+    end
+  end
+
   describe '#attendance_score' do
     let(:course) { FactoryGirl.create(:course) }
     let(:student) { FactoryGirl.create(:student, course: course) }

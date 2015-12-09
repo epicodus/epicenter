@@ -5,7 +5,7 @@ class StudentsController < ApplicationController
   before_filter :authenticate_student_and_admin
 
   def index
-    @students = current_admin.current_course.students
+    @students = current_admin.current_course.students.includes(:submissions)
     @enrollment = Enrollment.new
   end
 
