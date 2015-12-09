@@ -130,7 +130,7 @@ feature 'student roster page' do
   scenario 'when a teacher visits the sudent roster page when there are no students' do
     visit course_students_path(course)
     expect(page).to have_content 'Student Name'
-    expect(page).to have_content 'Absence Score'
+    expect(page).to have_content 'Attendance Score'
   end
 
   scenario 'when a teacher visits the sudent roster page when there are students' do
