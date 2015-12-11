@@ -34,15 +34,15 @@
     <tr>
       <td><%= link_to student.name, student, class: "unstyled-link" %></td>
       <td>
-        <% if student.absence_percentage_above?(current_course) %>
+        <% if student.attendance_score(current_course) >= 8 %>
             <p class="text-danger">
           <% else %>
             <p>
         <% end %>
-        <% if student.attendance_score(current_course, current_course.number_of_days_since_start).nan? %>
+        <% if student.attendance_score(current_course).nan? %>
           No records yet
         <% else %>
-          <%= number_to_percentage(student.attendance_score(current_course, current_course.number_of_days_since_start), precision: 0) %>
+          <%= number_to_percentage(student.attendance_score(current_course), precision: 0) %>
         <% end %>
         </p>
       </td>
