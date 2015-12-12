@@ -28,7 +28,7 @@ feature 'index page' do
       expect(page).to_not have_content reviewed_submission.student.name
     end
 
-    scenario 'lists submissions in order of when they were submitted' do
+    xscenario 'lists submissions in order of when they were submitted' do
       another_student = FactoryGirl.create(:student)
       first_submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
       second_submission = FactoryGirl.create(:submission, code_review: code_review, student: another_student)
