@@ -23,7 +23,7 @@ class Payment < ActiveRecord::Base
 
 private
   def update_close_io
-    student.update_close_io
+    student.update_close_io({ status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 })
   end
 
   def check_if_paid_up

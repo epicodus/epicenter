@@ -162,7 +162,7 @@ describe Student do
     end
   end
 
-  describe "updating close.io" do
+  describe "updating close.io when documents have been signed" do
     let(:student) { FactoryGirl.create(:student, email: 'test@test.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
     let(:lead_id) { close_io_client.list_leads('email:' + student.email).data.first.id }
@@ -177,7 +177,7 @@ describe Student do
       FactoryGirl.create(:completed_enrollment_agreement, student: student)
       allow(student).to receive(:total_paid).and_return(340000)
       expect(close_io_client).to receive(:update_lead).with(lead_id, { status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 })
-      student.update_close_io
+      student.update_close_io({ status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 })
     end
 
     it "fails to update the record when there are not enough signatures", :vcr do
@@ -185,7 +185,7 @@ describe Student do
       FactoryGirl.create(:completed_code_of_conduct, student: student)
       FactoryGirl.create(:completed_refund_policy, student: student)
       allow(student).to receive(:total_paid).and_return(100)
-      expect { student.update_close_io }.to raise_error(RuntimeError, 'The Close.io lead for fake@fake.com was not found.')
+      expect { student.update_close_io({ status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 }) }.to raise_error(RuntimeError, 'The Close.io lead for fake@fake.com was not found.')
     end
 
     it "fails to update the record when no payment has been made", :vcr do
@@ -194,7 +194,29 @@ describe Student do
       FactoryGirl.create(:completed_refund_policy, student: student)
       FactoryGirl.create(:completed_enrollment_agreement, student: student)
       allow(student).to receive(:total_paid).and_return(0)
-      expect { student.update_close_io }.to raise_error(RuntimeError, 'The Close.io lead for fake@fake.com was not found.')
+      expect { student.update_close_io({ status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 }) }.to raise_error(RuntimeError, 'The Close.io lead for fake@fake.com was not found.')
+    end
+  end
+
+  describe 'updating close.io when the payment plan is updated', :vcr do
+    let(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: 'test@test.com') }
+    let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
+    let(:lead_id) { close_io_client.list_leads('email:' + student.email).data.first.id }
+
+    before do
+      allow(student).to receive(:total_paid).and_return(100)
+      allow(student).to receive(:close_io_client).and_return(close_io_client)
+    end
+
+    it 'updates the record successfully' do
+      new_plan = FactoryGirl.create(:upfront_payment_only_plan)
+      expect(close_io_client).to receive(:update_lead).with(lead_id, { 'custom.Payment plan': new_plan.name })
+      student.update(plan: new_plan)
+    end
+
+    it 'does not update the record when the payment plan is not updated' do
+      expect(close_io_client).to_not receive(:update_lead)
+      student.update(name: 'New name')
     end
   end
 
