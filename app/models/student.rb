@@ -205,7 +205,7 @@ class Student < User
 private
 
   def update_close_io_payment_plan
-    update_close_io({ 'custom.Payment plan': plan.name }) if plan_id_changed?
+    update_close_io({ 'custom.Payment plan': plan.close_io_description }) if plan_id_changed?
   end
 
   def next_course
