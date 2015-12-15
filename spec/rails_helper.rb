@@ -7,7 +7,9 @@ require 'shoulda/matchers'
 require 'capybara/rails'
 require 'capybara/poltergeist'
 require 'billy/rspec'
-require "cancan/matchers"
+require 'cancan/matchers'
+require 'simplecov'
+require 'coveralls'
 
 include Warden::Test::Helpers
 Warden.test_mode!
@@ -62,3 +64,9 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
+
+SimpleCov.formatters = [
+  SimpleCov::Formatter::HTMLFormatter,
+  Coveralls::SimpleCov::Formatter,
+]
+SimpleCov.start
