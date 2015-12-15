@@ -116,4 +116,29 @@ describe Payment do
       expect(student.recurring_active?).to be false
     end
   end
+
+  describe 'updating Close.io when a payment is made' do
+    let(:student) { FactoryGirl.create :user_with_all_documents_signed_and_verified_bank_account, email: 'test@test.com' }
+    let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
+    let(:lead_id) { close_io_client.list_leads('email:' + student.email).data.first.id }
+
+    before do
+      allow(student).to receive(:close_io_client).and_return(close_io_client)
+      mailgun_client = spy("mailgun client")
+      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+    end
+
+    it 'updates status and amount paid on the first payment', :vcr do
+      payment = Payment.new(student: student, amount: 270_00, payment_method: student.primary_payment_method)
+      expect(student).to receive(:update_close_io).with({ status: "Enrolled", 'custom.Amount paid': payment.amount / 100 })
+      payment.save
+    end
+
+    it 'only updates amount paid on payments beyond the first', :vcr do
+      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method)
+      payment_2 = Payment.new(student: student, amount: 50_00, payment_method: student.primary_payment_method)
+      expect(student).to receive(:update_close_io).with({ 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
+      payment_2.save
+    end
+  end
 end

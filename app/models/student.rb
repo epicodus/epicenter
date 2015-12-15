@@ -21,6 +21,8 @@ class Student < User
   belongs_to :primary_payment_method, class_name: 'PaymentMethod'
   has_many :signatures
 
+  after_update :update_close_io_payment_plan
+
   accepts_nested_attributes_for :ratings
 
   NUMBER_OF_RANDOM_PAIRS = 5
@@ -79,10 +81,10 @@ class Student < User
     @latest_total_grade_score ||= most_recent_submission_grades.try(:inject, 0) { |score, grade| score += grade.score.value }
   end
 
-  def update_close_io
+  def update_close_io(update_fields)
     if close_io_lead_exists? && enrollment_complete?
-      id = close_io_client.list_leads('email:' + email).data.first.id
-      close_io_client.update_lead(id, { status: 'Enrolled', 'custom.Amount paid': total_paid / 100 })
+      lead_id = close_io_client.list_leads('email:' + email).data.first.id
+      close_io_client.update_lead(lead_id, update_fields)
     elsif !close_io_lead_exists?
      raise "The Close.io lead for #{email} was not found."
     end
@@ -201,6 +203,10 @@ class Student < User
   end
 
 private
+
+  def update_close_io_payment_plan
+    update_close_io({ 'custom.Payment plan': plan.close_io_description }) if plan_id_changed?
+  end
 
   def next_course
     @next_course ||= courses.where('start_date > ?', Time.zone.now.to_date).first

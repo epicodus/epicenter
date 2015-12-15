@@ -10,7 +10,7 @@ class Payment < ActiveRecord::Base
 
   before_create :make_payment, :send_payment_receipt
   after_create :check_if_paid_up
-  after_create :update_close_io
+  after_save :update_close_io
   after_update :send_payment_failure_notice, if: ->(payment) { payment.status == "failed" }
   after_update :switch_recurring_off, if: ->(payment) { payment.status == "failed" }
 
@@ -23,7 +23,12 @@ class Payment < ActiveRecord::Base
 
 private
   def update_close_io
-    student.update_close_io
+    amount_paid = { 'custom.Amount paid': student.total_paid / 100 }
+    if student.payments.count == 1
+      student.update_close_io({ status: "Enrolled" }.merge(amount_paid))
+    else
+      student.update_close_io(amount_paid)
+    end
   end
 
   def check_if_paid_up
