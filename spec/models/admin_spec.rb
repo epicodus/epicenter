@@ -3,7 +3,7 @@ describe Admin do
 
   describe "abilities" do
     let(:admin) { FactoryGirl.create(:admin) }
-    subject { Ability.new(admin) }
+    subject { Ability.new(admin, "::1") }
 
     context 'for code reviews' do
       it { is_expected.to have_abilities(:manage, CodeReview.new) }

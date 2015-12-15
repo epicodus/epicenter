@@ -22,6 +22,10 @@ class Course < ActiveRecord::Base
   before_create :import_code_reviews
   after_destroy :reassign_admin_current_courses
 
+  def other_course_students(student)
+    students.where.not(id: student.id)
+  end
+
   def other_students
     Student.where.not(id: students.map(&:id))
   end

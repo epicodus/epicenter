@@ -89,6 +89,10 @@ protected
     authenticate_admin!(:force => true)
   end
 
+  def current_ability
+    @current_ability ||= Ability.new(current_user, request.remote_ip)
+  end
+
   rescue_from CanCan::AccessDenied do |exception|
     redirect_to root_path, alert: exception.message
   end

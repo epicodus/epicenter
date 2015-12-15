@@ -1,8 +1,11 @@
-<h1>Welcome to the Epicenter</h1>
+<div class="text-center">
+  <h1>Welcome to the Epicenter</h1>
 
-<p class="lead">An app for Epicodus students to track attendance, submit assessments and manage class payments. </p>
+  <p class="lead">An app for Epicodus students to track attendance, submit assessments and manage class payments. </p>
 
-<div>
-  <%= link_to "Teacher log in", new_admin_session_path, class: 'btn btn-info' %>
-  <%= link_to "Student log in", new_student_session_path, class: 'btn btn-info' %>
+  <div>
+    <%= link_to "Teacher log in", new_admin_session_path, class: 'btn btn-info btn-lg' %>
+    <%= link_to "Attendance Sign In", sign_in_path, class: 'btn btn-danger btn-lg' %>
+    <%= link_to "Student log in", new_student_session_path, class: 'btn btn-info btn-lg' %>
+  </div>
 </div>

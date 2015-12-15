@@ -661,7 +661,7 @@ describe Student do
 
   describe "abilities" do
     let(:student) { FactoryGirl.create(:student) }
-    subject { Ability.new(student) }
+    subject { Ability.new(student, "::1") }
 
     context 'for code reviews' do
       it { is_expected.to have_abilities(:read, CodeReview.new(course: student.course)) }
