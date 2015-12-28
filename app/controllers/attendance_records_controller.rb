@@ -1,39 +1,10 @@
 class AttendanceRecordsController < ApplicationController
-  authorize_resource
-
-  def index
-    @students = current_admin.current_course.students.includes(:attendance_records)
-    @students_not_signed_in = @students - Student.find(AttendanceRecord.today.map(&:student_id))
-  end
-
-  def create
-    @attendance_record = AttendanceRecord.new(attendance_record_params)
-    if @attendance_record.save
-      flash[:notice] = "Welcome #{@attendance_record.student.name}"
-      flash[:secure] =  view_context.link_to("Not you?",
-                        attendance_record_path(@attendance_record),
-                        data: {method: :delete})
-      redirect_to attendance_path
-    else
-      flash[:alert] = "Something went wrong: " + @attendance_record.errors.full_messages.join(", ")
-      redirect_to attendance_path
-    end
-  end
-
-  def update
-    @attendance_record = AttendanceRecord.find(params[:id])
-    if @attendance_record.update(attendance_record_params)
-      redirect_to attendance_path, notice: "#{@attendance_record.student.name} successfully updated."
-    else
-      flash[:alert] = "Something went wrong: " + @attendance_record.errors.full_messages.join(", ")
-      redirect_to attendance_path
-    end
-  end
+  # authorize_resource
 
   def destroy
     @attendance_record = AttendanceRecord.find(params[:id])
     @attendance_record.destroy
-    redirect_to attendance_path, alert: "Attendance record has been deleted."
+    redirect_to sign_in_path, alert: "Attendance record has been deleted."
   end
 
 private
