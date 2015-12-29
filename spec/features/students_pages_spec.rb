@@ -131,6 +131,17 @@ feature "Student signs in while class is in session" do
         expect { sign_in(student, pair) }.to change { AttendanceRecord.count }.by 2
       end
 
+      it 'gives an error if they try to sign in twice in the same day' do
+        FactoryGirl.create(:attendance_record, student: student)
+        sign_in(student, pair)
+        expect(page).to have_content "Something went wrong:"
+      end
+
+      it 'gives an error if they try to pair with themself' do
+        sign_in(student, student)
+        expect(page).to have_content "Something went wrong: Pair cannot be yourself."
+      end
+
       it "gives an error for an incorrect email" do
         visit new_student_session_path
         fill_in 'student_email', with: 'wrong'

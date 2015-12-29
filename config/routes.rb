@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   root 'static_pages#index'
-  get 'sign_in', to: 'attendance_sign_ins#new', as: 'sign_in'
   get 'sign_out', to: 'attendance_sign_outs#new', as: 'sign_out'
 
   devise_for :student, :controllers => { :invitations => 'invitations', :registrations => 'registrations', sessions: 'student/sessions' }
@@ -49,12 +48,6 @@ Rails.application.routes.draw do
       resources :enrollment_agreement, only: [:new]
       resources :code_of_conduct, only: [:new]
       resources :refund_policy, only: [:new]
-    end
-  end
-
-  resources :pair_attendance_records, only: [:create] do
-    collection do
-      delete :destroy_multiple, :path => ''
     end
   end
 

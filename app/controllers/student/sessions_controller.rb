@@ -34,9 +34,6 @@ private
       if attendance_records.all? { |record| record.save }
         student_names = attendance_records.map { |attendance_record| attendance_record.student.name }
         flash[:notice] = "Welcome #{student_names.join(' and ')}."
-        flash[:secure] =  view_context.link_to("Wrong students?",
-                    destroy_multiple_pair_attendance_records_path(ids: attendance_records.map(&:id)),
-                    data: {method: :delete})
         redirect_to after_sign_in_path_for(student)
       else
         flash[:alert] = "Something went wrong: " + attendance_records.first.errors.full_messages.join(", ")
