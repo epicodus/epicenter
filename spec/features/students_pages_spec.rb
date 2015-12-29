@@ -97,6 +97,10 @@ feature "Student signs in while class is in session" do
       expect(current_path).to eq course_code_reviews_path(student.course)
       expect(page).to have_content "Code Reviews"
     end
+
+    it "does not create an attendance record" do
+      expect { sign_in(student) }.to change { AttendanceRecord.count }.by 0
+    end
   end
 
   context "at school" do
@@ -104,13 +108,48 @@ feature "Student signs in while class is in session" do
       allow_any_instance_of(Ability).to receive(:is_local).and_return(true)
     end
 
-    it "takes them to the help queue" do
-      sign_in(student)
-      expect(current_url).to eq "https://help.epicodus.com/"
+    context "when soloing" do
+      it "takes them to the help queue" do
+        sign_in(student)
+        expect(current_url).to eq "https://help.epicodus.com/"
+      end
+
+      it "creates an attendance record for them" do
+        expect { sign_in(student) }.to change { AttendanceRecord.count }.by 1
+      end
     end
 
-    it "creates an attendance record for them" do
-      expect { sign_in(student) }.to change { AttendanceRecord.count }.by 1
+    context "when pairing" do
+      let(:pair) { FactoryGirl.create(:user_with_all_documents_signed) }
+
+      it "takes them to the help queue" do
+        sign_in(student, pair)
+        expect(current_url).to eq "https://help.epicodus.com/"
+      end
+
+      it "creates an attendance record for them" do
+        expect { sign_in(student, pair) }.to change { AttendanceRecord.count }.by 2
+      end
+
+      it "gives an error for an incorrect email" do
+        visit new_student_session_path
+        fill_in 'student_email', with: 'wrong'
+        fill_in 'student_password', with: student.password
+        fill_in 'pair_email', with: pair.email
+        fill_in 'pair_password', with: pair.password
+        click_button 'Pair sign in'
+        expect(page).to have_content 'Invalid email or password.'
+      end
+
+      it "gives an error for an incorrect password" do
+        visit new_student_session_path
+        fill_in 'student_email', with: student.email
+        fill_in 'student_password', with: 'wrong'
+        fill_in 'pair_email', with: pair.email
+        fill_in 'pair_password', with: pair.password
+        click_button 'Pair sign in'
+        expect(page).to have_content 'Invalid email or password.'
+      end
     end
   end
 end

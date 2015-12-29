@@ -1,8 +1,14 @@
-def sign_in(user)
+def sign_in(user, pair=nil)
   visit new_student_session_path
-  fill_in 'Email', with: user.email
-  fill_in 'Password', with: user.password
-  click_button 'Sign in'
+  fill_in 'student_email', with: user.email
+  fill_in 'student_password', with: user.password
+  if pair
+    fill_in 'pair_email', with: pair.email
+    fill_in 'pair_password', with: pair.password
+    click_button 'Pair sign in'
+  else
+    click_button 'Sign in'
+  end
 end
 
 def create_hello_sign_signature

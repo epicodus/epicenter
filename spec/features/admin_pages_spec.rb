@@ -3,8 +3,8 @@ feature 'Admin signs in' do
 
   scenario 'with valid credentials' do
     visit new_admin_session_path
-    fill_in 'Email', with: admin.email
-    fill_in 'Password', with: 'password'
+    fill_in 'admin_email', with: admin.email
+    fill_in 'admin_password', with: 'password'
     click_on 'Sign in'
     expect(page).to have_content 'Signed in'
   end

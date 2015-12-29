@@ -1,8 +1,8 @@
 <h2>Sign in</h2>
 
 <div class="row">
-  <div class="col-xs-6">
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { id: 'sign-in' }) do |f| %>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { id: 'sign-in' }) do |f| %>
+    <div class="col-xs-6">
       <div class="form-group">
         <%= f.label :email %>
         <%= f.email_field :email, autofocus: true , class: "form-control" %>
@@ -25,6 +25,22 @@
 
       <div class="form-group">
         <%= render "devise/shared/links" %>
+      </div>
+    </div>
+
+    <div class="col-xs-6">
+      <div class="form-group">
+        <%= label :pair, :email %>
+        <%= email_field :pair, :email, autofocus: true , class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= label :pair, :password %>
+        <%= password_field :pair, :password, autocomplete: "off", class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.submit "Pair sign in", class: 'btn btn-primary' %>
       </div>
     <% end %>
   </div>
