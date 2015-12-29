@@ -46,7 +46,7 @@ class Ability
   private
 
   def local_ip_ranges
-    %w{::1}
+    ["::1", ENV['SCHOOL_IP_ADDRESS']]
   end
 
   def is_local(ip)

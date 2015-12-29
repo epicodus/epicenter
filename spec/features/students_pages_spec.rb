@@ -91,10 +91,27 @@ end
 feature "Student signs in while class is in session" do
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
-  it "takes them to the code reviews page" do
-    sign_in(student)
-    expect(current_path).to eq course_code_reviews_path(student.course)
-    expect(page).to have_content "Code Reviews"
+  context "not at school" do
+    it "takes them to the code reviews page" do
+      sign_in(student)
+      expect(current_path).to eq course_code_reviews_path(student.course)
+      expect(page).to have_content "Code Reviews"
+    end
+  end
+
+  context "at school" do
+    before do
+      allow_any_instance_of(Ability).to receive(:is_local).and_return(true)
+    end
+
+    it "takes them to the help queue" do
+      sign_in(student)
+      expect(current_url).to eq "https://help.epicodus.com/"
+    end
+
+    it "creates an attendance record for them" do
+      expect { sign_in(student) }.to change { AttendanceRecord.count }.by 1
+    end
   end
 end
 
