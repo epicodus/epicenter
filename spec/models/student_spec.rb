@@ -736,6 +736,7 @@ describe Student do
 
     context 'for students' do
       it { is_expected.to not_have_abilities(:read, Student.new) }
+      it { is_expected.to have_abilities(:read, student) }
     end
 
     context 'for transcripts' do
