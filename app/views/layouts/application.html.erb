@@ -17,7 +17,6 @@
     <%= flash_notice(flash) do %>
       <%= flash[:notice] %>
       <%= flash[:alert] %>
-      <%= flash[:secure].html_safe if flash[:secure] %>
     <% end %>
     <%= yield %>
   </div>

@@ -11,10 +11,7 @@ class AttendanceSignOutsController < ApplicationController
         authorize! :update, attendance_record
         if attendance_record.update(attendance_record_params)
           flash[:notice] = "Goodbye #{attendance_record.student.name}"
-          flash[:secure] =  view_context.link_to("Not you?",
-                          attendance_record_path(attendance_record),
-                          data: {method: :delete})
-          redirect_to root_path
+          redirect_to sign_out_path
         else
           flash[:alert] = "Something went wrong: " + attendance_record.errors.full_messages.join(", ")
           render 'attendance_sign_outs/new'
