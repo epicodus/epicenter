@@ -1,8 +1,5 @@
 class InternshipsController < ApplicationController
-
-  include AuthenticationHelper
-
-  before_filter :authenticate_student_and_admin
+  authorize_resource
 
   def index
     @course = Course.find(params[:course_id])
