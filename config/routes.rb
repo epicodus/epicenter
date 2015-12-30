@@ -15,7 +15,6 @@ Rails.application.routes.draw do
   resources :payments, only: [:index]
   resources :upfront_payments, only: [:create]
   resources :recurring_payments, only: [:create]
-  resources :attendance_records, only: [:create, :update, :destroy]
   resources :attendance_record_amendments, only: [:new, :create]
   resources :courses, except: [:show, :index] do
     resources :attendance_statistics, only: [:index, :create]
