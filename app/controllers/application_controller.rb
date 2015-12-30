@@ -27,7 +27,9 @@ protected
     if user.is_a? Admin
       course_students_path(user.current_course)
     elsif user.is_a? Student
-      if user.class_in_session? && user.signed_main_documents?
+      if can?(:create, AttendanceRecord.new)
+        'https://help.epicodus.com'
+      elsif user.class_in_session? && user.signed_main_documents?
         course_code_reviews_path(user.course)
       else
         signatures_check_path(user)
@@ -87,6 +89,10 @@ protected
   #to send invitations. This requires that the DeviseInvitable::Inviter is added to the Admin model.
   def authenticate_inviter!
     authenticate_admin!(:force => true)
+  end
+
+  def current_ability
+    @current_ability ||= Ability.new(current_user, request.remote_ip)
   end
 
   rescue_from CanCan::AccessDenied do |exception|

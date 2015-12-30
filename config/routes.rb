@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   root 'static_pages#index'
-  get 'attendance', to: 'attendance_records#index', as: 'attendance'
+  get 'sign_out', to: 'attendance_sign_outs#new', as: 'sign_out'
 
-  devise_for :student, :controllers => { :invitations => 'invitations', :registrations => 'registrations' }
+  devise_for :student, :controllers => { :invitations => 'invitations', :registrations => 'registrations', sessions: 'student/sessions' }
   devise_for :admins, skip: :registrations
 
   resources :students, only: [:show, :update]
@@ -15,7 +15,6 @@ Rails.application.routes.draw do
   resources :payments, only: [:index]
   resources :upfront_payments, only: [:create]
   resources :recurring_payments, only: [:create]
-  resources :attendance_records, only: [:create, :update, :destroy]
   resources :attendance_record_amendments, only: [:new, :create]
   resources :courses, except: [:show, :index] do
     resources :attendance_statistics, only: [:index, :create]
@@ -51,13 +50,9 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :pair_attendance_records, only: [:create] do
-    collection do
-      delete :destroy_multiple, :path => ''
-    end
-  end
-
   resource :code_review_copy, only: [:create]
   resource :random_pairs, only: [:show]
   resources :enrollments, only: [:create, :destroy]
+  resource :sign_out, controller: 'attendance_sign_outs', only: [:create]
+  resource :sign_in, controller: 'attendance_sign_ins', only: [:create]
 end

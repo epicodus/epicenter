@@ -1,8 +1,5 @@
 class StudentsController < ApplicationController
-
-  include AuthenticationHelper
-
-  before_filter :authenticate_student_and_admin
+  authorize_resource
 
   def index
     @students = current_admin.current_course.students
