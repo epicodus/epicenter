@@ -51,7 +51,7 @@ describe Admin do
     end
 
     context 'for students' do
-      it { is_expected.to have_abilities(:read, Student.new) }
+      it { is_expected.to have_abilities(:manage, Student.new) }
     end
   end
 
