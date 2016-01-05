@@ -58,19 +58,19 @@ describe Course do
 
     it 'counts number of days since start of class' do
       travel_to course.start_date + 6.days do
-        expect(course.number_of_days_since_start).to eq 4
+        expect(course.number_of_days_since_start).to eq 5
       end
     end
 
-    it 'does not count fridays or weekends' do
+    it 'does not count weekends' do
       travel_to course.start_date + 13.days do
-        expect(course.number_of_days_since_start).to eq 8
+        expect(course.number_of_days_since_start).to eq 10
       end
     end
 
     it 'does not count days after the class has ended' do
       travel_to course.end_date + 60.days do
-        expect(course.number_of_days_since_start).to eq 60
+        expect(course.number_of_days_since_start).to eq 75
       end
     end
   end
@@ -89,8 +89,8 @@ describe Course do
 
   describe '#total_class_days' do
     it 'counts the days of class minus weekends' do
-      course = FactoryGirl.create(:course, class_days: (Time.zone.now.to_date..(Time.zone.now.to_date + 2.weeks - 1.day)).select { |day| day if !day.friday? && !day.saturday? && !day.sunday? })
-      expect(course.total_class_days).to eq 8
+      course = FactoryGirl.create(:course, class_days: (Time.zone.now.to_date..(Time.zone.now.to_date + 2.weeks - 1.day)).select { |day| day if !day.saturday? && !day.sunday? })
+      expect(course.total_class_days).to eq 10
     end
   end
 
@@ -100,9 +100,9 @@ describe Course do
       friday = monday + 4.days
       next_friday = friday + 1.week
 
-      course = FactoryGirl.create(:course, class_days: (monday..next_friday).select { |day| day if !day.friday? && !day.saturday? && !day.sunday? })
+      course = FactoryGirl.create(:course, class_days: (monday..next_friday).select { |day| day if !day.saturday? && !day.sunday? })
       travel_to friday do
-        expect(course.number_of_days_left).to eq 4
+        expect(course.number_of_days_left).to eq 5
       end
     end
   end
@@ -113,7 +113,7 @@ describe Course do
       friday = monday + 4.days
       next_friday = friday + 1.week
 
-      course = FactoryGirl.create(:course, class_days: (monday..next_friday).select { |day| day if !day.friday? && !day.saturday? && !day.sunday? })
+      course = FactoryGirl.create(:course, class_days: (monday..next_friday).select { |day| day if !day.saturday? && !day.sunday? })
       travel_to friday do
         expect(course.progress_percent).to eq 50.0
       end
