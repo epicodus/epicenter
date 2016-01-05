@@ -24,11 +24,11 @@
           <li><%= link_to 'Payments', payments_path %></li>
           <li><%= link_to 'Code Reviews', course_code_reviews_path(current_student.course) %></li>
           <li><%= link_to 'Attendance record', attendance_statistics_path %></li>
-          <li><%= link_to 'Profile', edit_student_registration_path %></li>
+          <li><%= link_to 'Profile', student_path(current_student) %></li>
           <li><%= link_to "Log out", destroy_student_session_path, data: { method: :delete } %></li>
         <% elsif current_student && current_student.courses.empty? %>
           <li><%= link_to 'Payments', payments_path %></li>
-          <li><%= link_to 'Profile', edit_student_registration_path %></li>
+          <li><%= link_to 'Profile', student_path(current_student) %></li>
           <li><%= link_to "Log out", destroy_student_session_path, data: { method: :delete } %></li>
         <% elsif current_admin %>
           <li class="dropdown">

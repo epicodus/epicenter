@@ -19,10 +19,14 @@
               <span class="btn btn-success col-xs-3" disabled>On time</span>
             <% end %>
           </span>
-          <span class="col-xs-2">
-            <%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day), class: ''  %>
-          </span>
-          <span><%= @student.pair_on_day(day) ? @student.pair_on_day(day).name : 'Solo' %></span>
+
+          <% if is_a? Admin %>
+            <span class="col-xs-2">
+              <%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day), class: ''  %>
+            </span>
+          <% end %>
+
+          <span class="col-xs-2"><%= @student.pair_on_day(day) ? @student.pair_on_day(day).name : 'Solo' %></span>
         </li>
     </ul>
   <% end %>
