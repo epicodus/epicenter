@@ -46,7 +46,7 @@ FactoryGirl.define do
   factory :course do
     description 'Current course'
     class_days (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 14.weeks).end_of_week - 3.days).select { |day| day if !day.friday? && !day.saturday? && !day.sunday? }
-    start_time '9:00 AM'
+    start_time '8:00 AM'
     end_time '5:00 PM'
 
     factory :past_course do

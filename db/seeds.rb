@@ -15,9 +15,9 @@ end
 #Courses / Classes
 
 courses = [
-  ["Spring 2014", [Date.parse("November 16, 2015"), Date.parse("November 17, 2015")], Time.parse("09:00:00 AM"), Time.parse("17:00:00 PM")],
-  ["Summer 2015", [Date.parse("November 16, 2015"), Date.parse("November 17, 2015")], Time.parse("09:00:00 AM"), Time.parse("17:00:00 PM")],
-  ["Winter 2015", [Date.parse("November 16, 2015"), Date.parse("November 17, 2015")], Time.parse("09:00:00 AM"), Time.parse("17:00:00 PM")]
+  ["Spring 2014", [Date.parse("November 16, 2015"), Date.parse("November 17, 2015")], Time.parse("08:00:00 AM"), Time.parse("17:00:00 PM")],
+  ["Summer 2015", [Date.parse("November 16, 2015"), Date.parse("November 17, 2015")], Time.parse("08:00:00 AM"), Time.parse("17:00:00 PM")],
+  ["Winter 2015", [Date.parse("November 16, 2015"), Date.parse("November 17, 2015")], Time.parse("08:00:00 AM"), Time.parse("17:00:00 PM")]
 ]
 
 courses.each do |description, class_days, start_time, end_time|
