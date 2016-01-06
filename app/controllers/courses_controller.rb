@@ -2,7 +2,7 @@ class CoursesController < ApplicationController
   authorize_resource
 
   def new
-    @course = Course.new(start_time: "9:00 AM", end_time: "5:00 PM")
+    @course = Course.new(start_time: "8:00 AM", end_time: "5:00 PM")
   end
 
   def create

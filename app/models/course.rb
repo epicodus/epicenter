@@ -69,8 +69,8 @@ class Course < ActiveRecord::Base
 private
 
   def set_start_and_end_dates
-    self.start_date = class_days.select { |day| !day.friday? && !day.saturday? && !day.sunday? }.sort.first
-    self.end_date = class_days.select { |day| !day.friday? && !day.saturday? && !day.sunday? }.sort.last
+    self.start_date = class_days.select { |day| !day.saturday? && !day.sunday? }.sort.first
+    self.end_date = class_days.select { |day| !day.saturday? && !day.sunday? }.sort.last
   end
 
   def import_code_reviews

@@ -3,7 +3,7 @@ $(function() {
     format: "yyyy-mm-dd",
     multidate: true,
     todayHighlight: true,
-    daysOfWeekDisabled: '0,5,6'
+    daysOfWeekDisabled: '0,6'
   });
 
   $(".custom-datepicker").on("changeDate", function(event) {

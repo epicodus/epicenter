@@ -31,7 +31,7 @@ feature 'creating a course' do
       travel_to Date.parse('November 16, 2015') do
         visit new_course_path
         fill_in 'Description', with: 'Ruby/Rails - Summer 2015'
-        fill_in 'Start time', with: '9:00 AM'
+        fill_in 'Start time', with: '8:00 AM'
         fill_in 'End time', with: '5:00 PM'
         find('td', text: 16).click
         find('td', text: 19).click
@@ -46,7 +46,7 @@ feature 'creating a course' do
       code_review = FactoryGirl.create(:code_review, course: previous_course)
       visit new_course_path
       fill_in 'Description', with: 'Ruby/Rails - Summer 2015'
-      fill_in 'Start time', with: '9:00 AM'
+      fill_in 'Start time', with: '8:00 AM'
       fill_in 'End time', with: '5:00 PM'
       find(:xpath, "//input[@id='course_class_days']").set "2015-09-06,2015-09-07,2015-09-08"
       select previous_course.description, from: 'Import code reviews from previous course'
@@ -92,7 +92,7 @@ feature 'editing a course' do
     scenario 'with valid input' do
       visit edit_course_path(course)
       fill_in 'Description', with: 'PHP/Drupal - Summer 2015'
-      fill_in 'Start time', with: '9:00 AM'
+      fill_in 'Start time', with: '8:00 AM'
       fill_in 'End time', with: '5:00 PM'
       find(:xpath, "//input[@id='course_class_days']").set "2015-09-06,2015-09-07,2015-09-08"
       click_on 'Update Course'
