@@ -92,7 +92,7 @@ protected
   end
 
   def current_ability
-    @current_ability ||= Ability.new(current_user, request.remote_ip)
+    @current_ability ||= Ability.new(current_user, request.env['HTTP_CF_CONNECTING_IP'])
   end
 
   rescue_from CanCan::AccessDenied do |exception|
