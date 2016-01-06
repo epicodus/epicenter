@@ -1,33 +1,67 @@
 <div class="student-div student-attendance">
-  <% @student.course.class_dates_until(Time.zone.now.to_date).sort.reverse.each do |day| %>
-    <ul class='col-xs-12 list-unstyled'>
-        <li>
-          <span class="col-xs-2">
-            <%= day.strftime("%A") %>
-          </span>
-          <span class="col-xs-2">
-            <%= day.strftime("%B %d, %Y") %>
-          </span>
-          <span>
-            <% if @student.attendance_record_on_day(day) == nil %>
-              <span class="attendance absent col-xs-2" disabled>Absent</span>
-            <% elsif @student.attendance_record_on_day(day).tardy %>
-              <span class="attendance tardy col-xs-2" disabled>Tardy</span>
-            <% elsif @student.attendance_record_on_day(day).left_early %>
-              <span class="attendance left-early col-xs-2" disabled>Left early</span>
-            <% else %>
-              <span class="attendance on-time col-xs-2" disabled>On time</span>
-            <% end %>
-          </span>
+  <ul class='col-xs-12 list-unstyled'>
+    <% @student.course.class_dates_until(Time.zone.now.to_date).sort.reverse.each do |day| %>
+      <li>
+        <span class="col-xs-2">
+          <%= day.strftime("%A") %>
+        </span>
+        <span class="col-xs-2">
+          <%= day.strftime("%B %d, %Y") %>
+        </span>
+        <% if @student.attendance_record_on_day(day) == nil %>
+          <span class="attendance absent col-xs-2" disabled>Absent</span>
+        <% elsif @student.attendance_record_on_day(day).tardy %>
+          <span class="attendance tardy col-xs-2" disabled>Tardy</span>
+        <% elsif @student.attendance_record_on_day(day).left_early %>
+          <span class="attendance left-early col-xs-2" disabled>Left early</span>
+        <% else %>
+          <span class="attendance on-time col-xs-2" disabled>On time</span>
+        <% end %>
+        <span class="col-xs-2"><%= @student.pair_on_day(day) ? @student.pair_on_day(day).name : 'Solo' %></span>
 
-          <% if is_a? Admin %>
-            <span class="col-xs-2">
-              <%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day), class: ''  %>
-            </span>
-          <% end %>
+        <% if is_a? Admin %>
+        <span class="col-xs-2">
+          <%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day), class: ''  %>
+        </span>
+        <% end %>
+      </li>
+      <br>
+      <br>
+    <% end %>
+  </ul>
 
-          <span class="col-xs-2"><%= @student.pair_on_day(day) ? @student.pair_on_day(day).name : 'Solo' %></span>
-        </li>
-    </ul>
-  <% end %>
+  <div class="row">
+    <h3 class="col-xs-12">Totals</h3>
+  </div>
+
+  <ul class='col-xs-12 list-unstyled'>
+    <li>
+      <span class="col-xs-4">Absent: </span><span class="attendance col-xs-2 absent"><%= @student_attendance_stats.absences.count %></span>
+    </li>
+    <br>
+    <br>
+    <li>
+      <span class="col-xs-4">Tardy: </span><span class="attendance col-xs-2 tardy"><%= @student_attendance_stats.tardies.count %></span>
+    </li>
+    <br>
+    <br>
+    <li>
+      <span class="col-xs-4">Left early: </span><span class="attendance col-xs-2 left-early"><%= @student_attendance_stats.left_earlies.count %></span>
+    </li>
+    <br>
+    <br>
+  </ul>
+
+  <div class="row">
+    <h3 class="col-xs-12">
+      Class progress
+      <span class="pull-right muted">
+        <%= pluralize(@student_attendance_stats.days_remaining, 'day') %> left of class
+      </span>
+    </h3>
+    <div class="progress progress-bar-striped col-xs-12">
+      <div class="bar" style="width: <%= current_student.course.progress_percent %>%;"></div>
+    </div>
+  </div>
+
 </div>

@@ -1,5 +1,5 @@
 class StudentsController < ApplicationController
-  authorize_resource
+  authorize_resource :student_attendance_statistics, only: :show
 
   def index
     @students = current_admin.current_course.students
@@ -9,6 +9,7 @@ class StudentsController < ApplicationController
   def show
     @student = Student.find(params[:id])
     authorize! :read, @student
+    @student_attendance_stats = StudentAttendanceStatistics.new(current_student)
   end
 
   def update

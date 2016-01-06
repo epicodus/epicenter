@@ -26,8 +26,6 @@ Rails.application.routes.draw do
   resources :ratings, only: [:create]
   resources :companies
 
-  resource :attendance_statistics, only: [:show]
-
   resources :code_reviews, except: [:index] do
     resources :submissions, only: [:index, :create, :update]
     resource :report, only: [:show], to: 'code_review_reports#show'
