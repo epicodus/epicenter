@@ -3,7 +3,7 @@ class SubmissionsController < ApplicationController
 
   def index
     @code_review = CodeReview.find(params[:code_review_id])
-    @submissions = @code_review.submissions.needing_review
+    @submissions = @code_review.submissions.needing_review.includes(:student)
   end
 
   def create
@@ -31,5 +31,4 @@ private
   def submission_params
     params.require(:submission).permit(:link, :needs_review).merge(student_id: current_student.id)
   end
-
 end

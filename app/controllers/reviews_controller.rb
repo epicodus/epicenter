@@ -10,15 +10,15 @@ class ReviewsController < ApplicationController
     @submission = Submission.find(params[:submission_id])
     @review = @submission.reviews.new(review_params)
     if @review.save
-      render :create
+      redirect_to code_review_submissions_path(@submission.code_review), notice: 'Review saved.'
     else
-      render :errors
+      render 'new'
     end
   end
 
 private
 
   def review_params
-    params.require(:review).permit(:note, grades_attributes: [:score_id, :objective_id]).merge(admin_id: current_admin.id)
+    params.require(:review).permit(:student_signature, :note, grades_attributes: [:score_id, :objective_id]).merge(admin_id: current_admin.id)
   end
 end
