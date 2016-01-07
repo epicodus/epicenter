@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   root 'static_pages#index'
-  get 'sign_out', to: 'attendance_sign_outs#new', as: 'sign_out'
+  get 'sign_out', to: 'attendance_sign_out#new'
 
   devise_for :student, :controllers => { :invitations => 'invitations', :registrations => 'registrations', sessions: 'student/sessions' }
   devise_for :admins, skip: :registrations
@@ -53,5 +53,5 @@ Rails.application.routes.draw do
   resource :code_review_copy, only: [:create]
   resource :random_pairs, only: [:show]
   resources :enrollments, only: [:create, :destroy]
-  resource :sign_out, controller: 'attendance_sign_outs', only: [:create]
+  resources :sign_out, controller: 'attendance_sign_out', only: [:create]
 end

@@ -1,7 +1,4 @@
-class AttendanceSignOutsController < ApplicationController
-  def new
-
-  end
+class AttendanceSignOutController < ApplicationController
 
   def create
     if params[:commit] == "Sign Out"
@@ -14,15 +11,15 @@ class AttendanceSignOutsController < ApplicationController
           redirect_to sign_out_path
         else
           flash[:alert] = "Something went wrong: " + attendance_record.errors.full_messages.join(", ")
-          render 'attendance_sign_outs/new'
+          render 'attendance_sign_out/new'
         end
       end
     end
   end
 
-  private
+private
 
-    def attendance_record_params
-      params.permit(:signing_out, :student_id)
-    end
+  def attendance_record_params
+    params.permit(:signing_out, :student_id)
+  end
 end
