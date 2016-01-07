@@ -54,5 +54,4 @@ Rails.application.routes.draw do
   resource :random_pairs, only: [:show]
   resources :enrollments, only: [:create, :destroy]
   resource :sign_out, controller: 'attendance_sign_outs', only: [:create]
-  resource :sign_in, controller: 'attendance_sign_ins', only: [:create]
 end
