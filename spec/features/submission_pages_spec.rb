@@ -69,7 +69,7 @@ feature 'index page' do
           select score.description, from: 'review_grades_attributes_0_score_id'
           fill_in 'Note', with: 'Well done!'
           click_on 'Create Review'
-          expect(page).to have_content 'Saved!'
+          expect(page).to have_content 'Review saved.'
         end
 
         scenario 'with invalid input' do

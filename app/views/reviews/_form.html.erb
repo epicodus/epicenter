@@ -1,22 +1,50 @@
-<%= form_for [@submission, @review], remote: true do |f| %>
-  <div class="jumbotron">
-    <%= f.nested_fields_for :grades, wrapper_tag: :div do |ff| %>
-      <div class="row">
-        <div class="col-xs-7">
-          <%= ff.object.objective.content if ff.object.objective %>
-        </div>
-        <div class="col-xs-5">
-          <%= ff.collection_select :score_id, Score.all, :id, :description, {}, { class: "form-control" } %>
-        </div>
+<%= form_for [@submission, @review] do |f| %>
+  <%= f.nested_fields_for :grades, wrapper_tag: :div do |ff| %>
+    <div class="row">
+      <div class="col-xs-8">
+        <%= ff.object.objective.content if ff.object.objective %>
       </div>
-      <%= ff.hidden_field :objective_id %>
-    <% end %>
-    <br>
-    <div class="form-group">
-      <%= f.label :note, class: 'col-xs-2 control-label' %>
-      <%= f.text_area :note, rows: 5, class: 'form-control' %>
+      <div class="col-xs-4">
+        <%= ff.collection_select :score_id, Score.all, :id, :description, {}, { class: "form-control" } %>
+      </div>
     </div>
-    <%= f.submit nil, class: "btn btn-info" %>
-    <button type="button" class="cancel btn btn-default">Cancel</button>
+    <%= ff.hidden_field :objective_id %>
+  <% end %>
+  <br>
+  <div class="form-group">
+    <%= f.label :note %>
+    <%= f.text_area :note, rows: 10, class: 'form-control' %>
   </div>
+  <div class="form-group">
+    <%= f.label 'Your attendance for this course' %>
+      <p>
+        <span class="label label-success">
+          On Time:
+          <%= pluralize(@submission.student.attendance_records_for(:on_time, @submission.code_review.course), 'day') %>
+        </span>
+      </p>
+      <p>
+        <span class="label label-danger">
+          Tardy:
+          <%= pluralize(@submission.student.attendance_records_for(:tardy, @submission.code_review.course), 'day') %>
+        </span>
+      </p>
+      <p>
+        <span class="label label-danger">
+          Left Early:
+          <%= pluralize(@submission.student.attendance_records_for(:left_early, @submission.code_review.course), 'day') %>
+        </span>
+      </p>
+      <p>
+        <span class="label label-primary">
+          Absent:
+          <%= pluralize(@submission.student.attendance_records_for(:absent, @submission.code_review.course), 'day') %>
+        </span>
+      </p>
+  </div>
+  <div class="form-group">
+    <%= f.label :student_signature, 'Student: The state requires that you sign this form by typing your name below to acknowledge that you understand how you have reviewed this code review and your attendance with your teacher.' %>
+    <%= f.text_field :student_signature, class: 'form-control' %>
+  </div>
+  <%= f.submit nil, class: "btn btn-info" %>
 <% end %>

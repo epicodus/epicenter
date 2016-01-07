@@ -1,8 +1,0 @@
-$submission = $('#submission_<%= @submission.id %>');
-$submission.append('<%= j render "form" %>');
-$submission.find('.new_review_link').hide();
-$submission.find('button.cancel').click(function(event) {
-  $submission.find('form').remove();
-  $submission.find('.new_review_link').show();
-  event.preventDefault();
-});
