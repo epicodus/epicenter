@@ -1,12 +1,23 @@
 <h2>Submissions for <%= @code_review.title %></h2>
-<div class="submissions">
-  <div class="row">
-    <div class="col-xs-6">
-      <h3>Student name</h3>
-    </div>
-    <div class="col-xs-3">
-      <h3>Submitted</h3>
-    </div>
-  </div>
-  <%= render @submissions %>
-</div>
+<h3><%= @code_review.course.description %></h3>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Student name</th>
+      <th></th>
+      <th>Submitted</th>
+      <th></th>
+    </tr>
+  </thead>
+  <% @submissions.each do |submission| %>
+    <tbody>
+      <tr>
+        <td><%= link_to submission.student.name, student_path(submission.student) %></td>
+        <td><%= link_to 'view code', submission.link, target: '_blank' %></td>
+        <td><%= time_ago_in_words(submission.updated_at) %> ago</td>
+        <td><%= link_to 'Review', new_submission_review_path(submission) %></td>
+      </tr>
+    </tbody>
+  <% end %>
+</table>
