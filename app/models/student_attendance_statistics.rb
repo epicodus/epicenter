@@ -18,6 +18,10 @@ class StudentAttendanceStatistics
     @student.course.number_of_days_left
   end
 
+  def on_times
+    student.attendance_records.where(tardy: false, left_early: false).pluck(:date)
+  end
+
   def tardies
     student.attendance_records.where(tardy: true).pluck(:date)
   end
