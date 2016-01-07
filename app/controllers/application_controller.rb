@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :configure_permitted_params, if: :devise_controller?
 
-  helper_method :current_user, :current_course, :ruby_january_internship_course, :php_january_internship_course, :java_january_internship_course
+  helper_method :current_user, :current_course
 
 protected
   def configure_permitted_params
@@ -73,17 +73,6 @@ protected
     end
   end
 
-  def ruby_january_internship_course
-    Course.find_by(description: 'January 2016 Internships - Ruby')
-  end
-
-  def php_january_internship_course
-    Course.find_by(description: 'January 2016 Internships - PHP')
-  end
-
-  def java_january_internship_course
-    Course.find_by(description: 'January 2016 Internships - Java')
-  end
   #authenticate_inviter is used to restrict who can send invitations. We are overriding the devise default
   #behavior as this requires authentication of the same resource as the invited one. Only admins are allowed
   #to send invitations. This requires that the DeviseInvitable::Inviter is added to the Admin model.
