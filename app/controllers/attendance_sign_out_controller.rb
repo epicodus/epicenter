@@ -1,19 +1,22 @@
 class AttendanceSignOutController < ApplicationController
 
   def create
-    if params[:commit] == "Sign Out"
-      student = Student.find_by(email: params[:email])
-      if student.valid_password?(params[:password])
-        attendance_record = AttendanceRecord.find_by(date: Time.zone.now.to_date, student: student)
-        authorize! :update, attendance_record
-        if attendance_record.update(attendance_record_params)
-          flash[:notice] = "Goodbye #{attendance_record.student.name}"
-          redirect_to sign_out_path
-        else
-          flash[:alert] = "Something went wrong: " + attendance_record.errors.full_messages.join(", ")
-          render 'attendance_sign_out/new'
-        end
+    student = Student.find_by(email: params[:email])
+    attendance_record = AttendanceRecord.find_by(date: Time.zone.now.to_date, student: student)
+    if student.valid_password?(params[:password]) && attendance_record
+      authorize! :update, attendance_record
+      if attendance_record.update(attendance_record_params)
+        redirect_to sign_out_path, notice: "Goodbye #{attendance_record.student.name}"
+      else
+        flash[:alert] = "Something went wrong: " + attendance_record.errors.full_messages.join(", ")
+        render 'new'
       end
+    elsif student.valid_password?(params[:password]) && !attendance_record
+      flash[:alert] = "You haven't signed in yet today."
+      render 'new'
+    else
+      flash[:alert] = 'Invalid email or password.'
+      render 'new'
     end
   end
 
