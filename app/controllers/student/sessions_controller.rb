@@ -1,4 +1,5 @@
 class Student::SessionsController < Devise::SessionsController
+
   def create
     if can?(:create, AttendanceRecord.new) && params[:pair][:email] != ''
       pair_sign_in

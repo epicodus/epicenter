@@ -27,8 +27,10 @@ protected
     if user.is_a? Admin
       course_students_path(user.current_course)
     elsif user.is_a? Student
-      if can?(:create, AttendanceRecord.new)
-        'https://help.epicodus.com'
+      if can?(:create, AttendanceRecord.new) && !AttendanceRecord.find_by(student_id: user.id, date: Time.zone.now.to_date)
+        queue_redirect_path
+      elsif can?(:create, AttendanceRecord.new) && AttendanceRecord.find_by(student_id: user.id, date: Time.zone.now.to_date)
+        course_code_reviews_path(user.course)
       elsif user.class_in_session? && user.signed_main_documents?
         course_code_reviews_path(user.course)
       else
