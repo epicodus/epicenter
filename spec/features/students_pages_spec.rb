@@ -104,12 +104,10 @@ feature "Student signs in while class is in session" do
   end
 
   context "at school" do
-    before do
-      allow_any_instance_of(Ability).to receive(:is_local).and_return(true)
-    end
+    before { allow_any_instance_of(Ability).to receive(:is_local).and_return(true) }
 
     context "when soloing" do
-      it "takes them to the help queue" do
+      it "takes them to the welcome page" do
         sign_in(student)
         expect(current_path).to eq welcome_path
       end
@@ -122,7 +120,7 @@ feature "Student signs in while class is in session" do
     context "when pairing" do
       let(:pair) { FactoryGirl.create(:user_with_all_documents_signed) }
 
-      it "takes them to the help queue" do
+      it "takes them to the welcome page" do
         sign_in(student, pair)
         expect(current_path).to eq welcome_path
       end
@@ -131,10 +129,9 @@ feature "Student signs in while class is in session" do
         expect { sign_in(student, pair) }.to change { AttendanceRecord.count }.by 2
       end
 
-      it 'gives an error if they try to sign in twice in the same day' do
+      it 'creates and updates attendance records if one student has already signed in for the day' do
         FactoryGirl.create(:attendance_record, student: student)
-        sign_in(student, pair)
-        expect(page).to have_content "Something went wrong:"
+        expect { sign_in(student, pair) }.to change { AttendanceRecord.count }.by 1
       end
 
       it 'gives an error if they try to pair with themself' do
