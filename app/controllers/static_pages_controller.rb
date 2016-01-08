@@ -1,8 +1,5 @@
 class StaticPagesController < ApplicationController
-  before_filter :redirect_if_logged_in
-
-  def index
-  end
+  before_filter :redirect_if_logged_in, except: :show
 
 private
   def redirect_if_logged_in
