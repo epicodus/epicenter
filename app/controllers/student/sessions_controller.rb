@@ -27,14 +27,12 @@ private
         student_names = attendance_records.map { |attendance_record| attendance_record.student.name }
         redirect_to welcome_path, notice: "Welcome #{student_names.join(' and ')}."
       else
-        flash[:alert] = "Something went wrong: " + attendance_records.first.errors.full_messages.join(", ")
-        self.resource = Student.new
-        render 'devise/sessions/new'
+        sign_out student
+        redirect_to :back, alert: "Something went wrong: " + attendance_records.first.errors.full_messages.join(", ")
       end
     else
-      flash[:alert] = "Invalid email or password."
-      self.resource = Student.new
-      render 'devise/sessions/new'
+      sign_out student
+      redirect_to :back, alert: 'Invalid email or password.'
     end
   end
 end

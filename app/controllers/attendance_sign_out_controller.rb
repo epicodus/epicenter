@@ -3,7 +3,7 @@ class AttendanceSignOutController < ApplicationController
   def create
     student = Student.find_by(email: params[:email])
     attendance_record = AttendanceRecord.find_by(date: Time.zone.now.to_date, student: student)
-    if student.try(:valid_password?, params[:password]) && attendance_record
+    if attendance_record && student.try(:valid_password?, params[:password])
       authorize! :update, attendance_record
       if attendance_record.update(attendance_record_params)
         sign_out student
@@ -12,7 +12,7 @@ class AttendanceSignOutController < ApplicationController
         flash[:alert] = "Something went wrong: " + attendance_record.errors.full_messages.join(", ")
         render 'new'
       end
-    elsif student.try(:valid_password?, params[:password]) && !attendance_record
+    elsif !attendance_record && student.try(:valid_password?, params[:password])
       flash[:alert] = "You haven't signed in yet today."
       render 'new'
     else
