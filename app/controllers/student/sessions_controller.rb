@@ -18,8 +18,10 @@ private
     pair = Student.find_by(email: params[:pair][:email])
 
     if student.try(:valid_password?, params[:student][:password]) && pair.try(:valid_password?, params[:pair][:password])
-      attendance_records = [AttendanceRecord.new(student: student, pair_id: pair.id),
-                            AttendanceRecord.new(student: pair, pair_id: student.id)]
+      attendance_records = [AttendanceRecord.find_or_initialize_by(student: student, date: Time.zone.now.to_date),
+                            AttendanceRecord.find_or_initialize_by(student: pair, date: Time.zone.now.to_date)]
+      attendance_records.first.pair_id = pair.id
+      attendance_records.last.pair_id = student.id
       if attendance_records.all? { |record| record.save }
         sign_out student
         student_names = attendance_records.map { |attendance_record| attendance_record.student.name }
