@@ -6,7 +6,7 @@ class AttendanceSignOutController < ApplicationController
     if student.valid_password?(params[:password]) && attendance_record
       authorize! :update, attendance_record
       if attendance_record.update(attendance_record_params)
-        redirect_to sign_out_path, notice: "Goodbye #{attendance_record.student.name}"
+        redirect_to sign_out_path, notice: "Goodbye #{attendance_record.student.name}."
       else
         flash[:alert] = "Something went wrong: " + attendance_record.errors.full_messages.join(", ")
         render 'new'

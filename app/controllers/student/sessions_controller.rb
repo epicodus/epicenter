@@ -23,7 +23,7 @@ private
       if attendance_records.all? { |record| record.save }
         sign_out student
         student_names = attendance_records.map { |attendance_record| attendance_record.student.name }
-        redirect_to queue_redirect_path, notice: "Welcome #{student_names.join(' and ')}."
+        redirect_to welcome_path, notice: "Welcome #{student_names.join(' and ')}."
       else
         flash[:alert] = "Something went wrong: " + attendance_records.first.errors.full_messages.join(", ")
         self.resource = Student.new

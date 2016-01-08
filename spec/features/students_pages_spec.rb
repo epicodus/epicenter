@@ -111,7 +111,7 @@ feature "Student signs in while class is in session" do
     context "when soloing" do
       it "takes them to the help queue" do
         sign_in(student)
-        expect(current_path).to eq queue_redirect_path
+        expect(current_path).to eq welcome_path
       end
 
       it "creates an attendance record for them" do
@@ -124,7 +124,7 @@ feature "Student signs in while class is in session" do
 
       it "takes them to the help queue" do
         sign_in(student, pair)
-        expect(current_path).to eq queue_redirect_path
+        expect(current_path).to eq welcome_path
       end
 
       it "creates an attendance record for them" do

@@ -1,3 +1,12 @@
 <h1 class="text-center">Welcome to Epicodus!</h1>
 
-<h3 class="text-center">You'll be redirected to the help queue momentarily...</h3>
+<hr>
+
+<div class="row">
+  <div class="col-xs-4 col-xs-offset-4">
+    <%= link_to 'Epicenter', root_path, class: 'btn btn-info btn-lg btn-block' %>
+    <%= link_to 'Queue', 'https://help.epicodus.com', class: 'btn btn-success btn-lg btn-block' %>
+    <%= link_to 'Learn How to Program', 'https://learnhowtoprogram.com/courses', class: 'btn btn-primary btn-lg btn-block' %>
+    <%= link_to 'Attendance Sign Out', sign_out_path, class: 'btn btn-default btn-lg btn-block' %>
+  </div>
+</div>
