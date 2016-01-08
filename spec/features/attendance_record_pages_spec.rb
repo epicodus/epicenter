@@ -27,6 +27,14 @@ feature 'student logging out on attendance page' do
     click_button "Sign Out"
     expect(page).to have_content 'Invalid email or password.'
   end
+
+  scenario 'student fails to log out because the wrong email is used' do
+    visit sign_out_path
+    fill_in "email", with: 'wrong_email@epicodus.com'
+    fill_in "password", with: student.password
+    click_button "Sign Out"
+    expect(page).to have_content 'Invalid email or password.'
+  end
 end
 
 feature "admin viewing an individual student's attendance" do
