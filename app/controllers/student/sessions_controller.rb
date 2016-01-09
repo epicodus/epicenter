@@ -14,25 +14,35 @@ class Student::SessionsController < Devise::SessionsController
 private
 
   def pair_sign_in
-    student = Student.find_by(email: params[:student][:email])
-    pair = Student.find_by(email: params[:pair][:email])
+    users = [Student.find_by(email: params[:student][:email]),
+             Student.find_by(email: params[:pair][:email])]
 
-    if student.try(:valid_password?, params[:student][:password]) && pair.try(:valid_password?, params[:pair][:password])
-      attendance_records = [AttendanceRecord.find_or_initialize_by(student: student, date: Time.zone.now.to_date),
-                            AttendanceRecord.find_or_initialize_by(student: pair, date: Time.zone.now.to_date)]
-      attendance_records.first.pair_id = pair.id
-      attendance_records.last.pair_id = student.id
-      if attendance_records.all? { |record| record.save }
-        sign_out student
-        student_names = attendance_records.map { |attendance_record| attendance_record.student.name }
+    if users.all? { |user| valid_credentials(user) }
+      sign_out(current_student)
+      if create_attendance_records(users)
+        student_names = users.map { |user| user.name }.uniq
         redirect_to welcome_path, notice: "Welcome #{student_names.join(' and ')}."
       else
-        sign_out student
-        redirect_to :back, alert: "Something went wrong: " + attendance_records.first.errors.full_messages.join(", ")
+        flash[:alert] = "Something went wrong: " + attendance_records.first.errors.full_messages.join(", ")
+        self.resource = Student.new
+        render 'devise/sessions/new'
       end
     else
-      sign_out student
-      redirect_to :back, alert: 'Invalid email or password.'
+      flash[:alert] = 'Invalid email or password.'
+      self.resource = Student.new
+      render 'devise/sessions/new'
+    end
+  end
+
+  def valid_credentials(student)
+    student.try(:valid_password?, params[:student][:password])
+  end
+
+  def create_attendance_records(users)
+    users.map do |user|
+      record = AttendanceRecord.find_or_initialize_by(student: user, date: Time.zone.now.to_date)
+      record.pair_id = (users - [user]).try(:first).try(:id)
+      record.save
     end
   end
 end
