@@ -14,6 +14,8 @@ class Student::SessionsController < Devise::SessionsController
 private
 
   def pair_sign_in
+    sign_out_all_scopes
+
     @users = [Student.find_by(email: params[:student][:email]),
              Student.find_by(email: params[:pair][:email])]
 
@@ -23,13 +25,14 @@ private
         student_names = @users.map { |user| user.name }.uniq
         redirect_to welcome_path, notice: "Welcome #{student_names.join(' and ')}."
       else
-        flash[:alert] = "Something went wrong: " + attendance_records.first.errors.full_messages.join(", ")
+        flash.now[:alert] = "Something went wrong: " + attendance_records.first.errors.full_messages.join(", ")
         self.resource = Student.new
         render 'devise/sessions/new'
       end
     else
-      sign_out(current_student)
-      redirect_to new_student_session_path, alert: 'Invalid email or password.'
+      flash.now[:alert] = 'Invalid email or password.'
+      self.resource = Student.new
+      render 'devise/sessions/new'
     end
   end
 
