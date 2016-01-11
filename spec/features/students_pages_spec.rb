@@ -89,7 +89,7 @@ feature "Student visits homepage after logged in" do
 end
 
 feature "Student signs in while class is in session" do
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
 
   context "not at school" do
     it "takes them to the code reviews page" do
@@ -118,7 +118,7 @@ feature "Student signs in while class is in session" do
     end
 
     context "when pairing" do
-      let(:pair) { FactoryGirl.create(:user_with_all_documents_signed) }
+      let(:pair) { FactoryGirl.create(:user_with_all_documents_signed, password: 'password2', password_confirmation: 'password2') }
 
       it "takes them to the welcome page" do
         sign_in(student, pair)
@@ -129,9 +129,14 @@ feature "Student signs in while class is in session" do
         expect { sign_in(student, pair) }.to change { AttendanceRecord.count }.by 2
       end
 
-      it 'creates and updates attendance records if one student has already signed in for the day' do
+      it 'creates attendance records if one student has already signed in for the day' do
         FactoryGirl.create(:attendance_record, student: student)
         expect { sign_in(student, pair) }.to change { AttendanceRecord.count }.by 1
+      end
+
+      it 'updates the pair id if one student has already signed in for the day' do
+        FactoryGirl.create(:attendance_record, student: student)
+        expect { sign_in(student, pair) }.to change { AttendanceRecord.first.pair_id }.from(nil).to(pair.id)
       end
 
       it "gives an error for an incorrect email" do

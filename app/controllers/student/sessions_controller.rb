@@ -14,13 +14,13 @@ class Student::SessionsController < Devise::SessionsController
 private
 
   def pair_sign_in
-    users = [Student.find_by(email: params[:student][:email]),
+    @users = [Student.find_by(email: params[:student][:email]),
              Student.find_by(email: params[:pair][:email])]
 
-    if users.all? { |user| valid_credentials(user) }
+    if @users.all? { |user| valid_credentials(user) }
       sign_out(current_student)
-      if create_attendance_records(users)
-        student_names = users.map { |user| user.name }.uniq
+      if create_attendance_records(@users)
+        student_names = @users.map { |user| user.name }.uniq
         redirect_to welcome_path, notice: "Welcome #{student_names.join(' and ')}."
       else
         flash[:alert] = "Something went wrong: " + attendance_records.first.errors.full_messages.join(", ")
@@ -28,14 +28,17 @@ private
         render 'devise/sessions/new'
       end
     else
-      flash[:alert] = 'Invalid email or password.'
-      self.resource = Student.new
-      render 'devise/sessions/new'
+      sign_out(current_student)
+      redirect_to new_student_session_path, alert: 'Invalid email or password.'
     end
   end
 
   def valid_credentials(student)
-    student.try(:valid_password?, params[:student][:password])
+    if student == @users.first
+      student.try(:valid_password?, params[:student][:password])
+    else
+      student.try(:valid_password?, params[:pair][:password])
+    end
   end
 
   def create_attendance_records(users)
