@@ -1,16 +1,39 @@
 feature 'student logging out on attendance page' do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let!(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: "student1@example.com") }
-  let!(:attendance_record) { FactoryGirl.create(:attendance_record, student: student, date: Time.zone.now.to_date) }
+  let!(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
-  before { login_as(admin, scope: :admin) }
-
+  before { allow_any_instance_of(Ability).to receive(:is_local).and_return(true) }
+  
   scenario 'student successfully logs out' do
+    FactoryGirl.create(:attendance_record, student: student, date: Time.zone.now.to_date)
     visit sign_out_path
-    fill_in "email", with: "student1@example.com"
-    fill_in "password", with: "password"
-    click_button("Sign Out")
+    fill_in "email", with: student.email
+    fill_in "password", with: student.password
+    click_button "Sign Out"
     expect(page).to have_content "Goodbye #{student.name}"
+  end
+
+  scenario 'student fails to log out because they have not logged in yet' do
+    visit sign_out_path
+    fill_in "email", with: student.email
+    fill_in "password", with: student.password
+    click_button "Sign Out"
+    expect(page).to have_content "You haven't signed in yet today."
+  end
+
+  scenario 'student fails to log out because the wrong password is used' do
+    visit sign_out_path
+    fill_in "email", with: student.email
+    fill_in "password", with: "wrong_password"
+    click_button "Sign Out"
+    expect(page).to have_content 'Invalid email or password.'
+  end
+
+  scenario 'student fails to log out because the wrong email is used' do
+    visit sign_out_path
+    fill_in "email", with: 'wrong_email@epicodus.com'
+    fill_in "password", with: student.password
+    click_button "Sign Out"
+    expect(page).to have_content 'Invalid email or password.'
   end
 end
 

@@ -4,7 +4,6 @@ class AttendanceRecord < ActiveRecord::Base
   validates :student_id, presence: true, uniqueness: { scope: :date }
   validates :date, presence: true
   validates :pair_id, uniqueness: { scope: [:student_id, :date] }
-  validate :pair_is_not_self
 
   before_validation :set_date
   before_validation :sign_in
@@ -12,13 +11,6 @@ class AttendanceRecord < ActiveRecord::Base
   belongs_to :student
 
 private
-
-  def pair_is_not_self
-    if pair_id == student_id
-      errors.add(:pair_id, "cannot be yourself.")
-      false
-    end
-  end
 
   def sign_out
     class_end_time = Time.zone.parse(student.course.end_time) - 20.minutes

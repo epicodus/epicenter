@@ -11,7 +11,7 @@ module ApplicationHelper
     current_page?(new_enrollment_agreement_path) ||
     current_page?(certificate_path) ||
     current_page?(transcript_path) ||
-    current_page?(sign_in_path) ||
-    current_page?(sign_out_path)
+    current_page?(welcome_path) ||
+    current_page?(student_session_path)
   end
 end

@@ -1,4 +1,5 @@
 class Student::SessionsController < Devise::SessionsController
+
   def create
     if can?(:create, AttendanceRecord.new) && params[:pair][:email] != ''
       pair_sign_in
@@ -13,25 +14,41 @@ class Student::SessionsController < Devise::SessionsController
 private
 
   def pair_sign_in
-    student = Student.find_by(email: params[:student][:email])
-    pair = Student.find_by(email: params[:pair][:email])
+    sign_out_all_scopes
 
-    if student.try(:valid_password?, params[:student][:password]) && pair.try(:valid_password?, params[:pair][:password])
-      attendance_records = [AttendanceRecord.new(student: student, pair_id: pair.id),
-                            AttendanceRecord.new(student: pair, pair_id: student.id)]
-      if attendance_records.all? { |record| record.save }
-        student_names = attendance_records.map { |attendance_record| attendance_record.student.name }
-        flash[:notice] = "Welcome #{student_names.join(' and ')}."
-        redirect_to after_sign_in_path_for(student)
+    @users = [Student.find_by(email: params[:student][:email]),
+             Student.find_by(email: params[:pair][:email])]
+
+    if @users.all? { |user| valid_credentials(user) }
+      sign_out(current_student)
+      if create_attendance_records(@users)
+        student_names = @users.map { |user| user.name }.uniq
+        redirect_to welcome_path, notice: "Welcome #{student_names.join(' and ')}."
       else
-        flash[:alert] = "Something went wrong: " + attendance_records.first.errors.full_messages.join(", ")
+        flash.now[:alert] = "Something went wrong: " + attendance_records.first.errors.full_messages.join(", ")
         self.resource = Student.new
         render 'devise/sessions/new'
       end
     else
-      flash[:alert] = "Invalid email or password."
+      flash.now[:alert] = 'Invalid email or password.'
       self.resource = Student.new
       render 'devise/sessions/new'
+    end
+  end
+
+  def valid_credentials(student)
+    if student == @users.first
+      student.try(:valid_password?, params[:student][:password])
+    else
+      student.try(:valid_password?, params[:pair][:password])
+    end
+  end
+
+  def create_attendance_records(users)
+    users.map do |user|
+      record = AttendanceRecord.find_or_initialize_by(student: user, date: Time.zone.now.to_date)
+      record.pair_id = (users - [user]).try(:first).try(:id)
+      record.save
     end
   end
 end

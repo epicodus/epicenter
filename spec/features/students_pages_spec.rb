@@ -89,7 +89,7 @@ feature "Student visits homepage after logged in" do
 end
 
 feature "Student signs in while class is in session" do
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
 
   context "not at school" do
     it "takes them to the code reviews page" do
@@ -104,14 +104,12 @@ feature "Student signs in while class is in session" do
   end
 
   context "at school" do
-    before do
-      allow_any_instance_of(Ability).to receive(:is_local).and_return(true)
-    end
+    before { allow_any_instance_of(Ability).to receive(:is_local).and_return(true) }
 
     context "when soloing" do
-      it "takes them to the help queue" do
+      it "takes them to the welcome page" do
         sign_in(student)
-        expect(current_url).to eq "https://help.epicodus.com/"
+        expect(current_path).to eq welcome_path
       end
 
       it "creates an attendance record for them" do
@@ -120,26 +118,25 @@ feature "Student signs in while class is in session" do
     end
 
     context "when pairing" do
-      let(:pair) { FactoryGirl.create(:user_with_all_documents_signed) }
+      let(:pair) { FactoryGirl.create(:user_with_all_documents_signed, password: 'password2', password_confirmation: 'password2') }
 
-      it "takes them to the help queue" do
+      it "takes them to the welcome page" do
         sign_in(student, pair)
-        expect(current_url).to eq "https://help.epicodus.com/"
+        expect(current_path).to eq welcome_path
       end
 
       it "creates an attendance record for them" do
         expect { sign_in(student, pair) }.to change { AttendanceRecord.count }.by 2
       end
 
-      it 'gives an error if they try to sign in twice in the same day' do
+      it 'creates attendance records if one student has already signed in for the day' do
         FactoryGirl.create(:attendance_record, student: student)
-        sign_in(student, pair)
-        expect(page).to have_content "Something went wrong:"
+        expect { sign_in(student, pair) }.to change { AttendanceRecord.count }.by 1
       end
 
-      it 'gives an error if they try to pair with themself' do
-        sign_in(student, student)
-        expect(page).to have_content "Something went wrong: Pair cannot be yourself."
+      it 'updates the pair id if one student has already signed in for the day' do
+        FactoryGirl.create(:attendance_record, student: student)
+        expect { sign_in(student, pair) }.to change { AttendanceRecord.first.pair_id }.from(nil).to(pair.id)
       end
 
       it "gives an error for an incorrect email" do
