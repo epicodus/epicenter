@@ -35,7 +35,6 @@ group :development do
   gem 'quiet_assets'
   gem "letter_opener"
   gem 'bullet'
-  gem 'rack-mini-profiler'
 end
 
 group :test, :development do
