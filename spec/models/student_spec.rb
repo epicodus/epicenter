@@ -529,7 +529,7 @@ describe Student do
       day_one = student.course.start_date
       student.course.update(class_days: [day_one])
 
-      travel_to day_one.beginning_of_day + 9.hours do
+      travel_to day_one.beginning_of_day + 8.hours do
         attendance_record = FactoryGirl.create(:attendance_record, student: student)
         travel_to day_one.beginning_of_day + 17.hours do
           attendance_record.update({signing_out: true})
