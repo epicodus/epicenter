@@ -202,3 +202,20 @@ feature 'unenrolled student signs in' do
     expect(page).to have_content 'Profile'
   end
 end
+
+feature 'viewing the student show page' do
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+
+  before { login_as(student, scope: :student) }
+
+  scenario 'as a student viewing his/her own page' do
+    visit student_path(student)
+    expect(page).to have_content student.name
+  end
+
+  scenario 'as a student viewing another student page' do
+    other_student = FactoryGirl.create(:user_with_all_documents_signed)
+    visit student_path(other_student)
+    expect(page).to have_content 'You are not authorized to access this page.'
+  end
+end
