@@ -4,7 +4,7 @@
     <% @student.submissions.each do |submission| %>
     <tr>
       <td><%= submission.code_review.title %></td>
-      <td><%= submission.code_review.course.description %></td>
+      <td><%= submission.code_review.course.try(:description) %></td>
       <td><%= submission.code_review.latest_total_score_for(@student) %>/<%= submission.code_review.total_points_available %></td>
       <td><%= submission.code_review.expectations_met_by?(@student) ? "Pass" : "Fail" %></td>
       <td><%= link_to "Notes", "##{submission.id}", data: { toggle: "modal" } %></td>
