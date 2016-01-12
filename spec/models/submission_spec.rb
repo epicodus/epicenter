@@ -3,16 +3,20 @@ describe Submission do
   it { should belong_to :code_review }
   it { should have_many :reviews }
   it { should belong_to :student }
-  it { should validate_uniqueness_of(:student_id).scoped_to(:code_review_id) }
 
-  it 'is invalid if link is not a valid url' do
-    submission = FactoryGirl.build(:submission, link: 'github.com')
-    expect(submission.valid?).to eq false
-  end
+  describe "validations" do
+    subject { FactoryGirl.build(:submission) }
+    it { should validate_uniqueness_of(:student_id).scoped_to(:code_review_id) }
 
-  it 'is valid if link is a valid url' do
-    submission = FactoryGirl.build(:submission, link: 'http://github.com')
-    expect(submission.valid?).to eq true
+    it 'is invalid if link is not a valid url' do
+      submission = FactoryGirl.build(:submission, link: 'github.com')
+      expect(submission.valid?).to eq false
+    end
+
+    it 'is valid if link is a valid url' do
+      submission = FactoryGirl.build(:submission, link: 'http://github.com')
+      expect(submission.valid?).to eq true
+    end
   end
 
   describe '#needs_review?' do

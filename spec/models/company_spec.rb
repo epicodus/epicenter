@@ -2,7 +2,11 @@ describe Company do
   it { should have_many :internships }
   it { should validate_presence_of :name }
   it { should validate_presence_of :website }
-  it { should validate_uniqueness_of :name }
+
+  describe "validations" do
+    subject { FactoryGirl.build(:company) }
+    it { should validate_uniqueness_of(:name) }
+  end
 
   describe 'default scope' do
     let!(:company) { FactoryGirl.create(:company, name: "z labs") }
