@@ -8,7 +8,6 @@ class StudentsController < ApplicationController
   def show
     @student = Student.find(params[:id])
     authorize! :read, @student
-    @student_attendance_stats = StudentAttendanceStatistics.new(@student)
   end
 
   def update

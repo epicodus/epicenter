@@ -26,11 +26,10 @@ class Ability
       can :create, Payment, student_id: user.id, payment_method: { student_id: user.id }
       can :read, Payment, student_id: user.id
       can :manage, Student, id: user.id
-      can :read, StudentAttendanceStatistics, student: user
       can :read, Internship, course_id: user.course_id
       can :read, Transcript, student: user
       can :read, :certificate
-      can :manage, AttendanceRecord if is_local(ip)
+      can :create, AttendanceRecord.new(student: user) if is_local(ip)
     elsif user.is_a?(Student) && user.courses.empty?
       can :create, BankAccount
       can :update, BankAccount

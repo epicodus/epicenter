@@ -3,7 +3,7 @@
     <h3 class="col-xs-12">
       Class progress
       <span class="pull-right muted">
-        <%= pluralize(@student_attendance_stats.days_remaining, 'day') %> left of class
+        <%= pluralize(@student.course.number_of_days_left, 'day') %> left of class
       </span>
     </h3>
     <div class="progress progress-bar-striped col-xs-12">
@@ -12,35 +12,40 @@
   </div>
 
   <div class="row">
-    <h3 class="col-xs-12">Totals</h3>
+    <h3 class="col-xs-12">Totals for <%= @student.course.description %></h3>
   </div>
 
   <ul class='col-xs-12 list-unstyled'>
+    <br>
     <li>
-      <span class="col-xs-4">On time: </span><span class="attendance col-xs-2 on-time"><%= @student_attendance_stats.on_times.count %></span>
+      <span class="col-xs-4">On time: </span><span class="attendance col-xs-2 on-time"><%= @student.attendance_records_for(:on_time, @student.course) %></span>
     </li>
     <br>
     <br>
     <li>
-      <span class="col-xs-4">Absent: </span><span class="attendance col-xs-2 absent"><%= @student_attendance_stats.absences.count %></span>
+      <span class="col-xs-4">Absent: </span><span class="attendance col-xs-2 absent"><%= @student.attendance_records_for(:absent, @student.course) %></span>
     </li>
     <br>
     <br>
     <li>
-      <span class="col-xs-4">Tardy: </span><span class="attendance col-xs-2 tardy"><%= @student_attendance_stats.tardies.count %></span>
+      <span class="col-xs-4">Tardy: </span><span class="attendance col-xs-2 tardy"><%= @student.attendance_records_for(:tardy, @student.course) %></span>
     </li>
     <br>
     <br>
     <li>
-      <span class="col-xs-4">Left early: </span><span class="attendance col-xs-2 left-early"><%= @student_attendance_stats.left_earlies.count %></span>
+      <span class="col-xs-4">Left early: </span><span class="attendance col-xs-2 left-early"><%= @student.attendance_records_for(:left_early, @student.course) %></span>
     </li>
-    <br>
     <br>
   </ul>
 
-  <ul class='col-xs-12 list-unstyled'>
+  <div class="row">
+    <h3 class="col-xs-12">Day-by-day</h3>
+  </div>
+
+  <ul class='daily-attendance col-xs-12 list-unstyled'>
     <% @student.course.class_dates_until(Time.zone.now.to_date).sort.reverse.each do |day| %>
       <li>
+        <br>
         <span class="col-xs-2">
           <%= day.strftime("%A") %>
         </span>
@@ -58,13 +63,12 @@
         <% end %>
         <span class="col-xs-2"><%= @student.pair_on_day(day) ? @student.pair_on_day(day).name : 'Solo' %></span>
 
-        <% if is_a? Admin %>
+        <% if can? :manage, AttendanceRecord %>
         <span class="col-xs-2">
           <%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day), class: ''  %>
         </span>
         <% end %>
       </li>
-      <br>
       <br>
     <% end %>
   </ul>

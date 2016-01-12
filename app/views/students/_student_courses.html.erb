@@ -1,5 +1,5 @@
 <div class="student-div student-courses col-xs-6">
-  <% if is_a? Admin %>
+  <% if can? :manage, Course %>
     <%= form_for @student, method: :patch do |f| %>
     <%= render 'layouts/errors', object: @student %>
     <div class="input-group">
@@ -17,7 +17,7 @@
   <% @student.courses.each do |course| %>
     <div class="row" id="student-course-<%= course.id %>">
       <div class="col-xs-6"><%= course.description %></div>
-      <% if is_a? Admin %>
+      <% if can? :manage, Course %>
         <%= link_to 'Withdraw', enrollment_path(course_id: course.id), data: { method: :delete, confirm: 'Are you sure?' }, class: 'unstyled-link col-xs-6' %>
       <% end %>
     </div>
