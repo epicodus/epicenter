@@ -356,3 +356,23 @@ feature 'view the Code Reviews tab' do
     expect(page).to have_content("Great job!")
   end
 end
+
+feature 'deleting a code review' do
+  let(:admin) { FactoryGirl.create(:admin) }
+  let(:code_review) { FactoryGirl.create(:code_review) }
+
+  before { login_as(admin, scope: :admin) }
+
+  scenario 'without existing submissions' do
+    visit code_review_path(code_review)
+    click_link 'Delete'
+    expect(page).to have_content "#{code_review.title} has been deleted."
+  end
+
+  scenario 'with existing submissions' do
+    submission = FactoryGirl.create(:submission, code_review: code_review)
+    visit code_review_path(code_review)
+    click_link 'Delete'
+    expect(page).to have_content "Cannot delete a code review with existing submissions."
+  end
+end

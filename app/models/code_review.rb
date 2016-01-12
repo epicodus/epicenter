@@ -12,6 +12,7 @@ class CodeReview < ActiveRecord::Base
   accepts_nested_attributes_for :objectives, reject_if: :attributes_blank?, allow_destroy: true
 
   before_create :set_number
+  before_destroy :check_for_submissions
 
   def total_points_available
     objectives.length * 3
@@ -40,6 +41,13 @@ class CodeReview < ActiveRecord::Base
   end
 
 private
+
+  def check_for_submissions
+    if submissions.any?
+      errors.add(:base, 'Cannot delete a code review with existing submissions.')
+      false
+    end
+  end
 
   def set_number
     self.number = course.code_reviews.pluck(:number).last.to_i + 1

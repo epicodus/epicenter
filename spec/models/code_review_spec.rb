@@ -25,6 +25,12 @@ describe CodeReview do
     expect(next_code_review.number).to eq 2
   end
 
+  it 'prevents code review deletion when submissions exist' do
+    code_review = FactoryGirl.create(:code_review)
+    submission = FactoryGirl.create(:submission, code_review: code_review)
+    expect(code_review.destroy).to be false
+  end
+
   describe 'total_points_available' do
     it 'multiplies the number of objectives by 3' do
       code_review = FactoryGirl.create(:code_review, objectives: [FactoryGirl.create(:objective)])

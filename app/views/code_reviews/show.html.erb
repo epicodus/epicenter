@@ -1,3 +1,5 @@
+<%= render 'layouts/errors', object: @code_review %>
+
 <h1 class="page-header">
   <%= @code_review.title %>
   <% if current_admin %>
@@ -31,10 +33,11 @@
   </div>
 <% end %>
 
-<hr>
-
-<div class="row">
-  <div class="col-xs-6">
-    <%= render 'submissions/form' %>
+<% if can? :create, Submission %>
+  <hr>
+  <div class="row">
+    <div class="col-xs-6">
+      <%= render 'submissions/form' %>
+    </div>
   </div>
-</div>
+<% end %>
