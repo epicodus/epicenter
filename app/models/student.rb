@@ -69,7 +69,7 @@ class Student < User
   end
 
   def submission_for(code_review)
-    submissions.find { |submission| submission.code_review_id == code_review.id }
+    submissions.find_by(code_review: code_review)
   end
 
   def pair_on_day(day)
