@@ -36,16 +36,3 @@ feature "admin viewing an individual student's attendance" do
     expect(page).to have_xpath("//input[@value='#{attendance_record.date}']")
   end
 end
-
-feature "student viewing their own attendance record" do
-  let(:student) { FactoryGirl.create(:student) }
-  let!(:attendance_record) { FactoryGirl.create(:attendance_record, student: student, date: student.course.start_date + 6) }
-  before do
-    login_as(student, scope: :student)
-    travel_to student.course.start_date + 6
-  end
-
-  scenario "looking at course attendance totals" do
-    # CODE HERE
-  end
-end

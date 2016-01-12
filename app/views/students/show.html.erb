@@ -1,5 +1,9 @@
 <h1><%= @student.name %></h1>
-<%= link_to "Edit Profile", edit_student_registration_path %>
+
+<% if current_user.id == @student.id %>
+  <%= link_to "Edit Profile", edit_student_registration_path %>
+<% end %>
+
 <hr>
 <% if @student.courses.any? %>
   <ul class="nav nav-tabs list-group" id="student-nav">

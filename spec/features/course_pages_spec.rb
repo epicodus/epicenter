@@ -158,10 +158,9 @@ feature 'viewing courses as a student' do
   let(:student) { FactoryGirl.create(:student) }
   before { login_as(student, scope: :student) }
 
-  scenario 'via profile page', js: true do
+  scenario 'via profile page' do
     visit student_path(student)
     find('#student-nav li.student-courses').click
-    save_and_open_screenshot
     expect(page).to have_content "Current course"
   end
 
