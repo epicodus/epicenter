@@ -2,7 +2,7 @@ class StudentsController < ApplicationController
   authorize_resource
 
   def index
-    @students = current_admin.current_course.students
+    @students = current_admin.current_course.students.includes(:submissions)
     @enrollment = Enrollment.new
   end
 

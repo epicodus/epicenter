@@ -26,6 +26,14 @@ class Student < User
   accepts_nested_attributes_for :ratings
 
   NUMBER_OF_RANDOM_PAIRS = 5
+  TARDY_WEIGHT = 0.5
+
+  def attendance_score(filtered_course)
+    absences_penalty = attendance_records_for(:absent, filtered_course)
+    tardies_penalty = attendance_records_for(:tardy, filtered_course) * TARDY_WEIGHT
+    left_earlies_penalty = attendance_records_for(:left_early, filtered_course) * TARDY_WEIGHT
+    ((absences_penalty + tardies_penalty + left_earlies_penalty) / filtered_course.number_of_days_since_start) * 100
+  end
 
   def other_courses
     Course.where.not(id: courses.map(&:id))
@@ -58,6 +66,10 @@ class Student < User
 
   def course_id=(new_course_id)
     courses.push(Course.find(new_course_id))
+  end
+
+  def submission_for(code_review)
+    submissions.find_by(code_review: code_review)
   end
 
   def pair_on_day(day)

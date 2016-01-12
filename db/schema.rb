@@ -175,6 +175,9 @@ ActiveRecord::Schema.define(version: 20160107182050) do
     t.boolean  "needs_review"
   end
 
+  add_index "submissions", ["code_review_id"], name: "index_submissions_on_code_review_id", using: :btree
+  add_index "submissions", ["student_id"], name: "index_submissions_on_student_id", using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                     limit: 255, default: "", null: false
     t.string   "encrypted_password",        limit: 255, default: ""
