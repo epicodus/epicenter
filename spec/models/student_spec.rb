@@ -497,6 +497,52 @@ describe Student do
     end
   end
 
+  describe '#submission_for' do
+    let(:student) { FactoryGirl.create(:student) }
+    let(:code_review_1) { FactoryGirl.create(:code_review, course: student.course) }
+    let(:code_review_2) { FactoryGirl.create(:code_review, course: student.course) }
+    let!(:submission_1) { FactoryGirl.create(:submission, student: student, code_review: code_review_1) }
+
+    it 'returns a student submission for a particular code review' do
+      expect(student.submission_for(code_review_1)).to eq submission_1
+    end
+  end
+
+  describe '#attendance_score' do
+    let(:course) { FactoryGirl.create(:course) }
+    let(:student) { FactoryGirl.create(:student, course: course) }
+
+    it "calculates the student's attendance score" do
+      day_one = student.course.start_date
+      student.course.update(class_days: [day_one])
+
+      travel_to day_one.beginning_of_day do
+        FactoryGirl.create(:attendance_record, student: student)
+      end
+
+      travel_to day_one.end_of_day do
+        expect(student.attendance_score(course)).to eq 50
+      end
+    end
+
+    it "calculates the student attendance score with perfect attendance records" do
+      day_one = student.course.start_date
+      student.course.update(class_days: [day_one])
+
+      travel_to day_one.beginning_of_day + 9.hours do
+        attendance_record = FactoryGirl.create(:attendance_record, student: student)
+        travel_to day_one.beginning_of_day + 17.hours do
+          attendance_record.update({signing_out: true})
+          expect(student.attendance_score(course)).to eq 0
+        end
+      end
+    end
+
+    it "calculates the student attendance score with no attendance records" do
+      expect(student.attendance_score(course)).to eq 100
+    end
+  end
+
   describe '#attendance_records_for' do
     let(:course) { FactoryGirl.create(:course) }
     let(:student) { FactoryGirl.create(:student, course: course) }

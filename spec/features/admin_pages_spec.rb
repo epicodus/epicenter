@@ -120,3 +120,22 @@ feature 'viewing the student page' do
     expect(page).to have_content "#{unenrolled_student.name} is not enrolled in any courses."
   end
 end
+
+feature 'student roster page' do
+  let(:admin) { FactoryGirl.create(:admin) }
+  let!(:course) { FactoryGirl.create(:course) }
+
+  before { login_as(admin, scope: :admin) }
+
+  scenario 'when a teacher visits the sudent roster page when there are no students' do
+    visit course_students_path(course)
+    expect(page).to have_content 'Student Name'
+    expect(page).to have_content 'Attendance Score'
+  end
+
+  scenario 'when a teacher visits the sudent roster page when there are students' do
+    student = FactoryGirl.create(:student, course: course)
+    visit course_students_path(course)
+    expect(page).to have_content student.name
+  end
+end
