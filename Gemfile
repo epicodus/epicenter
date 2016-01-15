@@ -61,7 +61,7 @@ end
 
 group :production do
   gem 'rails_12factor'
-  gem 'unicorn'
+  gem 'puma'
   gem 'newrelic_rpm'
   gem 'bugsnag'
   gem 'lograge'
