@@ -48,7 +48,7 @@ class Course < ActiveRecord::Base
   end
 
   def class_dates_until(last_date)
-    class_days.select { |day| day <= last_date }
+    class_days.select { |day| day <= last_date }.sort
   end
 
   def internships_sorted_by_interest(current_student)
