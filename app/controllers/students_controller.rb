@@ -2,7 +2,8 @@ class StudentsController < ApplicationController
   authorize_resource
 
   def index
-    @students = current_admin.current_course.students.includes(:submissions)
+    @course = Course.find(params[:course_id])
+    @students = @course.students.includes(:submissions)
     @enrollment = Enrollment.new
   end
 
