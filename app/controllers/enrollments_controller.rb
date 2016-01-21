@@ -1,13 +1,13 @@
 class EnrollmentsController < ApplicationController
 
   def create
-    course = Course.find(params[:enrollment][:course_id])
-    student = Student.find(params[:enrollment][:student_id])
-    enrollment = Enrollment.new(enrollment_params)
-    if enrollment.save
-      redirect_to course_students_path(course), notice: "#{student.name} has been added to this course"
+    @course = Course.find(params[:enrollment][:course_id])
+    @student = Student.find(params[:enrollment][:student_id])
+    @enrollment = Enrollment.new(enrollment_params)
+    if @enrollment.save
+      redirect_to course_students_path(@course), notice: "#{@student.name} has been added to this course"
     else
-      redirect_to :back, alert: "#{student.name} not added to this course"
+      render 'students/index'
     end
   end
 

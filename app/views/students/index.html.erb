@@ -1,16 +1,16 @@
-<h1><%= "#{current_admin.current_course.description}" %> student roster</h1>
+<h1><%= "#{@course.description}" %> student roster</h1>
 
 <div class="form-group">
-  <%= link_to "Edit #{current_course.description}", edit_course_path(current_admin.current_course), class: 'btn btn-success' %>
+  <%= link_to "Edit #{@course.description}", edit_course_path(@course), class: 'btn btn-success' %>
 </div>
 
 <%= form_for @enrollment do |f| %>
   <div class="row">
     <div class="col-xs-5">
       <%= render 'layouts/errors', object: @enrollment %>
-      <%= f.hidden_field :course_id, value: current_course.id %>
+      <%= f.hidden_field :course_id, value: @course.id %>
       <div class="input-group">
-        <%= f.collection_select :student_id, current_course.other_students.with_actived_accounts, :id, :name, { include_blank: 'Add a student to this course' }, { class: 'form-control', required: true } %>
+        <%= f.collection_select :student_id, @course.other_students.with_actived_accounts, :id, :name, { include_blank: 'Add a student to this course' }, { class: 'form-control', required: true } %>
         <span class="input-group-btn">
           <%= f.submit 'Add student', class: 'btn btn-info' %>
         </span>
@@ -24,29 +24,29 @@
     <tr>
       <th>Student Name</th>
       <th>Attendance Score (lower is better)</th>
-        <% current_course.code_reviews.each do |code_review| %>
+        <% @course.code_reviews.each do |code_review| %>
           <th><%= code_review.title %></th>
         <% end %>
     </tr>
   </thead>
   <tbody>
-  <% @students.each do |student| %>
+  <% @course.students.each do |student| %>
     <tr>
       <td><%= link_to student.name, student, class: "unstyled-link" %></td>
       <td>
-        <% if student.attendance_score(current_course) >= 8 %>
+        <% if student.attendance_score(@course) >= 8 %>
             <p class="text-danger">
           <% else %>
             <p>
         <% end %>
-        <% if student.attendance_score(current_course).nan? %>
+        <% if student.attendance_score(@course).nan? %>
           No records yet
         <% else %>
-          <%= number_to_percentage(student.attendance_score(current_course), precision: 0) %>
+          <%= number_to_percentage(student.attendance_score(@course), precision: 0) %>
         <% end %>
         </p>
       </td>
-      <% current_course.code_reviews.each do |code_review| %>
+      <% @course.code_reviews.each do |code_review| %>
         <% if student.submission_for(code_review).nil? %>
           <td><p class="text-danger">Missing</p></td>
         <% elsif student.submission_for(code_review).has_been_reviewed? %>

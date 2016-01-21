@@ -2,7 +2,7 @@ class StudentsController < ApplicationController
   authorize_resource
 
   def index
-    @students = current_admin.current_course.students.includes(:submissions)
+    @course = Course.find(params[:course_id])
     @enrollment = Enrollment.new
   end
 
@@ -13,11 +13,11 @@ class StudentsController < ApplicationController
 
   def update
     if current_admin
-      student = Student.find(params[:id])
-      if student.update(student_params)
-        redirect_to :back, notice: "Courses for #{student.name} have been updated"
+      @student = Student.find(params[:id])
+      if @student.update(student_params)
+        redirect_to student_path(@student), notice: "Courses for #{@student.name} have been updated"
       else
-        redirect_to :back, alert: "There was an error."
+        render 'show'
       end
     elsif current_student
       if current_student.update(student_params)
