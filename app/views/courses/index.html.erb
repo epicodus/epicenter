@@ -1,0 +1,15 @@
+<h1>Your courses</h1>
+<hr>
+
+<% if current_student %>
+  <% current_student.courses.each do |course| %>
+    <h2>
+      <%= course.description %>
+      <% if course.in_session? %>
+        <span class="label label-info">Current Course</span>
+      <% end %>
+    </h2>
+    <p><%= link_to 'Internships', course_internships_path(course) %></p>
+    <p><%= link_to 'Code Reviews', course_code_reviews_path(course) %></p>
+  <% end %>
+<% end %>
