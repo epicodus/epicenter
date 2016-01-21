@@ -42,8 +42,12 @@ class CodeReviewsController < ApplicationController
 
   def destroy
     @code_review = CodeReview.find(params[:id])
-    @code_review.destroy
-    redirect_to course_code_reviews_path(current_admin.current_course), alert: "#{@code_review.title} has been deleted."
+    if @code_review.destroy
+      redirect_to course_code_reviews_path(current_admin.current_course), alert: "#{@code_review.title} has been deleted."
+    else
+      @submission = @code_review.submission_for(current_student) || Submission.new(code_review: @code_review)
+      render 'show'
+    end
   end
 
   def update_multiple
