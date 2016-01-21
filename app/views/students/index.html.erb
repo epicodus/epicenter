@@ -30,7 +30,7 @@
     </tr>
   </thead>
   <tbody>
-  <% @students.each do |student| %>
+  <% @course.students.each do |student| %>
     <tr>
       <td><%= link_to student.name, student, class: "unstyled-link" %></td>
       <td>

@@ -3,7 +3,6 @@ class StudentsController < ApplicationController
 
   def index
     @course = Course.find(params[:course_id])
-    @students = @course.students.includes(:submissions)
     @enrollment = Enrollment.new
   end
 
@@ -14,11 +13,12 @@ class StudentsController < ApplicationController
 
   def update
     if current_admin
-      student = Student.find(params[:id])
-      if student.update(student_params)
-        redirect_to :back, notice: "Courses for #{student.name} have been updated"
+      @student = Student.find(params[:id])
+      if @student.update(student_params)
+        redirect_to student_path(@student), notice: "Courses for #{@student.name} have been updated"
       else
-        redirect_to :back, alert: "There was an error."
+        @student = Student.find(params[:id])
+        render 'show'
       end
     elsif current_student
       if current_student.update(student_params)
