@@ -20,7 +20,9 @@
             <% end %>
           </span>
           <span class="col-xs-2">
-            <%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day), class: ''  %>
+            <% if current_admin && can?(:manage, AttendanceRecord) %>
+              <%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day), class: ''  %>
+            <% end %>
           </span>
           <span><%= @student.pair_on_day(day) ? @student.pair_on_day(day).name : 'Solo' %></span>
         </li>

@@ -1,4 +1,7 @@
 <h1><%= @student.name %></h1>
+<% if current_student && can?(:manage, @student) %>
+  <%= link_to 'Edit Account Info', edit_student_registration_path %>
+<% end %>
 <hr>
 <% if @student.courses.any? %>
   <ul class="nav nav-tabs list-group" id="student-nav">
