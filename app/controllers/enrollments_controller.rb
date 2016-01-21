@@ -7,8 +7,6 @@ class EnrollmentsController < ApplicationController
     if @enrollment.save
       redirect_to course_students_path(@course), notice: "#{@student.name} has been added to this course"
     else
-      @course = Course.find(params[:enrollment][:course_id])
-      @enrollment = Enrollment.new(enrollment_params)
       render 'students/index'
     end
   end
