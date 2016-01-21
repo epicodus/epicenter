@@ -2,9 +2,8 @@ class CodeReviewsController < ApplicationController
   authorize_resource
 
   def index
-    course = Course.find(params[:course_id])
-    @code_reviews = course.code_reviews
-    authorize! :read, course # I don't know what this is necessary. Should be handled by authorize_resource above.
+    @course = Course.find(params[:course_id])
+    # authorize! :read, course # I don't know what this is necessary. Should be handled by authorize_resource above.
   end
 
   def new
@@ -24,7 +23,7 @@ class CodeReviewsController < ApplicationController
   def show
     @code_review = CodeReview.find(params[:id])
     @submission = @code_review.submission_for(current_student) || Submission.new(code_review: @code_review)
-    authorize! :show, @code_review # I don't know what this is necessary. Should be handled by authorize_resource above.
+    # authorize! :show, @code_review # I don't know what this is necessary. Should be handled by authorize_resource above.
   end
 
   def edit
