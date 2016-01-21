@@ -27,7 +27,6 @@ class Ability
       can :create, Payment, student_id: user.id, payment_method: { student_id: user.id }
       can :read, Payment, student_id: user.id
       can :manage, Student, id: user.id
-      can :read, StudentAttendanceStatistics, student: user
       can :read, Internship, course_id: user.course_id
       can :read, Transcript, student: user
       can :read, :certificate
