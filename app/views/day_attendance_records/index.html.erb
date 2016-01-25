@@ -22,13 +22,13 @@
           <span class="col-xs-3"><%= link_to student.name, student, class: 'unstyled-link' %></span>
           <span>
             <% if !student.attendance_record_on_day(@day) %>
-              <span class="btn btn-primary col-xs-3" disabled>Absent</span>
+              <span class="attendance absent col-xs-2" disabled>Absent</span>
             <% elsif student.attendance_record_on_day(@day).tardy %>
-              <span class="btn btn-info col-xs-3" disabled>Tardy</span>
+              <span class="attendance tardy col-xs-2" disabled>Tardy</span>
             <% elsif student.attendance_record_on_day(@day).left_early %>
-              <span class="btn btn-info col-xs-3" disabled>Left early</span>
+              <span class="attendance left-early col-xs-2" disabled>Left early</span>
             <% else %>
-              <span class="btn btn-success col-xs-3" disabled>On time</span>
+              <span class="attendance on-time col-xs-2" disabled>On time</span>
             <% end %>
           </span>
           <span class="col-xs-2">

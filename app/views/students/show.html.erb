@@ -1,18 +1,23 @@
 <h1><%= @student.name %></h1>
+
+<% if current_user.id == @student.id %>
+  <%= link_to "Edit Profile", edit_student_registration_path %>
+<% end %>
+
 <hr>
 <% if @student.courses.any? %>
   <ul class="nav nav-tabs list-group" id="student-nav">
     <li class="student-attendance">
-      <a>Attendance</a>
+      <a class="student-tab">Attendance</a>
     </li>
     <li class="student-code-reviews">
-      <a>Code Reviews</a>
+      <a class="student-tab">Code Reviews</a>
     </li>
     <li class="student-internships">
-      <a>Rated Internships</a>
+      <a class="student-tab">Rated Internships</a>
     </li>
     <li class="student-courses">
-      <a>Courses</a>
+      <a class="student-tab">Courses</a>
     </li>
   </ul>
 
@@ -23,7 +28,6 @@
   <%= render 'students/student_internships' %>
 
   <%= render 'students/student_attendance' %>
-
 
 <% else %>
   <h2><%= @student.name %> is not enrolled in any courses.</h2>

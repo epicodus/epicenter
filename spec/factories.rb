@@ -9,6 +9,12 @@ FactoryGirl.define do
 
   factory :attendance_record do
     student
+
+    # MOTHBALL
+    # factory :on_time_attendance_record do
+    #   tardy false
+    #   left_early false
+    # end
   end
 
 
@@ -201,6 +207,22 @@ FactoryGirl.define do
         enrollment = Enrollment.find_by(student_id: student.id)
         enrollment.destroy
       end
+    end
+
+    factory :user_with_perfect_attendance do
+      after(:create) do |student|
+        student.course.class_days.each do |class_day|
+          create(:on_time_attendance_record, date: class_day)
+        end
+      end
+    end
+
+    factory :user_with_inconsistent_attendance do
+
+    end
+
+    factory :user_with_absent_attendance do
+
     end
 
     factory :part_time_student do

@@ -41,17 +41,19 @@ feature "admin viewing an individual student's attendance" do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:student) { FactoryGirl.create(:student) }
   let!(:attendance_record) { FactoryGirl.create(:attendance_record, student: student, date: student.course.start_date + 3) }
-  before { login_as(admin, scope: :admin) }
+  before do
+    login_as(admin, scope: :admin)
+    travel_to student.course.start_date + 3
+  end
 
   scenario "an admin can view attendance records for an individual student" do
-    travel_to student.course.start_date + 3
     visit student_path(student)
     expect(page).to have_content attendance_record.date.strftime("%B %d, %Y")
   end
 
   scenario "an admin can navigate through to the attendance record amendment page for a particular record" do
     visit student_path(student)
-    within '.student-div.student-attendance' do
+    within '.daily-attendance' do
       first('li').click_link 'Edit'
     end
     expect(page).to have_xpath("//input[@value='#{attendance_record.date}']")
