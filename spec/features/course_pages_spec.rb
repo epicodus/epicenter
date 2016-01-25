@@ -57,6 +57,21 @@ feature 'creating a course' do
   end
 end
 
+feature 'viewing courses' do
+  let(:student) { FactoryGirl.create(:student) }
+
+  scenario 'as a student logged in' do
+    login_as(student, scope: :student)
+    visit student_courses_path(student)
+    expect(page).to have_content 'Your courses'
+  end
+
+  scenario 'as a guest' do
+    visit student_courses_path(student)
+    expect(page).to have_content 'You need to sign in.'
+  end
+end
+
 feature 'editing a course' do
   let(:course) { FactoryGirl.create(:course) }
 
