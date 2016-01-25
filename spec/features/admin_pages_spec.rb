@@ -108,15 +108,23 @@ feature 'viewing the student page' do
   before { login_as(admin, scope: :admin) }
 
   scenario 'when a student is enrolled in a course' do
-    visit student_path(student)
+    visit course_student_path(student.course, student)
     expect(page).to have_content 'Attendance'
     expect(page).to have_content 'Code Reviews'
-    expect(page).to have_content 'Rated Internships'
+    expect(page).to have_content 'Courses'
+  end
+
+  scenario 'when a student is enrolled in a course with internships' do
+    FactoryGirl.create(:internship, course: student.course)
+    visit course_student_path(student.course, student)
+    expect(page).to have_content 'Attendance'
+    expect(page).to have_content 'Code Reviews'
+    expect(page).to have_content 'Internships'
     expect(page).to have_content 'Courses'
   end
 
   scenario 'when a student is not enrolled in any courses' do
-    visit student_path(unenrolled_student)
+    visit course_student_path(unenrolled_student.course, unenrolled_student)
     expect(page).to have_content "#{unenrolled_student.name} is not enrolled in any courses."
   end
 end

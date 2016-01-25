@@ -339,18 +339,16 @@ feature 'view the Code Reviews tab' do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:student) { FactoryGirl.create(:user_with_score_of_6) }
 
-
   before { login_as(admin, scope: :admin) }
 
   scenario 'an instructor looks at a code review and sees whether a student passed' do
-    visit student_path(student)
+    visit course_student_path(student.course, student)
     find('#student-nav li.student-code-reviews').click
     expect(page).to have_content "Pass"
   end
 
-
   scenario 'a user clicks on notes and a modal opens' do
-    visit student_path(student)
+    visit course_student_path(student.course, student)
     find('#student-nav li.student-code-reviews').click
     click_link 'Notes'
     expect(page).to have_content("Great job!")

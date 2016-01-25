@@ -237,7 +237,7 @@ feature 'admin viewing students interested in an internship' do
       visit course_internship_path(internship.course, internship)
       click_on 'Not interested students'
       click_link student.name
-      expect(page).to have_content 'Rated Internships'
+      expect(page).to have_content 'Internships'
     end
   end
 end
@@ -255,18 +255,18 @@ feature "admin viewing a student's internship page" do
   end
 
   scenario "an admin can see internships from that student's course" do
-    visit student_path(student)
+    visit course_student_path(student.course, student)
     expect(page).to have_content internship.company_name
   end
 
   scenario "rated internships display their correct background color" do
     rating = FactoryGirl.create(:rating, interest: '3', student: student, internship: internship)
-    visit student_path(student)
+    visit course_student_path(student.course, student)
     expect(page).to have_css 'span.btn-primary'
   end
 
   scenario "an admin can navigate through to an internship's show page" do
-    visit student_path(student)
+    visit course_student_path(student.course, student)
     click_link  internship.company_name
     expect(page).to have_content internship.description
   end
