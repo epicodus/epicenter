@@ -13,13 +13,11 @@
 
   <% if @student.courses.any? %>
     <h3>Courses</h3>
-  <% end %>
-  <% @student.courses.each do |course| %>
-    <div class="row" id="student-course-<%= course.id %>">
-      <div class="col-xs-6"><%= course.description %></div>
-      <% if current_admin && can?(:manage, Enrollment) %>
+    <% @student.courses.each do |course| %>
+      <div class="row" id="student-course-<%= course.id %>">
+        <div class="col-xs-6"><%= link_to course.description, course_student_path(course, @student) %></div>
         <%= link_to 'Withdraw', enrollment_path(course_id: course.id), data: { method: :delete, confirm: 'Are you sure?' }, class: 'unstyled-link col-xs-6' %>
-      <% end %>
-    </div>
+      </div>
+    <% end %>
   <% end %>
 </div>

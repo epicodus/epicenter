@@ -1,5 +1,5 @@
 <div class="student-div student-attendance">
-  <% @student.course.class_dates_until(Time.zone.now.to_date).sort.reverse.each do |day| %>
+  <% @course.class_dates_until(Time.zone.now.to_date).sort.reverse.each do |day| %>
     <ul class='col-xs-12 list-unstyled'>
         <li>
           <span class="col-xs-2">
