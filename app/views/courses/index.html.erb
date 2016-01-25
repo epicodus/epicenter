@@ -1,15 +1,30 @@
-<h1>Your courses</h1>
-<hr>
-
 <% if current_student %>
+  <h1 class="text-center">Your courses</h1>
+
   <% current_student.courses.each do |course| %>
-    <h2>
-      <%= course.description %>
-      <% if course.in_session? %>
-        <span class="label label-info">Current Course</span>
-      <% end %>
-    </h2>
-    <p><%= link_to 'Internships', course_internships_path(course) %></p>
-    <p><%= link_to 'Code Reviews', course_code_reviews_path(course) %></p>
+    <div class="row">
+      <div class="col-xs-8 col-xs-offset-2">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <%= link_to course.description, course_student_path(course, current_student) %>
+            <% if course.in_session? %>
+              <span class="label label-info pull-right">Current Course</span>
+            <% end %>
+          </div>
+          <div class="panel-body">
+            <p><%= pluralize(course.number_of_days_left, 'day') %> left of class</p>
+            <% if course.internships.any? %>
+              <p><%= link_to 'Internships', course_internships_path(course) %></p>
+            <% end %>
+            <div class="progress">
+              <div data-toggle='tooltip' data-placement='bottom' title='On time' class="progress-bar progress-bar-success" style="width: <%= number_to_percentage(current_student.attendance_percentage_for(:on_time, course), precision: 0) %>"></div>
+              <div data-toggle='tooltip' data-placement='bottom' title='Tardy' class="progress-bar progress-bar-danger" style="width: <%= number_to_percentage(current_student.attendance_percentage_for(:tardy, course), precision: 0) %>"></div>
+              <div data-toggle='tooltip' data-placement='bottom' title='Left early' class="progress-bar progress-bar-danger" style="width: <%= number_to_percentage(current_student.attendance_percentage_for(:left_early, course), precision: 0) %>"></div>
+              <div data-toggle='tooltip' data-placement='bottom' title='Absent' class="progress-bar" style="width: <%= number_to_percentage(current_student.attendance_percentage_for(:absent, course), precision: 0) %>"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   <% end %>
 <% end %>
