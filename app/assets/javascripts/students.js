@@ -12,4 +12,6 @@ $(function() {
       $(this).siblings().removeClass('active');
     });
   });
+
+  $('[data-toggle="tooltip"]').tooltip();
 });
