@@ -214,6 +214,10 @@ class Student < User
     course.internships_sorted_by_interest(self)
   end
 
+  def attendance_percentage_for(status, filtered_course)
+    attendance_records_for(status, filtered_course).to_f / filtered_course.class_days.count.to_f * 100
+  end
+
 private
 
   def update_close_io_payment_plan
