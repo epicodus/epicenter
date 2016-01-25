@@ -32,7 +32,7 @@
   <tbody>
   <% @course.students.each do |student| %>
     <tr>
-      <td><%= link_to student.name, student, class: "unstyled-link" %></td>
+      <td><%= link_to student.name, course_student_path(@course, student), class: "unstyled-link" %></td>
       <td>
         <% if student.attendance_score(@course) >= 8 %>
             <p class="text-danger">
