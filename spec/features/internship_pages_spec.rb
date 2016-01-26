@@ -41,7 +41,7 @@ feature 'creating a new internship' do
 
   scenario 'an admin can navigate to the new internship form' do
     visit course_internships_path(internship.course)
-    click_link '+ New Internship'
+    click_link '+ New internship'
     expect(page).to have_content 'Internship description'
   end
 

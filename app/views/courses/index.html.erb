@@ -7,7 +7,7 @@
         <div class="panel-heading">
           <%= link_to course.description, course_student_path(course, current_student) %>
           <% if course.in_session? %>
-            <span class="label label-info pull-right">Current Course</span>
+            <span class="label label-info pull-right">Current course</span>
           <% end %>
         </div>
         <div class="panel-body">

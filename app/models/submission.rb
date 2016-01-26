@@ -1,7 +1,7 @@
 class Submission < ActiveRecord::Base
   default_scope { order(:updated_at) }
   scope :needing_review, -> { where(needs_review: true) }
-  scope :for_course, ->(filtered_course) { joins(:code_review).where(code_reviews: { course_id: filtered_course }) }
+  scope :for_course, ->(course) { joins(:code_review).where(code_reviews: { course_id: course }) }
   validates :link, presence: true, url: true
   validates :student_id, uniqueness: { scope: :code_review_id }
 

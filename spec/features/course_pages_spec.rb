@@ -37,7 +37,7 @@ feature 'creating a course' do
         find('td', text: 19).click
         click_on 'Create Course'
         expect(page).to have_content 'Class has been created'
-        expect(page).to have_content 'Code Reviews'
+        expect(page).to have_content 'Code reviews'
       end
     end
 
@@ -112,7 +112,7 @@ feature 'editing a course' do
       find(:xpath, "//input[@id='course_class_days']").set "2015-09-06,2015-09-07,2015-09-08"
       click_on 'Update Course'
       expect(page).to have_content "PHP/Drupal - Summer 2015 has been updated"
-      expect(page).to have_content 'Code Reviews'
+      expect(page).to have_content 'Code reviews'
     end
   end
 end

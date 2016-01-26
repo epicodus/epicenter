@@ -8,7 +8,7 @@ feature 'student logging out on attendance page' do
     visit sign_out_path
     fill_in "email", with: student.email
     fill_in "password", with: student.password
-    click_button "Sign Out"
+    click_button "Sign out"
     expect(page).to have_content "Goodbye #{student.name}"
   end
 
@@ -16,7 +16,7 @@ feature 'student logging out on attendance page' do
     visit sign_out_path
     fill_in "email", with: student.email
     fill_in "password", with: student.password
-    click_button "Sign Out"
+    click_button "Sign out"
     expect(page).to have_content "You haven't signed in yet today."
   end
 
@@ -24,7 +24,7 @@ feature 'student logging out on attendance page' do
     visit sign_out_path
     fill_in "email", with: student.email
     fill_in "password", with: "wrong_password"
-    click_button "Sign Out"
+    click_button "Sign out"
     expect(page).to have_content 'Invalid email or password.'
   end
 
@@ -32,7 +32,7 @@ feature 'student logging out on attendance page' do
     visit sign_out_path
     fill_in "email", with: 'wrong_email@epicodus.com'
     fill_in "password", with: student.password
-    click_button "Sign Out"
+    click_button "Sign out"
     expect(page).to have_content 'Invalid email or password.'
   end
 end
