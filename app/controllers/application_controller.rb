@@ -33,6 +33,8 @@ protected
         student_courses_path(current_student)
       elsif user.class_in_session? && user.signed_main_documents?
         student_courses_path(current_student)
+      elsif user.signed_main_documents? && user.payment_methods.any? && user.courses.any?
+        student_courses_path(current_student)
       else
         signatures_check_path(user)
       end
