@@ -14,18 +14,18 @@
           </td>
           <td class="col-xs-2">
             <% if @student.attendance_record_on_day(day) == nil %>
-              <span class="label label-primary" disabled>Absent</span>
+              <span class="label label-primary">Absent</span>
             <% elsif @student.attendance_record_on_day(day).tardy %>
-              <span class="label label-danger" disabled>Tardy</span>
+              <span class="label label-danger">Tardy</span>
             <% elsif @student.attendance_record_on_day(day).left_early %>
-              <span class="label label-danger" disabled>Left early</span>
+              <span class="label label-danger">Left early</span>
             <% else %>
-              <span class="label label-success" disabled>On time</span>
+              <span class="label label-success">On time</span>
             <% end %>
           </td>
-          <td>
+          <td class="edit-attendance">
             <% if current_admin && can?(:manage, AttendanceRecord) %>
-              <%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day), class: ''  %>
+              <%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day) %>
             <% end %>
           </td>
           <td>

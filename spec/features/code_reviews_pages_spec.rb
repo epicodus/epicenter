@@ -336,20 +336,22 @@ feature 'view the Code Reviews tab' do
     allow(Mailgun::Client).to receive(:new) { mailgun_client }
   end
 
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:student) { FactoryGirl.create(:user_with_score_of_6) }
+  let(:course) { FactoryGirl.create(:course) }
+  let(:admin) { FactoryGirl.create(:admin, current_course: course) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: course) }
+  let!(:code_review) { FactoryGirl.create(:code_review, course: course) }
+  let!(:submission) { FactoryGirl.create(:submission, code_review: code_review, student: student) }
+  let!(:review) { FactoryGirl.create(:review, submission: submission) }
 
   before { login_as(admin, scope: :admin) }
 
   scenario 'an instructor looks at a code review and sees whether a student passed' do
     visit course_student_path(student.course, student)
-    find('#student-nav li.student-code-reviews').click
-    expect(page).to have_content "Pass"
+    expect(page).to have_css '.submission-success'
   end
 
   scenario 'a user clicks on notes and a modal opens' do
     visit course_student_path(student.course, student)
-    find('#student-nav li.student-code-reviews').click
     click_link 'Notes'
     expect(page).to have_content("Great job!")
   end

@@ -49,9 +49,11 @@ feature "admin viewing an individual student's attendance" do
   end
 
   scenario "an admin can navigate through to the attendance record amendment page for a particular record" do
-    visit course_student_path(student.course, student)
-    find('#student-nav li.student-attendance').click
-    click_link 'Edit'
-    expect(page).to have_xpath("//input[@value='#{attendance_record.date}']")
+    travel_to student.course.start_date do
+      visit course_student_path(student.course, student)
+      find('#student-nav li.student-attendance').click
+      first('.edit-attendance').click_link 'Edit'
+      expect(page).to have_xpath("//input[@value='#{attendance_record.date}']")
+    end
   end
 end

@@ -23,12 +23,10 @@
           <td><%= link_to "Notes", "##{submission.id}", data: { toggle: "modal" } %></td>
           <td><%= link_to "Submission", submission.link, target: '_blank' %></td>
           <td>
-            <% if submission.code_review.submission_for(current_student).nil? %>
-              Not submitted
-            <% elsif submission.code_review.submission_for(current_student).has_been_reviewed? %>
+            <% if submission.has_been_reviewed? %>
               Reviewed
             <% else %>
-              Submitted - Pending review
+              <span class="text-warning">Pending</span>
             <% end %>
           </td>
           <td><%= submission.created_at.to_formatted_s(:long) %></td>
