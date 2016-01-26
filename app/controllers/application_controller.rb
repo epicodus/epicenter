@@ -30,9 +30,9 @@ protected
       if can?(:create, AttendanceRecord.new) && !AttendanceRecord.find_by(student_id: user.id, date: Time.zone.now.to_date)
         welcome_path
       elsif can?(:create, AttendanceRecord.new) && AttendanceRecord.find_by(student_id: user.id, date: Time.zone.now.to_date)
-        course_code_reviews_path(user.course)
+        student_courses_path(current_student)
       elsif user.class_in_session? && user.signed_main_documents?
-        course_code_reviews_path(user.course)
+        student_courses_path(current_student)
       else
         signatures_check_path(user)
       end

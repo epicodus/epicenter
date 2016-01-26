@@ -59,8 +59,8 @@ feature 'index page' do
 
     scenario 'has a link to create a new code review' do
       visit course_code_reviews_path(code_review.course)
-      click_on 'New Code Review'
-      expect(page).to have_content 'New Code Review'
+      click_on 'New code review'
+      expect(page).to have_content 'New code review'
     end
 
     scenario 'shows the number of submissions needing review for each code_review' do
@@ -107,7 +107,7 @@ feature 'show page' do
 
     scenario 'has a link to edit code_review' do
       click_on 'Edit'
-      expect(page).to have_content 'Edit Code Review'
+      expect(page).to have_content 'Edit code review'
     end
 
     scenario 'has a link to delete code_review' do
@@ -117,7 +117,7 @@ feature 'show page' do
 
     scenario 'has a link to create a new code_review' do
       click_on 'New'
-      expect(page).to have_content 'New Code Review'
+      expect(page).to have_content 'New code review'
     end
   end
 
@@ -232,7 +232,7 @@ feature 'creating an code_review' do
       end
 
       scenario 'allows more objectives to be added', js: true do
-        click_link 'Add Objective'
+        click_link 'Add objective'
         within('ul#objective-fields') do
           expect(page).to have_selector('li', count: 4)
         end
@@ -296,7 +296,7 @@ feature 'editing an code_review' do
 
     scenario 'adding objectives', js: true do
       objective_count = code_review.objectives.count
-      click_link 'Add Objective'
+      click_link 'Add objective'
       within('ul#objective-fields') do
         all('input').last.set 'The last objective'
       end
@@ -336,22 +336,22 @@ feature 'view the Code Reviews tab' do
     allow(Mailgun::Client).to receive(:new) { mailgun_client }
   end
 
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:student) { FactoryGirl.create(:user_with_score_of_6) }
-
+  let(:course) { FactoryGirl.create(:course) }
+  let(:admin) { FactoryGirl.create(:admin, current_course: course) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: course) }
+  let!(:code_review) { FactoryGirl.create(:code_review, course: course) }
+  let!(:submission) { FactoryGirl.create(:submission, code_review: code_review, student: student) }
+  let!(:review) { FactoryGirl.create(:review, submission: submission) }
 
   before { login_as(admin, scope: :admin) }
 
   scenario 'an instructor looks at a code review and sees whether a student passed' do
-    visit student_path(student)
-    find('#student-nav li.student-code-reviews').click
-    expect(page).to have_content "Pass"
+    visit course_student_path(student.course, student)
+    expect(page).to have_css '.submission-success'
   end
 
-
   scenario 'a user clicks on notes and a modal opens' do
-    visit student_path(student)
-    find('#student-nav li.student-code-reviews').click
+    visit course_student_path(student.course, student)
     click_link 'Notes'
     expect(page).to have_content("Great job!")
   end

@@ -533,13 +533,13 @@ describe Student do
         attendance_record = FactoryGirl.create(:attendance_record, student: student)
         travel_to day_one.beginning_of_day + 17.hours do
           attendance_record.update({signing_out: true})
-          expect(student.attendance_score(course)).to eq 0
+          expect(student.attendance_score(course)).to eq 100
         end
       end
     end
 
     it "calculates the student attendance score with no attendance records" do
-      expect(student.attendance_score(course)).to eq 100
+      expect(student.attendance_score(course)).to eq 0
     end
   end
 
@@ -729,11 +729,6 @@ describe Student do
       it { is_expected.to not_have_abilities(:read, CourseAttendanceStatistics) }
     end
 
-    context 'for student_attendance_statistics' do
-      it { is_expected.to have_abilities(:read, StudentAttendanceStatistics.new(student)) }
-      it { is_expected.to not_have_abilities(:read, StudentAttendanceStatistics.new(Student.new)) }
-    end
-
     context 'for bank_accounts' do
       it { is_expected.to have_abilities(:create, BankAccount.new) }
     end
@@ -788,6 +783,17 @@ describe Student do
     context 'for transcripts' do
       it { is_expected.to have_abilities(:read, Transcript.new(student)) }
       it { is_expected.to not_have_abilities(:read, Transcript.new(Student.new)) }
+    end
+  end
+
+  describe '#attendance_percentage_for' do
+    let(:course) { FactoryGirl.create(:course, class_days: [Time.zone.now.to_date.beginning_of_week, Time.zone.now.beginning_of_week + 1.days]) }
+    let(:student) { FactoryGirl.create(:student, course: course) }
+
+    it 'returns the on time attendance percentage for a course' do
+      FactoryGirl.create(:on_time_attendance_record, student: student, date: course.start_date)
+      FactoryGirl.create(:on_time_attendance_record, student: student, date: course.start_date + 1.days)
+      expect(student.attendance_percentage_for(:on_time, course)).to eq 100
     end
   end
 end

@@ -31,6 +31,18 @@ describe Course do
     end
   end
 
+  describe '#in_session?' do
+    it 'returns true if the course is in session' do
+      course = FactoryGirl.create(:course)
+      expect(course.in_session?).to eq true
+    end
+
+    it 'returns false if the course is not in session' do
+      future_course = FactoryGirl.create(:course, class_days: [Time.zone.now.beginning_of_week + 1.week, Time.zone.now.end_of_week + 1.week - 2.days])
+      expect(future_course.in_session?).to eq false
+    end
+  end
+
   describe "#other_students" do
     let(:course) { FactoryGirl.create(:course) }
     let(:student) { FactoryGirl.create(:student, course: course) }

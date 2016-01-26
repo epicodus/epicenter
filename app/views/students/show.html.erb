@@ -1,26 +1,35 @@
 <h1><%= @student.name %></h1>
-<hr>
+<h3><%= @course.description %></h3>
+
 <% if @student.courses.any? %>
   <ul class="nav nav-tabs list-group" id="student-nav">
-    <li class="student-attendance">
-      <a>Attendance</a>
-    </li>
     <li class="student-code-reviews">
       <a>Code Reviews</a>
     </li>
-    <li class="student-internships">
-      <a>Rated Internships</a>
+    <li class="student-attendance">
+      <a>Attendance</a>
     </li>
-    <li class="student-courses">
-      <a>Courses</a>
-    </li>
+    <% if @course.internships.any? %>
+      <li class="student-internships">
+        <a>Internships</a>
+      </li>
+    <% end %>
+    <% if current_admin %>
+      <li class="student-courses">
+        <a>Courses</a>
+      </li>
+    <% end %>
   </ul>
 
-  <%= render 'students/student_courses' %>
+  <% if current_admin %>
+    <%= render 'students/student_courses' %>
+  <% end %>
 
   <%= render 'students/student_code_reviews' %>
 
-  <%= render 'students/student_internships' %>
+  <% if @course.internships.any? %>
+    <%= render 'students/student_internships' %>
+  <% end %>
 
   <%= render 'students/student_attendance' %>
 

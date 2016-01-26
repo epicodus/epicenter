@@ -1,4 +1,5 @@
-<%= render partial: 'layouts/category_header', locals: { header: 'Code Reviews', class_to_manage: CodeReview, category: 'Code Review', category_path: new_code_review_path } %>
+<%= render partial: 'layouts/category_header', locals: { header: 'Code reviews', class_to_manage: CodeReview, category: 'code review', category_path: new_code_review_path } %>
+<hr>
 
 <% if can? :manage, CodeReview %>
   <%= form_tag update_multiple_code_reviews_path, method: :patch, class: 'update-multiple-code-reviews' do %>
@@ -6,13 +7,13 @@
       <%= submit_tag 'Save order', class: "btn btn-info" %>
     </div>
     <div class="sortable-code-reviews col-xs-12">
-      <%= render @code_reviews %>
+      <%= render @course.code_reviews %>
     </div>
   <% end %>
 <% else %>
   <div class="row">
     <div class="col-xs-12">
-      <%= render @code_reviews %>
+      <%= render @course.code_reviews %>
     </div>
   </div>
 <% end %>

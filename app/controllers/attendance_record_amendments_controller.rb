@@ -29,7 +29,7 @@ private
       redirect_to course_day_attendance_records_path(student.course, day: day), notice: "#{student.name}'s attendance record has been amended."
     else
       student = Student.find(params[:attendance_record_amendment][:student_id])
-      redirect_to student_path(student), notice: "#{student.name}'s attendance record has been amended."
+      redirect_to course_student_path(student.course, student), notice: "#{student.name}'s attendance record has been amended."
     end
   end
 end

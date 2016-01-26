@@ -1,17 +1,40 @@
-
 <div class="student-div student-code-reviews">
-  <table class="table table-hover info">
-    <% @student.submissions.each do |submission| %>
-    <tr>
-      <td><%= submission.code_review.title %></td>
-      <td><%= submission.code_review.course.try(:description) %></td>
-      <td><%= submission.code_review.latest_total_score_for(@student) %>/<%= submission.code_review.total_points_available %></td>
-      <td><%= submission.code_review.expectations_met_by?(@student) ? "Pass" : "Fail" %></td>
-      <td><%= link_to "Notes", "##{submission.id}", data: { toggle: "modal" } %></td>
-      <td><%= link_to "Submission", submission.link %></td>
-    </tr>
-    <% end %>
-  </table>
+  <% if @student.submissions.for_course(@course).any? %>
+    <table class="table table-hover">
+      <thead>
+        <th>Title</th>
+        <th>Expectations met?</th>
+        <th>Teacher notes</th>
+        <th>GitHub repo</th>
+        <th>Status</th>
+      </thead>
+      <% @student.submissions.for_course(@course).each do |submission| %>
+      <tbody>
+        <tr>
+          <td><%= link_to submission.code_review.title, code_review_path(submission.code_review) %></td>
+          <td>
+            <% if submission.code_review.expectations_met_by?(@student) %>
+              <span class="glyphicon glyphicon-ok submission-success"></span>
+            <% else %>
+              <span class="glyphicon glyphicon-remove submission-fail"></span>
+            <% end %>
+          </td>
+          <td><%= link_to "Notes", "##{submission.id}", data: { toggle: "modal" } %></td>
+          <td><%= link_to "Submission", submission.link, target: '_blank' %></td>
+          <td>
+            <% if submission.has_been_reviewed? %>
+              Reviewed
+            <% else %>
+              <span class="text-warning">Pending</span>
+            <% end %>
+          </td>
+        </tr>
+      </tbody>
+      <% end %>
+    </table>
+  <% else %>
+    <p><%= @student.name %> has no code review submissions for this course yet.</p>
+  <% end %>
 </div>
 
-<%= render "notes_modal" %>
+<%= render "students/notes_modal" %>

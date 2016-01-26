@@ -94,8 +94,8 @@ feature "Student signs in while class is in session" do
   context "not at school" do
     it "takes them to the code reviews page" do
       sign_in(student)
-      expect(current_path).to eq course_code_reviews_path(student.course)
-      expect(page).to have_content "Code Reviews"
+      expect(current_path).to eq student_courses_path(student)
+      expect(page).to have_content "Your courses"
     end
 
     it "does not create an attendance record" do
@@ -209,13 +209,13 @@ feature 'viewing the student show page' do
   before { login_as(student, scope: :student) }
 
   scenario 'as a student viewing his/her own page' do
-    visit student_path(student)
+    visit course_student_path(student.course, student)
     expect(page).to have_content student.name
   end
 
   scenario 'as a student viewing another student page' do
     other_student = FactoryGirl.create(:user_with_all_documents_signed)
-    visit student_path(other_student)
+    visit course_student_path(other_student.course, other_student)
     expect(page).to have_content 'You are not authorized to access this page.'
   end
 end

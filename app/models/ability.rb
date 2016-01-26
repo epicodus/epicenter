@@ -15,6 +15,7 @@ class Ability
       can :read, CourseAttendanceStatistics
       can :create, AttendanceRecordAmendment
       can :manage, Student
+      can :manage, Enrollment
     elsif user.is_a?(Student) && user.courses.any?
       can :read, CodeReview, course_id: user.course_id
       can :create, Submission, student_id: user.id
@@ -26,7 +27,6 @@ class Ability
       can :create, Payment, student_id: user.id, payment_method: { student_id: user.id }
       can :read, Payment, student_id: user.id
       can :manage, Student, id: user.id
-      can :read, StudentAttendanceStatistics, student: user
       can :read, Internship, course_id: user.course_id
       can :read, Transcript, student: user
       can :read, :certificate

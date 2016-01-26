@@ -120,4 +120,17 @@ describe Submission do
       expect(submission.meets_expectations?).to eq false
     end
   end
+
+  describe '#for_course' do
+    it 'returns submissions for a particular course' do
+      course_1 = FactoryGirl.create(:course)
+      course_2 = FactoryGirl.create(:course)
+      student = FactoryGirl.create(:student, courses: [course_1, course_2])
+      code_review_1 = FactoryGirl.create(:code_review, course: course_1)
+      code_review_2 = FactoryGirl.create(:code_review, course: course_2)
+      submission_1 = FactoryGirl.create(:submission, code_review: code_review_1)
+      submission_2 = FactoryGirl.create(:submission, code_review: code_review_2)
+      expect(Submission.for_course(course_2)).to eq [submission_2]
+    end
+  end
 end

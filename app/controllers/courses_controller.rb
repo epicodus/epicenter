@@ -1,6 +1,10 @@
 class CoursesController < ApplicationController
   authorize_resource
 
+  def index
+    @courses = current_student.courses.includes(:internships)
+  end
+
   def new
     @course = Course.new(start_time: "8:00 AM", end_time: "5:00 PM")
   end

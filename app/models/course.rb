@@ -22,6 +22,10 @@ class Course < ActiveRecord::Base
   before_create :import_code_reviews
   after_destroy :reassign_admin_current_courses
 
+  def in_session?
+    start_date <= Time.zone.now.to_date && end_date >= Time.zone.now.to_date
+  end
+
   def other_course_students(student)
     students.where.not(id: student.id)
   end

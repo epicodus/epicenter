@@ -9,6 +9,11 @@ FactoryGirl.define do
 
   factory :attendance_record do
     student
+
+    factory :on_time_attendance_record do
+      tardy false
+      left_early false
+    end
   end
 
 

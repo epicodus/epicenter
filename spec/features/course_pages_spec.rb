@@ -37,7 +37,7 @@ feature 'creating a course' do
         find('td', text: 19).click
         click_on 'Create Course'
         expect(page).to have_content 'Class has been created'
-        expect(page).to have_content 'Code Reviews'
+        expect(page).to have_content 'Code reviews'
       end
     end
 
@@ -54,6 +54,21 @@ feature 'creating a course' do
       expect(page).to have_content 'Class has been created'
       expect(page).to have_content code_review.title
     end
+  end
+end
+
+feature 'viewing courses' do
+  let(:student) { FactoryGirl.create(:student) }
+
+  scenario 'as a student logged in' do
+    login_as(student, scope: :student)
+    visit student_courses_path(student)
+    expect(page).to have_content 'Your courses'
+  end
+
+  scenario 'as a guest' do
+    visit student_courses_path(student)
+    expect(page).to have_content 'You need to sign in.'
   end
 end
 
@@ -97,7 +112,7 @@ feature 'editing a course' do
       find(:xpath, "//input[@id='course_class_days']").set "2015-09-06,2015-09-07,2015-09-08"
       click_on 'Update Course'
       expect(page).to have_content "PHP/Drupal - Summer 2015 has been updated"
-      expect(page).to have_content 'Code Reviews'
+      expect(page).to have_content 'Code reviews'
     end
   end
 end
@@ -122,7 +137,7 @@ feature 'adding another course for a student' do
   before { login_as(admin, scope: :admin) }
 
   scenario 'as an admin on the individual student page' do
-    visit student_path(student)
+    visit course_student_path(student.course, student)
     find('#student-nav li.student-courses').click
     select other_course.description, from: 'student_course_id'
     click_on 'Add course'
@@ -145,7 +160,7 @@ feature 'deleting a course for a student' do
 
   scenario 'as an admin' do
     student.update(course: other_course)
-    visit student_path(student)
+    visit course_student_path(student.course, student)
     find('#student-nav li.student-courses').click
     within "#student-course-#{other_course.id}" do
       click_on 'Withdraw'
