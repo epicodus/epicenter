@@ -23,7 +23,7 @@
   <thead>
     <tr>
       <th>Student Name</th>
-      <th>Attendance Score (lower is better)</th>
+      <th>Attendance Score</th>
         <% @course.code_reviews.each do |code_review| %>
           <th><%= code_review.title %></th>
         <% end %>
@@ -34,7 +34,7 @@
     <tr>
       <td><%= link_to student.name, course_student_path(@course, student), class: "unstyled-link" %></td>
       <td>
-        <% if student.attendance_score(@course) >= 8 %>
+        <% if student.attendance_score(@course) <= 92 %>
             <p class="text-danger">
           <% else %>
             <p>

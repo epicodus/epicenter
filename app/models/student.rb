@@ -32,7 +32,7 @@ class Student < User
     absences_penalty = attendance_records_for(:absent, filtered_course)
     tardies_penalty = attendance_records_for(:tardy, filtered_course) * TARDY_WEIGHT
     left_earlies_penalty = attendance_records_for(:left_early, filtered_course) * TARDY_WEIGHT
-    ((absences_penalty + tardies_penalty + left_earlies_penalty) / filtered_course.number_of_days_since_start) * 100
+    100 - (((absences_penalty + tardies_penalty + left_earlies_penalty) / filtered_course.number_of_days_since_start) * 100)
   end
 
   def other_courses

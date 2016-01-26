@@ -7,7 +7,6 @@
         <th>Teacher notes</th>
         <th>GitHub repo</th>
         <th>Status</th>
-        <th>Time submitted</th>
       </thead>
       <% @student.submissions.for_course(@course).each do |submission| %>
       <tbody>
@@ -29,7 +28,6 @@
               <span class="text-warning">Pending</span>
             <% end %>
           </td>
-          <td><%= submission.created_at.to_formatted_s(:long) %></td>
         </tr>
       </tbody>
       <% end %>

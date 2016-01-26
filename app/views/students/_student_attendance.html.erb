@@ -1,4 +1,5 @@
 <div class="student-div student-attendance">
+  <h3>Attendance Score: <%= number_to_percentage(@student.attendance_score(@course), precision: 0) %></h3>
   <table class="table table-hover">
     <thead>
       <th>Date</th>

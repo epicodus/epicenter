@@ -533,13 +533,13 @@ describe Student do
         attendance_record = FactoryGirl.create(:attendance_record, student: student)
         travel_to day_one.beginning_of_day + 17.hours do
           attendance_record.update({signing_out: true})
-          expect(student.attendance_score(course)).to eq 0
+          expect(student.attendance_score(course)).to eq 100
         end
       end
     end
 
     it "calculates the student attendance score with no attendance records" do
-      expect(student.attendance_score(course)).to eq 100
+      expect(student.attendance_score(course)).to eq 0
     end
   end
 
