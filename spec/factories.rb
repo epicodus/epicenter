@@ -50,16 +50,16 @@ FactoryGirl.define do
 
   factory :course do
     description 'Current course'
-    class_days (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 14.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? }
+    class_days (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 4.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? }
     start_time '8:00 AM'
     end_time '5:00 PM'
 
     factory :past_course do
-      class_days ((Time.zone.now.to_date - 18.weeks).beginning_of_week..(Time.zone.now.to_date - 3.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? }
+      class_days ((Time.zone.now.to_date - 18.weeks).beginning_of_week..(Time.zone.now.to_date - 14.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? }
     end
 
     factory :future_course do
-      class_days ((Time.zone.now.to_date + 4.weeks).beginning_of_week..(Time.zone.now.to_date + 15.weeks).beginning_of_week).select { |day| day if !day.saturday? && !day.sunday? }
+      class_days ((Time.zone.now.to_date + 4.weeks).beginning_of_week..(Time.zone.now.to_date + 8.weeks).beginning_of_week).select { |day| day if !day.saturday? && !day.sunday? }
     end
 
     factory :part_time_course do
