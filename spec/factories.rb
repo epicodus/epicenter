@@ -87,6 +87,10 @@ FactoryGirl.define do
     factory :failing_grade do
       association :score, factory: :failing_score
     end
+
+    factory :in_between_grade do
+      association :score, factory: :in_between_score
+    end
   end
 
   factory :invalid_credit_card, class: CreditCard do
@@ -157,6 +161,14 @@ FactoryGirl.define do
         end
       end
     end
+
+    factory :in_between_review do
+      after(:create) do |review|
+        review.submission.code_review.objectives.each do |objective|
+          FactoryGirl.create(:in_between_grade, review: review, objective: objective)
+        end
+      end
+    end
   end
 
   factory :score do
@@ -168,6 +180,10 @@ FactoryGirl.define do
 
     factory :passing_score do
       value 3
+    end
+
+    factory :in_between_score do
+      value 2
     end
   end
 
