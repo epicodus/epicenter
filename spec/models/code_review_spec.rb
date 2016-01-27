@@ -106,17 +106,17 @@ describe CodeReview do
     let(:code_review) { FactoryGirl.create(:code_review, course: student.course) }
     let(:submission) { FactoryGirl.create(:submission, code_review: code_review, student: student) }
 
-    it 'returns the overall student status when a student meets the requirements for a code review' do
+    it 'returns the overall student status when a student meets the requirements for a code review', :vcr do
       FactoryGirl.create(:passing_review, submission: submission)
       expect(code_review.status(student)).to eq 'Met requirements all of the time'
     end
 
-    it 'returns the overall student status when a student mostly meets the requirements for a code review' do
+    it 'returns the overall student status when a student mostly meets the requirements for a code review', :vcr do
       FactoryGirl.create(:in_between_review, submission: submission)
       expect(code_review.status(student)).to eq 'Met requirements most of the time'
     end
 
-    it 'returns the overall student status when a student does not meet the requirements for a code review' do
+    it 'returns the overall student status when a student does not meet the requirements for a code review', :vcr do
       FactoryGirl.create(:failing_review, submission: submission)
       expect(code_review.status(student)).to eq 'Did not meet requirements'
     end

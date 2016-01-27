@@ -23,14 +23,12 @@ feature "viewing transcript" do
       course = FactoryGirl.create(:past_course)
       student = FactoryGirl.create(:student, course: course)
       code_review = FactoryGirl.create(:code_review, course: course)
-      not_submitted_code_review = FactoryGirl.create(:code_review, course: course)
       submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
       review = FactoryGirl.create(:passing_review, submission: submission)
 
       login_as(student, scope: :student)
       visit transcript_path
       expect(page).to have_content code_review.title
-      expect(page).to_not have_content not_submitted_code_review.title
     end
 
     it 'shows a summary of their attendance record' do
@@ -38,7 +36,7 @@ feature "viewing transcript" do
       student = FactoryGirl.create(:student, course: course)
       login_as(student, scope: :student)
       visit transcript_path
-      expect(page).to have_content "#{student.name} was present 0% - 5% of the time"
+      expect(page).to have_content "Present: 0%"
     end
   end
 end
