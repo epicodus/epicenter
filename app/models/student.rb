@@ -196,7 +196,7 @@ class Student < User
     elsif filtered_course
       filtered_results.count
     elsif status == :absent
-      course.number_of_days_since_start - attendance_records.count
+      total_number_of_course_days - attendance_records.count
     else
       results.count
     end
@@ -214,11 +214,19 @@ class Student < User
     course.internships_sorted_by_interest(self)
   end
 
-  def attendance_percentage_for(status, filtered_course)
-    attendance_records_for(status, filtered_course).to_f / filtered_course.class_days.count.to_f * 100
+  def attendance_percentage_for(status, filtered_course=nil)
+    if filtered_course
+      attendance_records_for(status, filtered_course).to_f / filtered_course.class_days.count.to_f * 100
+    else
+      attendance_records_for(status).to_f / total_number_of_course_days.to_f * 100
+    end
   end
 
 private
+
+  def total_number_of_course_days
+    courses.map(&:class_days).flatten.count
+  end
 
   def update_close_io_payment_plan
     update_close_io({ 'custom.Payment plan': plan.close_io_description }) if plan_id_changed?

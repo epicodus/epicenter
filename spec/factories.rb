@@ -14,8 +14,15 @@ FactoryGirl.define do
       tardy false
       left_early false
     end
-  end
 
+    factory :tardy_attendance_record do
+      tardy true
+    end
+
+    factory :left_early_attendance_record do
+      left_early true
+    end
+  end
 
   factory :bank_account do
     student
