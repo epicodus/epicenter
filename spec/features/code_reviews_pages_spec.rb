@@ -10,12 +10,6 @@ feature 'index page' do
     let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: code_review.course) }
     before { login_as(student, scope: :student) }
 
-    scenario "but isn't this student's course" do
-      another_course = FactoryGirl.create(:course)
-      visit course_code_reviews_path(another_course)
-      expect(page).to have_content 'not authorized'
-    end
-
     scenario 'shows all code reviews' do
       another_code_review = FactoryGirl.create(:code_review, title: 'another_code_review', course: code_review.course)
       visit course_code_reviews_path(code_review.course)
@@ -126,15 +120,11 @@ feature 'show page' do
     before { login_as(student, scope: :student) }
     subject { page }
 
-    scenario "but this code review is not part of your course" do
-      code_review_of_another_course = FactoryGirl.create(:code_review)
-      visit code_review_path(code_review_of_another_course)
-      expect(page).to have_content 'not authorized'
-    end
-
     context 'before submitting' do
       before do
-        visit code_review_path(code_review)
+        visit student_courses_path(student)
+        click_link 'Code reviews'
+        click_link code_review.title
       end
 
       it { is_expected.to have_button 'Submit' }

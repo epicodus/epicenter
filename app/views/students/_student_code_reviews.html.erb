@@ -11,7 +11,7 @@
       <% @student.submissions.for_course(@course).each do |submission| %>
       <tbody>
         <tr>
-          <td><%= link_to submission.code_review.title, code_review_path(submission.code_review) %></td>
+          <td><%= submission.code_review.title %></td>
           <td>
             <% if submission.code_review.expectations_met_by?(@student) %>
               <span class="glyphicon glyphicon-ok submission-success"></span>
