@@ -13,7 +13,6 @@ feature 'Admin signs in' do
     login_as(admin, scope: :admin)
     visit root_path
     expect(page).to have_link 'Code reviews'
-    expect(page).to have_link 'Attendance statistics'
     expect(page).to have_link 'Invite'
   end
 end
@@ -137,8 +136,8 @@ feature 'student roster page' do
 
   scenario 'when a teacher visits the sudent roster page when there are no students' do
     visit course_students_path(course)
-    expect(page).to have_content 'Student name'
-    expect(page).to have_content 'Attendance score'
+    expect(page).to have_content 'Student'
+    expect(page).to have_content 'Attendance'
   end
 
   scenario 'when a teacher visits the sudent roster page when there are students' do

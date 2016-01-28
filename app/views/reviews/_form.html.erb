@@ -5,7 +5,7 @@
         <%= ff.object.objective.content if ff.object.objective %>
       </div>
       <div class="col-xs-4">
-        <%= ff.collection_select :score_id, Score.all, :id, :description, {}, { class: "form-control" } %>
+        <%= ff.collection_select :score_id, Score.all, :id, :description, { include_blank: true }, { class: "form-control" } %>
       </div>
     </div>
     <%= ff.hidden_field :objective_id %>
