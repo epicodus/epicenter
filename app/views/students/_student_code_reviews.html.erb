@@ -1,4 +1,5 @@
 <div class="student-div student-code-reviews">
+  <%= link_to 'View all code reviews', course_code_reviews_path(@course) %>
   <% if @student.submissions.for_course(@course).any? %>
     <table class="table table-hover">
       <thead>

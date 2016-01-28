@@ -2,7 +2,7 @@ class CoursesController < ApplicationController
   authorize_resource
 
   def index
-    @courses = current_student.courses.includes(:internships)
+    @courses = current_student.courses.includes(:internships).includes(:code_reviews)
   end
 
   def new
