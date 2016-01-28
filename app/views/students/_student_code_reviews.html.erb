@@ -23,9 +23,9 @@
           <td><%= link_to "Submission", submission.link, target: '_blank' %></td>
           <td>
             <% if submission.has_been_reviewed? %>
-              Reviewed
+              <%= link_to 'Reviewed', code_review_path(submission.code_review) %>
             <% else %>
-              <span class="text-warning">Pending</span>
+              <%= link_to 'Pending', code_review_path(submission.code_review) %>
             <% end %>
           </td>
         </tr>
