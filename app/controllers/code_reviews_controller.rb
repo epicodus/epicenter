@@ -3,7 +3,6 @@ class CodeReviewsController < ApplicationController
 
   def index
     @course = Course.find(params[:course_id])
-    authorize! :read, @course
   end
 
   def new
@@ -23,7 +22,6 @@ class CodeReviewsController < ApplicationController
   def show
     @code_review = CodeReview.find(params[:id])
     @submission = @code_review.submission_for(current_student) || Submission.new(code_review: @code_review)
-    authorize! :show, @code_review
   end
 
   def edit
