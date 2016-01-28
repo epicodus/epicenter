@@ -27,6 +27,7 @@ gem 'jquery-timepicker-rails'
 gem 'bootswatch-rails'
 gem 'bootstrap-sass'
 gem 'sass-rails'
+gem 'jquery-datatables-rails'
 
 group :development do
   gem 'spring'
