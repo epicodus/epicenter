@@ -50,7 +50,7 @@ describe AttendanceRecord do
     let(:part_time_start_time) { Time.zone.parse(part_time_student.course.start_time) }
 
     it 'is true if the student checks in after the start of class' do
-      travel_to start_time + 20.minute do
+      travel_to start_time + 30.minute do
         tardy_attendance_record = FactoryGirl.create(:attendance_record)
         expect(tardy_attendance_record.tardy).to eq true
       end
@@ -64,7 +64,7 @@ describe AttendanceRecord do
     end
 
     it 'is true if the part-time student checks in after the start of class' do
-      travel_to part_time_start_time + 20.minute do
+      travel_to part_time_start_time + 30.minute do
         tardy_attendance_record = FactoryGirl.create(:attendance_record, student: part_time_student)
         expect(tardy_attendance_record.tardy).to eq true
       end
