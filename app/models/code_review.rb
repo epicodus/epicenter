@@ -42,14 +42,12 @@ class CodeReview < ActiveRecord::Base
 
   def status(student)
     grade_scores = submission_for(student).try(:latest_review).try(:grades).try(:map, &:score).try(:map, &:value)
-    if grade_scores.try(:include?, 1)
+    if grade_scores.nil? || grade_scores.include?(1)
       'Did not meet requirements'
-    elsif grade_scores.try(:include?, 2)
+    elsif grade_scores.include?(2)
       'Met requirements most of the time'
-    elsif grade_scores.try(:include?, 3)
+    elsif grade_scores.include?(3)
       'Met requirements all of the time'
-    else
-      'Did not meet requirements'
     end
   end
 
