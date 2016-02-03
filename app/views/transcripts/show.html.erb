@@ -31,6 +31,6 @@
 <hr>
 <p><%= image_tag "signature.png" %></p>
 <p><strong>Michael Kaiser-Nyman, President</strong></p>
-<p>Date: <%= Time.zone.now.to_date.strftime('%B %d, %Y') %></p>
+<p>Date: <%= current_student.courses.last.end_date.strftime('%B %d, %Y') %></p>
 <br>
 <p>Epicodus maintains student transcripts for 50 years.</p>
