@@ -113,7 +113,20 @@ feature "Student signs in while class is in session" do
       end
 
       it "creates an attendance record for them" do
-        expect { sign_in(student) }.to change { AttendanceRecord.count }.by 1
+        expect { sign_in(student) }.to change { student.attendance_records.count }.by 1
+      end
+
+      it 'does not update the attendance record on subsequent solo sign ins during the day' do
+        travel_to student.course.start_date + 8.hours do
+          sign_in(student)
+        end
+        attendance_record = AttendanceRecord.find_by(student: student)
+        travel_to student.course.start_date + 12.hours do
+          visit root_path
+          click_link 'Log out'
+          sign_in(student)
+          expect(attendance_record.tardy).to be false
+        end
       end
     end
 
@@ -137,6 +150,33 @@ feature "Student signs in while class is in session" do
       it 'updates the pair id if one student has already signed in for the day' do
         FactoryGirl.create(:attendance_record, student: student)
         expect { sign_in(student, pair) }.to change { AttendanceRecord.first.pair_id }.from(nil).to(pair.id)
+      end
+
+      it 'does not update the attendance record when signing as pairs, then solo during same day' do
+        travel_to student.course.start_date + 8.hours do
+          sign_in(student, pair)
+        end
+        attendance_record = AttendanceRecord.find_by(student: pair)
+        travel_to student.course.start_date + 12.hours do
+          sign_in(pair)
+          expect(attendance_record.tardy).to be false
+        end
+      end
+
+      it 'does not update the attendance record when signing in solo, then as pairs, then solo again during same day' do
+        travel_to student.course.start_date + 8.hours do
+          sign_in(student)
+          visit root_path
+          click_link 'Log out'
+        end
+        travel_to student.course.start_date + 10.hours do
+          sign_in(student, pair)
+        end
+        attendance_record = AttendanceRecord.find_by(student: student)
+        travel_to student.course.start_date + 14.hours do
+          sign_in(student)
+          expect(attendance_record.tardy).to be false
+        end
       end
 
       it "gives an error for an incorrect email" do
