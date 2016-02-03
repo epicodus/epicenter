@@ -82,7 +82,7 @@ describe Course do
 
     it 'does not count days after the class has ended' do
       travel_to course.end_date + 60.days do
-        expect(course.number_of_days_since_start).to eq 75
+        expect(course.number_of_days_since_start).to eq 25
       end
     end
   end

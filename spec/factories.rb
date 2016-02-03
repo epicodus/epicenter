@@ -14,8 +14,15 @@ FactoryGirl.define do
       tardy false
       left_early false
     end
-  end
 
+    factory :tardy_attendance_record do
+      tardy true
+    end
+
+    factory :left_early_attendance_record do
+      left_early true
+    end
+  end
 
   factory :bank_account do
     student
@@ -50,16 +57,16 @@ FactoryGirl.define do
 
   factory :course do
     description 'Current course'
-    class_days (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 14.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? }
+    class_days (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 4.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? }
     start_time '8:00 AM'
     end_time '5:00 PM'
 
     factory :past_course do
-      class_days ((Time.zone.now.to_date - 18.weeks).beginning_of_week..(Time.zone.now.to_date - 3.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? }
+      class_days ((Time.zone.now.to_date - 18.weeks).beginning_of_week..(Time.zone.now.to_date - 14.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? }
     end
 
     factory :future_course do
-      class_days ((Time.zone.now.to_date + 4.weeks).beginning_of_week..(Time.zone.now.to_date + 15.weeks).beginning_of_week).select { |day| day if !day.saturday? && !day.sunday? }
+      class_days ((Time.zone.now.to_date + 4.weeks).beginning_of_week..(Time.zone.now.to_date + 8.weeks).beginning_of_week).select { |day| day if !day.saturday? && !day.sunday? }
     end
 
     factory :part_time_course do
@@ -86,6 +93,10 @@ FactoryGirl.define do
 
     factory :failing_grade do
       association :score, factory: :failing_score
+    end
+
+    factory :in_between_grade do
+      association :score, factory: :in_between_score
     end
   end
 
@@ -157,6 +168,14 @@ FactoryGirl.define do
         end
       end
     end
+
+    factory :in_between_review do
+      after(:create) do |review|
+        review.submission.code_review.objectives.each do |objective|
+          FactoryGirl.create(:in_between_grade, review: review, objective: objective)
+        end
+      end
+    end
   end
 
   factory :score do
@@ -168,6 +187,10 @@ FactoryGirl.define do
 
     factory :passing_score do
       value 3
+    end
+
+    factory :in_between_score do
+      value 2
     end
   end
 

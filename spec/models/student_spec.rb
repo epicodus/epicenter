@@ -578,11 +578,11 @@ describe Student do
 
     it 'counts the number of days the student has been absent' do
       travel_to course.start_date do
-        travel 1.day
         FactoryGirl.create(:attendance_record, student: student)
-        travel 2.day
-        FactoryGirl.create(:attendance_record, student: student)
-        expect(student.attendance_records_for(:absent)).to eq 2
+        travel 2.day do
+          FactoryGirl.create(:attendance_record, student: student)
+        end
+        expect(student.attendance_records_for(:absent)).to eq 23
       end
     end
 
@@ -781,8 +781,7 @@ describe Student do
     end
 
     context 'for transcripts' do
-      it { is_expected.to have_abilities(:read, Transcript.new(student)) }
-      it { is_expected.to not_have_abilities(:read, Transcript.new(Student.new)) }
+      it { is_expected.to have_abilities(:read, Transcript) }
     end
   end
 
@@ -794,6 +793,15 @@ describe Student do
       FactoryGirl.create(:on_time_attendance_record, student: student, date: course.start_date)
       FactoryGirl.create(:on_time_attendance_record, student: student, date: course.start_date + 1.days)
       expect(student.attendance_percentage_for(:on_time, course)).to eq 100
+    end
+
+    it 'returns the overall on time attendance percentage' do
+      second_course = FactoryGirl.create(:course, class_days: [Time.zone.now.to_date.beginning_of_week - 2.weeks, Time.zone.now.beginning_of_week - 2.weeks + 1.days])
+      student.update(course: second_course)
+      FactoryGirl.create(:on_time_attendance_record, student: student, date: course.start_date)
+      FactoryGirl.create(:on_time_attendance_record, student: student, date: course.start_date + 1.days)
+      FactoryGirl.create(:on_time_attendance_record, student: student, date: second_course.start_date)
+      expect(student.attendance_percentage_for(:on_time)).to eq 75
     end
   end
 end
