@@ -3,6 +3,23 @@
 <hr>
 
 <div class="row">
+  <div class="panel panel-default col-xs-8 col-xs-offset-2">
+    <div class="panel-heading text-center">Morning questions for <%= Time.zone.now.to_date.strftime("%A, %B %d, %Y") %></div>
+    <div class="panel-body">
+      <p class="text-center">1. How are you feeling about the content from last night's homework?</p>
+      <p class="text-center">2. How long do you like to work on a challenge before asking classmates or an instructor?</p>
+      <p class="text-center">3. Do you like to follow the course material closely or experiment with related concepts?</p>
+      <p class="text-center">4. What's your biggest challenge with pairing?</p>  </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-4 col-xs-offset-4">
+    <%= link_to 'Continue', '#', class: 'btn btn-success btn-lg btn-block', id: 'welcome-continue' %>
+  </div>
+</div>
+
+<div class="row" id="welcome-links">
   <div class="col-xs-4 col-xs-offset-4">
     <% if current_student %>
       <%= link_to 'Epicenter', student_courses_path(current_student), target: '_blank', class: 'btn btn-info btn-lg btn-block' %>

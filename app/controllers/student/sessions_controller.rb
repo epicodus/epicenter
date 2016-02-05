@@ -5,7 +5,7 @@ class Student::SessionsController < Devise::SessionsController
       pair_sign_in
     elsif can?(:create, AttendanceRecord.new)
       super
-      @attendance_record = AttendanceRecord.find_or_create_by(student: current_student)
+      @attendance_record = AttendanceRecord.create(student: current_student)
     else
       super
     end
