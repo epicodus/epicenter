@@ -252,42 +252,60 @@ describe Student do
     end
   end
 
-  it "validates that the primary payment method belongs to the user", :vcr do
+  it "validates that the primary payment method belongs to the user" do
+    StripeMock.create_test_helper
+    StripeMock.start
     student = FactoryGirl.create(:student)
     other_students_credit_card = FactoryGirl.create(:credit_card)
     student.primary_payment_method = other_students_credit_card
     expect(student.valid?).to be false
+    StripeMock.stop
   end
 
   describe "#stripe_customer" do
-    it "creates a Stripe Customer object for a student", :vcr do
+    it "creates a Stripe Customer object for a student" do
+      StripeMock.create_test_helper
+      StripeMock.start
       student = FactoryGirl.create(:student)
       expect(student.stripe_customer).to be_an_instance_of(Stripe::Customer)
+      StripeMock.stop
     end
 
-    it "returns the Stripe Customer object", :vcr do
+    it "returns the Stripe Customer object" do
+      StripeMock.create_test_helper
+      StripeMock.start
       student = FactoryGirl.create(:student)
       expect(student.stripe_customer).to be_an_instance_of(Stripe::Customer)
+      StripeMock.stop
     end
 
-    it "returns a Stripe Customer object if one already exists", :vcr do
+    it "returns a Stripe Customer object if one already exists" do
+      StripeMock.create_test_helper
+      StripeMock.start
       student = FactoryGirl.create(:student)
       first_stripe_customer_return = student.stripe_customer
       second_stripe_customer_return = student.stripe_customer
       expect(first_stripe_customer_return.id).to eq second_stripe_customer_return.id
+      StripeMock.stop
     end
   end
 
   describe "#stripe_customer_id" do
-    it "starts out nil", :vcr do
+    it "starts out nil" do
+      StripeMock.create_test_helper
+      StripeMock.start
       student = FactoryGirl.create(:student)
       expect(student.stripe_customer_id).to be_nil
+      StripeMock.stop
     end
 
-    it "is populated when a Stripe Customer object is created", :vcr do
+    it "is populated when a Stripe Customer object is created" do
+      StripeMock.create_test_helper
+      StripeMock.start
       student = FactoryGirl.create(:student)
       stripe_customer = student.stripe_customer
       expect(student.stripe_customer_id).to eq stripe_customer.id
+      StripeMock.stop
     end
   end
 
@@ -387,25 +405,31 @@ describe Student do
     end
   end
 
-  describe "#recurring_amount_with_fees", :vcr do
+  describe "#recurring_amount_with_fees" do
     let(:plan) { FactoryGirl.create(:recurring_plan_with_upfront_payment, recurring_amount: 600_00) }
 
     it "calculates the total recurring amount for a credit card" do
+      StripeMock.create_test_helper
+      StripeMock.start
       student = FactoryGirl.create(:user_with_credit_card, plan: plan)
       expect(student.recurring_amount_with_fees).to eq 618_21
+      StripeMock.stop
     end
 
-    it 'calculates the total recurring amount for a bank account' do
+    it 'calculates the total recurring amount for a bank account', :vcr do
       student = FactoryGirl.create(:user_with_verified_bank_account, plan: plan)
       expect(student.recurring_amount_with_fees).to eq 600_00
     end
   end
 
-  describe "#upfront_amount_with_fees", :vcr do
+  describe "#upfront_amount_with_fees" do
     it "calculates the total upfront amount" do
+      StripeMock.create_test_helper
+      StripeMock.start
       plan = FactoryGirl.create(:recurring_plan_with_upfront_payment, upfront_amount: 200_00)
       student = FactoryGirl.create(:user_with_credit_card, plan: plan)
       expect(student.upfront_amount_with_fees).to eq 206_27
+      StripeMock.stop
     end
   end
 
