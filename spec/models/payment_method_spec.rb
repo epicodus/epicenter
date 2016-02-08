@@ -8,10 +8,13 @@ describe PaymentMethod do
       let(:credit_card) { FactoryGirl.create :credit_card }
       let(:bank_account) { FactoryGirl.create :bank_account }
 
-      it "creates a Stripe card for a Stripe customer", :vcr do
+      it "creates a Stripe card for a Stripe customer" do
+        StripeMock.create_test_helper
+        StripeMock.start
         credit_card = FactoryGirl.create(:credit_card)
-        stripe_card = credit_card.student.stripe_customer.cards.first
+        stripe_card = credit_card.student.stripe_customer.sources.first
         expect(stripe_card).to be_an_instance_of(Stripe::Card)
+        StripeMock.stop
       end
 
       it "creates a Stripe bank account for a Stripe customer", :vcr, js: true do
@@ -20,10 +23,13 @@ describe PaymentMethod do
         expect(stripe_account).to be_an_instance_of(Stripe::BankAccount)
       end
 
-      it "sets the stripe_id for the credit card instance", :vcr do
+      it "sets the stripe_id for the credit card instance" do
+        StripeMock.create_test_helper
+        StripeMock.start
         card = FactoryGirl.create(:credit_card)
-        stripe_card = card.student.stripe_customer.cards.first
+        stripe_card = card.student.stripe_customer.sources.first
         expect(card.stripe_id).to eq stripe_card.id
+        StripeMock.stop
       end
 
       it "sets the stripe_id for the bank account instance", :vcr, js: true do
@@ -37,9 +43,12 @@ describe PaymentMethod do
         expect(credit_card.id).to eq nil
       end
 
-      it "gets last four digits of a credit card before_create", :vcr do
+      it "gets last four digits of a credit card before_create" do
+        StripeMock.create_test_helper
+        StripeMock.start
         credit_card = FactoryGirl.create(:credit_card)
         expect(credit_card.last_four_string).to eq "4242"
+        StripeMock.stop
       end
 
       it "gets last four digits of a bank account before_create", :vcr, js: true do
