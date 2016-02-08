@@ -19,7 +19,7 @@ private
 
   def create_stripe_account
     begin
-      account = student.stripe_customer.sources.create(:source => stripe_token)
+      account = student.stripe_customer.sources.create({ source: stripe_token }, { api_key: Stripe.api_key })
       self.stripe_id = account.id
     rescue Stripe::StripeError => exception
       errors.add(:base, exception.message)
@@ -30,7 +30,7 @@ private
   def get_last_four_string
     begin
       customer = student.stripe_customer
-      stripe_account = customer.sources.retrieve(stripe_id)
+      stripe_account = customer.sources.retrieve(stripe_id, { api_key: Stripe.api_key })
       self.last_four_string = stripe_account.last4
     rescue Stripe::StripeError => exception
       errors.add(:base, exception.message)
