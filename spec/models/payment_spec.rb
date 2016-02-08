@@ -1,5 +1,4 @@
 describe Payment do
-
   it { should belong_to :student }
   it { should belong_to :payment_method }
   it { should validate_presence_of :student_id }
@@ -53,23 +52,31 @@ describe Payment do
     end
 
     it 'sets recurring_active to false if student is paid up', :vcr do
+      StripeMock.create_test_helper
+      StripeMock.start
       plan = FactoryGirl.create(:recurring_plan_with_upfront_payment, total_amount: 5000_00)
       student = FactoryGirl.create(:user_with_credit_card, plan: plan, email: 'test@test.com')
       payment = student.payments.create(amount: 5000_00, payment_method: student.credit_cards.first)
       expect(student.recurring_active).to be false
+      StripeMock.stop
     end
   end
 
   describe '#total_amount' do
     it 'returns payment amount plus fees', :vcr do
+      StripeMock.create_test_helper
+      StripeMock.start
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       payment = student.payments.create(amount: 600_00, payment_method: student.credit_cards.first)
       expect(payment.total_amount).to be 618_21
+      StripeMock.stop
     end
   end
 
   describe "#send_payment_receipt" do
     it "emails the student a receipt after successful payment", :vcr do
+      StripeMock.create_test_helper
+      StripeMock.start
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
 
       mailgun_client = spy("mailgun client")
@@ -85,11 +92,14 @@ describe Payment do
           :subject => "Epicodus tuition payment receipt",
           :text => "Hi #{student.name}. This is to confirm your payment of $618.21 for Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
       )
+      StripeMock.stop
     end
   end
 
   describe "failed" do
     it "emails the student a failure notice if payment status is updated to 'failed'", :vcr do
+      StripeMock.create_test_helper
+      StripeMock.start
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
 
       mailgun_client = spy("mailgun client")
@@ -106,6 +116,7 @@ describe Payment do
           :subject => "Epicodus payment failure notice",
           :text => "Hi #{student.name}. This is to notify you that a recent payment you made for Epicodus tuition has failed. Please reply to this email so we can sort it out together. Thanks!" }
       )
+      StripeMock.stop
     end
 
     it "switches their recurring active status to false", :vcr do
