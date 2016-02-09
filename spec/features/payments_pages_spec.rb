@@ -17,7 +17,7 @@ feature 'Viewing payment index page' do
     context 'after a payment has been made with bank account', :vcr do
       it 'shows payment history with correct charge and status' do
         student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com')
-        payment = FactoryGirl.create(:payment, amount: 600_00, student: student)
+        payment = FactoryGirl.create(:payment, amount: 600_00, student: student, payment_method: student.payment_methods.first)
         login_as(student, scope: :student)
         visit payments_path
         expect(page).to have_content 600.00
@@ -84,7 +84,7 @@ feature 'Viewing payment index page' do
 
     context 'with recurring payments active', :vcr do
       it "doesn't show a link to start recurring payments" do
-        student = FactoryGirl.create(:user_with_recurring_active, email: 'test@test.com')
+        student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com', recurring_active: true)
         login_as(student, scope: :student)
         visit payments_path
         expect(page).to_not have_button('Start recurring payments')
