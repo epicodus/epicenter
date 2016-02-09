@@ -674,18 +674,24 @@ describe Student do
     end
   end
 
-  describe '#total_paid', :vcr do
-    it 'sums all of the students payments' do
+  describe '#total_paid' do
+    before do
+      StripeMock.create_test_helper
+      StripeMock.start
+    end
+    after { StripeMock.stop }
+
+    it 'sums all of the students payments', :vcr do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
-      FactoryGirl.create(:payment, student: student, amount: 200_00)
-      FactoryGirl.create(:payment, student: student, amount: 200_00)
+      FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00, payment_method: student.payment_methods.first)
+      FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00, payment_method: student.payment_methods.first)
       expect(student.total_paid).to eq 400_00
     end
 
-    it 'does not include failed payments' do
+    it 'does not include failed payments', :vcr do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
-      FactoryGirl.create(:payment, student: student, amount: 200_00)
-      failed_payment = FactoryGirl.create(:payment, student: student, amount: 200_00)
+      FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00, payment_method: student.payment_methods.first)
+      failed_payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00, payment_method: student.payment_methods.first)
       failed_payment.update(status: 'failed')
       expect(student.total_paid).to eq 200_00
     end
