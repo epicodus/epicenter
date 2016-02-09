@@ -25,7 +25,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 09 Feb 2016 21:28:41 GMT
+      - Tue, 09 Feb 2016 21:31:46 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -46,11 +46,11 @@ http_interactions:
       encoding: UTF-8
       string: |-
         {
-          "id": "<20160209212841.40056.52608@epicodus.com>",
+          "id": "<20160209213146.68418.42898@epicodus.com>",
           "message": "Queued. Thank you."
         }
     http_version: 
-  recorded_at: Tue, 09 Feb 2016 21:29:01 GMT
+  recorded_at: Tue, 09 Feb 2016 21:32:06 GMT
 - request:
     method: get
     uri: https://<CLOSE_IO_API_KEY>:@app.close.io/api/v1/lead/?query=email:test@test.com
@@ -72,7 +72,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 09 Feb 2016 21:28:41 GMT
+      - Tue, 09 Feb 2016 21:31:46 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -104,7 +104,7 @@ http_interactions:
         [], "url": null, "status_label": "Enrolled", "date_created": "2015-08-04T20:54:51.404000+00:00",
         "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26", "description": "Foo"}]}'
     http_version: 
-  recorded_at: Tue, 09 Feb 2016 21:29:01 GMT
+  recorded_at: Tue, 09 Feb 2016 21:32:06 GMT
 - request:
     method: get
     uri: https://<CLOSE_IO_API_KEY>:@app.close.io/api/v1/lead/?query=email:test@test.com
@@ -126,7 +126,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 09 Feb 2016 21:28:41 GMT
+      - Tue, 09 Feb 2016 21:31:46 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -158,20 +158,20 @@ http_interactions:
         [], "url": null, "status_label": "Enrolled", "date_created": "2015-08-04T20:54:51.404000+00:00",
         "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26", "description": "Foo"}]}'
     http_version: 
-  recorded_at: Tue, 09 Feb 2016 21:29:01 GMT
+  recorded_at: Tue, 09 Feb 2016 21:32:06 GMT
 - request:
     method: post
     uri: https://api:<MAILGUN_API_KEY>@api.mailgun.net/v2/epicodus.com/messages
     body:
       encoding: UTF-8
-      string: from=administrator%40school.edu&to=test%40test.com&bcc=administrator%40school.edu&subject=Epicodus%20payment%20failure%20notice&text=Hi%20Example%20Brown%201.%20This%20is%20to%20notify%20you%20that%20a%20recent%20payment%20you%20made%20for%20Epicodus%20tuition%20has%20failed.%20Please%20reply%20to%20this%20email%20so%20we%20can%20sort%20it%20out%20together.%20Thanks!
+      string: from=administrator%40school.edu&to=test%40test.com&bcc=administrator%40school.edu&subject=Epicodus%20tuition%20payment%20receipt&text=Hi%20Example%20Brown%201.%20This%20is%20to%20confirm%20your%20payment%20of%20%241.32%20for%20Epicodus%20tuition.%20If%20you%20have%20any%20questions%2C%20reply%20to%20this%20email.%20Thanks!
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
       Accept-Encoding:
       - gzip, deflate
       Content-Length:
-      - '369'
+      - '324'
       Content-Type:
       - application/x-www-form-urlencoded
       User-Agent:
@@ -184,11 +184,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 09 Feb 2016 21:28:41 GMT
+      - Tue, 09 Feb 2016 21:31:46 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '89'
+      - '90'
       Connection:
       - keep-alive
       Content-Disposition:
@@ -205,11 +205,11 @@ http_interactions:
       encoding: UTF-8
       string: |-
         {
-          "id": "<20160209212841.6677.56164@epicodus.com>",
+          "id": "<20160209213146.68402.22864@epicodus.com>",
           "message": "Queued. Thank you."
         }
     http_version: 
-  recorded_at: Tue, 09 Feb 2016 21:29:02 GMT
+  recorded_at: Tue, 09 Feb 2016 21:32:06 GMT
 - request:
     method: get
     uri: https://<CLOSE_IO_API_KEY>:@app.close.io/api/v1/lead/?query=email:test@test.com
@@ -231,7 +231,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 09 Feb 2016 21:28:42 GMT
+      - Tue, 09 Feb 2016 21:31:46 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -263,7 +263,7 @@ http_interactions:
         [], "url": null, "status_label": "Enrolled", "date_created": "2015-08-04T20:54:51.404000+00:00",
         "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26", "description": "Foo"}]}'
     http_version: 
-  recorded_at: Tue, 09 Feb 2016 21:29:02 GMT
+  recorded_at: Tue, 09 Feb 2016 21:32:07 GMT
 - request:
     method: get
     uri: https://<CLOSE_IO_API_KEY>:@app.close.io/api/v1/lead/?query=email:test@test.com
@@ -285,7 +285,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 09 Feb 2016 21:28:42 GMT
+      - Tue, 09 Feb 2016 21:31:46 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -317,5 +317,5 @@ http_interactions:
         [], "url": null, "status_label": "Enrolled", "date_created": "2015-08-04T20:54:51.404000+00:00",
         "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26", "description": "Foo"}]}'
     http_version: 
-  recorded_at: Tue, 09 Feb 2016 21:29:02 GMT
+  recorded_at: Tue, 09 Feb 2016 21:32:07 GMT
 recorded_with: VCR 3.0.1

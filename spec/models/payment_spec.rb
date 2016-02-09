@@ -5,21 +5,27 @@ describe Payment do
   it { should validate_presence_of :payment_method }
   it { should validate_presence_of :amount }
 
-  xdescribe '.order_by_latest scope' do
+  describe '.order_by_latest scope' do
     it 'orders by created_at, descending', :vcr do
-      student = FactoryGirl.create(:student, email: 'test@test.com')
-      payment_one = FactoryGirl.create(:payment, student: student)
-      payment_two = FactoryGirl.create(:payment, student: student)
+      StripeMock.create_test_helper
+      StripeMock.start
+      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
+      payment_one = FactoryGirl.create(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first)
+      payment_two = FactoryGirl.create(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first)
       expect(Payment.order_by_latest).to eq [payment_two, payment_one]
+      StripeMock.stop
     end
   end
 
   describe '.without_failed' do
     it "doesn't include failed payments", :vcr do
-      student = FactoryGirl.create(:student, email: 'test@test.com')
-      failed_payment = FactoryGirl.create(:payment, student: student)
+      StripeMock.create_test_helper
+      StripeMock.start
+      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
+      failed_payment = FactoryGirl.create(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first)
       failed_payment.update(status: 'failed')
       expect(Payment.without_failed).to eq []
+      StripeMock.stop
     end
   end
 
