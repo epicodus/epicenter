@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.stripe.com/v1/customers
     body:
       encoding: UTF-8
-      string: description=student235%40example.com
+      string: description=student2%40example.com
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -22,7 +22,7 @@ http_interactions:
         epicodus-73.local 15.2.0 Darwin Kernel Version 15.2.0: Fri Nov 13 19:56:56
         PST 2015; root:xnu-3248.20.55~2/RELEASE_X86_64 x86_64","hostname":"epicodus-73.local"}'
       Content-Length:
-      - '36'
+      - '34'
   response:
     status:
       code: 200
@@ -31,11 +31,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 09 Feb 2016 19:29:42 GMT
+      - Wed, 10 Feb 2016 19:55:45 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1160'
+      - '1158'
       Connection:
       - keep-alive
       Access-Control-Allow-Credentials:
@@ -49,7 +49,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7sS5hZQTsLFRWU
+      - req_7spj5NaBxXGUuc
       Stripe-Version:
       - '2012-11-07'
       Strict-Transport-Security:
@@ -58,7 +58,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_7sS5R8hwzwsmrK",
+          "id": "cus_7spjYil8b8Xby1",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
@@ -67,7 +67,7 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7sS5R8hwzwsmrK/bank_accounts"
+            "url": "/v1/customers/cus_7spjYil8b8Xby1/bank_accounts"
           },
           "cards": {
             "object": "list",
@@ -75,16 +75,16 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7sS5R8hwzwsmrK/cards"
+            "url": "/v1/customers/cus_7spjYil8b8Xby1/cards"
           },
-          "created": 1455046181,
+          "created": 1455134145,
           "currency": null,
           "default_bank_account": null,
           "default_card": null,
           "default_source": null,
           "default_source_type": null,
           "delinquent": false,
-          "description": "student235@example.com",
+          "description": "student2@example.com",
           "discount": null,
           "email": null,
           "livemode": false,
@@ -96,7 +96,7 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7sS5R8hwzwsmrK/sources"
+            "url": "/v1/customers/cus_7spjYil8b8Xby1/sources"
           },
           "subscriptions": {
             "object": "list",
@@ -104,16 +104,16 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7sS5R8hwzwsmrK/subscriptions"
+            "url": "/v1/customers/cus_7spjYil8b8Xby1/subscriptions"
           },
           "active_card": null,
           "subscription": null
         }
     http_version: 
-  recorded_at: Tue, 05 Apr 2016 07:00:00 GMT
+  recorded_at: Wed, 10 Feb 2016 19:56:05 GMT
 - request:
     method: post
-    uri: https://api.stripe.com/v1/customers/cus_7sS5R8hwzwsmrK/sources
+    uri: https://api.stripe.com/v1/customers/cus_7spjYil8b8Xby1/sources
     body:
       encoding: UTF-8
       string: source[account_number]=000123456789&source[country]=US&source[object]=bank_account&source[routing_number]=110000000
@@ -142,7 +142,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 09 Feb 2016 19:29:42 GMT
+      - Wed, 10 Feb 2016 19:55:46 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -160,7 +160,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7sS5gzOcX5OKvl
+      - req_7spj2Kg9KwNHjY
       Stripe-Version:
       - '2012-11-07'
       Strict-Transport-Security:
@@ -169,13 +169,13 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "ba_7sS5XPCa54liTk",
+          "id": "ba_7spj6o0m66etUv",
           "object": "bank_account",
           "account_holder_type": null,
           "bank_name": "STRIPE TEST BANK",
           "country": "US",
           "currency": "usd",
-          "customer": "cus_7sS5R8hwzwsmrK",
+          "customer": "cus_7spjYil8b8Xby1",
           "fingerprint": "qw2YdYDmIJUuNi9w",
           "last4": "6789",
           "metadata": {},
@@ -187,10 +187,10 @@ http_interactions:
           "verified": false
         }
     http_version: 
-  recorded_at: Tue, 05 Apr 2016 07:00:00 GMT
+  recorded_at: Wed, 10 Feb 2016 19:56:06 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_7sS5R8hwzwsmrK
+    uri: https://api.stripe.com/v1/customers/cus_7spjYil8b8Xby1
     body:
       encoding: US-ASCII
       string: ''
@@ -217,11 +217,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 09 Feb 2016 19:29:42 GMT
+      - Wed, 10 Feb 2016 19:55:46 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '2242'
+      - '2240'
       Connection:
       - keep-alive
       Access-Control-Allow-Credentials:
@@ -235,7 +235,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7sS5JYyQk3nxGe
+      - req_7spjE5Jhc9EKGb
       Stripe-Version:
       - '2012-11-07'
       Strict-Transport-Security:
@@ -244,7 +244,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_7sS5R8hwzwsmrK",
+          "id": "cus_7spjYil8b8Xby1",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
@@ -252,13 +252,13 @@ http_interactions:
             "count": 1,
             "data": [
               {
-                "id": "ba_7sS5XPCa54liTk",
+                "id": "ba_7spj6o0m66etUv",
                 "object": "bank_account",
                 "account_holder_type": null,
                 "bank_name": "STRIPE TEST BANK",
                 "country": "US",
                 "currency": "usd",
-                "customer": "cus_7sS5R8hwzwsmrK",
+                "customer": "cus_7spjYil8b8Xby1",
                 "fingerprint": "qw2YdYDmIJUuNi9w",
                 "last4": "6789",
                 "metadata": {},
@@ -272,7 +272,7 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_7sS5R8hwzwsmrK/bank_accounts"
+            "url": "/v1/customers/cus_7spjYil8b8Xby1/bank_accounts"
           },
           "cards": {
             "object": "list",
@@ -280,16 +280,16 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7sS5R8hwzwsmrK/cards"
+            "url": "/v1/customers/cus_7spjYil8b8Xby1/cards"
           },
-          "created": 1455046181,
+          "created": 1455134145,
           "currency": null,
-          "default_bank_account": "ba_7sS5XPCa54liTk",
+          "default_bank_account": "ba_7spj6o0m66etUv",
           "default_card": null,
-          "default_source": "ba_7sS5XPCa54liTk",
+          "default_source": "ba_7spj6o0m66etUv",
           "default_source_type": "bank_account",
           "delinquent": false,
-          "description": "student235@example.com",
+          "description": "student2@example.com",
           "discount": null,
           "email": null,
           "livemode": false,
@@ -300,13 +300,13 @@ http_interactions:
             "count": 1,
             "data": [
               {
-                "id": "ba_7sS5XPCa54liTk",
+                "id": "ba_7spj6o0m66etUv",
                 "object": "bank_account",
                 "account_holder_type": null,
                 "bank_name": "STRIPE TEST BANK",
                 "country": "US",
                 "currency": "usd",
-                "customer": "cus_7sS5R8hwzwsmrK",
+                "customer": "cus_7spjYil8b8Xby1",
                 "fingerprint": "qw2YdYDmIJUuNi9w",
                 "last4": "6789",
                 "metadata": {},
@@ -320,7 +320,7 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_7sS5R8hwzwsmrK/sources"
+            "url": "/v1/customers/cus_7spjYil8b8Xby1/sources"
           },
           "subscriptions": {
             "object": "list",
@@ -328,16 +328,16 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7sS5R8hwzwsmrK/subscriptions"
+            "url": "/v1/customers/cus_7spjYil8b8Xby1/subscriptions"
           },
           "active_card": null,
           "subscription": null
         }
     http_version: 
-  recorded_at: Tue, 05 Apr 2016 07:00:00 GMT
+  recorded_at: Wed, 10 Feb 2016 19:56:06 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_7sS5R8hwzwsmrK/sources/ba_7sS5XPCa54liTk
+    uri: https://api.stripe.com/v1/customers/cus_7spjYil8b8Xby1/sources/ba_7spj6o0m66etUv
     body:
       encoding: US-ASCII
       string: ''
@@ -364,7 +364,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 09 Feb 2016 19:29:42 GMT
+      - Wed, 10 Feb 2016 19:55:47 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -382,7 +382,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7sS5332BvFJpd8
+      - req_7spj9U52PscD48
       Stripe-Version:
       - '2012-11-07'
       Strict-Transport-Security:
@@ -391,13 +391,13 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "ba_7sS5XPCa54liTk",
+          "id": "ba_7spj6o0m66etUv",
           "object": "bank_account",
           "account_holder_type": null,
           "bank_name": "STRIPE TEST BANK",
           "country": "US",
           "currency": "usd",
-          "customer": "cus_7sS5R8hwzwsmrK",
+          "customer": "cus_7spjYil8b8Xby1",
           "fingerprint": "qw2YdYDmIJUuNi9w",
           "last4": "6789",
           "metadata": {},
@@ -409,13 +409,13 @@ http_interactions:
           "verified": false
         }
     http_version: 
-  recorded_at: Tue, 05 Apr 2016 07:00:00 GMT
+  recorded_at: Wed, 10 Feb 2016 19:56:06 GMT
 - request:
     method: post
     uri: https://api.stripe.com/v1/customers
     body:
       encoding: UTF-8
-      string: description=student236%40example.com
+      string: description=student3%40example.com
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -432,7 +432,7 @@ http_interactions:
         epicodus-73.local 15.2.0 Darwin Kernel Version 15.2.0: Fri Nov 13 19:56:56
         PST 2015; root:xnu-3248.20.55~2/RELEASE_X86_64 x86_64","hostname":"epicodus-73.local"}'
       Content-Length:
-      - '36'
+      - '34'
   response:
     status:
       code: 200
@@ -441,11 +441,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 09 Feb 2016 19:29:42 GMT
+      - Wed, 10 Feb 2016 19:55:47 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1160'
+      - '1158'
       Connection:
       - keep-alive
       Access-Control-Allow-Credentials:
@@ -459,7 +459,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7sS5faVnBEtnyx
+      - req_7spjeImHFuijNl
       Stripe-Version:
       - '2012-11-07'
       Strict-Transport-Security:
@@ -468,7 +468,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_7sS5cEKPDtH2x7",
+          "id": "cus_7spjBFbEM8L9p3",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
@@ -477,7 +477,7 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7sS5cEKPDtH2x7/bank_accounts"
+            "url": "/v1/customers/cus_7spjBFbEM8L9p3/bank_accounts"
           },
           "cards": {
             "object": "list",
@@ -485,16 +485,16 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7sS5cEKPDtH2x7/cards"
+            "url": "/v1/customers/cus_7spjBFbEM8L9p3/cards"
           },
-          "created": 1455046182,
+          "created": 1455134147,
           "currency": null,
           "default_bank_account": null,
           "default_card": null,
           "default_source": null,
           "default_source_type": null,
           "delinquent": false,
-          "description": "student236@example.com",
+          "description": "student3@example.com",
           "discount": null,
           "email": null,
           "livemode": false,
@@ -506,7 +506,7 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7sS5cEKPDtH2x7/sources"
+            "url": "/v1/customers/cus_7spjBFbEM8L9p3/sources"
           },
           "subscriptions": {
             "object": "list",
@@ -514,16 +514,16 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7sS5cEKPDtH2x7/subscriptions"
+            "url": "/v1/customers/cus_7spjBFbEM8L9p3/subscriptions"
           },
           "active_card": null,
           "subscription": null
         }
     http_version: 
-  recorded_at: Tue, 05 Apr 2016 07:00:00 GMT
+  recorded_at: Wed, 10 Feb 2016 19:56:07 GMT
 - request:
     method: post
-    uri: https://api.stripe.com/v1/customers/cus_7sS5cEKPDtH2x7/sources
+    uri: https://api.stripe.com/v1/customers/cus_7spjBFbEM8L9p3/sources
     body:
       encoding: UTF-8
       string: source[cvv]=123&source[exp_month]=12&source[exp_year]=2020&source[number]=4242424242424242&source[object]=card
@@ -552,7 +552,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 09 Feb 2016 19:29:43 GMT
+      - Wed, 10 Feb 2016 19:55:47 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -570,7 +570,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7sS59jNqUchZea
+      - req_7spjRkOo23RXx1
       Stripe-Version:
       - '2012-11-07'
       Strict-Transport-Security:
@@ -579,7 +579,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "card_7sS5BoS59N6Kaq",
+          "id": "card_7spjvgIYsgrDX4",
           "object": "card",
           "address_city": null,
           "address_country": null,
@@ -591,7 +591,7 @@ http_interactions:
           "address_zip_check": null,
           "brand": "Visa",
           "country": "US",
-          "customer": "cus_7sS5cEKPDtH2x7",
+          "customer": "cus_7spjBFbEM8L9p3",
           "cvc_check": null,
           "dynamic_last4": null,
           "exp_month": 12,
@@ -605,10 +605,10 @@ http_interactions:
           "type": "Visa"
         }
     http_version: 
-  recorded_at: Tue, 05 Apr 2016 07:00:00 GMT
+  recorded_at: Wed, 10 Feb 2016 19:56:07 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_7sS5cEKPDtH2x7
+    uri: https://api.stripe.com/v1/customers/cus_7spjBFbEM8L9p3
     body:
       encoding: US-ASCII
       string: ''
@@ -635,11 +635,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 09 Feb 2016 19:29:43 GMT
+      - Wed, 10 Feb 2016 19:55:47 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '3315'
+      - '3313'
       Connection:
       - keep-alive
       Access-Control-Allow-Credentials:
@@ -653,7 +653,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7sS5IcRd9QDPNX
+      - req_7spjnFk8msyhKA
       Stripe-Version:
       - '2012-11-07'
       Strict-Transport-Security:
@@ -662,7 +662,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_7sS5cEKPDtH2x7",
+          "id": "cus_7spjBFbEM8L9p3",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
@@ -671,14 +671,14 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7sS5cEKPDtH2x7/bank_accounts"
+            "url": "/v1/customers/cus_7spjBFbEM8L9p3/bank_accounts"
           },
           "cards": {
             "object": "list",
             "count": 1,
             "data": [
               {
-                "id": "card_7sS5BoS59N6Kaq",
+                "id": "card_7spjvgIYsgrDX4",
                 "object": "card",
                 "address_city": null,
                 "address_country": null,
@@ -690,7 +690,7 @@ http_interactions:
                 "address_zip_check": null,
                 "brand": "Visa",
                 "country": "US",
-                "customer": "cus_7sS5cEKPDtH2x7",
+                "customer": "cus_7spjBFbEM8L9p3",
                 "cvc_check": null,
                 "dynamic_last4": null,
                 "exp_month": 12,
@@ -706,16 +706,16 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_7sS5cEKPDtH2x7/cards"
+            "url": "/v1/customers/cus_7spjBFbEM8L9p3/cards"
           },
-          "created": 1455046182,
+          "created": 1455134147,
           "currency": null,
           "default_bank_account": null,
-          "default_card": "card_7sS5BoS59N6Kaq",
-          "default_source": "card_7sS5BoS59N6Kaq",
+          "default_card": "card_7spjvgIYsgrDX4",
+          "default_source": "card_7spjvgIYsgrDX4",
           "default_source_type": "card",
           "delinquent": false,
-          "description": "student236@example.com",
+          "description": "student3@example.com",
           "discount": null,
           "email": null,
           "livemode": false,
@@ -726,7 +726,7 @@ http_interactions:
             "count": 1,
             "data": [
               {
-                "id": "card_7sS5BoS59N6Kaq",
+                "id": "card_7spjvgIYsgrDX4",
                 "object": "card",
                 "address_city": null,
                 "address_country": null,
@@ -738,7 +738,7 @@ http_interactions:
                 "address_zip_check": null,
                 "brand": "Visa",
                 "country": "US",
-                "customer": "cus_7sS5cEKPDtH2x7",
+                "customer": "cus_7spjBFbEM8L9p3",
                 "cvc_check": null,
                 "dynamic_last4": null,
                 "exp_month": 12,
@@ -754,7 +754,7 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_7sS5cEKPDtH2x7/sources"
+            "url": "/v1/customers/cus_7spjBFbEM8L9p3/sources"
           },
           "subscriptions": {
             "object": "list",
@@ -762,10 +762,10 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7sS5cEKPDtH2x7/subscriptions"
+            "url": "/v1/customers/cus_7spjBFbEM8L9p3/subscriptions"
           },
           "active_card": {
-            "id": "card_7sS5BoS59N6Kaq",
+            "id": "card_7spjvgIYsgrDX4",
             "object": "card",
             "address_city": null,
             "address_country": null,
@@ -777,7 +777,7 @@ http_interactions:
             "address_zip_check": null,
             "brand": "Visa",
             "country": "US",
-            "customer": "cus_7sS5cEKPDtH2x7",
+            "customer": "cus_7spjBFbEM8L9p3",
             "cvc_check": null,
             "dynamic_last4": null,
             "exp_month": 12,
@@ -793,10 +793,10 @@ http_interactions:
           "subscription": null
         }
     http_version: 
-  recorded_at: Tue, 05 Apr 2016 07:00:00 GMT
+  recorded_at: Wed, 10 Feb 2016 19:56:07 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_7sS5cEKPDtH2x7/sources/card_7sS5BoS59N6Kaq
+    uri: https://api.stripe.com/v1/customers/cus_7spjBFbEM8L9p3/sources/card_7spjvgIYsgrDX4
     body:
       encoding: US-ASCII
       string: ''
@@ -823,7 +823,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 09 Feb 2016 19:29:43 GMT
+      - Wed, 10 Feb 2016 19:55:48 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -841,7 +841,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7sS5Bgoo0bsz15
+      - req_7spj5unpTF7qHv
       Stripe-Version:
       - '2012-11-07'
       Strict-Transport-Security:
@@ -850,7 +850,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "card_7sS5BoS59N6Kaq",
+          "id": "card_7spjvgIYsgrDX4",
           "object": "card",
           "address_city": null,
           "address_country": null,
@@ -862,7 +862,7 @@ http_interactions:
           "address_zip_check": null,
           "brand": "Visa",
           "country": "US",
-          "customer": "cus_7sS5cEKPDtH2x7",
+          "customer": "cus_7spjBFbEM8L9p3",
           "cvc_check": null,
           "dynamic_last4": null,
           "exp_month": 12,
@@ -876,5 +876,5 @@ http_interactions:
           "type": "Visa"
         }
     http_version: 
-  recorded_at: Tue, 05 Apr 2016 07:00:00 GMT
+  recorded_at: Wed, 10 Feb 2016 19:56:07 GMT
 recorded_with: VCR 3.0.1

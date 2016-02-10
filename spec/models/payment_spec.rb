@@ -29,7 +29,7 @@ describe Payment do
     end
   end
 
-  describe "make a payment" do
+  describe "make a payment with a bank account" do
     it "makes a successful payment", :vcr do
       student = FactoryGirl.create :user_with_verified_bank_account, email: 'test@test.com'
       student.payments.create(amount: 100, payment_method: student.bank_accounts.first)
@@ -47,6 +47,32 @@ describe Payment do
       student = FactoryGirl.create :user_with_verified_bank_account, email: 'test@test.com'
       payment = student.payments.create(amount: 100, payment_method: student.bank_accounts.first)
       expect(payment.status).to eq "pending"
+    end
+  end
+
+  describe "make a payment with a credit card" do
+    before do
+      StripeMock.create_test_helper
+      StripeMock.start
+    end
+    after { StripeMock.stop }
+
+    it "makes a successful payment", :vcr do
+      student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
+      student.payments.create(amount: 100, payment_method: student.payment_methods.first)
+      student.reload
+      expect(student.payments).to_not eq []
+    end
+
+    it "sets the fee for the payment type", :vcr do
+      student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
+      payment = student.payments.create(amount: 100, payment_method: student.payment_methods.first)
+      expect(payment.fee).to eq 32
+    end
+    it "sets the status for the payment type", :vcr do
+      student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
+      payment = student.payments.create(amount: 100, payment_method: student.payment_methods.first)
+      expect(payment.status).to eq "succeeded"
     end
   end
 

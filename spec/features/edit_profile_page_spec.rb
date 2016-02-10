@@ -1,7 +1,7 @@
 feature 'Student edits their profile' do
-  context 'with the correct password', :vcr do
+  context 'with the correct password' do
     it "successfully updates information" do
-      student = FactoryGirl.create(:user_with_credit_card)
+      student = FactoryGirl.create(:user_with_all_documents_signed)
       login_as(student, scope: :student)
       visit edit_student_registration_path
       fill_in 'Name', with: 'New Name'
@@ -11,9 +11,9 @@ feature 'Student edits their profile' do
     end
   end
 
-  context 'with the incorrect password', :vcr do
+  context 'with the incorrect password' do
     it "shows an error" do
-      student = FactoryGirl.create(:user_with_credit_card)
+      student = FactoryGirl.create(:user_with_all_documents_signed)
       login_as(student, scope: :student)
       visit edit_student_registration_path
       fill_in 'Name', with: 'New Name'
@@ -22,5 +22,4 @@ feature 'Student edits their profile' do
       expect(page).to have_content "Current password is invalid"
     end
   end
-
 end

@@ -330,8 +330,14 @@ describe Student do
     end
   end
 
-  describe "#upfront_payment_due?", :vcr do
-    let(:student) { FactoryGirl.create :user_with_verified_bank_account }
+  describe "#upfront_payment_due?" do
+    before do
+      StripeMock.create_test_helper
+      StripeMock.start
+    end
+    after { StripeMock.stop }
+
+    let(:student) { FactoryGirl.create :user_with_credit_card, email: 'test@test.com' }
 
     it "is true if student has upfront payment and no payments have been made" do
       expect(student.upfront_payment_due?).to be true
@@ -342,15 +348,21 @@ describe Student do
       expect(student.upfront_payment_due?).to be false
     end
 
-    it "is false if student has made any payments" do
-      student = FactoryGirl.create :user_with_upfront_payment, email: 'test@test.com'
+    it "is false if student has made any payments", :vcr do
+      FactoryGirl.create(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first)
       expect(student.upfront_payment_due?).to be false
     end
   end
 
-  describe "#make_upfront_payment", :vcr do
-    it "makes a payment for the upfront amount of the student's plan" do
-      student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com')
+  describe "#make_upfront_payment" do
+    before do
+      StripeMock.create_test_helper
+      StripeMock.start
+    end
+    after { StripeMock.stop }
+
+    it "makes a payment for the upfront amount of the student's plan", :vcr do
+      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       student.make_upfront_payment
       expect(student.payments.first.amount).to eq student.plan.upfront_amount
     end
@@ -677,16 +689,16 @@ describe Student do
     end
 
 
-    context 'for payments', vcr: true do
+    context 'for payments' do
       let(:bank_account) { FactoryGirl.create(:bank_account, student: student) }
       let(:credit_card) { FactoryGirl.create(:credit_card, student: student) }
 
-      it 'allows students to create payments using one of their payment methods' do
+      it 'allows students to create payments using one of their payment methods', :vcr do
         is_expected.to have_abilities(:create, Payment.new(payment_method: bank_account, student_id: student.id))
         is_expected.to have_abilities(:create, Payment.new(payment_method: credit_card, student_id: student.id))
       end
 
-      it "doesn't allow students to create payments for others' payment methods" do
+      it "doesn't allow students to create payments for others' payment methods", :vcr do
         another_bank_account = FactoryGirl.create(:bank_account)
         another_credit_card = FactoryGirl.create(:credit_card)
         is_expected.to not_have_abilities(:create, Payment.new(payment_method: another_bank_account))
@@ -694,12 +706,19 @@ describe Student do
       end
 
       it "doesn't allow students to create payments for other students" do
-        bank_account = FactoryGirl.create(:bank_account, student: student)
+        StripeMock.create_test_helper
+        StripeMock.start
         another_student = FactoryGirl.create(:student)
-        is_expected.to not_have_abilities(:create, Payment.new(student: another_student, payment_method: bank_account))
+        is_expected.to not_have_abilities(:create, Payment.new(student: another_student, payment_method: credit_card))
+        StripeMock.stop
       end
 
-      it { is_expected.to not_have_abilities(:create, Payment.new(payment_method: bank_account)) }
+      it "doesn't allow students to create payments without a specified student" do
+        StripeMock.create_test_helper
+        StripeMock.start
+        is_expected.to not_have_abilities(:create, Payment.new(payment_method: credit_card))
+        StripeMock.stop
+      end
 
       it { is_expected.to have_abilities(:read, Payment.new(student: student)) }
       it { is_expected.to not_have_abilities(:read, Payment.new) }
