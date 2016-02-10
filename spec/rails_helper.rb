@@ -24,8 +24,12 @@ ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
   config.use_transactional_fixtures = false
-  config.before(:each) do
+  config.before(:each) do |example|
     DatabaseCleaner.clean_with(:truncation)
+    if example.metadata[:stub_mailgun]
+      mailgun_client = spy("mailgun client")
+      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+    end
   end
   config.infer_spec_type_from_file_location!
 end

@@ -89,11 +89,6 @@ describe Student do
   end
 
   describe "#random_pairs" do
-    before do
-      mailgun_client = spy("mailgun client")
-      allow(Mailgun::Client).to receive(:new) { mailgun_client }
-    end
-
     let!(:current_student) { FactoryGirl.create(:student) }
     let!(:student_2) { FactoryGirl.create(:user_with_score_of_9, course: current_student.course) }
     let!(:student_3) { FactoryGirl.create(:user_with_score_of_10, course: current_student.course) }
@@ -107,30 +102,30 @@ describe Student do
     let!(:student_11_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, course: current_student.course) }
     let!(:student_12_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, course: current_student.course) }
 
-    it "returns an empty array when there are no other students in a course" do
+    it "returns an empty array when there are no other students in a course", :stub_mailgun do
       new_course = FactoryGirl.create(:course)
       current_student.update(course: new_course)
       expect(current_student.random_pairs).to eq []
     end
 
-    it "returns random pairs based on student total grade score for the most recent code review and distance_until_end is more than the number of pairs" do
+    it "returns random pairs based on student total grade score for the most recent code review and distance_until_end is more than the number of pairs", :stub_mailgun do
       allow(current_student).to receive(:latest_total_grade_score).and_return(10)
       allow(current_student).to receive(:random_starting_point).and_return(1)
       expect(current_student.random_pairs).to eq [student_3, student_4, student_5, student_6, student_7_after_starting_point]
     end
 
-    it "returns random pairs based on student total grade score for the most recent code review and distance_until_end is less than the number of pairs" do
+    it "returns random pairs based on student total grade score for the most recent code review and distance_until_end is less than the number of pairs", :stub_mailgun do
       allow(current_student).to receive(:latest_total_grade_score).and_return(10)
       allow(current_student).to receive(:random_starting_point).and_return(5)
       expect(current_student.random_pairs).to eq [student_7_after_starting_point, student_2, student_3, student_4, student_5]
     end
 
-    it "returns random pairs when the student total grade score is nil and distance_until_end is less than the number of pairs" do
+    it "returns random pairs when the student total grade score is nil and distance_until_end is less than the number of pairs", :stub_mailgun do
       allow(current_student).to receive(:random_starting_point).and_return(8)
       expect(current_student.random_pairs).to eq [student_10_after_starting_point, student_11_after_starting_point, student_12_after_starting_point, student_2, student_3]
     end
 
-    it "returns random pairs when the student total grade score is nil and distance_until_end is more than the number of pairs" do
+    it "returns random pairs when the student total grade score is nil and distance_until_end is more than the number of pairs", :stub_mailgun do
       allow(current_student).to receive(:random_starting_point).and_return(6)
       expect(current_student.random_pairs).to eq [student_8, student_9, student_10_after_starting_point, student_11_after_starting_point, student_12_after_starting_point]
     end
@@ -140,21 +135,16 @@ describe Student do
     let(:student) { FactoryGirl.create(:student) }
     let(:submission) { FactoryGirl.create(:submission, student: student) }
 
-    before do
-      mailgun_client = spy("mailgun client")
-      allow(Mailgun::Client).to receive(:new) { mailgun_client }
-    end
-
-    it 'returns nil when a student has not submitted a code review' do
+    it 'returns nil when a student has not submitted a code review', :stub_mailgun do
       expect(student.latest_total_grade_score).to eq nil
     end
 
-    it 'returns a total grade score for the latest code review when a student has received a grade' do
+    it 'returns a total grade score for the latest code review when a student has received a grade', :stub_mailgun do
       FactoryGirl.create(:passing_review, student: student, submission: submission)
       expect(student.latest_total_grade_score).to eq 3
     end
 
-    it 'returns an aggregate total grade score for the latest code review when a student has received multiple grades' do
+    it 'returns an aggregate total grade score for the latest code review when a student has received multiple grades', :stub_mailgun do
       review = FactoryGirl.create(:passing_review, student: student, submission: submission)
       objective = FactoryGirl.create(:objective)
       FactoryGirl.create(:failing_grade, review: review, objective: objective )

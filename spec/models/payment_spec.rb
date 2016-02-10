@@ -124,17 +124,15 @@ describe Payment do
 
     before do
       allow(student).to receive(:close_io_client).and_return(close_io_client)
-      mailgun_client = spy("mailgun client")
-      allow(Mailgun::Client).to receive(:new) { mailgun_client }
     end
 
-    it 'updates status and amount paid on the first payment', :vcr do
+    it 'updates status and amount paid on the first payment', :vcr, :stub_mailgun do
       payment = Payment.new(student: student, amount: 270_00, payment_method: student.primary_payment_method)
       expect(student).to receive(:update_close_io).with({ status: "Enrolled", 'custom.Amount paid': payment.amount / 100 })
       payment.save
     end
 
-    it 'only updates amount paid on payments beyond the first', :vcr do
+    it 'only updates amount paid on payments beyond the first', :vcr, :stub_mailgun do
       payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method)
       payment_2 = Payment.new(student: student, amount: 50_00, payment_method: student.primary_payment_method)
       expect(student).to receive(:update_close_io).with({ 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
