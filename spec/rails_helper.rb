@@ -30,6 +30,13 @@ RSpec.configure do |config|
       mailgun_client = spy("mailgun client")
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
     end
+    if example.metadata[:stripe_mock]
+      StripeMock.create_test_helper
+      StripeMock.start
+    end
+  end
+  config.after(:each) do |example|
+    StripeMock.stop if example.metadata[:stripe_mock]
   end
   config.infer_spec_type_from_file_location!
 end

@@ -6,26 +6,20 @@ describe Payment do
   it { should validate_presence_of :amount }
 
   describe '.order_by_latest scope' do
-    it 'orders by created_at, descending', :vcr do
-      StripeMock.create_test_helper
-      StripeMock.start
+    it 'orders by created_at, descending', :vcr, :stripe_mock do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       payment_one = FactoryGirl.create(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first)
       payment_two = FactoryGirl.create(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first)
       expect(Payment.order_by_latest).to eq [payment_two, payment_one]
-      StripeMock.stop
     end
   end
 
   describe '.without_failed' do
-    it "doesn't include failed payments", :vcr do
-      StripeMock.create_test_helper
-      StripeMock.start
+    it "doesn't include failed payments", :vcr, :stripe_mock do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       failed_payment = FactoryGirl.create(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first)
       failed_payment.update(status: 'failed')
       expect(Payment.without_failed).to eq []
-      StripeMock.stop
     end
   end
 
@@ -51,25 +45,19 @@ describe Payment do
   end
 
   describe "make a payment with a credit card" do
-    before do
-      StripeMock.create_test_helper
-      StripeMock.start
-    end
-    after { StripeMock.stop }
-
-    it "makes a successful payment", :vcr do
+    it "makes a successful payment", :vcr, :stripe_mock do
       student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
       student.payments.create(amount: 100, payment_method: student.payment_methods.first)
       student.reload
       expect(student.payments).to_not eq []
     end
 
-    it "sets the fee for the payment type", :vcr do
+    it "sets the fee for the payment type", :vcr, :stripe_mock do
       student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
       payment = student.payments.create(amount: 100, payment_method: student.payment_methods.first)
       expect(payment.fee).to eq 32
     end
-    it "sets the status for the payment type", :vcr do
+    it "sets the status for the payment type", :vcr, :stripe_mock do
       student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
       payment = student.payments.create(amount: 100, payment_method: student.payment_methods.first)
       expect(payment.status).to eq "succeeded"
@@ -77,20 +65,15 @@ describe Payment do
   end
 
   describe '#total_amount' do
-    it 'returns payment amount plus fees', :vcr do
-      StripeMock.create_test_helper
-      StripeMock.start
+    it 'returns payment amount plus fees', :vcr, :stripe_mock do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       payment = student.payments.create(amount: 600_00, payment_method: student.credit_cards.first)
       expect(payment.total_amount).to be 618_21
-      StripeMock.stop
     end
   end
 
   describe "#send_payment_receipt" do
-    it "emails the student a receipt after successful payment", :vcr do
-      StripeMock.create_test_helper
-      StripeMock.start
+    it "emails the student a receipt after successful payment", :vcr, :stripe_mock do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
 
       mailgun_client = spy("mailgun client")
@@ -106,14 +89,11 @@ describe Payment do
           :subject => "Epicodus tuition payment receipt",
           :text => "Hi #{student.name}. This is to confirm your payment of $618.21 for Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
       )
-      StripeMock.stop
     end
   end
 
   describe "failed" do
-    it "emails the student a failure notice if payment status is updated to 'failed'", :vcr do
-      StripeMock.create_test_helper
-      StripeMock.start
+    it "emails the student a failure notice if payment status is updated to 'failed'", :vcr, :stripe_mock do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
 
       mailgun_client = spy("mailgun client")
@@ -130,7 +110,6 @@ describe Payment do
           :subject => "Epicodus payment failure notice",
           :text => "Hi #{student.name}. This is to notify you that a recent payment you made for Epicodus tuition has failed. Please reply to this email so we can sort it out together. Thanks!" }
       )
-      StripeMock.stop
     end
   end
 

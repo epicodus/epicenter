@@ -252,60 +252,42 @@ describe Student do
     end
   end
 
-  it "validates that the primary payment method belongs to the user" do
-    StripeMock.create_test_helper
-    StripeMock.start
+  it "validates that the primary payment method belongs to the user", :stripe_mock do
     student = FactoryGirl.create(:student)
     other_students_credit_card = FactoryGirl.create(:credit_card)
     student.primary_payment_method = other_students_credit_card
     expect(student.valid?).to be false
-    StripeMock.stop
   end
 
   describe "#stripe_customer" do
-    it "creates a Stripe Customer object for a student" do
-      StripeMock.create_test_helper
-      StripeMock.start
+    it "creates a Stripe Customer object for a student", :stripe_mock do
       student = FactoryGirl.create(:student)
       expect(student.stripe_customer).to be_an_instance_of(Stripe::Customer)
-      StripeMock.stop
     end
 
-    it "returns the Stripe Customer object" do
-      StripeMock.create_test_helper
-      StripeMock.start
+    it "returns the Stripe Customer object", :stripe_mock do
       student = FactoryGirl.create(:student)
       expect(student.stripe_customer).to be_an_instance_of(Stripe::Customer)
-      StripeMock.stop
     end
 
-    it "returns a Stripe Customer object if one already exists" do
-      StripeMock.create_test_helper
-      StripeMock.start
+    it "returns a Stripe Customer object if one already exists", :stripe_mock do
       student = FactoryGirl.create(:student)
       first_stripe_customer_return = student.stripe_customer
       second_stripe_customer_return = student.stripe_customer
       expect(first_stripe_customer_return.id).to eq second_stripe_customer_return.id
-      StripeMock.stop
     end
   end
 
   describe "#stripe_customer_id" do
-    it "starts out nil" do
-      StripeMock.create_test_helper
-      StripeMock.start
+    it "starts out nil", :stripe_mock do
       student = FactoryGirl.create(:student)
       expect(student.stripe_customer_id).to be_nil
-      StripeMock.stop
     end
 
-    it "is populated when a Stripe Customer object is created" do
-      StripeMock.create_test_helper
-      StripeMock.start
+    it "is populated when a Stripe Customer object is created", :stripe_mock do
       student = FactoryGirl.create(:student)
       stripe_customer = student.stripe_customer
       expect(student.stripe_customer_id).to eq stripe_customer.id
-      StripeMock.stop
     end
   end
 
@@ -331,37 +313,25 @@ describe Student do
   end
 
   describe "#upfront_payment_due?" do
-    before do
-      StripeMock.create_test_helper
-      StripeMock.start
-    end
-    after { StripeMock.stop }
-
     let(:student) { FactoryGirl.create :user_with_credit_card, email: 'test@test.com' }
 
-    it "is true if student has upfront payment and no payments have been made" do
+    it "is true if student has upfront payment and no payments have been made", :stripe_mock do
       expect(student.upfront_payment_due?).to be true
     end
 
-    it "is false if student has no upfront payment" do
+    it "is false if student has no upfront payment", :stripe_mock do
       student.plan.upfront_amount = 0
       expect(student.upfront_payment_due?).to be false
     end
 
-    it "is false if student has made any payments", :vcr do
+    it "is false if student has made any payments", :vcr, :stripe_mock do
       FactoryGirl.create(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first)
       expect(student.upfront_payment_due?).to be false
     end
   end
 
   describe "#make_upfront_payment" do
-    before do
-      StripeMock.create_test_helper
-      StripeMock.start
-    end
-    after { StripeMock.stop }
-
-    it "makes a payment for the upfront amount of the student's plan", :vcr do
+    it "makes a payment for the upfront amount of the student's plan", :vcr, :stripe_mock do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       student.make_upfront_payment
       expect(student.payments.first.amount).to eq student.plan.upfront_amount
@@ -369,13 +339,10 @@ describe Student do
   end
 
   describe "#upfront_amount_with_fees" do
-    it "calculates the total upfront amount" do
-      StripeMock.create_test_helper
-      StripeMock.start
+    it "calculates the total upfront amount", :stripe_mock do
       plan = FactoryGirl.create(:upfront_payment_only_plan, upfront_amount: 200_00)
       student = FactoryGirl.create(:user_with_credit_card, plan: plan)
       expect(student.upfront_amount_with_fees).to eq 206_27
-      StripeMock.stop
     end
   end
 
@@ -606,20 +573,14 @@ describe Student do
   end
 
   describe '#total_paid' do
-    before do
-      StripeMock.create_test_helper
-      StripeMock.start
-    end
-    after { StripeMock.stop }
-
-    it 'sums all of the students payments', :vcr do
+    it 'sums all of the students payments', :vcr, :stripe_mock do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00, payment_method: student.payment_methods.first)
       FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00, payment_method: student.payment_methods.first)
       expect(student.total_paid).to eq 400_00
     end
 
-    it 'does not include failed payments', :vcr do
+    it 'does not include failed payments', :vcr, :stripe_mock do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00, payment_method: student.payment_methods.first)
       failed_payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00, payment_method: student.payment_methods.first)
@@ -705,19 +666,13 @@ describe Student do
         is_expected.to not_have_abilities(:create, Payment.new(payment_method: another_credit_card))
       end
 
-      it "doesn't allow students to create payments for other students" do
-        StripeMock.create_test_helper
-        StripeMock.start
+      it "doesn't allow students to create payments for other students", :stripe_mock do
         another_student = FactoryGirl.create(:student)
         is_expected.to not_have_abilities(:create, Payment.new(student: another_student, payment_method: credit_card))
-        StripeMock.stop
       end
 
-      it "doesn't allow students to create payments without a specified student" do
-        StripeMock.create_test_helper
-        StripeMock.start
+      it "doesn't allow students to create payments without a specified student", :stripe_mock do
         is_expected.to not_have_abilities(:create, Payment.new(payment_method: credit_card))
-        StripeMock.stop
       end
 
       it { is_expected.to have_abilities(:read, Payment.new(student: student)) }
