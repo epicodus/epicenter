@@ -330,14 +330,6 @@ describe Student do
     end
   end
 
-  describe ".recurring_active" do
-    it "only includes users that are recurring_active", :vcr do
-      recurring_active_user = FactoryGirl.create(:user_with_recurring_active, email: 'test@test.com')
-      non_recurring_active_user  = FactoryGirl.create(:user_with_verified_bank_account)
-      expect(Student.recurring_active).to eq [recurring_active_user]
-    end
-  end
-
   describe "#upfront_payment_due?", :vcr do
     let(:student) { FactoryGirl.create :user_with_verified_bank_account }
 
@@ -356,33 +348,6 @@ describe Student do
     end
   end
 
-  describe "#ready_to_start_recurring_payments?", :vcr do
-    let(:student) { FactoryGirl.create :user_with_verified_bank_account }
-
-    it "is true if student has a recurring plan, recurring is not active and no upfront payment is due" do
-      plan = FactoryGirl.create(:recurring_plan_with_no_upfront_payment)
-      student = FactoryGirl.create(:student, plan: plan)
-      expect(student.ready_to_start_recurring_payments?).to be true
-    end
-
-    it "is false if student has upfront payment due" do
-      plan = FactoryGirl.create(:recurring_plan_with_upfront_payment)
-      student = FactoryGirl.create(:student, plan: plan)
-      expect(student.ready_to_start_recurring_payments?).to be false
-    end
-
-    it "is false if student does not have a plan with recurring payments" do
-      plan = FactoryGirl.create(:upfront_payment_only_plan)
-      student = FactoryGirl.create(:user_with_upfront_payment, plan: plan, email: 'test@test.com')
-      expect(student.ready_to_start_recurring_payments?).to be false
-    end
-
-    it "is false if recurring is active" do
-      student = FactoryGirl.create(:user_with_recurring_active, email: 'test@test.com')
-      expect(student.ready_to_start_recurring_payments?).to be false
-    end
-  end
-
   describe "#make_upfront_payment", :vcr do
     it "makes a payment for the upfront amount of the student's plan" do
       student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com')
@@ -391,42 +356,11 @@ describe Student do
     end
   end
 
-  describe "#start_recurring_payments", :vcr do
-    it "makes a payment for the recurring amount of the users's plan" do
-      student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com')
-      student.start_recurring_payments
-      expect(student.payments.first.amount).to eq student.plan.recurring_amount
-    end
-
-    it 'sets the bank account to be recurring_active' do
-      student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com')
-      student.start_recurring_payments
-      expect(student.recurring_active).to eq true
-    end
-  end
-
-  describe "#recurring_amount_with_fees" do
-    let(:plan) { FactoryGirl.create(:recurring_plan_with_upfront_payment, recurring_amount: 600_00) }
-
-    it "calculates the total recurring amount for a credit card" do
-      StripeMock.create_test_helper
-      StripeMock.start
-      student = FactoryGirl.create(:user_with_credit_card, plan: plan)
-      expect(student.recurring_amount_with_fees).to eq 618_21
-      StripeMock.stop
-    end
-
-    it 'calculates the total recurring amount for a bank account', :vcr do
-      student = FactoryGirl.create(:user_with_verified_bank_account, plan: plan)
-      expect(student.recurring_amount_with_fees).to eq 600_00
-    end
-  end
-
   describe "#upfront_amount_with_fees" do
     it "calculates the total upfront amount" do
       StripeMock.create_test_helper
       StripeMock.start
-      plan = FactoryGirl.create(:recurring_plan_with_upfront_payment, upfront_amount: 200_00)
+      plan = FactoryGirl.create(:upfront_payment_only_plan, upfront_amount: 200_00)
       student = FactoryGirl.create(:user_with_credit_card, plan: plan)
       expect(student.upfront_amount_with_fees).to eq 206_27
       StripeMock.stop
@@ -656,21 +590,6 @@ describe Student do
         FactoryGirl.create(:attendance_record, student: student)
         expect(student.attendance_records_for(:absent, student.course)).to eq 1
       end
-    end
-  end
-
-  describe "#next_payment_date", :vcr do
-    it "returns nil if recurring_active is not true" do
-      student = FactoryGirl.create(:user_with_upfront_payment, email: 'test@test.com')
-      expect(student.next_payment_date).to eq nil
-    end
-
-    it "returns the next payment date if recurring_active is true" do
-      student = nil
-      travel_to(Date.parse("January 5, 2014")) do
-        student = FactoryGirl.create(:user_with_recurring_active, email: 'test@test.com')
-      end
-      expect(student.next_payment_date.to_date).to eq Date.parse("February 5, 2014")
     end
   end
 

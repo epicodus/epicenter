@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160107182050) do
+ActiveRecord::Schema.define(version: 20160210174422) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -193,7 +193,6 @@ ActiveRecord::Schema.define(version: 20160107182050) do
     t.datetime "updated_at"
     t.string   "name",                      limit: 255
     t.integer  "plan_id"
-    t.boolean  "recurring_active"
     t.integer  "old_course_id"
     t.integer  "primary_payment_method_id"
     t.string   "type",                      limit: 255
@@ -214,7 +213,6 @@ ActiveRecord::Schema.define(version: 20160107182050) do
   add_index "users", ["invitations_count"], name: "index_users_on_invitations_count", using: :btree
   add_index "users", ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
   add_index "users", ["plan_id"], name: "index_users_on_plan_id", using: :btree
-  add_index "users", ["recurring_active"], name: "index_users_on_recurring_active", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end

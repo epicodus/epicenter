@@ -50,24 +50,6 @@ describe Payment do
     end
   end
 
-  describe '#check_if_paid_up' do
-    it 'does nothing if student is not paid up', :vcr do
-      student = FactoryGirl.create(:user_with_recurring_active, email: 'test@test.com')
-      payment = student.payments.create(amount: 600_00, payment_method: student.credit_cards.first)
-      expect(student.recurring_active).to be true
-    end
-
-    it 'sets recurring_active to false if student is paid up', :vcr do
-      StripeMock.create_test_helper
-      StripeMock.start
-      plan = FactoryGirl.create(:recurring_plan_with_upfront_payment, total_amount: 5000_00)
-      student = FactoryGirl.create(:user_with_credit_card, plan: plan, email: 'test@test.com')
-      payment = student.payments.create(amount: 5000_00, payment_method: student.credit_cards.first)
-      expect(student.recurring_active).to be false
-      StripeMock.stop
-    end
-  end
-
   describe '#total_amount' do
     it 'returns payment amount plus fees', :vcr do
       StripeMock.create_test_helper
@@ -123,14 +105,6 @@ describe Payment do
           :text => "Hi #{student.name}. This is to notify you that a recent payment you made for Epicodus tuition has failed. Please reply to this email so we can sort it out together. Thanks!" }
       )
       StripeMock.stop
-    end
-
-    it "switches their recurring active status to false", :vcr do
-      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
-      student.update(recurring_active: true)
-      payment = FactoryGirl.create(:payment, student: student)
-      payment.update(status: 'failed')
-      expect(student.recurring_active?).to be false
     end
   end
 

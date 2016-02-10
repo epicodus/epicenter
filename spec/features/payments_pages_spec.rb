@@ -40,54 +40,21 @@ feature 'Viewing payment index page' do
 
     context 'with upfront payment due using a bank account', :vcr do
       it 'only shows a link to make an upfront payment with correct amount' do
-        plan = FactoryGirl.create(:recurring_plan_with_upfront_payment, upfront_amount: 200_00)
+        plan = FactoryGirl.create(:upfront_payment_only_plan, upfront_amount: 200_00)
         student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com', plan: plan)
         login_as(student, scope: :student)
         visit payments_path
         expect(page).to have_button('Make upfront payment of $200.00')
-        expect(page).to_not have_button('Start recurring payments')
       end
     end
 
     context 'with upfront payment due using a credit card', :vcr do
       it 'only shows a link to make an upfront payment with correct amount' do
-        plan = FactoryGirl.create(:recurring_plan_with_upfront_payment, upfront_amount: 200_00)
+        plan = FactoryGirl.create(:upfront_payment_only_plan, upfront_amount: 200_00)
         student = FactoryGirl.create(:user_with_credit_card, plan: plan)
         login_as(student, scope: :student)
         visit payments_path
         expect(page).to have_button('Make upfront payment of $206.27')
-        expect(page).to_not have_button('Start recurring payments')
-      end
-    end
-
-    context 'with no upfront payment due', :vcr do
-      it "doesn't show a link to make an upfront payment" do
-        plan = FactoryGirl.create(:recurring_plan_with_no_upfront_payment, recurring_amount: 600_00)
-        student = FactoryGirl.create(:user_with_credit_card, plan: plan)
-        login_as(student, scope: :student)
-        visit payments_path
-        expect(page).to_not have_button('Make upfront payment')
-        expect(page).to have_button('Start recurring payments of $618.21')
-      end
-    end
-
-    context 'with recurring payments not active', :vcr do
-      it 'shows a link to start recurring payments' do
-        plan = FactoryGirl.create(:recurring_plan_with_no_upfront_payment, recurring_amount: 600_00)
-        student = FactoryGirl.create(:user_with_verified_bank_account, plan: plan)
-        login_as(student, scope: :student)
-        visit payments_path
-        expect(page).to have_button('Start recurring payments of $600.00')
-        expect(page).to_not have_button('Make upfront payment')
-      end
-    end
-
-    context 'with recurring payments active', :vcr do
-      it "doesn't show a link to start recurring payments" do
-        student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com', recurring_active: true)
-        login_as(student, scope: :student)
-        visit payments_path
-        expect(page).to_not have_button('Start recurring payments')
       end
     end
   end
