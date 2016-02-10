@@ -321,11 +321,6 @@ feature 'copying an existing code review' do
 end
 
 feature 'view the Code Reviews tab' do
-  before do
-    mailgun_client = spy("mailgun client")
-    allow(Mailgun::Client).to receive(:new) { mailgun_client }
-  end
-
   let(:course) { FactoryGirl.create(:course) }
   let(:admin) { FactoryGirl.create(:admin, current_course: course) }
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: course) }
@@ -335,12 +330,12 @@ feature 'view the Code Reviews tab' do
 
   before { login_as(admin, scope: :admin) }
 
-  scenario 'an instructor looks at a code review and sees whether a student passed' do
+  scenario 'an instructor looks at a code review and sees whether a student passed', :stub_mailgun do
     visit course_student_path(student.course, student)
     expect(page).to have_css '.submission-success'
   end
 
-  scenario 'a user clicks on notes and a modal opens' do
+  scenario 'a user clicks on notes and a modal opens', :stub_mailgun do
     visit course_student_path(student.course, student)
     click_link 'Notes'
     expect(page).to have_content("Great job!")
