@@ -82,7 +82,7 @@ FactoryGirl.define do
       :number => '4242424242424242',
       :exp_month => '12',
       :exp_year => '2020',
-      :cvv => '123'
+      :cvc => '123'
     })
   end
 
@@ -107,7 +107,7 @@ FactoryGirl.define do
       :number => '4242424242424241',
       :exp_month => '12',
       :exp_year => '2020',
-      :cvv => '123'
+      :cvc => '123'
     })
   end
 
