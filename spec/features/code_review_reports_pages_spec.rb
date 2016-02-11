@@ -1,5 +1,5 @@
-feature 'code_review report', vcr: true do
-  it 'shows a table with all of the students and their grades' do
+feature 'code_review report' do
+  it 'shows a table with all of the students and their grades', :stub_mailgun do
     student = FactoryGirl.create(:student)
     code_review = FactoryGirl.create(:code_review, course: student.course)
     submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
@@ -12,7 +12,7 @@ feature 'code_review report', vcr: true do
     expect(page).to have_content grade.score.value
   end
 
-  it "sorts the table by the student's total score for that code_review" do
+  it "sorts the table by the student's total score for that code_review", :stub_mailgun do
     student = FactoryGirl.create(:student)
     better_student = FactoryGirl.create(:student, course: student.course)
     code_review = FactoryGirl.create(:code_review, course: student.course)
@@ -31,7 +31,7 @@ feature 'code_review report', vcr: true do
     end
   end
 
-  context 'visiting as a student' do
+  context 'visiting as a student', :vcr do
     it 'is not authorized' do
       student = FactoryGirl.create(:student)
       code_review = FactoryGirl.create(:code_review)

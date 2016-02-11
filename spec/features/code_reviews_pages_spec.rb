@@ -24,7 +24,7 @@ feature 'index page' do
       expect(page).to_not have_content 'Not submitted'
     end
 
-    scenario 'shows if the code_review has been graded', :vcr do
+    scenario 'shows if the code_review has been graded', :stub_mailgun do
       submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
       FactoryGirl.create(:passing_review, submission: submission)
       visit course_code_reviews_path(code_review.course)
@@ -158,7 +158,7 @@ feature 'show page' do
       it { is_expected.to_not have_link 'has been reviewed' }
     end
 
-    context 'after submission has been reviewed', :vcr do
+    context 'after submission has been reviewed', :stub_mailgun do
       let(:submission) { FactoryGirl.create(:submission, code_review: code_review, student: student) }
       let!(:review) { FactoryGirl.create(:passing_review, submission: submission) }
 
@@ -171,7 +171,7 @@ feature 'show page' do
       it { is_expected.to have_content 'Meets expectations' }
     end
 
-    context 'after resubmitting', :vcr do
+    context 'after resubmitting', :stub_mailgun do
       let(:submission) { FactoryGirl.create(:submission, code_review: code_review, student: student) }
 
       before do

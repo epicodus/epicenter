@@ -31,13 +31,13 @@ describe Review do
     end
   end
 
-  describe '#meets_expectations?', :vcr do
-    it "is true if the review's scores are all above 1" do
+  describe '#meets_expectations?' do
+    it "is true if the review's scores are all above 1", :stub_mailgun do
       review = FactoryGirl.create(:passing_review)
       expect(review.meets_expectations?).to eq true
     end
 
-    it "is false if any of the review's scores are 1" do
+    it "is false if any of the review's scores are 1", :stub_mailgun do
       review = FactoryGirl.create(:failing_review)
       expect(review.meets_expectations?).to eq false
     end

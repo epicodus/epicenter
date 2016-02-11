@@ -19,7 +19,7 @@ feature "viewing transcript" do
       expect(page).to have_content student.name
     end
 
-    it 'shows a breakdown of how they did on each code review', :vcr do
+    it 'shows a breakdown of how they did on each code review', :stub_mailgun do
       course = FactoryGirl.create(:past_course)
       student = FactoryGirl.create(:student, course: course)
       code_review = FactoryGirl.create(:code_review, course: course)

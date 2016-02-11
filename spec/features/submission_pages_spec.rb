@@ -1,4 +1,4 @@
-feature 'index page' do
+feature 'Visiting the submissions index page' do
   let(:code_review) { FactoryGirl.create(:code_review) }
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
@@ -21,7 +21,7 @@ feature 'index page' do
       expect(page).to have_content submission.student.name
     end
 
-    scenario 'lists only submissions needing review', :vcr do
+    scenario 'lists only submissions needing review', :stub_mailgun do
       reviewed_submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
       FactoryGirl.create(:passing_review, submission: reviewed_submission)
       visit code_review_submissions_path(code_review)
@@ -45,7 +45,7 @@ feature 'index page' do
         expect(page).to have_content '2 days ago'
       end
 
-      scenario 'clicking review link to show review form', js: true do
+      scenario 'clicking review link to show review form' do
         FactoryGirl.create(:submission, code_review: code_review, student: student)
         visit code_review_submissions_path(code_review)
         expect(page).to_not have_button 'Create Review'
@@ -64,7 +64,7 @@ feature 'index page' do
           visit code_review_submissions_path(code_review)
         end
 
-        scenario 'with valid input', :vcr do
+        scenario 'with valid input', :stub_mailgun do
           click_on 'Review'
           select score.description, from: 'review_grades_attributes_0_score_id'
           fill_in 'Note', with: 'Well done!'
@@ -83,7 +83,7 @@ feature 'index page' do
 
           before { submission.update(needs_review: true) }
 
-          scenario 'should be prepopulated with information from the last review created for this submission', :vcr do
+          scenario 'should be prepopulated with information from the last review created for this submission', :stub_mailgun do
             click_on 'Review'
             expect(find_field('Note').value).to eq review.note
           end
