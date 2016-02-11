@@ -6,7 +6,7 @@ describe Payment do
   it { should validate_presence_of :amount }
 
   describe '.order_by_latest scope' do
-    it 'orders by created_at, descending', :vcr, :stripe_mock do
+    it 'orders by created_at, descending', :vcr, :stripe_mock, :stub_mailgun do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       payment_one = FactoryGirl.create(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first)
       payment_two = FactoryGirl.create(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first)
@@ -15,7 +15,7 @@ describe Payment do
   end
 
   describe '.without_failed' do
-    it "doesn't include failed payments", :vcr, :stripe_mock do
+    it "doesn't include failed payments", :vcr, :stripe_mock, :stub_mailgun do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       failed_payment = FactoryGirl.create(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first)
       failed_payment.update(status: 'failed')
@@ -23,41 +23,41 @@ describe Payment do
     end
   end
 
-  describe "make a payment with a bank account" do
-    it "makes a successful payment", :vcr do
+  describe "make a payment with a bank account", :vcr, :stub_mailgun do
+    it "makes a successful payment" do
       student = FactoryGirl.create :user_with_verified_bank_account, email: 'test@test.com'
       student.payments.create(amount: 100, payment_method: student.bank_accounts.first)
       student.reload
       expect(student.payments).to_not eq []
     end
 
-    it "sets the fee for the payment type", :vcr do
+    it "sets the fee for the payment type" do
       student = FactoryGirl.create :user_with_verified_bank_account, email: 'test@test.com'
       payment = student.payments.create(amount: 100, payment_method: student.bank_accounts.first)
       expect(payment.fee).to eq 0
     end
 
-    it "sets the status for the payment type", :vcr do
+    it "sets the status for the payment type" do
       student = FactoryGirl.create :user_with_verified_bank_account, email: 'test@test.com'
       payment = student.payments.create(amount: 100, payment_method: student.bank_accounts.first)
       expect(payment.status).to eq "pending"
     end
   end
 
-  describe "make a payment with a credit card" do
-    it "makes a successful payment", :vcr, :stripe_mock do
+  describe "make a payment with a credit card", :vcr, :stripe_mock, :stub_mailgun do
+    it "makes a successful payment" do
       student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
       student.payments.create(amount: 100, payment_method: student.payment_methods.first)
       student.reload
       expect(student.payments).to_not eq []
     end
 
-    it "sets the fee for the payment type", :vcr, :stripe_mock do
+    it "sets the fee for the payment type" do
       student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
       payment = student.payments.create(amount: 100, payment_method: student.payment_methods.first)
       expect(payment.fee).to eq 32
     end
-    it "sets the status for the payment type", :vcr, :stripe_mock do
+    it "sets the status for the payment type" do
       student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
       payment = student.payments.create(amount: 100, payment_method: student.payment_methods.first)
       expect(payment.status).to eq "succeeded"
@@ -65,7 +65,7 @@ describe Payment do
   end
 
   describe '#total_amount' do
-    it 'returns payment amount plus fees', :vcr, :stripe_mock do
+    it 'returns payment amount plus fees', :vcr, :stripe_mock, :stub_mailgun do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       payment = student.payments.create(amount: 600_00, payment_method: student.credit_cards.first)
       expect(payment.total_amount).to be 618_21

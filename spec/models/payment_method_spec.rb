@@ -47,7 +47,7 @@ describe PaymentMethod do
         expect(bank_account.last_four_string).to eq "6789"
       end
 
-      it "is made the primary payment method if student does not have one" do
+      it "is made the primary payment method if student does not have one", :stripe_mock do
         credit_card = FactoryGirl.create(:credit_card)
         expect(credit_card.student.primary_payment_method).to eq credit_card
       end

@@ -324,14 +324,14 @@ describe Student do
       expect(student.upfront_payment_due?).to be false
     end
 
-    it "is false if student has made any payments", :vcr, :stripe_mock do
+    it "is false if student has made any payments", :vcr, :stripe_mock, :stub_mailgun do
       FactoryGirl.create(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first)
       expect(student.upfront_payment_due?).to be false
     end
   end
 
   describe "#make_upfront_payment" do
-    it "makes a payment for the upfront amount of the student's plan", :vcr, :stripe_mock do
+    it "makes a payment for the upfront amount of the student's plan", :vcr, :stripe_mock, :stub_mailgun do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       student.make_upfront_payment
       expect(student.payments.first.amount).to eq student.plan.upfront_amount
@@ -572,15 +572,15 @@ describe Student do
     end
   end
 
-  describe '#total_paid' do
-    it 'sums all of the students payments', :vcr, :stripe_mock do
+  describe '#total_paid', :vcr, :stripe_mock, :stub_mailgun do
+    it 'sums all of the students payments' do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00, payment_method: student.payment_methods.first)
       FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00, payment_method: student.payment_methods.first)
       expect(student.total_paid).to eq 400_00
     end
 
-    it 'does not include failed payments', :vcr, :stripe_mock do
+    it 'does not include failed payments' do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00, payment_method: student.payment_methods.first)
       failed_payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00, payment_method: student.payment_methods.first)

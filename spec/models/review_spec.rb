@@ -6,7 +6,7 @@ describe Review do
   it { should have_one(:student) }
 
   describe 'on creation' do
-    it 'updates the submission needs review to false', :vcr do
+    it 'updates the submission needs review to false', :stub_mailgun do
       submission = FactoryGirl.create(:submission)
       review = FactoryGirl.create(:passing_review, submission: submission)
       expect(submission.needs_review).to eq false
