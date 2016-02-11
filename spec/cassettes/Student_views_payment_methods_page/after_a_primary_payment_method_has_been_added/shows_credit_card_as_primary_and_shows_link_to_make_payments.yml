@@ -2,477 +2,10 @@
 http_interactions:
 - request:
     method: post
-    uri: https://api.stripe.com/v1/customers
-    body:
-      encoding: UTF-8
-      string: description=student82%40example.com
-    headers:
-      Accept:
-      - "*/*; q=0.5, application/xml"
-      Accept-Encoding:
-      - gzip, deflate
-      User-Agent:
-      - Stripe/v1 RubyBindings/1.31.0
-      Authorization:
-      - Bearer <STRIPE_API_KEY>
-      Content-Type:
-      - application/x-www-form-urlencoded
-      X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.31.0","lang":"ruby","lang_version":"2.3.0 p0 (2015-12-25)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        epicodus-73.local 15.2.0 Darwin Kernel Version 15.2.0: Fri Nov 13 19:56:56
-        PST 2015; root:xnu-3248.20.55~2/RELEASE_X86_64 x86_64","hostname":"epicodus-73.local"}'
-      Content-Length:
-      - '35'
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Tue, 09 Feb 2016 22:01:50 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '1159'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Access-Control-Allow-Methods:
-      - GET, POST, HEAD, OPTIONS, DELETE
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Max-Age:
-      - '300'
-      Cache-Control:
-      - no-cache, no-store
-      Request-Id:
-      - req_7sUXZ1CZ4b5p80
-      Stripe-Version:
-      - '2012-11-07'
-      Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains
-    body:
-      encoding: UTF-8
-      string: |
-        {
-          "id": "cus_7sUXU0IX10QQoi",
-          "object": "customer",
-          "account_balance": 0,
-          "bank_accounts": {
-            "object": "list",
-            "count": 0,
-            "data": [],
-            "has_more": false,
-            "total_count": 0,
-            "url": "/v1/customers/cus_7sUXU0IX10QQoi/bank_accounts"
-          },
-          "cards": {
-            "object": "list",
-            "count": 0,
-            "data": [],
-            "has_more": false,
-            "total_count": 0,
-            "url": "/v1/customers/cus_7sUXU0IX10QQoi/cards"
-          },
-          "created": 1455055310,
-          "currency": null,
-          "default_bank_account": null,
-          "default_card": null,
-          "default_source": null,
-          "default_source_type": null,
-          "delinquent": false,
-          "description": "student82@example.com",
-          "discount": null,
-          "email": null,
-          "livemode": false,
-          "metadata": {},
-          "shipping": null,
-          "sources": {
-            "object": "list",
-            "count": 0,
-            "data": [],
-            "has_more": false,
-            "total_count": 0,
-            "url": "/v1/customers/cus_7sUXU0IX10QQoi/sources"
-          },
-          "subscriptions": {
-            "object": "list",
-            "count": 0,
-            "data": [],
-            "has_more": false,
-            "total_count": 0,
-            "url": "/v1/customers/cus_7sUXU0IX10QQoi/subscriptions"
-          },
-          "active_card": null,
-          "subscription": null
-        }
-    http_version: 
-  recorded_at: Tue, 09 Feb 2016 22:02:10 GMT
-- request:
-    method: post
-    uri: https://api.stripe.com/v1/customers/cus_7sUXU0IX10QQoi/sources
-    body:
-      encoding: UTF-8
-      string: source[cvv]=123&source[exp_month]=12&source[exp_year]=2020&source[number]=4242424242424242&source[object]=card
-    headers:
-      Accept:
-      - "*/*; q=0.5, application/xml"
-      Accept-Encoding:
-      - gzip, deflate
-      User-Agent:
-      - Stripe/v1 RubyBindings/1.31.0
-      Authorization:
-      - Bearer <STRIPE_API_KEY>
-      Content-Type:
-      - application/x-www-form-urlencoded
-      X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.31.0","lang":"ruby","lang_version":"2.3.0 p0 (2015-12-25)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        epicodus-73.local 15.2.0 Darwin Kernel Version 15.2.0: Fri Nov 13 19:56:56
-        PST 2015; root:xnu-3248.20.55~2/RELEASE_X86_64 x86_64","hostname":"epicodus-73.local"}'
-      Content-Length:
-      - '110'
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Tue, 09 Feb 2016 22:01:51 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '584'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Access-Control-Allow-Methods:
-      - GET, POST, HEAD, OPTIONS, DELETE
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Max-Age:
-      - '300'
-      Cache-Control:
-      - no-cache, no-store
-      Request-Id:
-      - req_7sUX2oHzZWtGeC
-      Stripe-Version:
-      - '2012-11-07'
-      Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains
-    body:
-      encoding: UTF-8
-      string: |
-        {
-          "id": "card_7sUXrObM2BWeBJ",
-          "object": "card",
-          "address_city": null,
-          "address_country": null,
-          "address_line1": null,
-          "address_line1_check": null,
-          "address_line2": null,
-          "address_state": null,
-          "address_zip": null,
-          "address_zip_check": null,
-          "brand": "Visa",
-          "country": "US",
-          "customer": "cus_7sUXU0IX10QQoi",
-          "cvc_check": null,
-          "dynamic_last4": null,
-          "exp_month": 12,
-          "exp_year": 2020,
-          "fingerprint": "B5I5Hkz6r7cWlvfb",
-          "funding": "credit",
-          "last4": "4242",
-          "metadata": {},
-          "name": null,
-          "tokenization_method": null,
-          "type": "Visa"
-        }
-    http_version: 
-  recorded_at: Tue, 09 Feb 2016 22:02:11 GMT
-- request:
-    method: get
-    uri: https://api.stripe.com/v1/customers/cus_7sUXU0IX10QQoi
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - "*/*; q=0.5, application/xml"
-      Accept-Encoding:
-      - gzip, deflate
-      User-Agent:
-      - Stripe/v1 RubyBindings/1.31.0
-      Authorization:
-      - Bearer <STRIPE_API_KEY>
-      Content-Type:
-      - application/x-www-form-urlencoded
-      X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.31.0","lang":"ruby","lang_version":"2.3.0 p0 (2015-12-25)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        epicodus-73.local 15.2.0 Darwin Kernel Version 15.2.0: Fri Nov 13 19:56:56
-        PST 2015; root:xnu-3248.20.55~2/RELEASE_X86_64 x86_64","hostname":"epicodus-73.local"}'
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Tue, 09 Feb 2016 22:01:51 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '3314'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Access-Control-Allow-Methods:
-      - GET, POST, HEAD, OPTIONS, DELETE
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Max-Age:
-      - '300'
-      Cache-Control:
-      - no-cache, no-store
-      Request-Id:
-      - req_7sUX3qLIXaGqki
-      Stripe-Version:
-      - '2012-11-07'
-      Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains
-    body:
-      encoding: UTF-8
-      string: |
-        {
-          "id": "cus_7sUXU0IX10QQoi",
-          "object": "customer",
-          "account_balance": 0,
-          "bank_accounts": {
-            "object": "list",
-            "count": 0,
-            "data": [],
-            "has_more": false,
-            "total_count": 0,
-            "url": "/v1/customers/cus_7sUXU0IX10QQoi/bank_accounts"
-          },
-          "cards": {
-            "object": "list",
-            "count": 1,
-            "data": [
-              {
-                "id": "card_7sUXrObM2BWeBJ",
-                "object": "card",
-                "address_city": null,
-                "address_country": null,
-                "address_line1": null,
-                "address_line1_check": null,
-                "address_line2": null,
-                "address_state": null,
-                "address_zip": null,
-                "address_zip_check": null,
-                "brand": "Visa",
-                "country": "US",
-                "customer": "cus_7sUXU0IX10QQoi",
-                "cvc_check": null,
-                "dynamic_last4": null,
-                "exp_month": 12,
-                "exp_year": 2020,
-                "fingerprint": "B5I5Hkz6r7cWlvfb",
-                "funding": "credit",
-                "last4": "4242",
-                "metadata": {},
-                "name": null,
-                "tokenization_method": null,
-                "type": "Visa"
-              }
-            ],
-            "has_more": false,
-            "total_count": 1,
-            "url": "/v1/customers/cus_7sUXU0IX10QQoi/cards"
-          },
-          "created": 1455055310,
-          "currency": null,
-          "default_bank_account": null,
-          "default_card": "card_7sUXrObM2BWeBJ",
-          "default_source": "card_7sUXrObM2BWeBJ",
-          "default_source_type": "card",
-          "delinquent": false,
-          "description": "student82@example.com",
-          "discount": null,
-          "email": null,
-          "livemode": false,
-          "metadata": {},
-          "shipping": null,
-          "sources": {
-            "object": "list",
-            "count": 1,
-            "data": [
-              {
-                "id": "card_7sUXrObM2BWeBJ",
-                "object": "card",
-                "address_city": null,
-                "address_country": null,
-                "address_line1": null,
-                "address_line1_check": null,
-                "address_line2": null,
-                "address_state": null,
-                "address_zip": null,
-                "address_zip_check": null,
-                "brand": "Visa",
-                "country": "US",
-                "customer": "cus_7sUXU0IX10QQoi",
-                "cvc_check": null,
-                "dynamic_last4": null,
-                "exp_month": 12,
-                "exp_year": 2020,
-                "fingerprint": "B5I5Hkz6r7cWlvfb",
-                "funding": "credit",
-                "last4": "4242",
-                "metadata": {},
-                "name": null,
-                "tokenization_method": null,
-                "type": "Visa"
-              }
-            ],
-            "has_more": false,
-            "total_count": 1,
-            "url": "/v1/customers/cus_7sUXU0IX10QQoi/sources"
-          },
-          "subscriptions": {
-            "object": "list",
-            "count": 0,
-            "data": [],
-            "has_more": false,
-            "total_count": 0,
-            "url": "/v1/customers/cus_7sUXU0IX10QQoi/subscriptions"
-          },
-          "active_card": {
-            "id": "card_7sUXrObM2BWeBJ",
-            "object": "card",
-            "address_city": null,
-            "address_country": null,
-            "address_line1": null,
-            "address_line1_check": null,
-            "address_line2": null,
-            "address_state": null,
-            "address_zip": null,
-            "address_zip_check": null,
-            "brand": "Visa",
-            "country": "US",
-            "customer": "cus_7sUXU0IX10QQoi",
-            "cvc_check": null,
-            "dynamic_last4": null,
-            "exp_month": 12,
-            "exp_year": 2020,
-            "fingerprint": "B5I5Hkz6r7cWlvfb",
-            "funding": "credit",
-            "last4": "4242",
-            "metadata": {},
-            "name": null,
-            "tokenization_method": null,
-            "type": "Visa"
-          },
-          "subscription": null
-        }
-    http_version: 
-  recorded_at: Tue, 09 Feb 2016 22:02:11 GMT
-- request:
-    method: get
-    uri: https://api.stripe.com/v1/customers/cus_7sUXU0IX10QQoi/sources/card_7sUXrObM2BWeBJ
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - "*/*; q=0.5, application/xml"
-      Accept-Encoding:
-      - gzip, deflate
-      User-Agent:
-      - Stripe/v1 RubyBindings/1.31.0
-      Authorization:
-      - Bearer <STRIPE_API_KEY>
-      Content-Type:
-      - application/x-www-form-urlencoded
-      X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.31.0","lang":"ruby","lang_version":"2.3.0 p0 (2015-12-25)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        epicodus-73.local 15.2.0 Darwin Kernel Version 15.2.0: Fri Nov 13 19:56:56
-        PST 2015; root:xnu-3248.20.55~2/RELEASE_X86_64 x86_64","hostname":"epicodus-73.local"}'
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Tue, 09 Feb 2016 22:01:51 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '584'
-      Connection:
-      - keep-alive
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Access-Control-Allow-Methods:
-      - GET, POST, HEAD, OPTIONS, DELETE
-      Access-Control-Allow-Origin:
-      - "*"
-      Access-Control-Max-Age:
-      - '300'
-      Cache-Control:
-      - no-cache, no-store
-      Request-Id:
-      - req_7sUX9YwPAl7tfS
-      Stripe-Version:
-      - '2012-11-07'
-      Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains
-    body:
-      encoding: UTF-8
-      string: |
-        {
-          "id": "card_7sUXrObM2BWeBJ",
-          "object": "card",
-          "address_city": null,
-          "address_country": null,
-          "address_line1": null,
-          "address_line1_check": null,
-          "address_line2": null,
-          "address_state": null,
-          "address_zip": null,
-          "address_zip_check": null,
-          "brand": "Visa",
-          "country": "US",
-          "customer": "cus_7sUXU0IX10QQoi",
-          "cvc_check": null,
-          "dynamic_last4": null,
-          "exp_month": 12,
-          "exp_year": 2020,
-          "fingerprint": "B5I5Hkz6r7cWlvfb",
-          "funding": "credit",
-          "last4": "4242",
-          "metadata": {},
-          "name": null,
-          "tokenization_method": null,
-          "type": "Visa"
-        }
-    http_version: 
-  recorded_at: Tue, 09 Feb 2016 22:02:11 GMT
-- request:
-    method: post
     uri: https://<HELLO_SIGN_API_KEY>:@api.hellosign.com/v3/signature_request/create_embedded
     body:
       encoding: UTF-8
-      string: client_id=<HELLO_SIGN_CLIENT_ID>&file_url%5B%5D=https%3A%2F%2Fwww.dropbox.com%2Fs%2Fkuyegiukdg57sym%2Fcode_of_conduct.pdf%3Fdl%3D1&signers%5B0%5D%5Bemail_address%5D=student82%40example.com&signers%5B0%5D%5Bname%5D=Example+Brown+84&subject=Sign+to+accept+the+Epicodus+Code+of+Conduct&test_mode=1
+      string: client_id=<HELLO_SIGN_CLIENT_ID>&file_url%5B%5D=https%3A%2F%2Fwww.dropbox.com%2Fs%2Fkuyegiukdg57sym%2Fcode_of_conduct.pdf%3Fdl%3D1&signers%5B0%5D%5Bemail_address%5D=student1%40example.com&signers%5B0%5D%5Bname%5D=Example+Brown+1&subject=Sign+to+accept+the+Epicodus+Code+of+Conduct&test_mode=1
     headers:
       User-Agent:
       - hellosign-ruby-sdk/3.2.7
@@ -496,7 +29,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 09 Feb 2016 22:01:52 GMT
+      - Thu, 11 Feb 2016 19:34:36 GMT
       P3p:
       - CP="NOP3PPOLICY"
       Server:
@@ -510,23 +43,23 @@ http_interactions:
       X-Ratelimit-Limit-Remaining:
       - '49'
       X-Ratelimit-Reset:
-      - '1455055312'
+      - '1455219276'
       X-Xss-Protection:
       - 1; mode=block
       Content-Length:
-      - '1107'
+      - '1105'
       Connection:
       - keep-alive
     body:
       encoding: UTF-8
       string: |2-
 
-        {"signature_request":{"signature_request_id":"f9da2ad7d43962265d3e79308dfc170c82513abc","test_mode":true,"title":"Sign to accept the Epicodus Code of Conduct","original_title":"Sign to accept the Epicodus Code of Conduct","subject":"Sign to accept the Epicodus Code of Conduct","message":null,"metadata":{},"is_complete":false,"has_error":false,"custom_fields":[],"response_data":[],"signing_url":null,"signing_redirect_url":null,"final_copy_uri":"\/v3\/signature_request\/final_copy\/f9da2ad7d43962265d3e79308dfc170c82513abc","files_url":"https:\/\/api.hellosign.com\/v3\/signature_request\/files\/f9da2ad7d43962265d3e79308dfc170c82513abc","details_url":"https:\/\/www.hellosign.com\/home\/manage?guid=f9da2ad7d43962265d3e79308dfc170c82513abc","requester_email_address":"michael@epicodus.com","signatures":[{"signature_id":"1421fa77bd6a934b4f11d0f107538909","has_pin":false,"signer_email_address":"student82@example.com","signer_name":"Example Brown 84","order":null,"status_code":"awaiting_signature","signed_at":null,"last_viewed_at":null,"last_reminded_at":null,"error":null}],"cc_email_addresses":[]}}
+        {"signature_request":{"signature_request_id":"35767393681a601dc1d338ea96a910c120eb1a82","test_mode":true,"title":"Sign to accept the Epicodus Code of Conduct","original_title":"Sign to accept the Epicodus Code of Conduct","subject":"Sign to accept the Epicodus Code of Conduct","message":null,"metadata":{},"is_complete":false,"has_error":false,"custom_fields":[],"response_data":[],"signing_url":null,"signing_redirect_url":null,"final_copy_uri":"\/v3\/signature_request\/final_copy\/35767393681a601dc1d338ea96a910c120eb1a82","files_url":"https:\/\/api.hellosign.com\/v3\/signature_request\/files\/35767393681a601dc1d338ea96a910c120eb1a82","details_url":"https:\/\/www.hellosign.com\/home\/manage?guid=35767393681a601dc1d338ea96a910c120eb1a82","requester_email_address":"michael@epicodus.com","signatures":[{"signature_id":"85edf7f9b472c77147162a8ce694ddc9","has_pin":false,"signer_email_address":"student1@example.com","signer_name":"Example Brown 1","order":null,"status_code":"awaiting_signature","signed_at":null,"last_viewed_at":null,"last_reminded_at":null,"error":null}],"cc_email_addresses":[]}}
     http_version: 
-  recorded_at: Tue, 09 Feb 2016 22:02:13 GMT
+  recorded_at: Thu, 11 Feb 2016 19:34:57 GMT
 - request:
     method: get
-    uri: https://<HELLO_SIGN_API_KEY>:@api.hellosign.com/v3/embedded/sign_url/1421fa77bd6a934b4f11d0f107538909
+    uri: https://<HELLO_SIGN_API_KEY>:@api.hellosign.com/v3/embedded/sign_url/85edf7f9b472c77147162a8ce694ddc9
     body:
       encoding: US-ASCII
       string: ''
@@ -551,7 +84,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 09 Feb 2016 22:01:53 GMT
+      - Thu, 11 Feb 2016 19:34:38 GMT
       P3p:
       - CP="NOP3PPOLICY"
       Server:
@@ -565,7 +98,7 @@ http_interactions:
       X-Ratelimit-Limit-Remaining:
       - '499'
       X-Ratelimit-Reset:
-      - '1455055314'
+      - '1455219278'
       X-Xss-Protection:
       - 1; mode=block
       Content-Length:
@@ -576,7 +109,7 @@ http_interactions:
       encoding: UTF-8
       string: |2-
 
-        {"embedded":{"sign_url":"https:\/\/www.hellosign.com\/editor\/embeddedSign?signature_id=1421fa77bd6a934b4f11d0f107538909&token=83aacbab378b6718036f1b37962b12be","expires_at":1455058914}}
+        {"embedded":{"sign_url":"https:\/\/www.hellosign.com\/editor\/embeddedSign?signature_id=85edf7f9b472c77147162a8ce694ddc9&token=e2ac47dcaee1aacf397b3ebdfdcc8982","expires_at":1455222878}}
     http_version: 
-  recorded_at: Tue, 09 Feb 2016 22:02:14 GMT
+  recorded_at: Thu, 11 Feb 2016 19:34:58 GMT
 recorded_with: VCR 3.0.1
