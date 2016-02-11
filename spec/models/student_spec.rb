@@ -474,8 +474,8 @@ describe Student do
     let(:course) { FactoryGirl.create(:course) }
     let(:student) { FactoryGirl.create(:student, course: course) }
 
-    xit 'counts the number of days the student has been on time to class' do
-      travel_to Time.new(course.start_date.year, course.start_date.month, course.start_date.day, 8, 55, 00) do
+    it 'counts the number of days the student has been on time to class' do
+      travel_to course.start_date + 8.hours do
         attendance_record = FactoryGirl.create(:attendance_record, student: student)
         travel 15.hours do
           attendance_record.update({:signing_out => true})
@@ -513,16 +513,16 @@ describe Student do
       end
     end
 
-    xit 'counts the number of days the student has been on time to class for a particular course' do
-      travel_to (course.start_date - 5).to_time.change({ hour: 8, min: 55 }) do
+    it 'counts the number of days the student has been on time to class for a particular course' do
+      travel_to (course.start_date - 5).to_time.change({ hour: 8, min: 00 }) do
         attendance_record_outside_current_course_date_range = FactoryGirl.create(:attendance_record, student: student)
-        travel 15.hours do
-          attendance_record_outside_current_course_date_range.update({ signing_out:true })
+        travel 9.hours do
+          attendance_record_outside_current_course_date_range.update({ signing_out: true })
         end
       end
-      travel_to Time.new(course.start_date.year, course.start_date.month, course.start_date.day, 8, 55, 00) do
+      travel_to course.start_date + 8.hours do
         attendance_record = FactoryGirl.create(:attendance_record, student: student)
-        travel 15.hours do
+        travel 9.hours do
           attendance_record.update({ signing_out: true })
           expect(student.attendance_records_for(:on_time, student.course)).to eq 1
         end
