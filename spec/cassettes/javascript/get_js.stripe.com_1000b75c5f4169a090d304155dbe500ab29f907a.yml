@@ -7,21 +7,23 @@
 :headers:
   Server: nginx
   Content-Type: application/x-javascript
-  Last-Modified: Tue, 14 Apr 2015 22:36:45 GMT
-  ETag: '"552d967d-a9c9"'
-  Strict-Transport-Security: max-age=31556926; includeSubDomains
-  Content-Length: '43465'
-  Accept-Ranges: bytes
-  Date: Fri, 15 May 2015 23:23:53 GMT
-  Via: 1.1 varnish
-  Age: '509'
-  Connection: close
-  X-Served-By: cache-sjc3126-SJC
-  X-Cache: HIT
-  X-Cache-Hits: '6'
-  Vary: Accept-Encoding
+  Last-Modified: Wed, 10 Feb 2016 03:55:14 GMT
+  ETag: '"56bab4a2-b012"'
   Cache-Control: public, max-age=300
-:content: "/*! stripe-js 14-04-2015 */\n(function(){var a,b,c,d,e,f,g,h,i,j={}.hasOwnProperty,k=function(a,b){function
+  Via:
+  - 1.1 varnish
+  - 1.1 varnish
+  Fastly-Debug-Digest: fab7c732e334802a39a635c63e878ed85f1b68ec2ea2492e47b40bf8e9075173
+  Content-Length: '45074'
+  Accept-Ranges: bytes
+  Date: Thu, 11 Feb 2016 21:11:37 GMT
+  Age: '247'
+  Connection: close
+  X-Served-By: cache-sea1927-SEA, cache-lax1429-LAX
+  X-Cache: HIT, HIT
+  X-Cache-Hits: 59, 4
+  Vary: Accept-Encoding
+:content: "/*! stripe-js 10-02-2016 */\n(function(){var a,b,c,d,e,f,g,h,i,j={}.hasOwnProperty,k=function(a,b){function
   c(){this.constructor=a}for(var d in b)j.call(b,d)&&(a[d]=b[d]);return c.prototype=b.prototype,a.prototype=new
   c,a.__super__=b.prototype,a};if(g=\"https://js.stripe.com\",c=\"https://js.stripe.com\",d=/stripe\\.com$/.test(\"undefined\"!=typeof
   window&&null!==window?window.location.host:void 0)?!0:!1,b=\"console\"in window&&\"warn\"in
@@ -31,7 +33,10 @@
   looks like Stripe.js was loaded more than one time. Please only load it once per
   page.\"),void(this.Stripe.isDoubleLoaded=!0);this.Stripe=function(){function a(){}return
   a.version=2,a.endpoint=\"https://api.stripe.com/v1\",a.setPublishableKey=function(b){return
-  a.key=b,a.utils.validateProtocol(a.key)},a.trackPerf=!1,a._isChannel=\"#__stripe_transport__\"===(\"undefined\"!=typeof
+  a.key=b,a.utils.validateProtocol(a.key)},a._language=\"en-US\",a.setLanguage=function(b){return
+  a._language=b},a._allowedCustomHeaders=[\"X-Stripe-Livemode\",\"Authorization\"],a._customHeaders={},a._setCustomHeader=function(a,b){var
+  c,d,e,f,g;for(d=!1,g=this._allowedCustomHeaders,e=0,f=g.length;f>e;e++)if(c=g[e],c===a){this._customHeaders[a]=b,d=!0;break}return
+  d},a.trackPerf=!1,a._isChannel=\"#__stripe_transport__\"===(\"undefined\"!=typeof
   window&&null!==window?window.location.hash:void 0)?!0:!1,a._isSafeStripeDomain=d,a._iframeOnAmount=1,a._isSafeDomain=function(){return\"#__forcedss3__\"===window.location.hash?!1:a._isSafeStripeDomain||window.StripeTemporaryNoDSS3?!0:a._iframeOnAmount<Math.random()}(),a._finalTransport=\"undefined\"!=typeof
   window&&null!==window&&\"XMLHttpRequest\"in window&&\"withCredentials\"in new XMLHttpRequest?\"cors\":\"jsonp\",a._transport=a._isChannel||a._isSafeDomain?a._finalTransport:\"iframe\",a._fallBackToOldStripeJsTechniques=function(){return
   this._transport=\"jsonp\",this._finalTransport=\"jsonp\",this._isSafeDomain=\"true\"},a._iframeRequestQueue=[],a._iframePendingRequests={},a._iframeChannelStatus=\"pending\",a._iframeChannelComplete=function(b){var
@@ -64,33 +69,35 @@
   b){try{e=a.JSON.parse(b)}catch(h){throw d=h,a.reportError(\"InvalidJSON-ChannelRelay\"),new
   Error(\"Stripe.js received invalid JSON\")}if(\"function\"==typeof a._callCache[e.requestId])return
   a._callCache[e.requestId](e.resp,e.code),delete a._callCache[e.requestId]}},a._channelListener=function(b,c){var
-  d,e,f;if(\"string\"==typeof b){try{f=a.JSON.parse(b)}catch(g){throw e=g,a.reportError(\"InvalidJSON-ChannelListener\"),new
-  Error(\"Stripe.js received invalid JSON\")}if(d=f.data.card,delete f.data.card,d)return
-  a.setPublishableKey(f.data.key),null!=f.endpoint&&(a.endpoint=f.endpoint),null!=f.trackPerf&&(a.trackPerf=f.trackPerf),a.card.createToken(d,f.data,function(b,c){return
-  a._relayResponse(f.requestId,b,c)});throw a.reportError(\"InvalidChannelUse-NonCard\"),new
+  d,e,f,g;if(\"string\"==typeof b){try{g=a.JSON.parse(b)}catch(h){throw e=h,a.reportError(\"InvalidJSON-ChannelListener\"),new
+  Error(\"Stripe.js received invalid JSON\")}if(d=g.data.card,delete g.data.card,f=g.headers[\"Accept-Language\"],d)return
+  a.setPublishableKey(g.data.key),f&&a.setLanguage(f),null!=g.endpoint&&(a.endpoint=g.endpoint),null!=g.trackPerf&&(a.trackPerf=g.trackPerf),a.card.createToken(d,g.data,function(b,c){return
+  a._relayResponse(g.requestId,b,c)});throw a.reportError(\"InvalidChannelUse-NonCard\"),new
   Error(\"Stripe.js iframe transport used for non-card request\")}},a}(),this.Stripe.token=function(){function
   a(){}return a.validate=function(a,b){if(!a)throw b+\" required\";if(\"object\"!=typeof
-  a)throw b+\" invalid\"},a.formatData=function(a,b){return Stripe.utils.isElement(a)&&(a=Stripe.utils.paramsFromForm(a,b)),Stripe.utils.underscoreKeys(a),a},a.create=function(a,b){var
-  c;return a.key||(a.key=Stripe.key||Stripe.publishableKey),Stripe.utils.validateKey(a.key),c=function(){switch(!1){case
-  null==a.card:return\"card\";case null==a.bank_account:return\"bank_account\";default:return\"unknown\"}}(),Stripe.request({url:\"\"+Stripe.endpoint+\"/tokens\",data:a,method:\"POST\",success:function(a,c){return\"function\"==typeof
+  a)throw b+\" invalid\"},a.formatData=function(a,b){var c,d,e;Stripe.utils.isElement(a)&&(a=Stripe.utils.paramsFromForm(a,b));for(c
+  in a)d=a[c],null==d&&delete a[c];return Stripe.utils.underscoreKeys(a),\"string\"==typeof
+  a.exp&&(e=Stripe.utils.parseExpString(a.exp),a.exp_month=e[0],a.exp_year=e[1],delete
+  a.exp),a},a.create=function(a,b){var c,d;return a.key||(a.key=Stripe.key||Stripe.publishableKey),Stripe.utils.validateKey(a.key),d=function(){switch(!1){case
+  null==a.card:return\"card\";case null==a.bank_account:return\"bank_account\";default:return\"unknown\"}}(),c={url:\"\"+Stripe.endpoint+\"/tokens\",data:a,method:\"POST\",headers:{},success:function(a,c){return\"function\"==typeof
   b?b(c,a):void 0},complete:Stripe.complete(b,\"A network error has occurred, and
-  you have not been charged. Please try again.\"),timeout:4e4,tokenType:c})},a.get=function(a,b){if(!a)throw
+  you have not been charged. Please try again.\"),timeout:4e4,tokenType:d},Stripe._language&&(c.headers[\"Accept-Language\"]=Stripe._language),Stripe.request(c)},a.get=function(a,b){if(!a)throw
   new Error(\"token required\");return Stripe.utils.validateKey(Stripe.key),Stripe.request({url:\"\"+Stripe.endpoint+\"/tokens/\"+a,data:{key:Stripe.key},success:function(a,c){return\"function\"==typeof
   b?b(c,a):void 0},complete:Stripe.complete(b,\"A network error has occurred loading
   data from Stripe. Please try again.\"),timeout:4e4})},a}(),this.Stripe.card=function(a){function
-  b(){return b.__super__.constructor.apply(this,arguments)}return k(b,a),b.tokenName=\"card\",b.whitelistedAttrs=[\"number\",\"cvc\",\"exp_month\",\"exp_year\",\"name\",\"address_line1\",\"address_line2\",\"address_city\",\"address_state\",\"address_zip\",\"address_country\"],b.createToken=function(a,c,d){var
+  b(){return b.__super__.constructor.apply(this,arguments)}return k(b,a),b.tokenName=\"card\",b.whitelistedAttrs=[\"number\",\"cvc\",\"exp\",\"exp_month\",\"exp_year\",\"name\",\"address_line1\",\"address_line2\",\"address_city\",\"address_state\",\"address_zip\",\"address_country\",\"currency\"],b.createToken=function(a,c,d){var
   e;return null==c&&(c={}),Stripe.token.validate(a,\"card\"),\"function\"==typeof
   c?(d=c,c={}):\"object\"!=typeof c&&(e=parseInt(c,10),c={},e>0&&(c.amount=e)),c[b.tokenName]=Stripe.token.formatData(a,b.whitelistedAttrs),Stripe.token.create(c,d)},b.getToken=function(a,b){return
   Stripe.token.get(a,b)},b.validateCardNumber=function(a){return a=(a+\"\").replace(/\\s+|-/g,\"\"),a.length>=10&&a.length<=16&&b.luhnCheck(a)},b.validateCVC=function(a){return
   a=Stripe.utils.trim(a),/^\\d+$/.test(a)&&a.length>=3&&a.length<=4},b.validateExpiry=function(a,b){var
-  c,d;return a=Stripe.utils.trim(a),b=Stripe.utils.trim(b),/^\\d+$/.test(a)&&/^\\d+$/.test(b)&&a>=1&&12>=a?(2===b.length&&(b=70>b?\"20\"+b:\"19\"+b),4!==b.length?!1:(d=new
-  Date(b,a),c=new Date,d.setMonth(d.getMonth()-1),d.setMonth(d.getMonth()+1,1),d>c)):!1},b.luhnCheck=function(a){var
+  c,d,e,f;if(null!=b)e=Stripe.utils.trim(a),b=Stripe.utils.trim(b);else{try{f=Stripe.utils.parseExpString(a),e=f[0],b=f[1]}catch(g){return!1}e+=\"\",b+=\"\"}return/^\\d+$/.test(e)&&/^\\d+$/.test(b)&&e>=1&&12>=e?(2===b.length&&(b=70>b?\"20\"+b:\"19\"+b),4!==b.length?!1:(d=new
+  Date(b,e),c=new Date,d.setMonth(d.getMonth()-1),d.setMonth(d.getMonth()+1,1),d>c)):!1},b.luhnCheck=function(a){var
   b,c,d,e,f,g;for(d=!0,e=0,c=(a+\"\").split(\"\").reverse(),f=0,g=c.length;g>f;f++)b=c[f],b=parseInt(b,10),(d=!d)&&(b*=2),b>9&&(b-=9),e+=b;return
   e%10===0},b.cardType=function(a){return b.cardTypes[a.slice(0,2)]||\"Unknown\"},b.cardBrand=function(a){return
   b.cardType(a)},b.cardTypes=function(){var a,b,c,d;for(b={},a=c=40;49>=c;a=++c)b[a]=\"Visa\";for(a=d=50;59>=d;a=++d)b[a]=\"MasterCard\";return
   b[34]=b[37]=\"American Express\",b[60]=b[62]=b[64]=b[65]=\"Discover\",b[35]=\"JCB\",b[30]=b[36]=b[38]=b[39]=\"Diners
   Club\",b}(),b}(this.Stripe.token),this.Stripe.bankAccount=function(a){function b(){return
-  b.__super__.constructor.apply(this,arguments)}return k(b,a),b.tokenName=\"bank_account\",b.whitelistedAttrs=[\"country\",\"currency\",\"routing_number\",\"account_number\"],b.createToken=function(a,c,d){return
+  b.__super__.constructor.apply(this,arguments)}return k(b,a),b.tokenName=\"bank_account\",b.whitelistedAttrs=[\"country\",\"currency\",\"routing_number\",\"account_number\",\"name\",\"account_holder_type\"],b.createToken=function(a,c,d){return
   null==c&&(c={}),Stripe.token.validate(a,\"bank account\"),\"function\"==typeof c&&(d=c,c={}),c[b.tokenName]=Stripe.token.formatData(a,b.whitelistedAttrs),Stripe.token.create(c,d)},b.getToken=function(a,b){return
   Stripe.token.get(a,b)},b.validateRoutingNumber=function(a,c){switch(a=Stripe.utils.trim(a),c){case\"US\":return/^\\d+$/.test(a)&&9===a.length&&b.routingChecksum(a);case\"CA\":return/\\d{5}\\-\\d{3}/.test(a)&&9===a.length;default:return!0}},b.validateAccountNumber=function(a,b){switch(a=Stripe.utils.trim(a),b){case\"US\":return/^\\d+$/.test(a)&&a.length>=1&&a.length<=17;default:return!0}},b.routingChecksum=function(a){var
   b,c,d,e,f,g;for(d=0,b=(a+\"\").split(\"\"),g=[0,3,6],e=0,f=g.length;f>e;e++)c=g[e],d+=3*parseInt(b[c]),d+=7*parseInt(b[c+1]),d+=parseInt(b[c+2]);return
@@ -109,7 +116,7 @@
   c?c(d,e):void 0):d>=400&&500>d?(a._clearReceiverPoll(b),\"function\"==typeof c?c(d,e):void
   0):(f=500===d?5e3:a._pollInterval,g=setTimeout(function(){return a._pollReceiver(b,c)},f),a._activeReceiverPolls[b].timeoutId=g)})},a.cancelReceiverPoll=function(b){var
   c;if(c=a._activeReceiverPolls[b],null==c)throw new Error(\"You are not polling receiver
-  \"+b+\".\");null!=c.timeoutId&&clearTimeout(c.timeoutId),a._clearReceiverPoll(b)},a}(),a=[\"createToken\",\"getToken\",\"cardType\",\"validateExpiry\",\"validateCVC\",\"validateCardNumber\"];for(h=0,i=a.length;i>h;h++)e=a[h],this.Stripe[e]=this.Stripe.card[e];this.Stripe.stripejs_ua=\"stripe.js/6a67cf0\",\"undefined\"!=typeof
+  \"+b+\".\");null!=c.timeoutId&&clearTimeout(c.timeoutId),a._clearReceiverPoll(b)},a}(),a=[\"createToken\",\"getToken\",\"cardType\",\"validateExpiry\",\"validateCVC\",\"validateCardNumber\"];for(h=0,i=a.length;i>h;h++)e=a[h],this.Stripe[e]=this.Stripe.card[e];this.Stripe.stripejs_ua=\"stripe.js/d31b455\",\"undefined\"!=typeof
   module&&null!==module&&(module.exports=this.Stripe),\"function\"==typeof define&&define(\"stripe\",[],function(a){return
   function(){return a.Stripe}}(this))}).call(this),function(){this.Stripe.isDoubleLoaded||function(a){function
   b(a,e){function f(a){if(f[a]!==q)return f[a];var b;if(\"bug-string-char-index\"==a)b=\"a\"!=\"a\"[0];else
@@ -233,29 +240,36 @@
   \"+a)}},b.underscore=function(a){return(a+\"\").replace(/([A-Z])/g,function(a){return\"_\"+a.toLowerCase()}).replace(/-/g,\"_\")},b.underscoreKeys=function(a){var
   b,c,d;d=[];for(b in a)c=a[b],delete a[b],d.push(a[this.underscore(b)]=c);return
   d},b.isElement=function(a){return\"object\"!=typeof a?!1:a.jquery?!0:1===a.nodeType},b.paramsFromForm=function(b,c){var
-  d,e,f,g,h,i,j,k,l,m;for(null==c&&(c=[]),b.jquery&&(b=b[0]),f=b.getElementsByTagName(\"input\"),h=b.getElementsByTagName(\"select\"),i={},j=0,l=f.length;l>j;j++)e=f[j],d=this.underscore(e.getAttribute(\"data-stripe\")),a.call(c,d)<0||(i[d]=e.value);for(k=0,m=h.length;m>k;k++)g=h[k],d=this.underscore(g.getAttribute(\"data-stripe\")),a.call(c,d)<0||null!=g.selectedIndex&&(i[d]=g.options[g.selectedIndex].value);return
+  d,e,f,g,h,i,j,k,l,m;for(null==c&&(c=[]),\nb.jquery&&(b=b[0]),f=b.getElementsByTagName(\"input\"),h=b.getElementsByTagName(\"select\"),i={},j=0,l=f.length;l>j;j++)e=f[j],d=this.underscore(e.getAttribute(\"data-stripe\")),a.call(c,d)<0||(i[d]=e.value);for(k=0,m=h.length;m>k;k++)g=h[k],d=this.underscore(g.getAttribute(\"data-stripe\")),a.call(c,d)<0||null!=g.selectedIndex&&(i[d]=g.options[g.selectedIndex].value);return
   i},b.validateProtocol=function(a){var b;if(a&&\"string\"==typeof a)return/_live_/g.test(a)&&\"https:\"!==window.location.protocol&&null!=(null!=(b=window.console)?b.warn:void
   0)?window.console.warn(\"You are using Stripe.js in live mode over an insecure connection.
   This is considered unsafe. Please conduct live requests only on sites served over
-  https. For more info, see https://stripe.com/help/ssl\"):void 0;\n\n},b.validateKey=function(a){if(!a||\"string\"!=typeof
+  https. For more info, see https://stripe.com/help/ssl\"):void 0},b.validateKey=function(a){if(!a||\"string\"!=typeof
   a)throw new Error(\"You did not set a valid publishable key. Call Stripe.setPublishableKey()
   with your publishable key. For more info, see https://stripe.com/docs/stripe.js\");if(/\\s/g.test(a))throw
   new Error(\"Your key is invalid, as it contains whitespace. For more info, see https://stripe.com/docs/stripe.js\");if(/^sk_/.test(a))throw
   new Error(\"You are using a secret key with Stripe.js, instead of the publishable
-  one. For more info, see https://stripe.com/docs/stripe.js\")},b}())}.call(this),function(){var
+  one. For more info, see https://stripe.com/docs/stripe.js\")},b.parseExpString=function(a){var
+  b,c,d,e,f,g,h,i,j;for(g=function(b){throw new Error(\"You passed an invalid expiration
+  date `\"+a+\"`. \"+(b||\"\")+\"Please pass a string containing a numeric month and
+  year such as `01-17` or `2015 / 05` For more info, see https://stripe.com/docs/stripe.js\")},\"string\"!=typeof
+  a&&g(),f=a.split(/[\\.\\-\\/\\s]+/g),2!==f.length&&g(),b=i=0,j=f.length;j>i;b=++i)e=f[b],d=parseInt(e),isNaN(d)&&g(\"\"+f+\"
+  is not a number. \"),1>d&&g(\"\"+d+\" is less than one. \"),f[b]=d;return f[0]>12?(h=f[0],c=f[1]):(c=f[0],h=f[1]),c>12&&g(\"Month
+  must be a number 1-12, not \"+c),100>h&&(h+=2e3),[c,h]},b}())}.call(this),function(){var
   a,b=[].slice;a=(new Date).getTime(),this.Stripe.isDoubleLoaded||(this.Stripe.ajaxJSONP=function(c){var
-  d,e,f,g,h,i;return null==c&&(c={}),f=\"sjsonp\"+ ++a,h=document.createElement(\"script\"),e=null,d=function(a){var
-  b;return null==a&&(a=\"abort\"),clearTimeout(e),null!=(b=h.parentNode)&&b.removeChild(h),f
-  in window&&(window[f]=function(){}),\"function\"==typeof c.complete?c.complete(a,i,c):void
-  0},i={abort:d},h.onerror=function(){return i.abort(),\"function\"==typeof c.error?c.error(i,c):void
-  0},window[f]=function(){var a,d;a=1<=arguments.length?b.call(arguments,0):[],clearTimeout(e),h.parentNode.removeChild(h);try{delete
-  window[f]}catch(g){d=g,window[f]=void 0}return\"function\"==typeof c.success&&c.success.apply(c,b.call(a).concat([i])),\"function\"==typeof
-  c.complete?c.complete(\"success\",i,c):void 0},c.data||(c.data={}),c.data.callback=f,c.method&&(c.data._method=c.method),h.src=c.url+\"?\"+Stripe.utils.serialize(c.data),g=document.getElementsByTagName(\"head\")[0],g.appendChild(h),c.timeout>0&&(e=setTimeout(function(){return
-  i.abort(\"timeout\")},c.timeout)),i})}.call(this),function(){var a,b,c,d,e,f,g,h,i,j={}.hasOwnProperty;this.Stripe.isDoubleLoaded||(b={contentType:\"application/x-www-form-urlencoded\",accept:{json:\"application/json\"}},g=/^(20\\d|1223)$/,f=\"invalid_json_response\",d=function(a,b,c){return
+  d,e,f,g,h,i,j;return null==c&&(c={}),f=\"sjsonp\"+ ++a,i=document.createElement(\"script\"),e=null,d=function(a){var
+  b;return null==a&&(a=\"abort\"),clearTimeout(e),null!=(b=i.parentNode)&&b.removeChild(i),f
+  in window&&(window[f]=function(){}),\"function\"==typeof c.complete?c.complete(a,j,c):void
+  0},j={abort:d},i.onerror=function(){return j.abort(),\"function\"==typeof c.error?c.error(j,c):void
+  0},window[f]=function(){var a,d;a=1<=arguments.length?b.call(arguments,0):[],clearTimeout(e),i.parentNode.removeChild(i);try{delete
+  window[f]}catch(g){d=g,window[f]=void 0}return\"function\"==typeof c.success&&c.success.apply(c,b.call(a).concat([j])),\"function\"==typeof
+  c.complete?c.complete(\"success\",j,c):void 0},h=(c.headers||{})[\"Accept-Language\"],c.data||(c.data={}),c.data.callback=f,c.method&&(c.data._method=c.method),h&&(c.data._accept_language=h),i.src=c.url+\"?\"+Stripe.utils.serialize(c.data),g=document.getElementsByTagName(\"head\")[0],g.appendChild(i),c.timeout>0&&(e=setTimeout(function(){return
+  j.abort(\"timeout\")},c.timeout)),j})}.call(this),function(){var a,b,c,d,e,f,g,h,i,j={}.hasOwnProperty;this.Stripe.isDoubleLoaded||(b={contentType:\"application/x-www-form-urlencoded\",accept:{json:\"application/json\"}},g=/^(20\\d|1223)$/,f=\"invalid_json_response\",d=function(a,b,c){return
   function(){return a._aborted?c(a.request,\"abort\"):a.request&&4===a.request.readyState?(a.request.onreadystatechange=function(){},0===a.request.status?c(a.request,\"empty_response\"):g.test(a.request.status)?b(a.request,a.request.status):b(a.request,a.request.status)):void
-  0}},h=function(a,c){var d,e,f;e=c.headers||{},e.Accept||(e.Accept=b.accept.json),e[\"Content-Type\"]||(e[\"Content-Type\"]=b.contentType),f=[];for(d
-  in e)j.call(e,d)&&f.push(\"setRequestHeader\"in a?a.setRequestHeader(d,e[d]):void
-  0);return f},i=function(a,b){return/\\?/.test(a)?a+\"&\"+b:a+\"?\"+b},c=function(a,b){var
+  0}},h=function(a,c){var d,e,f,g,h;f=c.headers||{},f.Accept||(f.Accept=b.accept.json),f[\"Content-Type\"]||(f[\"Content-Type\"]=b.contentType),g=c._globalCustomHeaders;for(d
+  in g)j.call(g,d)&&\"setRequestHeader\"in a&&a.setRequestHeader(d,c._globalCustomHeaders[d]);h=[];for(e
+  in f)j.call(f,e)&&(\"setRequestHeader\"in a?h.push(a.setRequestHeader(e,f[e])):h.push(void
+  0));return h},i=function(a,b){return/\\?/.test(a)?a+\"&\"+b:a+\"?\"+b},c=function(a,b){var
   c,e,f,g,j,k,l,m,n;k=this.o,j=(k.method||\"GET\").toUpperCase(),l=k.url,g=null!=(m=k.data)?m.key:void
   0,c=Stripe.utils.serialize(k.data),f=void 0,\"GET\"===j&&c&&(l=i(l,c),c=null),n=new
   XMLHttpRequest,n.open(j,l,!0),h(n,k),n.onreadystatechange=d(this,a,b);try{n.send(c)}catch(o){e=o,Stripe.reportError(\"XHR-\"+e.toString()),b(n,\"xhr_send_failure\")}return
@@ -271,8 +285,8 @@
   0,g&&g.length&&c!==f)try{e=Stripe.JSON.parse(g)}catch(h){d=h,c=c+\"_AND_\"+f}for(;a._errorHandlers.length>0;)a._errorHandlers.shift()(e||b,c);return
   Stripe.reportError(c),Stripe._fallBackToOldStripeJsTechniques(),Stripe.request(a.o,!0)}}(this),this.request=c.call(this,e,d)},a.prototype={abort:function(){var
   a;return this._aborted=!0,null!=(a=this.request)?a.abort():void 0}},this.Stripe.xhr=function(b){return
-  new a(b)})}.call(this),function(){var a,b,c,d={}.hasOwnProperty;this.Stripe.isDoubleLoaded||(a=function(a){return
-  this.options=a,a.requestId=Stripe._callCount,a.endpoint=Stripe.endpoint,a.trackPerf=Stripe.trackPerf,this.iframeTimeout=setTimeout(function(){return
+  b._globalCustomHeaders=this._customHeaders,new a(b)})}.call(this),function(){var
+  a,b,c,d={}.hasOwnProperty;this.Stripe.isDoubleLoaded||(a=function(a){return this.options=a,a.requestId=Stripe._callCount,a.endpoint=Stripe.endpoint,a.trackPerf=Stripe.trackPerf,this.iframeTimeout=setTimeout(function(){return
   Stripe._fallBackToOldStripeJsTechniques(),Stripe._iframePendingRequests[a.requestId]&&(Stripe.request(Stripe._iframePendingRequests[a.requestId],!0),delete
   Stripe._iframePendingRequests[a.requestId]),Stripe._callCache[a.requestId]=function(){return
   Stripe.reportError(\"TimeoutEventualReturnError\")}},1e4),Stripe._iframePendingRequests[a.requestId]=a,Stripe._callCache[a.requestId]=function(b){return

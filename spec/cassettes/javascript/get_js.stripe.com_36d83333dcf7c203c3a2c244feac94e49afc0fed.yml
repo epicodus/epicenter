@@ -7,20 +7,22 @@
 :headers:
   Server: nginx
   Content-Type: text/html
-  Last-Modified: Tue, 14 Apr 2015 22:36:45 GMT
-  ETag: '"552d967d-459"'
-  Strict-Transport-Security: max-age=31556926; includeSubDomains
+  Last-Modified: Wed, 10 Feb 2016 03:55:13 GMT
+  ETag: '"56bab4a1-459"'
+  Cache-Control: public, max-age=300
+  Via:
+  - 1.1 varnish
+  - 1.1 varnish
+  Fastly-Debug-Digest: da5a5f8366c53af83ffda87d2ec27f62664f0e2cdb529b3b029bc1431d93d0af
   Content-Length: '1113'
   Accept-Ranges: bytes
-  Date: Fri, 15 May 2015 23:23:53 GMT
-  Via: 1.1 varnish
-  Age: '586'
+  Date: Thu, 11 Feb 2016 21:11:38 GMT
+  Age: '103'
   Connection: close
-  X-Served-By: cache-sjc3129-SJC
-  X-Cache: HIT
-  X-Cache-Hits: '642'
+  X-Served-By: cache-sea1923-SEA, cache-lax1425-LAX
+  X-Cache: HIT, HIT
+  X-Cache-Hits: 2, 1
   Vary: Accept-Encoding
-  Cache-Control: public, max-age=300
 :content: |
   <!doctype html>
   <html>

@@ -5,7 +5,7 @@ http_interactions:
     uri: https://<HELLO_SIGN_API_KEY>:@api.hellosign.com/v3/signature_request/create_embedded
     body:
       encoding: UTF-8
-      string: client_id=<HELLO_SIGN_CLIENT_ID>&file_url%5B%5D=https%3A%2F%2Fwww.dropbox.com%2Fs%2Fkuyegiukdg57sym%2Fcode_of_conduct.pdf%3Fdl%3D1&signers%5B0%5D%5Bemail_address%5D=student1%40example.com&signers%5B0%5D%5Bname%5D=Example+Brown+1&subject=Sign+to+accept+the+Epicodus+Code+of+Conduct&test_mode=1
+      string: client_id=<HELLO_SIGN_CLIENT_ID>&file_url%5B%5D=https%3A%2F%2Fwww.dropbox.com%2Fs%2Fkuyegiukdg57sym%2Fcode_of_conduct.pdf%3Fdl%3D1&signers%5B0%5D%5Bemail_address%5D=student82%40example.com&signers%5B0%5D%5Bname%5D=Example+Brown+83&subject=Sign+to+accept+the+Epicodus+Code+of+Conduct&test_mode=1
     headers:
       User-Agent:
       - hellosign-ruby-sdk/3.2.7
@@ -29,7 +29,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 11 Feb 2016 19:34:36 GMT
+      - Thu, 11 Feb 2016 21:12:14 GMT
       P3p:
       - CP="NOP3PPOLICY"
       Server:
@@ -41,25 +41,25 @@ http_interactions:
       X-Ratelimit-Limit:
       - '50'
       X-Ratelimit-Limit-Remaining:
-      - '49'
+      - '41'
       X-Ratelimit-Reset:
-      - '1455219276'
+      - '1455225134'
       X-Xss-Protection:
       - 1; mode=block
       Content-Length:
-      - '1105'
+      - '1107'
       Connection:
       - keep-alive
     body:
       encoding: UTF-8
       string: |2-
 
-        {"signature_request":{"signature_request_id":"35767393681a601dc1d338ea96a910c120eb1a82","test_mode":true,"title":"Sign to accept the Epicodus Code of Conduct","original_title":"Sign to accept the Epicodus Code of Conduct","subject":"Sign to accept the Epicodus Code of Conduct","message":null,"metadata":{},"is_complete":false,"has_error":false,"custom_fields":[],"response_data":[],"signing_url":null,"signing_redirect_url":null,"final_copy_uri":"\/v3\/signature_request\/final_copy\/35767393681a601dc1d338ea96a910c120eb1a82","files_url":"https:\/\/api.hellosign.com\/v3\/signature_request\/files\/35767393681a601dc1d338ea96a910c120eb1a82","details_url":"https:\/\/www.hellosign.com\/home\/manage?guid=35767393681a601dc1d338ea96a910c120eb1a82","requester_email_address":"michael@epicodus.com","signatures":[{"signature_id":"85edf7f9b472c77147162a8ce694ddc9","has_pin":false,"signer_email_address":"student1@example.com","signer_name":"Example Brown 1","order":null,"status_code":"awaiting_signature","signed_at":null,"last_viewed_at":null,"last_reminded_at":null,"error":null}],"cc_email_addresses":[]}}
+        {"signature_request":{"signature_request_id":"02974b11f6a5c085a82cb6169ebd76f79ce383ef","test_mode":true,"title":"Sign to accept the Epicodus Code of Conduct","original_title":"Sign to accept the Epicodus Code of Conduct","subject":"Sign to accept the Epicodus Code of Conduct","message":null,"metadata":{},"is_complete":false,"has_error":false,"custom_fields":[],"response_data":[],"signing_url":null,"signing_redirect_url":null,"final_copy_uri":"\/v3\/signature_request\/final_copy\/02974b11f6a5c085a82cb6169ebd76f79ce383ef","files_url":"https:\/\/api.hellosign.com\/v3\/signature_request\/files\/02974b11f6a5c085a82cb6169ebd76f79ce383ef","details_url":"https:\/\/www.hellosign.com\/home\/manage?guid=02974b11f6a5c085a82cb6169ebd76f79ce383ef","requester_email_address":"michael@epicodus.com","signatures":[{"signature_id":"d3c287cbf680c3856bf89b732eea7c98","has_pin":false,"signer_email_address":"student82@example.com","signer_name":"Example Brown 83","order":null,"status_code":"awaiting_signature","signed_at":null,"last_viewed_at":null,"last_reminded_at":null,"error":null}],"cc_email_addresses":[]}}
     http_version: 
-  recorded_at: Thu, 11 Feb 2016 19:34:57 GMT
+  recorded_at: Thu, 11 Feb 2016 21:12:35 GMT
 - request:
     method: get
-    uri: https://<HELLO_SIGN_API_KEY>:@api.hellosign.com/v3/embedded/sign_url/85edf7f9b472c77147162a8ce694ddc9
+    uri: https://<HELLO_SIGN_API_KEY>:@api.hellosign.com/v3/embedded/sign_url/d3c287cbf680c3856bf89b732eea7c98
     body:
       encoding: US-ASCII
       string: ''
@@ -84,7 +84,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 11 Feb 2016 19:34:38 GMT
+      - Thu, 11 Feb 2016 21:12:15 GMT
       P3p:
       - CP="NOP3PPOLICY"
       Server:
@@ -96,9 +96,9 @@ http_interactions:
       X-Ratelimit-Limit:
       - '500'
       X-Ratelimit-Limit-Remaining:
-      - '499'
+      - '497'
       X-Ratelimit-Reset:
-      - '1455219278'
+      - '1455225135'
       X-Xss-Protection:
       - 1; mode=block
       Content-Length:
@@ -109,7 +109,7 @@ http_interactions:
       encoding: UTF-8
       string: |2-
 
-        {"embedded":{"sign_url":"https:\/\/www.hellosign.com\/editor\/embeddedSign?signature_id=85edf7f9b472c77147162a8ce694ddc9&token=e2ac47dcaee1aacf397b3ebdfdcc8982","expires_at":1455222878}}
+        {"embedded":{"sign_url":"https:\/\/www.hellosign.com\/editor\/embeddedSign?signature_id=d3c287cbf680c3856bf89b732eea7c98&token=f103df1ac3b20e9f0a4b413e30b413e4","expires_at":1455228736}}
     http_version: 
-  recorded_at: Thu, 11 Feb 2016 19:34:58 GMT
+  recorded_at: Thu, 11 Feb 2016 21:12:36 GMT
 recorded_with: VCR 3.0.1
