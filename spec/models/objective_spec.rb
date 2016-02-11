@@ -4,7 +4,7 @@ describe Objective do
   it { should have_many :grades }
 
   describe "#score_for" do
-    it "returns the latest score of the student given for this objective", vcr: true do
+    it "returns the latest score of the student given for this objective", :stub_mailgun do
       student = FactoryGirl.create(:student)
       code_review = FactoryGirl.create(:code_review)
       first_objective = code_review.objectives.first

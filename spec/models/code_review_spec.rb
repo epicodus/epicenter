@@ -58,17 +58,17 @@ describe CodeReview do
     end
   end
 
-  describe '#exepectations_met_by?', :vcr do
+  describe '#exepectations_met_by?' do
     let(:code_review) { FactoryGirl.create(:code_review) }
     let(:student) { FactoryGirl.create(:student) }
 
-    it "is true if the student's submission has met expectations" do
+    it "is true if the student's submission has met expectations", :stub_mailgun do
       submission = FactoryGirl.create(:submission, student: student, code_review: code_review)
       FactoryGirl.create(:passing_review, submission: submission)
       expect(code_review.expectations_met_by?(student)).to eq true
     end
 
-    it "is false if the student's submission has not met expectations" do
+    it "is false if the student's submission has not met expectations", :stub_mailgun do
       submission = FactoryGirl.create(:submission, student: student, code_review: code_review)
       FactoryGirl.create(:failing_review, submission: submission)
       expect(code_review.expectations_met_by?(student)).to eq false
@@ -79,7 +79,7 @@ describe CodeReview do
     let(:code_review) { FactoryGirl.create(:code_review) }
     let(:student) { FactoryGirl.create(:student) }
 
-    it 'gives the latest total score the student received for this code_review', vcr: true do
+    it 'gives the latest total score the student received for this code_review', :stub_mailgun do
       submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
       review = FactoryGirl.create(:review, submission: submission)
       score = FactoryGirl.create(:score, value: 1)
@@ -106,17 +106,17 @@ describe CodeReview do
     let(:code_review) { FactoryGirl.create(:code_review, course: student.course) }
     let(:submission) { FactoryGirl.create(:submission, code_review: code_review, student: student) }
 
-    it 'returns the overall student status when a student meets the requirements for a code review', :vcr do
+    it 'returns the overall student status when a student meets the requirements for a code review', :stub_mailgun do
       FactoryGirl.create(:passing_review, submission: submission)
       expect(code_review.status(student)).to eq 'Met requirements all of the time'
     end
 
-    it 'returns the overall student status when a student mostly meets the requirements for a code review', :vcr do
+    it 'returns the overall student status when a student mostly meets the requirements for a code review', :stub_mailgun do
       FactoryGirl.create(:in_between_review, submission: submission)
       expect(code_review.status(student)).to eq 'Met requirements most of the time'
     end
 
-    it 'returns the overall student status when a student does not meet the requirements for a code review', :vcr do
+    it 'returns the overall student status when a student does not meet the requirements for a code review', :stub_mailgun do
       FactoryGirl.create(:failing_review, submission: submission)
       expect(code_review.status(student)).to eq 'Did not meet requirements'
     end
