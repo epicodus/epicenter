@@ -22,7 +22,6 @@ feature 'index page' do
     before { login_as(admin, scope: :admin) }
 
     xscenario "all companies should be listed" do # passes when run individually, but not with whole test suite
-      visit companies_path
       expect(page).to have_content "1 labs"
       expect(page).to have_content other_company.name
     end

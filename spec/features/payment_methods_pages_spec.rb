@@ -23,8 +23,8 @@ feature 'Student views payment methods page' do
     end
   end
 
-  context 'after a primary payment method has been added', :vcr do
-    it "shows credit card as primary and shows link to make payments" do
+  context 'after a primary payment method has been added' do
+    it "shows credit card as primary and shows link to make payments", :vcr, :stripe_mock do
       student = FactoryGirl.create(:user_with_credit_card)
       sign_in student
       visit payment_methods_path
@@ -36,7 +36,7 @@ feature 'Student views payment methods page' do
       expect(page).to have_link "Make or review payments"
     end
 
-    it "shows verified bank account as primary and verified" do
+    it "shows verified bank account as primary and verified", :vcr do
       student = FactoryGirl.create(:user_with_verified_bank_account)
       sign_in student
       visit payment_methods_path

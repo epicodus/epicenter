@@ -82,7 +82,7 @@ FactoryGirl.define do
       :number => '4242424242424242',
       :exp_month => '12',
       :exp_year => '2020',
-      :cvv => '123'
+      :cvc => '123'
     })
   end
 
@@ -107,41 +107,34 @@ FactoryGirl.define do
       :number => '4242424242424241',
       :exp_month => '12',
       :exp_year => '2020',
-      :cvv => '123'
+      :cvc => '123'
     })
   end
 
   factory :payment do
-    association :student, factory: :user_with_verified_bank_account
     amount 100
-    association :payment_method, factory: :verified_bank_account
-  end
 
-  factory :payment_with_credit_card, class: Payment do
-    association :student, factory: :user_with_credit_card
-    amount 100
-    association :payment_method, factory: :credit_card
+    factory :payment_with_bank_account do
+      association :student, factory: :user_with_verified_bank_account
+      before(:create) do |payment|
+        payment.payment_method = payment.student.payment_methods.first
+      end
+    end
+
+    factory :payment_with_credit_card do
+      association :student, factory: :user_with_credit_card
+      before(:create) do |payment|
+        payment.payment_method = payment.student.payment_methods.first
+      end
+    end
   end
 
   factory :plan do
     name "summer 2014"
 
-    factory :recurring_plan_with_upfront_payment do
-      upfront_amount 200_00
-      recurring_amount 600_00
-      total_amount 5000_00
-    end
-
     factory :upfront_payment_only_plan do
       upfront_amount 3400_00
-      recurring_amount 0
       total_amount 3400_00
-    end
-
-    factory :recurring_plan_with_no_upfront_payment do
-      upfront_amount 0
-      recurring_amount 625_00
-      total_amount 5000_00
     end
   end
 
@@ -215,7 +208,7 @@ FactoryGirl.define do
 
   factory :student do
     course
-    association :plan, factory: :recurring_plan_with_upfront_payment
+    association :plan, factory: :upfront_payment_only_plan
     sequence(:name) { |n| "Example Brown #{n}" }
     sequence(:email) { |n| "student#{n}@example.com" }
     password "password"
@@ -256,27 +249,6 @@ FactoryGirl.define do
     factory :user_with_verified_bank_account do
       after(:create) do |student|
         create(:verified_bank_account, student: student)
-      end
-
-      factory :user_with_recurring_active do
-        recurring_active true
-        after(:create) do |student|
-          create(:payment, student: student)
-        end
-      end
-
-      factory :user_with_recurring_not_due do
-        recurring_active true
-        after(:create) do |student|
-          create(:payment, student: student, created_at: 2.weeks.ago)
-        end
-      end
-
-      factory :user_with_recurring_due do
-        recurring_active true
-        after(:create) do |student|
-          create(:payment, student: student, created_at: 1.month.ago)
-        end
       end
 
       factory :user_with_upfront_payment do

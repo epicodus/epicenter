@@ -13,7 +13,6 @@
       </tr>
     </thead>
     <tbody>
-      <%= render 'payments/next_payment_date' %>
       <% @payments.order_by_latest.each do |payment| %>
         <tr>
           <td>
@@ -38,10 +37,6 @@
 
 <% if current_student.upfront_payment_due? %>
   <%= render 'payments/upfront_payment_button' %>
-<% end %>
-
-<% if current_student.ready_to_start_recurring_payments? %>
-  <%= render 'payments/recurring_payment_button' %>
 <% end %>
 
 <p class='new-method-links'><%= link_to 'Manage payment methods', payment_methods_path %></p>

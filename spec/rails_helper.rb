@@ -10,6 +10,7 @@ require 'billy/rspec'
 require 'cancan/matchers'
 require 'simplecov'
 require 'coveralls'
+require 'stripe_mock'
 
 include Warden::Test::Helpers
 Warden.test_mode!
@@ -29,7 +30,11 @@ RSpec.configure do |config|
     if example.metadata[:stub_mailgun]
       mailgun_client = spy("mailgun client")
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
-    end
+    end    
+    StripeMock.start if example.metadata[:stripe_mock]
+  end
+  config.after(:each) do |example|
+    StripeMock.stop if example.metadata[:stripe_mock]
   end
   config.infer_spec_type_from_file_location!
 end

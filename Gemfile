@@ -9,7 +9,7 @@ gem 'jquery-rails'
 gem 'coffee-script'
 gem 'devise'
 gem 'devise_invitable'
-gem 'stripe', github: 'zachflower/stripe-ruby'
+gem 'stripe'
 gem 'chartkick'
 gem 'groupdate'
 gem 'mailgun-ruby', require: 'mailgun'
@@ -59,6 +59,7 @@ group :test do
   gem 'puffing-billy'
   gem 'simplecov', require: false
   gem 'coveralls', require: false
+  gem 'stripe-ruby-mock'
 end
 
 group :production do
