@@ -7,8 +7,8 @@ plans = [
   ["Winter 2015 up-front", 3400_00, 0, 3400_00]
 ]
 
-plans.each do |name, upfront_amount, recurring_amount, total_amount|
-  Plan.create(name: name, upfront_amount: upfront_amount, recurring_amount: recurring_amount, total_amount: total_amount)
+plans.each do |name, upfront_amount, total_amount|
+  Plan.create(name: name, upfront_amount: upfront_amount, total_amount: total_amount)
 end
 
 

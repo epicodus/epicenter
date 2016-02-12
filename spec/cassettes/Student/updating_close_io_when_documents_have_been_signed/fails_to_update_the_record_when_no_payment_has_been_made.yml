@@ -21,7 +21,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 14 Dec 2015 22:59:31 GMT
+      - Thu, 11 Feb 2016 21:14:01 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -38,7 +38,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"has_more": false, "total_results": 0, "data": []}'
     http_version: 
-  recorded_at: Tue, 29 Mar 2016 07:00:00 GMT
+  recorded_at: Tue, 05 Apr 2016 07:00:00 GMT
 - request:
     method: get
     uri: https://<CLOSE_IO_API_KEY>:@app.close.io/api/v1/lead/?query=email:fake@fake.com
@@ -60,7 +60,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Mon, 14 Dec 2015 22:59:31 GMT
+      - Thu, 11 Feb 2016 21:14:01 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -77,5 +77,5 @@ http_interactions:
       encoding: UTF-8
       string: '{"has_more": false, "total_results": 0, "data": []}'
     http_version: 
-  recorded_at: Tue, 29 Mar 2016 07:00:00 GMT
-recorded_with: VCR 3.0.0
+  recorded_at: Tue, 05 Apr 2016 07:00:00 GMT
+recorded_with: VCR 3.0.1

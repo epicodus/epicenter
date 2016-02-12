@@ -8,9 +8,9 @@ describe PaymentMethod do
       let(:credit_card) { FactoryGirl.create :credit_card }
       let(:bank_account) { FactoryGirl.create :bank_account }
 
-      it "creates a Stripe card for a Stripe customer", :vcr do
+      it "creates a Stripe card for a Stripe customer", :stripe_mock do
         credit_card = FactoryGirl.create(:credit_card)
-        stripe_card = credit_card.student.stripe_customer.cards.first
+        stripe_card = credit_card.student.stripe_customer.sources.first
         expect(stripe_card).to be_an_instance_of(Stripe::Card)
       end
 
@@ -20,9 +20,9 @@ describe PaymentMethod do
         expect(stripe_account).to be_an_instance_of(Stripe::BankAccount)
       end
 
-      it "sets the stripe_id for the credit card instance", :vcr do
+      it "sets the stripe_id for the credit card instance", :stripe_mock do
         card = FactoryGirl.create(:credit_card)
-        stripe_card = card.student.stripe_customer.cards.first
+        stripe_card = card.student.stripe_customer.sources.first
         expect(card.stripe_id).to eq stripe_card.id
       end
 
@@ -37,7 +37,7 @@ describe PaymentMethod do
         expect(credit_card.id).to eq nil
       end
 
-      it "gets last four digits of a credit card before_create", :vcr do
+      it "gets last four digits of a credit card before_create", :stripe_mock do
         credit_card = FactoryGirl.create(:credit_card)
         expect(credit_card.last_four_string).to eq "4242"
       end
@@ -47,7 +47,7 @@ describe PaymentMethod do
         expect(bank_account.last_four_string).to eq "6789"
       end
 
-      it "is made the primary payment method if student does not have one" do
+      it "is made the primary payment method if student does not have one", :stripe_mock do
         credit_card = FactoryGirl.create(:credit_card)
         expect(credit_card.student.primary_payment_method).to eq credit_card
       end

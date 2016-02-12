@@ -21,7 +21,7 @@ private
       update!(verified: true)
       ensure_primary_method_exists
       true
-    rescue Stripe::InvalidRequestError => exception
+    rescue Stripe::CardError => exception
       errors.add(:base, exception.message)
       false
     end

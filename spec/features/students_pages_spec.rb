@@ -68,7 +68,7 @@ feature "Student signs in while class is not in session" do
     end
   end
 
-  context "after adding a credit card", :vcr do
+  context "after adding a credit card", :vcr, :stripe_mock do
     it "shows them their payment history" do
       credit_card = FactoryGirl.create(:credit_card, student: student)
       sign_in(student)

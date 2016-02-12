@@ -28,12 +28,14 @@ feature 'Visiting the submissions index page' do
       expect(page).to_not have_content reviewed_submission.student.name
     end
 
-    xscenario 'lists submissions in order of when they were submitted' do
+    scenario 'lists submissions in order of when they were submitted' do
       another_student = FactoryGirl.create(:student)
       first_submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
       second_submission = FactoryGirl.create(:submission, code_review: code_review, student: another_student)
       visit code_review_submissions_path(code_review)
-      expect(first('.submission')).to have_content first_submission.student.name
+      within 'tbody' do
+        expect(first('tr')).to have_content first_submission.student.name
+      end
     end
 
     context 'within an individual submission' do

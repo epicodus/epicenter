@@ -1,5 +1,4 @@
 class Student < User
-  scope :recurring_active, -> { where(recurring_active: true) }
   scope :with_actived_accounts, -> { where('sign_in_count > ?', 0 ) }
   default_scope { order(:name) }
 
@@ -132,16 +131,8 @@ class Student < User
     plan.upfront_amount > 0 && payments.without_failed.count == 0
   end
 
-  def recurring_amount_with_fees
-    plan.recurring_amount + primary_payment_method.calculate_fee(plan.recurring_amount)
-  end
-
   def upfront_amount_with_fees
     plan.upfront_amount + primary_payment_method.calculate_fee(plan.upfront_amount)
-  end
-
-  def ready_to_start_recurring_payments?
-    plan.recurring_amount > 0 && !recurring_active && !upfront_payment_due?
   end
 
   def total_paid
@@ -158,10 +149,6 @@ class Student < User
     end
   end
 
-  def next_payment_date
-    payments.without_failed.last.created_at + 1.month if recurring_active
-  end
-
   def make_upfront_payment
     payments.create(amount: plan.upfront_amount, payment_method: primary_payment_method)
   end
@@ -176,12 +163,6 @@ class Student < User
 
   def class_over?
     Time.zone.now.to_date > course.end_date
-  end
-
-  def start_recurring_payments
-    payment = payments.create(amount: plan.recurring_amount, payment_method: primary_payment_method)
-    update!(recurring_active: true) if payment.persisted?
-    payment
   end
 
   def attendance_records_for(status, filtered_course=nil)
