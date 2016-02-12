@@ -30,11 +30,8 @@ RSpec.configure do |config|
     if example.metadata[:stub_mailgun]
       mailgun_client = spy("mailgun client")
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
-    end
-    if example.metadata[:stripe_mock]
-      StripeMock.create_test_helper
-      StripeMock.start
-    end
+    end    
+    StripeMock.start if example.metadata[:stripe_mock]
   end
   config.after(:each) do |example|
     StripeMock.stop if example.metadata[:stripe_mock]
