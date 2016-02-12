@@ -42,7 +42,7 @@ feature 'Visiting the submissions index page' do
           FactoryGirl.create(:submission, code_review: code_review, student: student)
         end
         visit code_review_submissions_path(code_review)
-        expect(page).to have_content '2 days ago'
+        expect(page).to have_content (Time.zone.now.to_date - 2.days).strftime("%a, %b %d, %Y")
       end
 
       scenario 'clicking review link to show review form' do
