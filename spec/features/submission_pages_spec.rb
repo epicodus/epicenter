@@ -56,7 +56,7 @@ feature 'Visiting the submissions index page' do
         expect(page).to have_button 'Create Review'
       end
 
-      context 'creating a review', js: true do
+      context 'creating a review' do
         let(:admin) { FactoryGirl.create(:admin) }
         let!(:submission) { FactoryGirl.create(:submission, code_review: code_review, student: student) }
         let!(:score) { FactoryGirl.create(:passing_score) }

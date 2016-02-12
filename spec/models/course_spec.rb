@@ -31,6 +31,16 @@ describe Course do
     end
   end
 
+  describe '#other_course_students' do
+    it 'returns all other students for a course except the selected student' do
+      course = FactoryGirl.create(:course)
+      student_1 = FactoryGirl.create(:student, course: course)
+      student_2 = FactoryGirl.create(:student, course: course)
+      student_3 = FactoryGirl.create(:student, course: course)
+      expect(course.other_course_students(student_3)).to eq [student_1, student_2]
+    end
+  end
+
   describe '#in_session?' do
     it 'returns true if the course is in session' do
       course = FactoryGirl.create(:course)

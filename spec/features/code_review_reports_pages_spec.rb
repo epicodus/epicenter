@@ -31,9 +31,9 @@ feature 'code_review report' do
     end
   end
 
-  context 'visiting as a student', :vcr do
+  context 'visiting as a student' do
     it 'is not authorized' do
-      student = FactoryGirl.create(:student)
+      student = FactoryGirl.create(:user_with_all_documents_signed)
       code_review = FactoryGirl.create(:code_review)
       login_as(student, scope: :student)
       visit code_review_report_path(code_review)
