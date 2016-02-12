@@ -325,7 +325,7 @@ describe Student do
     end
 
     it "is false if student has made any payments", :vcr, :stripe_mock, :stub_mailgun do
-      FactoryGirl.create(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first)
+      FactoryGirl.create(:payment_with_credit_card, student: student)
       expect(student.upfront_payment_due?).to be false
     end
   end
@@ -575,15 +575,15 @@ describe Student do
   describe '#total_paid', :vcr, :stripe_mock, :stub_mailgun do
     it 'sums all of the students payments' do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
-      FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00, payment_method: student.payment_methods.first)
-      FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00, payment_method: student.payment_methods.first)
+      FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00)
+      FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00)
       expect(student.total_paid).to eq 400_00
     end
 
     it 'does not include failed payments' do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
-      FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00, payment_method: student.payment_methods.first)
-      failed_payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00, payment_method: student.payment_methods.first)
+      FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00)
+      failed_payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00)
       failed_payment.update(status: 'failed')
       expect(student.total_paid).to eq 200_00
     end

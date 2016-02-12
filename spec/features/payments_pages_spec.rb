@@ -17,7 +17,7 @@ feature 'Viewing payment index page' do
     context 'after a payment has been made with bank account', :vcr, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
         student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com')
-        payment = FactoryGirl.create(:payment, amount: 600_00, student: student, payment_method: student.payment_methods.first)
+        payment = FactoryGirl.create(:payment_with_bank_account, amount: 600_00, student: student)
         login_as(student, scope: :student)
         visit payments_path
         expect(page).to have_content 600.00
@@ -29,7 +29,7 @@ feature 'Viewing payment index page' do
     context 'after a payment has been made with credit card', :vcr, :stripe_mock, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
         student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
-        FactoryGirl.create(:payment_with_credit_card, amount: 600_00, student: student, payment_method: student.payment_methods.first)
+        FactoryGirl.create(:payment_with_credit_card, amount: 600_00, student: student)
         login_as(student, scope: :student)
         visit payments_path
         expect(page).to have_content 618.21

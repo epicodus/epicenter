@@ -112,15 +112,21 @@ FactoryGirl.define do
   end
 
   factory :payment do
-    association :student, factory: :user_with_verified_bank_account
     amount 100
-    association :payment_method, factory: :verified_bank_account
-  end
 
-  factory :payment_with_credit_card, class: Payment do
-    association :student, factory: :user_with_credit_card
-    amount 100
-    association :payment_method, factory: :credit_card
+    factory :payment_with_bank_account do
+      association :student, factory: :user_with_verified_bank_account
+      before(:create) do |payment|
+        payment.payment_method = payment.student.payment_methods.first
+      end
+    end
+
+    factory :payment_with_credit_card do
+      association :student, factory: :user_with_credit_card
+      before(:create) do |payment|
+        payment.payment_method = payment.student.payment_methods.first
+      end
+    end
   end
 
   factory :plan do

@@ -8,8 +8,8 @@ describe Payment do
   describe '.order_by_latest scope' do
     it 'orders by created_at, descending', :vcr, :stripe_mock, :stub_mailgun do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
-      payment_one = FactoryGirl.create(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first)
-      payment_two = FactoryGirl.create(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first)
+      payment_one = FactoryGirl.create(:payment_with_credit_card, student: student)
+      payment_two = FactoryGirl.create(:payment_with_credit_card, student: student)
       expect(Payment.order_by_latest).to eq [payment_two, payment_one]
     end
   end
@@ -17,7 +17,7 @@ describe Payment do
   describe '.without_failed' do
     it "doesn't include failed payments", :vcr, :stripe_mock, :stub_mailgun do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
-      failed_payment = FactoryGirl.create(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first)
+      failed_payment = FactoryGirl.create(:payment_with_credit_card, student: student)
       failed_payment.update(status: 'failed')
       expect(Payment.without_failed).to eq []
     end
@@ -26,20 +26,20 @@ describe Payment do
   describe "make a payment with a bank account", :vcr, :stub_mailgun do
     it "makes a successful payment" do
       student = FactoryGirl.create :user_with_verified_bank_account, email: 'test@test.com'
-      student.payments.create(amount: 100, payment_method: student.bank_accounts.first)
+      FactoryGirl.create(:payment_with_bank_account, student: student)
       student.reload
       expect(student.payments).to_not eq []
     end
 
     it "sets the fee for the payment type" do
       student = FactoryGirl.create :user_with_verified_bank_account, email: 'test@test.com'
-      payment = student.payments.create(amount: 100, payment_method: student.bank_accounts.first)
+      payment = FactoryGirl.create(:payment_with_bank_account, student: student)
       expect(payment.fee).to eq 0
     end
 
     it "sets the status for the payment type" do
       student = FactoryGirl.create :user_with_verified_bank_account, email: 'test@test.com'
-      payment = student.payments.create(amount: 100, payment_method: student.bank_accounts.first)
+      payment = FactoryGirl.create(:payment_with_bank_account, student: student)
       expect(payment.status).to eq "pending"
     end
   end
@@ -47,19 +47,19 @@ describe Payment do
   describe "make a payment with a credit card", :vcr, :stripe_mock, :stub_mailgun do
     it "makes a successful payment" do
       student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
-      student.payments.create(amount: 100, payment_method: student.payment_methods.first)
+      FactoryGirl.create(:payment_with_credit_card, student: student)
       student.reload
       expect(student.payments).to_not eq []
     end
 
     it "sets the fee for the payment type" do
       student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
-      payment = student.payments.create(amount: 100, payment_method: student.payment_methods.first)
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student)
       expect(payment.fee).to eq 32
     end
     it "sets the status for the payment type" do
       student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
-      payment = student.payments.create(amount: 100, payment_method: student.payment_methods.first)
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student)
       expect(payment.status).to eq "succeeded"
     end
   end
@@ -67,7 +67,8 @@ describe Payment do
   describe '#total_amount' do
     it 'returns payment amount plus fees', :vcr, :stripe_mock, :stub_mailgun do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
-      payment = student.payments.create(amount: 600_00, payment_method: student.credit_cards.first)
+      FactoryGirl.create(:payment_with_credit_card, student: student)
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
       expect(payment.total_amount).to be 618_21
     end
   end
@@ -79,7 +80,7 @@ describe Payment do
       mailgun_client = spy("mailgun client")
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
 
-      payment = student.payments.create(amount: 600_00, payment_method: student.credit_cards.first)
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
 
       expect(mailgun_client).to have_received(:send_message).with(
         "epicodus.com",
@@ -99,7 +100,7 @@ describe Payment do
       mailgun_client = spy("mailgun client")
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
 
-      payment = student.payments.create(amount: 600_00, payment_method: student.credit_cards.first)
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
       payment.update(status: 'failed')
 
       expect(mailgun_client).to have_received(:send_message).with(
