@@ -177,12 +177,19 @@ feature 'show page' do
       before do
         FactoryGirl.create(:passing_review, submission: submission)
         visit code_review_path(code_review)
-        click_on 'Resubmit'
       end
 
-      it { is_expected.to have_content 'Submission updated' }
-      it { is_expected.to have_content 'pending review' }
-      it { is_expected.to_not have_link 'has been reviewed' }
+      scenario 'successfully' do
+        click_button 'Resubmit'
+        expect(page).to have_content 'Submission updated'
+        expect(page).to have_content 'pending review'
+      end
+
+      scenario 'unsuccessfully' do
+        fill_in 'submission_link', with: ''
+        click_button 'Resubmit'
+        expect(page).to have_content "Please correct these problems: Link can't be blank"
+      end
     end
   end
 end
