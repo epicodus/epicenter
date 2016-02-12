@@ -1,3 +1,10 @@
+feature 'Guest attempts to sign up' do
+  scenario 'without an invitation' do
+    visit new_student_registration_path
+    expect(page).to have_content 'Sign up is only allowed via invitation.'
+  end
+end
+
 feature 'Student signs up via invitation' do
 
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
@@ -24,7 +31,6 @@ feature 'Student signs up via invitation' do
 end
 
 feature 'Student cannot invite other students' do
-
   let (:student) { FactoryGirl.create(:student) }
 
   scenario 'student visits new_student_invitation path' do
