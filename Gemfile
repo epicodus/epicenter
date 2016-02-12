@@ -59,7 +59,7 @@ group :test do
   gem 'puffing-billy'
   gem 'simplecov', require: false
   gem 'coveralls', require: false
-  gem 'stripe-ruby-mock', require: 'stripe_mock'
+  gem 'stripe-ruby-mock'
 end
 
 group :production do

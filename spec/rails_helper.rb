@@ -10,6 +10,7 @@ require 'billy/rspec'
 require 'cancan/matchers'
 require 'simplecov'
 require 'coveralls'
+require 'stripe_mock'
 
 include Warden::Test::Helpers
 Warden.test_mode!
