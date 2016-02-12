@@ -259,18 +259,18 @@ describe Student do
     expect(student.valid?).to be false
   end
 
-  describe "#stripe_customer" do
-    it "creates a Stripe Customer object for a student", :stripe_mock do
+  describe "#stripe_customer", :stripe_mock do
+    it "creates a Stripe Customer object for a student" do
       student = FactoryGirl.create(:student)
       expect(student.stripe_customer).to be_an_instance_of(Stripe::Customer)
     end
 
-    it "returns the Stripe Customer object", :stripe_mock do
+    it "returns the Stripe Customer object" do
       student = FactoryGirl.create(:student)
       expect(student.stripe_customer).to be_an_instance_of(Stripe::Customer)
     end
 
-    it "returns a Stripe Customer object if one already exists", :stripe_mock do
+    it "returns a Stripe Customer object if one already exists" do
       student = FactoryGirl.create(:student)
       first_stripe_customer_return = student.stripe_customer
       second_stripe_customer_return = student.stripe_customer
@@ -278,13 +278,13 @@ describe Student do
     end
   end
 
-  describe "#stripe_customer_id" do
-    it "starts out nil", :stripe_mock do
+  describe "#stripe_customer_id", :stripe_mock do
+    it "starts out nil" do
       student = FactoryGirl.create(:student)
       expect(student.stripe_customer_id).to be_nil
     end
 
-    it "is populated when a Stripe Customer object is created", :stripe_mock do
+    it "is populated when a Stripe Customer object is created" do
       student = FactoryGirl.create(:student)
       stripe_customer = student.stripe_customer
       expect(student.stripe_customer_id).to eq stripe_customer.id
@@ -312,19 +312,19 @@ describe Student do
     end
   end
 
-  describe "#upfront_payment_due?" do
+  describe "#upfront_payment_due?", :stripe_mock do
     let(:student) { FactoryGirl.create :user_with_credit_card, email: 'test@test.com' }
 
-    it "is true if student has upfront payment and no payments have been made", :stripe_mock do
+    it "is true if student has upfront payment and no payments have been made" do
       expect(student.upfront_payment_due?).to be true
     end
 
-    it "is false if student has no upfront payment", :stripe_mock do
+    it "is false if student has no upfront payment" do
       student.plan.upfront_amount = 0
       expect(student.upfront_payment_due?).to be false
     end
 
-    it "is false if student has made any payments", :vcr, :stripe_mock, :stub_mailgun do
+    it "is false if student has made any payments", :vcr, :stub_mailgun do
       FactoryGirl.create(:payment_with_credit_card, student: student)
       expect(student.upfront_payment_due?).to be false
     end
