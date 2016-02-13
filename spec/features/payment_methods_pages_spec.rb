@@ -10,7 +10,7 @@ feature 'Student views payment methods page' do
   end
 
   context 'after a bank account is added but not verified' do
-    it "shows 'Verify Account' button and does not show link to make payments" do
+    it "shows 'Verify Account' button and does not show link to make payments", :vcr do
       student = FactoryGirl.create(:user_with_all_documents_signed_and_unverified_bank_account)
       sign_in student
       visit payment_methods_path
