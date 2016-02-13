@@ -28,7 +28,7 @@ feature 'Viewing payment index page' do
 
     context 'after a payment has been made with credit card', :vcr, :stripe_mock, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
-        student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
+        student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
         FactoryGirl.create(:payment_with_credit_card, amount: 600_00, student: student)
         login_as(student, scope: :student)
         visit payments_path

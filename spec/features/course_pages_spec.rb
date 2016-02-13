@@ -91,7 +91,7 @@ feature 'editing a course' do
     let(:admin) { FactoryGirl.create(:admin, current_course: course) }
     before { login_as(admin, scope: :admin) }
 
-    scenario 'navigation to course#edit page', js: true do
+    scenario 'navigation to course#edit page' do
       visit root_path
       click_on "Edit #{course.description}"
       expect(page).to have_content "Edit #{course.description}"

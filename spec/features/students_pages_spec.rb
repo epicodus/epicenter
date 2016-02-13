@@ -1,8 +1,15 @@
+feature 'Guest attempts to sign up' do
+  scenario 'without an invitation' do
+    visit new_student_registration_path
+    expect(page).to have_content 'Sign up is only allowed via invitation.'
+  end
+end
+
 feature 'Student signs up via invitation' do
 
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
-  scenario 'with valid information', js: true do
+  scenario 'with valid information' do
     student.invite!
     visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
     fill_in 'Name', with: 'Ryan Larson'
@@ -13,7 +20,7 @@ feature 'Student signs up via invitation' do
     expect(page).to have_content 'Your password was set successfully. You are now signed in.'
   end
 
-  scenario 'with missing information', js: true do
+  scenario 'with missing information' do
     student.invite!
     visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
     fill_in 'Name', with: ''
@@ -24,10 +31,9 @@ feature 'Student signs up via invitation' do
 end
 
 feature 'Student cannot invite other students' do
-
   let (:student) { FactoryGirl.create(:student) }
 
-  scenario 'student visits new_student_invitation path', js: true do
+  scenario 'student visits new_student_invitation path' do
     login_as(student)
     visit new_student_invitation_path
     expect(page).to have_content 'You need to sign in or sign up before continuing'
@@ -38,7 +44,7 @@ end
 feature "Student signs in while class is not in session" do
 
   let(:future_course) { FactoryGirl.create(:future_course) }
-  let(:student) { FactoryGirl.create(:student, course: future_course) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: future_course) }
 
   context "before adding a payment method" do
     it "takes them to the page to choose payment method" do

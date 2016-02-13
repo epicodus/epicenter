@@ -22,7 +22,7 @@ feature 'Creating a credit card' do
       expect(page).to have_content 'Your credit card has been added.'
     end
 
-    scenario 'with missing account information', js: true do
+    scenario 'with missing account information', :vcr, js: true do
       fill_in 'card_number', with: '4012888888881881'
       fill_in 'expiration_month', with: ' '
       fill_in 'expiration_year', with: '2016'
@@ -32,7 +32,7 @@ feature 'Creating a credit card' do
       expect(page).to have_content 'Enter a valid integer value.'
     end
 
-    scenario 'with invalid account number', js: true do
+    scenario 'with invalid account number', :vcr, js: true do
       fill_in 'card_number', with: '4242424242424241'
       fill_in 'expiration_month', with: '12'
       fill_in 'expiration_year', with: '2016'
