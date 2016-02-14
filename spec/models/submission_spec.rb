@@ -49,7 +49,7 @@ describe Submission do
     end
   end
 
-  xdescribe '#latest_review', :stub_mailgun do
+  describe '#latest_review', :stub_mailgun do
     it 'returns the latest review for this submission' do
       submission = FactoryGirl.create(:submission)
       review = FactoryGirl.create(:review, submission: submission)

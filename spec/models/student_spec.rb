@@ -43,23 +43,27 @@ describe Student do
     let(:student) { FactoryGirl.create(:student, courses: [first_course, second_course, third_course]) }
 
     it 'returns the upcoming course when a student has enrolled, but class has not started' do
-      travel_to first_course.start_date - 1
-      expect(student.course).to eq first_course
+      travel_to first_course.start_date - 1 do
+        expect(student.course).to eq first_course
+      end
     end
 
     it 'returns the current course when class is in session' do
-      travel_to first_course.start_date
-      expect(student.course).to eq first_course
+      travel_to first_course.start_date do
+        expect(student.course).to eq first_course
+      end
     end
 
     it 'returns the next course when a student is in between courses' do
-      travel_to second_course.end_date + 1
-      expect(student.course).to eq third_course
+      travel_to second_course.end_date + 1 do
+        expect(student.course).to eq third_course
+      end
     end
 
     it 'returns the last course when a student is no longer enrolled' do
-      travel_to third_course.end_date + 1
-      expect(student.course).to eq third_course
+      travel_to third_course.end_date + 1 do
+        expect(student.course).to eq third_course
+      end
     end
   end
 
@@ -103,9 +107,8 @@ describe Student do
     let!(:student_12_after_starting_point) { FactoryGirl.create(:user_with_score_of_6, course: current_student.course) }
 
     it "returns an empty array when there are no other students in a course", :stub_mailgun do
-      new_course = FactoryGirl.create(:course)
-      current_student.update(course: new_course)
-      expect(current_student.random_pairs).to eq []
+      student_without_classmates = FactoryGirl.create(:student)
+      expect(student_without_classmates.random_pairs).to eq []
     end
 
     it "returns random pairs based on student total grade score for the most recent code review and distance_until_end is more than the number of pairs", :stub_mailgun do
