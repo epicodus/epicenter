@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   devise_for :student, :controllers => { :invitations => 'invitations', :registrations => 'registrations', sessions: 'student/sessions' }
   devise_for :admins, skip: :registrations
 
-  resources :students, only: [:update] do
+  resources :students, only: [:index, :update] do
     resources :courses, only: [:index]
   end
   resources :admins, only: [:update]

@@ -652,7 +652,6 @@ describe Student do
       it { is_expected.to have_abilities(:create, CreditCard.new) }
     end
 
-
     context 'for payments' do
       let(:bank_account) { FactoryGirl.create(:bank_account, student: student) }
       let(:credit_card) { FactoryGirl.create(:credit_card, student: student) }

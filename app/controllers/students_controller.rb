@@ -2,8 +2,16 @@ class StudentsController < ApplicationController
   authorize_resource
 
   def index
-    @course = Course.find(params[:course_id])
-    @enrollment = Enrollment.new
+    if params[:search]
+      @query = params[:search]
+      @results = Student.includes(:courses).search(@query)
+      render 'search_results'
+    elsif params[:course_id]
+      @course = Course.find(params[:course_id])
+      @enrollment = Enrollment.new
+    else
+      redirect_to root_path
+    end
   end
 
   def show
