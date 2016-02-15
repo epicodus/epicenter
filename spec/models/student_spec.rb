@@ -17,11 +17,11 @@ describe Student do
     expect(student.valid?).to be false
   end
 
-  describe '#with_actived_accounts' do
+  describe '#with_activated_accounts' do
     it 'returns all students who have activated their accounts' do
       inactive_student = FactoryGirl.create(:student, sign_in_count: 0)
       active_student = FactoryGirl.create(:student, sign_in_count: 4)
-      expect(Student.with_actived_accounts).to eq [active_student]
+      expect(Student.with_activated_accounts).to eq [active_student]
     end
   end
 

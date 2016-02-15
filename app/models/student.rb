@@ -1,5 +1,5 @@
 class Student < User
-  scope :with_actived_accounts, -> { where('sign_in_count > ?', 0 ) }
+  scope :with_activated_accounts, -> { where('sign_in_count > ?', 0 ) }
   default_scope { order(:name) }
 
   validates :plan_id, presence: true
