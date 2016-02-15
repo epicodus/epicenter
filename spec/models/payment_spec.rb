@@ -136,4 +136,44 @@ describe Payment do
       payment_2.save
     end
   end
+
+  describe '#refund', :stub_mailgun do
+    it 'refunds a credit card payment' do
+      student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student)
+      payment.refund(50)
+      expect(payment.refund_amount).to eq 50
+    end
+
+    it 'fails to refund a credit card payment when the refund amount is more than the payment amount' do
+      student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student)
+      expect(payment.refund(200)).to eq false
+    end
+
+    it 'fails to refund a credit card payment when the refund amount is negative' do
+      student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student)
+      expect(payment.refund(-200)).to eq false
+    end
+
+    it 'refunds a bank account payment' do
+      student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'test@test.com')
+      payment = FactoryGirl.create(:payment_with_bank_account, student: student)
+      payment.refund(75)
+      expect(payment.refund_amount).to eq 75
+    end
+
+    it 'fails to refund a bank account payment when the refund amount is more than the payment amount' do
+      student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'test@test.com')
+      payment = FactoryGirl.create(:payment_with_bank_account, student: student)
+      expect(payment.refund(200)).to eq false
+    end
+
+    it 'fails to refund a bank account payment when the refund amount is negative' do
+      student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'test@test.com')
+      payment = FactoryGirl.create(:payment_with_bank_account, student: student)
+      expect(payment.refund(-200)).to eq false
+    end
+  end
 end

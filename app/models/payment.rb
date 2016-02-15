@@ -19,6 +19,17 @@ class Payment < ActiveRecord::Base
     amount + fee
   end
 
+  def refund(amount)
+    begin
+      charge_id = Stripe::BalanceTransaction.retrieve(stripe_transaction).source
+      refund = Stripe::Refund.create(charge: charge_id, amount: amount)
+      self.refund_amount = refund.amount
+    rescue Stripe::InvalidRequestError => exception
+      errors.add(:base, exception.message)
+      false
+    end
+  end
+
 private
   def update_close_io
     amount_paid = { 'custom.Amount paid': student.total_paid / 100 }
