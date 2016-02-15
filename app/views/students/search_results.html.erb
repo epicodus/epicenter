@@ -1,0 +1,47 @@
+<% if @results.any? %>
+  <% @results.each do |student| %>
+    <div class="col-xs-8 col-xs-offset-2">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <strong><%= student.name %></strong>
+          <% if student.courses.empty? %>
+            <span class="label label-primary pull-right">Not enrolled</span>
+          <% elsif student.class_over? %>
+            <span class="label label-info pull-right">Graduate</span>
+          <% elsif student.courses.any? %>
+            <span class="label label-success pull-right">Current student</span>
+          <% end %>
+        </div>
+        <div class="panel-body">
+          <% if !student.signed_main_documents? %>
+            <p><strong><%= student.name %> has not signed all documents.</strong></p>
+          <% end %>
+          <p><%= pluralize(student.courses.count, 'course') %></p>
+          <p>Total paid: <%= number_to_currency(student.total_paid / 100.00) %></p>
+          <% if student.courses.any? %>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Courses</th>
+                  <th>Attendance</th>
+                  <th>Submissions status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% student.courses.each do |course| %>
+                  <tr>
+                    <td class="col-xs-5"><%= link_to course.description, course_student_path(course, student) %></td>
+                    <td><%= number_to_percentage(student.attendance_score(course), precision: 0) %></td>
+                    <td><%= student.submissions.needing_review.count %> to review</td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% else %>
+  <h3>No students found.</h3>
+<% end %>

@@ -1,0 +1,10 @@
+<%= form_tag students_path, method: 'get', class: 'navbar-form navbar-left' do %>
+  <div class="input-group">
+    <%= text_field_tag :search, nil, placeholder: 'Search students', class: 'form-control' %>
+      <div class="input-group-btn">
+        <%= button_tag 'Search', class: 'btn btn-info', id: 'student-search' do %>
+          <span class="glyphicon glyphicon-search"></span>
+        <% end %>
+      </div>
+  </div>
+<% end %>
