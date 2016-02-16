@@ -1,0 +1,12 @@
+<h1>Payment for <%= @student.name %></h1>
+<hr>
+<h3>Status: <%= @payment.status.capitalize %></h3>
+<h3>Date: <%= @payment.created_at.strftime("%A, %B %d, %Y") %></h3>
+<h3>Amount: <%= number_to_currency(@payment.total_amount / 100.00) %></h3>
+<h3>Payment Method: <%= @payment.payment_method.class.name.underscore.humanize + ' ending in ' + @payment.payment_method.last_four_string[-4,4] %></h3>
+
+<%= form_for [@student, @payment], method: :patch do |f| %>
+  <%= f.label :refund_amount %>
+  <%= f.text_field :refund_amount %>
+  <%= f.submit 'Issue refund' %>
+<% end %>

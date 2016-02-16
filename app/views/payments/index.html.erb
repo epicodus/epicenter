@@ -1,4 +1,8 @@
-<h1>Your payments</h1>
+<% if current_student %>
+  <h1>Your payments</h1>
+<% elsif current_admin %>
+  <h1>Payments for <%= @student.name %></h1>
+<% end %>
 
 <%= render 'layouts/errors', object: @payment %>
 
@@ -10,23 +14,21 @@
         <th>Date</th>
         <th>Amount</th>
         <th>Payment Method</th>
+        <% if current_admin %>
+          <th></th>
+        <% end %>
       </tr>
     </thead>
     <tbody>
       <% @payments.order_by_latest.each do |payment| %>
         <tr>
-          <td>
-            <%= payment.status.capitalize %>
-          </td>
-          <td>
-            <%= payment.created_at.strftime("%F") %>
-          </td>
-          <td>
-            <%= number_to_currency(payment.total_amount / 100.00) %>
-          </td>
-          <td>
-            <%= payment.payment_method.class.name.underscore.humanize + ' ending in ' + payment.payment_method.last_four_string[-4,4] %>
-          </td>
+          <td><%= payment.status.capitalize %></td>
+          <td><%= payment.created_at.strftime("%A, %B %d, %Y") %></td>
+          <td><%= number_to_currency(payment.total_amount / 100.00) %></td>
+          <td><%= payment.payment_method.class.name.underscore.humanize + ' ending in ' + payment.payment_method.last_four_string[-4,4] %></td>
+          <% if current_admin %>
+            <td><%= link_to 'Issue refund', student_payment_path(@student, payment) %></td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>
@@ -35,12 +37,14 @@
   <p>Looks like you haven't made any payments yet.</p>
 <% end %>
 
-<% if current_student.upfront_payment_due? %>
-  <%= render 'payments/upfront_payment_button' %>
+<% if current_student %>
+  <% if @student.upfront_payment_due? %>
+    <%= render 'payments/upfront_payment_button' %>
+  <% end %>
+
+  <p class='new-method-links'><%= link_to 'Manage payment methods', payment_methods_path %></p>
+
+  <p>All payments will be made using your primary payment method.</p>
+
+  <p>If you need help or have any questions regarding your payments, contact us.</p>
 <% end %>
-
-<p class='new-method-links'><%= link_to 'Manage payment methods', payment_methods_path %></p>
-
-<p>All payments will be made using your primary payment method.</p>
-
-<p>If you need help or have any questions regarding your payments, contact us.</p>
