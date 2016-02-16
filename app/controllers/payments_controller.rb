@@ -5,6 +5,7 @@ class PaymentsController < ApplicationController
   def index
     @student = Student.find(params[:student_id])
     @payments = @student.payments
+    authorize! :manage, @student
     if @student.upfront_payment_due?
       @payment = Payment.new(amount: @student.upfront_amount_with_fees)
     end
@@ -13,6 +14,7 @@ class PaymentsController < ApplicationController
   def show
     @student = Student.find(params[:student_id])
     @payment = Payment.find(params[:id])
+    authorize! :read, @payment
   end
 
   def update

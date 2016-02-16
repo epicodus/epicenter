@@ -13,18 +13,19 @@
   <h4><strong>Refund amount: <%= number_to_currency(@payment.refund_amount / 100.00) %></strong></h4>
 <% end %>
 
-<hr>
-
-<% if !@payment.refund_amount? || @payment.refund_amount > @payment.total_amount %>
-  <div class="row">
-    <div class="col-xs-3">
-      <%= form_for [@student, @payment], method: :patch do |f| %>
-        <div class="form-group">
-          <%= f.label :refund_amount %>
-          <%= f.number_field :refund_amount, class: 'form-control', min: 1 %>
-        </div>
-        <%= f.submit 'Issue refund', class: 'btn btn-info' %>
-      <% end %>
+<% if current_admin %>
+  <% if !@payment.refund_amount? || @payment.refund_amount > @payment.total_amount %>
+    <hr>
+    <div class="row">
+      <div class="col-xs-3">
+        <%= form_for [@student, @payment], method: :patch do |f| %>
+          <div class="form-group">
+            <%= f.label :refund_amount %>
+            <%= f.number_field :refund_amount, class: 'form-control', min: 1 %>
+          </div>
+          <%= f.submit 'Issue refund', class: 'btn btn-info', id: 'refund-button' %>
+        <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
 <% end %>
