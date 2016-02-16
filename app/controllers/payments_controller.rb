@@ -15,7 +15,21 @@ class PaymentsController < ApplicationController
     @payment = Payment.find(params[:id])
   end
 
+  def update
+    @student = Student.find(params[:student_id])
+    @payment = Payment.find(params[:id])
+    if @payment.update(payment_params)
+      redirect_to student_payments_path(@student)
+    else
+      render 'show'
+    end
+  end
+
 private
+  def payment_params
+    params.require(:payment).permit(:refund_amount)
+  end
+
   def ensure_student_has_primary_payment_method
     @student = Student.find(params[:student_id])
     redirect_to payment_methods_path if !@student.primary_payment_method
