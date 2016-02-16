@@ -8,8 +8,8 @@ feature 'Viewing payment index page' do
   context 'as a student' do
     context "viewing another student's payments page", :stripe_mock do
       it "doesn't show payment history" do
-        student = FactoryGirl.create(:user_with_credit_card)
-        student_2 = FactoryGirl.create(:user_with_credit_card)
+        student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card)
+        student_2 = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card)
         login_as(student, scope: :student)
         visit student_payments_path(student_2)
         expect(page).to have_content "You are not authorized to access this page."
@@ -152,6 +152,7 @@ feature 'viewing payment show page', :vcr, :stripe_mock, :stub_mailgun do
       visit payment_path(payment)
       expect(page).to have_content "Payment for #{student.name}"
       expect(page).to have_content "Total amount: $1.32"
+      expect(page).to_not have_content 'Refund amount'
     end
   end
 
