@@ -69,7 +69,7 @@ feature "Student signs in while class is not in session" do
     it "shows them their payment history" do
       verified_bank_account = FactoryGirl.create(:verified_bank_account, student: student)
       sign_in(student)
-      visit payments_path
+      visit student_payments_path(student)
       expect(page).to have_content "Your payments"
     end
   end
@@ -78,7 +78,7 @@ feature "Student signs in while class is not in session" do
     it "shows them their payment history" do
       credit_card = FactoryGirl.create(:credit_card, student: student)
       sign_in(student)
-      visit payments_path
+      visit student_payments_path(student)
       expect(page).to have_content "Your payments"
     end
   end
@@ -223,7 +223,7 @@ feature 'Guest not signed in' do
 
   context 'visits payments path' do
     let(:student) { FactoryGirl.create(:student) }
-    before { visit payments_path }
+    before { visit student_payments_path(student) }
     it { should have_content 'You need to sign in' }
   end
 end
@@ -239,7 +239,7 @@ feature 'unenrolled student signs in' do
   end
 
   it 'student can view the payments page' do
-    visit payments_path
+    visit student_payments_path(student)
     expect(page).to have_content 'Your payment methods'
   end
 

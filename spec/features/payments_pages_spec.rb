@@ -1,6 +1,7 @@
 feature 'Viewing payment index page' do
   scenario 'as a guest' do
-    visit payments_path
+    student = FactoryGirl.create(:student)
+    visit student_payments_path(student)
     expect(page).to have_content 'need to sign in'
   end
 
@@ -9,7 +10,7 @@ feature 'Viewing payment index page' do
       it "doesn't show payment history" do
         student = FactoryGirl.create(:user_with_credit_card)
         login_as(student, scope: :student)
-        visit payments_path
+        visit student_payments_path(student)
         expect(page).to have_content "Looks like you haven't made any payments yet."
       end
     end
@@ -19,7 +20,7 @@ feature 'Viewing payment index page' do
         student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com')
         payment = FactoryGirl.create(:payment_with_bank_account, amount: 600_00, student: student)
         login_as(student, scope: :student)
-        visit payments_path
+        visit student_payments_path(student)
         expect(page).to have_content 600.00
         expect(page).to have_content "Pending"
         expect(page).to have_content "Bank account ending in 6789"
@@ -31,7 +32,7 @@ feature 'Viewing payment index page' do
         student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
         FactoryGirl.create(:payment_with_credit_card, amount: 600_00, student: student)
         login_as(student, scope: :student)
-        visit payments_path
+        visit student_payments_path(student)
         expect(page).to have_content 618.21
         expect(page).to have_content "Succeeded"
         expect(page).to have_content "Credit card ending in 4242"
@@ -43,7 +44,7 @@ feature 'Viewing payment index page' do
         plan = FactoryGirl.create(:upfront_payment_only_plan, upfront_amount: 200_00)
         student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com', plan: plan)
         login_as(student, scope: :student)
-        visit payments_path
+        visit student_payments_path(student)
         expect(page).to have_button('Make upfront payment of $200.00')
       end
     end
@@ -53,7 +54,7 @@ feature 'Viewing payment index page' do
         plan = FactoryGirl.create(:upfront_payment_only_plan, upfront_amount: 200_00)
         student = FactoryGirl.create(:user_with_credit_card, plan: plan)
         login_as(student, scope: :student)
-        visit payments_path
+        visit student_payments_path(student)
         expect(page).to have_button('Make upfront payment of $206.27')
       end
     end
