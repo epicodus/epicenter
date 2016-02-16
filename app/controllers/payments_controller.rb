@@ -1,6 +1,6 @@
 class PaymentsController < ApplicationController
   authorize_resource
-  before_filter :ensure_student_has_primary_payment_method
+  before_filter :ensure_student_has_primary_payment_method, except: [:show, :update]
 
   def index
     @student = Student.find(params[:student_id])
@@ -12,16 +12,14 @@ class PaymentsController < ApplicationController
   end
 
   def show
-    @student = Student.find(params[:student_id])
     @payment = Payment.find(params[:id])
     authorize! :read, @payment
   end
 
   def update
-    @student = Student.find(params[:student_id])
     @payment = Payment.find(params[:id])
     if @payment.update(payment_params)
-      redirect_to student_payments_path(@student)
+      redirect_to student_payments_path(@payment.student)
     else
       render 'show'
     end
@@ -33,7 +31,7 @@ private
   end
 
   def ensure_student_has_primary_payment_method
-    @student = Student.find(params[:student_id])
-    redirect_to payment_methods_path if !@student.primary_payment_method
+    student = Student.find(params[:student_id])
+    redirect_to payment_methods_path if !student.primary_payment_method
   end
 end

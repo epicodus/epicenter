@@ -29,7 +29,7 @@
             <% if payment.refund_amount? %>
               <td><%= number_to_currency(payment.refund_amount / 100.00) %></td>
             <% else %>
-              <td><%= link_to 'Issue refund', student_payment_path(@student, payment) %></td>
+              <td><%= link_to 'Issue refund', payment_path(payment) %></td>
             <% end %>
           <% end %>
         </tr>

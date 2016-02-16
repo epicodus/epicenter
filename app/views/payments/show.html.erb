@@ -1,7 +1,7 @@
 <%= render 'layouts/errors', object: @payment %>
 
-<%= link_to 'Back to payments', student_payments_path(@student) %>
-<h1>Payment for <%= @student.name %></h1>
+<%= link_to 'Back to payments', student_payments_path(@payment.student) %>
+<h1>Payment for <%= @payment.student.name %></h1>
 
 <h4>Payment Method: <%= @payment.payment_method.class.name.underscore.humanize + ' ending in ' + @payment.payment_method.last_four_string[-4,4] %></h4>
 <h4>Status: <%= @payment.status.capitalize %></h4>
@@ -18,7 +18,7 @@
     <hr>
     <div class="row">
       <div class="col-xs-3">
-        <%= form_for [@student, @payment], method: :patch do |f| %>
+        <%= form_for @payment, method: :patch do |f| %>
           <div class="form-group">
             <%= f.label :refund_amount %>
             <%= f.number_field :refund_amount, class: 'form-control', min: 1 %>
