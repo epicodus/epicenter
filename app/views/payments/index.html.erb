@@ -5,17 +5,16 @@
 <% end %>
 
 <%= render 'layouts/errors', object: @payment %>
-
 <% if @payments.present? %>
   <table class="table table-hover">
     <thead>
       <tr>
         <th>Status</th>
         <th>Date</th>
-        <th>Amount</th>
+        <th>Amount (including fee)</th>
         <th>Payment Method</th>
         <% if current_admin %>
-          <th></th>
+          <th>Refund amount</th>
         <% end %>
       </tr>
     </thead>
@@ -27,14 +26,22 @@
           <td><%= number_to_currency(payment.total_amount / 100.00) %></td>
           <td><%= payment.payment_method.class.name.underscore.humanize + ' ending in ' + payment.payment_method.last_four_string[-4,4] %></td>
           <% if current_admin %>
-            <td><%= link_to 'Issue refund', student_payment_path(@student, payment) %></td>
+            <% if payment.refund_amount? %>
+              <td><%= number_to_currency(payment.refund_amount / 100.00) %></td>
+            <% else %>
+              <td><%= link_to 'Issue refund', student_payment_path(@student, payment) %></td>
+            <% end %>
           <% end %>
         </tr>
       <% end %>
     </tbody>
   </table>
 <% else %>
-  <p>Looks like you haven't made any payments yet.</p>
+  <% if current_student %>
+    <p>Looks like you haven't made any payments yet.</p>
+  <% elsif current_admin %>
+    <p>Looks like <%= @student.name %> hasn't made any payments yet.</p>
+  <% end %>
 <% end %>
 
 <% if current_student %>
