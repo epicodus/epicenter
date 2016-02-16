@@ -142,6 +142,7 @@ describe Payment do
       student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
       payment = FactoryGirl.create(:payment_with_credit_card, student: student)
       payment.refund(50)
+      payment.reload
       expect(payment.refund_amount).to eq 50
     end
 
@@ -161,6 +162,7 @@ describe Payment do
       student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'test@test.com')
       payment = FactoryGirl.create(:payment_with_bank_account, student: student)
       payment.refund(75)
+      payment.reload
       expect(payment.refund_amount).to eq 75
     end
 

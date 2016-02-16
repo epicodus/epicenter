@@ -23,7 +23,7 @@ class Payment < ActiveRecord::Base
     begin
       charge_id = Stripe::BalanceTransaction.retrieve(stripe_transaction).source
       refund = Stripe::Refund.create(charge: charge_id, amount: amount)
-      self.refund_amount = refund.amount
+      self.update(refund_amount: refund.amount) # extract this out to an after_update callback
     rescue Stripe::InvalidRequestError => exception
       errors.add(:base, exception.message)
       false
