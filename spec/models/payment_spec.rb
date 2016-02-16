@@ -137,7 +137,7 @@ describe Payment do
     end
   end
 
-  describe '#refund', :stub_mailgun do
+  describe '#refund', :stub_mailgun, :vcr do
     it 'refunds a credit card payment' do
       student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
       payment = FactoryGirl.create(:payment_with_credit_card, student: student)
