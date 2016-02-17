@@ -188,7 +188,7 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
     visit payment_path(payment)
     fill_in 'payment_refund_amount', with: 60
     click_on 'Issue refund'
-    expect(page).to have_content "Payments for #{student.name}"
+    expect(page).to have_content "Refund successfully issued for #{@payment.student.name}."
     expect(page).to have_content '$0.60'
   end
 

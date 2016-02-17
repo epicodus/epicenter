@@ -1,47 +1,43 @@
-<% if current_student %>
-  <h1>Your payments</h1>
-<% elsif current_admin %>
+<% if can? :manage, Payment %>
   <h1>Payments for <%= @student.name %></h1>
+<% elsif can? :read, Payment %>
+  <h1>Your payments</h1>
 <% end %>
 
 <%= render 'layouts/errors', object: @payment %>
-<% if @payments.present? %>
+<% if @student.payments.present? %>
   <table class="table table-hover">
     <thead>
       <tr>
         <th>Status</th>
         <th>Date</th>
         <th>Amount (including fee)</th>
-        <th>Payment Method</th>
-        <% if current_admin %>
+        <th>Payment method</th>
+        <% if can?(:manage, Payment) || @student.payments.pluck(:refund_amount).any? %>
           <th>Refund amount</th>
         <% end %>
       </tr>
     </thead>
     <tbody>
-      <% @payments.order_by_latest.each do |payment| %>
+      <% @student.payments.order_by_latest.each do |payment| %>
         <tr>
           <td><%= payment.status.capitalize %></td>
           <td><%= payment.created_at.strftime("%A, %B %d, %Y") %></td>
           <td><%= number_to_currency(payment.total_amount / 100.00) %></td>
           <td><%= payment.payment_method.class.name.underscore.humanize + ' ending in ' + payment.payment_method.last_four_string[-4,4] %></td>
-          <% if current_admin %>
             <% if payment.refund_amount? %>
               <td><%= number_to_currency(payment.refund_amount / 100.00) %></td>
             <% else %>
-              <td><%= link_to 'Issue refund', payment_path(payment) %></td>
+              <% if can? :manage, Payment %>
+                <td><%= link_to 'Issue refund', payment_path(payment) %></td>
+              <% end %>
             <% end %>
-          <% end %>
         </tr>
       <% end %>
     </tbody>
   </table>
 <% else %>
-  <% if current_student %>
-    <p>Looks like you haven't made any payments yet.</p>
-  <% elsif current_admin %>
-    <p>Looks like <%= @student.name %> hasn't made any payments yet.</p>
-  <% end %>
+  <p>No payments have been made yet.</p>
 <% end %>
 
 <% if current_student %>
