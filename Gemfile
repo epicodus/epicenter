@@ -29,7 +29,6 @@ gem 'bootstrap-sass'
 gem 'sass-rails'
 gem 'jquery-datatables-rails'
 gem 'textacular'
-gem 'autonumeric-rails'
 
 group :development do
   gem 'spring'
