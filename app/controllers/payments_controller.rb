@@ -26,7 +26,17 @@ class PaymentsController < ApplicationController
 
 private
   def payment_params
+    format_refund_amount
     params.require(:payment).permit(:refund_amount)
+  end
+
+  def format_refund_amount
+    amount = params[:payment][:refund_amount]
+    if amount.include?('.')
+      amount.slice!('.')
+    else
+      params[:payment][:refund_amount] = amount.to_i * 100
+    end
   end
 
   def ensure_student_has_primary_payment_method

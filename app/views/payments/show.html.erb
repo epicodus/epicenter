@@ -9,19 +9,22 @@
 <h4>Amount: <%= number_to_currency(@payment.amount / 100.00) %></h4>
 <h4>Fee: <%= number_to_currency(@payment.fee / 100.00) %></h4>
 <h4><strong>Total amount: <%= number_to_currency(@payment.total_amount / 100.00) %></strong></h4>
-<% if @payment.refund_amount? && @payment.refund_amount <= @payment.total_amount %>
+<% if @payment.refund_amount? && @payment.refund_amount.between?(0, @payment.total_amount) %>
   <h4><strong>Refund amount: <%= number_to_currency(@payment.refund_amount / 100.00) %></strong></h4>
 <% end %>
 
 <% if can? :manage, Payment %>
-  <% if !@payment.refund_amount? || @payment.refund_amount > @payment.total_amount %>
+  <% if !@payment.refund_amount? || !@payment.refund_amount.between?(0, @payment.total_amount) %>
     <hr>
     <div class="row">
       <div class="col-xs-3">
         <%= form_for @payment, method: :patch do |f| %>
           <div class="form-group">
             <%= f.label :refund_amount %>
-            <%= f.number_field :refund_amount, class: 'form-control', min: 1 %>
+            <div class="input-group">
+              <span class="input-group-addon">$</span>
+              <%= f.text_field :refund_amount, class: 'form-control', id: 'refund-input', required: true %>
+            </div>
           </div>
           <%= f.submit 'Issue refund', class: 'btn btn-info', id: 'refund-button' %>
         <% end %>
