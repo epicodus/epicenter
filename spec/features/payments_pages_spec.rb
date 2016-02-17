@@ -6,6 +6,13 @@ feature 'Viewing payment index page' do
   end
 
   context 'as a student' do
+    scenario "without a primary payment method" do
+      student = FactoryGirl.create(:user_with_all_documents_signed)
+      login_as(student, scope: :student)
+      visit student_payments_path(student)
+      expect(page).to have_content "Your payment methods"
+    end
+
     context "viewing another student's payments page", :stripe_mock do
       it "doesn't show payment history" do
         student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card)
