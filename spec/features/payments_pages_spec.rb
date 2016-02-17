@@ -81,6 +81,13 @@ feature 'Viewing payment index page' do
     let(:admin) { FactoryGirl.create(:admin) }
     before { login_as(admin, scope: :admin) }
 
+    scenario "for a student without a primary payment method" do
+      student = FactoryGirl.create(:user_with_all_documents_signed)
+      visit student_payments_path(student)
+      expect(page).to have_content "Payments for #{student.name}"
+      expect(page).to have_content "No payments have been made yet."
+    end
+
     context 'before any payments have been made', :stripe_mock do
       it "doesn't show payment history" do
         student = FactoryGirl.create(:user_with_credit_card)

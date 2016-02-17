@@ -5,7 +5,7 @@ class PaymentsController < ApplicationController
   def index
     @student = Student.find(params[:student_id])
     authorize! :manage, @student
-    if @student.upfront_payment_due?
+    if current_student && @student.upfront_payment_due?
       @payment = Payment.new(amount: @student.upfront_amount_with_fees)
     end
   end
@@ -31,6 +31,8 @@ private
 
   def ensure_student_has_primary_payment_method
     student = Student.find(params[:student_id])
-    redirect_to payment_methods_path if !student.primary_payment_method
+    if current_student && !student.primary_payment_method
+      redirect_to payment_methods_path
+    end
   end
 end
