@@ -33,7 +33,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 16 Feb 2016 22:00:25 GMT
+      - Wed, 17 Feb 2016 21:46:25 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -51,7 +51,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7v76xVPXfjPMz9
+      - req_7vU6sQ94mCjLTA
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -60,7 +60,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_7v76EZSBkSQAND",
+          "id": "cus_7vU6RP1xhjb4Ir",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
@@ -68,9 +68,9 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7v76EZSBkSQAND/bank_accounts"
+            "url": "/v1/customers/cus_7vU6RP1xhjb4Ir/bank_accounts"
           },
-          "created": 1455660025,
+          "created": 1455745585,
           "currency": null,
           "default_bank_account": null,
           "default_source": null,
@@ -87,21 +87,21 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7v76EZSBkSQAND/sources"
+            "url": "/v1/customers/cus_7vU6RP1xhjb4Ir/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7v76EZSBkSQAND/subscriptions"
+            "url": "/v1/customers/cus_7vU6RP1xhjb4Ir/subscriptions"
           }
         }
     http_version: 
-  recorded_at: Tue, 16 Feb 2016 22:00:25 GMT
+  recorded_at: Wed, 17 Feb 2016 21:46:25 GMT
 - request:
     method: post
-    uri: https://api.stripe.com/v1/customers/cus_7v76EZSBkSQAND/sources
+    uri: https://api.stripe.com/v1/customers/cus_7vU6RP1xhjb4Ir/sources
     body:
       encoding: UTF-8
       string: source[cvc]=123&source[exp_month]=12&source[exp_year]=2020&source[number]=4242424242424242&source[object]=card
@@ -132,7 +132,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 16 Feb 2016 22:00:26 GMT
+      - Wed, 17 Feb 2016 21:46:26 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -150,7 +150,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7v76l62lJ3c4mB
+      - req_7vU6C2C9MdaA9V
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -159,7 +159,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "card_7v76CRBH13AIlJ",
+          "id": "card_7vU6OLN6q0j96e",
           "object": "card",
           "address_city": null,
           "address_country": null,
@@ -171,7 +171,7 @@ http_interactions:
           "address_zip_check": null,
           "brand": "Visa",
           "country": "US",
-          "customer": "cus_7v76EZSBkSQAND",
+          "customer": "cus_7vU6RP1xhjb4Ir",
           "cvc_check": "pass",
           "dynamic_last4": null,
           "exp_month": 12,
@@ -184,10 +184,10 @@ http_interactions:
           "tokenization_method": null
         }
     http_version: 
-  recorded_at: Tue, 16 Feb 2016 22:00:26 GMT
+  recorded_at: Wed, 17 Feb 2016 21:46:26 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_7v76EZSBkSQAND
+    uri: https://api.stripe.com/v1/customers/cus_7vU6RP1xhjb4Ir
     body:
       encoding: US-ASCII
       string: ''
@@ -216,7 +216,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 16 Feb 2016 22:00:26 GMT
+      - Wed, 17 Feb 2016 21:46:26 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -234,7 +234,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7v76IQI9JsSySj
+      - req_7vU6WYDi6jsrUK
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -243,7 +243,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_7v76EZSBkSQAND",
+          "id": "cus_7vU6RP1xhjb4Ir",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
@@ -251,12 +251,12 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7v76EZSBkSQAND/bank_accounts"
+            "url": "/v1/customers/cus_7vU6RP1xhjb4Ir/bank_accounts"
           },
-          "created": 1455660025,
+          "created": 1455745585,
           "currency": null,
           "default_bank_account": null,
-          "default_source": "card_7v76CRBH13AIlJ",
+          "default_source": "card_7vU6OLN6q0j96e",
           "default_source_type": "card",
           "delinquent": false,
           "description": "test@test.com",
@@ -269,7 +269,7 @@ http_interactions:
             "object": "list",
             "data": [
               {
-                "id": "card_7v76CRBH13AIlJ",
+                "id": "card_7vU6OLN6q0j96e",
                 "object": "card",
                 "address_city": null,
                 "address_country": null,
@@ -281,7 +281,7 @@ http_interactions:
                 "address_zip_check": null,
                 "brand": "Visa",
                 "country": "US",
-                "customer": "cus_7v76EZSBkSQAND",
+                "customer": "cus_7vU6RP1xhjb4Ir",
                 "cvc_check": "pass",
                 "dynamic_last4": null,
                 "exp_month": 12,
@@ -296,21 +296,21 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_7v76EZSBkSQAND/sources"
+            "url": "/v1/customers/cus_7vU6RP1xhjb4Ir/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7v76EZSBkSQAND/subscriptions"
+            "url": "/v1/customers/cus_7vU6RP1xhjb4Ir/subscriptions"
           }
         }
     http_version: 
-  recorded_at: Tue, 16 Feb 2016 22:00:26 GMT
+  recorded_at: Wed, 17 Feb 2016 21:46:26 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_7v76EZSBkSQAND/sources/card_7v76CRBH13AIlJ
+    uri: https://api.stripe.com/v1/customers/cus_7vU6RP1xhjb4Ir/sources/card_7vU6OLN6q0j96e
     body:
       encoding: US-ASCII
       string: ''
@@ -339,7 +339,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 16 Feb 2016 22:00:26 GMT
+      - Wed, 17 Feb 2016 21:46:26 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -357,7 +357,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7v76Xb2k5BNXSp
+      - req_7vU6TID10ijRWh
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -366,7 +366,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "card_7v76CRBH13AIlJ",
+          "id": "card_7vU6OLN6q0j96e",
           "object": "card",
           "address_city": null,
           "address_country": null,
@@ -378,7 +378,7 @@ http_interactions:
           "address_zip_check": null,
           "brand": "Visa",
           "country": "US",
-          "customer": "cus_7v76EZSBkSQAND",
+          "customer": "cus_7vU6RP1xhjb4Ir",
           "cvc_check": "pass",
           "dynamic_last4": null,
           "exp_month": 12,
@@ -391,10 +391,10 @@ http_interactions:
           "tokenization_method": null
         }
     http_version: 
-  recorded_at: Tue, 16 Feb 2016 22:00:26 GMT
+  recorded_at: Wed, 17 Feb 2016 21:46:26 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_7v76EZSBkSQAND
+    uri: https://api.stripe.com/v1/customers/cus_7vU6RP1xhjb4Ir
     body:
       encoding: US-ASCII
       string: ''
@@ -423,7 +423,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 16 Feb 2016 22:00:26 GMT
+      - Wed, 17 Feb 2016 21:46:26 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -441,7 +441,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7v76XZhzqpMKyc
+      - req_7vU6TQHQdpJ9UF
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -450,7 +450,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_7v76EZSBkSQAND",
+          "id": "cus_7vU6RP1xhjb4Ir",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
@@ -458,12 +458,12 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7v76EZSBkSQAND/bank_accounts"
+            "url": "/v1/customers/cus_7vU6RP1xhjb4Ir/bank_accounts"
           },
-          "created": 1455660025,
+          "created": 1455745585,
           "currency": null,
           "default_bank_account": null,
-          "default_source": "card_7v76CRBH13AIlJ",
+          "default_source": "card_7vU6OLN6q0j96e",
           "default_source_type": "card",
           "delinquent": false,
           "description": "test@test.com",
@@ -476,7 +476,7 @@ http_interactions:
             "object": "list",
             "data": [
               {
-                "id": "card_7v76CRBH13AIlJ",
+                "id": "card_7vU6OLN6q0j96e",
                 "object": "card",
                 "address_city": null,
                 "address_country": null,
@@ -488,7 +488,7 @@ http_interactions:
                 "address_zip_check": null,
                 "brand": "Visa",
                 "country": "US",
-                "customer": "cus_7v76EZSBkSQAND",
+                "customer": "cus_7vU6RP1xhjb4Ir",
                 "cvc_check": "pass",
                 "dynamic_last4": null,
                 "exp_month": 12,
@@ -503,24 +503,24 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_7v76EZSBkSQAND/sources"
+            "url": "/v1/customers/cus_7vU6RP1xhjb4Ir/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7v76EZSBkSQAND/subscriptions"
+            "url": "/v1/customers/cus_7vU6RP1xhjb4Ir/subscriptions"
           }
         }
     http_version: 
-  recorded_at: Tue, 16 Feb 2016 22:00:26 GMT
+  recorded_at: Wed, 17 Feb 2016 21:46:26 GMT
 - request:
     method: post
     uri: https://api.stripe.com/v1/charges
     body:
       encoding: UTF-8
-      string: amount=132&currency=usd&customer=cus_7v76EZSBkSQAND&source=card_7v76CRBH13AIlJ
+      string: amount=10328&currency=usd&customer=cus_7vU6RP1xhjb4Ir&source=card_7vU6OLN6q0j96e
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -539,7 +539,7 @@ http_interactions:
         chris.local 15.3.0 Darwin Kernel Version 15.3.0: Thu Dec 10 18:40:58 PST 2015;
         root:xnu-3248.30.4~1/RELEASE_X86_64 x86_64","hostname":"chris.local"}'
       Content-Length:
-      - '78'
+      - '80'
   response:
     status:
       code: 200
@@ -548,11 +548,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Tue, 16 Feb 2016 22:00:26 GMT
+      - Wed, 17 Feb 2016 21:46:26 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1433'
+      - '1435'
       Connection:
       - keep-alive
       Access-Control-Allow-Credentials:
@@ -566,7 +566,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7v76lgawOnWALE
+      - req_7vU6Uieu444Lbp
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -575,16 +575,16 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "ch_7v76Gj2spXKZH9",
+          "id": "ch_7vU6NzMRHbyBf0",
           "object": "charge",
-          "amount": 132,
+          "amount": 10328,
           "amount_refunded": 0,
           "application_fee": null,
-          "balance_transaction": "txn_7v76JWwpskrK5b",
+          "balance_transaction": "txn_7vU6UaLwInG1Bu",
           "captured": true,
-          "created": 1455660026,
+          "created": 1455745586,
           "currency": "usd",
-          "customer": "cus_7v76EZSBkSQAND",
+          "customer": "cus_7vU6RP1xhjb4Ir",
           "description": null,
           "destination": null,
           "dispute": null,
@@ -604,11 +604,11 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/charges/ch_7v76Gj2spXKZH9/refunds"
+            "url": "/v1/charges/ch_7vU6NzMRHbyBf0/refunds"
           },
           "shipping": null,
           "source": {
-            "id": "card_7v76CRBH13AIlJ",
+            "id": "card_7vU6OLN6q0j96e",
             "object": "card",
             "address_city": null,
             "address_country": null,
@@ -620,7 +620,7 @@ http_interactions:
             "address_zip_check": null,
             "brand": "Visa",
             "country": "US",
-            "customer": "cus_7v76EZSBkSQAND",
+            "customer": "cus_7vU6RP1xhjb4Ir",
             "cvc_check": "pass",
             "dynamic_last4": null,
             "exp_month": 12,
@@ -636,7 +636,7 @@ http_interactions:
           "status": "succeeded"
         }
     http_version: 
-  recorded_at: Tue, 16 Feb 2016 22:00:26 GMT
+  recorded_at: Wed, 17 Feb 2016 21:46:26 GMT
 - request:
     method: get
     uri: https://<CLOSE_IO_API_KEY>:@app.close.io/api/v1/lead/?query=email:test@test.com
@@ -658,7 +658,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 16 Feb 2016 22:00:26 GMT
+      - Wed, 17 Feb 2016 21:46:27 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -668,14 +668,14 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       Content-Length:
-      - '652'
+      - '653'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
       string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "display_name":
         "TEST TEST", "addresses": [], "status_id": "stat_IAcdBqZZTAul6vK2srakLxAyd8Kem3ALHW6MBg12ntc",
-        "date_updated": "2016-02-16T21:39:37.617000+00:00", "status_label": "Enrolled",
+        "date_updated": "2016-02-17T21:43:55.660000+00:00", "status_label": "Enrolled",
         "description": "Foo", "contacts": [{"name": "TEST TEST", "title": "", "date_updated":
         "2015-08-04T20:54:56.554000+00:00", "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
         "id": "cont_FStz8S1Oe1diS12GwlUZM3kd9An7qfrPhTkQ3nyxvoH", "organization_id":
@@ -684,14 +684,14 @@ http_interactions:
         "test@test.com"}], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}],
         "html_url": "https://app.close.io/lead/lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26/",
         "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "custom":
-        {"Amount paid": 1, "Payment plan": "Standard Plan - $150 then $850"}, "organization_id":
+        {"Amount paid": 100, "Payment plan": "Standard Plan - $150 then $850"}, "organization_id":
         "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "url": null, "updated_by":
         "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "opportunities": [], "created_by_name":
         "Michael Kaiser-Nyman", "date_created": "2015-08-04T20:54:51.404000+00:00",
         "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26", "updated_by_name":
         "Michael Kaiser-Nyman", "name": "TEST TEST"}]}'
     http_version: 
-  recorded_at: Tue, 16 Feb 2016 22:00:26 GMT
+  recorded_at: Wed, 17 Feb 2016 21:46:27 GMT
 - request:
     method: get
     uri: https://<CLOSE_IO_API_KEY>:@app.close.io/api/v1/lead/?query=email:test@test.com
@@ -713,7 +713,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 16 Feb 2016 22:00:27 GMT
+      - Wed, 17 Feb 2016 21:46:27 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -723,14 +723,14 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       Content-Length:
-      - '652'
+      - '653'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
       string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "display_name":
         "TEST TEST", "addresses": [], "status_id": "stat_IAcdBqZZTAul6vK2srakLxAyd8Kem3ALHW6MBg12ntc",
-        "date_updated": "2016-02-16T21:39:37.617000+00:00", "status_label": "Enrolled",
+        "date_updated": "2016-02-17T21:43:55.660000+00:00", "status_label": "Enrolled",
         "description": "Foo", "contacts": [{"name": "TEST TEST", "title": "", "date_updated":
         "2015-08-04T20:54:56.554000+00:00", "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
         "id": "cont_FStz8S1Oe1diS12GwlUZM3kd9An7qfrPhTkQ3nyxvoH", "organization_id":
@@ -739,20 +739,20 @@ http_interactions:
         "test@test.com"}], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}],
         "html_url": "https://app.close.io/lead/lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26/",
         "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "custom":
-        {"Amount paid": 1, "Payment plan": "Standard Plan - $150 then $850"}, "organization_id":
+        {"Amount paid": 100, "Payment plan": "Standard Plan - $150 then $850"}, "organization_id":
         "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "url": null, "updated_by":
         "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "opportunities": [], "created_by_name":
         "Michael Kaiser-Nyman", "date_created": "2015-08-04T20:54:51.404000+00:00",
         "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26", "updated_by_name":
         "Michael Kaiser-Nyman", "name": "TEST TEST"}]}'
     http_version: 
-  recorded_at: Tue, 16 Feb 2016 22:00:27 GMT
+  recorded_at: Wed, 17 Feb 2016 21:46:27 GMT
 - request:
     method: put
     uri: https://<CLOSE_IO_API_KEY>:@app.close.io/api/v1/lead/lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26/
     body:
       encoding: UTF-8
-      string: '{"status":"Enrolled","custom.Amount paid":1}'
+      string: '{"status":"Enrolled","custom.Amount paid":100}'
     headers:
       Accept:
       - application/json
@@ -770,7 +770,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Tue, 16 Feb 2016 22:00:27 GMT
+      - Wed, 17 Feb 2016 21:46:27 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -780,14 +780,14 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       Content-Length:
-      - '622'
+      - '624'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
       string: '{"tasks": [], "display_name": "TEST TEST", "addresses": [], "name":
         "TEST TEST", "status_id": "stat_IAcdBqZZTAul6vK2srakLxAyd8Kem3ALHW6MBg12ntc",
-        "date_updated": "2016-02-16T21:39:37.617000+00:00", "status_label": "Enrolled",
+        "date_updated": "2016-02-17T21:43:55.660000+00:00", "status_label": "Enrolled",
         "contacts": [{"name": "TEST TEST", "title": "", "date_updated": "2015-08-04T20:54:56.554000+00:00",
         "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
         "id": "cont_FStz8S1Oe1diS12GwlUZM3kd9An7qfrPhTkQ3nyxvoH", "organization_id":
@@ -796,16 +796,16 @@ http_interactions:
         "test@test.com"}], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}],
         "html_url": "https://app.close.io/lead/lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26/",
         "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "custom":
-        {"Amount paid": 1, "Payment plan": "Standard Plan - $150 then $850"}, "organization_id":
+        {"Amount paid": 100, "Payment plan": "Standard Plan - $150 then $850"}, "organization_id":
         "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "url": null, "created_by_name":
         "Michael Kaiser-Nyman", "opportunities": [], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
         "date_created": "2015-08-04T20:54:51.404000+00:00", "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26",
         "updated_by_name": "Michael Kaiser-Nyman", "description": "Foo"}'
     http_version: 
-  recorded_at: Tue, 16 Feb 2016 22:00:27 GMT
+  recorded_at: Wed, 17 Feb 2016 21:46:27 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/balance/history/txn_7v76JWwpskrK5b
+    uri: https://api.stripe.com/v1/balance/history/txn_7vU6UaLwInG1Bu
     body:
       encoding: US-ASCII
       string: ''
@@ -834,11 +834,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 17 Feb 2016 00:45:33 GMT
+      - Wed, 17 Feb 2016 21:46:27 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '645'
+      - '651'
       Connection:
       - keep-alive
       Access-Control-Allow-Credentials:
@@ -852,7 +852,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7v9lodGf74ArjX
+      - req_7vU6M4LEl8lUFW
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -861,43 +861,43 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "txn_7v76JWwpskrK5b",
+          "id": "txn_7vU6UaLwInG1Bu",
           "object": "balance_transaction",
-          "amount": 132,
-          "available_on": 1455753600,
-          "created": 1455660026,
+          "amount": 10328,
+          "available_on": 1455840000,
+          "created": 1455745586,
           "currency": "usd",
           "description": null,
-          "fee": 34,
+          "fee": 330,
           "fee_details": [
             {
-              "amount": 34,
+              "amount": 330,
               "application": null,
               "currency": "usd",
               "description": "Stripe processing fees",
               "type": "stripe_fee"
             }
           ],
-          "net": 98,
-          "source": "ch_7v76Gj2spXKZH9",
+          "net": 9998,
+          "source": "ch_7vU6NzMRHbyBf0",
           "sourced_transfers": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/transfers?source_transaction=ch_7v76Gj2spXKZH9"
+            "url": "/v1/transfers?source_transaction=ch_7vU6NzMRHbyBf0"
           },
           "status": "pending",
           "type": "charge"
         }
     http_version: 
-  recorded_at: Wed, 17 Feb 2016 00:45:33 GMT
+  recorded_at: Wed, 17 Feb 2016 21:46:27 GMT
 - request:
     method: post
     uri: https://api.stripe.com/v1/refunds
     body:
       encoding: UTF-8
-      string: amount=200&charge=ch_7v76Gj2spXKZH9
+      string: amount=20000&charge=ch_7vU6NzMRHbyBf0
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -916,7 +916,7 @@ http_interactions:
         chris.local 15.3.0 Darwin Kernel Version 15.3.0: Thu Dec 10 18:40:58 PST 2015;
         root:xnu-3248.30.4~1/RELEASE_X86_64 x86_64","hostname":"chris.local"}'
       Content-Length:
-      - '35'
+      - '37'
   response:
     status:
       code: 400
@@ -925,11 +925,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 17 Feb 2016 00:45:33 GMT
+      - Wed, 17 Feb 2016 21:46:27 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '158'
+      - '162'
       Connection:
       - keep-alive
       Access-Control-Allow-Credentials:
@@ -943,7 +943,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7v9lu3a6wvoCnj
+      - req_7vU6fuukRH2C9c
       Stripe-Version:
       - '2016-02-03'
     body:
@@ -952,10 +952,10 @@ http_interactions:
         {
           "error": {
             "type": "invalid_request_error",
-            "message": "Refund amount ($2.00) is greater than charge amount ($1.32)",
+            "message": "Refund amount ($200.00) is greater than charge amount ($103.28)",
             "param": "amount"
           }
         }
     http_version: 
-  recorded_at: Wed, 17 Feb 2016 00:45:33 GMT
+  recorded_at: Wed, 17 Feb 2016 21:46:27 GMT
 recorded_with: VCR 3.0.1

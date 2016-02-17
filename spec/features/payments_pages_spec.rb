@@ -194,22 +194,46 @@ end
 feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com') }
-  let(:payment) { FactoryGirl.create(:payment_with_credit_card, student: student) }
+  let(:payment) { FactoryGirl.create(:payment_with_credit_card, amount: 100_00, student: student) }
 
   before { login_as(admin, scope: :admin) }
 
-  scenario 'successfully' do
+  scenario 'successfully without cents' do
     visit payment_path(payment)
-    fill_in 'payment_refund_amount', with: 60
+    fill_in 'refund-input', with: 60
     click_on 'Issue refund'
     expect(page).to have_content "Refund successfully issued for #{payment.student.name}."
-    expect(page).to have_content '$0.60'
+    expect(page).to have_content '$60.00'
   end
 
-  scenario 'unsuccessfully' do
+  scenario 'successfully with cents' do
     visit payment_path(payment)
-    fill_in 'payment_refund_amount', with: 200
+    fill_in 'refund-input', with: 60.18
     click_on 'Issue refund'
-    expect(page).to have_content 'Refund amount cannot be greater than the total payment amount.'
+    expect(page).to have_content "Refund successfully issued for #{payment.student.name}."
+    expect(page).to have_content '$60.18'
+  end
+
+  scenario 'unsuccessfully with an improperly formatted amount', :js do
+    visit payment_path(payment)
+    fill_in 'refund-input', with: 60.1
+    message = accept_prompt do
+      click_on 'Issue refund'
+    end
+    expect(message).to eq 'Please enter a refund amount that includes 2 decimal places.'
+  end
+
+  scenario 'unsuccessfully with an amount that is too large' do
+    visit payment_path(payment)
+    fill_in 'refund-input', with: 200
+    click_on 'Issue refund'
+    expect(page).to have_content 'Refund amount ($200.00) is greater than charge amount ($103.28)'
+  end
+
+  scenario 'unsuccessfully with a negative amount' do
+    visit payment_path(payment)
+    fill_in 'refund-input', with: -16.46
+    click_on 'Issue refund'
+    expect(page).to have_content 'Invalid positive integer'
   end
 end
