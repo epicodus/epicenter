@@ -199,19 +199,3 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
     expect(page).to have_content 'Refund amount cannot be greater than the total payment amount.'
   end
 end
-
-feature 'visiting student payments page via search' do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com') }
-  let(:payment) { FactoryGirl.create(:payment_with_credit_card, student: student) }
-
-  before { login_as(admin, scope: :admin) }
-
-  scenario 'successfully' do
-    visit payment_path(payment)
-    fill_in 'payment_refund_amount', with: 60
-    click_on 'Issue refund'
-    expect(page).to have_content "Payments for #{student.name}"
-    expect(page).to have_content '$0.60'
-  end
-end
