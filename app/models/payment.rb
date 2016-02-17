@@ -22,19 +22,11 @@ class Payment < ActiveRecord::Base
 
 private
   def issue_refund
-    check_refund_amount
     begin
       charge_id = Stripe::BalanceTransaction.retrieve(stripe_transaction).source
       refund = Stripe::Refund.create(charge: charge_id, amount: refund_amount)
     rescue Stripe::StripeError => exception
       errors.add(:base, exception.message)
-      false
-    end
-  end
-
-  def check_refund_amount
-    if refund_amount > total_amount
-      errors.add(:refund_amount, 'cannot be greater than the total payment amount.')
       false
     end
   end
