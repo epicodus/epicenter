@@ -19,4 +19,5 @@
 //= require bootstrap-datepicker
 //= require jquery.timepicker.js
 //= require bootstrap-sprockets
+//= require autonumeric
 //= require_tree .
