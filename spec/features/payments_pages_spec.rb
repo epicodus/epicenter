@@ -21,7 +21,7 @@ feature 'Viewing payment index page' do
         student = FactoryGirl.create(:user_with_credit_card)
         login_as(student, scope: :student)
         visit student_payments_path(student)
-        expect(page).to have_content "Looks like you haven't made any payments yet."
+        expect(page).to have_content "No payments have been made yet."
       end
     end
 
@@ -78,7 +78,7 @@ feature 'Viewing payment index page' do
       it "doesn't show payment history" do
         student = FactoryGirl.create(:user_with_credit_card)
         visit student_payments_path(student)
-        expect(page).to have_content "Looks like #{student.name} hasn't made any payments yet."
+        expect(page).to have_content "No payments have been made yet."
       end
     end
 
@@ -188,7 +188,7 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
     visit payment_path(payment)
     fill_in 'payment_refund_amount', with: 60
     click_on 'Issue refund'
-    expect(page).to have_content "Refund successfully issued for #{@payment.student.name}."
+    expect(page).to have_content "Refund successfully issued for #{payment.student.name}."
     expect(page).to have_content '$0.60'
   end
 

@@ -10,8 +10,7 @@ class Payment < ActiveRecord::Base
 
   before_create :make_payment, :send_payment_receipt
   after_save :update_close_io
-  before_update :check_refund_amount, if: ->(payment) { payment.refund_amount? }
-  before_update :issue_refund, if: ->(payment) { payment.refund_amount? && payment.refund_amount <= payment.total_amount }
+  before_update :issue_refund, if: ->(payment) { payment.refund_amount? }
   after_update :send_payment_failure_notice, if: ->(payment) { payment.status == "failed" }
 
   scope :order_by_latest, -> { order('created_at DESC') }
@@ -23,6 +22,7 @@ class Payment < ActiveRecord::Base
 
 private
   def issue_refund
+    check_refund_amount
     begin
       charge_id = Stripe::BalanceTransaction.retrieve(stripe_transaction).source
       refund = Stripe::Refund.create(charge: charge_id, amount: refund_amount)

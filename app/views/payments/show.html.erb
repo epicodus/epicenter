@@ -13,7 +13,7 @@
   <h4><strong>Refund amount: <%= number_to_currency(@payment.refund_amount / 100.00) %></strong></h4>
 <% end %>
 
-<% if current_admin %>
+<% if can? :manage, Payment %>
   <% if !@payment.refund_amount? || @payment.refund_amount > @payment.total_amount %>
     <hr>
     <div class="row">
