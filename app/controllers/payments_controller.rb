@@ -4,7 +4,6 @@ class PaymentsController < ApplicationController
 
   def index
     @student = Student.find(params[:student_id])
-    @payments = @student.payments
     authorize! :manage, @student
     if @student.upfront_payment_due?
       @payment = Payment.new(amount: @student.upfront_amount_with_fees)
@@ -19,7 +18,7 @@ class PaymentsController < ApplicationController
   def update
     @payment = Payment.find(params[:id])
     if @payment.update(payment_params)
-      redirect_to student_payments_path(@payment.student)
+      redirect_to student_payments_path(@payment.student), notice: "Refund successfully issued for #{@payment.student.name}."
     else
       render 'show'
     end
