@@ -18,6 +18,7 @@
           <% end %>
           <p><%= pluralize(student.courses.count, 'course') %></p>
           <p>Total paid: <%= number_to_currency(student.total_paid / 100.00) %></p>
+          <%= link_to 'Manage payments', student_payments_path(student) %>
           <% if student.courses.any? %>
             <table class="table">
               <thead>

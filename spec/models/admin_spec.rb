@@ -30,8 +30,8 @@ describe Admin do
       it { is_expected.to not_have_abilities(:create, CreditCard.new) }
     end
 
-    context 'for payments', vcr: true do
-      it { is_expected.to not_have_abilities([:create, :update], Payment.new) }
+    context 'for payments' do
+      it { is_expected.to have_abilities([:manage], Payment.new) }
     end
 
     context 'for courses' do

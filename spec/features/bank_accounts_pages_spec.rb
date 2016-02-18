@@ -23,7 +23,7 @@ feature 'Creating a bank account' do
       fill_in 'Routing number', with: '110000000'
       fill_in 'Bank account number', with: ' '
       click_on 'Verify bank account'
-      within '.alert-error' do
+      within '.alert-danger' do
         expect(page).to have_content 'Invalid bank account number.'
       end
     end
@@ -32,7 +32,7 @@ feature 'Creating a bank account' do
       fill_in 'Bank account number', with: '000123456789'
       fill_in 'Routing number', with: '12345689'
       click_on 'Verify bank account'
-      within '.alert-error' do
+      within '.alert-danger' do
         expect(page).to have_content 'Invalid routing number.'
       end
     end

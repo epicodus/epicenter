@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   resources :students, only: [:index, :update] do
     resources :courses, only: [:index]
+    resources :payments, only: [:index]
   end
   resources :admins, only: [:update]
   resources :payment_methods, only: [:index, :new]
@@ -15,7 +16,7 @@ Rails.application.routes.draw do
   resource :credit_card, only: [:new, :create]
   resource :certificate, only: [:show]
   resource :transcript, only: [:show]
-  resources :payments, only: [:index]
+  resources :payments, only: [:update]
   resources :upfront_payments, only: [:create]
   resources :attendance_record_amendments, only: [:new, :create]
   resources :courses, except: [:show, :index] do

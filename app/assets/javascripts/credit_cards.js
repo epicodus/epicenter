@@ -26,9 +26,9 @@ var stripeResponseHandler = function(status, response) {
     $('form#new_credit_card').unbind('submit').submit();
     $('#card-submit-button').val('loading...').attr('disabled', 'disabled');
   } else {
-    $('div.alert-error').remove();
+    $('div.alert-danger').remove();
     $('form#new_credit_card').prepend(
-      '<div class="alert alert-error">' +
+      '<div class="alert alert-danger">' +
         '<h3>Please correct these problems:</h3>' +
         '<ul>' +
         '</ul>' +
@@ -39,6 +39,6 @@ var stripeResponseHandler = function(status, response) {
       "The 'exp_month' parameter should be an integer (instead, is  ).": "Enter a valid integer value."
     };
     var errorMessage = errorMapping[response.error.message] || response.error.message;
-    $('.alert-error ul').append('<li>' + errorMessage + '</li>');
+    $('.alert-danger ul').append('<li>' + errorMessage + '</li>');
   };
 };
