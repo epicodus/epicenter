@@ -21,7 +21,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 18 Feb 2016 00:10:30 GMT
+      - Thu, 18 Feb 2016 00:24:16 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -31,14 +31,14 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       Content-Length:
-      - '654'
+      - '652'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
       string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "display_name":
         "TEST TEST", "addresses": [], "status_id": "stat_IAcdBqZZTAul6vK2srakLxAyd8Kem3ALHW6MBg12ntc",
-        "date_updated": "2016-02-17T23:25:39.166000+00:00", "status_label": "Enrolled",
+        "date_updated": "2016-02-18T00:10:46.963000+00:00", "status_label": "Enrolled",
         "description": "Foo", "contacts": [{"name": "TEST TEST", "title": "", "date_updated":
         "2015-08-04T20:54:56.554000+00:00", "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
         "id": "cont_FStz8S1Oe1diS12GwlUZM3kd9An7qfrPhTkQ3nyxvoH", "organization_id":
@@ -54,7 +54,7 @@ http_interactions:
         "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26", "updated_by_name":
         "Michael Kaiser-Nyman", "name": "TEST TEST"}]}'
     http_version: 
-  recorded_at: Thu, 18 Feb 2016 00:10:30 GMT
+  recorded_at: Thu, 18 Feb 2016 00:24:16 GMT
 - request:
     method: get
     uri: https://<CLOSE_IO_API_KEY>:@app.close.io/api/v1/lead/?query=email:test@test.com
@@ -76,7 +76,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 18 Feb 2016 00:10:30 GMT
+      - Thu, 18 Feb 2016 00:24:16 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -86,14 +86,14 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       Content-Length:
-      - '654'
+      - '652'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
       string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "display_name":
         "TEST TEST", "addresses": [], "status_id": "stat_IAcdBqZZTAul6vK2srakLxAyd8Kem3ALHW6MBg12ntc",
-        "date_updated": "2016-02-17T23:25:39.166000+00:00", "status_label": "Enrolled",
+        "date_updated": "2016-02-18T00:10:46.963000+00:00", "status_label": "Enrolled",
         "description": "Foo", "contacts": [{"name": "TEST TEST", "title": "", "date_updated":
         "2015-08-04T20:54:56.554000+00:00", "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
         "id": "cont_FStz8S1Oe1diS12GwlUZM3kd9An7qfrPhTkQ3nyxvoH", "organization_id":
@@ -109,7 +109,7 @@ http_interactions:
         "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26", "updated_by_name":
         "Michael Kaiser-Nyman", "name": "TEST TEST"}]}'
     http_version: 
-  recorded_at: Thu, 18 Feb 2016 00:10:30 GMT
+  recorded_at: Thu, 18 Feb 2016 00:24:16 GMT
 - request:
     method: put
     uri: https://<CLOSE_IO_API_KEY>:@app.close.io/api/v1/lead/lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26/
@@ -133,7 +133,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 18 Feb 2016 00:10:30 GMT
+      - Thu, 18 Feb 2016 00:24:16 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -143,14 +143,14 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       Content-Length:
-      - '620'
+      - '621'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
       string: '{"tasks": [], "display_name": "TEST TEST", "addresses": [], "name":
         "TEST TEST", "status_id": "stat_IAcdBqZZTAul6vK2srakLxAyd8Kem3ALHW6MBg12ntc",
-        "date_updated": "2016-02-18T00:10:30.681000+00:00", "status_label": "Enrolled",
+        "date_updated": "2016-02-18T00:24:16.668000+00:00", "status_label": "Enrolled",
         "contacts": [{"name": "TEST TEST", "title": "", "date_updated": "2015-08-04T20:54:56.554000+00:00",
         "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
         "id": "cont_FStz8S1Oe1diS12GwlUZM3kd9An7qfrPhTkQ3nyxvoH", "organization_id":
@@ -165,5 +165,5 @@ http_interactions:
         "date_created": "2015-08-04T20:54:51.404000+00:00", "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26",
         "updated_by_name": "Michael Kaiser-Nyman", "description": "Foo"}'
     http_version: 
-  recorded_at: Thu, 18 Feb 2016 00:10:30 GMT
+  recorded_at: Thu, 18 Feb 2016 00:24:16 GMT
 recorded_with: VCR 3.0.1
