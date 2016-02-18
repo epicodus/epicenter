@@ -1,6 +1,6 @@
 class PaymentsController < ApplicationController
   authorize_resource
-  before_filter :ensure_student_has_primary_payment_method, except: [:show, :update]
+  before_filter :ensure_student_has_primary_payment_method, except: [:update]
 
   def index
     @student = Student.find(params[:student_id])

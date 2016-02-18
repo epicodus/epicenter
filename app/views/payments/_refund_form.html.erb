@@ -5,7 +5,7 @@
         <span class="input-group-addon">$</span>
         <%= f.number_field :refund_amount, { class: 'form-control refund-input', id: "refund-#{payment.id}-input", required: true, step: 0.01, max: 5000 } %>
         <span class="input-group-btn">
-          <%= f.submit 'Refund', class: 'btn btn-info refund-button', id: "refund-#{payment.id}-button" %>
+          <%= f.submit 'Refund', class: 'btn btn-info refund-button', id: "refund-#{payment.id}-button", data: { confirm: 'Are you sure?' } %>
         </span>
       </div>
     </div>
