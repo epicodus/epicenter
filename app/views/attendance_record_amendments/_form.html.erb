@@ -10,7 +10,7 @@
   </div>
   <div class="form-group">
     <%= f.label :status %>
-    <%= f.select :status, options_for_select(["On time", "Tardy", "Left early", "Absent"]), {}, { class: "form-control" } %>
+    <%= f.select :status, options_for_select(["On time", "Tardy", "Left early", "Absent", "Tardy and Left early"]), {}, { class: "form-control" } %>
   </div>
   <%= f.submit "Submit", class: 'btn btn-info' %>
 <% end %>

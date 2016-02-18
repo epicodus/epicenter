@@ -16,6 +16,9 @@
           <td class="col-xs-2">
             <% if @student.attendance_record_on_day(day) == nil %>
               <span class="label label-primary">Absent</span>
+            <% elsif @student.attendance_record_on_day(day).tardy && @student.attendance_record_on_day(day).left_early %>
+              <span class="label label-danger">Tardy</span>
+              <span class="label label-danger">Left early</span>
             <% elsif @student.attendance_record_on_day(day).tardy %>
               <span class="label label-danger">Tardy</span>
             <% elsif @student.attendance_record_on_day(day).left_early %>

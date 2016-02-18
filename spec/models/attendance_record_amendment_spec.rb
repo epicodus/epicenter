@@ -36,6 +36,13 @@ describe AttendanceRecordAmendment do
       expect(student.attendance_records.first.left_early).to eq(true)
     end
 
+    it 'sets left_early and tardy to true if the status is "Tardy and Left early"' do
+      attendance_record_amendment = AttendanceRecordAmendment.new(student_id: student.id, date: Time.zone.now.to_date, status: 'Tardy and Left early')
+      attendance_record_amendment.save
+      expect(student.attendance_records.first.left_early).to eq(true)
+      expect(student.attendance_records.first.tardy).to eq(true)
+    end
+
     it 'updates the status if an attendance record alread exists for the given day' do
       FactoryGirl.create(:attendance_record, student: student, date: Time.zone.now.to_date, tardy: true)
       attendance_record_amendment = AttendanceRecordAmendment.new(student_id: student.id, date: Time.zone.now.to_date, status: 'On time')
