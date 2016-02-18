@@ -31,6 +31,8 @@ private
       attendance_record.update(left_early: true)
     when "Absent"
       attendance_record.try(:destroy)
+    when "Tardy and Left early"
+      attendance_record.update(tardy: true, left_early: true)
     end
   end
 
