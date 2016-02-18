@@ -23,9 +23,9 @@ var stripeBankAccountResponseHandler = function(status, response) {
     $('form#new_bank_account').unbind('submit').submit();
     $('#account-submit-button').val('loading...').attr('disabled', 'disabled');
   } else {
-    $('div.alert-error').remove();
+    $('div.alert-danger').remove();
     $('form#new_bank_account').prepend(
-      '<div class="alert alert-error">' +
+      '<div class="alert alert-danger">' +
         '<h3>Please correct these problems:</h3>' +
         '<ul>' +
         '</ul>' +
@@ -37,6 +37,6 @@ var stripeBankAccountResponseHandler = function(status, response) {
       "A bank account with that routing number and account number already exists for this customer.": "Please enter a new account."
     };
     var errorMessage = errorMapping[response.error.message] || response.error.message;
-    $('.alert-error ul').append('<li>' + errorMessage + '</li>');
+    $('.alert-danger ul').append('<li>' + errorMessage + '</li>');
   };
 };

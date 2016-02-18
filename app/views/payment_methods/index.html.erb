@@ -1,5 +1,5 @@
 <h1>Your payment methods</h1>
-<p class="text-warning">* Payments made with a credit card will be charged a 2.9% processing fee + 30¢ per transaction.</p>
+<p class="text-primary">* Payments made with a credit card will be charged a 2.9% processing fee + 30¢ per transaction.</p>
 
 <% if @payment_methods.present? %>
   <table class="table">
@@ -55,7 +55,7 @@
 <% end %>
 
 <% if @primary_payment_method %>
-  <p><%= link_to 'Make or review payments', student_payments_path(current_student) %></p>
+  <p><%= link_to 'Make or review payments', student_payments_path(current_student), class: 'btn btn-success' %></p>
 <% end %>
-<p><%= link_to 'Add credit card', new_credit_card_path %></p>
-<p><%= link_to 'Add bank account', new_bank_account_path %></p>
+<p><%= link_to 'Add credit card', new_credit_card_path, class: 'btn btn-info' %></p>
+<p><%= link_to 'Add bank account', new_bank_account_path, class: 'btn btn-info' %></p>
