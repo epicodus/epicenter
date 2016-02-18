@@ -37,7 +37,7 @@
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu" role="menu">
-              <li class="new-course"><%= link_to '+ Add a course', new_course_path %></li>
+              <li><%= link_to '+ Add a course', new_course_path %></li>
               <li class="divider"></li>
               <% Course.current_and_future_courses.reverse.each do |course| %>
                 <li><%= link_to course.description, admin_path(current_admin, admin: { current_course_id: course.id }), method: :patch %></li>

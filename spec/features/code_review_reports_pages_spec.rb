@@ -9,7 +9,7 @@ feature 'code_review report' do
     login_as(admin, scope: :admin)
     visit course_code_reviews_path(code_review.course)
     click_link 'Grades report'
-    expect(page).to have_content grade.score.value
+    expect(page).to have_css '.submission-success'
   end
 
   it "sorts the table by the student's total score for that code_review", :stub_mailgun do
@@ -26,8 +26,11 @@ feature 'code_review report' do
     login_as(admin, scope: :admin)
     visit course_code_reviews_path(code_review.course)
     click_link 'Grades report'
-    within('tr', :text => better_student.name) do
-      expect(page).to have_content passing_grade.score.value
+    within('tr', text: better_student.name) do
+      expect(page).to have_css '.submission-success'
+    end
+    within('tr', text: student.name) do
+      expect(page).to have_css '.submission-fail'
     end
   end
 
