@@ -5,6 +5,7 @@ class Review < ActiveRecord::Base
   has_many :grades
 
   validates :note, presence: true
+  validates :student_signature, presence: true
 
   accepts_nested_attributes_for :grades
 

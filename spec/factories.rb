@@ -144,6 +144,7 @@ FactoryGirl.define do
 
   factory :review do
     note 'Great job!'
+    sequence(:student_signature) { |n| "Example Student #{n}" }
     submission
 
     factory :passing_review do

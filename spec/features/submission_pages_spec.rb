@@ -70,6 +70,7 @@ feature 'Visiting the submissions index page' do
           click_on 'Review'
           select score.description, from: 'review_grades_attributes_0_score_id'
           fill_in 'Note', with: 'Well done!'
+          fill_in 'review_student_signature', with: "#{student.name}"
           click_on 'Create Review'
           expect(page).to have_content 'Review saved.'
         end

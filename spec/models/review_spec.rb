@@ -3,6 +3,7 @@ describe Review do
   it { should have_many :grades }
   it { should belong_to :admin }
   it { should validate_presence_of :note }
+  it { should validate_presence_of :student_signature }
   it { should have_one(:student) }
 
   describe 'on creation' do
