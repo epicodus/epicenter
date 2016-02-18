@@ -185,4 +185,21 @@ describe Course do
       expect(course.internships_sorted_by_interest(nil)).to eq([internship_two, internship_one])
     end
   end
+
+  describe '#current_and_future_courses' do
+    it 'returns all current and future courses' do
+      past_course = FactoryGirl.create(:past_course)
+      current_course = FactoryGirl.create(:course)
+      future_course = FactoryGirl.create(:future_course)
+      expect(Course.current_and_future_courses).to eq [current_course, future_course]
+    end
+  end
+
+  describe '#previous_courses' do
+    it 'returns all current and future courses' do
+      past_course = FactoryGirl.create(:past_course)
+      current_course = FactoryGirl.create(:course)
+      expect(Course.previous_courses).to eq [past_course]
+    end
+  end
 end
