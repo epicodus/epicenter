@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   resource :credit_card, only: [:new, :create]
   resource :certificate, only: [:show]
   resource :transcript, only: [:show]
-  resources :payments, only: [:show, :update]
+  resources :payments, only: [:update]
   resources :upfront_payments, only: [:create]
   resources :attendance_record_amendments, only: [:new, :create]
   resources :courses, except: [:show, :index] do

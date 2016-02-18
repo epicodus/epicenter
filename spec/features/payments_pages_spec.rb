@@ -104,19 +104,19 @@ feature 'Viewing payment index page' do
         expect(page).to have_content 600.00
         expect(page).to have_content "Pending"
         expect(page).to have_content "Bank account ending in 6789"
-        expect(page).to have_content "Issue refund"
+        expect(page).to have_css "#refund-#{payment.id}-button"
       end
     end
 
     context 'after a payment has been made with credit card', :vcr, :stripe_mock, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
         student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
-        FactoryGirl.create(:payment_with_credit_card, amount: 600_00, student: student)
+        payment = FactoryGirl.create(:payment_with_credit_card, amount: 600_00, student: student)
         visit student_payments_path(student)
         expect(page).to have_content 618.21
         expect(page).to have_content "Succeeded"
         expect(page).to have_content "Credit card ending in 4242"
-        expect(page).to have_content "Issue refund"
+        expect(page).to have_css "#refund-#{payment.id}-button"
       end
     end
 
@@ -152,88 +152,49 @@ feature 'Viewing payment index page' do
   end
 end
 
-feature 'viewing payment show page', :vcr, :stripe_mock, :stub_mailgun do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com') }
-  let(:payment) { FactoryGirl.create(:payment_with_credit_card, student: student) }
-
-  scenario 'as a guest' do
-    visit payment_path(payment)
-    expect(page).to have_content 'need to sign in'
-  end
-
-  context 'as a student' do
-    scenario "viewing another student's page" do
-      student_2 = FactoryGirl.create(:user_with_credit_card, email: 'test2@test.com')
-      payment_2 = FactoryGirl.create(:payment_with_credit_card, student: student_2)
-      login_as(student, scope: :student)
-      visit payment_path(payment_2)
-      expect(page).to have_content "You are not authorized to access this page."
-    end
-
-    scenario 'viewing their personal payment page' do
-      login_as(student, scope: :student)
-      visit payment_path(payment)
-      expect(page).to have_content "Payment for #{student.name}"
-      expect(page).to have_content "Total amount: $1.32"
-      expect(page).to_not have_content 'Refund amount'
-    end
-  end
-
-  context 'as an admin' do
-    before { login_as(admin, scope: :admin) }
-
-    scenario 'before a refund is issued' do
-      visit payment_path(payment)
-      expect(page).to have_content 'Refund amount'
-      expect(page).to have_css '#refund-button'
-    end
-  end
-end
-
 feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com') }
-  let(:payment) { FactoryGirl.create(:payment_with_credit_card, amount: 100_00, student: student) }
+  let!(:payment) { FactoryGirl.create(:payment_with_credit_card, amount: 100_00, student: student) }
 
   before { login_as(admin, scope: :admin) }
 
   scenario 'successfully without cents' do
-    visit payment_path(payment)
-    fill_in 'refund-input', with: 60
-    click_on 'Issue refund'
+    visit student_payments_path(student)
+    fill_in "refund-#{payment.id}-input", with: 60
+    click_on 'Refund'
     expect(page).to have_content "Refund successfully issued for #{payment.student.name}."
     expect(page).to have_content '$60.00'
   end
 
   scenario 'successfully with cents' do
-    visit payment_path(payment)
-    fill_in 'refund-input', with: 60.18
-    click_on 'Issue refund'
+    visit student_payments_path(student)
+    fill_in "refund-#{payment.id}-input", with: 60.18
+    click_on 'Refund'
     expect(page).to have_content "Refund successfully issued for #{payment.student.name}."
     expect(page).to have_content '$60.18'
   end
 
   scenario 'unsuccessfully with an improperly formatted amount', :js do
-    visit payment_path(payment)
-    fill_in 'refund-input', with: 60.1
+    visit student_payments_path(student)
+    fill_in "refund-#{payment.id}-input", with: 60.1
     message = accept_prompt do
-      click_on 'Issue refund'
+      click_on 'Refund'
     end
     expect(message).to eq 'Please enter a refund amount that includes 2 decimal places.'
   end
 
   scenario 'unsuccessfully with an amount that is too large' do
-    visit payment_path(payment)
-    fill_in 'refund-input', with: 200
-    click_on 'Issue refund'
+    visit student_payments_path(student)
+    fill_in "refund-#{payment.id}-input", with: 200
+    click_on 'Refund'
     expect(page).to have_content 'Refund amount ($200.00) is greater than charge amount ($103.28)'
   end
 
   scenario 'unsuccessfully with a negative amount' do
-    visit payment_path(payment)
-    fill_in 'refund-input', with: -16.46
-    click_on 'Issue refund'
+    visit student_payments_path(student)
+    fill_in "refund-#{payment.id}-input", with: -16.46
+    click_on 'Refund'
     expect(page).to have_content 'Invalid positive integer'
   end
 end

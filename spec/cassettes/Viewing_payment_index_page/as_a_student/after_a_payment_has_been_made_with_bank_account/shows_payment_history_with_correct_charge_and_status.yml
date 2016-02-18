@@ -21,8 +21,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.31.0","lang":"ruby","lang_version":"2.3.0 p0 (2015-12-25)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        epicodus-73.local 15.2.0 Darwin Kernel Version 15.2.0: Fri Nov 13 19:56:56
-        PST 2015; root:xnu-3248.20.55~2/RELEASE_X86_64 x86_64","hostname":"epicodus-73.local"}'
+        chris.local 15.3.0 Darwin Kernel Version 15.3.0: Thu Dec 10 18:40:58 PST 2015;
+        root:xnu-3248.30.4~1/RELEASE_X86_64 x86_64","hostname":"chris.local"}'
       Content-Length:
       - '27'
   response:
@@ -33,7 +33,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 11 Feb 2016 21:12:34 GMT
+      - Thu, 18 Feb 2016 00:10:26 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -51,7 +51,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7tECWFxmIwtruh
+      - req_7vWQwmnVl8XsSk
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -60,7 +60,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_7tECjTf1LGN9Rl",
+          "id": "cus_7vWQ8OaJJHUnTy",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
@@ -68,9 +68,9 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7tECjTf1LGN9Rl/bank_accounts"
+            "url": "/v1/customers/cus_7vWQ8OaJJHUnTy/bank_accounts"
           },
-          "created": 1455225154,
+          "created": 1455754225,
           "currency": null,
           "default_bank_account": null,
           "default_source": null,
@@ -87,21 +87,21 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7tECjTf1LGN9Rl/sources"
+            "url": "/v1/customers/cus_7vWQ8OaJJHUnTy/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7tECjTf1LGN9Rl/subscriptions"
+            "url": "/v1/customers/cus_7vWQ8OaJJHUnTy/subscriptions"
           }
         }
     http_version: 
-  recorded_at: Thu, 11 Feb 2016 21:12:54 GMT
+  recorded_at: Thu, 18 Feb 2016 00:10:26 GMT
 - request:
     method: post
-    uri: https://api.stripe.com/v1/customers/cus_7tECjTf1LGN9Rl/sources
+    uri: https://api.stripe.com/v1/customers/cus_7vWQ8OaJJHUnTy/sources
     body:
       encoding: UTF-8
       string: source[account_number]=000123456789&source[country]=US&source[object]=bank_account&source[routing_number]=110000000
@@ -120,8 +120,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.31.0","lang":"ruby","lang_version":"2.3.0 p0 (2015-12-25)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        epicodus-73.local 15.2.0 Darwin Kernel Version 15.2.0: Fri Nov 13 19:56:56
-        PST 2015; root:xnu-3248.20.55~2/RELEASE_X86_64 x86_64","hostname":"epicodus-73.local"}'
+        chris.local 15.3.0 Darwin Kernel Version 15.3.0: Thu Dec 10 18:40:58 PST 2015;
+        root:xnu-3248.30.4~1/RELEASE_X86_64 x86_64","hostname":"chris.local"}'
       Content-Length:
       - '115'
   response:
@@ -132,7 +132,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 11 Feb 2016 21:12:35 GMT
+      - Thu, 18 Feb 2016 00:10:26 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -150,7 +150,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7tEC18A2y456xV
+      - req_7vWQrcIeSvcXRN
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -159,13 +159,13 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "ba_7tECjFhI53Cbuo",
+          "id": "ba_7vWQzis6tMJ5NJ",
           "object": "bank_account",
           "account_holder_type": null,
           "bank_name": "STRIPE TEST BANK",
           "country": "US",
           "currency": "usd",
-          "customer": "cus_7tECjTf1LGN9Rl",
+          "customer": "cus_7vWQ8OaJJHUnTy",
           "fingerprint": "qw2YdYDmIJUuNi9w",
           "last4": "6789",
           "metadata": {},
@@ -174,10 +174,10 @@ http_interactions:
           "status": "new"
         }
     http_version: 
-  recorded_at: Thu, 11 Feb 2016 21:12:55 GMT
+  recorded_at: Thu, 18 Feb 2016 00:10:26 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_7tECjTf1LGN9Rl
+    uri: https://api.stripe.com/v1/customers/cus_7vWQ8OaJJHUnTy
     body:
       encoding: US-ASCII
       string: ''
@@ -196,8 +196,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.31.0","lang":"ruby","lang_version":"2.3.0 p0 (2015-12-25)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        epicodus-73.local 15.2.0 Darwin Kernel Version 15.2.0: Fri Nov 13 19:56:56
-        PST 2015; root:xnu-3248.20.55~2/RELEASE_X86_64 x86_64","hostname":"epicodus-73.local"}'
+        chris.local 15.3.0 Darwin Kernel Version 15.3.0: Thu Dec 10 18:40:58 PST 2015;
+        root:xnu-3248.30.4~1/RELEASE_X86_64 x86_64","hostname":"chris.local"}'
   response:
     status:
       code: 200
@@ -206,7 +206,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 11 Feb 2016 21:12:35 GMT
+      - Thu, 18 Feb 2016 00:10:26 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -224,7 +224,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7tECwAcVIyfyLZ
+      - req_7vWQ0obmBV9d5W
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -233,20 +233,20 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_7tECjTf1LGN9Rl",
+          "id": "cus_7vWQ8OaJJHUnTy",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
             "object": "list",
             "data": [
               {
-                "id": "ba_7tECjFhI53Cbuo",
+                "id": "ba_7vWQzis6tMJ5NJ",
                 "object": "bank_account",
                 "account_holder_type": null,
                 "bank_name": "STRIPE TEST BANK",
                 "country": "US",
                 "currency": "usd",
-                "customer": "cus_7tECjTf1LGN9Rl",
+                "customer": "cus_7vWQ8OaJJHUnTy",
                 "fingerprint": "qw2YdYDmIJUuNi9w",
                 "last4": "6789",
                 "metadata": {},
@@ -257,12 +257,12 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_7tECjTf1LGN9Rl/bank_accounts"
+            "url": "/v1/customers/cus_7vWQ8OaJJHUnTy/bank_accounts"
           },
-          "created": 1455225154,
+          "created": 1455754225,
           "currency": null,
-          "default_bank_account": "ba_7tECjFhI53Cbuo",
-          "default_source": "ba_7tECjFhI53Cbuo",
+          "default_bank_account": "ba_7vWQzis6tMJ5NJ",
+          "default_source": "ba_7vWQzis6tMJ5NJ",
           "default_source_type": "bank_account",
           "delinquent": false,
           "description": "test@test.com",
@@ -275,13 +275,13 @@ http_interactions:
             "object": "list",
             "data": [
               {
-                "id": "ba_7tECjFhI53Cbuo",
+                "id": "ba_7vWQzis6tMJ5NJ",
                 "object": "bank_account",
                 "account_holder_type": null,
                 "bank_name": "STRIPE TEST BANK",
                 "country": "US",
                 "currency": "usd",
-                "customer": "cus_7tECjTf1LGN9Rl",
+                "customer": "cus_7vWQ8OaJJHUnTy",
                 "fingerprint": "qw2YdYDmIJUuNi9w",
                 "last4": "6789",
                 "metadata": {},
@@ -292,21 +292,21 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_7tECjTf1LGN9Rl/sources"
+            "url": "/v1/customers/cus_7vWQ8OaJJHUnTy/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7tECjTf1LGN9Rl/subscriptions"
+            "url": "/v1/customers/cus_7vWQ8OaJJHUnTy/subscriptions"
           }
         }
     http_version: 
-  recorded_at: Thu, 11 Feb 2016 21:12:55 GMT
+  recorded_at: Thu, 18 Feb 2016 00:10:26 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_7tECjTf1LGN9Rl/sources/ba_7tECjFhI53Cbuo
+    uri: https://api.stripe.com/v1/customers/cus_7vWQ8OaJJHUnTy/sources/ba_7vWQzis6tMJ5NJ
     body:
       encoding: US-ASCII
       string: ''
@@ -325,8 +325,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.31.0","lang":"ruby","lang_version":"2.3.0 p0 (2015-12-25)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        epicodus-73.local 15.2.0 Darwin Kernel Version 15.2.0: Fri Nov 13 19:56:56
-        PST 2015; root:xnu-3248.20.55~2/RELEASE_X86_64 x86_64","hostname":"epicodus-73.local"}'
+        chris.local 15.3.0 Darwin Kernel Version 15.3.0: Thu Dec 10 18:40:58 PST 2015;
+        root:xnu-3248.30.4~1/RELEASE_X86_64 x86_64","hostname":"chris.local"}'
   response:
     status:
       code: 200
@@ -335,7 +335,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 11 Feb 2016 21:12:35 GMT
+      - Thu, 18 Feb 2016 00:10:26 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -353,7 +353,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7tECSNqWsrmZHL
+      - req_7vWQ9RPuHMys4Y
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -362,13 +362,13 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "ba_7tECjFhI53Cbuo",
+          "id": "ba_7vWQzis6tMJ5NJ",
           "object": "bank_account",
           "account_holder_type": null,
           "bank_name": "STRIPE TEST BANK",
           "country": "US",
           "currency": "usd",
-          "customer": "cus_7tECjTf1LGN9Rl",
+          "customer": "cus_7vWQ8OaJJHUnTy",
           "fingerprint": "qw2YdYDmIJUuNi9w",
           "last4": "6789",
           "metadata": {},
@@ -377,10 +377,10 @@ http_interactions:
           "status": "new"
         }
     http_version: 
-  recorded_at: Thu, 11 Feb 2016 21:12:55 GMT
+  recorded_at: Thu, 18 Feb 2016 00:10:26 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_7tECjTf1LGN9Rl
+    uri: https://api.stripe.com/v1/customers/cus_7vWQ8OaJJHUnTy
     body:
       encoding: US-ASCII
       string: ''
@@ -399,8 +399,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.31.0","lang":"ruby","lang_version":"2.3.0 p0 (2015-12-25)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        epicodus-73.local 15.2.0 Darwin Kernel Version 15.2.0: Fri Nov 13 19:56:56
-        PST 2015; root:xnu-3248.20.55~2/RELEASE_X86_64 x86_64","hostname":"epicodus-73.local"}'
+        chris.local 15.3.0 Darwin Kernel Version 15.3.0: Thu Dec 10 18:40:58 PST 2015;
+        root:xnu-3248.30.4~1/RELEASE_X86_64 x86_64","hostname":"chris.local"}'
   response:
     status:
       code: 200
@@ -409,7 +409,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 11 Feb 2016 21:12:35 GMT
+      - Thu, 18 Feb 2016 00:10:26 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -427,7 +427,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7tECsctk6TJ8HC
+      - req_7vWQScDFTp4lCl
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -436,20 +436,20 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_7tECjTf1LGN9Rl",
+          "id": "cus_7vWQ8OaJJHUnTy",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
             "object": "list",
             "data": [
               {
-                "id": "ba_7tECjFhI53Cbuo",
+                "id": "ba_7vWQzis6tMJ5NJ",
                 "object": "bank_account",
                 "account_holder_type": null,
                 "bank_name": "STRIPE TEST BANK",
                 "country": "US",
                 "currency": "usd",
-                "customer": "cus_7tECjTf1LGN9Rl",
+                "customer": "cus_7vWQ8OaJJHUnTy",
                 "fingerprint": "qw2YdYDmIJUuNi9w",
                 "last4": "6789",
                 "metadata": {},
@@ -460,12 +460,12 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_7tECjTf1LGN9Rl/bank_accounts"
+            "url": "/v1/customers/cus_7vWQ8OaJJHUnTy/bank_accounts"
           },
-          "created": 1455225154,
+          "created": 1455754225,
           "currency": null,
-          "default_bank_account": "ba_7tECjFhI53Cbuo",
-          "default_source": "ba_7tECjFhI53Cbuo",
+          "default_bank_account": "ba_7vWQzis6tMJ5NJ",
+          "default_source": "ba_7vWQzis6tMJ5NJ",
           "default_source_type": "bank_account",
           "delinquent": false,
           "description": "test@test.com",
@@ -478,13 +478,13 @@ http_interactions:
             "object": "list",
             "data": [
               {
-                "id": "ba_7tECjFhI53Cbuo",
+                "id": "ba_7vWQzis6tMJ5NJ",
                 "object": "bank_account",
                 "account_holder_type": null,
                 "bank_name": "STRIPE TEST BANK",
                 "country": "US",
                 "currency": "usd",
-                "customer": "cus_7tECjTf1LGN9Rl",
+                "customer": "cus_7vWQ8OaJJHUnTy",
                 "fingerprint": "qw2YdYDmIJUuNi9w",
                 "last4": "6789",
                 "metadata": {},
@@ -495,21 +495,21 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_7tECjTf1LGN9Rl/sources"
+            "url": "/v1/customers/cus_7vWQ8OaJJHUnTy/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7tECjTf1LGN9Rl/subscriptions"
+            "url": "/v1/customers/cus_7vWQ8OaJJHUnTy/subscriptions"
           }
         }
     http_version: 
-  recorded_at: Thu, 11 Feb 2016 21:12:55 GMT
+  recorded_at: Thu, 18 Feb 2016 00:10:26 GMT
 - request:
     method: post
-    uri: https://api.stripe.com/v1/customers/cus_7tECjTf1LGN9Rl/sources/ba_7tECjFhI53Cbuo/verify
+    uri: https://api.stripe.com/v1/customers/cus_7vWQ8OaJJHUnTy/sources/ba_7vWQzis6tMJ5NJ/verify
     body:
       encoding: UTF-8
       string: amounts[]=32&amounts[]=45
@@ -528,8 +528,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.31.0","lang":"ruby","lang_version":"2.3.0 p0 (2015-12-25)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        epicodus-73.local 15.2.0 Darwin Kernel Version 15.2.0: Fri Nov 13 19:56:56
-        PST 2015; root:xnu-3248.20.55~2/RELEASE_X86_64 x86_64","hostname":"epicodus-73.local"}'
+        chris.local 15.3.0 Darwin Kernel Version 15.3.0: Thu Dec 10 18:40:58 PST 2015;
+        root:xnu-3248.30.4~1/RELEASE_X86_64 x86_64","hostname":"chris.local"}'
       Content-Length:
       - '25'
   response:
@@ -540,7 +540,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 11 Feb 2016 21:12:35 GMT
+      - Thu, 18 Feb 2016 00:10:28 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -558,7 +558,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7tECN0xrXPcfcY
+      - req_7vWQ1jyavgyEee
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -567,13 +567,13 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "ba_7tECjFhI53Cbuo",
+          "id": "ba_7vWQzis6tMJ5NJ",
           "object": "bank_account",
           "account_holder_type": null,
           "bank_name": "STRIPE TEST BANK",
           "country": "US",
           "currency": "usd",
-          "customer": "cus_7tECjTf1LGN9Rl",
+          "customer": "cus_7vWQ8OaJJHUnTy",
           "fingerprint": "qw2YdYDmIJUuNi9w",
           "last4": "6789",
           "metadata": {},
@@ -582,10 +582,10 @@ http_interactions:
           "status": "verified"
         }
     http_version: 
-  recorded_at: Thu, 11 Feb 2016 21:12:55 GMT
+  recorded_at: Thu, 18 Feb 2016 00:10:28 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_7tECjTf1LGN9Rl
+    uri: https://api.stripe.com/v1/customers/cus_7vWQ8OaJJHUnTy
     body:
       encoding: US-ASCII
       string: ''
@@ -604,8 +604,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.31.0","lang":"ruby","lang_version":"2.3.0 p0 (2015-12-25)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        epicodus-73.local 15.2.0 Darwin Kernel Version 15.2.0: Fri Nov 13 19:56:56
-        PST 2015; root:xnu-3248.20.55~2/RELEASE_X86_64 x86_64","hostname":"epicodus-73.local"}'
+        chris.local 15.3.0 Darwin Kernel Version 15.3.0: Thu Dec 10 18:40:58 PST 2015;
+        root:xnu-3248.30.4~1/RELEASE_X86_64 x86_64","hostname":"chris.local"}'
   response:
     status:
       code: 200
@@ -614,7 +614,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 11 Feb 2016 21:12:35 GMT
+      - Thu, 18 Feb 2016 00:10:29 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -632,7 +632,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7tECt1MHe6DVFE
+      - req_7vWQhIRY4fEP99
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -641,20 +641,20 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_7tECjTf1LGN9Rl",
+          "id": "cus_7vWQ8OaJJHUnTy",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
             "object": "list",
             "data": [
               {
-                "id": "ba_7tECjFhI53Cbuo",
+                "id": "ba_7vWQzis6tMJ5NJ",
                 "object": "bank_account",
                 "account_holder_type": null,
                 "bank_name": "STRIPE TEST BANK",
                 "country": "US",
                 "currency": "usd",
-                "customer": "cus_7tECjTf1LGN9Rl",
+                "customer": "cus_7vWQ8OaJJHUnTy",
                 "fingerprint": "qw2YdYDmIJUuNi9w",
                 "last4": "6789",
                 "metadata": {},
@@ -665,12 +665,12 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_7tECjTf1LGN9Rl/bank_accounts"
+            "url": "/v1/customers/cus_7vWQ8OaJJHUnTy/bank_accounts"
           },
-          "created": 1455225154,
+          "created": 1455754225,
           "currency": null,
-          "default_bank_account": "ba_7tECjFhI53Cbuo",
-          "default_source": "ba_7tECjFhI53Cbuo",
+          "default_bank_account": "ba_7vWQzis6tMJ5NJ",
+          "default_source": "ba_7vWQzis6tMJ5NJ",
           "default_source_type": "bank_account",
           "delinquent": false,
           "description": "test@test.com",
@@ -683,13 +683,13 @@ http_interactions:
             "object": "list",
             "data": [
               {
-                "id": "ba_7tECjFhI53Cbuo",
+                "id": "ba_7vWQzis6tMJ5NJ",
                 "object": "bank_account",
                 "account_holder_type": null,
                 "bank_name": "STRIPE TEST BANK",
                 "country": "US",
                 "currency": "usd",
-                "customer": "cus_7tECjTf1LGN9Rl",
+                "customer": "cus_7vWQ8OaJJHUnTy",
                 "fingerprint": "qw2YdYDmIJUuNi9w",
                 "last4": "6789",
                 "metadata": {},
@@ -700,24 +700,24 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_7tECjTf1LGN9Rl/sources"
+            "url": "/v1/customers/cus_7vWQ8OaJJHUnTy/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_7tECjTf1LGN9Rl/subscriptions"
+            "url": "/v1/customers/cus_7vWQ8OaJJHUnTy/subscriptions"
           }
         }
     http_version: 
-  recorded_at: Thu, 11 Feb 2016 21:12:55 GMT
+  recorded_at: Thu, 18 Feb 2016 00:10:29 GMT
 - request:
     method: post
     uri: https://api.stripe.com/v1/charges
     body:
       encoding: UTF-8
-      string: amount=60000&currency=usd&customer=cus_7tECjTf1LGN9Rl&source=ba_7tECjFhI53Cbuo
+      string: amount=60000&currency=usd&customer=cus_7vWQ8OaJJHUnTy&source=ba_7vWQzis6tMJ5NJ
     headers:
       Accept:
       - "*/*; q=0.5, application/xml"
@@ -733,8 +733,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.31.0","lang":"ruby","lang_version":"2.3.0 p0 (2015-12-25)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        epicodus-73.local 15.2.0 Darwin Kernel Version 15.2.0: Fri Nov 13 19:56:56
-        PST 2015; root:xnu-3248.20.55~2/RELEASE_X86_64 x86_64","hostname":"epicodus-73.local"}'
+        chris.local 15.3.0 Darwin Kernel Version 15.3.0: Thu Dec 10 18:40:58 PST 2015;
+        root:xnu-3248.30.4~1/RELEASE_X86_64 x86_64","hostname":"chris.local"}'
       Content-Length:
       - '78'
   response:
@@ -745,7 +745,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 11 Feb 2016 21:12:36 GMT
+      - Thu, 18 Feb 2016 00:10:29 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -763,7 +763,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7tECCJJkufusrW
+      - req_7vWQIWMIvo8t1h
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -772,16 +772,16 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "py_7tECU83s7NLdNY",
+          "id": "py_7vWQMqQcbHETS8",
           "object": "charge",
           "amount": 60000,
           "amount_refunded": 0,
           "application_fee": null,
-          "balance_transaction": "txn_7tECwdLghVsbnM",
+          "balance_transaction": "txn_7vWQfQ3u6pBYJX",
           "captured": true,
-          "created": 1455225155,
+          "created": 1455754229,
           "currency": "usd",
-          "customer": "cus_7tECjTf1LGN9Rl",
+          "customer": "cus_7vWQ8OaJJHUnTy",
           "description": null,
           "destination": null,
           "dispute": null,
@@ -801,17 +801,17 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/charges/py_7tECU83s7NLdNY/refunds"
+            "url": "/v1/charges/py_7vWQMqQcbHETS8/refunds"
           },
           "shipping": null,
           "source": {
-            "id": "ba_7tECjFhI53Cbuo",
+            "id": "ba_7vWQzis6tMJ5NJ",
             "object": "bank_account",
             "account_holder_type": null,
             "bank_name": "STRIPE TEST BANK",
             "country": "US",
             "currency": "usd",
-            "customer": "cus_7tECjTf1LGN9Rl",
+            "customer": "cus_7vWQ8OaJJHUnTy",
             "fingerprint": "qw2YdYDmIJUuNi9w",
             "last4": "6789",
             "metadata": {},
@@ -823,7 +823,7 @@ http_interactions:
           "status": "pending"
         }
     http_version: 
-  recorded_at: Thu, 11 Feb 2016 21:12:56 GMT
+  recorded_at: Thu, 18 Feb 2016 00:10:29 GMT
 - request:
     method: get
     uri: https://<CLOSE_IO_API_KEY>:@app.close.io/api/v1/lead/?query=email:test@test.com
@@ -845,7 +845,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 11 Feb 2016 21:12:36 GMT
+      - Thu, 18 Feb 2016 00:10:30 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -855,14 +855,14 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       Content-Length:
-      - '651'
+      - '654'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
       string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "display_name":
         "TEST TEST", "addresses": [], "status_id": "stat_IAcdBqZZTAul6vK2srakLxAyd8Kem3ALHW6MBg12ntc",
-        "date_updated": "2015-12-15T01:01:48.878000+00:00", "status_label": "Enrolled",
+        "date_updated": "2016-02-17T23:25:39.166000+00:00", "status_label": "Enrolled",
         "description": "Foo", "contacts": [{"name": "TEST TEST", "title": "", "date_updated":
         "2015-08-04T20:54:56.554000+00:00", "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
         "id": "cont_FStz8S1Oe1diS12GwlUZM3kd9An7qfrPhTkQ3nyxvoH", "organization_id":
@@ -878,7 +878,7 @@ http_interactions:
         "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26", "updated_by_name":
         "Michael Kaiser-Nyman", "name": "TEST TEST"}]}'
     http_version: 
-  recorded_at: Thu, 11 Feb 2016 21:12:56 GMT
+  recorded_at: Thu, 18 Feb 2016 00:10:30 GMT
 - request:
     method: get
     uri: https://<CLOSE_IO_API_KEY>:@app.close.io/api/v1/lead/?query=email:test@test.com
@@ -900,7 +900,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 11 Feb 2016 21:12:36 GMT
+      - Thu, 18 Feb 2016 00:10:30 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -910,14 +910,14 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       Content-Length:
-      - '651'
+      - '654'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
       string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "display_name":
         "TEST TEST", "addresses": [], "status_id": "stat_IAcdBqZZTAul6vK2srakLxAyd8Kem3ALHW6MBg12ntc",
-        "date_updated": "2015-12-15T01:01:48.878000+00:00", "status_label": "Enrolled",
+        "date_updated": "2016-02-17T23:25:39.166000+00:00", "status_label": "Enrolled",
         "description": "Foo", "contacts": [{"name": "TEST TEST", "title": "", "date_updated":
         "2015-08-04T20:54:56.554000+00:00", "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
         "id": "cont_FStz8S1Oe1diS12GwlUZM3kd9An7qfrPhTkQ3nyxvoH", "organization_id":
@@ -933,5 +933,5 @@ http_interactions:
         "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26", "updated_by_name":
         "Michael Kaiser-Nyman", "name": "TEST TEST"}]}'
     http_version: 
-  recorded_at: Thu, 11 Feb 2016 21:12:56 GMT
+  recorded_at: Thu, 18 Feb 2016 00:10:30 GMT
 recorded_with: VCR 3.0.1

@@ -10,17 +10,13 @@ class PaymentsController < ApplicationController
     end
   end
 
-  def show
-    @payment = Payment.find(params[:id])
-    authorize! :read, @payment
-  end
-
   def update
     @payment = Payment.find(params[:id])
     if @payment.update(payment_params)
       redirect_to student_payments_path(@payment.student), notice: "Refund successfully issued for #{@payment.student.name}."
     else
-      render 'show'
+      @student = @payment.student
+      render 'index'
     end
   end
 
