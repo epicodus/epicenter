@@ -3,6 +3,7 @@
 <% elsif can? :read, Payment %>
   <h1>Your payments</h1>
 <% end %>
+<p class="text-warning">* Payments made with a credit card will be charged a 2.9% processing fee + 30¢ per transaction.</p>
 
 <%= render 'layouts/errors', object: @payment %>
 <% if @student.payments.present? %>
@@ -40,14 +41,15 @@
   <p>No payments have been made yet.</p>
 <% end %>
 
+
 <% if current_student %>
   <% if @student.upfront_payment_due? %>
+    <hr>
     <%= render 'payments/upfront_payment_button' %>
+    <br>
   <% end %>
 
-  <p class='new-method-links'><%= link_to 'Manage payment methods', payment_methods_path %></p>
-
   <p>All payments will be made using your primary payment method.</p>
-
   <p>If you need help or have any questions regarding your payments, contact us.</p>
+  <p><%= link_to 'Manage payment methods', payment_methods_path %></p>
 <% end %>

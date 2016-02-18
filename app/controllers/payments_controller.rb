@@ -27,11 +27,10 @@ private
   end
 
   def format_refund_amount
-    amount = params[:payment][:refund_amount]
-    if amount.include?('.')
-      amount.slice!('.')
+    if params.dig(:payment, :refund_amount).include?('.')
+      params.dig(:payment, :refund_amount).slice!('.')
     else
-      params[:payment][:refund_amount] = amount.to_i * 100
+      params[:payment][:refund_amount] = params.dig(:payment, :refund_amount).to_i * 100
     end
   end
 
