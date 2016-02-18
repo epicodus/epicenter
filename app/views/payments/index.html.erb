@@ -6,7 +6,7 @@
 
 <%= render 'layouts/errors', object: @payment %>
 <% if @student.payments.present? %>
-  <table class="table table-hover">
+  <table class="table">
     <thead>
       <tr>
         <th>Status</th>
@@ -29,19 +29,7 @@
               <td><%= number_to_currency(payment.refund_amount / 100.00) %></td>
             <% else %>
               <% if can? :manage, Payment %>
-                <td class="col-xs-3">
-                  <%= form_for payment, method: :patch do |f| %>
-                    <div class="form-group">
-                      <div class="input-group">
-                        <span class="input-group-addon">$</span>
-                        <%= f.number_field :refund_amount, { class: 'form-control refund-input', id: "refund-#{payment.id}-input", required: true, step: 0.01, max: 5000 } %>
-                        <span class="input-group-btn">
-                          <%= f.submit 'Refund', class: 'btn btn-info refund-button', id: "refund-#{payment.id}-button" %>
-                        </span>
-                      </div>
-                    </div>
-                  <% end %>
-                </td>
+                <%= render 'payments/refund_form', payment: payment %>
               <% end %>
             <% end %>
         </tr>
