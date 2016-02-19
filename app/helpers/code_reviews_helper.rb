@@ -17,14 +17,4 @@ module CodeReviewsHelper
     end
     content_tag(:tr, class: score_class, &block)
   end
-
-  def submissions_count_badge(code_review)
-    unless code_review.submissions.needing_review.empty?
-      link_to code_review_submissions_path(code_review) do
-        content_tag :span, class: 'pull-right badge badge-info code-review-status' do
-          pluralize code_review.submissions.needing_review.count, 'new submission'
-        end
-      end
-    end
-  end
 end

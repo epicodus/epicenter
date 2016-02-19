@@ -1,30 +1,29 @@
-<div class="code-review">
-  <% if can? :manage, CodeReview %>
-    <div class='row well'>
-  <% else %>
-    <div class='row'>
-  <% end %>
-    <div class="col-xs-6">
-      <p><%= link_to code_review.title, code_review %></p>
-    </div>
-    <div class="col-xs-6">
-      <% if current_student %>
-        <span class="code-review-status">
-          <% if code_review.submission_for(current_student).nil? %>
-            Not submitted
-          <% elsif code_review.submission_for(current_student).has_been_reviewed? %>
-            Reviewed
-          <% else %>
-            Submitted - Pending review
-          <% end %>
-        </span>
-      <% elsif current_admin %>
-        <%= link_to 'Grades report', code_review_report_path(code_review) %>
-        <%= submissions_count_badge(code_review) %>
-        <%= fields_for 'code_reviews[]', code_review do |f| %>
-          <%= f.hidden_field :number, class: 'code-review-number' %>
+<tr>
+  <td class="col-xs-1">
+    <%= code_review.number %>
+  </td>
+  <td><p><%= link_to code_review.title, code_review %></p></td>
+  <td>
+    <% if can? :manage, CodeReview %>
+      <%= link_to 'Grades report', code_review_report_path(code_review) %>
+      <% if code_review.submissions.needing_review.any? %>
+        <%= link_to code_review_submissions_path(code_review) do %>
+          <span class="pull-right badge badge-info">
+            <%= pluralize(code_review.submissions.needing_review.count, 'new submission') %>
+          </span>
         <% end %>
       <% end %>
-    </div>
-  </div>
-</div>
+      <%= fields_for 'code_reviews[]', code_review do |f| %>
+        <%= f.hidden_field :number, class: 'code-review-number' %>
+      <% end %>
+    <% elsif can? :read, CodeReview %>
+      <% if code_review.submission_for(current_student).nil? %>
+      Not submitted
+      <% elsif code_review.submission_for(current_student).has_been_reviewed? %>
+      Reviewed
+      <% else %>
+      Submitted - Pending review
+      <% end %>
+    <% end %>
+  </td>
+</tr>

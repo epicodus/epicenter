@@ -1,5 +1,5 @@
 $(function() {
-  $('div.sortable-code-reviews').sortable({
+  $('.sortable-code-reviews').sortable({
   });
 
   $('form.update-multiple-code-reviews').submit(function(event) {
