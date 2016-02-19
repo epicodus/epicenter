@@ -4,9 +4,22 @@ class PaymentsController < ApplicationController
 
   def index
     @student = Student.find(params[:student_id])
+    @pay_method = @student.payment_method.class.name.underscore.humanize
+    @last_four = 
     authorize! :manage, @student
     if current_student && @student.upfront_payment_due?
       @payment = Payment.new(amount: @student.upfront_amount_with_fees)
+    else users.type == "Admin"
+      @payment = Payment.new(payment2_params)
+    end
+  end
+
+  def create
+    @student = Student.find(params[:student_id])
+    @payment = if @payment.save
+      notice: "Your payment was successfull."
+    else
+      alert: = "There was a problem processing your payment."
     end
   end
 
