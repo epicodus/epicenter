@@ -11,6 +11,7 @@ class Payment < ActiveRecord::Base
   before_create :make_payment, :send_payment_receipt
   after_save :update_close_io
   before_update :issue_refund, if: ->(payment) { payment.refund_amount? }
+  after_update :send_refund_receipt, if: ->(payment) { payment.refund_amount? }
   after_update :send_payment_failure_notice, if: ->(payment) { payment.status == "failed" }
 
   scope :order_by_latest, -> { order('created_at DESC') }
@@ -73,5 +74,16 @@ private
       errors.add(:base, exception.message)
       false
     end
+  end
+
+  def send_refund_receipt
+    Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message(
+      "epicodus.com",
+      { :from => ENV['FROM_EMAIL_PAYMENT'],
+        :to => student.email,
+        :bcc => ENV['FROM_EMAIL_PAYMENT'],
+        :subject => "Epicodus tuition refund receipt",
+        :text => "Hi #{student.name}. This is to confirm your refund of #{number_to_currency(refund_amount / 100.00)} from your Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
+    )
   end
 end

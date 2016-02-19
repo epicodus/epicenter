@@ -176,4 +176,25 @@ describe Payment do
       expect(payment.update(refund_amount: -40)).to eq false
     end
   end
+
+  describe "#send_refund_receipt" do
+    it "emails the student a receipt after successful refund", :vcr do
+      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
+
+      mailgun_client = spy("mailgun client")
+      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
+      payment.update(refund_amount: 50_00)
+
+      expect(mailgun_client).to have_received(:send_message).with(
+        "epicodus.com",
+        { :from => ENV['FROM_EMAIL_PAYMENT'],
+          :to => student.email,
+          :bcc => ENV['FROM_EMAIL_PAYMENT'],
+          :subject => "Epicodus tuition refund receipt",
+          :text => "Hi #{student.name}. This is to confirm your refund of $50.00 from your Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
+      )
+    end
+  end
 end
