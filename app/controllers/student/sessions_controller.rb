@@ -5,7 +5,9 @@ class Student::SessionsController < Devise::SessionsController
       pair_sign_in
     elsif can?(:create, AttendanceRecord.new)
       super
-      @attendance_record = AttendanceRecord.create(student: current_student)
+      @attendance_record = AttendanceRecord.new(student: current_student)
+      @attendance_record.sign_in_ip_address = request.env['HTTP_CF_CONNECTING_IP']
+      @attendance_record.save
     else
       super
     end
@@ -48,6 +50,7 @@ private
     users.map do |user|
       record = AttendanceRecord.find_or_initialize_by(student: user, date: Time.zone.now.to_date)
       record.pair_id = (users - [user]).try(:first).try(:id)
+      record.sign_in_ip_address = request.env['HTTP_CF_CONNECTING_IP']
       record.save
     end
   end
