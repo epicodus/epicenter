@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   resources :students, only: [:index, :update] do
     resources :courses, only: [:index]
-    resources :payments, only: [:index]
+    resources :payments, only: [:index, :create]
   end
   resources :admins, only: [:update]
   resources :payment_methods, only: [:index, :new]

@@ -4,22 +4,22 @@ class PaymentsController < ApplicationController
 
   def index
     @student = Student.find(params[:student_id])
-    @pay_method = @student.payment_method.class.name.underscore.humanize
-    @last_four = 
+
     authorize! :manage, @student
     if current_student && @student.upfront_payment_due?
       @payment = Payment.new(amount: @student.upfront_amount_with_fees)
-    else users.type == "Admin"
-      @payment = Payment.new(payment2_params)
+    else current_admin
+      @payment = Payment.new
     end
   end
 
   def create
     @student = Student.find(params[:student_id])
-    @payment = if @payment.save
-      notice: "Your payment was successfull."
+    @payment = Payment.new(payment_params)
+    if @payment.save
+      redirect_to student_payments_path(@student), notice: "Manual payment successfully made for #{@student.name}."
     else
-      alert: = "There was a problem processing your payment."
+      render 'index'
     end
   end
 
@@ -35,8 +35,8 @@ class PaymentsController < ApplicationController
 
 private
   def payment_params
-    format_refund_amount
-    params.require(:payment).permit(:refund_amount)
+    format_refund_amount if params[:payment][:refund_amount]
+    params.require(:payment).permit(:refund_amount, :amount, :student_id, :payment_method_id)
   end
 
   def format_refund_amount

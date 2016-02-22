@@ -52,4 +52,6 @@
   <p>All payments will be made using your primary payment method.</p>
   <p>If you need help or have any questions regarding your payments, contact us.</p>
   <%= link_to 'Manage payment methods', payment_methods_path, class: 'btn btn-info' %>
+<% elsif can? :manage, Payment %>
+  <%= render 'form' %>
 <% end %>
