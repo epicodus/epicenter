@@ -21,7 +21,9 @@ Rails.application.routes.draw do
   resources :attendance_record_amendments, only: [:new, :create]
   resources :courses, except: [:show, :index] do
     resources :attendance_statistics, only: [:index, :create]
-    resources :code_reviews, only: [:index]
+    resources :code_reviews, only: [:index] do
+      resource :report, only: [:show], to: 'code_review_reports#show'
+    end
     resources :internships
     resources :students, only: [:index, :show]
     resources :day_attendance_records, only: [:index]
@@ -31,7 +33,6 @@ Rails.application.routes.draw do
 
   resources :code_reviews, except: [:index] do
     resources :submissions, only: [:index, :create, :update]
-    resource :report, only: [:show], to: 'code_review_reports#show'
     collection do
       patch :update_multiple, :path => ''
     end

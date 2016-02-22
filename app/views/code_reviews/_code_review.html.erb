@@ -5,7 +5,7 @@
   <td><p><%= link_to code_review.title, code_review %></p></td>
   <td>
     <% if can? :manage, CodeReview %>
-      <%= link_to 'Grades report', code_review_report_path(code_review) %>
+      <%= link_to 'Grades report', course_code_review_report_path(@course, code_review) %>
       <% if code_review.submissions.needing_review.any? %>
         <%= link_to code_review_submissions_path(code_review) do %>
           <span class="pull-right badge badge-info">

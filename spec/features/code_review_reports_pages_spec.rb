@@ -39,7 +39,7 @@ feature 'code_review report' do
       student = FactoryGirl.create(:user_with_all_documents_signed)
       code_review = FactoryGirl.create(:code_review)
       login_as(student, scope: :student)
-      visit code_review_report_path(code_review)
+      visit course_code_review_report_path(student.course, code_review)
       expect(page).to have_content("not authorized")
     end
   end
