@@ -1,4 +1,11 @@
-<h2><%= t "devise.invitations.new.header" %></h2>
+<% if resource.is_a?(Student) %>
+  <h2><%= 'Invite a student' %></h2>
+  <%= link_to 'Invite an admin', new_admin_invitation_path %>
+<% else %>
+  <h2><%= 'Invite an admin' %></h2>
+<% end %>
+
+<hr>
 
 <div class="row">
   <div class="col-xs-6">
@@ -9,7 +16,7 @@
       <% if resource.is_a?(Student) %>
         <div class="form-group">
           <%= f.label :course_id, class: "control-label" %>
-          <%= f.select(:course_id, Course.current_and_future_courses.collect {|c| [ c.description, c.id ] }, {}, { class: "form-control" }) %>
+          <%= f.select(:course_id, Course.current_and_future_courses.reverse.collect {|c| [ c.description, c.id ] }, {}, { class: "form-control" }) %>
         </div>
       <% end %>
 
@@ -25,7 +32,11 @@
       </div>
     <% end -%>
 
-      <%= f.submit t("devise.invitations.new.submit_button"), class: "btn btn-info" %>
+      <% if resource.is_a?(Student) %>
+        <%= f.submit 'Invite student', class: "btn btn-info" %>
+      <% else %>
+        <%= f.submit 'Invite admin', class: "btn btn-info" %>
+      <% end %>
     <% end %>
   </div>
 </div>

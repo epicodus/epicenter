@@ -64,7 +64,7 @@ feature 'Inviting new users' do
     visit new_student_invitation_path
     select course.description, from: 'student_course_id'
     fill_in 'Email', with: 'newstudent@example.com'
-    click_on 'Send an invitation'
+    click_on 'Invite student'
     expect(page).to have_content "An invitation email has been sent to newstudent@example.com"
   end
 
@@ -72,7 +72,7 @@ feature 'Inviting new users' do
     login_as(admin, scope: :admin)
     visit new_admin_invitation_path
     fill_in 'Email', with: 'newadmin@example.com'
-    click_on 'Send an invitation'
+    click_on 'Invite admin'
     expect(page).to have_content "An invitation email has been sent to newadmin@example.com"
   end
 end
