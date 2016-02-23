@@ -199,3 +199,63 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
     expect(page).to have_content 'Invalid positive integer'
   end
 end
+
+feature 'make a manual payment' do
+
+  scenario 'successfully with cents' do
+    visit student_payments_path(student)
+    fill_in :amount, with: 1765.24
+    click_on 'Manual Payment'
+    expect(page).to have_content "Manual payment successfully made for #{@student.name}."
+    expect(page).to have_content '$1765.24'
+  end
+
+  scenario 'successfully without cents' do
+    visit student_payments_path(student)
+    fill_in :amount, with: 1765
+    click_on 'Manual Payment'
+    expect(page).to have_content "Manual payment successfully made for #{@student.name}."
+    expect(page).to have_content '$1765.00'
+  end
+
+  scenario 'unsuccessfully with an improperly formatted amount' do
+    visit student_payments_path(student)
+    fill_in :amount, with: 60.1
+    message = accept_prompt do
+      click_on 'Manual Payment'
+    end
+    expect(message).to eq 'Please enter an amount that includes 2 decimal places.'
+  end
+
+  scenario 'unsuccessfully with an amount that is too large' do
+    visit student_payments_path(student)
+    fill_in :amount, with: 5100
+    click_on 'Manual Refund'
+    expect(page).to have_content 'Value must be less than or equal to $5000.00.'
+  end
+
+  scenario 'unsuccessfully with a negative amount' do
+    visit student_payments_path(student)
+    fill_in :amount, with: -16.46
+    click_on 'Manual Payment'
+    expect(page).to have_content 'Invalid positive integer'
+  end
+
+  scenario 'no primary payment method selected' do
+    visit student_payments_path(student)
+    expect(page).to have_content 'No primary payment method has been selected.'
+  end
+
+  context 'after a manual payment is made' do
+    it 'the payment shows up in the payment history with the proper status and amount' do
+      visit student_payments_path(student)
+      fill_in :amount, with: 2500
+      click_on 'Manual Refund'
+      expect(page).to have_content 'Pending'
+      expect(page).to have_content '$2500.00'
+    end
+  end
+
+
+
+end
