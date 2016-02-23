@@ -1,16 +1,16 @@
 <%= form_for [@student, @payment] do |f| %>
-  <div class="form-group col-xs-4">
-    <%= "Primary Payment Method: " %>
-    <%= @student.primary_payment_method.type.humanize %>
-    <%= @student.primary_payment_method.last_four_string %>
+  <div class="form-group col-xs-6">
+    <p>
+      <strong>Primary payment method: </strong>
+      <%= @student.primary_payment_method.class.name.underscore.humanize + ' ending in ' + @student.primary_payment_method.last_four_string %>
+    </p>
     <div class="input-group">
-
       <span class="input-group-addon">$</span>
-      <%= f.number_field :amount, { class: 'form-control refund-input', required: true, step: 0.01, max: 5000 } %>
+      <%= f.number_field :amount, { class: 'form-control payment-input', required: true, step: 0.01, max: 5000 } %>
       <%= f.hidden_field :student_id, value: @student.id %>
       <%= f.hidden_field :payment_method_id, value: @student.primary_payment_method.id %>
       <span class="input-group-btn">
-        <%= f.submit 'Manual payment', class: 'btn btn-warning refund-button', data: { confirm: 'Are you sure?' } %>
+        <%= f.submit 'Manual payment', class: 'btn btn-warning payment-button', data: { confirm: 'Are you sure?' } %>
       </span>
     </div>
   </div>

@@ -35,15 +35,19 @@ class PaymentsController < ApplicationController
 
 private
   def payment_params
-    format_refund_amount if params[:payment][:refund_amount]
+    if params[:payment][:refund_amount]
+      format_payment_amount(:refund_amount)
+    elsif params[:payment][:amount]
+      format_payment_amount(:amount)
+    end
     params.require(:payment).permit(:refund_amount, :amount, :student_id, :payment_method_id)
   end
 
-  def format_refund_amount
-    if params.dig(:payment, :refund_amount).include?('.')
-      params.dig(:payment, :refund_amount).slice!('.')
+  def format_payment_amount(payment_type)
+    if params.dig(:payment, payment_type).include?('.')
+      params.dig(:payment, payment_type).slice!('.')
     else
-      params[:payment][:refund_amount] = params.dig(:payment, :refund_amount).to_i * 100
+      params[:payment][payment_type] = params.dig(:payment, payment_type).to_i * 100
     end
   end
 
