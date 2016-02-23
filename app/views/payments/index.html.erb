@@ -41,7 +41,6 @@
   <p>No payments have been made yet.</p>
 <% end %>
 
-
 <% if current_student %>
   <% if @student.upfront_payment_due? %>
     <hr>
@@ -53,5 +52,9 @@
   <p>If you need help or have any questions regarding your payments, contact us.</p>
   <%= link_to 'Manage payment methods', payment_methods_path, class: 'btn btn-info' %>
 <% elsif can? :manage, Payment %>
-  <%= render 'form' %>
+  <% if @student.primary_payment_method && params[:action] != 'update' %>
+    <%= render 'form' %>
+  <% elsif !@student.primary_payment_method && params[:action] != 'update' %>
+    No primary payment method has been selected.
+  <% end %>
 <% end %>

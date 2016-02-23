@@ -86,6 +86,7 @@ feature 'Viewing payment index page' do
       visit student_payments_path(student)
       expect(page).to have_content "Payments for #{student.name}"
       expect(page).to have_content "No payments have been made yet."
+      expect(page).to have_content "No primary payment method has been selected."
     end
 
     context 'before any payments have been made', :stripe_mock do
@@ -181,7 +182,7 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
     message = accept_prompt do
       click_on 'Refund'
     end
-    expect(message).to eq 'Please enter a refund amount that includes 2 decimal places.'
+    expect(message).to eq 'Please enter an amount that includes 2 decimal places.'
   end
 
   scenario 'unsuccessfully with an amount that is too large' do
