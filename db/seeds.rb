@@ -1,25 +1,43 @@
-#Payment Plans
+# Courses, admin, plan, and scores
+course = FactoryGirl.create(:course)
+past_course = FactoryGirl.create(:past_course)
+part_time_course = FactoryGirl.create(:part_time_course)
+FactoryGirl.create(:admin, current_course: course)
+FactoryGirl.create(:upfront_payment_only_plan)
+FactoryGirl.create(:passing_score)
+FactoryGirl.create(:in_between_score)
+FactoryGirl.create(:failing_score)
 
-plans = [
-  ["Spring 2015 loan", 0, 625_00, 5000_00],
-  ["Summer 2014 loan", 0, 600_00, 5000_00],
-  ["Winter 2015 loan", 200_00, 600_00, 5000_00],
-  ["Winter 2015 up-front", 3400_00, 0, 3400_00]
-]
-
-plans.each do |name, upfront_amount, total_amount|
-  Plan.create(name: name, upfront_amount: upfront_amount, total_amount: total_amount)
+# Students
+15.times do
+  FactoryGirl.create(:user_with_all_documents_signed, course: course)
+  FactoryGirl.create(:user_with_all_documents_signed, course: past_course)
+  FactoryGirl.create(:user_with_all_documents_signed, course: part_time_course)
 end
 
+# Code reviews
+5.times do
+  FactoryGirl.create(:code_review, course: course)
+  FactoryGirl.create(:code_review, course: past_course)
+  FactoryGirl.create(:code_review, course: part_time_course)
+end
 
-#Courses / Classes
+# Companies and internships
+30.times do
+  company = FactoryGirl.create(:company)
+  FactoryGirl.create(:internship, company: company, course: Course.all.sample(1).first)
+end
 
-courses = [
-  ["Spring 2014", [Date.parse("November 16, 2015"), Date.parse("November 17, 2015")], Time.parse("08:00:00 AM"), Time.parse("17:00:00 PM")],
-  ["Summer 2015", [Date.parse("November 16, 2015"), Date.parse("November 17, 2015")], Time.parse("08:00:00 AM"), Time.parse("17:00:00 PM")],
-  ["Winter 2015", [Date.parse("November 16, 2015"), Date.parse("November 17, 2015")], Time.parse("08:00:00 AM"), Time.parse("17:00:00 PM")]
-]
+# Internship ratings and code review submissions
+Student.all.each do |student|
+  student.update(sign_in_count: 1)
+  internships = Internship.where(course_id: student.courses.pluck(:id))
+  internships.each do |internship|
+    FactoryGirl.create(:rating, student: student, internship: internship)
+  end
 
-courses.each do |description, class_days, start_time, end_time|
-  Course.create!(description: description, class_days: class_days, start_time: start_time, end_time: end_time)
+  code_reviews = CodeReview.where(course_id: student.courses.pluck(:id))
+  code_reviews.each do |code_review|
+    FactoryGirl.create(:submission, code_review: code_review, student: student)
+  end
 end
