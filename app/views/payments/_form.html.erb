@@ -6,7 +6,7 @@
     </p>
     <div class="input-group">
       <span class="input-group-addon">$</span>
-      <%= f.number_field :amount, { class: 'form-control payment-input', required: true, step: 0.01, max: 5000 } %>
+      <%= f.number_field :amount, { class: 'form-control payment-input', required: true, step: 0.01 } %>
       <%= f.hidden_field :student_id, value: @student.id %>
       <%= f.hidden_field :payment_method_id, value: @student.primary_payment_method.id %>
       <span class="input-group-btn">

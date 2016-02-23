@@ -7,7 +7,7 @@ class PaymentsController < ApplicationController
     authorize! :manage, @student
     if current_student && @student.upfront_payment_due?
       @payment = Payment.new(amount: @student.upfront_amount_with_fees)
-    else current_admin
+    elsif current_admin
       @payment = Payment.new
     end
   end

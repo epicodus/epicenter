@@ -8,7 +8,7 @@ class Payment < ActiveRecord::Base
   validates :student_id, presence: true
   validates :payment_method, presence: true
 
-  before_create :make_payment, :send_payment_receipt
+  before_create :check_amount, :make_payment, :send_payment_receipt
   after_save :update_close_io
   before_update :issue_refund, if: ->(payment) { payment.refund_amount? }
   after_update :send_refund_receipt, if: ->(payment) { payment.refund_amount? }
@@ -85,5 +85,12 @@ private
         :subject => "Epicodus tuition refund receipt",
         :text => "Hi #{student.name}. This is to confirm your refund of #{number_to_currency(refund_amount / 100.00)} from your Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
     )
+  end
+
+  def check_amount
+    if amount >= 5000_00
+      errors.add(:amount, 'cannot be greater than $5,000.')
+      false
+    end
   end
 end
