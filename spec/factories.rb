@@ -62,14 +62,17 @@ FactoryGirl.define do
     end_time '5:00 PM'
 
     factory :past_course do
+      description 'Past course'
       class_days ((Time.zone.now.to_date - 18.weeks).beginning_of_week..(Time.zone.now.to_date - 14.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? }
     end
 
     factory :future_course do
+      description 'Future course'
       class_days ((Time.zone.now.to_date + 4.weeks).beginning_of_week..(Time.zone.now.to_date + 8.weeks).beginning_of_week).select { |day| day if !day.saturday? && !day.sunday? }
     end
 
     factory :part_time_course do
+      description 'Part-time course'
       start_time '6:00 PM'
       end_time '9:00 PM'
     end
@@ -257,7 +260,6 @@ FactoryGirl.define do
           student.make_upfront_payment
         end
       end
-
     end
 
     factory :user_with_all_documents_signed do

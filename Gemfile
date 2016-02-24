@@ -29,6 +29,7 @@ gem 'bootstrap-sass'
 gem 'sass-rails'
 gem 'jquery-datatables-rails'
 gem 'textacular'
+gem 'factory_girl_rails'
 
 group :development do
   gem 'spring'
@@ -42,7 +43,6 @@ end
 
 group :test, :development do
   gem 'rspec-rails'
-  gem 'factory_girl_rails'
   gem 'awesome_print'
   gem 'dotenv-rails'
   gem 'pry'
