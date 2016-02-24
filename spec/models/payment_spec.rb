@@ -57,6 +57,13 @@ describe Payment do
       payment = FactoryGirl.create(:payment_with_credit_card, student: student)
       expect(payment.fee).to eq 32
     end
+
+    it 'unsuccessfully with an amount that is too high' do
+      student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
+      payment = FactoryGirl.build(:payment_with_credit_card, student: student, amount: 5250_00)
+      expect(payment.save).to be false
+    end
+
     it "sets the status for the payment type" do
       student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
       payment = FactoryGirl.create(:payment_with_credit_card, student: student)
