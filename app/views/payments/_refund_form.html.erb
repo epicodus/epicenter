@@ -3,9 +3,9 @@
     <div class="form-group">
       <div class="input-group">
         <span class="input-group-addon">$</span>
-        <%= f.number_field :refund_amount, { class: 'form-control payment-input', id: "refund-#{payment.id}-input", required: true, step: 0.01 } %>
+        <%= f.number_field :refund_amount, { class: 'form-control payment-refund-input', id: "refund-#{payment.id}-input", required: true, step: 0.01 } %>
         <span class="input-group-btn">
-          <%= f.submit 'Refund', class: 'btn btn-info payment-button', id: "refund-#{payment.id}-button", data: { confirm: 'Are you sure?' } %>
+          <%= f.submit 'Refund', class: 'btn btn-info payment-refund-button', id: "refund-#{payment.id}-button", data: { confirm: 'Are you sure?' } %>
         </span>
       </div>
     </div>
