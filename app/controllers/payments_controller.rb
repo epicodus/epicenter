@@ -7,6 +7,18 @@ class PaymentsController < ApplicationController
     authorize! :manage, @student
     if current_student && @student.upfront_payment_due?
       @payment = Payment.new(amount: @student.upfront_amount_with_fees)
+    elsif current_admin
+      @payment = Payment.new
+    end
+  end
+
+  def create
+    @student = Student.find(params[:student_id])
+    @payment = Payment.new(payment_params)
+    if @payment.save
+      redirect_to student_payments_path(@student), notice: "Manual payment successfully made for #{@student.name}."
+    else
+      render 'index'
     end
   end
 
@@ -22,16 +34,18 @@ class PaymentsController < ApplicationController
 
 private
   def payment_params
-    format_refund_amount
-    params.require(:payment).permit(:refund_amount)
-  end
-
-  def format_refund_amount
-    if params.dig(:payment, :refund_amount).include?('.')
-      params.dig(:payment, :refund_amount).slice!('.')
-    else
-      params[:payment][:refund_amount] = params.dig(:payment, :refund_amount).to_i * 100
+    refund_amount = params[:payment][:refund_amount]
+    payment_amount = params[:payment][:amount]
+    if refund_amount.try(:include?, '.')
+      refund_amount.slice!('.')
+    elsif refund_amount
+      params[:payment][:refund_amount] = refund_amount.to_i * 100
+    elsif payment_amount.try(:include?, '.')
+      payment_amount.slice!('.')
+    elsif payment_amount
+      params[:payment][:amount] = payment_amount.to_i * 100
     end
+    params.require(:payment).permit(:refund_amount, :amount, :student_id, :payment_method_id)
   end
 
   def ensure_student_has_primary_payment_method

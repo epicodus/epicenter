@@ -1,0 +1,15 @@
+<%= form_for [@student, @payment] do |f| %>
+  <p>
+    <strong>Primary payment method: </strong>
+    <%= @student.primary_payment_method.class.name.underscore.humanize + ' ending in ' + @student.primary_payment_method.last_four_string %>
+  </p>
+  <div class="input-group">
+    <span class="input-group-addon">$</span>
+    <%= f.number_field :amount, { class: 'form-control payment-refund-input', required: true, step: 0.01 } %>
+    <%= f.hidden_field :student_id, value: @student.id %>
+    <%= f.hidden_field :payment_method_id, value: @student.primary_payment_method.id %>
+    <span class="input-group-btn">
+      <%= f.submit 'Manual payment', class: 'btn btn-warning payment-refund-button', data: { confirm: 'Are you sure?' } %>
+    </span>
+  </div>
+<% end %>

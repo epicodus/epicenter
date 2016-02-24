@@ -86,6 +86,7 @@ feature 'Viewing payment index page' do
       visit student_payments_path(student)
       expect(page).to have_content "Payments for #{student.name}"
       expect(page).to have_content "No payments have been made yet."
+      expect(page).to have_content "No primary payment method has been selected."
     end
 
     context 'before any payments have been made', :stripe_mock do
@@ -181,7 +182,7 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
     message = accept_prompt do
       click_on 'Refund'
     end
-    expect(message).to eq 'Please enter a refund amount that includes 2 decimal places.'
+    expect(message).to eq 'Please enter an amount that includes 2 decimal places.'
   end
 
   scenario 'unsuccessfully with an amount that is too large' do
@@ -196,5 +197,59 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
     fill_in "refund-#{payment.id}-input", with: -16.46
     click_on 'Refund'
     expect(page).to have_content 'Invalid positive integer'
+  end
+end
+
+feature 'make a manual payment', :stripe_mock, :stub_mailgun do
+  let(:admin) { FactoryGirl.create(:admin) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com') }
+
+  before { login_as(admin, scope: :admin) }
+
+  scenario 'successfully with cents', :vcr do
+    visit student_payments_path(student)
+    fill_in 'payment_amount', with: 1765.24
+    click_on 'Manual payment'
+    expect(page).to have_content "Manual payment successfully made for #{student.name}."
+    expect(page).to have_content 'Succeeded'
+    expect(page).to have_content '$1,818.26'
+  end
+
+  scenario 'successfully without cents', :vcr do
+    visit student_payments_path(student)
+    fill_in 'payment_amount', with: 1765
+    click_on 'Manual payment'
+    expect(page).to have_content "Manual payment successfully made for #{student.name}."
+    expect(page).to have_content 'Succeeded'
+    expect(page).to have_content '$1,818.01'
+  end
+
+  scenario 'unsuccessfully with an improperly formatted amount', :js do
+    visit student_payments_path(student)
+    fill_in 'payment_amount', with: 60.1
+    message = accept_prompt do
+      click_on 'Manual payment'
+    end
+    expect(message).to eq 'Please enter an amount that includes 2 decimal places.'
+  end
+
+  scenario 'with an invalid amount' do
+    visit student_payments_path(student)
+    fill_in 'payment_amount', with: 5100
+    click_on 'Manual payment'
+    expect(page).to have_content 'Amount cannot be greater than $5,000.'
+  end
+
+  scenario 'unsuccessfully with a negative amount' do
+    visit student_payments_path(student)
+    fill_in 'payment_amount', with: -16.46
+    click_on 'Manual payment'
+    expect(page).to have_content 'Invalid positive integer'
+  end
+
+  scenario 'with no primary payment method selected' do
+    student = FactoryGirl.create(:user_with_all_documents_signed)
+    visit student_payments_path(student)
+    expect(page).to have_content 'No primary payment method has been selected.'
   end
 end
