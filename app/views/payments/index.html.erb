@@ -26,13 +26,13 @@
           <td><%= payment.created_at.strftime("%A, %B %d, %Y") %></td>
           <td><%= number_to_currency(payment.total_amount / 100.00) %></td>
           <td><%= payment.payment_method.class.name.underscore.humanize + ' ending in ' + payment.payment_method.last_four_string[-4,4] %></td>
-            <% if payment.refund_amount? %>
-              <td><%= number_to_currency(payment.refund_amount / 100.00) %></td>
-            <% else %>
-              <% if can? :manage, Payment %>
-                <%= render 'payments/refund_form', payment: payment %>
-              <% end %>
+          <% if payment.refund_amount? %>
+            <td><%= number_to_currency(payment.refund_amount / 100.00) %></td>
+          <% else %>
+            <% if can? :manage, Payment %>
+              <%= render 'payments/refund_form', payment: payment %>
             <% end %>
+          <% end %>
         </tr>
       <% end %>
     </tbody>
@@ -43,7 +43,6 @@
 
 <% if current_student %>
   <% if @student.upfront_payment_due? %>
-    <hr>
     <%= render 'payments/upfront_payment_button' %>
     <br>
   <% end %>
@@ -51,10 +50,13 @@
   <p>All payments will be made using your primary payment method.</p>
   <p>If you need help or have any questions regarding your payments, contact us.</p>
   <%= link_to 'Manage payment methods', payment_methods_path, class: 'btn btn-info' %>
-<% elsif can? :manage, Payment %>
-  <% if @student.primary_payment_method && params[:action] != 'update' %>
-    <%= render 'form' %>
-  <% elsif !@student.primary_payment_method && params[:action] != 'update' %>
-    No primary payment method has been selected.
-  <% end %>
+<% elsif can?(:manage, Payment) && @student.primary_payment_method && params[:action] != 'update' %>
+  <h3>Manual payment</h3>
+  <div class="row">
+    <div class="col-xs-5">
+      <%= render 'form' %>
+    </div>
+  </div>
+<% else %>
+  No primary payment method has been selected.
 <% end %>
