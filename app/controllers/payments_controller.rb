@@ -34,18 +34,18 @@ class PaymentsController < ApplicationController
 
 private
   def payment_params
-    format_payment_amount
-    params.require(:payment).permit(:refund_amount, :amount, :student_id, :payment_method_id)
-  end
-
-  def format_payment_amount
-    payment_type = params[:payment].keys[0]
-    payment_amount = params.dig(:payment, payment_type)
-    if payment_amount.include?('.')
+    refund_amount = params[:payment][:refund_amount]
+    payment_amount = params[:payment][:amount]
+    if refund_amount.try(:include?, '.')
+      refund_amount.slice!('.')
+    elsif refund_amount
+      params[:payment][:refund_amount] = refund_amount.to_i * 100
+    elsif payment_amount.try(:include?, '.')
       payment_amount.slice!('.')
-    else
-      params[:payment][payment_type] = payment_amount.to_i * 100
+    elsif payment_amount
+      params[:payment][:amount] = payment_amount.to_i * 100
     end
+    params.require(:payment).permit(:refund_amount, :amount, :student_id, :payment_method_id)
   end
 
   def ensure_student_has_primary_payment_method

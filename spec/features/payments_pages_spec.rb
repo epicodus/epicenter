@@ -233,7 +233,7 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
     expect(message).to eq 'Please enter an amount that includes 2 decimal places.'
   end
 
-  scenario 'unsuccessfully with an amount that is too large' do
+  scenario 'with an invalid amount' do
     visit student_payments_path(student)
     fill_in 'payment_amount', with: 5100
     click_on 'Manual payment'
