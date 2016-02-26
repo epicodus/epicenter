@@ -15,8 +15,8 @@
   <div class="container">
     <%= render 'layouts/navbar' unless hide_navbar %>
     <%= flash_notice(flash) do %>
-      <%= flash[:notice] %>
-      <%= flash[:alert] %>
+      <%= sanitize(flash[:notice]) %>
+      <%= sanitize(flash[:alert]) %>
     <% end %>
     <%= yield %>
   </div>
