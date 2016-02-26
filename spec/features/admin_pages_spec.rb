@@ -57,19 +57,38 @@ end
 
 feature 'Inviting new users' do
   let(:admin) { FactoryGirl.create(:admin) }
+  let(:course) { FactoryGirl.build(:course) }
+
+  before { login_as(admin, scope: :admin) }
 
   scenario 'admin sends invitation to a student' do
-    course = FactoryGirl.build(:course)
-    login_as(admin, scope: :admin)
     visit new_student_invitation_path
     select course.description, from: 'student_course_id'
     fill_in 'Email', with: 'newstudent@example.com'
     click_on 'Invite student'
-    expect(page).to have_content "An invitation email has been sent to newstudent@example.com"
+    expect(page).to have_content "An invitation email has been sent to newstudent@example.com to join #{course.description}. Wrong course?"
+  end
+
+  scenario 'admin fails to send invitation to a student' do
+    visit new_student_invitation_path
+    select course.description, from: 'student_course_id'
+    fill_in 'Email', with: 'bad_email'
+    click_on 'Invite student'
+    expect(page).to have_content "Email is invalid"
+  end
+
+  scenario 'admin resends invitation to a student' do
+    visit new_student_invitation_path
+    select course.description, from: 'student_course_id'
+    fill_in 'Email', with: 'newstudent@example.com'
+    click_on 'Invite student'
+    student = Student.find_by(email: 'newstudent@example.com')
+    visit course_student_path(student.course, student)
+    click_on 'Resend invitation'
+    expect(page).to have_content "A new invitation email has been sent to newstudent@example.com"
   end
 
   scenario 'admin sends invitation to an admin' do
-    login_as(admin, scope: :admin)
     visit new_admin_invitation_path
     fill_in 'Email', with: 'newadmin@example.com'
     click_on 'Invite admin'
