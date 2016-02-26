@@ -1,6 +1,6 @@
 <h1><%= @student.name %></h1>
 
-<% if !@student.invitation_accepted_at? %>
+<% if current_admin && !@student.invitation_accepted_at? %>
   <%= link_to 'Resend invitation', student_invitation_path(student_id: @student), method: :post %>
 <% end %>
 
