@@ -1,15 +1,11 @@
 <div class="text-center">
   <h1>Welcome to the Epicenter</h1>
 
-  <p class="lead">An app for Epicodus students to track attendance, submit assessments and manage class payments. </p>
-
-  <%= link_to "Sign in with GitHub", '/auth/github', class: 'btn btn-default' %>
-
-  <div class="row">
-    <%= link_to "Student log in", new_student_session_path, class: 'btn btn-info btn-lg' %>
-  </div>
-  <br>
-  <div class="row">
-    <%= link_to "Teacher log in", new_admin_session_path, class: 'teacher-login btn btn-primary btn-sm' %>
-  </div>
+  <p><%= link_to 'Student sign in', new_student_session_path, class: 'btn btn-info' %></p>
+  <p><%= link_to 'Teacher sign in', new_admin_session_path, class: 'btn btn-primary' %></p>
+  <p><%= link_to '/auth/github', class: 'btn btn-default' do %>
+    <i class="fa fa-github"></i>
+    Sign in with GitHub
+    <% end %>
+  </p>
 </div>

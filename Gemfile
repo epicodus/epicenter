@@ -31,6 +31,7 @@ gem 'jquery-datatables-rails'
 gem 'textacular'
 gem 'factory_girl_rails'
 gem 'omniauth-github'
+gem 'font-awesome-rails'
 
 group :development do
   gem 'spring'
