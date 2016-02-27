@@ -40,6 +40,41 @@ feature 'Student cannot invite other students' do
   end
 end
 
+feature 'Student signs in with GitHub' do
+  let (:student) { FactoryGirl.create(:student) }
+
+  after { OmniAuth.config.mock_auth[:github] = nil }
+
+  scenario 'with valid credentials the first time' do
+    OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: student.email }})
+    visit root_path
+    click_on 'Sign in with GitHub'
+    expect(page).to have_content 'Signed in successfully.'
+  end
+
+  scenario 'with valid credentials on subsequent logins' do
+    student = FactoryGirl.create(:student, github_uid: '12345')
+    OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: student.email }})
+    visit root_path
+    click_on 'Sign in with GitHub'
+    expect(page).to have_content 'Signed in successfully.'
+  end
+
+  scenario 'with a valid email but invalid uid on subsequent logins' do
+    student = FactoryGirl.create(:student, github_uid: '12345')
+    OmniAuth.config.add_mock(:github, { uid: '98765', info: { email: student.email }})
+    visit root_path
+    click_on 'Sign in with GitHub'
+    expect(page).to have_content 'Your GitHub and Epicenter credentials do not match.'
+  end
+
+  scenario 'with invalid credentials' do
+    OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: 'wrong_email@example.com' }})
+    visit root_path
+    click_on 'Sign in with GitHub'
+    expect(page).to have_content 'Your GitHub and Epicenter credentials do not match.'
+  end
+end
 
 feature "Student signs in while class is not in session" do
 

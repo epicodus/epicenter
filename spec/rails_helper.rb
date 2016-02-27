@@ -30,7 +30,7 @@ RSpec.configure do |config|
     if example.metadata[:stub_mailgun]
       mailgun_client = spy("mailgun client")
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
-    end    
+    end
     StripeMock.start if example.metadata[:stripe_mock]
   end
   config.after(:each) do |example|
@@ -79,3 +79,5 @@ SimpleCov.formatters = [
   Coveralls::SimpleCov::Formatter,
 ]
 SimpleCov.start
+
+OmniAuth.config.test_mode = true
