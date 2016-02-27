@@ -30,6 +30,7 @@ gem 'sass-rails'
 gem 'jquery-datatables-rails'
 gem 'textacular'
 gem 'factory_girl_rails'
+gem 'omniauth-github'
 
 group :development do
   gem 'spring'
