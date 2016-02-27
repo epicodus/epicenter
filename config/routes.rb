@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   root 'static_pages#index'
   get 'sign_out', to: 'attendance_sign_out#new'
   get 'welcome', to: 'static_pages#show'
+  get '/auth/:provider/callback', to: 'sessions#create'
 
   devise_for :student, :controllers => { :invitations => 'invitations', :registrations => 'registrations', sessions: 'student/sessions' }
   devise_for :admins, skip: :registrations
