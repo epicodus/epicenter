@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :configure_permitted_params, if: :devise_controller?
 
-  helper_method :current_user, :current_course, :is_local
+  helper_method :current_user, :current_course, :is_local?
 
 protected
   def configure_permitted_params
@@ -24,9 +24,9 @@ protected
     if user.is_a? Admin
       course_students_path(user.current_course)
     elsif user.is_a? Student
-      if can?(:create, AttendanceRecord.new) && !AttendanceRecord.find_by(student_id: user.id, date: Time.zone.now.to_date)
+      if is_local? && !AttendanceRecord.find_by(student_id: user.id, date: Time.zone.now.to_date)
         welcome_path
-      elsif can?(:create, AttendanceRecord.new) && AttendanceRecord.find_by(student_id: user.id, date: Time.zone.now.to_date)
+      elsif is_local? && AttendanceRecord.find_by(student_id: user.id, date: Time.zone.now.to_date)
         student_courses_path(current_student)
       elsif user.class_in_session? && user.signed_main_documents?
         student_courses_path(current_student)
@@ -74,7 +74,7 @@ protected
     end
   end
 
-  def is_local
+  def is_local?
     require 'ipaddr'
     ip = IPAddr.new(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip)
     local_ip_ranges = ["::1", ENV['SCHOOL_IP_ADDRESS'], ENV['SCHOOL_WIFI_IP_ADDRESS']]

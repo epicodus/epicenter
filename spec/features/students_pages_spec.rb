@@ -146,7 +146,7 @@ feature "Student signs in while class is in session" do
 
   context "at school" do
     before { allow_any_instance_of(Ability).to receive(:is_local).and_return(true) }
-    before { allow_any_instance_of(ApplicationController).to receive(:is_local).and_return(true) }
+    before { allow_any_instance_of(ApplicationController).to receive(:is_local?).and_return(true) }
 
     context "when soloing" do
       it "takes them to the welcome page" do
