@@ -31,14 +31,14 @@ class Ability
       can :read, Internship, course_id: user.course_id
       can :read, Transcript, student: user
       can :read, :certificate
-      can :manage, AttendanceRecord if is_local(ip)
+      can :manage, AttendanceRecord if is_local?(ip)
     elsif user.is_a?(Student) && user.courses.empty?
       can :create, BankAccount
       can :update, BankAccount
       can :create, CreditCard
       can :create, Payment, student_id: user.id, payment_method: { student_id: user.id }
       can :read, Payment, student_id: user.id
-    elsif is_local(ip)
+    elsif is_local?(ip)
       can [:create, :update], AttendanceRecord
     else
       raise CanCan::AccessDenied.new("You need to sign in.", :manage, :all)
@@ -47,13 +47,9 @@ class Ability
 
   private
 
-  def local_ip_ranges
-    ["::1", ENV['SCHOOL_IP_ADDRESS'], ENV['SCHOOL_WIFI_IP_ADDRESS']]
-  end
-
-  def is_local(ip)
-    require 'ipaddr'
+  def is_local?(ip)
     ip = IPAddr.new(ip)
+    local_ip_ranges = ["::1", ENV['SCHOOL_IP_ADDRESS'], ENV['SCHOOL_WIFI_IP_ADDRESS']]
     local_ip_ranges.any? { |range| IPAddr.new(range).include?(ip) }
   end
 end

@@ -28,22 +28,24 @@
       </div>
     </div>
 
-    <div class="col-xs-4 col-xs-offset-4">
-      <h2>Pair sign in</h2>
+    <% if is_local_computer? %>
+      <div class="col-xs-4 col-xs-offset-4">
+        <h2>Pair sign in</h2>
 
-      <div class="form-group">
-        <%= label :pair, :email %>
-        <%= email_field :pair, :email, class: "form-control" %>
-      </div>
+        <div class="form-group">
+          <%= label :pair, :email %>
+          <%= email_field :pair, :email, class: "form-control" %>
+        </div>
 
-      <div class="form-group">
-        <%= label :pair, :password %>
-        <%= password_field :pair, :password, autocomplete: "off", class: "form-control" %>
-      </div>
+        <div class="form-group">
+          <%= label :pair, :password %>
+          <%= password_field :pair, :password, autocomplete: "off", class: "form-control" %>
+        </div>
 
-      <div class="form-group">
-        <%= f.submit "Pair sign in", class: 'btn btn-primary btn-block' %>
+        <div class="form-group">
+          <%= f.submit "Pair sign in", class: 'btn btn-primary btn-block' %>
+        </div>
       </div>
     <% end %>
-  </div>
+  <% end %>
 </div>

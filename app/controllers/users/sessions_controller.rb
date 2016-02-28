@@ -7,7 +7,7 @@ class Users::SessionsController < Devise::SessionsController
         sign_in_admin(user)
       elsif user.is_a? Student
         request.env["devise.mapping"] = Devise.mappings[:student]
-        if is_local? && params[:pair][:email] != ''
+        if is_local_computer? && params[:pair][:email] != ''
           pair_sign_in
         else
           sign_in_student(user)

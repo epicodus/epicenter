@@ -145,7 +145,7 @@ feature "Student signs in while class is in session" do
   end
 
   context "at school" do
-    before { allow_any_instance_of(Ability).to receive(:is_local).and_return(true) }
+    before { allow_any_instance_of(Ability).to receive(:is_local?).and_return(true) }
     before { allow_any_instance_of(ApplicationController).to receive(:is_local?).and_return(true) }
 
     context "when soloing" do
@@ -187,8 +187,10 @@ feature "Student signs in while class is in session" do
       end
     end
 
-    context "when pairing" do
+    context "when pairing on a school computer" do
       let(:pair) { FactoryGirl.create(:user_with_all_documents_signed, password: 'password2', password_confirmation: 'password2') }
+
+      before { allow_any_instance_of(ApplicationController).to receive(:is_local_computer?).and_return(true) }
 
       it "takes them to the welcome page" do
         sign_in(student, pair)
