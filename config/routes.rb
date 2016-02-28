@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   root 'static_pages#index'
   get 'sign_out', to: 'attendance_sign_out#new'
   get 'welcome', to: 'static_pages#show'
+  get 'queue', to: 'tickets#index'
+  get 'help', to: 'tickets#new'
 
   devise_for :student, :controllers => { :invitations => 'invitations', :registrations => 'registrations', sessions: 'student/sessions' }
   devise_for :admins, skip: :registrations
@@ -56,4 +58,5 @@ Rails.application.routes.draw do
   resource :random_pairs, only: [:show]
   resources :enrollments, only: [:create, :destroy]
   resource :sign_out, controller: 'attendance_sign_out', only: [:create]
+  resources :tickets, except: [:index, :new]
 end
