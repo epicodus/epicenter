@@ -32,7 +32,7 @@ private
       attendance_record = AttendanceRecord.new(student: user)
       attendance_record.sign_in_ip_address = request.env['HTTP_CF_CONNECTING_IP']
       attendance_record.save
-      redirect_to welcome_path, notice: 'Signed in successfully.'
+      redirect_to welcome_path, notice: 'Signed in successfully and attendance record created.'
     else
       redirect_to root_path, notice: 'Signed in successfully.'
     end
@@ -48,7 +48,7 @@ private
       sign_out(current_student)
       if create_attendance_records(@users)
         student_names = @users.map { |user| user.name }.uniq
-        redirect_to welcome_path, notice: "Welcome #{student_names.join(' and ')}."
+        redirect_to welcome_path, notice: "Welcome #{student_names.join(' and ')}. Your attendance records have been created."
       else
         flash.now[:alert] = "Something went wrong: " + attendance_records.first.errors.full_messages.join(", ")
         self.resource = Student.new

@@ -183,6 +183,7 @@ feature "Student signs in while class is in session" do
         OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: student.email }})
         visit root_path
         expect { click_on('Sign in with GitHub') }.to change { student.attendance_records.count }.by 1
+        expect(page).to have_content 'Signed in successfully and attendance record created.'
         OmniAuth.config.mock_auth[:github] = nil
       end
     end
