@@ -1,8 +1,8 @@
-<h2>Sign in</h2>
 
 <div class="row">
   <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { id: 'sign-in' }) do |f| %>
-    <div class="col-xs-6">
+    <div class="col-xs-4 col-xs-offset-4">
+      <h2>Sign in</h2>
       <div class="form-group">
         <%= f.label :email %>
         <%= f.email_field :email, autofocus: true , class: "form-control" %>
@@ -20,7 +20,7 @@
       <% end -%>
 
       <div class="form-group">
-        <%= f.submit "Sign in", class: 'btn btn-info' %>
+        <%= f.submit "Sign in", class: 'btn btn-info btn-block' %>
       </div>
 
       <div class="form-group">
@@ -28,10 +28,12 @@
       </div>
     </div>
 
-    <div class="col-xs-6">
+    <div class="col-xs-4 col-xs-offset-4">
+      <h2>Pair sign in</h2>
+
       <div class="form-group">
         <%= label :pair, :email %>
-        <%= email_field :pair, :email, autofocus: true , class: "form-control" %>
+        <%= email_field :pair, :email, class: "form-control" %>
       </div>
 
       <div class="form-group">
@@ -40,7 +42,7 @@
       </div>
 
       <div class="form-group">
-        <%= f.submit "Pair sign in", class: 'btn btn-primary' %>
+        <%= f.submit "Pair sign in", class: 'btn btn-primary btn-block' %>
       </div>
     <% end %>
   </div>
