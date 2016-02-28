@@ -24,11 +24,7 @@ protected
     if user.is_a? Admin
       course_students_path(user.current_course)
     elsif user.is_a? Student
-      if is_local? && !AttendanceRecord.find_by(student_id: user.id, date: Time.zone.now.to_date)
-        welcome_path
-      elsif is_local? && AttendanceRecord.find_by(student_id: user.id, date: Time.zone.now.to_date)
-        student_courses_path(current_student)
-      elsif user.class_in_session? && user.signed_main_documents?
+      if user.class_in_session? && user.signed_main_documents?
         student_courses_path(current_student)
       elsif user.signed_main_documents? && user.payment_methods.any? && user.courses.any?
         student_courses_path(current_student)

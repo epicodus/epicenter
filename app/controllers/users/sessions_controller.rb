@@ -28,11 +28,13 @@ private
 
   def sign_in_student(user)
     sign_in user
-    redirect_to root_path, notice: 'Signed in successfully.'
-    if is_local?
-      @attendance_record = AttendanceRecord.new(student: user)
-      @attendance_record.sign_in_ip_address = request.env['HTTP_CF_CONNECTING_IP']
-      @attendance_record.save
+    if is_local? && !AttendanceRecord.find_by(student_id: user.id, date: Time.zone.now.to_date)
+      attendance_record = AttendanceRecord.new(student: user)
+      attendance_record.sign_in_ip_address = request.env['HTTP_CF_CONNECTING_IP']
+      attendance_record.save
+      redirect_to welcome_path, notice: 'Signed in successfully.'
+    else
+      redirect_to root_path, notice: 'Signed in successfully.'
     end
   end
 

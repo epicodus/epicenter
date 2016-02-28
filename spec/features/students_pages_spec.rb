@@ -41,7 +41,7 @@ feature 'Student cannot invite other students' do
 end
 
 feature 'Student signs in with GitHub' do
-  let (:student) { FactoryGirl.create(:student) }
+  let (:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
   after { OmniAuth.config.mock_auth[:github] = nil }
 
@@ -53,7 +53,7 @@ feature 'Student signs in with GitHub' do
   end
 
   scenario 'with valid credentials on subsequent logins' do
-    student = FactoryGirl.create(:student, github_uid: '12345')
+    student = FactoryGirl.create(:user_with_all_documents_signed, github_uid: '12345')
     OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: student.email }})
     visit root_path
     click_on 'Sign in with GitHub'
@@ -156,6 +156,12 @@ feature "Student signs in while class is in session" do
 
       it "creates an attendance record for them" do
         expect { sign_in(student) }.to change { student.attendance_records.count }.by 1
+      end
+
+      it "takes them to the courses page if they've already signed in" do
+        FactoryGirl.create(:attendance_record, student: student)
+        sign_in(student)
+        expect(current_path).to eq student_courses_path(student)
       end
 
       it 'does not update the attendance record on subsequent solo sign ins during the day' do
