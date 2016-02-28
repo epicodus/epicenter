@@ -172,6 +172,15 @@ feature "Student signs in while class is in session" do
       end
     end
 
+    context 'when signing in with GitHub' do
+      scenario 'with valid credentials' do
+        OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: student.email }})
+        visit root_path
+        expect { click_on('Sign in with GitHub') }.to change { student.attendance_records.count }.by 1
+        OmniAuth.config.mock_auth[:github] = nil
+      end
+    end
+
     context "when pairing" do
       let(:pair) { FactoryGirl.create(:user_with_all_documents_signed, password: 'password2', password_confirmation: 'password2') }
 
