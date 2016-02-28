@@ -1,4 +1,4 @@
-class SessionsController < ApplicationController
+class OmniauthCallbacksController < ApplicationController
 
   def create
     response = request.env['omniauth.auth']
