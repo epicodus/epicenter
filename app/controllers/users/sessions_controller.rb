@@ -7,7 +7,7 @@ class Users::SessionsController < Devise::SessionsController
         sign_in_admin(user)
       elsif user.is_a? Student
         request.env["devise.mapping"] = Devise.mappings[:student]
-        if can?(:create, AttendanceRecord.new) && params[:pair][:email] != ''
+        if is_local && params[:pair][:email] != ''
           pair_sign_in
         else
           sign_in_student(user)
@@ -29,7 +29,7 @@ private
   def sign_in_student(user)
     sign_in user
     redirect_to root_path, notice: 'Signed in successfully.'
-    if can?(:create, AttendanceRecord.new)
+    if is_local
       @attendance_record = AttendanceRecord.new(student: user)
       @attendance_record.sign_in_ip_address = request.env['HTTP_CF_CONNECTING_IP']
       @attendance_record.save

@@ -134,7 +134,7 @@ feature "Student signs in while class is in session" do
 
   context "not at school" do
     it "takes them to the courses page" do
-      login_as(student, scope: :student)
+      sign_in(student)
       expect(current_path).to eq student_courses_path(student)
       expect(page).to have_content "Your courses"
     end
@@ -146,6 +146,7 @@ feature "Student signs in while class is in session" do
 
   context "at school" do
     before { allow_any_instance_of(Ability).to receive(:is_local).and_return(true) }
+    before { allow_any_instance_of(ApplicationController).to receive(:is_local).and_return(true) }
 
     context "when soloing" do
       it "takes them to the welcome page" do
