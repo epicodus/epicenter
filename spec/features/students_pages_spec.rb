@@ -68,7 +68,7 @@ feature 'Student signs in with GitHub' do
     expect(page).to have_content 'Your GitHub and Epicenter credentials do not match.'
   end
 
-  scenario 'with invalid credentials' do
+  scenario 'with mismatching GitHub and Epicenter emails' do
     OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: 'wrong_email@example.com' }})
     visit root_path
     click_on 'Sign in with GitHub'
@@ -178,8 +178,8 @@ feature "Student signs in while class is in session" do
       end
     end
 
-    context 'when signing in with GitHub' do
-      scenario 'with valid credentials' do
+    context 'when soloing and signing in with GitHub' do
+      scenario 'creates an attendance record with valid credentials' do
         OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: student.email }})
         visit root_path
         expect { click_on('Sign in with GitHub') }.to change { student.attendance_records.count }.by 1
