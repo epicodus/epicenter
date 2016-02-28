@@ -25,11 +25,18 @@
           <li><%= link_to 'Payments', student_payments_path(current_student) %></li>
           <li><%= link_to 'Pair suggestions', random_pairs_path %></li>
           <li><%= link_to 'Profile', edit_student_registration_path %></li>
-          <li><%= link_to "Log out", destroy_student_session_path, data: { method: :delete } %></li>
+          <li><%= link_to 'Sign out', destroy_student_session_path, data: { method: :delete } %></li>
+          <% if is_local? && AttendanceRecord.find_by(student_id: current_student.id, date: Time.zone.now.to_date) %>
+            <li>
+              <%= link_to sign_out_path do %>
+                <span class="text-primary">Attendance sign out</span>
+              <% end %>
+            </li>
+          <% end %>
         <% elsif current_student && current_student.courses.empty? %>
           <li><%= link_to 'Payments', student_payments_path(current_student) %></li>
           <li><%= link_to 'Profile', edit_student_registration_path %></li>
-          <li><%= link_to "Log out", destroy_student_session_path, data: { method: :delete } %></li>
+          <li><%= link_to 'Sign out', destroy_student_session_path, data: { method: :delete } %></li>
         <% elsif current_admin %>
           <li class="dropdown">
             <a href="#" id="current-course" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -60,7 +67,7 @@
           <li id="navbar-search">
             <%= render 'students/search' %>
           </li>
-          <li><%= link_to "Log out", destroy_admin_session_path, data: { method: :delete } %></li>
+          <li><%= link_to 'Sign out', destroy_admin_session_path, data: { method: :delete } %></li>
         <% end %>
       </ul>
     </div>

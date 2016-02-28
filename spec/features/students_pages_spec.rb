@@ -171,7 +171,7 @@ feature "Student signs in while class is in session" do
         attendance_record = AttendanceRecord.find_by(student: student)
         travel_to student.course.start_date + 12.hours do
           visit root_path
-          click_link 'Log out'
+          click_link 'Sign out'
           sign_in(student)
           expect(attendance_record.tardy).to be false
         end
@@ -227,7 +227,7 @@ feature "Student signs in while class is in session" do
         travel_to student.course.start_date + 8.hours do
           sign_in(student)
           visit root_path
-          click_link 'Log out'
+          click_link 'Sign out'
         end
         travel_to student.course.start_date + 10.hours do
           sign_in(student, pair)
