@@ -4,9 +4,9 @@ feature 'Admin signs in' do
   after { OmniAuth.config.mock_auth[:github] = nil }
 
   scenario 'with valid credentials' do
-    visit new_admin_session_path
-    fill_in 'admin_email', with: admin.email
-    fill_in 'admin_password', with: 'password'
+    visit new_user_session_path
+    fill_in 'user_email', with: admin.email
+    fill_in 'user_password', with: 'password'
     click_on 'Sign in'
     expect(page).to have_content 'Signed in'
   end

@@ -1,7 +1,7 @@
 def sign_in(user, pair=nil)
-  visit new_student_session_path
-  fill_in 'student_email', with: user.email
-  fill_in 'student_password', with: user.password
+  visit new_user_session_path
+  fill_in 'user_email', with: user.email
+  fill_in 'user_password', with: user.password
   if pair
     fill_in 'pair_email', with: pair.email
     fill_in 'pair_password', with: pair.password
