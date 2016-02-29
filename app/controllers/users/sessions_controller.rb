@@ -28,7 +28,7 @@ private
 
   def sign_in_student(user)
     sign_in user
-    if is_local? && !AttendanceRecord.find_by(student_id: user.id, date: Time.zone.now.to_date)
+    if is_local? && !user.signed_in_today?
       attendance_record = AttendanceRecord.new(student: user)
       attendance_record.sign_in_ip_address = request.env['HTTP_CF_CONNECTING_IP']
       attendance_record.save

@@ -2,7 +2,7 @@
 
 <div class="row">
   <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { id: 'sign-in' }) do |f| %>
-    <div class="col-xs-4 col-xs-offset-4">
+    <div class="col-sm-4 col-sm-offset-4">
       <div class="form-group">
         <%= f.label :email %>
         <%= f.email_field :email, autofocus: true, class: "form-control" %>
@@ -29,7 +29,7 @@
     </div>
 
     <% if is_local_computer? %>
-      <div class="col-xs-4 col-xs-offset-4">
+      <div class="col-sm-4 col-sm-offset-4">
         <h2 class="text-center">Pair sign in</h2>
 
         <div class="form-group">

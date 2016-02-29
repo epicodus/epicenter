@@ -84,7 +84,7 @@ feature "Student signs in while class is not in session" do
   context "before adding a payment method" do
     it "takes them to the page to choose payment method" do
       student = FactoryGirl.create(:user_with_all_documents_signed)
-      login_as(student, scope: :student)
+      sign_in(student)
       visit new_payment_method_path
       expect(page).to have_content "How would you like to make payments"
     end
@@ -93,7 +93,7 @@ feature "Student signs in while class is not in session" do
   context "after entering bank account info but before verifying" do
     it "takes them to the payment methods page", :vcr do
       bank_account = FactoryGirl.create(:bank_account, student: student)
-      login_as(student, scope: :student)
+      sign_in student
       visit payment_methods_path
       expect(page).to have_content "Your payment methods"
       expect(page).to have_link "Verify Account"
@@ -103,7 +103,7 @@ feature "Student signs in while class is not in session" do
   context "after verifying their bank account", :vcr do
     it "shows them their payment history" do
       verified_bank_account = FactoryGirl.create(:verified_bank_account, student: student)
-      login_as(student, scope: :student)
+      sign_in(student)
       visit student_payments_path(student)
       expect(page).to have_content "Your payments"
     end
@@ -112,7 +112,7 @@ feature "Student signs in while class is not in session" do
   context "after adding a credit card", :vcr, :stripe_mock do
     it "shows them their payment history" do
       credit_card = FactoryGirl.create(:credit_card, student: student)
-      login_as(student, scope: :student)
+      sign_in(student)
       visit student_payments_path(student)
       expect(page).to have_content "Your payments"
     end
@@ -123,7 +123,7 @@ feature "Student visits homepage after logged in" do
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
   it "takes them to the correct path" do
-    login_as(student, scope: :student)
+    sign_in(student)
     visit root_path
     expect(current_path).to_not eq root_path
   end

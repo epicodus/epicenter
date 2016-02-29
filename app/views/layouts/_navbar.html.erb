@@ -26,7 +26,7 @@
           <li><%= link_to 'Pair suggestions', random_pairs_path %></li>
           <li><%= link_to 'Profile', edit_student_registration_path %></li>
           <li><%= link_to 'Sign out', destroy_student_session_path, data: { method: :delete } %></li>
-          <% if is_local? && AttendanceRecord.find_by(student_id: current_student.id, date: Time.zone.now.to_date) %>
+          <% if is_local? && current_student.signed_in_today? %>
             <li>
               <%= link_to sign_out_path do %>
                 <span class="text-primary">Attendance sign out</span>
