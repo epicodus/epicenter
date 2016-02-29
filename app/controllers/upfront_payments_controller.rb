@@ -6,7 +6,7 @@ class UpfrontPaymentsController < ApplicationController
     if @payment.persisted?
       redirect_to student_payments_path(current_student), notice: "Thank You! Your upfront payment has been made."
     else
-      @payments = current_student.payments
+      @student = current_student
       render 'payments/index'
     end
   end
