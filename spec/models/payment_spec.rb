@@ -182,6 +182,13 @@ describe Payment do
       payment = FactoryGirl.create(:payment_with_bank_account, student: student)
       expect(payment.update(refund_amount: -40)).to eq false
     end
+
+    it 'does not update Close.io', :vcr, :stub_mailgun do
+      student = FactoryGirl.create :user_with_all_documents_signed_and_credit_card, email: 'test@test.com'
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student)
+      payment.update(refund_amount: 51)
+      expect(student).to_not receive(:update_close_io)
+    end
   end
 
   describe "#send_refund_receipt" do

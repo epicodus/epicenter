@@ -9,7 +9,7 @@ class Payment < ActiveRecord::Base
   validates :payment_method, presence: true
 
   before_create :check_amount, :make_payment, :send_payment_receipt
-  after_save :update_close_io
+  after_save :update_close_io, if: ->(payment) { !payment.refund_amount? }
   before_update :issue_refund, if: ->(payment) { payment.refund_amount? }
   after_update :send_refund_receipt, if: ->(payment) { payment.refund_amount? }
   after_update :send_payment_failure_notice, if: ->(payment) { payment.status == "failed" }
