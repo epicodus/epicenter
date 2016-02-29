@@ -5,8 +5,11 @@
   <h3>Objectives</h3>
     <ul id="objective-fields" class="list-unstyled">
       <%= f.nested_fields_for :objectives, wrapper_tag: :li do |ff| %>
-        <%= ff.text_field :content, class: 'form-control' %>
-        <%= ff.remove_nested_fields_link %>
+        <div class="input-group">
+          <%= ff.text_field :content, class: 'form-control' %>
+          <%= ff.remove_nested_fields_link nil, class: 'input-group-addon', id: 'remove-objective-link' %>
+        </div>
+        <br>
       <% end %>
     </ul>
     <div class="form-group">
