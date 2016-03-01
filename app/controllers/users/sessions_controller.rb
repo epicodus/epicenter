@@ -7,12 +7,7 @@ class Users::SessionsController < Devise::SessionsController
       if user.is_a? Admin
         sign_in_admin(user)
       elsif user.is_a? Student
-        request.env["devise.mapping"] = Devise.mappings[:student]
-        if is_local_computer? && params[:pair][:email] != ''
-          pair_sign_in
-        else
-          sign_in_student(user)
-        end
+        sign_in_student(user)
       end
     else
       super
@@ -32,6 +27,15 @@ private
   end
 
   def sign_in_student(user)
+    request.env["devise.mapping"] = Devise.mappings[:student]
+    if is_local_computer? && params[:pair][:email] != ''
+      sign_in_pairs
+    else
+      sign_in_solo_student(user)
+    end
+  end
+
+  def sign_in_solo_student(user)
     sign_in user
     if is_local? && !user.signed_in_today?
       attendance_record = AttendanceRecord.new(student: user)
@@ -43,7 +47,7 @@ private
     end
   end
 
-  def pair_sign_in
+  def sign_in_pairs
     sign_out_all_scopes
 
     @users = [Student.find_by(email: params[:user][:email]),
