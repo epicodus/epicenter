@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :configure_permitted_params, if: :devise_controller?
 
-  helper_method :current_user, :current_course, :is_local?, :is_local_computer?
+  helper_method :current_user, :current_course
 
 protected
   def configure_permitted_params
@@ -68,16 +68,6 @@ protected
     elsif current_admin
       current_admin.current_course
     end
-  end
-
-  def is_local?
-    ip = IPAddr.new(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip)
-    local_ip_ranges = ["::1", ENV['SCHOOL_IP_ADDRESS'], ENV['SCHOOL_WIFI_IP_ADDRESS']]
-    local_ip_ranges.any? { |range| IPAddr.new(range).include?(ip) }
-  end
-
-  def is_local_computer?
-    IPAddr.new(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip) == ENV['SCHOOL_IP_ADDRESS']
   end
 
   #authenticate_inviter is used to restrict who can send invitations. We are overriding the devise default

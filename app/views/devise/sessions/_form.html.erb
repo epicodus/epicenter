@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <% if is_local_computer? %>
+    <% if IpLocation.is_local_computer?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip) %>
       <div class="col-md-4 col-md-offset-4">
         <h2 class="text-center">Pair sign in</h2>
 
