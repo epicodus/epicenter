@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  root 'static_pages#index'
+  devise_scope :user do
+    root 'users/sessions#new'
+  end
   get 'sign_out', to: 'attendance_sign_out#new'
   get 'welcome', to: 'static_pages#show'
   get 'auth/:provider/callback', to: 'omniauth_callbacks#create'

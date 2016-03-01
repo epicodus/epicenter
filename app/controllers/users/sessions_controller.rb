@@ -1,4 +1,5 @@
 class Users::SessionsController < Devise::SessionsController
+  before_filter :redirect_if_logged_in
 
   def create
     user = User.find_by(email: params[:user][:email])
@@ -19,6 +20,10 @@ class Users::SessionsController < Devise::SessionsController
   end
 
 private
+
+  def redirect_if_logged_in
+    redirect_to after_sign_in_path_for(current_user) if current_user
+  end
 
   def sign_in_admin(user)
     request.env["devise.mapping"] = Devise.mappings[:admin]

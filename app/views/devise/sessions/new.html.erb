@@ -1,51 +1,12 @@
-<h2 class="text-center">Sign in</h2>
-
-<div class="row">
-  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { id: 'sign-in' }) do |f| %>
-    <div class="col-sm-4 col-sm-offset-4">
-      <div class="form-group">
-        <%= f.label :email %>
-        <%= f.email_field :email, autofocus: true, class: "form-control" %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :password %>
-        <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
-      </div>
-
-      <% if devise_mapping.rememberable? -%>
-        <div class="form-group">
-          <%= f.check_box :remember_me %> <%= f.label :remember_me %>
-        </div>
-      <% end -%>
-
-      <div class="form-group">
-        <%= f.submit "Sign in", class: 'btn btn-info btn-block' %>
-      </div>
-
-      <div class="form-group">
-        <%= render "devise/shared/links" %>
-      </div>
-    </div>
-
-    <% if is_local_computer? %>
-      <div class="col-sm-4 col-sm-offset-4">
-        <h2 class="text-center">Pair sign in</h2>
-
-        <div class="form-group">
-          <%= label :pair, :email %>
-          <%= email_field :pair, :email, class: "form-control" %>
-        </div>
-
-        <div class="form-group">
-          <%= label :pair, :password %>
-          <%= password_field :pair, :password, autocomplete: "off", class: "form-control" %>
-        </div>
-
-        <div class="form-group">
-          <%= f.submit "Pair sign in", class: 'btn btn-primary btn-block' %>
-        </div>
-      </div>
+<div class="text-center">
+  <p><%= image_tag "logo.png", id: 'logo' %></p>
+  <h1>Welcome to the Epicenter</h1>
+  <p><%= link_to '/auth/github', class: 'btn btn-default', id: 'github-sign-in-button' do %>
+    <i class="fa fa-github"></i>
+    Sign in with GitHub
     <% end %>
-  <% end %>
+  </p>
+  <p>or</p>
 </div>
+
+<%= render 'form' %>
