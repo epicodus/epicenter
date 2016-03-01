@@ -1,10 +1,14 @@
 Rails.application.routes.draw do
-  root 'static_pages#index'
+  devise_scope :user do
+    root 'users/sessions#new'
+  end
   get 'sign_out', to: 'attendance_sign_out#new'
   get 'welcome', to: 'static_pages#show'
+  get 'auth/:provider/callback', to: 'omniauth_callbacks#create'
 
-  devise_for :student, :controllers => { :invitations => 'invitations', :registrations => 'registrations', sessions: 'student/sessions' }
+  devise_for :student, controllers: { invitations: 'invitations', registrations: 'registrations' }
   devise_for :admins, skip: :registrations
+  devise_for :users, controllers: { sessions: 'users/sessions' }, skip: [:invitations, :registrations]
 
   resources :students, only: [:index, :update] do
     resources :courses, only: [:index]

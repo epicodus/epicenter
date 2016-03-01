@@ -40,6 +40,41 @@ feature 'Student cannot invite other students' do
   end
 end
 
+feature 'Student signs in with GitHub' do
+  let (:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+
+  after { OmniAuth.config.mock_auth[:github] = nil }
+
+  scenario 'with valid credentials the first time' do
+    OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: student.email }})
+    visit root_path
+    click_on 'Sign in with GitHub'
+    expect(page).to have_content 'Signed in successfully.'
+  end
+
+  scenario 'with valid credentials on subsequent logins' do
+    student = FactoryGirl.create(:user_with_all_documents_signed, github_uid: '12345')
+    OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: student.email }})
+    visit root_path
+    click_on 'Sign in with GitHub'
+    expect(page).to have_content 'Signed in successfully.'
+  end
+
+  scenario 'with a valid email but invalid uid on subsequent logins' do
+    student = FactoryGirl.create(:student, github_uid: '12345')
+    OmniAuth.config.add_mock(:github, { uid: '98765', info: { email: student.email }})
+    visit root_path
+    click_on 'Sign in with GitHub'
+    expect(page).to have_content 'Your GitHub and Epicenter credentials do not match.'
+  end
+
+  scenario 'with mismatching GitHub and Epicenter emails' do
+    OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: 'wrong_email@example.com' }})
+    visit root_path
+    click_on 'Sign in with GitHub'
+    expect(page).to have_content 'Your GitHub and Epicenter credentials do not match.'
+  end
+end
 
 feature "Student signs in while class is not in session" do
 
@@ -98,7 +133,7 @@ feature "Student signs in while class is in session" do
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
 
   context "not at school" do
-    it "takes them to the code reviews page" do
+    it "takes them to the courses page" do
       sign_in(student)
       expect(current_path).to eq student_courses_path(student)
       expect(page).to have_content "Your courses"
@@ -110,7 +145,7 @@ feature "Student signs in while class is in session" do
   end
 
   context "at school" do
-    before { allow_any_instance_of(Ability).to receive(:is_local).and_return(true) }
+    before { allow(IpLocation).to receive(:is_local?).and_return(true) }
 
     context "when soloing" do
       it "takes them to the welcome page" do
@@ -122,6 +157,12 @@ feature "Student signs in while class is in session" do
         expect { sign_in(student) }.to change { student.attendance_records.count }.by 1
       end
 
+      it "takes them to the courses page if they've already signed in" do
+        FactoryGirl.create(:attendance_record, student: student)
+        sign_in(student)
+        expect(current_path).to eq student_courses_path(student)
+      end
+
       it 'does not update the attendance record on subsequent solo sign ins during the day' do
         travel_to student.course.start_date + 8.hours do
           sign_in(student)
@@ -129,15 +170,27 @@ feature "Student signs in while class is in session" do
         attendance_record = AttendanceRecord.find_by(student: student)
         travel_to student.course.start_date + 12.hours do
           visit root_path
-          click_link 'Log out'
+          click_link 'Sign out'
           sign_in(student)
           expect(attendance_record.tardy).to be false
         end
       end
     end
 
-    context "when pairing" do
+    context 'when soloing and signing in with GitHub' do
+      scenario 'creates an attendance record with valid credentials' do
+        OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: student.email }})
+        visit root_path
+        expect { click_on('Sign in with GitHub') }.to change { student.attendance_records.count }.by 1
+        expect(page).to have_content 'Signed in successfully and attendance record created.'
+        OmniAuth.config.mock_auth[:github] = nil
+      end
+    end
+
+    context "when pairing on a school computer" do
       let(:pair) { FactoryGirl.create(:user_with_all_documents_signed, password: 'password2', password_confirmation: 'password2') }
+
+      before { allow(IpLocation).to receive(:is_local_computer?).and_return(true) }
 
       it "takes them to the welcome page" do
         sign_in(student, pair)
@@ -173,7 +226,7 @@ feature "Student signs in while class is in session" do
         travel_to student.course.start_date + 8.hours do
           sign_in(student)
           visit root_path
-          click_link 'Log out'
+          click_link 'Sign out'
         end
         travel_to student.course.start_date + 10.hours do
           sign_in(student, pair)
@@ -186,9 +239,9 @@ feature "Student signs in while class is in session" do
       end
 
       it "gives an error for an incorrect email" do
-        visit new_student_session_path
-        fill_in 'student_email', with: 'wrong'
-        fill_in 'student_password', with: student.password
+        visit new_user_session_path
+        fill_in 'user_email', with: 'wrong'
+        fill_in 'user_password', with: student.password
         fill_in 'pair_email', with: pair.email
         fill_in 'pair_password', with: pair.password
         click_button 'Pair sign in'
@@ -196,9 +249,9 @@ feature "Student signs in while class is in session" do
       end
 
       it "gives an error for an incorrect password" do
-        visit new_student_session_path
-        fill_in 'student_email', with: student.email
-        fill_in 'student_password', with: 'wrong'
+        visit new_user_session_path
+        fill_in 'user_email', with: student.email
+        fill_in 'user_password', with: 'wrong'
         fill_in 'pair_email', with: pair.email
         fill_in 'pair_password', with: pair.password
         click_button 'Pair sign in'

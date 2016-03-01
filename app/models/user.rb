@@ -1,8 +1,14 @@
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
   validates :name, presence: true
+
+  def authenticate_with_github(uid)
+    if github_uid?
+      github_uid == uid
+    else
+      update(github_uid: uid)
+    end
+  end
 end

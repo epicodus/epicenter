@@ -12,6 +12,8 @@ module ApplicationHelper
     current_page?(certificate_path) ||
     current_page?(transcript_path) ||
     current_page?(welcome_path) ||
-    current_page?(student_session_path)
+    current_page?(user_session_path) ||
+    current_page?(new_user_password_path) ||
+    current_page?(root_path)
   end
 end

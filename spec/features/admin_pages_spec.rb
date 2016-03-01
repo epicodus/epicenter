@@ -1,12 +1,44 @@
 feature 'Admin signs in' do
   let(:admin) { FactoryGirl.create(:admin) }
 
+  after { OmniAuth.config.mock_auth[:github] = nil }
+
   scenario 'with valid credentials' do
-    visit new_admin_session_path
-    fill_in 'admin_email', with: admin.email
-    fill_in 'admin_password', with: 'password'
+    visit new_user_session_path
+    fill_in 'user_email', with: admin.email
+    fill_in 'user_password', with: 'password'
     click_on 'Sign in'
     expect(page).to have_content 'Signed in'
+  end
+
+  scenario 'with valid GitHub credentials the first time' do
+    OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: admin.email }})
+    visit root_path
+    click_on 'Sign in with GitHub'
+    expect(page).to have_content 'Signed in successfully.'
+  end
+
+  scenario 'with valid GitHub credentials on subsequent logins' do
+    admin = FactoryGirl.create(:admin, github_uid: '12345')
+    OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: admin.email }})
+    visit root_path
+    click_on 'Sign in with GitHub'
+    expect(page).to have_content 'Signed in successfully.'
+  end
+
+  scenario 'with a valid GitHub email but invalid uid on subsequent logins' do
+    admin = FactoryGirl.create(:admin, github_uid: '12345')
+    OmniAuth.config.add_mock(:github, { uid: '98765', info: { email: admin.email }})
+    visit root_path
+    click_on 'Sign in with GitHub'
+    expect(page).to have_content 'Your GitHub and Epicenter credentials do not match.'
+  end
+
+  scenario 'with mismatching GitHub and Epicenter emails' do
+    OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: 'wrong_email@example.com' }})
+    visit root_path
+    click_on 'Sign in with GitHub'
+    expect(page).to have_content 'Your GitHub and Epicenter credentials do not match.'
   end
 
   scenario 'and sees navigation links' do

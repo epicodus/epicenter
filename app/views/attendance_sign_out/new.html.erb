@@ -1,18 +1,18 @@
-<h1 class="text-center">Sign out</h1>
+<h2 class="text-center">Attendance sign out</h2>
 
 <div class="row">
-  <div class="col-xs-6 col-xs-offset-3">
+  <div class="col-xs-4 col-xs-offset-4">
     <%= form_tag sign_out_path do %>
       <%= hidden_field_tag :signing_out, value: true %>
       <div class="form-group">
         <%= label_tag :email %>
-        <%= text_field_tag 'email', nil, placeholder: "Email", class: "form-control input-lg" %>
+        <%= text_field_tag 'email', nil, autofocus: true, class: "form-control" %>
       </div>
       <div class="form-group">
         <%= label_tag :password %>
-        <%= password_field_tag 'password', nil, placeholder: "Password", class: "form-control input-lg" %>
+        <%= password_field_tag 'password', nil, autocomplete: "off", class: "form-control" %>
       </div>
-      <%= submit_tag 'Sign out', class: "btn btn-primary btn-lg btn-block" %>
+      <%= submit_tag 'Sign out', class: "btn btn-primary btn-block" %>
     <% end %>
   </div>
 </div>

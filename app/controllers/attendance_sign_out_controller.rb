@@ -8,7 +8,7 @@ class AttendanceSignOutController < ApplicationController
       attendance_record.sign_out_ip_address = request.env['HTTP_CF_CONNECTING_IP']
       if attendance_record.update(attendance_record_params)
         sign_out student
-        redirect_to sign_out_path, notice: "Goodbye #{attendance_record.student.name}."
+        redirect_to sign_out_path, notice: "Goodbye #{attendance_record.student.name}. Your attendance record has been updated."
       else
         flash.now[:alert] = "Something went wrong: " + attendance_record.errors.full_messages.join(", ")
         render 'new'
