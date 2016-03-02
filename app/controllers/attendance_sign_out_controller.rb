@@ -5,7 +5,6 @@ class AttendanceSignOutController < ApplicationController
     attendance_record = AttendanceRecord.find_by(date: Time.zone.now.to_date, student: student)
     if attendance_record && student.try(:valid_password?, params[:password])
       authorize! :update, attendance_record
-      attendance_record.sign_out_ip_address = request.env['HTTP_CF_CONNECTING_IP']
       if attendance_record.update(attendance_record_params)
         sign_out student
         redirect_to sign_out_path, notice: "Goodbye #{attendance_record.student.name}. Your attendance record has been updated."

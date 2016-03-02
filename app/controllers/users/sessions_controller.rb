@@ -38,9 +38,7 @@ private
   def sign_in_solo_student(user)
     sign_in user
     if is_weekday? && IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip) && !user.signed_in_today?
-      attendance_record = AttendanceRecord.new(student: user)
-      attendance_record.sign_in_ip_address = request.env['HTTP_CF_CONNECTING_IP']
-      attendance_record.save
+      attendance_record = AttendanceRecord.create(student: user)
       redirect_to welcome_path, notice: 'Signed in successfully and attendance record created.'
     else
       redirect_to root_path, notice: 'Signed in successfully.'
@@ -82,7 +80,6 @@ private
     users.map do |user|
       record = AttendanceRecord.find_or_initialize_by(student: user, date: Time.zone.now.to_date)
       record.pair_id = (users - [user]).try(:first).try(:id)
-      record.sign_in_ip_address = request.env['HTTP_CF_CONNECTING_IP']
       record.save
     end
   end

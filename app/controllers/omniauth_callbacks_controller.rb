@@ -6,9 +6,7 @@ class OmniauthCallbacksController < ApplicationController
     if user.try(:authenticate_with_github, response[:uid])
       sign_in user
       if is_weekday? && IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip) && user.is_a?(Student) && !user.signed_in_today?
-        attendance_record = AttendanceRecord.new(student: user)
-        attendance_record.sign_in_ip_address = request.env['HTTP_CF_CONNECTING_IP']
-        attendance_record.save
+        attendance_record = AttendanceRecord.create(student: user)
         redirect_to welcome_path, notice: 'Signed in successfully and attendance record created.'
       else
         redirect_to root_path, notice: 'Signed in successfully.'
