@@ -1,5 +1,8 @@
 class Admin < User
+  default_scope { order(:name) }
+
   belongs_to :current_course, class_name: 'Course'
+  has_many :courses
 
   before_create :assign_current_course
   devise :database_authenticatable, :validatable

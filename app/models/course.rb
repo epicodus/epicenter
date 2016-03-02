@@ -11,6 +11,7 @@ class Course < ActiveRecord::Base
   validates :end_time, presence: true
   before_validation :set_start_and_end_dates
 
+  belongs_to :admin
   has_many :enrollments
   has_many :students, through: :enrollments
   has_many :attendance_records, through: :students

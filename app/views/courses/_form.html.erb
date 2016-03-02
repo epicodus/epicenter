@@ -3,7 +3,12 @@
 
   <div class="form-group">
     <%= f.label :description %>
-    <%= f.text_field :description, class: 'form-control' %>
+    <%= f.text_field :description, autofocus: true, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :admin_id, 'Teacher' %>
+    <%= f.select :admin_id, Admin.all.collect {|c| [ c.name, c.id ] }, {}, { class: 'form-control' } %>
   </div>
 
   <div class="form-group">

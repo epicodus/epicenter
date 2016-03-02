@@ -21,6 +21,7 @@ feature 'creating a course' do
       click_on 'Add a course'
       expect(page).to have_content 'New course'
     end
+
     scenario 'with invalid input' do
       visit new_course_path
       click_on 'Create Course'
@@ -31,6 +32,7 @@ feature 'creating a course' do
       travel_to Date.parse('November 16, 2015') do
         visit new_course_path
         fill_in 'Description', with: 'Ruby/Rails - Summer 2015'
+        select admin.name, from: 'Teacher'
         fill_in 'Start time', with: '8:00 AM'
         fill_in 'End time', with: '5:00 PM'
         find('td', text: 16).click
@@ -46,6 +48,7 @@ feature 'creating a course' do
       code_review = FactoryGirl.create(:code_review, course: previous_course)
       visit new_course_path
       fill_in 'Description', with: 'Ruby/Rails - Summer 2015'
+      select admin.name, from: 'Teacher'
       fill_in 'Start time', with: '8:00 AM'
       fill_in 'End time', with: '5:00 PM'
       find(:xpath, "//input[@id='course_class_days']").set "2015-09-06,2015-09-07,2015-09-08"
