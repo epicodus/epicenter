@@ -1,6 +1,6 @@
 <% if @results.any? %>
   <% @results.each do |student| %>
-    <div class="col-xs-8 col-xs-offset-2">
+    <div class="col-md-8 col-md-offset-2">
       <div class="panel panel-default">
         <div class="panel-heading">
           <strong><%= student.name %></strong>
@@ -20,24 +20,26 @@
           <p>Total paid: <%= number_to_currency(student.total_paid / 100.00) %></p>
           <%= link_to 'Manage payments', student_payments_path(student) %>
           <% if student.courses.any? %>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Courses</th>
-                  <th>Attendance</th>
-                  <th>Submissions status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% student.courses.each do |course| %>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
                   <tr>
-                    <td class="col-xs-5"><%= link_to course.description, course_student_path(course, student) %></td>
-                    <td><%= number_to_percentage(student.attendance_score(course), precision: 0) %></td>
-                    <td><%= student.submissions.needing_review.count %> to review</td>
+                    <th>Courses</th>
+                    <th>Attendance</th>
+                    <th>Submissions status</th>
                   </tr>
-                <% end %>
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  <% student.courses.each do |course| %>
+                    <tr>
+                      <td class="col-md-5"><%= link_to course.description, course_student_path(course, student) %></td>
+                      <td><%= number_to_percentage(student.attendance_score(course), precision: 0) %></td>
+                      <td><%= student.submissions.needing_review.count %> to review</td>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
           <% end %>
         </div>
       </div>

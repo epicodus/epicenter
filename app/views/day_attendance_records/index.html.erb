@@ -3,7 +3,7 @@
 <%= form_for :attendance_records, url: course_attendance_statistics_path(@course), html: { method: :post } do |f| %>
 
   <div class="row">
-    <div class="col-xs-4">
+    <div class="col-md-4">
       <div class="input-group">
         <%= f.select :day, options_for_select(formatted_class_days, selected: day_value), {}, { class: 'form-control' } %>
         <span class="input-group-btn">
@@ -17,21 +17,21 @@
 <h3>Attendance for <%= @day.strftime("%A %B %d, %Y") %></h3>
 <hr>
 <% @course.students.each do |student| %>
-  <ul class="col-xs-12 list-unstyled">
+  <ul class="col-md-12 list-unstyled">
       <li>
-          <span class="col-xs-3"><%= link_to student.name, student, class: 'unstyled-link' %></span>
+          <span class="col-md-3"><%= link_to student.name, student, class: 'unstyled-link' %></span>
           <span>
             <% if !student.attendance_record_on_day(@day) %>
-              <span class="btn btn-primary col-xs-3" disabled>Absent</span>
+              <span class="btn btn-primary col-md-3" disabled>Absent</span>
             <% elsif student.attendance_record_on_day(@day).tardy %>
-              <span class="btn btn-info col-xs-3" disabled>Tardy</span>
+              <span class="btn btn-info col-md-3" disabled>Tardy</span>
             <% elsif student.attendance_record_on_day(@day).left_early %>
-              <span class="btn btn-info col-xs-3" disabled>Left early</span>
+              <span class="btn btn-info col-md-3" disabled>Left early</span>
             <% else %>
-              <span class="btn btn-success col-xs-3" disabled>On time</span>
+              <span class="btn btn-success col-md-3" disabled>On time</span>
             <% end %>
           </span>
-          <span class="col-xs-2">
+          <span class="col-md-2">
             <%= link_to 'Edit', new_attendance_record_amendment_path(student: student, day: @day, attendance_statistics: true), class: 'unstyled-link'  %>
           </span>
           <span><%= student.pair_on_day(@day) ? student.pair_on_day(@day).name : 'Solo' %></span>

@@ -1,9 +1,9 @@
-<div class="student-div student-courses col-xs-6">
+<div class="student-div student-courses col-md-6">
   <% if current_admin && can?(:manage, Enrollment) %>
     <%= form_for @student, method: :patch do |f| %>
       <%= render 'layouts/errors', object: @student %>
       <div class="input-group">
-        <%= f.collection_select :course_id, @student.other_courses.reverse, :id, :description, { include_blank: 'Please select a course' }, { class: 'col-xs-4 form-control', required: true } %>
+        <%= f.collection_select :course_id, @student.other_courses.reverse, :id, :description, { include_blank: 'Please select a course' }, { class: 'col-md-4 form-control', required: true } %>
         <span class="input-group-btn">
           <%= f.submit 'Add course', class: 'btn btn-info' %>
         </span>
@@ -15,8 +15,8 @@
     <h3>Courses</h3>
     <% @student.courses.each do |course| %>
       <div class="row" id="student-course-<%= course.id %>">
-        <div class="col-xs-6"><%= link_to course.description, course_student_path(course, @student) %></div>
-        <%= link_to 'Withdraw', enrollment_path(course_id: course.id), data: { method: :delete, confirm: 'Are you sure?' }, class: 'unstyled-link col-xs-6' %>
+        <div class="col-md-6"><%= link_to course.description, course_student_path(course, @student) %></div>
+        <%= link_to 'Withdraw', enrollment_path(course_id: course.id), data: { method: :delete, confirm: 'Are you sure?' }, class: 'unstyled-link col-md-6' %>
       </div>
     <% end %>
   <% end %>

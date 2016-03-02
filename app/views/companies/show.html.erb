@@ -1,11 +1,13 @@
 <h1><%= @company.name %></h1>
-  <table class="table table-rating">
-    <tr>
-      <th>Company info:</th>
-      <td>
-        <%= link_to @company.website, @company.website %><br>
-        <%= @company.address %><br><br>
-        <%= @company.description %>
-      </td>
-    </tr>
-  </table>
+  <div class="table-responsive">
+    <table class="table table-rating">
+      <tr>
+        <th>Company info:</th>
+        <td>
+          <%= link_to @company.website, @company.website %><br>
+          <%= @company.address %><br><br>
+          <%= @company.description %>
+        </td>
+      </tr>
+    </table>
+  </div>

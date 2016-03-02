@@ -4,18 +4,16 @@
   <p class="text-danger">* You may only rank 5 companies as "Low" interest.</p>
 <% end %>
 
-<hr>
-
 <% if current_student %>
   <%= form_for current_student do |f| %>
     <div class="row">
-      <div class="col-xs-6">
+      <div class="col-md-6">
         <ul class="list-unstyled">
           <% @course.internships_sorted_by_interest(current_student).each do |internship| %>
             <li id="internship_<%= internship.id %>">
               <p><%= link_to internship.company_name, course_internship_path(@course, internship) %></p>
               <div class="row">
-                <div class="col-xs-12">
+                <div class="col-md-12">
                   <p class="pull-right character-count"></p>
                   <%= render 'rating_form', rating: Rating.find_by(internship_id: internship.id, student_id: current_student.id), internship: internship, f: f %>
                 </div>
@@ -25,7 +23,7 @@
         </ul>
       </div>
       <% if @course.internships.any? %>
-        <div class="col-xs-2">
+        <div class="col-md-2">
           <div class="form-group">
             <%= f.submit 'Submit ratings', class: 'btn btn-info', id: 'fixed-ratings-button' %>
           </div>
