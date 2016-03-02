@@ -153,8 +153,18 @@ feature "Student signs in while class is in session" do
         expect(current_path).to eq welcome_path
       end
 
-      it "creates an attendance record for them" do
-        expect { sign_in(student) }.to change { student.attendance_records.count }.by 1
+      it "creates an attendance record for them during the week" do
+        thursday = Time.zone.now.to_date.beginning_of_week + 3.days
+        travel_to thursday do
+          expect { sign_in(student) }.to change { student.attendance_records.count }.by 1
+        end
+      end
+
+      it "does not create an attendance record for them on weekends" do
+        saturday = Time.zone.now.to_date.beginning_of_week + 5.days
+        travel_to saturday do
+          expect { sign_in(student) }.to change { student.attendance_records.count }.by 0
+        end
       end
 
       it "takes them to the courses page if they've already signed in" do
@@ -170,7 +180,7 @@ feature "Student signs in while class is in session" do
         attendance_record = AttendanceRecord.find_by(student: student)
         travel_to student.course.start_date + 12.hours do
           visit root_path
-          click_link 'Sign out'
+          logout :student
           sign_in(student)
           expect(attendance_record.tardy).to be false
         end
@@ -178,12 +188,24 @@ feature "Student signs in while class is in session" do
     end
 
     context 'when soloing and signing in with GitHub' do
-      scenario 'creates an attendance record with valid credentials' do
-        OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: student.email }})
-        visit root_path
-        expect { click_on('Sign in with GitHub') }.to change { student.attendance_records.count }.by 1
-        expect(page).to have_content 'Signed in successfully and attendance record created.'
-        OmniAuth.config.mock_auth[:github] = nil
+      scenario 'creates an attendance record with valid credentials during the week' do
+        travel_to Time.zone.now.to_date.beginning_of_week + 3.days do
+          OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: student.email }})
+          visit root_path
+          expect { click_on('Sign in with GitHub') }.to change { student.attendance_records.count }.by 1
+          expect(page).to have_content 'Signed in successfully and attendance record created.'
+          OmniAuth.config.mock_auth[:github] = nil
+        end
+      end
+
+      scenario 'does not create an attendance record on the weekend' do
+        travel_to Time.zone.now.to_date.beginning_of_week + 5.days do
+          OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: student.email }})
+          visit root_path
+          expect { click_on('Sign in with GitHub') }.to change { student.attendance_records.count }.by 0
+          expect(page).to have_content 'Signed in successfully.'
+          OmniAuth.config.mock_auth[:github] = nil
+        end
       end
     end
 
@@ -226,7 +248,7 @@ feature "Student signs in while class is in session" do
         travel_to student.course.start_date + 8.hours do
           sign_in(student)
           visit root_path
-          click_link 'Sign out'
+          logout :student
         end
         travel_to student.course.start_date + 10.hours do
           sign_in(student, pair)
