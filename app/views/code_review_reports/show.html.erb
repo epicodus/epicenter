@@ -1,27 +1,29 @@
 <h1>Report for <%= @code_review.title %></h1>
 
-<table class="datatable table table-hover">
-  <thead>
-    <tr>
-      <th>Student</th>
-      <th>Expectations met?</th>
-      <th>Notes</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @course.students.sort_by { |student| @code_review.latest_total_score_for(student) }.reverse.each do |student| %>
+<div class="table-responsive">
+  <table class="datatable table table-hover">
+    <thead>
       <tr>
-        <td class="col-xs-3"><%= link_to student.name, course_student_path(@course, student) %></td>
-        <td class="col-xs-2">
+        <th>Student</th>
+        <th>Expectations met?</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @course.students.sort_by { |student| @code_review.latest_total_score_for(student) }.reverse.each do |student| %>
+      <tr>
+        <td class="col-md-3"><%= link_to student.name, course_student_path(@course, student) %></td>
+        <td class="col-md-2">
           <% if @code_review.expectations_met_by?(student) %>
-            <span class="glyphicon glyphicon-ok submission-success"><span class="code-review-hidden-score">1</span></span>
+          <span class="glyphicon glyphicon-ok submission-success"><span class="code-review-hidden-score">1</span></span>
           <% else %>
-            <span class="glyphicon glyphicon-remove submission-fail"><span class="code-review-hidden-score">0</span></span>
+          <span class="glyphicon glyphicon-remove submission-fail"><span class="code-review-hidden-score">0</span></span>
           <% end %>
         </td>
         <td><%= @code_review.submission_for(student).try(:reviews).try(:last).try(:note) %></td>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+      <% end %>
+    </tbody>
+  </table>
+</div>

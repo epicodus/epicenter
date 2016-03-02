@@ -7,36 +7,38 @@
 
 <%= render 'layouts/errors', object: @payment %>
 <% if @student.payments.present? %>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Status</th>
-        <th>Date</th>
-        <th>Amount (including fee)</th>
-        <th>Payment method</th>
-        <% if can?(:manage, Payment) || @student.payments.pluck(:refund_amount).any? %>
-          <th>Refund amount</th>
-        <% end %>
-      </tr>
-    </thead>
-    <tbody>
-      <% @student.payments.order_by_latest.each do |payment| %>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
         <tr>
-          <td><%= payment.status.capitalize %></td>
-          <td><%= payment.created_at.strftime("%A, %B %d, %Y") %></td>
-          <td><%= number_to_currency(payment.total_amount / 100.00) %></td>
-          <td><%= payment.payment_method.class.name.underscore.humanize + ' ending in ' + payment.payment_method.last_four_string[-4,4] %></td>
-          <% if payment.refund_amount? %>
-            <td><%= number_to_currency(payment.refund_amount / 100.00) %></td>
-          <% else %>
-            <% if can? :manage, Payment %>
-              <%= render 'payments/refund_form', payment: payment %>
-            <% end %>
+          <th>Status</th>
+          <th>Date</th>
+          <th>Amount (including fee)</th>
+          <th>Payment method</th>
+          <% if can?(:manage, Payment) || @student.payments.pluck(:refund_amount).any? %>
+            <th>Refund amount</th>
           <% end %>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% @student.payments.order_by_latest.each do |payment| %>
+          <tr>
+            <td><%= payment.status.capitalize %></td>
+            <td><%= payment.created_at.strftime("%A, %B %d, %Y") %></td>
+            <td><%= number_to_currency(payment.total_amount / 100.00) %></td>
+            <td><%= payment.payment_method.class.name.underscore.humanize + ' ending in ' + payment.payment_method.last_four_string[-4,4] %></td>
+            <% if payment.refund_amount? %>
+              <td><%= number_to_currency(payment.refund_amount / 100.00) %></td>
+            <% else %>
+              <% if can? :manage, Payment %>
+                <%= render 'payments/refund_form', payment: payment %>
+              <% end %>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 <% else %>
   <p>No payments have been made yet.</p>
 <% end %>
@@ -53,7 +55,7 @@
 <% elsif can?(:manage, Payment) && @student.primary_payment_method && params[:action] != 'update' %>
   <h3>Manual payment</h3>
   <div class="row">
-    <div class="col-xs-5">
+    <div class="col-md-5">
       <%= render 'form' %>
     </div>
   </div>

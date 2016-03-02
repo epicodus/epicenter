@@ -1,14 +1,12 @@
 <% if resource.is_a?(Student) %>
   <h2><%= 'Invite a student' %></h2>
-  <%= link_to 'Invite an admin', new_admin_invitation_path %>
+  <p><%= link_to 'Invite an admin', new_admin_invitation_path %></p>
 <% else %>
   <h2><%= 'Invite an admin' %></h2>
 <% end %>
 
-<hr>
-
 <div class="row">
-  <div class="col-xs-6">
+  <div class="col-md-6">
 
     <%= form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :post } do |f| %>
       <%= devise_error_messages! %>

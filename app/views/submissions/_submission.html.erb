@@ -1,8 +1,8 @@
 <%= div_for submission do %>
   <div class="row">
-    <div class="col-xs-4"><%= submission.student.name %></div>
-    <div class="col-xs-2"><%= link_to 'view code', submission.link, target: '_blank' %></div>
-    <div class="col-xs-2"><%= time_ago_in_words(submission.updated_at) %> ago</div>
-    <div class="col-xs-2"><%= link_to 'Review', new_submission_review_path(submission) %></div>
+    <div class="col-md-4"><%= submission.student.name %></div>
+    <div class="col-md-2"><%= link_to 'view code', submission.link, target: '_blank' %></div>
+    <div class="col-md-2"><%= time_ago_in_words(submission.updated_at) %> ago</div>
+    <div class="col-md-2"><%= link_to 'Review', new_submission_review_path(submission) %></div>
   </div>
 <% end %>

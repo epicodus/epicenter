@@ -4,6 +4,6 @@
 <h2>Submission for <%= @submission.code_review.title %></h2>
 <h3><%= @submission.student.name %></h3>
 <p>Submitted <%= time_ago_in_words(@submission.updated_at) %> ago</p>
-<%= link_to 'View code', @submission.link, target: '_blank' %>
-<hr>
+<p><%= link_to 'View code', @submission.link, target: '_blank', class: 'btn btn-primary' %></p>
+
 <%= render 'form' %>

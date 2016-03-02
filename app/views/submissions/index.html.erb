@@ -1,23 +1,25 @@
 <h2>Submissions for <%= @code_review.title %></h2>
 <h3><%= @code_review.course.description %></h3>
 
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th>Student</th>
-      <th></th>
-      <th>Submitted</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @submissions.each do |submission| %>
-        <tr>
-          <td><%= link_to submission.student.name, course_student_path(@code_review.course, submission.student) %></td>
-          <td><%= link_to 'view code', submission.link, target: '_blank' %></td>
-          <td><%= submission.updated_at.strftime("%a, %b %d, %Y at %l:%M %P") %></td>
-          <td><%= link_to 'Review', new_submission_review_path(submission) %></td>
-        </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th></th>
+        <th>Submitted</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @submissions.each do |submission| %>
+          <tr>
+            <td><%= link_to submission.student.name, course_student_path(@code_review.course, submission.student) %></td>
+            <td><%= link_to 'view code', submission.link, target: '_blank' %></td>
+            <td><%= submission.updated_at.strftime("%a, %b %d, %Y at %l:%M %P") %></td>
+            <td><%= link_to 'Review', new_submission_review_path(submission) %></td>
+          </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

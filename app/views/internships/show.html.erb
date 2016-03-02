@@ -1,35 +1,37 @@
 <div>
   <h1><%= @internship.company.name %></h1>
 </div>
-<table class="table">
-  <tr>
-    <th>Company info:</th>
-    <td>
-      <%= link_to @internship.company.website, @internship.company.website %><br>
-      <%= @internship.company.address %><br><br>
-      <%= @internship.company.description %>
-    </td>
-  </tr>
-  <tr>
-    <th>Internship description:</th>
-    <td><%= @internship.description %></td>
-  </tr>
-  <tr>
-    <th>Ideal intern:</th>
-    <td><%= @internship.ideal_intern %></td>
-  </tr>
-  <% if @internship.clearance_required %>
+<div class="table-responsive">
+  <table class="table">
+    <tr>
+      <th>Company info:</th>
+      <td>
+        <%= link_to @internship.company.website, @internship.company.website %><br>
+        <%= @internship.company.address %><br><br>
+        <%= @internship.company.description %>
+      </td>
+    </tr>
+    <tr>
+      <th>Internship description:</th>
+      <td><%= @internship.description %></td>
+    </tr>
+    <tr>
+      <th>Ideal intern:</th>
+      <td><%= @internship.ideal_intern %></td>
+    </tr>
+    <% if @internship.clearance_required %>
     <tr>
       <th>Clearance description</th>
       <td><%= @internship.clearance_description %></td>
     </tr>
-  <% end %>
-</table>
+    <% end %>
+  </table>
+</div>
 
 <% if Rating.for(@internship, current_student) %>
   <%= form_for current_student do |f| %>
     <div class="row">
-      <div class="col-xs-6">
+      <div class="col-md-6">
         <p class="pull-right character-count"></p>
         <%= render 'rating_form', rating: Rating.for(@internship, current_student), internship: @internship, f: f %>
       </div>
@@ -53,25 +55,27 @@
     </li>
   </ul>
 
-  <table class='table table-striped'>
-    <thead>
-      <tr>
-        <th>Student</th>
-        <th>Notes</th>
-      </tr>
-    </thead>
-    <% if params[:tab].nil? %>
+  <div class="table-responsive">
+    <table class='table table-striped'>
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <% if params[:tab].nil? %>
       <% Student.find_students_by_interest(@internship, '1').each do |student| %>
-        <%= render 'student_row', student: student, internship: @internship %>
+      <%= render 'student_row', student: student, internship: @internship %>
       <% end %>
-    <% elsif params[:tab] == 'medium' %>
+      <% elsif params[:tab] == 'medium' %>
       <% Student.find_students_by_interest(@internship, '2').each do |student| %>
-        <%= render 'student_row', student: student, internship: @internship %>
+      <%= render 'student_row', student: student, internship: @internship %>
       <% end %>
-    <% elsif params[:tab] == 'low' %>
+      <% elsif params[:tab] == 'low' %>
       <% Student.find_students_by_interest(@internship, '3').each do |student| %>
-        <%= render 'student_row', student: student, internship: @internship %>
+      <%= render 'student_row', student: student, internship: @internship %>
       <% end %>
-    <% end %>
-  </table>
+      <% end %>
+    </table>
+  </div>
 <% end %>

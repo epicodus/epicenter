@@ -1,42 +1,44 @@
 <div class="student-div student-attendance">
   <h3>Attendance: <%= number_to_percentage(@student.attendance_score(@course), precision: 0) %></h3>
-  <table class="table table-hover">
-    <thead>
-      <th>Date</th>
-      <th>Status</th>
-      <th></th>
-      <th>Pair</th>
-    </thead>
-    <% @course.class_dates_until(Time.zone.now.to_date).sort.reverse.each do |day| %>
-      <tbody>
-        <tr>
-          <td class="col-xs-4">
-            <%= day.strftime("%A, %B %d, %Y") %>
-          </td>
-          <td class="col-xs-2">
-            <% if @student.attendance_record_on_day(day) == nil %>
-              <span class="label label-primary">Absent</span>
-            <% elsif @student.attendance_record_on_day(day).tardy && @student.attendance_record_on_day(day).left_early %>
-              <span class="label label-danger">Tardy</span>
-              <span class="label label-danger">Left early</span>
-            <% elsif @student.attendance_record_on_day(day).tardy %>
-              <span class="label label-danger">Tardy</span>
-            <% elsif @student.attendance_record_on_day(day).left_early %>
-              <span class="label label-danger">Left early</span>
-            <% else %>
-              <span class="label label-success">On time</span>
-            <% end %>
-          </td>
-          <td class="edit-attendance">
-            <% if current_admin && can?(:manage, AttendanceRecord) %>
-              <%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day) %>
-            <% end %>
-          </td>
-          <td>
-            <%= @student.pair_on_day(day) ? @student.pair_on_day(day).name : 'Solo' %>
-          </td>
-        </tr>
-      </tbody>
-    <% end %>
-  </table>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <th>Date</th>
+        <th>Status</th>
+        <th></th>
+        <th>Pair</th>
+      </thead>
+      <% @course.class_dates_until(Time.zone.now.to_date).sort.reverse.each do |day| %>
+        <tbody>
+          <tr>
+            <td class="col-md-4">
+              <%= day.strftime("%A, %B %d, %Y") %>
+            </td>
+            <td class="col-md-2">
+              <% if @student.attendance_record_on_day(day) == nil %>
+                <span class="label label-primary">Absent</span>
+              <% elsif @student.attendance_record_on_day(day).tardy && @student.attendance_record_on_day(day).left_early %>
+                <span class="label label-danger">Tardy</span>
+                <span class="label label-danger">Left early</span>
+              <% elsif @student.attendance_record_on_day(day).tardy %>
+                <span class="label label-danger">Tardy</span>
+              <% elsif @student.attendance_record_on_day(day).left_early %>
+                <span class="label label-danger">Left early</span>
+              <% else %>
+                <span class="label label-success">On time</span>
+              <% end %>
+            </td>
+            <td class="edit-attendance">
+              <% if current_admin && can?(:manage, AttendanceRecord) %>
+                <%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day) %>
+              <% end %>
+            </td>
+            <td>
+              <%= @student.pair_on_day(day) ? @student.pair_on_day(day).name : 'Solo' %>
+            </td>
+          </tr>
+        </tbody>
+      <% end %>
+    </table>
+  </div>
 </div>

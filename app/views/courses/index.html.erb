@@ -2,7 +2,7 @@
 
 <% @courses.each do |course| %>
   <div class="row">
-    <div class="col-xs-8 col-xs-offset-2">
+    <div class="col-md-8 col-md-offset-2">
       <div class="panel panel-default">
         <div class="panel-heading">
           <%= link_to course.description, course_student_path(course, current_student) %>
