@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :configure_permitted_params, if: :devise_controller?
 
-  helper_method :current_user, :current_course
+  helper_method :current_user, :current_course, :is_weekday?
 
 protected
   def configure_permitted_params
@@ -68,6 +68,10 @@ protected
     elsif current_admin
       current_admin.current_course
     end
+  end
+
+  def is_weekday?
+    !Time.zone.now.to_date.saturday? && !Time.zone.now.to_date.sunday?
   end
 
   #authenticate_inviter is used to restrict who can send invitations. We are overriding the devise default
