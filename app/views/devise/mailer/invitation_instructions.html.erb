@@ -3,7 +3,7 @@
   <p><%= "You have been invited to create an admin account at #{root_url}. Lucky you!" %></p>
   <p><%= link_to "Accept Invitation", accept_invitation_url(@resource, :invitation_token => @token) %></p>
 <% else %>
-  <p><%= "Hi #{@resource.name}. I'm really happy to tell you that you're accepted to Epicodus!" %></p>
+  <p><%= "Hi #{@resource.name}. I'm really happy to tell you that you're accepted to #{@resource.course.description} at Epicodus!" %></p>
 
   <p>The next step is to read and sign our code of conduct, refund policy, and enrollment agreement, and then pay your tuition.</p>
 
