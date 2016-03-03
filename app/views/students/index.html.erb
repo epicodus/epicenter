@@ -1,7 +1,5 @@
 <h1><%= "#{@course.description}" %> student roster</h1>
-<% if @course.admin %>
-  <h4>Teacher: <%= @course.admin.name %></h4>
-<% end %>
+<h4>Teacher: <%= @course.teacher %></h4>
 <h4><%= pluralize(@course.students.count, 'student') %></h4>
 <div class="form-group">
   <%= link_to "Edit #{@course.description}", edit_course_path(@course), class: 'btn btn-success' %>

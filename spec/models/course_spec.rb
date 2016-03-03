@@ -32,6 +32,19 @@ describe Course do
     end
   end
 
+  describe '#teacher' do
+    it 'returns the teacher name if the course has an assigned teacher' do
+      admin = FactoryGirl.create(:admin)
+      course = FactoryGirl.create(:course, admin: admin)
+      expect(course.teacher).to eq admin.name
+    end
+
+    it "does not return the teacher name if the course doesn't have an assigned teacher" do
+      course = FactoryGirl.create(:course)
+      expect(course.teacher).to eq 'Unknown teacher'
+    end
+  end
+
   describe '#other_course_students' do
     it 'returns all other students for a course except the selected student' do
       course = FactoryGirl.create(:course)

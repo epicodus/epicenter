@@ -25,6 +25,10 @@ class Course < ActiveRecord::Base
   before_create :import_code_reviews
   after_destroy :reassign_admin_current_courses
 
+  def teacher
+    admin ? admin.name : 'Unknown teacher'
+  end
+
   def in_session?
     start_date <= Time.zone.now.to_date && end_date >= Time.zone.now.to_date
   end

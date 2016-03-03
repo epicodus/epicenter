@@ -48,25 +48,11 @@
               <li><%= link_to '+ Add a course', new_course_path %></li>
               <li class="divider"></li>
               <% Course.current_and_future_courses.reverse.each do |course| %>
-                <li>
-                  <%= link_to admin_path(current_admin, admin: { current_course_id: course.id }), method: :patch do %>
-                    <%= course.description %>
-                    <% if course.admin %>
-                      <em>(<%= course.admin.name %>)</em>
-                    <% end %>
-                  <% end %>
-                </li>
+                <%= render 'layouts/course_link', course: course %>
               <% end %>
               <li class="divider"></li>
               <% Course.previous_courses.reverse.each do |course| %>
-                <li>
-                  <%= link_to admin_path(current_admin, admin: { current_course_id: course.id }), method: :patch do %>
-                    <%= course.description %>
-                    <% if course.admin %>
-                      <em>(<%= course.admin.name %>)</em>
-                    <% end %>
-                  <% end %>
-                </li>
+                <%= render 'layouts/course_link', course: course %>
              <% end %>
             </ul>
           </li>

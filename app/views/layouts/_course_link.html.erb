@@ -1,0 +1,12 @@
+<li id="course-dropdown">
+  <%= link_to admin_path(current_admin, admin: { current_course_id: course.id }), method: :patch do %>
+    <% if current_admin.name == course.teacher %>
+      <span class="text-primary">
+    <% else %>
+      <span>
+    <% end %>
+      <%= course.description %>
+      <em><small><%= course.teacher %></small></em>
+    </span>
+  <% end %>
+</li>
