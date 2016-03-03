@@ -26,6 +26,7 @@ class StudentsController < ApplicationController
       if @student.update(student_params)
         redirect_to course_student_path(@student.course, @student), notice: "Courses for #{@student.name} have been updated"
       else
+        @course = Course.find(params[:student][:course_id])
         render 'show'
       end
     elsif current_student

@@ -1,5 +1,4 @@
 describe Student do
-  it { should validate_presence_of :plan_id }
   it { should have_many :bank_accounts }
   it { should have_many :payment_methods }
   it { should have_many :credit_cards }
@@ -12,9 +11,21 @@ describe Student do
   it { should belong_to(:primary_payment_method).class_name('PaymentMethod') }
   it { should have_many :signatures }
 
-  it "validates that a student is created with an assigned course" do
-    student = FactoryGirl.build(:student, course: nil)
-    expect(student.valid?).to be false
+  describe 'validations' do
+    context 'validates plan_id when a student has accepted the epicenter invitation and created an account' do
+      before { allow(subject).to receive(:invitation_accepted_at?).and_return(true) }
+      it { should validate_presence_of :plan_id }
+    end
+
+    context 'does not validate plan_id when a student has not accepted the epicenter invitation' do
+      before { allow(subject).to receive(:invitation_accepted_at?).and_return(false) }
+      it { should_not validate_presence_of :plan_id }
+    end
+
+    it "validates that a student is created with an assigned course" do
+      student = FactoryGirl.build(:student, course: nil)
+      expect(student.valid?).to be false
+    end
   end
 
   describe '#with_activated_accounts' do
