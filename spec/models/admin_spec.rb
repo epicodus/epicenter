@@ -1,5 +1,14 @@
 describe Admin do
   it { should belong_to :current_course }
+  it { should have_many :courses }
+
+  describe "default scope" do
+    it "alphabetizes the admins by name" do
+      admin1 = FactoryGirl.create(:admin, name: "Bob Test")
+      admin2 = FactoryGirl.create(:admin, name: "Annie Test")
+      expect(Admin.all).to eq [admin2, admin1]
+    end
+  end
 
   describe "abilities" do
     let(:admin) { FactoryGirl.create(:admin) }

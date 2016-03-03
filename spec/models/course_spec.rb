@@ -1,8 +1,9 @@
 describe Course do
+  it { should belong_to :admin }
   it { should have_many :students }
   it { should have_many(:attendance_records).through(:students) }
   it { should have_many :code_reviews }
-  it { should have_many :internships}
+  it { should have_many :internships }
 
   describe "validations" do
     it "validates the presence of description" do
@@ -28,6 +29,19 @@ describe Course do
     it "validates the presence of end_time" do
       course = FactoryGirl.build(:course, end_time: nil)
       expect(course).to_not be_valid
+    end
+  end
+
+  describe '#teacher' do
+    it 'returns the teacher name if the course has an assigned teacher' do
+      admin = FactoryGirl.create(:admin)
+      course = FactoryGirl.create(:course, admin: admin)
+      expect(course.teacher).to eq admin.name
+    end
+
+    it "does not return the teacher name if the course doesn't have an assigned teacher" do
+      course = FactoryGirl.create(:course)
+      expect(course.teacher).to eq 'Unknown teacher'
     end
   end
 
