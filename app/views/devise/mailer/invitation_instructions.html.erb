@@ -1,9 +1,9 @@
 <% if @resource.is_a?(Admin) %>
-  <p><%= "Hi #{@resource.name}" %></p>
-  <p><%= "You have been invited to create an admin account at #{root_url}. Lucky you!" %></p>
+  <p>Hi <%= @resource.name %>,</p>
+  <p>You have been invited to create an admin account at <%= root_url %>. Lucky you!</p>
   <p><%= link_to "Accept Invitation", accept_invitation_url(@resource, :invitation_token => @token) %></p>
 <% else %>
-  <p><%= "Hi #{@resource.name}. I'm really happy to tell you that you're accepted to #{@resource.course.description} at Epicodus!" %></p>
+  <p>Hi <%= @resource.name %>. I'm really happy to tell you that you're accepted to <strong><%= @resource.course.description %></strong> with <strong><%= @resource.course.teacher %></strong> at Epicodus!</p>
 
   <p>The next step is to read and sign our code of conduct, refund policy, and enrollment agreement, and then pay your tuition.</p>
 
@@ -16,12 +16,12 @@
   <p>Now, on to the fun stuff!</p>
 
   <p>After you complete your enrollment, I'll invite you to our forum to connect with your fellow students and Epicodus alumni.</p>
-  
+
   <p>The Friday evening before class starts, we'll have a new student orientation, so make sure to mark your calendar now.</p>
 
   <p>The weekend before class starts, you'll have a few videos to watch for homework, so make sure to budget time to watch them. Also, as part of being at Epicodus, we'll provide you with a free Treehouse account that I'll send you an invite to after you enroll.</p>
 
-  <p>Finally, if you want to get plugged into the Portland tech community, pretty much every tech event around town is listed at calagator.org. Check it out!
+  <p>Finally, if you want to get plugged into the Portland tech community, pretty much every tech event around town is listed at <%= link_to 'calagator.org', 'http://calagator.org' %>. Check it out!
 
-  <p>Thanks so much, <%= "#{@resource.name}" %>! We're really excited to have you at Epicodus.</p>
+  <p>Thanks so much, <%= @resource.name %>! We're really excited to have you at Epicodus.</p>
 <% end %>

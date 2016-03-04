@@ -5,6 +5,7 @@
 <% end %>
 
 <h3><%= @course.description %></h3>
+<h4>Teacher: <%= @course.teacher %></h4>
 
 <% if @student.courses.any? %>
   <ul class="nav nav-tabs list-group" id="student-nav">
