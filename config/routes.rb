@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
   devise_for :student, controllers: { invitations: 'invitations', registrations: 'registrations' }
   devise_for :admins, skip: :registrations
+  devise_for :companies, controllers: { registrations: 'registrations' }, skip: :invitations
   devise_for :users, controllers: { sessions: 'users/sessions' }, skip: [:invitations, :registrations]
 
   resources :students, only: [:index, :update] do
@@ -33,7 +34,7 @@ Rails.application.routes.draw do
     resources :day_attendance_records, only: [:index]
   end
   resources :ratings, only: [:create]
-  resources :companies
+  resources :companies, only: [:index, :show, :update]
 
   resources :code_reviews, except: [:index] do
     resources :submissions, only: [:index, :create, :update]

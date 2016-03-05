@@ -8,6 +8,10 @@ class ApplicationController < ActionController::Base
 
 protected
   def configure_permitted_params
+    devise_parameter_sanitizer.for(:sign_up) do |u|
+      u.permit(:name, :email, :password, :password_confirmation,
+               internships_attributes: [:name, :description, :website, :address])
+    end
     devise_parameter_sanitizer.for(:invite) do |u|
       u.permit(:name, :email, :course_id)
     end
@@ -31,6 +35,8 @@ protected
       else
         signatures_check_path(user)
       end
+    elsif user.is_a? Company
+      company_path(user)
     end
   end
 
@@ -59,7 +65,7 @@ protected
   end
 
   def current_user
-    current_student || current_admin
+    current_student || current_admin || current_company
   end
 
   def current_course

@@ -9,6 +9,10 @@ class Users::SessionsController < Devise::SessionsController
         sign_in_admin(user)
       elsif user.is_a? Student
         sign_in_student(user)
+      elsif user.is_a? Company
+        sign_in_company(user)
+      else
+        super
       end
     else
       super
@@ -19,6 +23,12 @@ private
 
   def redirect_if_logged_in
     redirect_to after_sign_in_path_for(current_user) if current_user
+  end
+
+  def sign_in_company(user)
+    request.env["devise.mapping"] = Devise.mappings[:company]
+    sign_in user
+    redirect_to root_path, notice: 'Signed in successfully.'
   end
 
   def sign_in_admin(user)

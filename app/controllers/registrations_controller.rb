@@ -1,6 +1,29 @@
 class RegistrationsController < Devise::RegistrationsController
   def new
-    flash[:alert] = "Sign up is only allowed via invitation."
-    redirect_to root_path
+    if request.env["devise.mapping"] == Devise.mappings[:company]
+      super
+    else
+      flash[:alert] = "Sign up is only allowed via invitation."
+      redirect_to root_path
+    end
+  end
+
+  def create
+    internship_params = sign_up_params.delete(:internships_attributes)
+    @internship = Internship.new(internship_params)
+    if @internship.save
+      super do |user|
+        user.internships << @internship
+      end
+    else
+      render 'devise/registrations/new'
+    end
+  end
+
+private
+
+  def build_resource(sign_up_params)
+    user_params = sign_up_params.except!(:internships_attributes)
+    super
   end
 end

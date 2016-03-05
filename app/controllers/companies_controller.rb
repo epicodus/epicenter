@@ -1,12 +1,13 @@
 class CompaniesController < ApplicationController
   authorize_resource
-  before_action :find_company, only: [:show, :edit, :update, :destroy]
 
   def index
     @companies = Company.all
   end
 
   def show
+    @company = Company.find(params[:id])
+    authorize! :manage, @company
   end
 
   def new
@@ -24,9 +25,11 @@ class CompaniesController < ApplicationController
   end
 
   def edit
+    @company = Company.find(params[:id])
   end
 
   def update
+    @company = Company.find(params[:id])
     if @company.update(company_params)
       flash[:notice] = "#{@company.name} updated"
       redirect_to companies_path
@@ -37,18 +40,14 @@ class CompaniesController < ApplicationController
   end
 
   def destroy
+    @company = Company.find(params[:id])
     @company.delete
     flash[:alert] = "Company deleted."
     redirect_to companies_path
   end
 
   private
-    def find_company
-      @company = Company.find params[:id]
-    end
-
     def company_params
-      params.require(:company).permit(:name, :description, :website, :address,
-                     :contact_name, :contact_title, :contact_phone, :contact_email)
+      params.require(:company).permit()
     end
 end
