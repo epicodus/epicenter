@@ -332,19 +332,18 @@ FactoryGirl.define do
   end
 
   factory :company do
-    sequence(:name) { |n| "#{n} labs" }
-    description 'A great company'
-    website 'http://www.testcompany.com'
-    address '123 N Main st. Portland, OR 97200'
-    contact_name    'Alice Wonder'
-    contact_phone   '(555)555-5555'
-    contact_email   'test@company.com'
-    contact_title   'mentor'
+    sequence(:name) { |n| "Company #{n}" }
+    sequence(:email) { |n| "employee#{n}@company.com" }
+    password "password"
+    password_confirmation "password"
   end
 
   factory :internship do
     company
     course
+    sequence(:name) { |n| "#{n} labs" }
+    website 'http://www.testcompany.com'
+    address '123 N Main st. Portland, OR 97200'
     description "You will write awesome software here!"
     ideal_intern 'Somebody who writes awesome software!'
     clearance_required true

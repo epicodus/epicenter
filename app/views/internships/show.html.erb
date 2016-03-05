@@ -1,14 +1,14 @@
 <div>
-  <h1><%= @internship.company.name %></h1>
+  <h1><%= @internship.name %></h1>
 </div>
 <div class="table-responsive">
   <table class="table">
     <tr>
       <th>Company info:</th>
       <td>
-        <%= link_to @internship.company.website, @internship.company.website %><br>
-        <%= @internship.company.address %><br><br>
-        <%= @internship.company.description %>
+        <%= link_to @internship.website, @internship.website %><br>
+        <%= @internship.address %><br><br>
+        <%= @internship.description %>
       </td>
     </tr>
     <tr>

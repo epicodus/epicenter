@@ -1,13 +1,6 @@
-<h1><%= @company.name %></h1>
-  <div class="table-responsive">
-    <table class="table table-rating">
-      <tr>
-        <th>Company info:</th>
-        <td>
-          <%= link_to @company.website, @company.website %><br>
-          <%= @company.address %><br><br>
-          <%= @company.description %>
-        </td>
-      </tr>
-    </table>
-  </div>
+<% if current_admin %>
+  <h1><%= @company.name %></h1>
+<% elsif current_company %>
+  <h1>Your internships</h1>
+  Foofs
+<% end %>

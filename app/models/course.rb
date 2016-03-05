@@ -66,21 +66,6 @@ class Course < ActiveRecord::Base
     class_days.select { |day| day <= last_date }.sort
   end
 
-  def internships_sorted_by_interest(current_student)
-    if current_student
-      internships.sort_by do |internship|
-        rating = current_student.find_rating(internship)
-        if rating
-          rating.interest.to_i
-        else
-          0
-        end
-      end
-    else
-      internships.by_company_name
-    end
-  end
-
 private
 
   def set_start_and_end_dates

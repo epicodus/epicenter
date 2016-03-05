@@ -1,10 +1,10 @@
 <div class="student-div student-internships">
   <ul class="list-group">
-    <% @course.internships_sorted_by_interest(@student).each do |internship| %>
+    <% @course.internships.each do |internship| %>
       <li class="list-group-item">
         <div class='row'>
             <div class='col-md-3'>
-              <%= link_to internship.company_name, course_internship_path(@course, internship) %>
+              <%= link_to internship.name, course_internship_path(@course, internship) %>
               <%= render 'internships/rating_label', rating: @student.find_rating(internship) %>
             </div>
             <% if @student.find_rating(internship) %>

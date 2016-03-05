@@ -8,7 +8,7 @@ feature 'index page' do
     scenario 'students can see internships listed by comapany name' do
       visit root_path
       click_link 'Internships'
-      expect(page).to have_content internship.company_name
+      expect(page).to have_content internship.name
     end
 
     scenario 'students cannot see the edit or delete links' do
@@ -29,7 +29,7 @@ feature 'index page' do
 
     scenario 'admins can see internships listed by company name' do
       visit course_internships_path(admin.current_course)
-      expect(page).to have_content internship.company_name
+      expect(page).to have_content internship.name
     end
   end
 end
@@ -47,18 +47,24 @@ feature 'creating a new internship' do
 
   scenario 'a new internship will be created with valid input' do
     visit new_course_internship_path(internship.course)
+    fill_in 'Name', with: internship.name
     fill_in 'Internship description', with: internship.description
+    fill_in 'Website', with: internship.website
+    fill_in 'Address', with: internship.address
     fill_in 'Ideal intern', with: internship.ideal_intern
     fill_in 'Clearance description', with: internship.clearance_description
     check 'internship_clearance_required'
     select internship.company.name, from: "internship_company_id"
     click_on 'Create Internship'
-    expect(page).to have_content internship.company_name
+    expect(page).to have_content internship.name
   end
 
   scenario 'a new internship will not be created with invalid input' do
     visit new_course_internship_path(internship.course)
+    fill_in 'Name', with: internship.name
     fill_in 'Internship description', with: ''
+    fill_in 'Website', with: internship.website
+    fill_in 'Address', with: internship.address
     fill_in 'Ideal intern', with: internship.ideal_intern
     fill_in 'Clearance description', with: internship.clearance_description
     check 'internship_clearance_required'
@@ -103,7 +109,7 @@ feature 'deleting an internship' do
   scenario 'it deletes the record' do
     visit course_internships_path(internship.course)
     click_link 'Delete'
-    expect(page).to_not have_content internship.company_name
+    expect(page).to_not have_content internship.name
   end
 end
 
@@ -115,21 +121,21 @@ feature 'show page' do
   scenario 'you can navigate to the show page from the index' do
     internship = FactoryGirl.create(:internship)
     visit course_internships_path(internship.course)
-    click_link internship.company_name
+    click_link internship.name
     expect(page).to have_content internship.description
   end
 
   scenario 'clearance description is hidden if there is no clearance requirement' do
     internship = FactoryGirl.create(:internship, clearance_required: false)
     visit course_internships_path(internship.course)
-    click_link internship.company_name
+    click_link internship.name
     expect(page).to_not have_content 'Clearance description'
   end
 
   scenario 'clearance description is visible if there is a clearance requirement' do
     internship = FactoryGirl.create(:internship)
     visit course_internships_path(internship.course)
-    click_link internship.company_name
+    click_link internship.name
     expect(page).to have_content 'Clearance description'
   end
 end
@@ -251,12 +257,12 @@ feature "admin viewing a student's internship page" do
   scenario "an admin can navigate to a student's internship page from the student list" do
     visit root_path
     click_link student.name
-    expect(page).to have_content internship.company_name
+    expect(page).to have_content internship.name
   end
 
   scenario "an admin can see internships from that student's course" do
     visit course_student_path(student.course, student)
-    expect(page).to have_content internship.company_name
+    expect(page).to have_content internship.name
   end
 
   scenario "rated internships display their correct background color" do
@@ -267,7 +273,7 @@ feature "admin viewing a student's internship page" do
 
   scenario "an admin can navigate through to an internship's show page" do
     visit course_student_path(student.course, student)
-    click_link  internship.company_name
+    click_link  internship.name
     expect(page).to have_content internship.description
   end
 end

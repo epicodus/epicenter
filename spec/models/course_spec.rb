@@ -184,30 +184,6 @@ describe Course do
     end
   end
 
-  describe '#internships_sorted_by_interest' do
-    let(:course) { FactoryGirl.create(:course) }
-    let(:student) { FactoryGirl.create(:student, course: course) }
-    let(:internship_one) { FactoryGirl.create(:internship, course: course) }
-    let(:internship_two) { FactoryGirl.create(:internship, course: course) }
-
-    it 'returns a list of internships sorted with higher interest first' do
-      rating_one =  FactoryGirl.create(:rating, internship: internship_one, student: student, interest: '2')
-      rating_two =  FactoryGirl.create(:rating, internship: internship_two, student: student, interest: '1')
-      expect(course.internships_sorted_by_interest(student)).to eq([internship_two, internship_one])
-    end
-
-    it 'puts unrated internships at the beginning of the list' do
-      internship_three = FactoryGirl.create(:internship, course: course)
-      rating_one =  FactoryGirl.create(:rating, internship: internship_one, student: student, interest: '1')
-      rating_two =  FactoryGirl.create(:rating, internship: internship_two, student: student, interest: '3')
-      expect(course.internships_sorted_by_interest(student)).to eq([internship_three, internship_one, internship_two])
-    end
-
-    it 'returns internships sorted by company name when student is nil' do
-      expect(course.internships_sorted_by_interest(nil)).to eq([internship_two, internship_one])
-    end
-  end
-
   describe '#current_and_future_courses' do
     it 'returns all current and future courses' do
       past_course = FactoryGirl.create(:past_course)
