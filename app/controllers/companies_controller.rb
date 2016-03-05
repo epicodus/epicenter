@@ -10,40 +10,14 @@ class CompaniesController < ApplicationController
     authorize! :manage, @company
   end
 
-  def new
-    @company = Company.new
-  end
-
-  def create
-    @company = Company.new(company_params)
-    if @company.save
-      flash[:notice] = "#{@company.name} added to companies"
-      redirect_to @company
-    else
-      render :new
-    end
-  end
-
-  def edit
-    @company = Company.find(params[:id])
-  end
-
   def update
     @company = Company.find(params[:id])
     if @company.update(company_params)
       flash[:notice] = "#{@company.name} updated"
       redirect_to companies_path
     else
-      flash[:alert] = "Something went wrong"
-      render :edit
+      render 'edit'
     end
-  end
-
-  def destroy
-    @company = Company.find(params[:id])
-    @company.delete
-    flash[:alert] = "Company deleted."
-    redirect_to companies_path
   end
 
   private
