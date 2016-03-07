@@ -19,8 +19,8 @@
       </div>
 
       <div class="form-group">
-        <%= ff.label :course_id, '* Internship class' %>
-        <%= ff.select(:course_id, Course.current_and_future_courses.collect {|c| [ c.description, c.id ] }, { required: true }, class: 'form-control') %>
+        <%= ff.label :course_ids, '* Internship class' %>
+        <%= ff.collection_check_boxes :course_ids, Course.current_and_future_courses, :id, :description, { required: true }, class: 'form-control' %>
       </div>
 
       <div class='form-group'>

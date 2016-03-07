@@ -2,5 +2,9 @@
   <h1><%= @company.name %></h1>
 <% elsif current_company %>
   <h1>Your internships</h1>
-  Foofs
+  <% current_company.internships.each do |internship| %>
+    <% internship.courses.each do |course| %>
+      <%= course.description %>
+    <% end %>
+  <% end %>
 <% end %>
