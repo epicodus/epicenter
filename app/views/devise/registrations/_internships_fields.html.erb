@@ -1,6 +1,6 @@
+<h3>Company and internship details</h3>
+
 <div class="panel panel-info">
-  <div class="panel-heading"><h3 class="panel-title">Company and internship details</h3></div>
-  
   <div class="panel-body">
     <%= f.fields_for :internships_attributes do |ff| %>
       <div class='form-group'>
@@ -19,7 +19,7 @@
       </div>
 
       <div class="form-group">
-        <%= ff.label :course_id, '* Internships' %>
+        <%= ff.label :course_id, '* Internship class' %>
         <%= ff.select(:course_id, Course.current_and_future_courses.collect {|c| [ c.description, c.id ] }, { required: true }, class: 'form-control') %>
       </div>
 
