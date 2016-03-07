@@ -4,6 +4,8 @@ class Internship < ActiveRecord::Base
   belongs_to :course
   belongs_to :company
   has_many :ratings
+  has_many :course_internships
+  has_many :courses, through: :course_internships
   has_many :students, through: :ratings
 
   validates :name, presence: true

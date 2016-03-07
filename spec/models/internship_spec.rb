@@ -1,7 +1,7 @@
 describe Internship do
-  it { should belong_to :course }
   it { should belong_to :company }
   it { should have_many :ratings }
+  it { should have_many(:courses).through(:course_internships) }
   it { should have_many(:students).through(:ratings) }
   it { should validate_presence_of :course_id }
   it { should validate_presence_of :company_id }

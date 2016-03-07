@@ -16,7 +16,8 @@ class Course < ActiveRecord::Base
   has_many :students, through: :enrollments
   has_many :attendance_records, through: :students
   has_many :code_reviews
-  has_many :internships
+  has_many :course_internships
+  has_many :internships, through: :course_internships
 
   serialize :class_days, Array
 
