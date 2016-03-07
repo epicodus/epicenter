@@ -41,7 +41,7 @@ feature 'signing up as a company' do
     fill_in 'Description', with: 'You will write awesome software here!'
     fill_in 'Website', with: 'http://www.testcompany.com'
     fill_in 'Address', with: '123 N Main st. Portland, OR 97200'
-    check course.description
+    select course.description
     fill_in 'Ideal intern', with: 'Somebody who writes awesome software!'
     fill_in 'Name', with: 'Company employee 1'
     fill_in 'Email', with: 'employee1@company.com'
@@ -58,7 +58,7 @@ feature 'signing up as a company' do
     fill_in 'Description', with: 'You will write awesome software here!'
     fill_in 'Website', with: 'http://www.testcompany.com'
     fill_in 'Address', with: '123 N Main st. Portland, OR 97200'
-    check course.description
+    select course.description
     fill_in 'Ideal intern', with: 'Somebody who writes awesome software!'
     fill_in 'Name', with: 'Company employee 1'
     fill_in 'Email', with: 'employee1@company.com'
@@ -74,7 +74,7 @@ feature 'signing up as a company' do
     fill_in 'Description', with: 'You will write awesome software here!'
     fill_in 'Website', with: 'http://www.testcompany.com'
     fill_in 'Address', with: '123 N Main st. Portland, OR 97200'
-    check course.description
+    select course.description
     fill_in 'Ideal intern', with: 'Somebody who writes awesome software!'
     fill_in 'Name', with: 'Company employee 1'
     fill_in 'Email', with: 'employee1@company.com'
