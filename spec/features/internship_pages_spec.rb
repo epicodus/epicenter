@@ -1,8 +1,8 @@
-feature 'index page' do
+feature 'viewing the internships index page' do
 
   context "as a student" do
     let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
-    let!(:internship) { FactoryGirl.create(:internship, course_id: student.course.id) }
+    let!(:internship) { FactoryGirl.create(:internship, courses: [student.course]) }
     before { login_as(student, scope: :student) }
 
     scenario 'students can see internships listed by comapany name' do
@@ -24,7 +24,7 @@ feature 'index page' do
 
   context "as an admin" do
     let(:admin) { FactoryGirl.create(:admin) }
-    let!(:internship) { FactoryGirl.create(:internship, course_id: admin.current_course_id) }
+    let!(:internship) { FactoryGirl.create(:internship, courses: [admin.current_course]) }
     before { login_as(admin, scope: :admin) }
 
     scenario 'admins can see internships listed by company name' do
@@ -113,7 +113,7 @@ feature 'deleting an internship' do
   end
 end
 
-feature 'show page' do
+feature 'visiting the internships show page' do
   let(:admin) { FactoryGirl.create(:admin) }
 
   before { login_as(admin, scope: :admin) }
@@ -142,12 +142,12 @@ end
 
 feature 'rating an internship' do
   let(:student) { FactoryGirl.create(:student) }
-  let!(:low_rated_internship_1) { FactoryGirl.create(:internship, course: student.course) }
-  let!(:low_rated_internship_2) { FactoryGirl.create(:internship, course: student.course) }
-  let!(:low_rated_internship_3) { FactoryGirl.create(:internship, course: student.course) }
-  let!(:low_rated_internship_4) { FactoryGirl.create(:internship, course: student.course) }
-  let!(:low_rated_internship_5) { FactoryGirl.create(:internship, course: student.course) }
-  let!(:unrated_internship) { FactoryGirl.create(:internship, course: student.course) }
+  let!(:low_rated_internship_1) { FactoryGirl.create(:internship, courses: [student.course]) }
+  let!(:low_rated_internship_2) { FactoryGirl.create(:internship, courses: [student.course]) }
+  let!(:low_rated_internship_3) { FactoryGirl.create(:internship, courses: [student.course]) }
+  let!(:low_rated_internship_4) { FactoryGirl.create(:internship, courses: [student.course]) }
+  let!(:low_rated_internship_5) { FactoryGirl.create(:internship, courses: [student.course]) }
+  let!(:unrated_internship) { FactoryGirl.create(:internship, courses: [student.course]) }
   let!(:low_rating_1) { FactoryGirl.create(:low_rating, internship: low_rated_internship_1, student: student)}
   let!(:low_rating_2) { FactoryGirl.create(:low_rating, internship: low_rated_internship_2, student: student)}
   let!(:low_rating_3) { FactoryGirl.create(:low_rating, internship: low_rated_internship_3, student: student)}
@@ -206,7 +206,7 @@ end
 feature 'admin viewing students interested in an internship' do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:student) { FactoryGirl.create(:student) }
-  let(:internship) { FactoryGirl.create(:internship, course: student.course) }
+  let(:internship) { FactoryGirl.create(:internship, courses: [student.course]) }
   before { login_as(admin, scope: :admin) }
 
   context 'on an internship page' do
@@ -251,7 +251,7 @@ end
 feature "admin viewing a student's internship page" do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:student) { FactoryGirl.create(:student) }
-  let!(:internship) { FactoryGirl.create(:internship, course: student.course) }
+  let!(:internship) { FactoryGirl.create(:internship, courses: [student.course]) }
   before { login_as(admin, scope: :admin) }
 
   scenario "an admin can navigate to a student's internship page from the student list" do
