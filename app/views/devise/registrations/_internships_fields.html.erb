@@ -1,0 +1,49 @@
+<div class="panel panel-info">
+  <div class="panel-heading"><h3 class="panel-title">Company and internship details</h3></div>
+  
+  <div class="panel-body">
+    <%= f.fields_for :internships_attributes do |ff| %>
+      <div class='form-group'>
+        <%= ff.label :name, '* Company name' %>
+        <%= ff.text_field :name, autofocus: true, required: true, class: 'form-control' %>
+      </div>
+
+      <div class='form-group'>
+        <%= ff.label :description, '* Description' %>
+        <%= ff.text_area :description, rows: 5, required: true, class: 'form-control' %>
+      </div>
+
+      <div class='form-group'>
+        <%= ff.label :website, '* Website' %>
+        <%= ff.text_field :website, required: true, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= ff.label :course_id, '* Internships' %>
+        <%= ff.select(:course_id, Course.current_and_future_courses.collect {|c| [ c.description, c.id ] }, { required: true }, class: 'form-control') %>
+      </div>
+
+      <div class='form-group'>
+        <%= ff.label :ideal_intern, '* Ideal intern' %>
+        <%= ff.text_area :ideal_intern, rows: 5, required: true, class: 'form-control' %>
+      </div>
+
+      <div class='form-group'>
+        <%= ff.label :address %>
+        <%= ff.text_field :address, class: 'form-control' %>
+      </div>
+
+      <div class='form-group'>
+        <%= ff.label :clearance_required do %>
+          Clearance Required ?
+        <% end %>
+        <%= ff.check_box :clearance_required %>
+      </div>
+
+      <div class='form-group'>
+        <%= ff.label :clearance_description %>
+        <%= ff.text_area :clearance_description, rows: 5, class: 'form-control' %>
+      </div>
+    <% end %>
+  </div>
+</div>

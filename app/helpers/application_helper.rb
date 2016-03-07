@@ -14,6 +14,7 @@ module ApplicationHelper
     current_page?(welcome_path) ||
     current_page?(user_session_path) ||
     current_page?(new_user_password_path) ||
-    current_page?(root_path)
+    current_page?(root_path) ||
+    current_page?(new_company_registration_path)
   end
 end

@@ -10,7 +10,8 @@ protected
   def configure_permitted_params
     devise_parameter_sanitizer.for(:sign_up) do |u|
       u.permit(:name, :email, :password, :password_confirmation,
-               internships_attributes: [:name, :description, :website, :address])
+               internships_attributes: [:name, :description, :website, :address,
+                                        :ideal_intern, :course_id])
     end
     devise_parameter_sanitizer.for(:invite) do |u|
       u.permit(:name, :email, :course_id)

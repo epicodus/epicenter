@@ -11,7 +11,7 @@ class Internship < ActiveRecord::Base
   validates :ideal_intern, presence: true
   validates :description, presence: true
   validates :course_id, presence: true
-  validates :company_id, presence: true, uniqueness: { scope: :course_id }
+  # validates :company_id, presence: true, uniqueness: { scope: :course_id }
 
   before_save :fix_url
 

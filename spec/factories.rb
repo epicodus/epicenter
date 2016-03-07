@@ -332,7 +332,7 @@ FactoryGirl.define do
   end
 
   factory :company do
-    sequence(:name) { |n| "Company #{n}" }
+    sequence(:name) { |n| "Company employee #{n}" }
     sequence(:email) { |n| "employee#{n}@company.com" }
     password "password"
     password_confirmation "password"

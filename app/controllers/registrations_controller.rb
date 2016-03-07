@@ -13,7 +13,11 @@ class RegistrationsController < Devise::RegistrationsController
     @internship = Internship.new(internship_params)
     if @internship.save
       super do |user|
-        user.internships << @internship
+        if user.persisted?
+          user.internships << @internship
+        else
+          @internship.destroy
+        end
       end
     else
       render 'devise/registrations/new'
