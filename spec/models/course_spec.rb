@@ -45,6 +45,14 @@ describe Course do
     end
   end
 
+  describe '#teacher_and_description' do
+    it 'returns the teacher name and course description' do
+      admin = FactoryGirl.create(:admin)
+      course = FactoryGirl.create(:course, admin: admin)
+      expect(course.teacher_and_description).to eq "#{course.description} (#{course.teacher})"
+    end
+  end
+
   describe '#other_course_students' do
     it 'returns all other students for a course except the selected student' do
       course = FactoryGirl.create(:course)

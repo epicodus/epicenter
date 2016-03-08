@@ -29,6 +29,10 @@ class Course < ActiveRecord::Base
     admin ? admin.name : 'Unknown teacher'
   end
 
+  def teacher_and_description
+    "#{description} (#{teacher})"
+  end
+
   def in_session?
     start_date <= Time.zone.now.to_date && end_date >= Time.zone.now.to_date
   end

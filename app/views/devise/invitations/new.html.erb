@@ -14,7 +14,7 @@
       <% if resource.is_a?(Student) %>
         <div class="form-group">
           <%= f.label :course_id, class: "control-label" %>
-          <%= f.select(:course_id, Course.current_and_future_courses.reverse.collect {|c| [ c.description, c.id ] }, {}, { class: "form-control" }) %>
+          <%= f.select :course_id, Course.current_and_future_courses.reverse.collect {|c| [ c.teacher_and_description, c.id ] }, {}, { class: "form-control" } %>
         </div>
       <% end %>
 
