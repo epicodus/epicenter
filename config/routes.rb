@@ -24,13 +24,13 @@ Rails.application.routes.draw do
   resources :payments, only: [:update]
   resources :upfront_payments, only: [:create]
   resources :attendance_record_amendments, only: [:new, :create]
-  resources :internships, only: [:edit, :update]
+  resources :internships, only: [:edit, :update, :destroy]
   resources :courses, except: [:show, :index] do
     resources :attendance_statistics, only: [:index, :create]
     resources :code_reviews, only: [:index] do
       resource :report, only: [:show], to: 'code_review_reports#show'
     end
-    resources :internships
+    resources :internships, only: [:index, :show]
     resources :students, only: [:index, :show]
     resources :day_attendance_records, only: [:index]
   end

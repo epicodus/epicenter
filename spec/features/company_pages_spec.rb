@@ -34,11 +34,11 @@ feature 'signing up as a company' do
     expect(page).to have_content 'Email has already been taken'
   end
 
-  scenario 'unsuccessfully with blank internship fields' do
+  scenario 'unsuccessfully with invalid internship fields' do
     visit new_company_registration_path
     fill_in 'Company name', with: ''
-    fill_in 'Description', with: 'You will write awesome software here!'
-    fill_in 'Website', with: 'http://www.testcompany.com'
+    fill_in 'Description', with: ''
+    fill_in 'Website', with: "8789u2ljrlkj;'l;'l;"
     fill_in 'Address', with: '123 N Main st. Portland, OR 97200'
     select course.description
     fill_in 'Ideal intern', with: 'Somebody who writes awesome software!'
@@ -47,6 +47,6 @@ feature 'signing up as a company' do
     fill_in '* Password', with: 'password'
     fill_in '* Password confirmation', with: 'password'
     click_on 'Sign up'
-    expect(page).to have_content 'Welcome! You have signed up successfully.'
+    expect(page).to have_content 'Please correct these problems:'
   end
 end

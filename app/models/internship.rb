@@ -11,8 +11,7 @@ class Internship < ActiveRecord::Base
   validates :website, presence: true
   validates :ideal_intern, presence: true
   validates :description, presence: true
-  # validates :course_id, presence: true
-  # validates :company_id, presence: true, uniqueness: { scope: :course_id }
+  validates :courses, presence: true
 
   before_save :fix_url
 
@@ -26,7 +25,7 @@ private
         unless uri.scheme
             self.website = URI::HTTP.build({ host: self.website }).to_s
         end
-      rescue URI::InvalidURIError
+      rescue URI::InvalidURIError, URI::InvalidComponentError
         errors.add(:website, "is invalid.")
         false
       end

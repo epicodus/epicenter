@@ -348,7 +348,7 @@ FactoryGirl.define do
     clearance_required true
     clearance_description "You need to have an awesome attitude!"
     before(:create) do |internship|
-      internship.courses << create(:course, internships: [internship])
+      internship.courses << create(:course)
     end
   end
 

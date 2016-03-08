@@ -34,44 +34,6 @@ feature 'viewing the internships index page' do
   end
 end
 
-feature 'creating a new internship' do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:internship) { FactoryGirl.create(:internship) }
-  before { login_as(admin, scope: :admin) }
-
-  scenario 'an admin can navigate to the new internship form' do
-    visit course_internships_path(internship.courses.first)
-    click_link '+ New internship'
-    expect(page).to have_content 'Internship description'
-  end
-
-  scenario 'a new internship will be created with valid input' do
-    visit new_course_internship_path(internship.courses.first)
-    fill_in 'Company name', with: internship.name
-    fill_in 'Description', with: internship.description
-    fill_in 'Website', with: internship.website
-    fill_in 'Address', with: internship.address
-    fill_in 'Ideal intern', with: internship.ideal_intern
-    fill_in 'Clearance description', with: internship.clearance_description
-    check 'internship_clearance_required'
-    click_on 'Create Internship'
-    expect(page).to have_content internship.name
-  end
-
-  scenario 'a new internship will not be created with invalid input' do
-    visit new_course_internship_path(internship.courses.first)
-    fill_in 'Company name', with: internship.name
-    fill_in 'Description', with: ''
-    fill_in 'Website', with: internship.website
-    fill_in 'Address', with: internship.address
-    fill_in 'Ideal intern', with: internship.ideal_intern
-    fill_in 'Clearance description', with: internship.clearance_description
-    check 'internship_clearance_required'
-    click_on 'Create Internship'
-    expect(page).to have_content 'Please correct these problems:'
-  end
-end
-
 feature 'updating an internship' do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:internship) { FactoryGirl.create(:internship) }
@@ -81,19 +43,19 @@ feature 'updating an internship' do
   scenario 'admin can navigate to the edit page' do
     visit course_internships_path(internship.courses.first)
     click_link 'Edit'
-    expect(page).to have_content 'Internship description'
+    expect(page).to have_content 'Description'
   end
 
   scenario 'an internship can be update with valid input' do
-    visit edit_course_internship_path(internship.courses.first, internship)
-    fill_in 'Internship description', with: new_information.description
+    visit edit_internship_path(internship)
+    fill_in 'Description', with: new_information.description
     click_on 'Update Internship'
-    expect(page).to have_content 'Internship updated'
+    expect(page).to have_content 'Internship has been updated'
   end
 
   scenario 'an internship cannot be update with invalid input' do
-    visit edit_course_internship_path(internship.courses.first, internship)
-    fill_in 'Internship description', with: ''
+    visit edit_internship_path(internship)
+    fill_in 'Description', with: ''
     click_on 'Update Internship'
     expect(page).to have_content 'Please correct these problems:'
   end

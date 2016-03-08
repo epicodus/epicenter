@@ -1,4 +1,4 @@
-<%= form_for [@course, @internship] do |f| %>
+<%= form_for @internship do |f| %>
   <%= render 'layouts/errors', object: @internship %>
 
   <div class='form-group'>
@@ -45,6 +45,6 @@
   </div>
 
   <div class="form-group">
-    <%= f.submit 'Update internship', class: 'btn btn-primary' %>
+    <%= f.submit nil, class: 'btn btn-primary' %>
   </div>
 <% end %>

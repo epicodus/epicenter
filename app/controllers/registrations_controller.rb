@@ -3,8 +3,7 @@ class RegistrationsController < Devise::RegistrationsController
     if request.env["devise.mapping"] == Devise.mappings[:company]
       super
     else
-      flash[:alert] = "Sign up is only allowed via invitation."
-      redirect_to root_path
+      redirect_to root_path, alert: 'Sign up is only allowed via invitation.'
     end
   end
 

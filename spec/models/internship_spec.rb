@@ -3,17 +3,11 @@ describe Internship do
   it { should have_many :ratings }
   it { should have_many(:courses).through(:course_internships) }
   it { should have_many(:students).through(:ratings) }
-  it { should validate_presence_of :course_id }
-  it { should validate_presence_of :company_id }
+  it { should validate_presence_of :courses }
   it { should validate_presence_of :description }
   it { should validate_presence_of :ideal_intern }
   it { should validate_presence_of :name }
   it { should validate_presence_of :website }
-
-  describe "validations" do
-    subject { FactoryGirl.build(:internship) }
-    it { should validate_uniqueness_of(:company_id).scoped_to(:course_id) }
-  end
 
   describe 'default scope' do
     let!(:internship) { FactoryGirl.create(:internship, name: "z labs") }
@@ -21,7 +15,6 @@ describe Internship do
     let!(:internship_three) { FactoryGirl.create(:internship, name: 'k labs') }
 
     it 'should be organized alphabetically by name' do
-
       expect(Internship.all).to eq [internship_two, internship_three, internship]
     end
   end

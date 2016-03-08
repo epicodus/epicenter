@@ -3,12 +3,10 @@
   <h1>Welcome to the Epicodus internship program!</h1>
 </div>
 
-<span class="text-primary">* Indicates required field</span>
-
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
   <%= render 'layouts/errors', object: @internship %>
-
+  <span class="text-primary">* Indicates required field</span>
   <div class="row">
     <div class="col-md-6">
       <%= render 'internships_fields', f: f %>

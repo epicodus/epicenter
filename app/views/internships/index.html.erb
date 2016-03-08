@@ -1,4 +1,4 @@
-<%= render partial: 'layouts/category_header', locals: { header: 'Available internships', class_to_manage: Internship, category: 'internship', category_path: new_course_internship_path(@course) } %>
+<h1>Available internships</h1>
 
 <% if current_student %>
   <p class="text-danger">* You may only rank 5 companies as "Low" interest.</p>
@@ -44,7 +44,7 @@
         <tr>
           <td><%= link_to internship.name, course_internship_path(@course, internship) %></td>
           <td><%= link_to 'Edit', edit_internship_path(internship) %></td>
-          <td><%= link_to 'Delete', course_internship_path(@course, internship), data: { method: :delete, confirm: 'Are you sure?' } %></td>
+          <td><%= link_to 'Delete', internship_path(internship), data: { method: :delete, confirm: 'Are you sure?' } %></td>
         </tr>
         <% end %>
       </tbody>
