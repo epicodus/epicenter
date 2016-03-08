@@ -19,7 +19,8 @@
       </div>
 
       <div class="form-group">
-        <%= ff.label :course_ids, '* Internship class' %>
+        <%= ff.label :course_ids, '* Courses' %>
+        <br>
         <%= ff.collection_select :course_ids, Course.current_and_future_courses, :id, :description, {}, { class: 'multiselect-dropdown', multiple: true, include_hidden: false, required: true } %>
       </div>
 

@@ -2,9 +2,21 @@
   <h1><%= @company.name %></h1>
 <% elsif current_company %>
   <h1>Your internships</h1>
-  <% current_company.internships.each do |internship| %>
-    <% internship.courses.each do |course| %>
-      <%= course.description %>
-    <% end %>
-  <% end %>
+
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr><th>Courses</th></tr>
+      </thead>
+      <tbody>
+        <% current_company.internships.each do |internship| %>
+          <h2><%= internship.name %></h2>
+          <p><%= link_to 'Edit internship details', edit_internship_path(internship) %></p>
+          <% internship.courses.each do |course| %>
+            <tr><td><%= course.description %></td></tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 <% end %>

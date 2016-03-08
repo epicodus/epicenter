@@ -1,6 +1,6 @@
 <h1>Profile</h1>
 
-<% if @student.courses.any? && @student.class_over? %>
+<% if @student && @student.courses.any? && @student.class_over? %>
   <p><%= link_to "View certificate of completion", certificate_path, target: '_blank' %></p>
   <p><%= link_to "View transcript", transcript_path, target: '_blank' %></p>
 <% end %>
@@ -19,10 +19,12 @@
           <%= f.email_field :email, autofocus: true, class: 'form-control' %>
       </div>
 
-      <div class="form-group">
-        <%= f.label :plan_id, "Payment Plan" %>
-        <%= f.select(:plan_id, Plan.all.collect {|p| [ p.name, p.id ] }, {}, class: 'form-control') %>
-      </div>
+      <% if @student %>
+        <div class="form-group">
+          <%= f.label :plan_id, "Payment Plan" %>
+          <%= f.select(:plan_id, Plan.all.collect {|p| [ p.name, p.id ] }, {}, class: 'form-control') %>
+        </div>
+      <% end %>
 
       <div class="form-group">
         <%= f.label :password, 'New password' %>

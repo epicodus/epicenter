@@ -1,7 +1,6 @@
 class Internship < ActiveRecord::Base
   default_scope { order('name') }
 
-  belongs_to :course
   belongs_to :company
   has_many :ratings
   has_many :course_internships

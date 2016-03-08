@@ -2,28 +2,34 @@
   <%= render 'layouts/errors', object: @internship %>
 
   <div class='form-group'>
-    <%= f.label :name %>
-    <%= f.text_field :name, class: "form-control" %>
+    <%= f.label :name, 'Company name' %>
+    <%= f.text_field :name, autofocus: true, required: true, class: 'form-control' %>
   </div>
 
   <div class='form-group'>
-    <%= f.label :description, 'Internship description' %>
-    <%= f.text_area :description, rows: 6, class: "form-control" %>
+    <%= f.label :description, 'Description' %>
+    <%= f.text_area :description, rows: 5, required: true, class: 'form-control' %>
   </div>
 
   <div class='form-group'>
-    <%= f.label :website %>
-    <%= f.text_field :website, class: "form-control" %>
+    <%= f.label :website, 'Website' %>
+    <%= f.text_field :website, required: true, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :course_ids, 'Courses' %>
+    <br>
+    <%= f.collection_select :course_ids, Course.current_and_future_courses, :id, :description, {}, { class: 'multiselect-dropdown', multiple: true, include_hidden: false, required: true } %>
+  </div>
+
+  <div class='form-group'>
+    <%= f.label :ideal_intern, 'Ideal intern' %>
+    <%= f.text_area :ideal_intern, rows: 5, required: true, class: 'form-control' %>
   </div>
 
   <div class='form-group'>
     <%= f.label :address %>
-    <%= f.text_field :address, class: "form-control" %>
-  </div>
-
-  <div class='form-group'>
-    <%= f.label :ideal_intern %>
-    <%= f.text_area :ideal_intern, rows: 6, class: "form-control" %>
+    <%= f.text_field :address, class: 'form-control' %>
   </div>
 
   <div class='form-group'>
@@ -35,16 +41,10 @@
 
   <div class='form-group'>
     <%= f.label :clearance_description %>
-    <%= f.text_area :clearance_description, rows: 6, class: "form-control" %>
-  </div>
-
-  <div class='form-group'>
-    <%= f.label :company_id %>
-    <%= f.collection_select :company_id, Company.all, :id, :name, { prompt: "Please select a company." }, { class: "form-control" } %>
+    <%= f.text_area :clearance_description, rows: 5, class: 'form-control' %>
   </div>
 
   <div class="form-group">
-    <%= f.submit nil, class: 'btn btn-primary' %>
-    <%= link_to 'Cancel', course_internships_path, class: 'btn btn-default' %>
+    <%= f.submit 'Update internship', class: 'btn btn-primary' %>
   </div>
 <% end %>

@@ -37,7 +37,7 @@
       <li>
         <p><%= link_to internship.name, course_internship_path(@course, internship) %></p>
         <span class='btn-group'>
-          <%= link_to 'Edit', edit_course_internship_path(internship.course, internship), class: 'btn btn-info' %>
+          <%= link_to 'Edit', edit_internship_path(internship), class: 'btn btn-info' %>
           <%= link_to 'Delete', course_internship_path(@course, internship), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
         </span>
       </li>

@@ -173,7 +173,7 @@ feature 'viewing the student page' do
   end
 
   scenario 'when a student is enrolled in a course with internships' do
-    FactoryGirl.create(:internship, course: student.course)
+    FactoryGirl.create(:internship, courses: [student.course])
     visit course_student_path(student.course, student)
     expect(page).to have_content 'Attendance'
     expect(page).to have_content 'Code review submissions'

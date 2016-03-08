@@ -28,7 +28,7 @@ class Ability
       can :create, Payment, student_id: user.id, payment_method: { student_id: user.id }
       can :read, Payment, student_id: user.id
       can :manage, Student, id: user.id
-      can :read, Internship, course_id: user.course_id
+      can :read, Internship, courses: { id: user.course_id }
       can :read, Transcript, student: user
       can :read, :certificate
       can :manage, AttendanceRecord if IpLocation.is_local?(ip)

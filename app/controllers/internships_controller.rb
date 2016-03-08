@@ -23,23 +23,22 @@ class InternshipsController < ApplicationController
       flash[:notice] = "Internship added"
       redirect_to course_internships_path(@course)
     else
-      render :new
+      render 'new'
     end
   end
 
   def edit
-    @course = Course.find(params[:course_id])
+    @course = Course.find(params[:course_id]) if params[:course_id]
     @internship = Internship.find(params[:id])
   end
 
   def update
-    @course = Course.find(params[:course_id])
+    @course = Course.find(params[:course_id]) if params[:course_id]
     @internship = Internship.find(params[:id])
     if @internship.update(internship_params)
-      flash[:notice] = 'Internship updated'
-      redirect_to course_internships_path(@course)
+      redirect_to company_path(@internship.company), notice: 'Your internship has been updated'
     else
-      render :edit
+      render 'edit'
     end
   end
 
@@ -47,15 +46,15 @@ class InternshipsController < ApplicationController
     course = Course.find(params[:course_id])
     internship = Internship.find(params[:id])
     internship.destroy
-    flash[:alert] = "Internship deleted"
-    redirect_to course_internships_path(course)
+    redirect_to course_internships_path(course), alert: 'Your internship has been deleted'
   end
 
 
 private
   def internship_params
-    params.require(:internship).permit(:name, :website, :address, :company_id,
+    params.require(:internship).permit(:name, :website, :address,
                                        :description, :ideal_intern,
-                                       :clearance_required, :clearance_description)
+                                       :clearance_required,
+                                       :clearance_description, course_ids: [])
   end
 end

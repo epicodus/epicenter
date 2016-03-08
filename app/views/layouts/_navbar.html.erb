@@ -65,6 +65,7 @@
           </li>
           <li><%= link_to 'Sign out', destroy_admin_session_path, data: { method: :delete } %></li>
         <% elsif current_company %>
+          <li><%= link_to 'Profile', edit_company_registration_path %></li>
           <li><%= link_to 'Sign out', destroy_company_session_path, data: { method: :delete } %></li>
         <% end %>
       </ul>

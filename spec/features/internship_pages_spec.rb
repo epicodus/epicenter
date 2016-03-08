@@ -24,7 +24,7 @@ feature 'viewing the internships index page' do
 
   context "as an admin" do
     let(:admin) { FactoryGirl.create(:admin) }
-    let!(:internship) { FactoryGirl.create(:internship, courses: [admin.current_course]) }
+    let!(:internship) { FactoryGirl.create(:internship) }
     before { login_as(admin, scope: :admin) }
 
     scenario 'admins can see internships listed by company name' do

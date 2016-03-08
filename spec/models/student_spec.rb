@@ -614,7 +614,7 @@ describe Student do
 
   describe 'find_students_by_interest' do
     let(:student) { FactoryGirl.create(:student) }
-    let(:internship) { FactoryGirl.create(:internship, course: student.course) }
+    let(:internship) { FactoryGirl.create(:internship, courses: [student.course]) }
 
     it 'returns an array of students in an internship that share an interest level in that internship' do
       FactoryGirl.create(:rating, interest: '1', internship: internship, student: student)
@@ -698,7 +698,7 @@ describe Student do
 
     context 'for internships' do
       it { is_expected.to not_have_abilities([:create, :read, :update, :destroy], Internship.new)}
-      it { is_expected.to have_abilities(:read, Internship.new(course: student.course)) }
+      it { is_expected.to have_abilities(:read, Internship.new(courses: [student.course])) }
     end
 
     context 'for students' do

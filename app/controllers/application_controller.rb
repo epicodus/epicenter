@@ -11,7 +11,8 @@ protected
     devise_parameter_sanitizer.for(:sign_up) do |u|
       u.permit(:name, :email, :password, :password_confirmation,
                internships_attributes: [:name, :description, :website, :address,
-                                        :ideal_intern, course_ids: []])
+                                        :ideal_intern, :clearance_required,
+                                        :clearance_description, course_ids: []])
     end
     devise_parameter_sanitizer.for(:invite) do |u|
       u.permit(:name, :email, :course_id)
