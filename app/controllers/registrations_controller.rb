@@ -1,4 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
+
   def new
     if request.env["devise.mapping"] == Devise.mappings[:company]
       super
@@ -11,6 +12,7 @@ class RegistrationsController < Devise::RegistrationsController
     internship_params = sign_up_params.delete(:internships_attributes)
     @internship = Internship.new(internship_params)
     if @internship.save
+      @resource = build_resource(sign_up_params)
       super do |user|
         if user.persisted?
           user.internships << @internship
@@ -20,6 +22,14 @@ class RegistrationsController < Devise::RegistrationsController
       end
     else
       render 'devise/registrations/new'
+    end
+  end
+
+  def resource
+    if params[:action] == 'new' || params[:action] == 'create'
+      @resource ||= User.new
+    else
+      super
     end
   end
 
