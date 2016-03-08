@@ -22,20 +22,9 @@ end
   FactoryGirl.create(:code_review, course: part_time_course)
 end
 
-# Companies and internships
-30.times do
-  company = FactoryGirl.create(:company)
-  FactoryGirl.create(:internship, company: company, course: Course.all.sample(1).first)
-end
-
-# Internship ratings and code review submissions
+# Code review submissions
 Student.all.each do |student|
   student.update(sign_in_count: 1)
-  internships = Internship.where(course_id: student.courses.pluck(:id))
-  internships.each do |internship|
-    FactoryGirl.create(:rating, student: student, internship: internship)
-  end
-
   code_reviews = CodeReview.where(course_id: student.courses.pluck(:id))
   code_reviews.each do |code_review|
     FactoryGirl.create(:submission, code_review: code_review, student: student)
