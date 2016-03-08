@@ -22,12 +22,12 @@
         <div class="panel-body">
           <div class='form-group'>
             <%= f.label :name, '* Name' %>
-            <%= f.text_field :name, class: 'form-control' %>
+            <%= f.text_field :name, required: true, class: 'form-control' %>
           </div>
 
           <div class='form-group'>
             <%= f.label :email, '* Email' %>
-            <%= f.email_field :email, class: 'form-control' %>
+            <%= f.email_field :email, required: true, class: 'form-control' %>
           </div>
 
           <div class='form-group'>
@@ -35,18 +35,18 @@
             <% if @minimum_password_length %>
             <em>(<%= @minimum_password_length %> characters minimum)</em>
             <% end %>
-            <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
+            <%= f.password_field :password, required: true, autocomplete: "off", class: 'form-control' %>
           </div>
 
           <div class='form-group'>
             <%= f.label :password_confirmation, '* Password confirmation' %>
-            <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control' %>
+            <%= f.password_field :password_confirmation, required: true, autocomplete: "off", class: 'form-control' %>
           </div>
         </div>
       </div>
 
       <div class='form-group'>
-        <%= f.submit 'Sign up', class: 'btn btn-info btn-block' %>
+        <%= f.submit 'Sign up', class: 'btn btn-info btn-block', id: 'company-sign-up-button' %>
       </div>
     </div>
   </div>
