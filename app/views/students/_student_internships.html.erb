@@ -1,17 +1,26 @@
 <div class="student-div student-internships">
-  <ul class="list-group">
-    <% @course.internships.each do |internship| %>
-      <li class="list-group-item">
-        <div class='row'>
-            <div class='col-md-3'>
-              <%= link_to internship.name, course_internship_path(@course, internship) %>
-              <%= render 'internships/rating_label', rating: @student.find_rating(internship) %>
-            </div>
+  <div class="table-responsive">
+    <table class="datatable table table-hover">
+      <thead>
+        <tr>
+          <th>Company name</th>
+          <th>Rating</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @course.internships.each do |internship| %>
+        <tr>
+          <td class="col-md-3"><%= link_to internship.name, course_internship_path(@course, internship) %></td>
+          <td class="col-md-2"><%= render 'internships/rating_label', rating: @student.find_rating(internship) %></td>
+          <td>
             <% if @student.find_rating(internship) %>
               <p class='col-md-8'><%= @student.find_rating(internship).notes %></p>
             <% end %>
-        </div>
-      </li>
-    <% end %>
-  </ul>
+          </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>
