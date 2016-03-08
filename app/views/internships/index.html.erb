@@ -2,9 +2,7 @@
 
 <% if current_student %>
   <p class="text-danger">* You may only rank 5 companies as "Low" interest.</p>
-<% end %>
 
-<% if current_student %>
   <%= form_for current_student do |f| %>
     <div class="row">
       <div class="col-md-6">
@@ -32,15 +30,24 @@
     </div>
   <% end %>
 <% elsif current_admin %>
-  <ul class="list-unstyled">
-    <% @course.internships.each do |internship| %>
-      <li>
-        <p><%= link_to internship.name, course_internship_path(@course, internship) %></p>
-        <span class='btn-group'>
-          <%= link_to 'Edit', edit_internship_path(internship), class: 'btn btn-info' %>
-          <%= link_to 'Delete', course_internship_path(@course, internship), data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
-        </span>
-      </li>
-    <% end %>
-  </ul>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Company name</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @course.internships.each do |internship| %>
+        <tr>
+          <td><%= link_to internship.name, course_internship_path(@course, internship) %></td>
+          <td><%= link_to 'Edit', edit_internship_path(internship) %></td>
+          <td><%= link_to 'Delete', course_internship_path(@course, internship), data: { method: :delete, confirm: 'Are you sure?' } %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 <% end %>

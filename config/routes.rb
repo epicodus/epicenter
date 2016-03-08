@@ -35,7 +35,7 @@ Rails.application.routes.draw do
     resources :day_attendance_records, only: [:index]
   end
   resources :ratings, only: [:create]
-  resources :companies, only: [:index, :show, :update]
+  resources :companies, only: [:show]
 
   resources :code_reviews, except: [:index] do
     resources :submissions, only: [:index, :create, :update]

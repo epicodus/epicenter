@@ -36,39 +36,37 @@ end
 
 feature 'creating a new internship' do
   let(:admin) { FactoryGirl.create(:admin) }
-  let(:internship) { FactoryGirl.build(:internship) }
+  let(:internship) { FactoryGirl.create(:internship) }
   before { login_as(admin, scope: :admin) }
 
   scenario 'an admin can navigate to the new internship form' do
-    visit course_internships_path(internship.course)
+    visit course_internships_path(internship.courses.first)
     click_link '+ New internship'
     expect(page).to have_content 'Internship description'
   end
 
   scenario 'a new internship will be created with valid input' do
-    visit new_course_internship_path(internship.course)
-    fill_in 'Name', with: internship.name
-    fill_in 'Internship description', with: internship.description
+    visit new_course_internship_path(internship.courses.first)
+    fill_in 'Company name', with: internship.name
+    fill_in 'Description', with: internship.description
     fill_in 'Website', with: internship.website
     fill_in 'Address', with: internship.address
     fill_in 'Ideal intern', with: internship.ideal_intern
     fill_in 'Clearance description', with: internship.clearance_description
     check 'internship_clearance_required'
-    select internship.company.name, from: "internship_company_id"
     click_on 'Create Internship'
     expect(page).to have_content internship.name
   end
 
   scenario 'a new internship will not be created with invalid input' do
-    visit new_course_internship_path(internship.course)
-    fill_in 'Name', with: internship.name
-    fill_in 'Internship description', with: ''
+    visit new_course_internship_path(internship.courses.first)
+    fill_in 'Company name', with: internship.name
+    fill_in 'Description', with: ''
     fill_in 'Website', with: internship.website
     fill_in 'Address', with: internship.address
     fill_in 'Ideal intern', with: internship.ideal_intern
     fill_in 'Clearance description', with: internship.clearance_description
     check 'internship_clearance_required'
-    select internship.company.name, from: "internship_company_id"
     click_on 'Create Internship'
     expect(page).to have_content 'Please correct these problems:'
   end
@@ -81,20 +79,20 @@ feature 'updating an internship' do
   before { login_as(admin, scope: :admin) }
 
   scenario 'admin can navigate to the edit page' do
-    visit course_internships_path(internship.course)
+    visit course_internships_path(internship.courses.first)
     click_link 'Edit'
     expect(page).to have_content 'Internship description'
   end
 
   scenario 'an internship can be update with valid input' do
-    visit edit_course_internship_path(internship.course, internship)
+    visit edit_course_internship_path(internship.courses.first, internship)
     fill_in 'Internship description', with: new_information.description
     click_on 'Update Internship'
     expect(page).to have_content 'Internship updated'
   end
 
   scenario 'an internship cannot be update with invalid input' do
-    visit edit_course_internship_path(internship.course, internship)
+    visit edit_course_internship_path(internship.courses.first, internship)
     fill_in 'Internship description', with: ''
     click_on 'Update Internship'
     expect(page).to have_content 'Please correct these problems:'
@@ -107,7 +105,7 @@ feature 'deleting an internship' do
   before { login_as(admin, scope: :admin) }
 
   scenario 'it deletes the record' do
-    visit course_internships_path(internship.course)
+    visit course_internships_path(internship.courses.first)
     click_link 'Delete'
     expect(page).to_not have_content internship.name
   end
@@ -120,21 +118,21 @@ feature 'visiting the internships show page' do
 
   scenario 'you can navigate to the show page from the index' do
     internship = FactoryGirl.create(:internship)
-    visit course_internships_path(internship.course)
+    visit course_internships_path(internship.courses.first)
     click_link internship.name
     expect(page).to have_content internship.description
   end
 
   scenario 'clearance description is hidden if there is no clearance requirement' do
     internship = FactoryGirl.create(:internship, clearance_required: false)
-    visit course_internships_path(internship.course)
+    visit course_internships_path(internship.courses.first)
     click_link internship.name
     expect(page).to_not have_content 'Clearance description'
   end
 
   scenario 'clearance description is visible if there is a clearance requirement' do
     internship = FactoryGirl.create(:internship)
-    visit course_internships_path(internship.course)
+    visit course_internships_path(internship.courses.first)
     click_link internship.name
     expect(page).to have_content 'Clearance description'
   end
@@ -212,35 +210,35 @@ feature 'admin viewing students interested in an internship' do
   context 'on an internship page' do
     scenario 'an admin can see students highly interested in that internship' do
       rating = FactoryGirl.create(:rating, interest: '1', student: student, internship: internship)
-      visit course_internship_path(internship.course, internship)
+      visit course_internship_path(internship.courses.first, internship)
       click_on 'Highly interested students'
       expect(page).to have_content student.name
     end
 
     scenario "an admin can't see students not-highly interested in that internship when on the 'high tab'" do
       rating = FactoryGirl.create(:rating, interest: '2', student: student, internship: internship)
-      visit course_internship_path(internship.course, internship)
+      visit course_internship_path(internship.courses.first, internship)
       click_on 'Highly interested students'
       expect(page).to_not have_content student.name
     end
 
     scenario 'an admin can see students moderately interested in that internship' do
       rating = FactoryGirl.create(:rating, interest: '2', student: student, internship: internship)
-      visit course_internship_path(internship.course, internship)
+      visit course_internship_path(internship.courses.first, internship)
       click_on 'Moderately interested students'
       expect(page).to have_content student.name
     end
 
     scenario 'an admin can see students not interested in that internship' do
       rating = FactoryGirl.create(:rating, interest: '3', student: student, internship: internship)
-      visit course_internship_path(internship.course, internship)
+      visit course_internship_path(internship.courses.first, internship)
       click_on 'Not interested students'
       expect(page).to have_content student.name
     end
 
     scenario "an admin can click on a student's name to view their internships page" do
       rating = FactoryGirl.create(:rating, interest: '3', student: student, internship: internship)
-      visit course_internship_path(internship.course, internship)
+      visit course_internship_path(internship.courses.first, internship)
       click_on 'Not interested students'
       click_link student.name
       expect(page).to have_content 'Internships'
