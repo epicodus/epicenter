@@ -2,6 +2,7 @@ class Users::SessionsController < Devise::SessionsController
   before_filter :redirect_if_logged_in
 
   def create
+    params[:user][:email] = params[:user][:email].downcase
     user = User.find_by(email: params[:user][:email])
     if user.try(:valid_password?, params[:user][:password])
       if user.is_a? Admin

@@ -11,6 +11,14 @@ feature 'Admin signs in' do
     expect(page).to have_content 'Signed in'
   end
 
+  scenario 'with an uppercase email' do
+    visit new_user_session_path
+    fill_in 'user_email', with: admin.email.upcase
+    fill_in 'user_password', with: 'password'
+    click_on 'Sign in'
+    expect(page).to have_content 'Signed in'
+  end
+
   scenario 'with valid GitHub credentials the first time' do
     OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: admin.email }})
     visit root_path
