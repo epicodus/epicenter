@@ -39,27 +39,16 @@ feature 'viewing the course internships index page' do
       expect(page).to_not have_content 'Edit'
     end
   end
-
-  context 'as an admin' do
-    let(:admin) { FactoryGirl.create(:admin) }
-    let!(:internship) { FactoryGirl.create(:internship) }
-    before { login_as(admin, scope: :admin) }
-
-    scenario 'admins can see internships listed by name' do
-      visit course_internships_path(admin.current_course)
-      expect(page).to have_content internship.name
-    end
-  end
 end
 
 feature 'updating an internship' do
   let(:admin) { FactoryGirl.create(:admin) }
-  let(:internship) { FactoryGirl.create(:internship) }
+  let!(:internship) { FactoryGirl.create(:internship) }
   let(:new_information) { FactoryGirl.build(:internship) }
   before { login_as(admin, scope: :admin) }
 
   scenario 'admin can navigate to the edit page' do
-    visit course_internships_path(internship.courses.first)
+    visit internships_path
     click_link 'Edit'
     expect(page).to have_content 'Describe your company and internship. Get students excited about what you do!'
   end
@@ -67,25 +56,25 @@ feature 'updating an internship' do
   scenario 'an internship can be update with valid input' do
     visit edit_internship_path(internship)
     fill_in 'Describe your company and internship. Get students excited about what you do!', with: new_information.description
-    click_on 'Update Internship'
+    click_on 'Update internship'
     expect(page).to have_content 'Internship has been updated'
   end
 
   scenario 'an internship cannot be update with invalid input' do
     visit edit_internship_path(internship)
     fill_in 'Describe your company and internship. Get students excited about what you do!', with: ''
-    click_on 'Update Internship'
+    click_on 'Update internship'
     expect(page).to have_content 'Please correct these problems:'
   end
 end
 
 feature 'deleting an internship' do
   let(:admin) { FactoryGirl.create(:admin) }
-  let(:internship) { FactoryGirl.create(:internship) }
+  let!(:internship) { FactoryGirl.create(:internship) }
   before { login_as(admin, scope: :admin) }
 
   scenario 'it deletes the record' do
-    visit course_internships_path(internship.courses.first)
+    visit internships_path
     click_link 'Delete'
     expect(page).to_not have_content internship.name
   end
@@ -98,21 +87,21 @@ feature 'visiting the internships show page' do
 
   scenario 'you can navigate to the show page from the index' do
     internship = FactoryGirl.create(:internship)
-    visit course_internships_path(internship.courses.first)
+    visit internships_path
     click_link internship.name
     expect(page).to have_content internship.description
   end
 
   scenario 'clearance description is hidden if there is no clearance requirement' do
     internship = FactoryGirl.create(:internship, clearance_required: false)
-    visit course_internships_path(internship.courses.first)
+    visit internships_path
     click_link internship.name
     expect(page).to_not have_content 'Clearance description'
   end
 
   scenario 'clearance description is visible if there is a clearance requirement' do
     internship = FactoryGirl.create(:internship)
-    visit course_internships_path(internship.courses.first)
+    visit internships_path
     click_link internship.name
     expect(page).to have_content 'Clearance description'
   end

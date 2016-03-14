@@ -8,7 +8,7 @@
 
   <div class='form-group'>
     <%= f.label :description, 'Describe your company and internship. Get students excited about what you do!' %>
-    <%= f.text_area :description, rows: 5, required: true, class: 'form-control' %>
+    <%= f.text_area :description, rows: 8, required: true, class: 'form-control' %>
   </div>
 
   <div class='form-group'>
@@ -24,7 +24,7 @@
 
   <div class='form-group'>
     <%= f.label :ideal_intern, 'Describe your ideal intern.' %>
-    <%= f.text_area :ideal_intern, rows: 5, required: true, class: 'form-control' %>
+    <%= f.text_area :ideal_intern, rows: 8, required: true, class: 'form-control' %>
   </div>
 
   <div class='form-group'>
@@ -41,10 +41,10 @@
 
   <div class='form-group'>
     <%= f.label :clearance_description %>
-    <%= f.text_area :clearance_description, rows: 5, class: 'form-control' %>
+    <%= f.text_area :clearance_description, class: 'form-control' %>
   </div>
 
   <div class="form-group">
-    <%= f.submit nil, class: 'btn btn-primary btn-block' %>
+    <%= f.submit 'Update internship', class: 'btn btn-primary btn-block' %>
   </div>
 <% end %>

@@ -1,30 +1,33 @@
-<% if @course %>
-  <%= render 'courses/course_internships' %>
-<% else %>
+<% if can? :manage, Internship %>
   <h1>All internships</h1>
   <% @courses.reverse.each do |course| %>
-    <% if course.internships.any? %>
-      <h3><%= course.description %></h3>
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead>
+    <h3>
+      <%= course.description %>
+      <% if course == current_course %>
+        <span class="label label-info">Current course</span>
+      <% end %>
+    </h3>
+    <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Company</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% course.internships.order('name').each do |internship| %>
             <tr>
-              <th>Company</th>
-              <th></th>
-              <th></th>
+              <td class="col-md-9"><%= link_to internship.name, course_internship_path(course, internship) %></td>
+              <td><%= link_to 'Edit', edit_internship_path(internship) %></td>
+              <td><%= link_to 'Delete', internship_path(internship), data: { method: :delete, confirm: 'Are you sure?' } %></td>
             </tr>
-          </thead>
-          <tbody>
-            <% course.internships.order('name').each do |internship| %>
-              <tr>
-                <td class="col-md-9"><%= link_to internship.name, course_internship_path(course, internship) %></td>
-                <td><%= link_to 'Edit', edit_internship_path(internship) %></td>
-                <td><%= link_to 'Delete', internship_path(internship), data: { method: :delete, confirm: 'Are you sure?' } %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   <% end %>
+<% elsif @course && can?(:read, Internship) %>
+  <%= render 'courses/course_internships' %>
 <% end %>

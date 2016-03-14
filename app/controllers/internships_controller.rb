@@ -23,7 +23,11 @@ class InternshipsController < ApplicationController
   def update
     @internship = Internship.find(params[:id])
     if @internship.update(internship_params)
-      redirect_to root_path, notice: 'Internship has been updated'
+      if current_admin
+        redirect_to internships_path, notice: 'Internship has been updated'
+      elsif current_company
+        redirect_to root_path, notice: 'Internship has been updated'
+      end
     else
       render 'edit'
     end
@@ -32,7 +36,7 @@ class InternshipsController < ApplicationController
   def destroy
     internship = Internship.find(params[:id])
     internship.destroy
-    redirect_to root_path, alert: 'Internship has been deleted'
+    redirect_to internships_path, alert: 'Internship has been deleted'
   end
 
 private
