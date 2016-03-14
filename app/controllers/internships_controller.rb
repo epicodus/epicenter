@@ -2,7 +2,12 @@ class InternshipsController < ApplicationController
   authorize_resource
 
   def index
-    @course = Course.find(params[:course_id])
+    if params[:course_id]
+      @course = Course.find(params[:course_id])
+    else
+      @courses = Course.with_internships
+      authorize! :manage, Course
+    end
   end
 
   def show

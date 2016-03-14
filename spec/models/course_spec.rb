@@ -200,4 +200,13 @@ describe Course do
       expect(Course.previous_courses).to eq [past_course]
     end
   end
+
+  describe '#with_internships' do
+    it 'returns all courses with internships' do
+      course_1 = FactoryGirl.create(:course)
+      course_2 = FactoryGirl.create(:course)
+      internship_for_course_1 = FactoryGirl.create(:internship, courses: [course_1])
+      expect(Course.with_internships).to_not include course_2
+    end
+  end
 end

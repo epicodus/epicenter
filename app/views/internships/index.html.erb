@@ -1,53 +1,30 @@
-<h1>Available internships</h1>
-
-<% if current_student %>
-  <p class="text-danger">* You may only rank 5 companies as "Low" interest.</p>
-
-  <%= form_for current_student do |f| %>
-    <div class="row">
-      <div class="col-md-6">
-        <ul class="list-unstyled">
-          <% @course.internships.each do |internship| %>
-            <li id="internship_<%= internship.id %>">
-              <p><%= link_to internship.name, course_internship_path(@course, internship) %></p>
-              <div class="row">
-                <div class="col-md-12">
-                  <p class="pull-right character-count"></p>
-                  <%= render 'rating_form', rating: Rating.find_by(internship_id: internship.id, student_id: current_student.id), internship: internship, f: f %>
-                </div>
-              </div>
-            </li>
-          <% end %>
-        </ul>
+<% if @course %>
+  <%= render 'courses/course_internships' %>
+<% else %>
+  <h1>All internships</h1>
+  <% @courses.reverse.each do |course| %>
+    <% if course.internships.any? %>
+      <h3><%= course.description %></h3>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% course.internships.order('name').each do |internship| %>
+              <tr>
+                <td class="col-md-9"><%= link_to internship.name, course_internship_path(course, internship) %></td>
+                <td><%= link_to 'Edit', edit_internship_path(internship) %></td>
+                <td><%= link_to 'Delete', internship_path(internship), data: { method: :delete, confirm: 'Are you sure?' } %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
       </div>
-      <% if @course.internships.any? %>
-        <div class="col-md-2">
-          <div class="form-group">
-            <%= f.submit 'Submit ratings', class: 'btn btn-info', id: 'fixed-ratings-button' %>
-          </div>
-        </div>
-      <% end %>
-    </div>
+    <% end %>
   <% end %>
-<% elsif current_admin %>
-  <div class="table-responsive">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th>Company name</th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @course.internships.each do |internship| %>
-        <tr>
-          <td><%= link_to internship.name, course_internship_path(@course, internship) %></td>
-          <td><%= link_to 'Edit', edit_internship_path(internship) %></td>
-          <td><%= link_to 'Delete', internship_path(internship), data: { method: :delete, confirm: 'Are you sure?' } %></td>
-        </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
 <% end %>

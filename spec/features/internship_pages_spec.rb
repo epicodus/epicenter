@@ -1,5 +1,28 @@
 feature 'viewing the internships index page' do
+  context "as a student" do
+    let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+    let!(:internship) { FactoryGirl.create(:internship, courses: [student.course]) }
+    before { login_as(student, scope: :student) }
 
+    scenario 'students can see internships listed by comapany name' do
+      visit internships_path
+      expect(page).to have_content 'You are not authorized to access this page'
+    end
+  end
+
+  context "as an admin" do
+    let(:admin) { FactoryGirl.create(:admin) }
+    let!(:internship) { FactoryGirl.create(:internship) }
+    before { login_as(admin, scope: :admin) }
+
+    scenario 'admins can see internships listed by company name' do
+      visit internships_path
+      expect(page).to have_content 'All internships'
+    end
+  end
+end
+
+feature 'viewing the course internships index page' do
   context "as a student" do
     let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
     let!(:internship) { FactoryGirl.create(:internship, courses: [student.course]) }
@@ -14,11 +37,6 @@ feature 'viewing the internships index page' do
     scenario 'students cannot see the edit or delete links' do
       visit course_internships_path(student.course)
       expect(page).to_not have_content 'Edit'
-    end
-
-    scenario 'students cannot see the new internship link' do
-      visit course_internships_path(student.course)
-      expect(page).to_not have_content '+ New Internship'
     end
   end
 
