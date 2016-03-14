@@ -209,4 +209,12 @@ describe Course do
       expect(Course.with_internships).to_not include course_2
     end
   end
+
+  describe '#internship_courses' do
+    it 'returns all courses that are internship courses' do
+      internship_course = FactoryGirl.create(:internship_course)
+      regular_course = FactoryGirl.create(:course)
+      expect(Course.internship_courses).to eq [internship_course]
+    end
+  end
 end

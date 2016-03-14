@@ -2,6 +2,7 @@ class Course < ActiveRecord::Base
   default_scope { order(:start_date) }
   scope :with_code_reviews, -> { includes(:code_reviews).where.not(code_reviews: { id: nil }) }
   scope :with_internships, -> { includes(:internships).where.not(internships: { id: nil }) }
+  scope :internship_courses, -> { where(internship_course: true) }
   scope :current_and_future_courses, -> { where('start_date <= ? AND end_date >= ? OR start_date >= ?', Time.zone.now.to_date, Time.zone.now.to_date, Time.zone.now.to_date) }
   scope :previous_courses, -> { where('end_date <= ?', Time.zone.now.to_date) }
 

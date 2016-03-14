@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160308002154) do
+ActiveRecord::Schema.define(version: 20160314215646) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 20160308002154) do
   end
 
   create_table "courses", force: :cascade do |t|
-    t.string   "description", limit: 255
+    t.string   "description",       limit: 255
     t.date     "start_date"
     t.date     "end_date"
     t.datetime "created_at"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 20160308002154) do
     t.string   "start_time"
     t.string   "end_time"
     t.integer  "admin_id"
+    t.boolean  "internship_course"
   end
 
   add_index "courses", ["start_date"], name: "index_courses_on_start_date", using: :btree

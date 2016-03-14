@@ -1,5 +1,5 @@
 feature 'signing up as a company' do
-  let!(:course) { FactoryGirl.create(:course) }
+  let!(:course) { FactoryGirl.create(:internship_course) }
 
   scenario 'successfully' do
     visit new_company_registration_path

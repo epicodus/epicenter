@@ -53,14 +53,14 @@ feature 'updating an internship' do
     expect(page).to have_content 'Describe your company and internship. Get students excited about what you do!'
   end
 
-  scenario 'an internship can be update with valid input' do
+  scenario 'an internship can be updated with valid input' do
     visit edit_internship_path(internship)
     fill_in 'Describe your company and internship. Get students excited about what you do!', with: new_information.description
     click_on 'Update internship'
     expect(page).to have_content 'Internship has been updated'
   end
 
-  scenario 'an internship cannot be update with invalid input' do
+  scenario 'an internship cannot be updated with invalid input' do
     visit edit_internship_path(internship)
     fill_in 'Describe your company and internship. Get students excited about what you do!', with: ''
     click_on 'Update internship'
