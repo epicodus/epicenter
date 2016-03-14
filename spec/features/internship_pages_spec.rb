@@ -1,21 +1,21 @@
 feature 'viewing the internships index page' do
-  context "as a student" do
+  context 'as a student' do
     let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
     let!(:internship) { FactoryGirl.create(:internship, courses: [student.course]) }
     before { login_as(student, scope: :student) }
 
-    scenario 'students can see internships listed by comapany name' do
+    scenario 'students cannot view the page' do
       visit internships_path
       expect(page).to have_content 'You are not authorized to access this page'
     end
   end
 
-  context "as an admin" do
+  context 'as an admin' do
     let(:admin) { FactoryGirl.create(:admin) }
     let!(:internship) { FactoryGirl.create(:internship) }
     before { login_as(admin, scope: :admin) }
 
-    scenario 'admins can see internships listed by company name' do
+    scenario 'admins can see all the internships' do
       visit internships_path
       expect(page).to have_content 'All internships'
     end
@@ -23,12 +23,12 @@ feature 'viewing the internships index page' do
 end
 
 feature 'viewing the course internships index page' do
-  context "as a student" do
+  context 'as a student' do
     let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
     let!(:internship) { FactoryGirl.create(:internship, courses: [student.course]) }
     before { login_as(student, scope: :student) }
 
-    scenario 'students can see internships listed by comapany name' do
+    scenario 'students can see internships listed by name' do
       visit root_path
       click_link 'Internships'
       expect(page).to have_content internship.name
@@ -40,12 +40,12 @@ feature 'viewing the course internships index page' do
     end
   end
 
-  context "as an admin" do
+  context 'as an admin' do
     let(:admin) { FactoryGirl.create(:admin) }
     let!(:internship) { FactoryGirl.create(:internship) }
     before { login_as(admin, scope: :admin) }
 
-    scenario 'admins can see internships listed by company name' do
+    scenario 'admins can see internships listed by name' do
       visit course_internships_path(admin.current_course)
       expect(page).to have_content internship.name
     end
@@ -61,19 +61,19 @@ feature 'updating an internship' do
   scenario 'admin can navigate to the edit page' do
     visit course_internships_path(internship.courses.first)
     click_link 'Edit'
-    expect(page).to have_content 'Description'
+    expect(page).to have_content 'Describe your company and internship. Get students excited about what you do!'
   end
 
   scenario 'an internship can be update with valid input' do
     visit edit_internship_path(internship)
-    fill_in 'Description', with: new_information.description
+    fill_in 'Describe your company and internship. Get students excited about what you do!', with: new_information.description
     click_on 'Update Internship'
     expect(page).to have_content 'Internship has been updated'
   end
 
   scenario 'an internship cannot be update with invalid input' do
     visit edit_internship_path(internship)
-    fill_in 'Description', with: ''
+    fill_in 'Describe your company and internship. Get students excited about what you do!', with: ''
     click_on 'Update Internship'
     expect(page).to have_content 'Please correct these problems:'
   end

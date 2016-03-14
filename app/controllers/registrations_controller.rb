@@ -25,6 +25,7 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  # needed for rendering errors with customized devise sign up process
   def resource
     if params[:action] == 'new' || params[:action] == 'create'
       @resource ||= User.new
