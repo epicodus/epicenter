@@ -2,7 +2,11 @@
   <%= f.nested_fields_for :grades, wrapper_tag: :div do |ff| %>
     <div class="row">
       <div class="col-md-8">
-        <%= ff.object.objective.content if ff.object.objective %>
+        <ul>
+          <li>
+            <%= ff.object.objective.content if ff.object.objective %>
+          </li>
+        </ul>
       </div>
       <div class="col-md-4">
         <%= ff.collection_select :score_id, Score.all, :id, :description, { include_blank: true }, { class: "form-control" } %>
