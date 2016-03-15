@@ -1,6 +1,5 @@
-<div>
-  <h1><%= @internship.name %></h1>
-</div>
+<h1><%= @internship.name %></h1>
+
 <div class="table-responsive">
   <table class="table">
     <tr>
@@ -27,20 +26,6 @@
     <% end %>
   </table>
 </div>
-
-<% if Rating.for(@internship, current_student) %>
-  <%= form_for current_student do |f| %>
-    <div class="row">
-      <div class="col-md-6">
-        <p class="pull-right character-count"></p>
-        <%= render 'rating_form', rating: Rating.for(@internship, current_student), internship: @internship, f: f %>
-      </div>
-    </div>
-    <div class="form-group">
-      <%= f.submit 'Submit rating', class: 'btn btn-info', id: 'rating-button' %>
-    </div>
-  <% end %>
-<% end %>
 
 <% if current_admin %>
   <ul class='nav nav-pills'>

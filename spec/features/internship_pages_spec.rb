@@ -22,25 +22,6 @@ feature 'viewing the internships index page' do
   end
 end
 
-feature 'viewing the course internships index page' do
-  context 'as a student' do
-    let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
-    let!(:internship) { FactoryGirl.create(:internship, courses: [student.course]) }
-    before { login_as(student, scope: :student) }
-
-    scenario 'students can see internships listed by name' do
-      visit root_path
-      click_link 'Internships'
-      expect(page).to have_content internship.name
-    end
-
-    scenario 'students cannot see the edit or delete links' do
-      visit course_internships_path(student.course)
-      expect(page).to_not have_content 'Edit'
-    end
-  end
-end
-
 feature 'updating an internship' do
   let(:admin) { FactoryGirl.create(:admin) }
   let!(:internship) { FactoryGirl.create(:internship) }
@@ -122,29 +103,9 @@ feature 'rating an internship' do
   let!(:low_rating_5) { FactoryGirl.create(:low_rating, internship: low_rated_internship_5, student: student)}
   before { login_as(student, scope: :student) }
 
-  scenario 'a student can rate an internship from the internship page' do
-    visit course_internship_path(student.course, low_rated_internship_1)
-    choose "High"
-    fill_in 'Notes: minimum 10 characters', with: 'New note about the internship.'
-    click_on "Submit rating"
-    selected_radio_button = find('#student_ratings_attributes_0_interest_1')
-    expect(selected_radio_button).to be_checked
-  end
-
-  scenario 'a student can update an internship with a new rating from the internship page' do
-    visit course_internship_path(student.course, low_rated_internship_1)
-    choose "High"
-    fill_in 'Notes: minimum 10 characters', with: 'Old note.'
-    click_on "Submit rating"
-    choose "Low"
-    fill_in 'Notes: minimum 10 characters', with: 'New note.'
-    click_on "Submit rating"
-    selected_radio_button = find('#student_ratings_attributes_0_interest_3')
-    expect(selected_radio_button).to be_checked
-  end
-
   scenario 'a student can rate an internship from the internships index page' do
-    visit course_internships_path(student.course)
+    visit course_student_path(student.course, student)
+    find('li.student-internships').click
     within "#internship_#{low_rated_internship_1.id}" do
       choose "Medium"
       fill_in 'Notes: minimum 10 characters', with: 'Note about the first internship.'
@@ -161,7 +122,8 @@ feature 'rating an internship' do
   end
 
   scenario 'a student cannot rate five internships as low' do
-    visit course_internships_path(student.course)
+    visit course_student_path(student.course, student)
+    find('li.student-internships').click
     within "#internship_#{unrated_internship.id}" do
       fill_in 'Notes: minimum 10 characters', with: 'Note about the sixth internship.'
       choose "Low"

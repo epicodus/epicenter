@@ -1,0 +1,33 @@
+<%= f.fields_for :ratings, Rating.find_or_initialize_by(internship_id: internship.id, student_id: @student.id) do |ff| %>
+  <td class="col-md-3">
+    <div class='form-group' data-toggle='buttons'>
+      <% if @student.find_rating(internship).try(:interest) == '1' %>
+        <label class="btn btn-sm btn-success active">
+      <% else %>
+        <label class="btn btn-sm btn-success">
+      <% end %>
+        <%= ff.radio_button :interest, 1 %> High
+      </label>
+      <% if @student.find_rating(internship).try(:interest) == '2' %>
+        <label class="btn btn-sm btn-danger active">
+      <% else %>
+        <label class="btn btn-sm btn-danger">
+      <% end %>
+        <%= ff.radio_button :interest, 2 %> Medium
+      </label>
+      <% if @student.find_rating(internship).try(:interest) == '3' %>
+        <label class="btn btn-sm btn-primary active">
+      <% else %>
+        <label class="btn btn-sm btn-primary">
+      <% end %>
+        <%= ff.radio_button :interest, 3, data: { toggle: 'tooltip', placement: 'right' }, title: 'You may only rank 5 companies as "Low" interest.' %> Low
+      </label>
+    </div>
+    <%= ff.hidden_field :internship_id, value: internship.id %>
+  </td>
+  <td>
+    <div class='form-group'>
+      <%= ff.text_area :notes, rows: 6, placeholder: "Notes: minimum 10 characters", class: 'rating-text-area form-control' %>
+    </div>
+  </td>
+<% end %>
