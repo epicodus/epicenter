@@ -2,7 +2,7 @@
 
 <div class="panel panel-info">
   <div class="panel-body">
-    <%= f.fields_for :internships_attributes do |ff| %>
+    <%= f.fields_for :internships_attributes, @internship do |ff| %>
       <div class='form-group'>
         <%= ff.label :name, '* Company name' %>
         <%= ff.text_field :name, autofocus: true, required: true, class: 'form-control' %>

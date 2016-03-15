@@ -13,11 +13,17 @@
           <% @course.internships.each do |internship| %>
             <tr>
               <td class="col-md-3"><%= link_to internship.name, course_internship_path(@course, internship) %></td>
-              <td class="col-md-1"><%= render 'internships/rating_label', rating: @student.find_rating(internship) %></td>
-              <td class="col-md-8">
-                <% if @student.find_rating(internship) %>
-                  <p><%= @student.find_rating(internship).notes %></p>
+              <td class="col-md-1">
+                <% if @student.find_rating(internship).try(:interest) == "1" %>
+                  <span class="label label-success">High</span>
+                <% elsif @student.find_rating(internship).try(:interest) == "2" %>
+                  <span class="label label-danger">Medium</span>
+                <% elsif @student.find_rating(internship).try(:interest) == "3" %>
+                  <span class="label label-primary">Low</span>
                 <% end %>
+              </td>
+              <td class="col-md-8">
+                <p><%= @student.find_rating(internship).try(:notes) %></p>
               </td>
             </tr>
           <% end %>

@@ -197,7 +197,7 @@ feature "admin viewing a student's internship page" do
   scenario "rated internships display their correct background color" do
     rating = FactoryGirl.create(:rating, interest: '3', student: student, internship: internship)
     visit course_student_path(student.course, student)
-    expect(page).to have_css 'span.btn-primary'
+    expect(page).to have_css 'span.label-primary'
   end
 
   scenario "an admin can navigate through to an internship's show page" do
