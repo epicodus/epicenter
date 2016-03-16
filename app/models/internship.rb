@@ -13,7 +13,7 @@ class Internship < ActiveRecord::Base
   validates :description, presence: true
   validates :courses, presence: true
 
-  before_save :fix_url
+  before_validation :fix_url
 
 private
 
@@ -23,7 +23,7 @@ private
       begin
         uri = URI.parse(self.website)
         unless uri.scheme
-            self.website = URI::HTTP.build({ host: self.website }).to_s
+          self.website = URI::HTTP.build({ host: self.website }).to_s
         end
       rescue URI::InvalidURIError, URI::InvalidComponentError
         errors.add(:website, "is invalid.")

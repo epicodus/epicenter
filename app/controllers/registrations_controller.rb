@@ -7,37 +7,4 @@ class RegistrationsController < Devise::RegistrationsController
       redirect_to root_path, alert: 'Sign up is only allowed via invitation.'
     end
   end
-
-  def create
-    internship_params = sign_up_params.delete(:internships_attributes)
-    @internship = Internship.new(internship_params)
-    if @internship.save
-      @resource = build_resource(sign_up_params)
-      super do |user|
-        if user.persisted?
-          user.internships << @internship
-        else
-          @internship.destroy
-        end
-      end
-    else
-      render 'devise/registrations/new'
-    end
-  end
-
-  # needed for rendering errors with customized devise sign up process
-  def resource
-    if params[:action] == 'new' || params[:action] == 'create'
-      @resource ||= User.new
-    else
-      super
-    end
-  end
-
-private
-
-  def build_resource(sign_up_params)
-    user_params = sign_up_params.except!(:internships_attributes)
-    super
-  end
 end
