@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160314215646) do
+ActiveRecord::Schema.define(version: 20160316212758) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 20160314215646) do
 
   create_table "internships", force: :cascade do |t|
     t.integer  "company_id"
-    t.integer  "course_id"
+    t.integer  "old_course_id"
     t.text     "description"
     t.text     "ideal_intern"
     t.boolean  "clearance_required"
