@@ -7,7 +7,9 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/"><span class="text-info">epi</span>cen<span class="text-info">ter</span></a>
+      <% unless current_company %>
+        <a class="navbar-brand" href="/"><span class="text-info">epi</span>cen<span class="text-info">ter</span></a>
+      <% end %>
     </div>
     <div id='navbar' class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
@@ -64,7 +66,18 @@
           </li>
           <li><%= link_to 'Sign out', destroy_admin_session_path, data: { method: :delete } %></li>
         <% elsif current_company %>
-          <li><%= link_to 'Profile', edit_company_registration_path %></li>
+          <% if params[:controller] == 'companies' %>
+            <li class="active">
+          <% else %>
+            <li>
+          <% end %>
+            <%= link_to 'Internships', company_path(current_company) %></li>
+          <% if params[:controller] == 'registrations' %>
+            <li class="active">
+          <% else %>
+            <li>
+          <% end %>
+            <%= link_to 'Profile', edit_company_registration_path %></li>
           <li><%= link_to 'Sign out', destroy_company_session_path, data: { method: :delete } %></li>
         <% end %>
       </ul>
