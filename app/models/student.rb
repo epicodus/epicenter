@@ -191,10 +191,6 @@ class Student < User
     internship.students.select { |student| student.try(:find_rating, internship).try(:interest) == interest_level }
   end
 
-  def internships_sorted_by_interest
-    course.internships_sorted_by_interest(self)
-  end
-
   def attendance_percentage_for(status, filtered_course=nil)
     if filtered_course
       attendance_records_for(status, filtered_course).to_f / filtered_course.class_days.count.to_f * 100

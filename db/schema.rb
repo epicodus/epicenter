@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160304190500) do
+ActiveRecord::Schema.define(version: 20160316212758) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,21 +39,13 @@ ActiveRecord::Schema.define(version: 20160304190500) do
     t.integer  "number"
   end
 
-  create_table "companies", force: :cascade do |t|
-    t.string   "name",          limit: 255
-    t.text     "description"
-    t.string   "website",       limit: 255
-    t.string   "address",       limit: 255
-    t.string   "contact_name",  limit: 255
-    t.string   "contact_phone", limit: 255
-    t.string   "contact_email", limit: 255
-    t.string   "contact_title", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "course_internships", force: :cascade do |t|
+    t.integer "course_id"
+    t.integer "internship_id"
   end
 
   create_table "courses", force: :cascade do |t|
-    t.string   "description", limit: 255
+    t.string   "description",       limit: 255
     t.date     "start_date"
     t.date     "end_date"
     t.datetime "created_at"
@@ -62,6 +54,7 @@ ActiveRecord::Schema.define(version: 20160304190500) do
     t.string   "start_time"
     t.string   "end_time"
     t.integer  "admin_id"
+    t.boolean  "internship_course"
   end
 
   add_index "courses", ["start_date"], name: "index_courses_on_start_date", using: :btree
@@ -83,7 +76,7 @@ ActiveRecord::Schema.define(version: 20160304190500) do
 
   create_table "internships", force: :cascade do |t|
     t.integer  "company_id"
-    t.integer  "course_id"
+    t.integer  "old_course_id"
     t.text     "description"
     t.text     "ideal_intern"
     t.boolean  "clearance_required"

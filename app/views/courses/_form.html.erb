@@ -21,6 +21,13 @@
     <%= f.text_field :end_time, value: @course.end_time, class: 'timepicker form-control', required: true %>
   </div>
 
+  <div class='form-group'>
+    <%= f.label :internship_course do %>
+      Is this an internship course ?
+    <% end %>
+    <%= f.check_box :internship_course %>
+  </div>
+
   <div class="form-group">
     <%= f.label :class_days %>
     <div class="custom-datepicker">

@@ -76,6 +76,10 @@ FactoryGirl.define do
       start_time '6:00 PM'
       end_time '9:00 PM'
     end
+
+    factory :internship_course do
+      internship_course true
+    end
   end
 
   factory :credit_card do
@@ -332,23 +336,24 @@ FactoryGirl.define do
   end
 
   factory :company do
-    sequence(:name) { |n| "#{n} labs" }
-    description 'A great company'
-    website 'http://www.testcompany.com'
-    address '123 N Main st. Portland, OR 97200'
-    contact_name    'Alice Wonder'
-    contact_phone   '(555)555-5555'
-    contact_email   'test@company.com'
-    contact_title   'mentor'
+    sequence(:name) { |n| "Company employee #{n}" }
+    sequence(:email) { |n| "employee#{n}@company.com" }
+    password "password"
+    password_confirmation "password"
   end
 
   factory :internship do
     company
-    course
+    sequence(:name) { |n| "#{n} labs" }
+    website 'http://www.testcompany.com'
+    address '123 N Main st. Portland, OR 97200'
     description "You will write awesome software here!"
     ideal_intern 'Somebody who writes awesome software!'
     clearance_required true
     clearance_description "You need to have an awesome attitude!"
+    before(:create) do |internship|
+      internship.courses << create(:internship_course)
+    end
   end
 
   factory :rating do

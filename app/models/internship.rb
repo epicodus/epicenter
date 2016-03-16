@@ -1,15 +1,34 @@
 class Internship < ActiveRecord::Base
-  belongs_to :course
+  default_scope { order('name') }
+
   belongs_to :company
   has_many :ratings
+  has_many :course_internships
+  has_many :courses, through: :course_internships
   has_many :students, through: :ratings
 
+  validates :name, presence: true
+  validates :website, presence: true
   validates :ideal_intern, presence: true
   validates :description, presence: true
-  validates :course_id, presence: true
-  validates :company_id, presence: true, uniqueness: { scope: :course_id }
+  validates :courses, presence: true
 
-  delegate :name, to: :company, prefix: :company
+  before_validation :fix_url
 
-  scope :by_company_name, -> { joins(:company).order("name") }
+private
+
+  def fix_url
+    self.website = self.website.try(:strip)
+    if self.website
+      begin
+        uri = URI.parse(self.website)
+        unless uri.scheme
+          self.website = URI::HTTP.build({ host: self.website }).to_s
+        end
+      rescue URI::InvalidURIError, URI::InvalidComponentError
+        errors.add(:website, "is invalid.")
+        false
+      end
+    end
+  end
 end

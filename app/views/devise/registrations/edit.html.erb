@@ -1,13 +1,23 @@
-<h1>Profile</h1>
+<div class="text-center">
+  <h1>Profile</h1>
 
-<% if @student.courses.any? && @student.class_over? %>
-  <p><%= link_to "View certificate of completion", certificate_path, target: '_blank' %></p>
-  <p><%= link_to "View transcript", transcript_path, target: '_blank' %></p>
-<% end %>
+  <% if can? :manage, @student %>
+    <% if @student.class_over? %>
+      <p><%= link_to "View certificate of completion", certificate_path, target: '_blank' %></p>
+    <% end %>
+    
+    <p><%= link_to "View transcript", transcript_path, target: '_blank' %></p>
+  <% end %>
+</div>
+
 <div class='row'>
-  <div class='col-md-6'>
+  <div class='col-md-6 col-md-offset-3'>
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-      <%= devise_error_messages! %>
+      <% if resource.errors.any? %>
+        <div class="alert alert-danger">
+          <%= devise_error_messages! %>
+        </div>
+      <% end %>
 
       <div class="form-group">
         <%= f.label :name %>
@@ -19,10 +29,12 @@
           <%= f.email_field :email, autofocus: true, class: 'form-control' %>
       </div>
 
-      <div class="form-group">
-        <%= f.label :plan_id, "Payment Plan" %>
-        <%= f.select(:plan_id, Plan.all.collect {|p| [ p.name, p.id ] }, {}, class: 'form-control') %>
-      </div>
+      <% if can? :manage, @student %>
+        <div class="form-group">
+          <%= f.label :plan_id, "Payment Plan" %>
+          <%= f.select(:plan_id, Plan.all.collect {|p| [ p.name, p.id ] }, {}, class: 'form-control') %>
+        </div>
+      <% end %>
 
       <div class="form-group">
         <%= f.label :password, 'New password' %>
@@ -41,7 +53,7 @@
           <%= f.password_field :current_password, autocomplete: "off", class: 'form-control' %>
       </div>
 
-      <%= f.submit "Update", class: 'btn btn-info' %>
+      <%= f.submit "Update", class: 'btn btn-info btn-block' %>
     <% end %>
   </div>
 </div>

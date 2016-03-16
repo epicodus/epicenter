@@ -1,0 +1,52 @@
+<div class="text-center">
+  <p><%= image_tag "logo.png", id: 'logo' %></p>
+  <h1>Welcome to the Epicodus internship program!</h1>
+</div>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <% if resource.errors.any? %>
+    <div class="alert alert-danger">
+      <%= devise_error_messages! %>
+    </div>
+  <% end %>
+  <span class="text-primary">* Indicates required field</span>
+  <div class="row">
+    <div class="col-md-6">
+      <%= render 'internships_fields', f: f %>
+    </div>
+
+    <div class="col-md-6">
+      <h3>Your account details</h3>
+      <div class="panel panel-success">
+        <div class="panel-body">
+          <div class='form-group'>
+            <%= f.label :name, '* Name' %>
+            <%= f.text_field :name, required: true, class: 'form-control' %>
+          </div>
+
+          <div class='form-group'>
+            <%= f.label :email, '* Email' %>
+            <%= f.email_field :email, required: true, class: 'form-control' %>
+          </div>
+
+          <div class='form-group'>
+            <%= f.label :password, '* Password' %>
+            <% if @minimum_password_length %>
+            <em>(<%= @minimum_password_length %> characters minimum)</em>
+            <% end %>
+            <%= f.password_field :password, required: true, autocomplete: "off", class: 'form-control' %>
+          </div>
+
+          <div class='form-group'>
+            <%= f.label :password_confirmation, '* Password confirmation' %>
+            <%= f.password_field :password_confirmation, required: true, autocomplete: "off", class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+
+      <div class='form-group'>
+        <%= f.submit 'Sign up', class: 'btn btn-info btn-block', id: 'company-sign-up-button' %>
+      </div>
+    </div>
+  </div>
+<% end %>

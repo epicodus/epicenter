@@ -1,6 +1,8 @@
 class Course < ActiveRecord::Base
   default_scope { order(:start_date) }
   scope :with_code_reviews, -> { includes(:code_reviews).where.not(code_reviews: { id: nil }) }
+  scope :with_internships, -> { includes(:internships).where.not(internships: { id: nil }) }
+  scope :internship_courses, -> { where(internship_course: true) }
   scope :current_and_future_courses, -> { where('start_date <= ? AND end_date >= ? OR start_date >= ?', Time.zone.now.to_date, Time.zone.now.to_date, Time.zone.now.to_date) }
   scope :previous_courses, -> { where('end_date <= ?', Time.zone.now.to_date) }
 
@@ -16,7 +18,8 @@ class Course < ActiveRecord::Base
   has_many :students, through: :enrollments
   has_many :attendance_records, through: :students
   has_many :code_reviews
-  has_many :internships
+  has_many :course_internships
+  has_many :internships, through: :course_internships
 
   serialize :class_days, Array
 
@@ -64,21 +67,6 @@ class Course < ActiveRecord::Base
 
   def class_dates_until(last_date)
     class_days.select { |day| day <= last_date }.sort
-  end
-
-  def internships_sorted_by_interest(current_student)
-    if current_student
-      internships.sort_by do |internship|
-        rating = current_student.find_rating(internship)
-        if rating
-          rating.interest.to_i
-        else
-          0
-        end
-      end
-    else
-      internships.by_company_name
-    end
   end
 
 private

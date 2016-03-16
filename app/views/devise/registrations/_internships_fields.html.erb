@@ -1,0 +1,50 @@
+<h3>Company and internship details</h3>
+
+<div class="panel panel-info">
+  <div class="panel-body">
+    <%= f.fields_for 'internships_attributes[]', resource.internships.first_or_initialize do |ff| %>
+      <div class='form-group'>
+        <%= ff.label :name, '* Company name' %>
+        <%= ff.text_field :name, autofocus: true, required: true, class: 'form-control' %>
+      </div>
+
+      <div class='form-group'>
+        <%= ff.label :description, '* Describe your company and internship. Get students excited about what you do!' %>
+        <%= ff.text_area :description, rows: 8, required: true, class: 'form-control' %>
+      </div>
+
+      <div class='form-group'>
+        <%= ff.label :website, '* Website' %>
+        <%= ff.text_field :website, required: true, class: 'form-control' %>
+      </div>
+
+      <div class="form-group" id="course-multiselect">
+        <%= ff.label :course_ids, "* Choose which internship period(s) you'd like to participate in." %>
+        <br>
+        <%= ff.collection_select :course_ids, Course.internship_courses, :id, :description, {}, { class: 'multiselect-dropdown', multiple: true, include_hidden: false, required: true } %>
+      </div>
+
+      <div class='form-group'>
+        <%= ff.label :ideal_intern, '* Describe your ideal intern.' %>
+        <%= ff.text_area :ideal_intern, rows: 8, required: true, class: 'form-control' %>
+      </div>
+
+      <div class='form-group'>
+        <%= ff.label :address %>
+        <%= ff.text_field :address, class: 'form-control' %>
+      </div>
+
+      <div class='form-group'>
+        <%= ff.label :clearance_required do %>
+          Clearance Required ?
+        <% end %>
+        <%= ff.check_box :clearance_required %>
+      </div>
+
+      <div class='form-group'>
+        <%= ff.label :clearance_description %>
+        <%= ff.text_area :clearance_description, class: 'form-control' %>
+      </div>
+    <% end %>
+  </div>
+</div>

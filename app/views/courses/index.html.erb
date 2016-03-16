@@ -12,9 +12,6 @@
         </div>
         <div class="panel-body">
           <p><%= pluralize(course.number_of_days_left, 'day') %> left of class</p>
-          <% if course.internships.any? %>
-            <p><%= link_to 'Internships', course_internships_path(course) %></p>
-          <% end %>
           <% if course.code_reviews.any? %>
             <p><%= link_to 'Code reviews', course_code_reviews_path(course) %></p>
           <% end %>

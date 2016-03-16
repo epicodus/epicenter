@@ -42,6 +42,6 @@ private
 
   def course_params
     params[:course][:class_days] = params[:course][:class_days].split(',').map { |day| Date.parse(day) }
-    params.require(:course).permit(:admin_id, :description, :importing_course_id, :start_time, :end_time, class_days: [])
+    params.require(:course).permit(:admin_id, :description, :importing_course_id, :start_time, :end_time, :internship_course, class_days: [])
   end
 end

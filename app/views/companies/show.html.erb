@@ -1,13 +1,18 @@
-<h1><%= @company.name %></h1>
-  <div class="table-responsive">
-    <table class="table table-rating">
-      <tr>
-        <th>Company info:</th>
-        <td>
-          <%= link_to @company.website, @company.website %><br>
-          <%= @company.address %><br><br>
-          <%= @company.description %>
-        </td>
-      </tr>
-    </table>
-  </div>
+<h1>Your internships</h1>
+
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr><th>Internship periods</th></tr>
+    </thead>
+    <tbody>
+      <% @company.internships.each do |internship| %>
+        <h2><%= internship.name %></h2>
+        <p><%= link_to 'Edit internship details', edit_internship_path(internship) %></p>
+        <% internship.courses.each do |course| %>
+          <tr><td><%= course.description %></td></tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
