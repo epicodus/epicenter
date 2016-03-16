@@ -8,6 +8,7 @@ describe Internship do
   it { should validate_presence_of :ideal_intern }
   it { should validate_presence_of :name }
   it { should validate_presence_of :website }
+  it { should validate_presence_of :number_of_students }
 
   describe 'default scope' do
     let!(:internship) { FactoryGirl.create(:internship, name: "z labs") }

@@ -12,6 +12,7 @@ class Internship < ActiveRecord::Base
   validates :ideal_intern, presence: true
   validates :description, presence: true
   validates :courses, presence: true
+  validates :number_of_students, presence: true
 
   before_validation :fix_url
 

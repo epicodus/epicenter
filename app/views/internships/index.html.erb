@@ -11,6 +11,7 @@
       <thead>
         <tr>
           <th>Company</th>
+          <th>Number of students</th>
           <th></th>
           <th></th>
         </tr>
@@ -18,7 +19,8 @@
       <tbody>
         <% course.internships.order('name').each do |internship| %>
           <tr>
-            <td class="col-md-9"><%= link_to internship.name, course_internship_path(course, internship) %></td>
+            <td class="col-md-3"><%= link_to internship.name, course_internship_path(course, internship) %></td>
+            <td class="col-md-6"><%= internship.number_of_students %></td>
             <td><%= link_to 'Edit', edit_internship_path(internship) %></td>
             <td><%= link_to 'Delete', internship_path(internship), data: { method: :delete, confirm: 'Are you sure?' } %></td>
           </tr>

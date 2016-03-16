@@ -23,6 +23,30 @@
   </div>
 
   <div class='form-group'>
+    <%= f.label :number_of_students, "Number of students that you'd like to work with." %>
+    <div class="radio">
+      <%= f.label :number_of_students do %>
+        <%= f.radio_button :number_of_students, 2 %> 2
+      <% end %>
+      </label>
+    </div>
+
+    <div class="radio">
+      <%= f.label :number_of_students do %>
+        <%= f.radio_button :number_of_students, 4 %> 4
+      <% end %>
+      </label>
+    </div>
+
+    <div class="radio">
+      <%= f.label :number_of_students do %>
+        <%= f.radio_button :number_of_students, 6 %> 6
+      <% end %>
+      </label>
+    </div>
+  </div>
+
+  <div class='form-group'>
     <%= f.label :ideal_intern, 'Describe your ideal intern.' %>
     <%= f.text_area :ideal_intern, rows: 8, required: true, class: 'form-control' %>
   </div>

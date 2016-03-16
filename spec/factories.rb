@@ -351,6 +351,7 @@ FactoryGirl.define do
     ideal_intern 'Somebody who writes awesome software!'
     clearance_required true
     clearance_description "You need to have an awesome attitude!"
+    number_of_students 2
     before(:create) do |internship|
       internship.courses << create(:internship_course)
     end
