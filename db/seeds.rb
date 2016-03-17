@@ -30,3 +30,10 @@ Student.all.each do |student|
     FactoryGirl.create(:submission, code_review: code_review, student: student)
   end
 end
+
+# Tracks
+Track.create(description: 'Ruby/Rails')
+Track.create(description: 'PHP/Drupal')
+Track.create(description: 'Java/Android')
+Track.create(description: 'C#/.NET')
+Track.create(description: 'CSS/Design')
