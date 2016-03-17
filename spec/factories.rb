@@ -354,6 +354,7 @@ FactoryGirl.define do
     number_of_students 2
     before(:create) do |internship|
       internship.courses << create(:internship_course)
+      internship.tracks << create(:track)
     end
   end
 
@@ -366,5 +367,9 @@ FactoryGirl.define do
     factory :low_rating do
       interest 3
     end
+  end
+
+  factory :track do
+    description 'Ruby/Rails'
   end
 end

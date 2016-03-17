@@ -6,6 +6,8 @@ class Internship < ActiveRecord::Base
   has_many :course_internships
   has_many :courses, through: :course_internships
   has_many :students, through: :ratings
+  has_many :internship_tracks
+  has_many :tracks, through: :internship_tracks
 
   validates :name, presence: true
   validates :website, presence: true
@@ -13,6 +15,7 @@ class Internship < ActiveRecord::Base
   validates :description, presence: true
   validates :courses, presence: true
   validates :number_of_students, presence: true
+  validates :tracks, presence: true
 
   before_validation :fix_url
   before_save :check_number_of_students

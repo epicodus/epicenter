@@ -41,6 +41,6 @@ private
     params.require(:internship).permit(:name, :website, :address, :description,
                                        :ideal_intern, :clearance_required,
                                        :clearance_description, :number_of_students,
-                                       course_ids: [])
+                                       track_ids: [], course_ids: [])
   end
 end
