@@ -6,14 +6,19 @@ class Internship < ActiveRecord::Base
   has_many :course_internships
   has_many :courses, through: :course_internships
   has_many :students, through: :ratings
+  has_many :internship_tracks
+  has_many :tracks, through: :internship_tracks
 
   validates :name, presence: true
   validates :website, presence: true
   validates :ideal_intern, presence: true
   validates :description, presence: true
   validates :courses, presence: true
+  validates :number_of_students, presence: true
+  validates :tracks, presence: true
 
   before_validation :fix_url
+  before_save :check_number_of_students
 
 private
 
@@ -29,6 +34,14 @@ private
         errors.add(:website, "is invalid.")
         false
       end
+    end
+  end
+
+  def check_number_of_students
+    allowed_numbers = [2,4,6]
+    if allowed_numbers.exclude?(number_of_students)
+      errors.add(:number_of_students, 'must be 2, 4, or 6.')
+      false
     end
   end
 end

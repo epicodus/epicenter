@@ -1,7 +1,8 @@
 $(function() {
   $('.multiselect-dropdown').multiselect({
     buttonClass: 'btn btn-info',
-    maxHeight: 500
+    maxHeight: 500,
+    includeSelectAllOption: true
   });
 
   $('#company-sign-up-button').click(function() {

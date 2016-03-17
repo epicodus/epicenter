@@ -3,11 +3,21 @@ describe Internship do
   it { should have_many :ratings }
   it { should have_many(:courses).through(:course_internships) }
   it { should have_many(:students).through(:ratings) }
+  it { should have_many(:tracks).through(:internship_tracks) }
   it { should validate_presence_of :courses }
   it { should validate_presence_of :description }
   it { should validate_presence_of :ideal_intern }
   it { should validate_presence_of :name }
   it { should validate_presence_of :website }
+  it { should validate_presence_of :number_of_students }
+  it { should validate_presence_of :tracks }
+
+  describe 'validations' do
+    it 'returns false if an internship is saved with number_of_students not equal to 2, 4, or 6' do
+      internship = FactoryGirl.build(:internship, number_of_students: 5)
+      expect(internship.save).to eq false
+    end
+  end
 
   describe 'default scope' do
     let!(:internship) { FactoryGirl.create(:internship, name: "z labs") }

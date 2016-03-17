@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160316212758) do
+ActiveRecord::Schema.define(version: 20160317184109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,6 +74,11 @@ ActiveRecord::Schema.define(version: 20160316212758) do
     t.integer  "review_id"
   end
 
+  create_table "internship_tracks", force: :cascade do |t|
+    t.integer "internship_id"
+    t.integer "track_id"
+  end
+
   create_table "internships", force: :cascade do |t|
     t.integer  "company_id"
     t.integer  "old_course_id"
@@ -86,6 +91,7 @@ ActiveRecord::Schema.define(version: 20160316212758) do
     t.string   "name"
     t.string   "website"
     t.string   "address"
+    t.integer  "number_of_students"
   end
 
   create_table "objectives", force: :cascade do |t|
@@ -174,6 +180,12 @@ ActiveRecord::Schema.define(version: 20160316212758) do
 
   add_index "submissions", ["code_review_id"], name: "index_submissions_on_code_review_id", using: :btree
   add_index "submissions", ["student_id"], name: "index_submissions_on_student_id", using: :btree
+
+  create_table "tracks", force: :cascade do |t|
+    t.string   "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                     limit: 255, default: "", null: false

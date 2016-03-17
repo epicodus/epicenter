@@ -1,5 +1,6 @@
 feature 'signing up as a company' do
   let!(:course) { FactoryGirl.create(:internship_course) }
+  let!(:track) { FactoryGirl.create(:track) }
 
   scenario 'successfully' do
     visit new_company_registration_path
@@ -8,6 +9,8 @@ feature 'signing up as a company' do
     fill_in 'Website', with: 'http://www.testcompany.com'
     fill_in 'Address', with: '123 N Main st. Portland, OR 97200'
     select course.description
+    choose '2'
+    select track.description
     fill_in '* Describe your ideal intern.', with: 'Somebody who writes awesome software!'
     fill_in 'Name', with: 'Company employee 1'
     fill_in 'Email', with: 'employee1@company.com'
@@ -24,6 +27,8 @@ feature 'signing up as a company' do
     fill_in 'Website', with: "8789u2ljrlkj;'l;'l;"
     fill_in 'Address', with: '123 N Main st. Portland, OR 97200'
     select course.description
+    choose '2'
+    select track.description
     fill_in '* Describe your ideal intern.', with: 'Somebody who writes awesome software!'
     fill_in 'Name', with: 'Company employee 1'
     fill_in 'Email', with: 'employee1@company.com'
@@ -40,6 +45,8 @@ feature 'signing up as a company' do
     fill_in 'Website', with: "8789u2ljrlkj;'l;'l;"
     fill_in 'Address', with: '123 N Main st. Portland, OR 97200'
     select course.description
+    choose '2'
+    select track.description
     fill_in '* Describe your ideal intern.', with: 'Somebody who writes awesome software!'
     fill_in 'Name', with: 'Company employee 1'
     fill_in 'Email', with: 'employee1@company.com'
@@ -51,6 +58,8 @@ feature 'signing up as a company' do
     fill_in 'Website', with: 'http://www.testcompany.com'
     fill_in 'Address', with: '123 N Main st. Portland, OR 97200'
     select course.description
+    choose '2'
+    select track.description
     fill_in '* Describe your ideal intern.', with: 'Somebody who writes awesome software!'
     fill_in 'Name', with: 'Company employee 1'
     fill_in 'Email', with: 'employee1@company.com'
