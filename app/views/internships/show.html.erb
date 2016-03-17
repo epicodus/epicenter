@@ -3,6 +3,12 @@
 <div class="table-responsive">
   <table class="table">
     <tr>
+      <th>Technologies:</th>
+      <td>
+        <%= @internship.tracks.pluck(:description).join(', ') %><br>
+      </td>
+    </tr>
+    <tr>
       <th>Company info:</th>
       <td>
         <%= link_to @internship.website, @internship.website %><br>
