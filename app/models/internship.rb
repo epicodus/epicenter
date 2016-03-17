@@ -15,6 +15,7 @@ class Internship < ActiveRecord::Base
   validates :number_of_students, presence: true
 
   before_validation :fix_url
+  before_save :check_number_of_students
 
 private
 
@@ -30,6 +31,14 @@ private
         errors.add(:website, "is invalid.")
         false
       end
+    end
+  end
+
+  def check_number_of_students
+    allowed_numbers = [2,4,6]
+    if allowed_numbers.exclude?(number_of_students)
+      errors.add(:number_of_students, 'must be 2, 4, or 6.')
+      false
     end
   end
 end

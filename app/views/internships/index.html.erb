@@ -1,17 +1,12 @@
 <h1>All internships</h1>
 <% @courses.reverse.each do |course| %>
-  <h3>
-    <%= course.description %>
-    <% if course == current_course %>
-      <span class="label label-info">Current course</span>
-    <% end %>
-  </h3>
+  <h3><%= course.description %></h3>
   <div class="table-responsive">
     <table class="table table-hover">
       <thead>
         <tr>
           <th>Company</th>
-          <th>Number of students</th>
+          <th>Students requested</th>
           <th></th>
           <th></th>
         </tr>
