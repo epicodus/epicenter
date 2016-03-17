@@ -47,7 +47,7 @@
   </div>
 
   <div class="form-group" id="course-multiselect">
-    <%= f.label :track_ids, "Choose which technology stack(s) are needed for your internship. (all include JavaScript)" %>
+    <%= f.label :track_ids, "Which classes are you willing to interview students from? (all include JavaScript)" %>
     <br>
     <%= f.collection_select :track_ids, Track.all, :id, :description, {}, { class: 'multiselect-dropdown', multiple: true, include_hidden: false, required: true } %>
   </div>
