@@ -1,18 +1,31 @@
-<h1>Your internships</h1>
+<h1>Your internship periods</h1>
 
-<div class="table-responsive">
-  <table class="table">
-    <thead>
-      <tr><th>Internship periods</th></tr>
-    </thead>
-    <tbody>
-      <% @company.internships.each do |internship| %>
-        <h2><%= internship.name %></h2>
-        <p><%= link_to 'Edit internship details', edit_internship_path(internship) %></p>
-        <% internship.courses.each do |course| %>
-          <tr><td><%= course.description %></td></tr>
-        <% end %>
+<table class="table">
+  <thead>
+    <tr><th></th></tr>
+  </thead>
+  <tbody>
+    <% current_company.internships.each do |internship| %>
+      <p><%= link_to 'Edit internship details', edit_internship_path(internship) %></p>
+
+      <%= form_for @course_internship do |f| %>
+        <%= render 'layouts/errors', object: @course_internship %>
+        <div class="row">
+          <div class="col-md-4">
+            <%= f.hidden_field :company_id, value: current_company.id %>
+            <%= f.hidden_field :internship_id, value: internship.id %>
+            <div class="input-group">
+              <%= f.collection_select :course_id, Course.internship_courses, :id, :description, { include_blank: 'Join an internship period' }, { class: 'form-control', required: true } %>
+              <span class="input-group-btn">
+                <%= f.submit 'Join', class: 'btn btn-info' %>
+              </span>
+            </div>
+          </div>
+        </div>
       <% end %>
-    </tbody>
-  </table>
-</div>
+      <% internship.courses.each do |course| %>
+        <tr><td><%= course.description %></td></tr>
+      <% end %>
+    <% end %>
+  </tbody>
+</table>

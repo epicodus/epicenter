@@ -4,4 +4,5 @@ class CourseInternship < ActiveRecord::Base
 
   validates :course, presence: true
   validates :internship, presence: true
+  validates :internship_id, uniqueness: { scope: :course_id }
 end

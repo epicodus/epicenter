@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   resources :payments, only: [:update]
   resources :upfront_payments, only: [:create]
   resources :attendance_record_amendments, only: [:new, :create]
-  resources :internships, only: [:index, :edit, :update, :destroy]
+  resources :internships, only: [:index, :edit, :update]
   resources :courses, except: [:show, :index] do
     resources :attendance_statistics, only: [:index, :create]
     resources :code_reviews, only: [:index] do
@@ -62,4 +62,5 @@ Rails.application.routes.draw do
   resource :random_pairs, only: [:show]
   resources :enrollments, only: [:create, :destroy]
   resource :sign_out, controller: 'attendance_sign_out', only: [:create]
+  resource :course_internships, only: [:create, :destroy]
 end

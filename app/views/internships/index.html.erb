@@ -19,7 +19,7 @@
             <td class="col-md-2"><%= internship.number_of_students %></td>
             <td class="col-md-6"><%= internship.tracks.pluck(:description).join(', ') %></td>
             <td><%= link_to 'Edit', edit_internship_path(internship) %></td>
-            <td><%= link_to 'Delete', internship_path(internship), data: { method: :delete, confirm: 'Are you sure?' } %></td>
+            <td><%= link_to 'Withdraw', course_internships_path(course_id: course.id, internship_id: internship.id), data: { method: :delete, confirm: 'Are you sure?' } %></td>
           </tr>
         <% end %>
       </tbody>

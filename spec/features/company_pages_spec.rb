@@ -69,3 +69,17 @@ feature 'signing up as a company' do
     expect(page).to have_content 'Welcome! You have signed up successfully.'
   end
 end
+
+feature 'joining an internship course as a company' do
+  let(:company) { FactoryGirl.create(:company) }
+  let!(:internship) { FactoryGirl.create(:internship, company: company) }
+  let!(:other_internship_course) { FactoryGirl.create(:internship_course, description: 'Other course') }
+  before { login_as(company, scope: :company) }
+
+  scenario 'as a compnay on the company show page' do
+    visit company_path(company)
+    select other_internship_course.description
+    click_on 'Join'
+    expect(page).to have_content other_internship_course.description
+  end
+end

@@ -49,15 +49,15 @@ feature 'updating an internship' do
   end
 end
 
-feature 'deleting an internship' do
+feature 'removing an internship from a particular session' do
   let(:admin) { FactoryGirl.create(:admin) }
   let!(:internship) { FactoryGirl.create(:internship) }
   before { login_as(admin, scope: :admin) }
 
   scenario 'it deletes the record' do
     visit internships_path
-    click_link 'Delete'
-    expect(page).to_not have_content internship.name
+    click_link 'Withdraw'
+    expect(page).to_not have_content 'Withdraw'
   end
 end
 

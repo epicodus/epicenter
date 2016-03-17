@@ -29,12 +29,6 @@ class InternshipsController < ApplicationController
     end
   end
 
-  def destroy
-    internship = Internship.find(params[:id])
-    internship.destroy
-    redirect_to internships_path, alert: 'Internship has been deleted'
-  end
-
 private
 
   def internship_params
