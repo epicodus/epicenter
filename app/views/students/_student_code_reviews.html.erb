@@ -26,16 +26,28 @@
             <td><%= link_to "Submission", @student.submission_for(code_review).link, target: '_blank' %></td>
             <td>
               <% if @student.submission_for(code_review).has_been_reviewed? %>
-                <%= link_to 'Reviewed', code_review_path(code_review) %>
+                <% if can? :manage, CodeReview %>
+                  <%= link_to 'Reviewed', new_submission_review_path(@student.submission_for(code_review)) %>
+                <% else %>
+                  <%= link_to 'Reviewed', code_review_path(code_review) %>
+                <% end %>
               <% else %>
-                <%= link_to 'Pending', code_review_path(code_review) %>
+                <% if can? :manage, CodeReview %>
+                  <%= link_to 'Pending', new_submission_review_path(@student.submission_for(code_review)) %>
+                <% else %>
+                  <%= link_to 'Pending', code_review_path(code_review) %>
+                <% end %>
               <% end %>
             </td>
           <% else %>
             <td></td>
             <td></td>
             <td>
-              <%= link_to 'Submit', code_review_path(code_review), class: 'text-info' %>
+              <% if can? :manage, CodeReview %>
+                Not submitted
+              <% else %>
+                <%= link_to 'Submit', code_review_path(code_review), class: 'text-info' %>
+              <% end %>
             </td>
           <% end %>
         </tr>
