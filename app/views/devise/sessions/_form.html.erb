@@ -18,7 +18,7 @@
       <% end -%>
 
       <div class="form-group">
-        <%= f.submit "Sign in", class: 'btn btn-info btn-block' %>
+        <%= f.submit "Sign in", class: 'btn btn-info btn-block', id: 'solo-sign-in-button' %>
       </div>
 
       <div class="form-group">
@@ -26,7 +26,6 @@
       </div>
     </div>
 
-    <% if is_weekday? && IpLocation.is_local_computer?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip) %>
       <div class="col-md-4 col-md-offset-4">
         <h2 class="text-center">Pair sign in</h2>
 
@@ -44,6 +43,5 @@
           <%= f.submit "Pair sign in", class: 'btn btn-primary btn-block' %>
         </div>
       </div>
-    <% end %>
   <% end %>
 </div>
