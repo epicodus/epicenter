@@ -12,6 +12,15 @@ feature 'student logging out on attendance page' do
     expect(page).to have_content "Goodbye #{student.name}"
   end
 
+  scenario 'student successfully logs out' do
+    FactoryGirl.create(:attendance_record, student: student, date: Time.zone.now.to_date)
+    visit sign_out_path
+    fill_in "email", with: student.email.upcase
+    fill_in "password", with: student.password
+    click_button "Sign out"
+    expect(page).to have_content "Goodbye #{student.name}"
+  end
+
   scenario 'student fails to log out because they have not logged in yet' do
     visit sign_out_path
     fill_in "email", with: student.email
