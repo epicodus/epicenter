@@ -392,4 +392,100 @@ http_interactions:
         }
     http_version: 
   recorded_at: Thu, 11 Feb 2016 22:49:15 GMT
+- request:
+    method: post
+    uri: https://api.stripe.com/v1/tokens
+    body:
+      encoding: UTF-8
+      string: key=<STRIPE_PUBLIC_KEY>&payment_user_agent=stripe.js%2Fd31b455&card[name]=Example+Brown+60&card[number]=4242424242424242&card[exp_month]=12&card[exp_year]=2016&card[cvc]=123&card[address_zip]=11211
+    headers:
+      Accept:
+      - application/json
+      Referer:
+      - https://js.stripe.com/v2/channel.html?stripe_xdm_e=http%3A%2F%2F127.0.0.1%3A52273&stripe_xdm_c=default782343&stripe_xdm_p=1
+      Origin:
+      - https://js.stripe.com
+      Accept-Language:
+      - en-US
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/538.1 (KHTML, like Gecko)
+        PhantomJS/2.1.1 Safari/538.1
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Content-Length:
+      - '210'
+      Connection:
+      - Keep-Alive
+      Host:
+      - api.stripe.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 18 Mar 2016 18:50:34 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '746'
+      Connection:
+      - close
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - https://js.stripe.com
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_86g2GvKrchRP7B
+      Stripe-Version:
+      - '2016-02-03'
+      Timing-Allow-Origin:
+      - https://js.stripe.com
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: |
+        {
+          "id": "tok_86g2JcHAGljUUJ",
+          "object": "token",
+          "card": {
+            "id": "card_86g2daGduZTrwr",
+            "object": "card",
+            "address_city": null,
+            "address_country": null,
+            "address_line1": null,
+            "address_line1_check": null,
+            "address_line2": null,
+            "address_state": null,
+            "address_zip": "11211",
+            "address_zip_check": "unchecked",
+            "brand": "Visa",
+            "country": "US",
+            "cvc_check": "unchecked",
+            "dynamic_last4": null,
+            "exp_month": 12,
+            "exp_year": 2016,
+            "funding": "credit",
+            "last4": "4242",
+            "metadata": {},
+            "name": "Example Brown 60",
+            "tokenization_method": null
+          },
+          "client_ip": "50.141.101.89",
+          "created": 1458327034,
+          "livemode": false,
+          "type": "card",
+          "used": false
+        }
+    http_version: 
+  recorded_at: Fri, 18 Mar 2016 18:50:34 GMT
 recorded_with: VCR 3.0.1

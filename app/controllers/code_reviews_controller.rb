@@ -3,6 +3,7 @@ class CodeReviewsController < ApplicationController
 
   def index
     @course = Course.find(params[:course_id])
+    authorize! :manage, @course
   end
 
   def new

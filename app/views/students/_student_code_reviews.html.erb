@@ -1,45 +1,48 @@
 <div class="student-div student-code-reviews">
-  <% if current_student %>
-    <%= link_to 'View all code reviews', course_code_reviews_path(@course) %>
-  <% end %>
-  <% if @student.submissions.for_course(@course).any? %>
-    <div class="table-responsive">
-      <table class="table table-hover">
-        <thead>
-          <th>Title</th>
-          <th>Expectations met?</th>
-          <th>Teacher notes</th>
-          <th>GitHub repo</th>
-          <th>Status</th>
-        </thead>
-        <% @student.submissions.for_course(@course).each do |submission| %>
-        <tbody>
-          <tr>
-            <td><%= submission.code_review.title %></td>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <th>Number</th>
+        <th>Title</th>
+        <th>Expectations met?</th>
+        <th>Teacher notes</th>
+        <th>GitHub repo</th>
+        <th>Status</th>
+      </thead>
+      <% @course.code_reviews.each do |code_review| %>
+      <tbody>
+        <tr>
+          <td><%= code_review.number %></td>
+          <td><%= code_review.title %></td>
+          <td>
+            <% if code_review.expectations_met_by?(@student) %>
+              <span class="glyphicon glyphicon-ok submission-success"></span>
+            <% else %>
+              <span class="glyphicon glyphicon-remove submission-fail"></span>
+            <% end %>
+          </td>
+          <% if @student.submission_for(code_review) %>
+            <td><%= link_to "Notes", "##{@student.submission_for(code_review).id}", data: { toggle: "modal" } %></td>
+            <td><%= link_to "Submission", @student.submission_for(code_review).link, target: '_blank' %></td>
             <td>
-              <% if submission.code_review.expectations_met_by?(@student) %>
-                <span class="glyphicon glyphicon-ok submission-success"></span>
+              <% if @student.submission_for(code_review).has_been_reviewed? %>
+                <%= link_to 'Reviewed', code_review_path(code_review) %>
               <% else %>
-                <span class="glyphicon glyphicon-remove submission-fail"></span>
+                <%= link_to 'Pending', code_review_path(code_review) %>
               <% end %>
             </td>
-            <td><%= link_to "Notes", "##{submission.id}", data: { toggle: "modal" } %></td>
-            <td><%= link_to "Submission", submission.link, target: '_blank' %></td>
+          <% else %>
+            <td></td>
+            <td></td>
             <td>
-              <% if submission.has_been_reviewed? %>
-                <%= link_to 'Reviewed', code_review_path(submission.code_review) %>
-              <% else %>
-                <%= link_to 'Pending', code_review_path(submission.code_review) %>
-              <% end %>
+              <%= link_to 'Submit', code_review_path(code_review), class: 'text-info' %>
             </td>
-          </tr>
-        </tbody>
-        <% end %>
-      </table>
-    </div>
-  <% else %>
-    <p><%= @student.name %> has no code review submissions for this course yet.</p>
-  <% end %>
+          <% end %>
+        </tr>
+      </tbody>
+      <% end %>
+    </table>
+  </div>
 </div>
 
 <%= render "students/notes_modal" %>

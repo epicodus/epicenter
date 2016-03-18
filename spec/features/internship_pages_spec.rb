@@ -180,7 +180,8 @@ end
 
 feature "admin viewing a student's internship page" do
   let(:admin) { FactoryGirl.create(:admin) }
-  let(:student) { FactoryGirl.create(:student) }
+  let(:course) { FactoryGirl.create(:internship_course) }
+  let(:student) { FactoryGirl.create(:student, course: course) }
   let!(:internship) { FactoryGirl.create(:internship, courses: [student.course]) }
   before { login_as(admin, scope: :admin) }
 
