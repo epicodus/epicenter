@@ -12,8 +12,8 @@
         <tbody>
           <% @course.internships.each do |internship| %>
             <tr>
-              <td class="col-md-3"><%= link_to internship.name, course_internship_path(@course, internship) %></td>
-              <td class="col-md-1">
+              <td class="col-xs-3"><%= link_to internship.name, course_internship_path(@course, internship) %></td>
+              <td class="col-xs-1">
                 <% if @student.find_rating(internship).try(:interest) == "1" %>
                   <span class="label label-success">High</span>
                 <% elsif @student.find_rating(internship).try(:interest) == "2" %>
@@ -22,7 +22,7 @@
                   <span class="label label-primary">Low</span>
                 <% end %>
               </td>
-              <td class="col-md-8">
+              <td class="col-xs-8">
                 <p><%= @student.find_rating(internship).try(:notes) %></p>
               </td>
             </tr>
@@ -39,6 +39,7 @@
             <thead>
               <tr>
                 <th>Company</th>
+                <th>Technologies</th>
                 <th>Rating</th>
                 <th>Notes</th>
               </tr>
@@ -46,7 +47,8 @@
             <tbody>
               <% @course.internships.each do |internship| %>
                 <tr id="internship_<%= internship.id %>">
-                  <td class="col-md-3"><%= link_to internship.name, course_internship_path(@course, internship) %></td>
+                  <td class="col-xs-2"><%= link_to internship.name, course_internship_path(@course, internship) %></td>
+                  <td class="col-xs-2"><%= internship.tracks.pluck(:description).join(', ') %></td>
                   <%= render 'ratings_fields', f: f, internship: internship %>
                 </tr>
               <% end %>
@@ -54,7 +56,7 @@
           </table>
         </div>
         <% if @course.internships.any? %>
-          <div class="col-md-2">
+          <div class="col-xs-2">
             <div class="form-group">
               <%= f.submit 'Submit ratings', class: 'btn btn-info', id: 'fixed-ratings-button' %>
             </div>

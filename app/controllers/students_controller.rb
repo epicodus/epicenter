@@ -31,10 +31,10 @@ class StudentsController < ApplicationController
       end
     elsif current_student
       if current_student.update(student_params)
-        if request.referer.include?('internships')
-          redirect_to :back, notice: "Ratings have been updated."
-        else
+        if request.referer.include?('payment_methods')
           redirect_to :back, notice: "Primary payment method has been updated."
+        else
+          redirect_to :back, notice: "Internship ratings have been updated."
         end
       else
         if request.referer.include?('internships')

@@ -9,17 +9,17 @@
 
 <% if @student.courses.any? %>
   <ul class="nav nav-tabs list-group" id="student-nav">
+    <% if @course.internship_course? %>
+      <li class="student-internships">
+        <a>Internships</a>
+      </li>
+    <% end %>
     <li class="student-code-reviews">
       <a>Code review submissions</a>
     </li>
     <li class="student-attendance">
       <a>Attendance</a>
     </li>
-    <% if @course.internships.any? %>
-      <li class="student-internships">
-        <a>Internships</a>
-      </li>
-    <% end %>
     <% if current_admin %>
       <li class="student-courses">
         <a>Courses</a>
