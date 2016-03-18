@@ -1,0 +1,27 @@
+---
+:scope: 
+:url: https://api.stripe.com/v1/tokens
+:body: bank_account[routing_number]=12345689&bank_account[account_number]=000123456789&bank_account[name]=Example+Brown+22&bank_account[country]=US&bank_account[currency]=USD&key=pk_test_k71fNBhNztxvhxRq1PQaL4u5&payment_user_agent=stripe.js%2Fd31b455
+:status: 400
+:method: post
+:headers:
+  Server: nginx
+  Date: Fri, 18 Mar 2016 21:09:20 GMT
+  Content-Type: application/json
+  Content-Length: '138'
+  Connection: close
+  Access-Control-Allow-Credentials: 'true'
+  Access-Control-Allow-Methods: GET, POST, HEAD, OPTIONS, DELETE
+  Access-Control-Allow-Origin: http://127.0.0.1:60246
+  Access-Control-Max-Age: '300'
+  Cache-Control: no-cache, no-store
+  Request-Id: req_86iHYjLygmXsVb
+  Stripe-Version: '2016-02-03'
+:content: |
+  {
+    "error": {
+      "type": "invalid_request_error",
+      "message": "Routing number must have 9 digits",
+      "param": "bank_account"
+    }
+  }
