@@ -10,13 +10,6 @@
         <%= f.text_field :name, class: 'form-control' %>
       </div>
 
-      <% if resource.is_a?(Admin) %>
-        <div class="form-group">
-          <%= f.label :current_course_id %>
-          <%= f.select(:current_course_id, Course.all.collect {|c| [ c.description, c.id ] }, {}, { class: 'form-control' }) %>
-        </div>
-      <% end %>
-
       <% if resource.is_a?(Student) %>
         <div class="form-group">
           <%= f.label :plan_id %>
