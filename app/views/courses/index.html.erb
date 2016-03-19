@@ -11,19 +11,20 @@
           <% end %>
         </div>
         <div class="panel-body">
-          <p><%= pluralize(course.number_of_days_left, 'day') %> left of class</p>
-          <% if course.code_reviews.any? %>
-            <p><%= link_to 'Code reviews', course_code_reviews_path(course) %></p>
+          <% if course.internship_course? %>
+            <p><%= pluralize(course.internships.count, 'internship') %></p>
+          <% else %>
+            <p><%= pluralize(course.number_of_days_left, 'day') %> left of class</p>
+            <% if current_student.submissions.for_course(course).needing_review.any? %>
+              <p><%= pluralize(current_student.submissions.for_course(course).needing_review.count, 'submission') %> pending review</p>
+            <% end %>
+            <div class="progress">
+              <div data-toggle='tooltip' data-placement='bottom' title='On time' class="progress-bar progress-bar-success" style="width: <%= number_to_percentage(current_student.attendance_percentage_for(:on_time, course), precision: 0) %>"></div>
+              <div data-toggle='tooltip' data-placement='bottom' title='Absent' class="progress-bar" style="width: <%= number_to_percentage(current_student.attendance_percentage_for(:absent, course), precision: 0) %>"></div>
+              <div data-toggle='tooltip' data-placement='bottom' title='Tardy' class="progress-bar progress-bar-danger" style="width: <%= number_to_percentage(current_student.attendance_percentage_for(:tardy, course), precision: 0) %>"></div>
+              <div data-toggle='tooltip' data-placement='bottom' title='Left early' class="progress-bar progress-bar-danger" style="width: <%= number_to_percentage(current_student.attendance_percentage_for(:left_early, course), precision: 0) %>"></div>
+            </div>
           <% end %>
-          <% if current_student.submissions.for_course(course).needing_review.any? %>
-            <p><%= pluralize(current_student.submissions.for_course(course).needing_review.count, 'submission') %> pending review</p>
-          <% end %>
-          <div class="progress">
-            <div data-toggle='tooltip' data-placement='bottom' title='On time' class="progress-bar progress-bar-success" style="width: <%= number_to_percentage(current_student.attendance_percentage_for(:on_time, course), precision: 0) %>"></div>
-            <div data-toggle='tooltip' data-placement='bottom' title='Absent' class="progress-bar" style="width: <%= number_to_percentage(current_student.attendance_percentage_for(:absent, course), precision: 0) %>"></div>
-            <div data-toggle='tooltip' data-placement='bottom' title='Tardy' class="progress-bar progress-bar-danger" style="width: <%= number_to_percentage(current_student.attendance_percentage_for(:tardy, course), precision: 0) %>"></div>
-            <div data-toggle='tooltip' data-placement='bottom' title='Left early' class="progress-bar progress-bar-danger" style="width: <%= number_to_percentage(current_student.attendance_percentage_for(:left_early, course), precision: 0) %>"></div>
-          </div>
         </div>
       </div>
     </div>

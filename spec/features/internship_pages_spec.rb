@@ -89,7 +89,8 @@ feature 'visiting the internships show page' do
 end
 
 feature 'rating an internship' do
-  let(:student) { FactoryGirl.create(:student) }
+  let(:internship_course) { FactoryGirl.create(:internship_course) }
+  let(:student) { FactoryGirl.create(:student, course: internship_course) }
   let!(:low_rated_internship_1) { FactoryGirl.create(:internship, courses: [student.course]) }
   let!(:low_rated_internship_2) { FactoryGirl.create(:internship, courses: [student.course]) }
   let!(:low_rated_internship_3) { FactoryGirl.create(:internship, courses: [student.course]) }
@@ -179,7 +180,8 @@ end
 
 feature "admin viewing a student's internship page" do
   let(:admin) { FactoryGirl.create(:admin) }
-  let(:student) { FactoryGirl.create(:student) }
+  let(:course) { FactoryGirl.create(:internship_course) }
+  let(:student) { FactoryGirl.create(:student, course: course) }
   let!(:internship) { FactoryGirl.create(:internship, courses: [student.course]) }
   before { login_as(admin, scope: :admin) }
 

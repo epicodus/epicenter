@@ -1,7 +1,7 @@
 class AttendanceSignOutController < ApplicationController
 
   def create
-    student = Student.find_by(email: params[:email])
+    student = Student.find_by(email: params[:email].downcase)
     attendance_record = AttendanceRecord.find_by(date: Time.zone.now.to_date, student: student)
     if attendance_record && student.try(:valid_password?, params[:password])
       authorize! :update, attendance_record

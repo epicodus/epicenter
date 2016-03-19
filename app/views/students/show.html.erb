@@ -9,15 +9,17 @@
 
 <% if @student.courses.any? %>
   <ul class="nav nav-tabs list-group" id="student-nav">
-    <li class="student-code-reviews">
-      <a>Code review submissions</a>
-    </li>
-    <li class="student-attendance">
-      <a>Attendance</a>
-    </li>
-    <% if @course.internships.any? %>
+    <% if @course.internship_course? %>
       <li class="student-internships">
         <a>Internships</a>
+      </li>
+    <% end %>
+    <li class="student-code-reviews">
+      <a>Code reviews</a>
+    </li>
+    <% if !@course.internship_course? %>
+      <li class="student-attendance">
+        <a>Attendance</a>
       </li>
     <% end %>
     <% if current_admin %>
@@ -33,11 +35,12 @@
 
   <%= render 'students/student_code_reviews' %>
 
-  <% if @course.internships.any? %>
+  <% if @course.internship_course? %>
     <%= render 'students/student_internships' %>
+  <% else %>
+    <%= render 'students/student_attendance' %>
   <% end %>
 
-  <%= render 'students/student_attendance' %>
 
 
 <% else %>

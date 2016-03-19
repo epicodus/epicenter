@@ -1,6 +1,5 @@
 <%= render 'layouts/errors', object: @review %>
 
-<%= link_to 'Back to submissions', code_review_submissions_path(@submission.code_review) %>
 <h2>Submission for <%= @submission.code_review.title %></h2>
 <h3><%= @submission.student.name %></h3>
 <p>Submitted <%= time_ago_in_words(@submission.updated_at) %> ago</p>

@@ -1,51 +1,22 @@
-feature 'index page' do
+feature 'viewing the code review index page' do
   let!(:code_review) { FactoryGirl.create(:code_review) }
 
-  scenario 'not logged in' do
+  scenario 'as a guest' do
     visit course_code_reviews_path(code_review.course)
     expect(page).to have_content 'need to sign in'
   end
 
-  context 'when visiting as a student' do
+  context 'as a student' do
     let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: code_review.course) }
     before { login_as(student, scope: :student) }
 
-    scenario 'shows all code reviews' do
-      another_code_review = FactoryGirl.create(:code_review, title: 'another_code_review', course: code_review.course)
+    scenario 'redirects the student to the root path' do
       visit course_code_reviews_path(code_review.course)
-      expect(page).to have_content code_review.title
-      expect(page).to have_content another_code_review.title
-    end
-
-    scenario 'shows if the student has submitted an code_review' do
-      FactoryGirl.create(:submission, code_review: code_review, student: student)
-      visit course_code_reviews_path(code_review.course)
-      expect(page).to have_content 'Submitted'
-      expect(page).to_not have_content 'Not submitted'
-    end
-
-    scenario 'shows if the code_review has been graded', :stub_mailgun do
-      submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
-      FactoryGirl.create(:passing_review, submission: submission)
-      visit course_code_reviews_path(code_review.course)
-      expect(page).to have_content 'Reviewed'
-      expect(page).to_not have_content 'Submitted'
-    end
-
-    scenario 'links to code_review show page' do
-      visit course_code_reviews_path(code_review.course)
-      click_link code_review.title
-      expect(page).to have_content code_review.title
-      expect(page).to have_content code_review.objectives.first.content
-    end
-
-    scenario 'does not have button to save order of code reviews' do
-      visit course_code_reviews_path(code_review.course)
-      expect(page).to_not have_button 'Save order'
+      expect(page).to have_content 'You are not authorized'
     end
   end
 
-  context 'when visiting as an admin' do
+  context 'as an admin' do
     let(:admin) { FactoryGirl.create(:admin) }
     let(:code_review) { FactoryGirl.create(:code_review) }
 
@@ -84,15 +55,15 @@ feature 'index page' do
   end
 end
 
-feature 'show page' do
+feature 'visiting the code review show page' do
   let(:code_review) { FactoryGirl.create(:code_review) }
 
-  scenario 'not signed in' do
+  scenario 'as a guest' do
     visit code_review_path(code_review)
     expect(page).to have_content 'need to sign in'
   end
 
-  context 'when visiting as an admin' do
+  context 'as an admin' do
     let(:admin) { FactoryGirl.create(:admin) }
     before do
       login_as(admin, scope: :admin)
@@ -115,16 +86,15 @@ feature 'show page' do
     end
   end
 
-  context 'when visiting as a student' do
+  context 'as a student' do
     let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: code_review.course) }
     before { login_as(student, scope: :student) }
     subject { page }
 
     context 'before submitting' do
       before do
-        visit student_courses_path(student)
-        click_link 'Code reviews'
-        click_link code_review.title
+        visit course_student_path(code_review.course, student)
+        click_link 'Submit'
       end
 
       it { is_expected.to have_button 'Submit' }
@@ -194,8 +164,8 @@ feature 'show page' do
   end
 end
 
-feature 'creating an code_review' do
-  scenario 'not signed in' do
+feature 'creating a code review' do
+  scenario 'as a guest' do
     visit new_code_review_path
     expect(page).to have_content 'need to sign in'
   end
@@ -254,10 +224,10 @@ feature 'creating an code_review' do
   end
 end
 
-feature 'editing an code_review' do
+feature 'editing a code review' do
   let(:code_review) { FactoryGirl.create(:code_review) }
 
-  scenario 'not signed in' do
+  scenario 'as a guest' do
     visit edit_code_review_path(code_review)
     expect(page).to have_content 'need to sign in'
   end
@@ -327,7 +297,7 @@ feature 'copying an existing code review' do
   end
 end
 
-feature 'view the Code Reviews tab' do
+feature 'view the code reviews tab on the student show page' do
   let(:course) { FactoryGirl.create(:course) }
   let(:admin) { FactoryGirl.create(:admin, current_course: course) }
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: course) }

@@ -15,6 +15,7 @@ module ApplicationHelper
     current_page?(user_session_path) ||
     current_page?(new_user_password_path) ||
     current_page?(root_path) ||
-    current_page?(new_company_registration_path)
+    current_page?(new_company_registration_path) ||
+    params[:controller] == 'attendance_sign_out'
   end
 end

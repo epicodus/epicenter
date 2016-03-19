@@ -75,3 +75,15 @@ li, a {
     width: 30%;
   }
 }
+
+@media (max-width: 767px) {
+  .first-navbar-link {
+    padding-left: 15px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .first-navbar-link {
+    padding-left: 0px !important;
+  }
+}

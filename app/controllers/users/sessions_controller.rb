@@ -11,8 +11,6 @@ class Users::SessionsController < Devise::SessionsController
         sign_in_student(user)
       elsif user.is_a? Company
         sign_in_company(user)
-      else
-        super
       end
     else
       super
