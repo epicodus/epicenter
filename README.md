@@ -1,8 +1,7 @@
 [![Build status](https://travis-ci.org/epicodus/epicenter.svg?branch=master)](https://travis-ci.org/epicodus/epicenter)
 [![Code climate](https://codeclimate.com/github/epicodus/epicenter/badges/gpa.svg)](https://codeclimate.com/github/epicodus/epicenter)
-[![Coverage status](https://coveralls.io/repos/epicodus/epicenter/badge.svg)](https://coveralls.io/r/epicodus/epicenter)
+[![Coverage status](https://coveralls.io/repos/github/epicodus/epicenter/badge.svg?branch=master)](https://coveralls.io/github/epicodus/epicenter?branch=master)
 [![Dependency status](https://gemnasium.com/epicodus/epicenter.svg)](https://gemnasium.com/epicodus/epicenter)
-
 # Epicenter
 
 This is app handles a few different things for Epicodus students and staff, including:

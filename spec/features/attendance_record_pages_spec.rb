@@ -3,7 +3,7 @@ feature 'student logging out on attendance page' do
 
   before { allow(IpLocation).to receive(:is_local?).and_return(true) }
 
-  scenario 'student successfully logs out' do
+  scenario 'student successfully signs out' do
     FactoryGirl.create(:attendance_record, student: student, date: Time.zone.now.to_date)
     visit sign_out_path
     fill_in "email", with: student.email
@@ -12,7 +12,7 @@ feature 'student logging out on attendance page' do
     expect(page).to have_content "Goodbye #{student.name}"
   end
 
-  scenario 'student successfully logs out' do
+  scenario 'student successfully signs out with an uppercased email' do
     FactoryGirl.create(:attendance_record, student: student, date: Time.zone.now.to_date)
     visit sign_out_path
     fill_in "email", with: student.email.upcase

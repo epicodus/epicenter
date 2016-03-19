@@ -83,3 +83,15 @@ feature 'joining an internship course as a company' do
     expect(page).to have_content other_internship_course.description
   end
 end
+
+feature 'signing in as a company' do
+  let(:company) { FactoryGirl.create(:company) }
+
+  scenario 'successfully' do
+    visit root_path
+    fill_in 'Email', with: company.email
+    fill_in 'Password', with: company.password
+    click_on 'Sign in'
+    expect(page).to have_content 'Signed in successfully.'
+  end
+end
