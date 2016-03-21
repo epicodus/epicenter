@@ -4,7 +4,8 @@ $(function() {
     var formData = {
       routing_number: $("input#routing_number").val(),
       account_number: $("input#bank_account_number").val(),
-      name: $("input#name").val(),
+      account_holder_name: $("input#account_holder_name").val(),
+      account_holder_type: $("#account_holder_type").val().toLowerCase(),
       country: $("input#country").val(),
       currency: $("input#currency").val()
     };
