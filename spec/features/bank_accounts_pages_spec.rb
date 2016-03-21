@@ -10,6 +10,7 @@ feature 'Creating a bank account' do
       login_as(student, scope: :student)
       visit new_bank_account_path
       fill_in 'Name on account', with: student.name
+      select 'Individual'
     end
 
     scenario 'with valid information', :vcr, js: true do

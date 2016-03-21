@@ -117,7 +117,7 @@ class Student < User
     if stripe_customer_id
       customer = Stripe::Customer.retrieve(stripe_customer_id)
     else
-      customer = Stripe::Customer.create(description: email)
+      customer = Stripe::Customer.create(email: email)
       update(stripe_customer_id: customer.id)
       customer
     end
