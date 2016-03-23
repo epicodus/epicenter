@@ -5,13 +5,15 @@
         <thead>
           <tr>
             <th>Description</th>
+            <th>Teacher</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
           <% @student.courses.each do |course| %>
             <tr id="student-course-<%= course.id %>">
-              <td class="col-md-6"><%= link_to course.description, course_student_path(course, @student) %></td>
+              <td><%= link_to course.description, course_student_path(course, @student) %></td>
+              <td class="col-md-6"><%= course.teacher %></td>
               <td><%= link_to 'Withdraw', enrollment_path(course_id: course.id), data: { method: :delete, confirm: 'Are you sure?' }, class: 'unstyled-link col-md-6' %></td>
             </tr>
           <% end %>
