@@ -331,7 +331,7 @@ feature 'viewing the student show page' do
 
   scenario 'as a student viewing his/her own page' do
     visit course_student_path(student.course, student)
-    expect(page).to have_content student.name
+    expect(page).to have_content student.course.description
   end
 
   scenario 'as a student viewing another student page' do

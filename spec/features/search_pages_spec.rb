@@ -29,10 +29,7 @@ feature 'searching for a student' do
         click_on 'student-search'
       end
       expect(page).to have_content new_student.name
-      expect(page).to have_content new_student.course.description
-      expect(page).to have_content "#{new_student.name} has not signed all documents."
       expect(page).to have_content 'Current student'
-      expect(page).to have_content 'Total paid: $0.00'
     end
 
     scenario 'when a query is made for an unenrolled student' do
@@ -44,10 +41,7 @@ feature 'searching for a student' do
         click_on 'student-search'
       end
       expect(page).to have_content unenrolled_student.name
-      expect(page).to have_content unenrolled_student.course.description
-      expect(page).to have_content "#{unenrolled_student.name} has not signed all documents."
       expect(page).to have_content 'Not enrolled'
-      expect(page).to have_content 'Total paid: $0.00'
     end
 
     scenario 'when a query is made for an existing student with a payment made', :vcr, :stripe_mock, :stub_mailgun do
@@ -59,10 +53,7 @@ feature 'searching for a student' do
         click_on 'student-search'
       end
       expect(page).to have_content in_class_student.name
-      expect(page).to have_content in_class_student.course.description
-      expect(page).to_not have_content "#{in_class_student.name} has not signed all documents."
       expect(page).to have_content 'Current student'
-      expect(page).to have_content 'Total paid: $1.00'
     end
 
     scenario 'when a query is made for a student who has graduated' do
@@ -74,8 +65,6 @@ feature 'searching for a student' do
           click_on 'student-search'
         end
         expect(page).to have_content past_student.name
-        expect(page).to have_content past_student.course.description
-        expect(page).to_not have_content "#{past_student.name} has not signed all documents."
         expect(page).to have_content 'Graduate'
       end
     end

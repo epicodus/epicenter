@@ -140,8 +140,7 @@ feature 'adding another course for a student' do
   before { login_as(admin, scope: :admin) }
 
   scenario 'as an admin on the individual student page' do
-    visit course_student_path(student.course, student)
-    find('#student-nav li.student-courses').click
+    visit student_courses_path(student)
     select other_course.description, from: 'student_course_id'
     click_on 'Add course'
     expect(page).to have_content other_course.description
@@ -151,7 +150,7 @@ feature 'adding another course for a student' do
     visit course_students_path(student.course)
     select other_student.name, from: 'enrollment_student_id'
     click_on 'Add student'
-    expect(page).to have_content "#{other_student.name} has been added to this course"
+    expect(page).to have_content "#{other_student.name} has been added to #{student.course.description}"
   end
 end
 
@@ -163,8 +162,7 @@ feature 'deleting a course for a student' do
 
   scenario 'as an admin' do
     student.update(course: other_course)
-    visit course_student_path(student.course, student)
-    find('#student-nav li.student-courses').click
+    visit student_courses_path(student)
     within "#student-course-#{other_course.id}" do
       click_on 'Withdraw'
     end
