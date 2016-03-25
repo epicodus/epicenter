@@ -16,7 +16,7 @@ class StudentsController < ApplicationController
 
   def show
     @student = Student.find(params[:id])
-    @course = Course.find(params[:course_id])
+    @course = Course.find(params[:course_id]) if params[:course_id]
     authorize! :read, @student
   end
 
@@ -24,7 +24,7 @@ class StudentsController < ApplicationController
     if current_admin
       @student = Student.find(params[:id])
       if @student.update(student_params)
-        redirect_to course_student_path(@student.course, @student), notice: "Courses for #{@student.name} have been updated"
+        redirect_to student_courses_path(@student), notice: "Courses for #{@student.name} have been updated"
       else
         @course = Course.find(params[:student][:course_id])
         render 'show'

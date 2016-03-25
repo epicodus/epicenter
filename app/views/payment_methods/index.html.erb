@@ -29,7 +29,7 @@
                 <% if payment_method.verified? %>
                   <%= form_for payment_method.student, html: {class: 'payment-button-form'} do |f| %>
                     <%= f.hidden_field :primary_payment_method_id, value: payment_method.id %>
-                    <%= f.submit 'Make Primary', class: 'btn', data: { confirm: "Change primary payment method?" } %>
+                    <%= f.submit 'Make Primary', class: 'btn btn-primary', data: { confirm: "Change primary payment method?" } %>
                   <% end %>
                 <% end %>
               </td>
@@ -56,8 +56,7 @@
   <p>Looks like you haven't added any payment methods yet.</p>
 <% end %>
 
-<% if @primary_payment_method %>
-  <p><%= link_to 'Make or review payments', student_payments_path(current_student), class: 'btn btn-success' %></p>
-<% end %>
-<p><%= link_to 'Add credit card', new_credit_card_path, class: 'btn btn-info' %></p>
-<p><%= link_to 'Add bank account', new_bank_account_path, class: 'btn btn-info' %></p>
+<div class="btn-group">
+  <%= link_to 'Add credit card', new_credit_card_path, class: 'btn btn-success' %>
+  <%= link_to 'Add bank account', new_bank_account_path, class: 'btn btn-info' %>
+</div>

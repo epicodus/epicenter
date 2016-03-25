@@ -1,0 +1,21 @@
+<% if current_admin %>
+  <h1><%= @student.name %></h1>
+
+  <% if !@student.signed_main_documents? %>
+    <p><strong><%= @student.name %> has not signed all documents.</strong></p>
+  <% end %>
+
+  <% if @student.courses.empty? %>
+    <p><span class="label label-primary">Not enrolled</span></p>
+  <% elsif @student.class_over? %>
+    <p><span class="label label-info">Graduate</span></p>
+  <% elsif @student.courses.any? %>
+    <p><span class="label label-success">Current student</span></p>
+  <% end %>
+
+  <p>Total paid: <%= number_to_currency(@student.total_paid / 100.00) %></p>
+
+  <% if current_admin && !@student.invitation_accepted_at? %>
+    <p><%= link_to 'Resend invitation', student_invitation_path(student_id: @student), method: :post %></p>
+  <% end %>
+<% end %>
