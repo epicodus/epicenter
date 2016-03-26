@@ -6,7 +6,7 @@ $(function() {
     info: false
   });
 
-  $('#searchable-datatable').DataTable({
+  $('#students-datatable').DataTable({
     paging: false,
     autoWidth: false,
     info: false,
@@ -14,4 +14,14 @@ $(function() {
       search: 'Search table:',
     }
   });
+
+  $('#previous-courses-datatable').DataTable({
+    paging: false,
+    autoWidth: false,
+    info: false,
+    order: [[ 0, "desc" ]],
+    language: {
+      search: 'Search table:',
+    }
+  })
 });
