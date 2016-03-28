@@ -1,49 +1,6 @@
-<h1><%= @student.name %></h1>
-
-<% if current_admin && !@student.invitation_accepted_at? %>
-  <%= link_to 'Resend invitation', student_invitation_path(student_id: @student), method: :post %>
-<% end %>
-
-<h3><%= @course.description %></h3>
-<h4>Teacher: <%= @course.teacher %></h4>
-
-<% if @student.courses.any? %>
-  <ul class="nav nav-tabs list-group" id="student-nav">
-    <% if @course.internship_course? %>
-      <li class="student-internships">
-        <a>Internships</a>
-      </li>
-    <% end %>
-    <li class="student-code-reviews">
-      <a>Code reviews</a>
-    </li>
-    <% if !@course.internship_course? %>
-      <li class="student-attendance">
-        <a>Attendance</a>
-      </li>
-    <% end %>
-    <% if current_admin %>
-      <li class="student-courses">
-        <a>Courses</a>
-      </li>
-    <% end %>
-  </ul>
-
-  <% if current_admin %>
-    <%= render 'students/student_courses' %>
-  <% end %>
-
-  <%= render 'students/student_code_reviews' %>
-
-  <% if @course.internship_course? %>
-    <%= render 'students/student_internships' %>
-  <% else %>
-    <%= render 'students/student_attendance' %>
-  <% end %>
-
-
-
+<% if @course %>
+  <%= render 'student_course' %>
 <% else %>
-  <h2><%= @student.name %> is not enrolled in any courses.</h2>
-  <%= render 'students/student_courses' %>
+  <%= render 'student_header' %>
+  <%= render 'student_nav' %>
 <% end %>

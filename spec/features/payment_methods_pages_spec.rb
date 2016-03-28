@@ -33,7 +33,6 @@ feature 'Student views payment methods page' do
       expect(page).to have_content "Credit card"
       expect(page).to have_content "Verified"
       expect(page).to_not have_button "Make Primary"
-      expect(page).to have_link "Make or review payments"
     end
 
     it "shows verified bank account as primary and verified", :vcr do

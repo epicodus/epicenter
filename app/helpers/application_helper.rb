@@ -18,4 +18,12 @@ module ApplicationHelper
     current_page?(new_company_registration_path) ||
     params[:controller] == 'attendance_sign_out'
   end
+
+  def set_navbar_link_class(controller_name, &block)
+    if params[:controller] == controller_name
+      content_tag(:li, class: 'active', &block)
+    else
+      content_tag(:li, &block)
+    end
+  end
 end

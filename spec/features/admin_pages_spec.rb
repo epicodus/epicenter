@@ -123,7 +123,7 @@ feature 'Inviting new users' do
     fill_in 'Email', with: 'newstudent@example.com'
     click_on 'Invite student'
     student = Student.find_by(email: 'newstudent@example.com')
-    visit course_student_path(student.course, student)
+    visit student_courses_path(student)
     click_on 'Resend invitation'
     expect(page).to have_content "A new invitation email has been sent to newstudent@example.com"
   end
@@ -169,7 +169,6 @@ feature 'viewing the student page' do
     visit course_student_path(student.course, student)
     expect(page).to have_content 'Attendance'
     expect(page).to have_content 'Code reviews'
-    expect(page).to have_content 'Courses'
   end
 
   scenario 'when a student is enrolled in a course with internships' do
@@ -178,12 +177,11 @@ feature 'viewing the student page' do
     expect(page).to have_content 'Attendance'
     expect(page).to have_content 'Code reviews'
     expect(page).to have_content 'Internships'
-    expect(page).to have_content 'Courses'
   end
 
   scenario 'when a student is not enrolled in any courses' do
-    visit course_student_path(unenrolled_student.course, unenrolled_student)
-    expect(page).to have_content "#{unenrolled_student.name} is not enrolled in any courses."
+    visit student_courses_path(unenrolled_student)
+    expect(page).to have_content 'Not enrolled'
   end
 end
 

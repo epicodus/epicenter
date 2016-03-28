@@ -1,8 +1,10 @@
-<% if can? :manage, Payment %>
-  <h1>Payments for <%= @student.name %></h1>
-<% elsif can? :read, Payment %>
+<% if current_student %>
   <h1>Your payments</h1>
+<% else %>
+  <%= render 'students/student_header' %>
+  <%= render 'students/student_nav' %>
 <% end %>
+
 <p class="text-primary">* Payments made with a credit card will be charged a 2.9% processing fee + 30¢ per transaction.</p>
 
 <%= render 'layouts/errors', object: @payment %>
@@ -51,7 +53,6 @@
 
   <p>All payments will be made using your primary payment method.</p>
   <p>If you need help or have any questions regarding your payments, contact us.</p>
-  <%= link_to 'Manage payment methods', payment_methods_path, class: 'btn btn-info' %>
 <% elsif can?(:manage, Payment) && @student.primary_payment_method && params[:action] != 'update' %>
   <h3>Manual payment</h3>
   <div class="row">

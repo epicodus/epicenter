@@ -2,7 +2,13 @@ class CoursesController < ApplicationController
   authorize_resource
 
   def index
-    @courses = current_student.courses
+    if params[:student_id]
+      @student = Student.find(params[:student_id])
+      @courses = @student.courses
+      authorize! :manage, @student
+    else
+      @courses = Course.previous_courses
+    end
   end
 
   def new

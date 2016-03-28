@@ -84,7 +84,6 @@ feature 'Viewing payment index page' do
     scenario "for a student without a primary payment method" do
       student = FactoryGirl.create(:user_with_all_documents_signed)
       visit student_payments_path(student)
-      expect(page).to have_content "Payments for #{student.name}"
       expect(page).to have_content "No payments have been made yet."
       expect(page).to have_content "No primary payment method has been selected."
     end
@@ -139,16 +138,6 @@ feature 'Viewing payment index page' do
         visit student_payments_path(student)
         expect(page).to have_content '$200.00'
       end
-    end
-
-    scenario 'via search', :vcr, :stub_mailgun do
-      student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
-      payment = FactoryGirl.create(:payment_with_credit_card, student: student)
-      visit root_path
-      fill_in 'search', with: 'test@test.com'
-      click_on 'student-search'
-      click_on 'Manage payments'
-      expect(page).to have_content "Payments for #{student.name}"
     end
   end
 end
