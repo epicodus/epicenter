@@ -12,6 +12,8 @@ feature 'signing up as a company' do
     choose '2'
     select track.description
     fill_in '* Describe your ideal intern.', with: 'Somebody who writes awesome software!'
+    find('#clearance-checkbox').set true
+    fill_in 'Clearance description', with: 'Security clearance needed.'
     fill_in 'Name', with: 'Company employee 1'
     fill_in 'Email', with: 'employee1@company.com'
     fill_in '* Password', with: 'password'
@@ -30,6 +32,8 @@ feature 'signing up as a company' do
     choose '2'
     select track.description
     fill_in '* Describe your ideal intern.', with: 'Somebody who writes awesome software!'
+    find('#clearance-checkbox').set true
+    fill_in 'Clearance description', with: 'Security clearance needed.'
     fill_in 'Name', with: 'Company employee 1'
     fill_in 'Email', with: 'employee1@company.com'
     fill_in '* Password', with: 'password'
@@ -48,6 +52,8 @@ feature 'signing up as a company' do
     choose '2'
     select track.description
     fill_in '* Describe your ideal intern.', with: 'Somebody who writes awesome software!'
+    find('#clearance-checkbox').set true
+    fill_in 'Clearance description', with: 'Security clearance needed.'
     fill_in 'Name', with: 'Company employee 1'
     fill_in 'Email', with: 'employee1@company.com'
     fill_in '* Password', with: 'password'
@@ -61,6 +67,8 @@ feature 'signing up as a company' do
     choose '2'
     select track.description
     fill_in '* Describe your ideal intern.', with: 'Somebody who writes awesome software!'
+    find('#clearance-checkbox').set true
+    fill_in 'Clearance description', with: 'Security clearance needed.'
     fill_in 'Name', with: 'Company employee 1'
     fill_in 'Email', with: 'employee1@company.com'
     fill_in '* Password', with: 'password'

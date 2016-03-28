@@ -65,10 +65,8 @@
       </div>
 
       <div class='form-group'>
-        <%= ff.label :clearance_required do %>
-          Clearance Required ?
-        <% end %>
-        <%= ff.check_box :clearance_required %>
+        <%= label_tag 'Clearance required?' %>
+        <%= check_box_tag 'company[internships_attributes[]][clearance_required]', 1, checked = false, { id: 'clearance-checkbox' } %>
       </div>
 
       <div class='form-group'>
