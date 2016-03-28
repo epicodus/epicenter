@@ -169,3 +169,15 @@ feature 'deleting a course for a student' do
     expect(page).to have_content "#{other_course.description} has been removed"
   end
 end
+
+feature 'visiting the previous courses page' do
+  let(:admin) { FactoryGirl.create(:admin) }
+  before { login_as(admin, scope: :admin) }
+
+  scenario 'as an admin' do
+    visit root_path
+    click_on admin.current_course.description
+    click_on 'Previous courses'
+    expect(page).to have_content 'Previous courses'
+  end
+end
