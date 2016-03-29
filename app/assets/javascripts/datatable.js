@@ -6,7 +6,7 @@ $(function() {
     info: false
   });
 
-  $('#students-datatable').DataTable({
+  $('.searchable-datatable').DataTable({
     paging: false,
     autoWidth: false,
     info: false,

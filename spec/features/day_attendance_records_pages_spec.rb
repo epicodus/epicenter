@@ -13,13 +13,13 @@ feature 'attendance statistics page' do
 
     scenario 'can visit day attendance records page' do
       visit course_day_attendance_records_path(course)
-      expect(page).to have_content 'Attendance by day'
+      expect(page).to have_content 'Attendance for'
     end
 
     scenario 'retreiving attendance records for a specific day' do
       travel_to monday do
         visit course_day_attendance_records_path(course)
-        click_button 'Submit'
+        click_button 'Change day'
         expect(page).to have_content "Attendance for #{monday.strftime("%A %B %d, %Y")}"
       end
     end

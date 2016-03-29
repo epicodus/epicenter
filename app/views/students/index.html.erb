@@ -2,7 +2,10 @@
 <h4>Teacher: <%= @course.teacher %></h4>
 <h4><%= pluralize(@course.students.count, 'student') %></h4>
 <div class="form-group">
-  <%= link_to "Edit #{@course.description}", edit_course_path(@course), class: 'btn btn-success' %>
+  <div class="btn-group">
+    <%= link_to "Edit #{@course.description}", edit_course_path(@course), class: 'btn btn-success' %>
+    <%= link_to 'Attendance by day', course_day_attendance_records_path(@course), class: 'btn btn-default' %>
+  </div>
 </div>
 
 <%= form_for @enrollment do |f| %>
@@ -21,7 +24,7 @@
 <% end %>
 
 <div class="table-responsive">
-  <table id="students-datatable" class="table table-hover">
+  <table class="searchable-datatable table table-hover">
     <thead>
       <tr>
         <th>Student</th>

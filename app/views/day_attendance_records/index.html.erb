@@ -1,40 +1,52 @@
-<h1 class="page-header">Attendance by day</h1>
+<h1>Attendance for <%= day_value.strftime("%A %B %d, %Y") %></h1>
+<h4>Course: <%= @course.description %></h4>
+<h4>Teacher: <%= @course.teacher %></h4>
 
 <%= form_for :attendance_records, url: course_attendance_statistics_path(@course), html: { method: :post } do |f| %>
-
   <div class="row">
     <div class="col-md-4">
       <div class="input-group">
         <%= f.select :day, options_for_select(formatted_class_days, selected: day_value), {}, { class: 'form-control' } %>
         <span class="input-group-btn">
-          <%= f.submit 'Submit', class: 'btn btn-info' %>
+          <%= f.submit 'Change day', class: 'btn btn-info' %>
         </span>
       </div>
     </div>
   </div>
 <% end %>
 
-<h3>Attendance for <%= @day.strftime("%A %B %d, %Y") %></h3>
-<hr>
-<% @course.students.each do |student| %>
-  <ul class="col-md-12 list-unstyled">
-      <li>
-          <span class="col-md-3"><%= link_to student.name, student, class: 'unstyled-link' %></span>
-          <span>
+<div class="table-responsive">
+  <table class="searchable-datatable table table-hover">
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Status</th>
+        <th></th>
+        <th>Pair</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @course.students.each do |student| %>
+        <tr>
+          <td class="col-md-3"><%= link_to student.name, course_student_path(@course, student) %></td>
+          <td class="col-md-3">
             <% if !student.attendance_record_on_day(@day) %>
-              <span class="btn btn-primary col-md-3" disabled>Absent</span>
+              <span class="label label-primary">Absent</span>
+            <% elsif student.attendance_record_on_day(@day).tardy && student.attendance_record_on_day(@day).left_early %>
+              <span class="label label-danger">Tardy</span>
+              <span class="label label-danger">Left early</span>
             <% elsif student.attendance_record_on_day(@day).tardy %>
-              <span class="btn btn-info col-md-3" disabled>Tardy</span>
+              <span class="label label-danger">Tardy</span>
             <% elsif student.attendance_record_on_day(@day).left_early %>
-              <span class="btn btn-info col-md-3" disabled>Left early</span>
+              <span class="label label-danger">Left early</span>
             <% else %>
-              <span class="btn btn-success col-md-3" disabled>On time</span>
+              <span class="label label-success">On time</span>
             <% end %>
-          </span>
-          <span class="col-md-2">
-            <%= link_to 'Edit', new_attendance_record_amendment_path(student: student, day: @day, attendance_statistics: true), class: 'unstyled-link'  %>
-          </span>
-          <span><%= student.pair_on_day(@day) ? student.pair_on_day(@day).name : 'Solo' %></span>
-      </li>
-  </ul>
-<% end %>
+          </td>
+          <td class="col-md-3"><%= link_to 'Edit', new_attendance_record_amendment_path(student: student, day: @day, attendance_statistics: true) %></td>
+          <td><%= student.pair_on_day(@day) ? student.pair_on_day(@day).name : 'Solo' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
