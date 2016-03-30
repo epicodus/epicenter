@@ -74,7 +74,7 @@ describe Payment do
     it "sets the fee for the payment type" do
       student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
       payment = FactoryGirl.create(:payment_with_credit_card, student: student)
-      expect(payment.fee).to eq 32
+      expect(payment.fee).to eq 2941
     end
 
     it 'unsuccessfully with an amount that is too high' do
@@ -222,7 +222,7 @@ describe Payment do
     it 'fails to refund a credit card payment when the refund amount is more than the payment amount' do
       student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
       payment = FactoryGirl.create(:payment_with_credit_card, student: student)
-      expect(payment.update(refund_amount: 200)).to eq false
+      expect(payment.update(refund_amount: 1025_00)).to eq false
     end
 
     it 'fails to refund a credit card payment when the refund amount is negative' do
@@ -241,7 +241,7 @@ describe Payment do
     it 'fails to refund a bank account payment when the refund amount is more than the payment amount' do
       student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'test@test.com')
       payment = FactoryGirl.create(:payment_with_bank_account, student: student)
-      expect(payment.update(refund_amount: 200)).to eq false
+      expect(payment.update(refund_amount: 1000_00)).to eq false
     end
 
     it 'fails to refund a bank account payment when the refund amount is negative' do
@@ -276,6 +276,19 @@ describe Payment do
           :subject => "Epicodus tuition refund receipt",
           :text => "Hi #{student.name}. This is to confirm your refund of $50.00 from your Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
       )
+    end
+  end
+
+  describe 'updating LessAccounting when a payment is made', :vcr, :stripe_mock, :stub_mailgun, :stub_less_accounting do
+    it "successfully" do
+        student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
+        payment = FactoryGirl.create(:payment_with_credit_card, student: student)
+        expect(RestClient::Request).to have_received(:execute).with(
+          url: "https://epicodus.lessaccounting.com/expenses.json?api_key=#{ENV['LESS_ACCOUNTING_API_KEY']}&expense[title]=#{payment.student.name}&expense[amount]=#{payment.amount / 100}&expense[paid_date]=#{Date.today.strftime('%Y-%m-%d')}&expense[bank_account_id]=120215&expense[expense_category_id]=1496063",
+          method: :post,
+          user: ENV['LESS_ACCOUNTING_EMAIL'],
+          password: ENV['LESS_ACCOUNTING_PASSWORD']
+        )
     end
   end
 end
