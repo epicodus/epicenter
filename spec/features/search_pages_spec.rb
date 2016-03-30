@@ -44,9 +44,8 @@ feature 'searching for a student' do
       expect(page).to have_content 'Not enrolled'
     end
 
-    scenario 'when a query is made for an existing student with a payment made', :vcr, :stripe_mock, :stub_mailgun do
-      in_class_student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
-      FactoryGirl.create(:payment_with_credit_card, student: in_class_student)
+    scenario 'when a query is made for a current student' do
+      in_class_student = FactoryGirl.create(:student)
       visit root_path
       within '#navbar-search' do
         fill_in 'search', with: in_class_student.name

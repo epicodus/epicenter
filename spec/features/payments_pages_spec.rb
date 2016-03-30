@@ -32,7 +32,7 @@ feature 'Viewing payment index page' do
       end
     end
 
-    context 'after a payment has been made with bank account', :vcr, :stub_mailgun do
+    context 'after a payment has been made with bank account', :vcr, :stub_mailgun, :stub_less_accounting do
       it 'shows payment history with correct charge and status' do
         student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com')
         payment = FactoryGirl.create(:payment_with_bank_account, amount: 600_00, student: student)
@@ -44,7 +44,7 @@ feature 'Viewing payment index page' do
       end
     end
 
-    context 'after a payment has been made with credit card', :vcr, :stripe_mock, :stub_mailgun do
+    context 'after a payment has been made with credit card', :vcr, :stripe_mock, :stub_mailgun, :stub_less_accounting do
       it 'shows payment history with correct charge and status' do
         student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
         FactoryGirl.create(:payment_with_credit_card, amount: 600_00, student: student)
@@ -96,7 +96,7 @@ feature 'Viewing payment index page' do
       end
     end
 
-    context 'after a payment has been made with bank account', :vcr, :stub_mailgun do
+    context 'after a payment has been made with bank account', :vcr, :stub_mailgun, :stub_less_accounting do
       it 'shows payment history with correct charge and status' do
         student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'test@test.com')
         payment = FactoryGirl.create(:payment_with_bank_account, amount: 600_00, student: student)
@@ -108,7 +108,7 @@ feature 'Viewing payment index page' do
       end
     end
 
-    context 'after a payment has been made with credit card', :vcr, :stripe_mock, :stub_mailgun do
+    context 'after a payment has been made with credit card', :vcr, :stripe_mock, :stub_mailgun, :stub_less_accounting do
       it 'shows payment history with correct charge and status' do
         student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
         payment = FactoryGirl.create(:payment_with_credit_card, amount: 600_00, student: student)
@@ -120,7 +120,7 @@ feature 'Viewing payment index page' do
       end
     end
 
-    context 'after a refund has been issued to a bank account payment', :vcr, :stub_mailgun do
+    context 'after a refund has been issued to a bank account payment', :vcr, :stub_mailgun, :stub_less_accounting do
       it 'shows payment history with correct charge and status' do
         student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'test@test.com')
         payment = FactoryGirl.create(:payment_with_bank_account, amount: 600_00, student: student)
@@ -130,7 +130,7 @@ feature 'Viewing payment index page' do
       end
     end
 
-    context 'after a refund has been issued to a credit card payment', :vcr, :stub_mailgun do
+    context 'after a refund has been issued to a credit card payment', :vcr, :stub_mailgun, :stub_less_accounting do
       it 'shows payment history with correct charge and status' do
         student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
         payment = FactoryGirl.create(:payment_with_credit_card, amount: 600_00, student: student)
@@ -158,7 +158,7 @@ feature 'issuing an offline refund as an admin', :stripe_mock do
   end
 end
 
-feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
+feature 'issuing a refund as an admin', :vcr, :stub_mailgun, :stub_less_accounting do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com') }
   let!(:payment) { FactoryGirl.create(:payment_with_credit_card, amount: 100_00, student: student) }
@@ -205,7 +205,7 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
   end
 end
 
-feature 'make a manual payment', :stripe_mock, :stub_mailgun do
+feature 'make a manual payment', :stripe_mock, :stub_mailgun, :stub_less_accounting do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com') }
 
