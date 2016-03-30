@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160329201710) do
+ActiveRecord::Schema.define(version: 20160330213632) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 20160329201710) do
     t.string   "end_time"
     t.integer  "admin_id"
     t.boolean  "internship_course"
+    t.integer  "credit_cost"
   end
 
   add_index "courses", ["start_date"], name: "index_courses_on_start_date", using: :btree
@@ -124,6 +125,8 @@ ActiveRecord::Schema.define(version: 20160329201710) do
     t.string   "status",             limit: 255
     t.string   "stripe_transaction"
     t.integer  "refund_amount"
+    t.boolean  "offline"
+    t.text     "notes"
   end
 
   add_index "payments", ["student_id"], name: "index_payments_on_student_id", using: :btree
@@ -135,6 +138,7 @@ ActiveRecord::Schema.define(version: 20160329201710) do
     t.datetime "updated_at"
     t.integer  "total_amount"
     t.string   "close_io_description"
+    t.integer  "credits"
     t.boolean  "archived"
   end
 
