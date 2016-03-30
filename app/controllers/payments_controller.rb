@@ -45,7 +45,7 @@ private
     elsif payment_amount
       params[:payment][:amount] = payment_amount.to_i * 100
     end
-    params.require(:payment).permit(:refund_amount, :amount, :student_id, :payment_method_id)
+    params.require(:payment).permit(:refund_amount, :amount, :student_id, :payment_method_id, :offline, :notes)
   end
 
   def ensure_student_has_primary_payment_method
