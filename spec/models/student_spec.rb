@@ -348,7 +348,7 @@ describe Student do
     end
   end
 
-  describe "#upfront_payment_due?", :stripe_mock do
+  describe "#upfront_payment_due?", :stripe_mock, :stub_less_accounting do
     let(:student) { FactoryGirl.create :user_with_credit_card, email: 'test@test.com' }
 
     it "is true if student has upfront payment and no payments have been made" do
@@ -367,7 +367,7 @@ describe Student do
   end
 
   describe "#make_upfront_payment" do
-    it "makes a payment for the upfront amount of the student's plan", :vcr, :stripe_mock, :stub_mailgun do
+    it "makes a payment for the upfront amount of the student's plan", :vcr, :stripe_mock, :stub_mailgun, :stub_less_accounting do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       student.make_upfront_payment
       expect(student.payments.first.amount).to eq student.plan.upfront_amount
@@ -608,7 +608,7 @@ describe Student do
     end
   end
 
-  describe '#total_paid', :vcr, :stripe_mock, :stub_mailgun do
+  describe '#total_paid', :vcr, :stripe_mock, :stub_mailgun, :stub_less_accounting do
     it 'sums all of the students payments' do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00)

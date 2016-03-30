@@ -25,7 +25,7 @@ describe Payment do
   end
 
   describe '.order_by_latest scope' do
-    it 'orders by created_at, descending', :vcr, :stripe_mock, :stub_mailgun do
+    it 'orders by created_at, descending', :vcr, :stripe_mock, :stub_mailgun, :stub_less_accounting do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       payment_one = FactoryGirl.create(:payment_with_credit_card, student: student)
       payment_two = FactoryGirl.create(:payment_with_credit_card, student: student)
@@ -34,7 +34,7 @@ describe Payment do
   end
 
   describe '.without_failed' do
-    it "doesn't include failed payments", :vcr, :stripe_mock, :stub_mailgun do
+    it "doesn't include failed payments", :vcr, :stripe_mock, :stub_mailgun, :stub_less_accounting do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       failed_payment = FactoryGirl.create(:payment_with_credit_card, student: student)
       failed_payment.update(status: 'failed')
@@ -42,7 +42,7 @@ describe Payment do
     end
   end
 
-  describe "make a payment with a bank account", :vcr, :stub_mailgun do
+  describe "make a payment with a bank account", :vcr, :stub_mailgun, :stub_less_accounting do
     it "makes a successful payment" do
       student = FactoryGirl.create :user_with_verified_bank_account, email: 'test@test.com'
       FactoryGirl.create(:payment_with_bank_account, student: student)
@@ -63,7 +63,7 @@ describe Payment do
     end
   end
 
-  describe "make a payment with a credit card", :vcr, :stripe_mock, :stub_mailgun do
+  describe "make a payment with a credit card", :vcr, :stripe_mock, :stub_mailgun, :stub_less_accounting do
     it "makes a successful payment" do
       student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
       FactoryGirl.create(:payment_with_credit_card, student: student)
@@ -91,7 +91,7 @@ describe Payment do
   end
 
   describe '#total_amount' do
-    it 'returns payment amount plus fees', :vcr, :stripe_mock, :stub_mailgun do
+    it 'returns payment amount plus fees', :vcr, :stripe_mock, :stub_mailgun, :stub_less_accounting do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
       FactoryGirl.create(:payment_with_credit_card, student: student)
       payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
@@ -138,7 +138,7 @@ describe Payment do
       )
     end
 
-    it "emails the student a receipt after successful payment when the student is on the upfront plan", :vcr, :stripe_mock do
+    it "emails the student a receipt after successful payment", :vcr, :stripe_mock, :stub_less_accounting do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
 
       mailgun_client = spy("mailgun client")
@@ -159,7 +159,7 @@ describe Payment do
   end
 
   describe "failed" do
-    it "emails the student a failure notice if payment status is updated to 'failed'", :vcr, :stripe_mock do
+    it "emails the student a failure notice if payment status is updated to 'failed'", :vcr, :stripe_mock, :stub_less_accounting do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
 
       mailgun_client = spy("mailgun client")
@@ -188,13 +188,13 @@ describe Payment do
       allow(student).to receive(:close_io_client).and_return(close_io_client)
     end
 
-    it 'updates status and amount paid on the first payment', :vcr, :stub_mailgun do
+    it 'updates status and amount paid on the first payment', :vcr, :stub_mailgun, :stub_less_accounting do
       payment = Payment.new(student: student, amount: 270_00, payment_method: student.primary_payment_method)
       expect(student).to receive(:update_close_io).with({ status: "Enrolled", 'custom.Amount paid': payment.amount / 100 })
       payment.save
     end
 
-    it 'only updates amount paid on payments beyond the first', :vcr, :stub_mailgun do
+    it 'only updates amount paid on payments beyond the first', :vcr, :stub_mailgun, :stub_less_accounting do
       payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method)
       payment_2 = Payment.new(student: student, amount: 50_00, payment_method: student.primary_payment_method)
       expect(student).to receive(:update_close_io).with({ 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
@@ -202,7 +202,7 @@ describe Payment do
     end
   end
 
-  describe 'issuing a refund', :vcr, :stub_mailgun do
+  describe 'issuing a refund', :vcr, :stub_mailgun, :stub_less_accounting do
     it 'refunds an offline payment without talking to Stripe or Mailgun', :stripe_mock do
       student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card)
       payment = FactoryGirl.create(:payment_with_credit_card, student: student, offline: true)
@@ -259,7 +259,7 @@ describe Payment do
   end
 
   describe "#send_refund_receipt" do
-    it "emails the student a receipt after successful refund", :vcr do
+    it "emails the student a receipt after successful refund", :vcr, :stub_less_accounting do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
 
       mailgun_client = spy("mailgun client")
