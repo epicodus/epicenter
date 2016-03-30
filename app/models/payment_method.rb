@@ -15,6 +15,10 @@ class PaymentMethod < ActiveRecord::Base
     student.update(primary_payment_method: self) if !student.primary_payment_method
   end
 
+  def description
+    self.class.name.underscore.humanize + ' ending in ' + last_four_string[-4,4]
+  end
+
 private
 
   def create_stripe_account

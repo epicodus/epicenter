@@ -6,10 +6,12 @@ class Payment < ActiveRecord::Base
 
   validates :amount, presence: true
   validates :student_id, presence: true
-  validates :payment_method, presence: true
+  validates :payment_method, presence: true, unless: ->(payment) { payment.offline? }
 
-  before_create :check_amount, :make_payment, :send_payment_receipt
-  after_save :update_close_io, if: ->(payment) { !payment.refund_amount? }
+  before_create :check_amount
+  before_create :make_payment, :send_payment_receipt, unless: ->(payment) { payment.offline? }
+  after_create :set_offline_status, if: ->(payment) { payment.offline? }
+  after_save :update_close_io, unless: ->(payment) { payment.refund_amount? || payment.offline? }
   before_update :issue_refund, if: ->(payment) { payment.refund_amount? }
   after_update :send_refund_receipt, if: ->(payment) { payment.refund_amount? }
   after_update :send_payment_failure_notice, if: ->(payment) { payment.status == "failed" }
@@ -22,6 +24,11 @@ class Payment < ActiveRecord::Base
   end
 
 private
+
+  def set_offline_status
+    self.update(status: 'offline')
+  end
+
   def issue_refund
     begin
       charge_id = Stripe::BalanceTransaction.retrieve(stripe_transaction).source
