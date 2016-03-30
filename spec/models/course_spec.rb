@@ -236,7 +236,9 @@ describe Course do
     end
   end
 
-  describe '#realize_tuition_in_less_accounting', :vcr, :stripe_mock, :stub_mailgun, :stub_less_accounting do
+  describe '#realize_tuition_in_less_accounting', :vcr, :stripe_mock, :stub_mailgun do
+    before { allow(RestClient::Request).to receive(:execute) }
+
     it 'realizes the tuition for a course when it has concluded' do
       student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
       payment = FactoryGirl.create(:payment_with_credit_card, student: student)
