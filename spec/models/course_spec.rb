@@ -235,4 +235,19 @@ describe Course do
       expect(internship_course.total_internship_students_requested).to eq 4
     end
   end
+
+  describe '#realize_tuition_in_less_accounting', :vcr, :stripe_mock, :stub_mailgun, :stub_less_accounting do
+    it 'realizes the tuition for a course when it has concluded' do
+      student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student)
+      student.course.realize_tuition_in_less_accounting
+      payment_amount = (student.course.credit_cost * (student.plan.total_amount / student.plan.credits)) / 100
+      expect(RestClient::Request).to have_received(:execute).with(
+        url: "https://epicodus.lessaccounting.com/payments.json?api_key=#{ENV['LESS_ACCOUNTING_API_KEY']}&payment[title]=#{student.name}&payment[amount]=#{payment_amount}&payment[date]=#{Date.today.strftime('%Y-%m-%d')}&payment[bank_account_id]=120215&payment[expense_category_id]=1496063&payment[payment_type]=expense%20refund",
+        method: :post,
+        user: ENV['LESS_ACCOUNTING_EMAIL'],
+        password: ENV['LESS_ACCOUNTING_PASSWORD']
+      )
+    end
+  end
 end
