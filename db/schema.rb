@@ -57,6 +57,7 @@ ActiveRecord::Schema.define(version: 20160531170040) do
     t.integer  "admin_id"
     t.boolean  "internship_course"
     t.boolean  "active"
+    t.integer  "credit_cost"
   end
 
   add_index "courses", ["start_date"], name: "index_courses_on_start_date", using: :btree
@@ -139,6 +140,7 @@ ActiveRecord::Schema.define(version: 20160531170040) do
     t.datetime "updated_at"
     t.integer  "total_amount"
     t.string   "close_io_description"
+    t.integer  "credits"
     t.boolean  "archived"
     t.boolean  "loan"
     t.boolean  "standard"
