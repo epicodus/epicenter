@@ -20,6 +20,7 @@
           <% if can?(:manage, Payment) || @student.payments.pluck(:refund_amount).any? %>
             <th>Refund amount</th>
           <% end %>
+          <th>Notes</th>
         </tr>
       </thead>
       <tbody>
@@ -28,14 +29,23 @@
             <td><%= payment.status.capitalize %></td>
             <td><%= payment.created_at.strftime("%A, %B %d, %Y") %></td>
             <td><%= number_to_currency(payment.total_amount / 100.00) %></td>
-            <td><%= payment.payment_method.class.name.underscore.humanize + ' ending in ' + payment.payment_method.last_four_string[-4,4] %></td>
+            <td>
+              <% if payment.payment_method %>
+                <%= payment.payment_method.description %>
+              <% elsif payment.offline? %>
+                N/A
+              <% end %>
+            </td>
             <% if payment.refund_amount? %>
               <td><%= number_to_currency(payment.refund_amount / 100.00) %></td>
-            <% else %>
+            <% elsif !payment.offline? %>
               <% if can? :manage, Payment %>
                 <%= render 'payments/refund_form', payment: payment %>
               <% end %>
+            <% else %>
+              <td></td>
             <% end %>
+            <td><%= payment.notes %></td>
           </tr>
         <% end %>
       </tbody>
@@ -54,7 +64,8 @@
   <p>All payments will be made using your primary payment method.</p>
   <p>If you need help or have any questions regarding your payments, contact us.</p>
 <% elsif can?(:manage, Payment) && @student.primary_payment_method && params[:action] != 'update' %>
-  <h3>Manual payment</h3>
+  <h3>Manual payment <small class="text-info">($5,000 limit)</small></h3>
+
   <div class="row">
     <div class="col-md-5">
       <%= render 'form' %>

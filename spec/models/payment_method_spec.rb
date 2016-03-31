@@ -61,4 +61,18 @@ describe PaymentMethod do
       expect(PaymentMethod.not_verified_first).to eq [bank_account, credit_card]
     end
   end
+
+  describe '#description', :stripe_mock do
+    let(:student) { FactoryGirl.create(:user_with_credit_card) }
+
+    it 'returns the description for a primary payment method' do
+      primary_payment_method = student.primary_payment_method
+      expect(primary_payment_method.description).to eq 'Credit card ending in 4242 (Primary)'
+    end
+
+    it 'returns the description for a non-primary payment method' do
+      non_primary_payment_method = FactoryGirl.create(:credit_card, student: student)
+      expect(non_primary_payment_method.description).to eq 'Credit card ending in 4242'
+    end
+  end
 end

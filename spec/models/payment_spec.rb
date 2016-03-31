@@ -2,8 +2,27 @@ describe Payment do
   it { should belong_to :student }
   it { should belong_to :payment_method }
   it { should validate_presence_of :student_id }
-  it { should validate_presence_of :payment_method }
   it { should validate_presence_of :amount }
+
+  describe 'validations' do
+    context 'if regular payment' do
+      before { allow(subject).to receive(:offline?).and_return(false) }
+      it { should validate_presence_of :payment_method }
+    end
+
+    context 'if offline payment' do
+      before { allow(subject).to receive(:offline?).and_return(true) }
+      it { should_not validate_presence_of :payment_method }
+    end
+  end
+
+  describe 'offline payment status' do
+    it 'sets it successfully' do
+      student = FactoryGirl.create(:student)
+      payment = FactoryGirl.create(:payment, student: student, offline: true)
+      expect(payment.status).to eq 'offline'
+    end
+  end
 
   describe '.order_by_latest scope' do
     it 'orders by created_at, descending', :vcr, :stripe_mock, :stub_mailgun do
