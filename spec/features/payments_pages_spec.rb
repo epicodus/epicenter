@@ -197,11 +197,23 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
 
   scenario 'successfully with cents', :vcr do
     visit student_payments_path(student)
+    select student.primary_payment_method.description
     fill_in 'payment_amount', with: 1765.24
     click_on 'Manual payment'
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Succeeded'
     expect(page).to have_content '$1,818.26'
+  end
+
+  scenario 'successfully with multiple payment methods', :vcr do
+    other_payment_method = FactoryGirl.create(:bank_account, student: student)
+    visit student_payments_path(student)
+    select other_payment_method.description
+    fill_in 'payment_amount', with: 1765.24
+    click_on 'Manual payment'
+    expect(page).to have_content "Manual payment successfully made for #{student.name}."
+    expect(page).to have_content 'Pending'
+    expect(page).to have_content '$1,765.24'
   end
 
   scenario 'successfully without cents', :vcr do
