@@ -16,7 +16,12 @@ class PaymentMethod < ActiveRecord::Base
   end
 
   def description
-    self.class.name.underscore.humanize + ' ending in ' + last_four_string[-4,4]
+    description = self.class.name.underscore.humanize + ' ending in ' + last_four_string[-4,4]
+    if student.primary_payment_method == self
+      description + ' (Primary)'
+    else
+      description
+    end
   end
 
 private
