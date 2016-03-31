@@ -18,6 +18,7 @@ feature 'signing up as a company' do
     fill_in 'Email', with: 'employee1@company.com'
     fill_in '* Password', with: 'password'
     fill_in '* Password confirmation', with: 'password'
+    check 'internship-agreement-checkbox'
     click_on 'Sign up'
     expect(page).to have_content 'Welcome! You have signed up successfully.'
   end
@@ -38,6 +39,7 @@ feature 'signing up as a company' do
     fill_in 'Email', with: 'employee1@company.com'
     fill_in '* Password', with: 'password'
     fill_in '* Password confirmation', with: 'password'
+    check 'internship-agreement-checkbox'
     click_on 'Sign up'
     expect(page).to have_content 'prohibited this company from being saved:'
   end
@@ -58,6 +60,7 @@ feature 'signing up as a company' do
     fill_in 'Email', with: 'employee1@company.com'
     fill_in '* Password', with: 'password'
     fill_in '* Password confirmation', with: 'password'
+    check 'internship-agreement-checkbox'
     click_on 'Sign up'
     fill_in 'Company name', with: 'Awesome company'
     fill_in '* Describe your company and internship. Get students excited about what you do!', with: 'You will write awesome software here!'
@@ -73,6 +76,7 @@ feature 'signing up as a company' do
     fill_in 'Email', with: 'employee1@company.com'
     fill_in '* Password', with: 'password'
     fill_in '* Password confirmation', with: 'password'
+    check 'internship-agreement-checkbox'
     click_on 'Sign up'
     expect(page).to have_content 'Welcome! You have signed up successfully.'
   end
