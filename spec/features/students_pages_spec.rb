@@ -5,15 +5,16 @@ feature 'Guest attempts to sign up' do
   end
 end
 
-feature 'Student signs up via invitation' do
+feature 'Student signs up via invitation', :vcr do
 
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: 'test@test.com') }
+  let!(:plan) { FactoryGirl.create(:upfront_payment_only_plan, name: '5-class up-front discount') }
 
   scenario 'with valid information' do
     student.invite!
     visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
     fill_in 'Name', with: 'Ryan Larson'
-    select student.plan.name, from: 'student_plan_id'
+    select plan.name, from: 'student_plan_id'
     fill_in 'Password', with: 'password'
     fill_in 'Password confirmation', with: 'password'
     click_on 'Submit'
@@ -24,7 +25,7 @@ feature 'Student signs up via invitation' do
     student.invite!
     visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
     fill_in 'Name', with: ''
-    select student.plan.name, from: 'student_plan_id'
+    select plan.name, from: 'student_plan_id'
     click_on 'Submit'
     expect(page).to have_content 'error'
   end

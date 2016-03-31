@@ -13,7 +13,7 @@
       <% if resource.is_a?(Student) %>
         <div class="form-group">
           <%= f.label :plan_id %>
-          <%= f.select(:plan_id, Plan.active.collect {|p| [ p.name, p.id ] }, {}, { class: 'form-control' }) %>
+          <%= f.select(:plan_id, Plan.active.collect {|p| [ p.name, p.id ] }, { selected: Plan.find_by(name: '5-class up-front discount').id }, { class: 'form-control' }) %>
         </div>
       <% end %>
 
