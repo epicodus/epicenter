@@ -37,7 +37,7 @@
   </div>
 <% end %>
 
-<% if can? :create, Submission %>
+<% if can?(:create, Submission) && !@code_review.course.internship_course? %>
   <div class="row">
     <div class="col-md-6">
       <%= render 'submissions/form' %>
