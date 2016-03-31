@@ -6,7 +6,11 @@
         <th>Title</th>
         <th>Expectations met?</th>
         <th>Teacher notes</th>
-        <th>GitHub repo</th>
+        <% if @course.internship_course? %>
+          <th></th>
+        <% else %>
+          <th>GitHub repo</th>
+        <% end %>
         <th>Status</th>
       </thead>
       <% @course.code_reviews.each do |code_review| %>
@@ -23,7 +27,11 @@
           </td>
           <% if @student.submission_for(code_review) %>
             <td><%= link_to "Notes", "##{@student.submission_for(code_review).id}", data: { toggle: "modal" } %></td>
-            <td><%= link_to "Submission", @student.submission_for(code_review).link, target: '_blank' %></td>
+            <% if @course.internship_course? %>
+              <td></td>
+            <% else %>
+              <td><%= link_to "Submission", @student.submission_for(code_review).link, target: '_blank' %></td>
+            <% end %>
             <td>
               <% if @student.submission_for(code_review).has_been_reviewed? %>
                 <% if can? :manage, CodeReview %>
@@ -46,7 +54,11 @@
               <% if can? :manage, CodeReview %>
                 Not submitted
               <% else %>
-                <%= link_to 'Submit', code_review_path(code_review), class: 'text-info' %>
+                <% if code_review.course.internship_course? %>
+                  <%= link_to 'Pending', code_review_path(code_review) %>
+                <% else %>
+                  <%= link_to 'Submit', code_review_path(code_review), class: 'text-info' %>
+                <% end %>
               <% end %>
             </td>
           <% end %>
