@@ -10,7 +10,7 @@ class Ability
       can :manage, Course
       can :manage, Company
       can :manage, Internship
-      can :read, Submission
+      can :manage, Submission
       can :create, Review
       can :read, CourseAttendanceStatistics
       can :create, AttendanceRecordAmendment
