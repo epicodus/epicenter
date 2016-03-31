@@ -242,3 +242,22 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
     expect(page).to have_content 'No primary payment method has been selected.'
   end
 end
+
+feature 'make an offline payment', :stripe_mock, :js do
+  let(:admin) { FactoryGirl.create(:admin) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed_and_credit_card) }
+
+  before { login_as(admin, scope: :admin) }
+
+  scenario 'successfully with cents' do
+    visit student_payments_path(student)
+    check 'offline-payment-checkbox'
+    fill_in 'Notes', with: 'Test offline payment'
+    fill_in 'payment_amount', with: 60.18
+    click_on 'Manual payment'
+    expect(page).to have_content "Manual payment successfully made for #{student.name}."
+    expect(page).to have_content 'Offline'
+    expect(page).to have_content '$60.18'
+    expect(page).to have_content 'N/A'
+  end
+end
