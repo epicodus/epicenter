@@ -44,6 +44,17 @@
         </div>
       </div>
 
+      <div class="form-group">
+        <%= label_tag do %>
+          Please sign the <%= link_to 'internship agreement', ENV['INTERNSHIP_AGREEMENT_URL'] %> before registering
+        <% end %>
+      </div>
+
+      <div class="form-group">
+        <%= label_tag "I've signed the internship agreement" %>
+        <%= check_box_tag nil, 1, checked = false, { required: true, id: 'internship-agreement-checkbox' } %>
+      </div>
+
       <div class='form-group'>
         <%= f.submit 'Sign up', class: 'btn btn-info btn-block', id: 'company-sign-up-button' %>
       </div>
