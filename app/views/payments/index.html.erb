@@ -20,7 +20,9 @@
           <% if can?(:manage, Payment) || @student.payments.pluck(:refund_amount).any? %>
             <th>Refund amount</th>
           <% end %>
-          <th>Notes</th>
+          <% if current_admin %>
+            <th>Notes</th>
+          <% end %>
         </tr>
       </thead>
       <tbody>
@@ -45,7 +47,9 @@
             <% else %>
               <td></td>
             <% end %>
-            <td><%= payment.notes %></td>
+            <% if current_admin %>
+              <td><%= payment.notes %></td>
+            <% end %>
           </tr>
         <% end %>
       </tbody>
