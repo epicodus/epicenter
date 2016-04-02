@@ -19,8 +19,7 @@ describe Admin do
     end
 
     context 'for submissions' do
-      it { is_expected.to have_abilities(:read, Submission.new) }
-      it { is_expected.to not_have_abilities([:create, :update], Submission.new) }
+      it { is_expected.to have_abilities(:manage, Submission.new) }
     end
 
     context 'for reviews' do

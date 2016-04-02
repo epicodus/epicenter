@@ -1,20 +1,37 @@
 describe Submission do
-  it { should validate_presence_of :link }
   it { should belong_to :code_review }
   it { should have_many :reviews }
   it { should belong_to :student }
 
   describe "validations" do
+    context 'if regular submission' do
+      course = FactoryGirl.create(:course, internship_course: false)
+      code_review = FactoryGirl.create(:code_review, course: course)
+      subject { FactoryGirl.build(:submission, code_review: code_review) }
+      it { should validate_presence_of :link }
+    end
+
+    context 'if regular submission' do
+      internship_course = FactoryGirl.create(:course, internship_course: true)
+      code_review = FactoryGirl.create(:code_review, course: internship_course)
+      subject { FactoryGirl.build(:submission, code_review: code_review) }
+      it { should_not validate_presence_of :link }
+    end
+
     subject { FactoryGirl.build(:submission) }
     it { should validate_uniqueness_of(:student_id).scoped_to(:code_review_id) }
 
     it 'is invalid if link is not a valid url' do
-      submission = FactoryGirl.build(:submission, link: 'github.com')
+      course = FactoryGirl.create(:course, internship_course: false)
+      code_review = FactoryGirl.create(:code_review, course: course)
+      submission = FactoryGirl.build(:submission, link: 'github.com', code_review: code_review)
       expect(submission.valid?).to eq false
     end
 
     it 'is valid if link is a valid url' do
-      submission = FactoryGirl.build(:submission, link: 'http://github.com')
+      course = FactoryGirl.create(:course, internship_course: false)
+      code_review = FactoryGirl.create(:code_review, course: course)
+      submission = FactoryGirl.build(:submission, link: 'http://github.com', code_review: code_review)
       expect(submission.valid?).to eq true
     end
   end
