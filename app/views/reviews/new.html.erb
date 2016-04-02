@@ -1,6 +1,6 @@
 <%= render 'layouts/errors', object: @review %>
 
-<h2>Submission for <%= @submission.code_review.title %></h2>
+<h1>Submission for <%= @submission.code_review.title %></h1>
 <h3><%= @submission.student.name %></h3>
 <p>Submitted <%= time_ago_in_words(@submission.updated_at) %> ago</p>
 

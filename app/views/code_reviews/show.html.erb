@@ -1,6 +1,6 @@
 <%= render 'layouts/errors', object: @code_review %>
 
-<h1 class="page-header">
+<h1>
   <%= @code_review.title %>
   <% if current_admin %>
     <div class="btn-group pull-right">
@@ -11,33 +11,41 @@
   <% end %>
 </h1>
 
-<h3>Objectives</h3>
+<% if @submission.needs_review? %>
+  <div class="alert alert-warning">
+    Your submission is pending review.
+  </div>
+<% end %>
+
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr><th>Objectives</th></tr>
+    </thead>
+    <tbody>
+      <% if @submission.has_been_reviewed? %>
+        <%= render @submission.latest_review.grades %>
+      <% else %>
+        <%= render @code_review.objectives %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
 <% if @submission.has_been_reviewed? %>
   <div class="table-responsive">
     <table class="table">
-      <%= render @submission.latest_review.grades %>
+      <thead>
+        <tr><th>Feedback</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><%= markdown(@submission.latest_review.note) %></td></tr>
+      </tbody>
     </table>
   </div>
-<% else %>
-  <ul class="list-unstyled">
-    <div class="table-responsive">
-      <table class="table">
-        <%= render @code_review.objectives %>
-      </table>
-    </div>
-  </ul>
 <% end %>
 
-<% if @submission.needs_review? %>
-  <p class='text-muted'>Your submission is pending review.</p>
-<% elsif @submission.has_been_reviewed? %>
-  <h3>Feedback</h3>
-  <div>
-    <%= markdown(@submission.latest_review.note) %>
-  </div>
-<% end %>
-
-<% if can?(:create, Submission) && !@code_review.course.internship_course? %>
+<% if current_student %>
   <div class="row">
     <div class="col-md-6">
       <%= render 'submissions/form' %>
