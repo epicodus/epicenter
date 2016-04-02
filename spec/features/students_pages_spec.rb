@@ -146,7 +146,10 @@ feature "Student signs in while class is in session" do
   end
 
   context "at school" do
-    before { allow(IpLocation).to receive(:is_local?).and_return(true) }
+    before do
+      allow(IpLocation).to receive(:is_local?).and_return(true)
+      allow_any_instance_of(ApplicationController).to receive(:is_weekday?).and_return(true)
+    end
 
     context "when soloing" do
       it "takes them to the welcome page" do
@@ -162,6 +165,7 @@ feature "Student signs in while class is in session" do
       end
 
       it "does not create an attendance record for them on weekends" do
+        allow_any_instance_of(ApplicationController).to receive(:is_weekday?).and_return(false)
         saturday = Time.zone.now.to_date.beginning_of_week + 5.days
         travel_to saturday do
           expect { sign_in(student) }.to change { student.attendance_records.count }.by 0
@@ -200,6 +204,7 @@ feature "Student signs in while class is in session" do
       end
 
       scenario 'does not create an attendance record on the weekend' do
+        allow_any_instance_of(ApplicationController).to receive(:is_weekday?).and_return(false)
         travel_to Time.zone.now.to_date.beginning_of_week + 5.days do
           OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: student.email }})
           visit root_path
