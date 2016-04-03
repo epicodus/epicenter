@@ -2,10 +2,16 @@
 <h4>Teacher: <%= @course.teacher %></h4>
 <h4><%= pluralize(@course.students.count, 'student') %></h4>
 <div class="form-group">
-  <div class="btn-group">
-    <%= link_to "Edit #{@course.description}", edit_course_path(@course), class: 'btn btn-success' %>
-    <%= link_to 'Attendance by day', course_day_attendance_records_path(@course), class: 'btn btn-default' %>
-  </div>
+  <% if @course.internship_course? %>
+    <div class="form-group">
+      <%= link_to "Edit #{@course.description}", edit_course_path(@course), class: 'btn btn-success' %>
+    </div>
+  <% else %>
+    <div class="btn-group">
+      <%= link_to "Edit #{@course.description}", edit_course_path(@course), class: 'btn btn-success' %>
+      <%= link_to 'Attendance by day', course_day_attendance_records_path(@course), class: 'btn btn-default' %>
+    </div>
+  <% end %>
 </div>
 
 <%= form_for @enrollment do |f| %>
@@ -51,35 +57,23 @@
           <% end %>
           </p>
         </td>
-        <% if @course.internship_course? %>
-          <% @course.code_reviews.each do |code_review| %>
-            <% if student.submission_for(code_review).nil? %>
-              <td>
-                <%= form_for [code_review, Submission.new] do |f| %>
-                  <%= f.hidden_field :needs_review, value: true %>
-                  <%= f.hidden_field :student_id, value: student.id %>
-                  <%= f.submit 'Pending', class: 'pending-submission-link btn btn-link', id: 'create-submission-link' %>
-                <% end %>
-              </td>
-            <% elsif student.submission_for(code_review).has_been_reviewed? && student.submission_for(code_review).meets_expectations? %>
-              <td><%= link_to 'Pass', new_submission_review_path(student.submission_for(code_review)), class: 'passing-submission-link' %></td>
-            <% elsif student.submission_for(code_review).has_been_reviewed? && !student.submission_for(code_review).meets_expectations? %>
-              <td><%= link_to 'Fail', new_submission_review_path(student.submission_for(code_review)), class: 'failing-submission-link' %></td>
-            <% else %>
-              <td><%= link_to 'Pending', new_submission_review_path(student.submission_for(code_review)), class: 'pending-submission-link' %></td>
-            <% end %>
-          <% end %>
-        <% else %>
-          <% @course.code_reviews.each do |code_review| %>
-            <% if student.submission_for(code_review).nil? %>
-              <td><p class="text-danger">Missing</p></td>
-            <% elsif student.submission_for(code_review).has_been_reviewed? && student.submission_for(code_review).meets_expectations? %>
-              <td><%= link_to 'Pass', new_submission_review_path(student.submission_for(code_review)), class: 'passing-submission-link' %></td>
-            <% elsif student.submission_for(code_review).has_been_reviewed? && !student.submission_for(code_review).meets_expectations? %>
-              <td><%= link_to 'Fail', new_submission_review_path(student.submission_for(code_review)), class: 'failing-submission-link' %></td>
-            <% else %>
-              <td><%= link_to 'Pending', new_submission_review_path(student.submission_for(code_review)), class: 'pending-submission-link' %></td>
-            <% end %>
+        <% @course.code_reviews.each do |code_review| %>
+          <% if student.submission_for(code_review).nil? && @course.internship_course? %>
+            <td>
+              <%= form_for [code_review, Submission.new] do |f| %>
+                <%= f.hidden_field :needs_review, value: true %>
+                <%= f.hidden_field :student_id, value: student.id %>
+                <%= f.submit 'Pending', class: 'pending-submission-link btn btn-link', id: 'create-submission-link' %>
+              <% end %>
+            </td>
+          <% elsif student.submission_for(code_review).nil? %>
+            <td><p class="text-danger">Missing</p></td>
+          <% elsif student.submission_for(code_review).has_been_reviewed? && student.submission_for(code_review).meets_expectations? %>
+            <td><%= link_to 'Pass', new_submission_review_path(student.submission_for(code_review)), class: 'passing-submission-link' %></td>
+          <% elsif student.submission_for(code_review).has_been_reviewed? && !student.submission_for(code_review).meets_expectations? %>
+            <td><%= link_to 'Fail', new_submission_review_path(student.submission_for(code_review)), class: 'failing-submission-link' %></td>
+          <% else %>
+            <td><%= link_to 'Pending', new_submission_review_path(student.submission_for(code_review)), class: 'pending-submission-link' %></td>
           <% end %>
         <% end %>
       </tr>

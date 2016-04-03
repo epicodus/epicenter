@@ -5,19 +5,21 @@
     <%= f.label :title %>
     <%= f.text_field :title, class: "form-control" %>
   </div>
-  
-  <%= f.label :objectives %>
-    <ul id="objective-fields" class="list-unstyled">
-      <%= f.nested_fields_for :objectives, wrapper_tag: :li do |ff| %>
-        <div class="input-group">
-          <%= ff.text_field :content, class: 'form-control' %>
-          <%= ff.remove_nested_fields_link nil, class: 'input-group-addon', id: 'remove-objective-link' %>
-        </div>
-        <br>
-      <% end %>
-    </ul>
-    <div class="form-group">
-      <%= f.add_nested_fields_link :objectives, 'Add objective', class: 'btn btn-primary' %>
-    </div>
-    <%= f.submit nil, class: 'btn btn-info' %>
+
+  <%= f.label :objectives, 'Objectives (Markdown compatible)' %>
+  <ul id="objective-fields" class="list-unstyled">
+    <%= f.nested_fields_for :objectives, wrapper_tag: :li do |ff| %>
+      <div class="input-group">
+        <%= ff.text_field :content, class: 'form-control' %>
+        <%= ff.remove_nested_fields_link nil, class: 'input-group-addon', id: 'remove-objective-link' %>
+      </div>
+      <br>
+    <% end %>
+  </ul>
+
+  <div class="form-group">
+    <%= f.add_nested_fields_link :objectives, 'Add objective' %>
+  </div>
+
+  <%= f.submit nil, class: 'btn btn-info' %>
 <% end %>
