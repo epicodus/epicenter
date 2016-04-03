@@ -10,7 +10,7 @@
       <tbody>
         <%= f.nested_fields_for :grades do |ff| %>
           <tr>
-            <td><%= ff.object.objective.content if ff.object.objective %></td>
+            <td><%= markdown(ff.object.objective.content) if ff.object.objective %></td>
             <td><%= ff.collection_select :score_id, Score.all, :id, :description, { include_blank: true }, { class: "form-control" } %></td>
           </tr>
           <%= ff.hidden_field :objective_id %>
@@ -20,7 +20,7 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :note %>
+    <%= f.label :note, 'Note (Markdown compatible)' %>
     <%= f.text_area :note, rows: 10, class: 'form-control', required: true %>
   </div>
   <div class="form-group">

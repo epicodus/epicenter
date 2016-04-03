@@ -69,7 +69,7 @@ feature 'Visiting the submissions index page' do
         scenario 'with valid input', :stub_mailgun do
           click_on 'Review'
           select score.description, from: 'review_grades_attributes_0_score_id'
-          fill_in 'Note', with: 'Well done!'
+          fill_in 'Note (Markdown compatible)', with: 'Well done!'
           fill_in 'review_student_signature', with: "#{student.name}"
           click_on 'Create Review'
           expect(page).to have_content 'Review saved.'
@@ -88,7 +88,7 @@ feature 'Visiting the submissions index page' do
 
           scenario 'should be prepopulated with information from the last review created for this submission', :stub_mailgun do
             click_on 'Review'
-            expect(find_field('Note').value).to eq review.note
+            expect(find_field('Note (Markdown compatible)').value).to eq review.note
           end
         end
       end
