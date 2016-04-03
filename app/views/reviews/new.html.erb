@@ -3,9 +3,6 @@
 <h1>Submission for <%= @submission.code_review.title %></h1>
 <h3><%= @submission.student.name %></h3>
 <p>Submitted <%= time_ago_in_words(@submission.updated_at) %> ago</p>
-
-<% unless @submission.code_review.course.internship_course? %>
-  <p><%= link_to 'View code', @submission.link, target: '_blank', class: 'btn btn-primary' %></p>
-<% end %>
+<p><%= link_to 'View code', @submission.link, target: '_blank', class: 'btn btn-primary' if @submission.link %></p>
 
 <%= render 'form' %>
