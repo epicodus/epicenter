@@ -5,8 +5,24 @@ feature 'Guest attempts to sign up' do
   end
 end
 
-feature 'Student signs up via invitation', :vcr do
+feature 'Visiting students index page' do
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+  let(:admin) { FactoryGirl.create(:admin) }
 
+  scenario 'as a student' do
+    login_as(student, scope: :student)
+    visit course_students_path(student.course)
+    expect(page).to have_content 'You are not authorized'
+  end
+
+  scenario 'as an admin' do
+    login_as(admin, scope: :admin)
+    visit course_students_path(admin.current_course)
+    expect(page).to have_content admin.current_course.description
+  end
+end
+
+feature 'Student signs up via invitation', :vcr do
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: 'test@test.com') }
   let!(:plan) { FactoryGirl.create(:upfront_payment_only_plan, name: '5-class up-front discount') }
 

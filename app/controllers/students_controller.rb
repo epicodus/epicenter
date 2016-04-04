@@ -2,6 +2,7 @@ class StudentsController < ApplicationController
   authorize_resource
 
   def index
+    authorize! :manage, Course
     if params[:search]
       @query = params[:search]
       @results = Student.includes(:courses).search(@query)
