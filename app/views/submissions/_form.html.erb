@@ -4,14 +4,7 @@
   <%= f.hidden_field :student_id, value: current_student.id if current_student %>
 
   <div class="form-group">
-    <% if @code_review.submissions_optional? %>
-      <%= f.label :link do %>
-        Submission link
-        <span class="text-info">(not required for some internship submissions)</span>
-      <% end %>
-    <% else %>
-      <%= f.label :link, 'Submission link' %>
-    <% end %>
+    <%= f.label :link, 'Submission link' %>
     <%= f.text_field :link, class: 'form-control', placeholder: 'http://github.com/your-username/your-repository' %>
   </div>
 
