@@ -30,8 +30,6 @@
           <%= set_navbar_link_class('registrations') do %>
             <%= link_to 'Profile', edit_student_registration_path %>
           <% end %>
-
-          <li><%= link_to 'Sign out', destroy_student_session_path, data: { method: :delete } %></li>
         <% elsif current_student && current_student.courses.empty? %>
           <%= set_navbar_link_class('payments') do %>
             <%= link_to 'Payments', student_payments_path(current_student) %>
@@ -44,8 +42,6 @@
           <%= set_navbar_link_class('registrations') do %>
             <%= link_to 'Profile', edit_student_registration_path %>
           <% end %>
-
-          <li><%= link_to 'Sign out', destroy_student_session_path, data: { method: :delete } %></li>
         <% elsif current_admin %>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle first-navbar-link" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -66,19 +62,25 @@
           <li><%= link_to 'Code reviews', course_code_reviews_path(current_admin.current_course) %></li>
           <li><%= link_to "Internships", internships_path %></li>
           <li><%= link_to 'Invite', new_student_invitation_path %></li>
+        <% elsif current_company %>
+          <%= set_navbar_link_class('companies') do %>
+            <%= link_to 'Internships', company_path(current_company), class: 'first-navbar-link' %>
+          <% end %>
+
+          <%= set_navbar_link_class('registrations') do %>
+            <%= link_to 'Profile', edit_company_registration_path %>
+          <% end %>
+        <% end %>
+      </ul>
+      <ul class="nav navbar-nav pull-right">
+        <% if current_admin %>
           <li id="navbar-search">
             <%= render 'students/search' %>
           </li>
           <li><%= link_to 'Sign out', destroy_admin_session_path, data: { method: :delete } %></li>
+        <% elsif current_student %>
+          <li><%= link_to 'Sign out', destroy_student_session_path, data: { method: :delete } %></li>
         <% elsif current_company %>
-          <%= set_navbar_link_class('companies') do %>
-            <%= link_to 'Internships', company_path(current_company), class: 'first-navbar-link' %></li>
-          <% end %>
-
-          <%= set_navbar_link_class('registrations') do %>
-            <%= link_to 'Profile', edit_company_registration_path %></li>
-          <% end %>
-
           <li><%= link_to 'Sign out', destroy_company_session_path, data: { method: :delete } %></li>
         <% end %>
       </ul>
