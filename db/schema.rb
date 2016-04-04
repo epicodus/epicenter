@@ -32,12 +32,12 @@ ActiveRecord::Schema.define(version: 20160404214002) do
   add_index "attendance_records", ["tardy"], name: "index_attendance_records_on_tardy", using: :btree
 
   create_table "code_reviews", force: :cascade do |t|
-    t.string   "title",                limit: 255
+    t.string   "title",                    limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "course_id"
     t.integer  "number"
-    t.boolean  "submissions_optional"
+    t.boolean  "submissions_not_required"
   end
 
   create_table "course_internships", force: :cascade do |t|

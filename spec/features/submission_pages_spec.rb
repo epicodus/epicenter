@@ -103,7 +103,7 @@ feature 'Creating a student submission for an internship course code review' do
   before { login_as(admin, scope: :admin) }
 
   scenario 'as an admin' do
-    FactoryGirl.create(:code_review, course: student.course, submissions_optional: true)
+    FactoryGirl.create(:code_review, course: student.course, submissions_not_required: true)
     visit course_students_path(student.course)
     expect { click_on('Pending') }.to change { student.submissions.count }.by 1
   end

@@ -4,8 +4,8 @@ describe Submission do
   it { should belong_to :student }
 
   describe "validations" do
-    let(:code_review_with_optional_submissions) { FactoryGirl.create(:code_review, submissions_optional: true) }
-    let(:regular_code_review) { FactoryGirl.create(:code_review, submissions_optional: false) }
+    let(:code_review_with_optional_submissions) { FactoryGirl.create(:code_review, submissions_not_required: true) }
+    let(:regular_code_review) { FactoryGirl.create(:code_review, submissions_not_required: false) }
 
     context 'if regular submission' do
       subject { FactoryGirl.build(:submission, code_review: regular_code_review) }

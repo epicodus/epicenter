@@ -11,8 +11,8 @@
   <% end %>
 </h1>
 
-<% if can?(:manage, @code_review) && @code_review.submissions_optional? %>
-  <p><span class="label label-info">No submissions required</span></p>
+<% if can?(:manage, @code_review) && @code_review.submissions_not_required? %>
+  <p><span class="label label-info">Submissions not required</span></p>
 <% end %>
 
 <% if @submission.needs_review? %>
@@ -49,7 +49,7 @@
   </div>
 <% end %>
 
-<% if current_student && !@submission.code_review.submissions_optional? %>
+<% if current_student && !@submission.code_review.submissions_not_required? %>
   <div class="row">
     <div class="col-md-6">
       <%= render 'submissions/form' %>

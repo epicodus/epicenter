@@ -56,6 +56,6 @@ class CodeReviewsController < ApplicationController
 private
 
   def code_review_params
-    params.require(:code_review).permit(:title, :section, :url, :submissions_optional, objectives_attributes: [:id, :content, :_destroy]).merge(course_id: current_admin.current_course.id)
+    params.require(:code_review).permit(:title, :section, :url, :submissions_not_required, objectives_attributes: [:id, :content, :_destroy]).merge(course_id: current_admin.current_course.id)
   end
 end
