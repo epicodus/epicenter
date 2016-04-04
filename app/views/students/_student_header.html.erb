@@ -15,7 +15,7 @@
 
   <p>Total paid: <%= number_to_currency(@student.total_paid / 100.00) %></p>
 
-  <% if current_admin && !@student.invitation_accepted_at? %>
+  <% if current_admin && !@student.invitation_accepted_at? && @student.invitation_token? %>
     <p><%= link_to 'Resend invitation', student_invitation_path(student_id: @student), method: :post %></p>
   <% end %>
 <% end %>
