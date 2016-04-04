@@ -51,7 +51,7 @@
             <td>
               <% if can? :manage, CodeReview %>
                 Not submitted
-              <% elsif code_review.course.internship_course? %>
+              <% elsif code_review.submissions_optional? %>
                 <%= link_to 'Pending', code_review_path(code_review) %>
               <% else %>
                 <%= link_to 'Submit', code_review_path(code_review), class: 'text-info' %>

@@ -10,7 +10,7 @@ class SubmissionsController < ApplicationController
     @code_review = CodeReview.find(params[:code_review_id])
     @submission = @code_review.submissions.new(submission_params)
     if @submission.save
-      if @code_review.course.internship_course? && current_admin
+      if @code_review.submissions_optional? && current_admin
         redirect_to new_submission_review_path(@submission)
       else
         redirect_to @code_review, notice: "Thank you for submitting."

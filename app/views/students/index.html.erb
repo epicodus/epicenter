@@ -60,7 +60,7 @@
         <% @course.code_reviews.each do |code_review| %>
           <td>
             <% if student.submission_for(code_review).nil? %>
-              <% if @course.internship_course? %>
+              <% if code_review.submissions_optional? %>
                 <%= form_for [code_review, Submission.new] do |f| %>
                   <%= f.hidden_field :needs_review, value: true %>
                   <%= f.hidden_field :student_id, value: student.id %>

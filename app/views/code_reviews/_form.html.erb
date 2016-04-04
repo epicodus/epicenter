@@ -6,6 +6,13 @@
     <%= f.text_field :title, class: "form-control" %>
   </div>
 
+  <div class='form-group'>
+    <%= f.label :submissions_optional do %>
+      No submissions required
+    <% end %>
+    <%= f.check_box :submissions_optional %>
+  </div>
+
   <%= f.label :objectives, 'Objectives (Markdown compatible)' %>
   <ul id="objective-fields" class="list-unstyled">
     <%= f.nested_fields_for :objectives, wrapper_tag: :li do |ff| %>

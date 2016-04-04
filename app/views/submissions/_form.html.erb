@@ -4,7 +4,7 @@
   <%= f.hidden_field :student_id, value: current_student.id if current_student %>
 
   <div class="form-group">
-    <% if @code_review.course.internship_course? %>
+    <% if @code_review.submissions_optional? %>
       <%= f.label :link do %>
         Submission link
         <span class="text-info">(not required for some internship submissions)</span>

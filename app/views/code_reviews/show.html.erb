@@ -11,6 +11,10 @@
   <% end %>
 </h1>
 
+<% if @code_review.submissions_optional? %>
+  <p><span class="label label-info">No submissions required</span></p>
+<% end %>
+
 <% if @submission.needs_review? %>
   <div class="alert alert-warning">
     Your submission is pending review.
