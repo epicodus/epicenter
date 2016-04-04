@@ -10,7 +10,10 @@
 <% end %>
 
 <h4>Teacher: <%= @course.teacher %></h4>
-<h4>Attendance: <%= number_to_percentage(@student.attendance_score(@course), precision: 0) %></h4>
+
+<% unless @course.internship_course? %>
+  <h4>Attendance: <%= number_to_percentage(@student.attendance_score(@course), precision: 0) %></h4>
+<% end %>
 
 <ul class="nav nav-tabs list-group" id="student-nav">
   <% if @course.internship_course? %>

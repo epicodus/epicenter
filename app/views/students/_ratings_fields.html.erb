@@ -1,6 +1,6 @@
 <%= f.fields_for :ratings, Rating.find_or_initialize_by(internship_id: internship.id, student_id: @student.id) do |ff| %>
   <td class="col-xs-1">
-    <div class='form-group' data-toggle='buttons'>
+    <div class='btn-group-vertical' data-toggle='buttons'>
       <% if @student.find_rating(internship).try(:interest) == '1' %>
         <label class="btn btn-sm btn-success col-xs-12 active">
       <% else %>
