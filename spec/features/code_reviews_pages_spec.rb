@@ -109,6 +109,7 @@ feature 'visiting the code review show page' do
         fill_in 'submission_link', with: 'http://github.com'
         click_button 'Submit'
         is_expected.to have_content 'Thank you for submitting'
+        is_expected.to have_content code_review.title
       end
 
       scenario 'with invalid input' do
