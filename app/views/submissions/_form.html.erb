@@ -1,10 +1,7 @@
 <%= form_for [@code_review, @submission] do |f| %>
   <%= render 'layouts/errors', object: @submission %>
   <%= f.hidden_field :needs_review, value: true %>
-
-  <% if current_student %>
-    <%= f.hidden_field :student_id, value: current_student.id %>
-  <% end %>
+  <%= f.hidden_field :student_id, value: current_student.id if current_student %>
 
   <div class="form-group">
     <% if @code_review.course.internship_course? %>
