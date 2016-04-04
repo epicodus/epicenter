@@ -2,7 +2,7 @@ class Submission < ActiveRecord::Base
   default_scope { order(:updated_at) }
   scope :needing_review, -> { where(needs_review: true) }
   scope :for_course, ->(course) { joins(:code_review).where(code_reviews: { course_id: course }) }
-  validates :link, presence: true, url: true, unless: ->(submission) { submission.code_review.try(:course).try(:internship_course?) }
+  validates :link, presence: true, url: true, unless: ->(submission) { submission.code_review.try(:submissions_optional?) }
   validates :student_id, uniqueness: { scope: :code_review_id }
 
   belongs_to :student

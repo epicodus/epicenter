@@ -97,14 +97,13 @@ feature 'Visiting the submissions index page' do
 end
 
 feature 'Creating a student submission for an internship course code review' do
-  let(:course) { FactoryGirl.create(:internship_course) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: course) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
   let(:admin) { FactoryGirl.create(:admin) }
 
   before { login_as(admin, scope: :admin) }
 
   scenario 'as an admin' do
-    FactoryGirl.create(:code_review, course: student.course)
+    FactoryGirl.create(:code_review, course: student.course, submissions_optional: true)
     visit course_students_path(student.course)
     expect { click_on('Pending') }.to change { student.submissions.count }.by 1
   end

@@ -4,10 +4,8 @@ describe Submission do
   it { should belong_to :student }
 
   describe "validations" do
-    let(:internship_course) { FactoryGirl.create(:course, internship_course: true) }
-    let(:regular_course) { FactoryGirl.create(:course, internship_course: false) }
-    let(:internship_code_review) { FactoryGirl.create(:code_review, course: internship_course) }
-    let(:regular_code_review) { FactoryGirl.create(:code_review, course: regular_course) }
+    let(:code_review_with_optional_submissions) { FactoryGirl.create(:code_review, submissions_optional: true) }
+    let(:regular_code_review) { FactoryGirl.create(:code_review, submissions_optional: false) }
 
     context 'if regular submission' do
       subject { FactoryGirl.build(:submission, code_review: regular_code_review) }
@@ -15,7 +13,7 @@ describe Submission do
     end
 
     context 'if internship submission' do
-      subject { FactoryGirl.build(:submission, code_review: internship_code_review) }
+      subject { FactoryGirl.build(:submission, code_review: code_review_with_optional_submissions) }
       it { should_not validate_presence_of :link }
     end
 
