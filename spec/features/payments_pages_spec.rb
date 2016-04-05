@@ -142,6 +142,22 @@ feature 'Viewing payment index page' do
   end
 end
 
+feature 'issuing an offline refund as an admin', :stripe_mock do
+  let(:admin) { FactoryGirl.create(:admin) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed_and_credit_card) }
+  let!(:payment) { FactoryGirl.create(:payment_with_credit_card, amount: 100_00, student: student, offline: true) }
+
+  before { login_as(admin, scope: :admin) }
+
+  scenario 'successfully without cents' do
+    visit student_payments_path(student)
+    fill_in "refund-#{payment.id}-input", with: 60
+    click_on 'Refund'
+    expect(page).to have_content "Refund successfully issued for #{payment.student.name}."
+    expect(page).to have_content '$60.00'
+  end
+end
+
 feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com') }
