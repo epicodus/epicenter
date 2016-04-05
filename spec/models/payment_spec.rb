@@ -164,6 +164,15 @@ describe Payment do
   end
 
   describe 'issuing a refund', :vcr, :stub_mailgun do
+    it 'refunds an offline payment without talking to Stripe or Mailgun', :stripe_mock do
+      student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card)
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student, offline: true)
+      payment.update(refund_amount: 51)
+      expect(payment.refund_amount).to eq 51
+      expect(payment).to_not receive(:issue_refund)
+      expect(payment).to_not receive(:send_refund_receipt)
+    end
+
     it 'refunds a credit card payment' do
       student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
       payment = FactoryGirl.create(:payment_with_credit_card, student: student)

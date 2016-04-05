@@ -17,11 +17,11 @@
           <th>Date</th>
           <th>Amount (including fee)</th>
           <th>Payment method</th>
+          <% if can?(:manage, Payment) %>
+            <th>Notes</th>
+          <% end %>
           <% if can?(:manage, Payment) || @student.payments.pluck(:refund_amount).any? %>
             <th>Refund amount</th>
-          <% end %>
-          <% if current_admin %>
-            <th>Notes</th>
           <% end %>
         </tr>
       </thead>
@@ -38,18 +38,18 @@
                 N/A
               <% end %>
             </td>
-            <% if payment.refund_amount? %>
-              <td><%= number_to_currency(payment.refund_amount / 100.00) %></td>
-            <% elsif !payment.offline? %>
-              <% if can? :manage, Payment %>
-                <%= render 'payments/refund_form', payment: payment %>
-              <% end %>
-            <% else %>
-              <td></td>
-            <% end %>
-            <% if current_admin %>
+            <% if can? :manage, Payment %>
               <td><%= payment.notes %></td>
             <% end %>
+            <td class="col-md-3">
+              <% if payment.refund_amount? %>
+                <%= number_to_currency(payment.refund_amount / 100.00) %>
+              <% else %>
+                <% if can? :manage, Payment %>
+                  <%= render 'payments/refund_form', payment: payment %>
+                <% end %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
       </tbody>
