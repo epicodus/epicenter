@@ -166,6 +166,18 @@ describe Student do
     end
   end
 
+  describe '#close_io_lead_exists?', :vcr do
+    it 'returns true if the Close.io lead for the student exists' do
+      student = FactoryGirl.create(:student, email: 'test@test.com')
+      expect(student.close_io_lead_exists?).to eq true
+    end
+
+    it 'returns false if the Close.io lead for the student exists' do
+      student = FactoryGirl.create(:student, email: 'wrong_email@test.com')
+      expect(student.close_io_lead_exists?).to eq false
+    end
+  end
+
   describe "updating close.io when documents have been signed" do
     let(:student) { FactoryGirl.create(:student, email: 'test@test.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }

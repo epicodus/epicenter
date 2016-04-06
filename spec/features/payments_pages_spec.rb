@@ -269,6 +269,17 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
     visit student_payments_path(student)
     expect(page).to have_content 'No primary payment method has been selected.'
   end
+
+  scenario 'successfully with mismatching Epicenter and Close.io emails', :vcr do
+    student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'wrong_email@test.com')
+    visit student_payments_path(student)
+    select student.primary_payment_method.description
+    fill_in 'payment_amount', with: 1765.24
+    click_on 'Manual payment'
+    expect(page).to have_content "Manual payment successfully made for #{student.name}."
+    expect(page).to have_content 'Succeeded'
+    expect(page).to have_content '$1,818.26'
+  end
 end
 
 feature 'make an offline payment', :stripe_mock, :js do
