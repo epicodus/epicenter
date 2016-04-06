@@ -41,10 +41,12 @@ private
 
   def update_close_io
     amount_paid = { 'custom.Amount paid': student.total_paid / 100 }
-    if student.payments.count == 1
-      student.update_close_io({ status: "Enrolled" }.merge(amount_paid))
-    else
-      student.update_close_io(amount_paid)
+    if student.close_io_lead_exists?
+      if student.payments.count == 1
+        student.update_close_io({ status: "Enrolled" }.merge(amount_paid))
+      else
+        student.update_close_io(amount_paid)
+      end
     end
   end
 
