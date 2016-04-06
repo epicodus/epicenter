@@ -52,7 +52,20 @@
               <li><%= link_to '+ Add a course', new_course_path %></li>
               <li class="divider"></li>
               <% Course.includes(:admin).current_and_future_courses.reverse.each do |course| %>
-                <%= render 'layouts/course_link', course: course %>
+                <li id="course-dropdown">
+                  <%= link_to admin_path(current_admin, admin: { current_course_id: course.id }), method: :patch do %>
+                    <% if current_admin.name == course.teacher %>
+                      <span class="text-primary">
+                    <% else %>
+                      <span>
+                    <% end %>
+                      <%= course.description %>
+                      <span class="pull-right">
+                        <em><small><%= course.teacher %></small></em>
+                      </span>
+                    </span>
+                  <% end %>
+                </li>
               <% end %>
               <li class="divider"></li>
               <li><%= link_to 'Previous courses', courses_path %></li>
@@ -75,7 +88,16 @@
       <ul class="nav navbar-nav pull-right">
         <% if current_admin %>
           <li id="navbar-search">
-            <%= render 'students/search' %>
+            <%= form_tag students_path, method: 'get', class: 'navbar-form navbar-left' do %>
+              <div class="input-group">
+                <%= text_field_tag :search, nil, placeholder: 'Search students', class: 'form-control' %>
+                  <div class="input-group-btn">
+                    <%= button_tag 'Search', class: 'btn btn-info', id: 'student-search' do %>
+                      <span class="glyphicon glyphicon-search"></span>
+                    <% end %>
+                  </div>
+              </div>
+            <% end %>
           </li>
           <li><%= link_to 'Sign out', destroy_admin_session_path, data: { method: :delete } %></li>
         <% elsif current_student %>
