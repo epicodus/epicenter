@@ -5,46 +5,52 @@ class Ability
     user ||= User.new
 
     if user.is_a? Admin
-      can :manage, AttendanceRecord
-      can :manage, CodeReview
-      can :manage, Course
-      can :manage, Company
-      can :manage, Internship
-      can :read, Submission
-      can :create, Review
-      can :read, CourseAttendanceStatistics
-      can :create, AttendanceRecordAmendment
-      can :manage, Student
-      can :manage, Enrollment
-      can :manage, Payment
+      set_admin_permissions
     elsif user.is_a?(Student) && user.courses.any?
-      can :read, CodeReview, course_id: user.course_id
-      can :create, Submission, student_id: user.id
-      can :update, Submission, student_id: user.id
-      can :create, BankAccount
-      can :update, BankAccount
-      can :read, Course, id: user.course_id
-      can :create, CreditCard
-      can :create, Payment, student_id: user.id, payment_method: { student_id: user.id }
-      can :read, Payment, student_id: user.id
-      can :manage, Student, id: user.id
-      can :read, Internship, courses: { id: user.course_id }
-      can :read, Transcript, student: user
-      can :read, :certificate
-      can :manage, AttendanceRecord if IpLocation.is_local?(ip)
+      set_enrolled_student_permissions(user, ip)
     elsif user.is_a?(Student) && user.courses.empty?
-      can :create, BankAccount
-      can :update, BankAccount
-      can :create, CreditCard
-      can :create, Payment, student_id: user.id, payment_method: { student_id: user.id }
-      can :read, Payment, student_id: user.id
+      set_unenrolled_student_permissions(user)
     elsif user.is_a? Company
-      can :manage, Company, id: user.id
-      can :manage, Internship, company_id: user.id
+      set_company_permissions(user)
     elsif IpLocation.is_local?(ip)
       can [:create, :update], AttendanceRecord
     else
       raise CanCan::AccessDenied.new("You need to sign in.", :manage, :all)
     end
+  end
+
+private
+
+  def set_admin_permissions
+    can :manage, [AttendanceRecord, CodeReview, Company, Course, Enrollment, Internship, Payment, Student]
+    can :create, [AttendanceRecordAmendment, Review]
+    can :read, [CourseAttendanceStatistics,Submission]
+  end
+
+  def set_enrolled_student_permissions(user, ip)
+    can [:create, :update], BankAccount
+    can [:create, :update], Submission, student_id: user.id
+    can :manage, AttendanceRecord if IpLocation.is_local?(ip)
+    can :read, CodeReview, course_id: user.course_id
+    can :read, Course, id: user.course_id
+    can :read, :certificate
+    can :create, CreditCard
+    can :read, Internship, courses: { id: user.course_id }
+    can :create, Payment, student_id: user.id, payment_method: { student_id: user.id }
+    can :read, Payment, student_id: user.id
+    can :manage, Student, id: user.id
+    can :read, Transcript, student: user
+  end
+
+  def set_unenrolled_student_permissions(user)
+    can [:create, :update], BankAccount
+    can :create, CreditCard
+    can :create, Payment, student_id: user.id, payment_method: { student_id: user.id }
+    can :read, Payment, student_id: user.id
+  end
+
+  def set_company_permissions(user)
+    can :manage, Company, id: user.id
+    can :manage, Internship, company_id: user.id
   end
 end

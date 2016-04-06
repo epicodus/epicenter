@@ -6,7 +6,7 @@ class CourseInternshipsController < ApplicationController
     if @course_internship.save
       redirect_to root_path, notice: "You've successfully joined #{course.description}"
     else
-      @course = current_company
+      @company = current_company
       render 'companies/show'
     end
   end

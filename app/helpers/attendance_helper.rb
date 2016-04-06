@@ -7,8 +7,7 @@ module AttendanceHelper
     @day ||= Time.zone.now.to_date
   end
 
-  def in_class_hours
-    Time.zone.now.between?(Time.zone.now.to_date + 8.hours, Time.zone.now.to_date + 16.hours + 40.minutes) ||
-    Time.zone.now.between?(Time.zone.now.to_date + 18.hours, Time.zone.now.to_date + 20.hours + 40.minutes)
+  def in_class_hours(beginning_hour, end_hour, end_minute)
+    Time.zone.now.between?(Time.zone.now.to_date + beginning_hour.hours, Time.zone.now.to_date + end_hour.hours + end_minute.minutes)
   end
 end

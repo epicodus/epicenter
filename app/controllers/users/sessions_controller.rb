@@ -5,12 +5,10 @@ class Users::SessionsController < Devise::SessionsController
     params[:user][:email] = params[:user][:email].downcase
     user = User.find_by(email: params[:user][:email])
     if user.try(:valid_password?, params[:user][:password])
-      if user.is_a? Admin
-        sign_in_admin(user)
-      elsif user.is_a? Student
+      if user.is_a? Student
         sign_in_student(user)
-      elsif user.is_a? Company
-        sign_in_company(user)
+      else
+        sign_in_admin_or_company(user)
       end
     else
       super
@@ -23,14 +21,12 @@ private
     redirect_to after_sign_in_path_for(current_user) if current_user
   end
 
-  def sign_in_company(user)
-    request.env["devise.mapping"] = Devise.mappings[:company]
-    sign_in user
-    redirect_to root_path, notice: 'Signed in successfully.'
-  end
-
-  def sign_in_admin(user)
-    request.env["devise.mapping"] = Devise.mappings[:admin]
+  def sign_in_admin_or_company(user)
+    if user.is_a? Admin
+      request.env["devise.mapping"] = Devise.mappings[:admin]
+    elsif user.is_a? Company
+      request.env["devise.mapping"] = Devise.mappings[:company]
+    end
     sign_in user
     redirect_to root_path, notice: 'Signed in successfully.'
   end
@@ -56,22 +52,24 @@ private
 
   def sign_in_pairs
     sign_out_all_scopes
-
     @users = [Student.find_by(email: params[:user][:email]),
              Student.find_by(email: params[:pair][:email])]
-
     if @users.all? { |user| valid_credentials(user) }
-      sign_out(current_student)
-      if create_attendance_records(@users)
-        student_names = @users.map { |user| user.name }.uniq
-        redirect_to welcome_path, notice: "Welcome #{student_names.join(' and ')}. Your attendance records have been created."
-      else
-        flash.now[:alert] = "Something went wrong: " + attendance_records.first.errors.full_messages.join(", ")
-        self.resource = Student.new
-        render 'devise/sessions/new'
-      end
+      sign_in_pairs_with_valid_credentials(@users)
     else
       flash.now[:alert] = 'Invalid email or password.'
+      self.resource = Student.new
+      render 'devise/sessions/new'
+    end
+  end
+
+  def sign_in_pairs_with_valid_credentials(users)
+    sign_out(current_student)
+    if create_attendance_records(@users)
+      student_names = @users.map { |user| user.name }.uniq
+      redirect_to welcome_path, notice: "Welcome #{student_names.join(' and ')}. Your attendance records have been created."
+    else
+      flash.now[:alert] = "Something went wrong: " + attendance_records.first.errors.full_messages.join(", ")
       self.resource = Student.new
       render 'devise/sessions/new'
     end

@@ -23,36 +23,48 @@ class StudentsController < ApplicationController
 
   def update
     if current_admin
-      @student = Student.find(params[:id])
-      if @student.update(student_params)
-        redirect_to student_courses_path(@student), notice: "Courses for #{@student.name} have been updated"
-      else
-        @course = Course.find(params[:student][:course_id])
-        render 'show'
-      end
+      update_student_enrollment
     elsif current_student
       if current_student.update(student_params)
-        if request.referer.include?('payment_methods')
-          redirect_to :back, notice: "Primary payment method has been updated."
-        else
-          redirect_to :back, notice: "Internship ratings have been updated."
-        end
+        redirect_appropriately
       else
-        if request.referer.include?('internships')
-          @course = Course.find(Rails.application.routes.recognize_path(request.referrer)[:course_id])
-          render 'internships/index'
-        else
-          @payments = current_student.payments
-          render 'payments/index'
-        end
+        render_errors_appropriately
       end
     end
   end
 
 private
   def student_params
-    params.require(:student).permit(:primary_payment_method_id,
-                                    :course_id,
+    params.require(:student).permit(:primary_payment_method_id, :course_id,
                                     ratings_attributes: [:id, :interest, :internship_id, :notes])
+  end
+
+  def update_student_enrollment
+    @student = Student.find(params[:id])
+    if @student.update(student_params)
+      redirect_to student_courses_path(@student), notice: "Courses for #{@student.name} have been updated"
+    else
+      @course = Course.find(params[:student][:course_id])
+      render 'show'
+    end
+  end
+
+  def redirect_appropriately
+    if request.referer.include?('payment_methods')
+      redirect_to payment_methods_path, notice: 'Primary payment method has been updated.'
+    else
+      @course = Course.find(Rails.application.routes.recognize_path(request.referrer)[:course_id])
+      redirect_to course_student_path(@course, current_student), notice: 'Internship ratings have been updated.'
+    end
+  end
+
+  def render_errors_appropriately
+    if request.referer.include?('payment_methods')
+      @payments = current_student.payments
+      render 'payments/index'
+    else
+      @course = Course.find(Rails.application.routes.recognize_path(request.referrer)[:course_id])
+      render 'internships/index'
+    end
   end
 end
