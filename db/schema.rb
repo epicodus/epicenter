@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330213632) do
+ActiveRecord::Schema.define(version: 20160407173846) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,11 +32,12 @@ ActiveRecord::Schema.define(version: 20160330213632) do
   add_index "attendance_records", ["tardy"], name: "index_attendance_records_on_tardy", using: :btree
 
   create_table "code_reviews", force: :cascade do |t|
-    t.string   "title",      limit: 255
+    t.string   "title",                    limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "course_id"
     t.integer  "number"
+    t.boolean  "submissions_not_required"
   end
 
   create_table "course_internships", force: :cascade do |t|
@@ -174,7 +175,7 @@ ActiveRecord::Schema.define(version: 20160330213632) do
 
   create_table "submissions", force: :cascade do |t|
     t.integer  "student_id"
-    t.string   "link",           limit: 255
+    t.text     "link"
     t.integer  "code_review_id"
     t.datetime "created_at"
     t.datetime "updated_at"

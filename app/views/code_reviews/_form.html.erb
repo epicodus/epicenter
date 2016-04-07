@@ -1,19 +1,32 @@
 <%= form_for code_review do |f| %>
   <%= render 'layouts/errors', object: code_review %>
-  <%= f.label :title %>
-  <%= f.text_field :title, class: "form-control" %>
-  <h3>Objectives</h3>
-    <ul id="objective-fields" class="list-unstyled">
-      <%= f.nested_fields_for :objectives, wrapper_tag: :li do |ff| %>
-        <div class="input-group">
-          <%= ff.text_field :content, class: 'form-control' %>
-          <%= ff.remove_nested_fields_link nil, class: 'input-group-addon', id: 'remove-objective-link' %>
-        </div>
-        <br>
-      <% end %>
-    </ul>
-    <div class="form-group">
-      <%= f.add_nested_fields_link :objectives, 'Add objective', class: 'btn btn-primary' %>
-    </div>
-    <%= f.submit nil, class: 'btn btn-info' %>
+
+  <div class="form-group">
+    <%= f.label :title %>
+    <%= f.text_field :title, class: "form-control" %>
+  </div>
+
+  <div class='form-group'>
+    <%= f.label :submissions_not_required do %>
+      Submissions not required
+    <% end %>
+    <%= f.check_box :submissions_not_required %>
+  </div>
+
+  <%= f.label :objectives, 'Objectives (Markdown compatible)' %>
+  <ul id="objective-fields" class="list-unstyled">
+    <%= f.nested_fields_for :objectives, wrapper_tag: :li do |ff| %>
+      <div class="input-group">
+        <%= ff.text_field :content, class: 'form-control' %>
+        <%= ff.remove_nested_fields_link nil, class: 'input-group-addon', id: 'remove-objective-link' %>
+      </div>
+      <br>
+    <% end %>
+  </ul>
+
+  <div class="form-group">
+    <%= f.add_nested_fields_link :objectives, 'Add objective' %>
+  </div>
+
+  <%= f.submit nil, class: 'btn btn-info' %>
 <% end %>

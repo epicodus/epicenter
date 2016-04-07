@@ -16,15 +16,14 @@
 <% end %>
 
 <ul class="nav nav-tabs list-group" id="student-nav">
+  <li class="student-code-reviews">
+    <a>Code reviews</a>
+  </li>
   <% if @course.internship_course? %>
     <li class="student-internships">
       <a>Internships</a>
     </li>
-  <% end %>
-  <li class="student-code-reviews">
-    <a>Code reviews</a>
-  </li>
-  <% if !@course.internship_course? %>
+  <% else %>
     <li class="student-attendance">
       <a>Attendance</a>
     </li>

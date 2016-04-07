@@ -1,7 +1,10 @@
 feature 'student logging out on attendance page' do
   let!(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
-  before { allow(IpLocation).to receive(:is_local?).and_return(true) }
+  before do
+    allow(IpLocation).to receive(:is_local?).and_return(true)
+    allow_any_instance_of(ApplicationController).to receive(:is_weekday?).and_return(true)
+  end
 
   scenario 'student successfully signs out' do
     FactoryGirl.create(:attendance_record, student: student, date: Time.zone.now.to_date)
