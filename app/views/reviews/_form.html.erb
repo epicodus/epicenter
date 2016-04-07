@@ -10,7 +10,7 @@
       <tbody>
         <%= f.nested_fields_for :grades do |ff| %>
           <tr>
-            <td><%= markdown(ff.object.objective.content) if ff.object.objective %></td>
+            <td class="col-md-8"><%= markdown(ff.object.objective.content) if ff.object.objective %></td>
             <td><%= ff.collection_select :score_id, Score.all, :id, :description, { include_blank: true }, { class: "form-control" } %></td>
           </tr>
           <%= ff.hidden_field :objective_id %>

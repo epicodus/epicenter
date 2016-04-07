@@ -64,7 +64,7 @@
                 <%= form_for [code_review, Submission.new] do |f| %>
                   <%= f.hidden_field :needs_review, value: true %>
                   <%= f.hidden_field :student_id, value: student.id %>
-                  <%= f.submit 'Pending', class: 'pending-submission-link btn btn-link', id: 'create-submission-link' %>
+                  <%= f.submit 'Missing', class: 'failing-submission-link btn btn-link', id: 'create-submission-link' %>
                 <% end %>
               <% else %>
                 <p class="text-danger">Missing</p>
