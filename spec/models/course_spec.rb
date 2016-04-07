@@ -186,7 +186,7 @@ describe Course do
 
   describe '#current_and_future_courses' do
     it 'returns all current and future courses' do
-      past_course = FactoryGirl.create(:past_course)
+      FactoryGirl.create(:past_course)
       current_course = FactoryGirl.create(:course)
       future_course = FactoryGirl.create(:future_course)
       expect(Course.current_and_future_courses).to eq [current_course, future_course]
@@ -196,7 +196,7 @@ describe Course do
   describe '#previous_courses' do
     it 'returns all current and future courses' do
       past_course = FactoryGirl.create(:past_course)
-      current_course = FactoryGirl.create(:course)
+      FactoryGirl.create(:course)
       expect(Course.previous_courses).to eq [past_course]
     end
   end
@@ -205,7 +205,7 @@ describe Course do
     it 'returns all courses with internships' do
       course_1 = FactoryGirl.create(:course)
       course_2 = FactoryGirl.create(:course)
-      internship_for_course_1 = FactoryGirl.create(:internship, courses: [course_1])
+      FactoryGirl.create(:internship, courses: [course_1])
       expect(Course.with_internships).to_not include course_2
     end
   end
@@ -213,7 +213,7 @@ describe Course do
   describe '#internship_courses' do
     it 'returns all courses that are internship courses' do
       internship_course = FactoryGirl.create(:internship_course)
-      regular_course = FactoryGirl.create(:course)
+      FactoryGirl.create(:course)
       expect(Course.internship_courses).to eq [internship_course]
     end
   end

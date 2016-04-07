@@ -5,6 +5,6 @@ $(function() {
       $('#payment_payment_method_id').val('');
     } else {
       $('#payment-method-options').show();
-    };
+    }
   });
 });

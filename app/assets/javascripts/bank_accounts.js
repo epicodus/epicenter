@@ -39,5 +39,5 @@ var stripeBankAccountResponseHandler = function(status, response) {
     };
     var errorMessage = errorMapping[response.error.message] || response.error.message;
     $('.alert-danger ul').append('<li>' + errorMessage + '</li>');
-  };
+  }
 };

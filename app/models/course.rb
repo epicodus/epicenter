@@ -6,11 +6,7 @@ class Course < ActiveRecord::Base
   scope :current_and_future_courses, -> { where('start_date <= ? AND end_date >= ? OR start_date >= ?', Time.zone.now.to_date, Time.zone.now.to_date, Time.zone.now.to_date) }
   scope :previous_courses, -> { where('end_date <= ?', Time.zone.now.to_date) }
 
-  validates :description, presence: true
-  validates :start_date, presence: true
-  validates :end_date, presence: true
-  validates :start_time, presence: true
-  validates :end_time, presence: true
+  validates :description, :start_date, :end_date, :start_time, :end_time, presence: true
   before_validation :set_start_and_end_dates
 
   belongs_to :admin

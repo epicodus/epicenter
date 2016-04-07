@@ -11,7 +11,7 @@ $(function() {
     autoWidth: false,
     info: false,
     language: {
-      search: 'Search table:',
+      search: 'Search table:'
     }
   });
 
@@ -21,7 +21,7 @@ $(function() {
     info: false,
     order: [[ 0, "desc" ]],
     language: {
-      search: 'Search table:',
+      search: 'Search table:'
     }
-  })
+  });
 });

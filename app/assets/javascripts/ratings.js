@@ -1,6 +1,6 @@
 $(function() {
   $('.rating-text-area').keyup(function() {
-    text_length = $(this).val().length;
+    var text_length = $(this).val().length;
     $(this).closest('div.row').find('p.character-count').html(text_length + ' characters');
 
     if ($(this).val().length < 10) {
@@ -29,7 +29,7 @@ $(function() {
   });
 
   $('input:text, textarea').change(function() {
-    $(this).closest('li').find($('input:radio')).attr('required', true)
+    $(this).closest('li').find($('input:radio')).attr('required', true);
   });
 
   $('input:radio').change(function() {

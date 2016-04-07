@@ -43,7 +43,7 @@ private
   def sign_in_solo_student(user)
     sign_in user
     if is_weekday? && IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip) && !user.signed_in_today?
-      attendance_record = AttendanceRecord.create(student: user)
+      AttendanceRecord.create(student: user)
       redirect_to welcome_path, notice: 'Signed in successfully and attendance record created.'
     else
       redirect_to root_path, notice: 'Signed in successfully.'
@@ -55,7 +55,7 @@ private
     @users = [Student.find_by(email: params[:user][:email]),
              Student.find_by(email: params[:pair][:email])]
     if @users.all? { |user| valid_credentials(user) }
-      sign_in_pairs_with_valid_credentials(@users)
+      sign_in_pairs_with_valid_credentials
     else
       flash.now[:alert] = 'Invalid email or password.'
       self.resource = Student.new
@@ -63,7 +63,7 @@ private
     end
   end
 
-  def sign_in_pairs_with_valid_credentials(users)
+  def sign_in_pairs_with_valid_credentials
     sign_out(current_student)
     if create_attendance_records(@users)
       student_names = @users.map { |user| user.name }.uniq

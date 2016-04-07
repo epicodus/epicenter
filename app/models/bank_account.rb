@@ -3,7 +3,7 @@ class BankAccount < PaymentMethod
 
   attr_accessor :first_deposit, :second_deposit
 
-  def calculate_fee(amount)
+  def calculate_fee(_)
     0
   end
 

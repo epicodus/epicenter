@@ -9,7 +9,7 @@ class InvitationsController < Devise::InvitationsController
     end
   end
 
-  def after_invite_path_for(user)
+  def after_invite_path_for(_)
     root_path
   end
 

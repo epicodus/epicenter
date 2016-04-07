@@ -6,7 +6,7 @@ $(function() {
     daysOfWeekDisabled: '0,6'
   });
 
-  $(".custom-datepicker").on("changeDate", function(event) {
+  $(".custom-datepicker").on("changeDate", function() {
     $("#course_class_days").val($(".custom-datepicker").datepicker('getFormattedDate'));
   });
 });

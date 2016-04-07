@@ -34,8 +34,11 @@ class PaymentsController < ApplicationController
 
 private
   def payment_params
-    refund_amount = params[:payment][:refund_amount]
-    payment_amount = params[:payment][:amount]
+    modify_amounts(params[:payment][:refund_amount], params[:payment][:amount])
+    params.require(:payment).permit(:refund_amount, :amount, :student_id, :payment_method_id, :offline, :notes)
+  end
+
+  def modify_amounts(refund_amount, payment_amount)
     if refund_amount.try(:include?, '.')
       refund_amount.slice!('.')
     elsif refund_amount
@@ -45,7 +48,6 @@ private
     elsif payment_amount
       params[:payment][:amount] = payment_amount.to_i * 100
     end
-    params.require(:payment).permit(:refund_amount, :amount, :student_id, :payment_method_id, :offline, :notes)
   end
 
   def ensure_student_has_primary_payment_method

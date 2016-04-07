@@ -15,7 +15,7 @@ private
   def sign_in_user(user)
     sign_in user
     if is_weekday? && IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip) && user.is_a?(Student) && !user.signed_in_today?
-      attendance_record = AttendanceRecord.create(student: user)
+      AttendanceRecord.create(student: user)
       redirect_to welcome_path, notice: 'Signed in successfully and attendance record created.'
     else
       redirect_to root_path, notice: 'Signed in successfully.'

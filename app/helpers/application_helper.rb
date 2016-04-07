@@ -27,7 +27,7 @@ module ApplicationHelper
     end
   end
 
-  def set_rating_label(student, internship, &block)
+  def set_rating_label(student, internship)
     if student.find_rating(internship).try(:interest) == '1'
       content_tag(:span, 'High', class: 'label label-success')
     elsif student.find_rating(internship).try(:interest) == '2'

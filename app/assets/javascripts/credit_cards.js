@@ -8,7 +8,7 @@ $(function() {
       exp_month: $('input#expiration_month').val(),
       exp_year: $('input#expiration_year').val(),
       cvc: $('input#cvc_code').val(),
-      address_zip: $('input#zip_code').val(),
+      address_zip: $('input#zip_code').val()
     };
     Stripe.card.createToken(formData, stripeResponseHandler);
   });
@@ -20,7 +20,7 @@ var stripeResponseHandler = function(status, response) {
     $("input#cvc_code").val('***');
     $("input#expiration_month").val('**');
     $("input#expiration_year").val('****');
-    $("input#zip_code").val()
+    $("input#zip_code").val();
     var token = response.id;
     $('input#credit_card_stripe_token').val(token);
     $('form#new_credit_card').unbind('submit').submit();
@@ -40,5 +40,5 @@ var stripeResponseHandler = function(status, response) {
     };
     var errorMessage = errorMapping[response.error.message] || response.error.message;
     $('.alert-danger ul').append('<li>' + errorMessage + '</li>');
-  };
+  }
 };
