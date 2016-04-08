@@ -1,7 +1,5 @@
 class Course < ActiveRecord::Base
   default_scope { order(:start_date) }
-  scope :with_code_reviews, -> { includes(:code_reviews).where.not(code_reviews: { id: nil }) }
-  scope :with_internships, -> { includes(:internships).where.not(internships: { id: nil }) }
   scope :internship_courses, -> { where(internship_course: true) }
   scope :previous_courses, -> { where('end_date <= ?', Time.zone.now.to_date) }
 
@@ -22,6 +20,14 @@ class Course < ActiveRecord::Base
 
   before_create :import_code_reviews
   after_destroy :reassign_admin_current_courses
+
+  def self.with_code_reviews
+    includes(:code_reviews).where.not(code_reviews: { id: nil })
+  end
+
+  def self.with_internships
+    includes(:internships).where.not(internships: { id: nil })
+  end
 
   def self.current_and_future_courses
     today = Time.zone.now.to_date
