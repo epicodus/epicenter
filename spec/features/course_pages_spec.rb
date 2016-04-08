@@ -51,7 +51,7 @@ feature 'creating a course' do
       select admin.name, from: 'Teacher'
       fill_in 'Start time', with: '8:00 AM'
       fill_in 'End time', with: '5:00 PM'
-      find(:xpath, "//input[@id='course_class_days']").set "2015-09-06,2015-09-07,2015-09-08"
+      find('#course_class_days', visible: false).set "2015-09-06,2015-09-07,2015-09-08"
       select previous_course.description, from: 'Import code reviews from previous course'
       click_on 'Create Course'
       expect(page).to have_content 'Class has been created'
@@ -112,7 +112,7 @@ feature 'editing a course' do
       fill_in 'Description', with: 'PHP/Drupal - Summer 2015'
       fill_in 'Start time', with: '8:00 AM'
       fill_in 'End time', with: '5:00 PM'
-      find(:xpath, "//input[@id='course_class_days']").set "2015-09-06,2015-09-07,2015-09-08"
+      find('#course_class_days', visible: false).set "2015-09-06,2015-09-07,2015-09-08"
       click_on 'Update Course'
       expect(page).to have_content "PHP/Drupal - Summer 2015 has been updated"
       expect(page).to have_content 'Code reviews'
