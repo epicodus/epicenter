@@ -6,17 +6,10 @@ module ApplicationHelper
   end
 
   def hide_navbar
-    current_page?(new_code_of_conduct_path) ||
-    current_page?(new_refund_policy_path) ||
-    current_page?(new_enrollment_agreement_path) ||
-    current_page?(certificate_path) ||
-    current_page?(transcript_path) ||
-    current_page?(welcome_path) ||
-    current_page?(user_session_path) ||
-    current_page?(new_user_password_path) ||
-    current_page?(root_path) ||
-    current_page?(new_company_registration_path) ||
-    params[:controller] == 'attendance_sign_out'
+    paths = [new_code_of_conduct_path, new_refund_policy_path, new_enrollment_agreement_path,
+             certificate_path, transcript_path, welcome_path, user_session_path,
+             new_user_password_path, root_path, new_company_registration_path, sign_out_path]
+    true if paths.map { |path| current_page?(path) }.include?(true)
   end
 
   def set_navbar_link_class(controller_name, &block)
