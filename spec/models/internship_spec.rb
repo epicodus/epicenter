@@ -54,4 +54,12 @@ describe Internship do
       end
     end
   end
+
+  describe 'other_internship_courses' do
+    it 'returns all internship courses not associated with the internship' do
+      internship = FactoryGirl.create(:internship)
+      other_internship_course = FactoryGirl.create(:internship_course)
+      expect(internship.other_internship_courses).to eq [other_internship_course]
+    end
+  end
 end
