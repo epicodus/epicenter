@@ -3,7 +3,6 @@ class Course < ActiveRecord::Base
   scope :with_code_reviews, -> { includes(:code_reviews).where.not(code_reviews: { id: nil }) }
   scope :with_internships, -> { includes(:internships).where.not(internships: { id: nil }) }
   scope :internship_courses, -> { where(internship_course: true) }
-  scope :current_and_future_courses, -> { where('start_date <= ? AND end_date >= ? OR start_date >= ?', Time.zone.now.to_date, Time.zone.now.to_date, Time.zone.now.to_date) }
   scope :previous_courses, -> { where('end_date <= ?', Time.zone.now.to_date) }
 
   validates :description, :start_date, :end_date, :start_time, :end_time, presence: true
@@ -23,6 +22,11 @@ class Course < ActiveRecord::Base
 
   before_create :import_code_reviews
   after_destroy :reassign_admin_current_courses
+
+  def self.current_and_future_courses
+    today = Time.zone.now.to_date
+    where('start_date <= ? AND end_date >= ? OR start_date >= ?', today, today, today)
+  end
 
   def teacher
     admin ? admin.name : 'Unknown teacher'
