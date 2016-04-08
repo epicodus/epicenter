@@ -663,10 +663,6 @@ describe Student do
       it { is_expected.to not_have_abilities([:create, :read, :update, :destroy], Review.new) }
     end
 
-    context 'for course_attendance_statistics' do
-      it { is_expected.to not_have_abilities(:read, CourseAttendanceStatistics) }
-    end
-
     context 'for bank_accounts' do
       it { is_expected.to have_abilities(:create, BankAccount.new) }
     end

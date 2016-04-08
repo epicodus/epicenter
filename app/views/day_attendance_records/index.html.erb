@@ -2,7 +2,7 @@
 <h4>Course: <%= @course.description %></h4>
 <h4>Teacher: <%= @course.teacher %></h4>
 
-<%= form_for :attendance_records, url: course_attendance_statistics_path(@course), html: { method: :post } do |f| %>
+<%= form_for :attendance_records, url: course_day_attendance_records_path(@course), html: { method: :post } do |f| %>
   <div class="row">
     <div class="col-md-4">
       <div class="input-group">
@@ -43,7 +43,7 @@
               <span class="label label-success">On time</span>
             <% end %>
           </td>
-          <td class="col-md-3"><%= link_to 'Edit', new_attendance_record_amendment_path(student: student, day: @day, attendance_statistics: true) %></td>
+          <td class="col-md-3"><%= link_to 'Edit', new_attendance_record_amendment_path(student: student, day: @day) %></td>
           <td><%= student.pair_on_day(@day) ? student.pair_on_day(@day).name : 'Solo' %></td>
         </tr>
       <% end %>

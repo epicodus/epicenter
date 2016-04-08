@@ -26,10 +26,6 @@ describe Admin do
       it { is_expected.to have_abilities([:create], Review.new) }
     end
 
-    context 'for course_attendance_statistics' do
-      it { is_expected.to have_abilities(:read, CourseAttendanceStatistics) }
-    end
-
     context 'for bank_accounts' do
       it { is_expected.to not_have_abilities(:create, BankAccount.new) }
     end

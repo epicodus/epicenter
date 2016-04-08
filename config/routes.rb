@@ -26,13 +26,12 @@ Rails.application.routes.draw do
   resources :attendance_record_amendments, only: [:new, :create]
   resources :internships, only: [:index, :edit, :update]
   resources :courses, except: [:show] do
-    resources :attendance_statistics, only: [:index, :create]
     resources :code_reviews, only: [:index] do
       resource :report, only: [:show], to: 'code_review_reports#show'
     end
     resources :internships, only: [:show]
     resources :students, only: [:index, :show]
-    resources :day_attendance_records, only: [:index]
+    resources :day_attendance_records, only: [:index, :create]
   end
   resources :ratings, only: [:create]
   resources :companies, only: [:show]

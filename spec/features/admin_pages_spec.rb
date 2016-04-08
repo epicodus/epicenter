@@ -70,18 +70,6 @@ feature 'Changing current course', js: true do
     expect(page).to have_content "You have switched to #{course2.description}"
   end
 
-  context 'when viewing a course attendance statistics page' do
-    it 'redirects them to the attendance statistics for their current course' do
-      course = FactoryGirl.create(:course, description: 'Winter 2015')
-      student = FactoryGirl.create(:student, course: course)
-      login_as(admin, scope: :admin)
-      visit course_attendance_statistics_path(admin.current_course)
-      expect(page).to have_content student.name
-      click_link admin.current_course.description
-      expect(page).to have_content student.name
-    end
-  end
-
   context 'when viewing a course code review page' do
     it 'redirects them to the code reviews for their current course' do
       course = FactoryGirl.create(:course, description: 'Winter 2015')
