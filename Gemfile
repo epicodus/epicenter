@@ -7,7 +7,7 @@ gem 'pg'
 gem 'uglifier'
 gem 'jquery-rails'
 gem 'coffee-script'
-gem 'devise'
+gem 'devise', '~> 3.5.8'
 gem 'devise_invitable'
 gem 'stripe'
 gem 'chartkick'
@@ -58,7 +58,7 @@ group :test do
   gem 'launchy'
   gem 'poltergeist'
   gem 'database_cleaner'
-  gem 'webmock', require: false
+  gem 'webmock', '~> 1.24.6', require: false
   gem 'vcr'
   gem 'puffing-billy'
   gem 'simplecov', require: false
