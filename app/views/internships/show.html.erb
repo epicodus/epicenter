@@ -2,6 +2,16 @@
 
 <div class="table-responsive">
   <table class="table">
+    <% if can? :manage, Company %>
+      <tr>
+        <th>Contact:</th>
+        <td><%= @internship.try(:company).try(:name) %></td>
+      </tr>
+      <tr>
+        <th>Email:</th>
+        <td><%= mail_to @internship.try(:company).try(:email) %></td>
+      </tr>
+    <% end %>
     <tr>
       <th>Technologies:</th>
       <td>

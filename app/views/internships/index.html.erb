@@ -8,6 +8,8 @@
           <th>Company</th>
           <th>Students requested</th>
           <th>Technologies</th>
+          <th>Contact</th>
+          <th>Email</th>
           <th></th>
           <th></th>
         </tr>
@@ -15,9 +17,11 @@
       <tbody>
         <% course.internships.order('name').each do |internship| %>
           <tr>
-            <td class="col-md-2"><%= link_to internship.name, course_internship_path(course, internship) %></td>
-            <td class="col-md-2"><%= internship.number_of_students %></td>
-            <td class="col-md-6"><%= internship.tracks.pluck(:description).join(', ') %></td>
+            <td><%= link_to internship.name, course_internship_path(course, internship) %></td>
+            <td><%= internship.number_of_students %></td>
+            <td><%= internship.tracks.pluck(:description).join(', ') %></td>
+            <td><%= internship.try(:company).try(:name) %></td>
+            <td><%= mail_to internship.try(:company).try(:email) %></td>
             <td><%= link_to 'Edit', edit_internship_path(internship) %></td>
             <td><%= link_to 'Withdraw', course_internships_path(course_id: course.id, internship_id: internship.id), data: { method: :delete, confirm: 'Are you sure?' } %></td>
           </tr>
