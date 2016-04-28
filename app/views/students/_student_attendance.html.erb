@@ -4,6 +4,8 @@
       <thead>
         <th>Date</th>
         <th>Status</th>
+        <th>Signed in</th>
+        <th>Signed out</th>
         <th></th>
         <th>Pair</th>
       </thead>
@@ -27,6 +29,8 @@
                 <span class="label label-success">On time</span>
               <% end %>
             </td>
+            <td><%= @student.attendance_record_on_day(day).try(:created_at).try(:strftime, '%l:%M %p') %></td>
+            <td><%= @student.attendance_record_on_day(day).try(:signed_out_time).try(:strftime, '%l:%M %p') %></td>
             <td class="edit-attendance">
               <% if current_admin && can?(:manage, AttendanceRecord) %>
                 <%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day) %>
