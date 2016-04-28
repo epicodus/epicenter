@@ -1,7 +1,7 @@
-<% if in_class_hours(8, 16, 40) || in_class_hours(18, 20, 40) %>
+<% if in_class_hours(8, 16, 45) || in_class_hours(18, 20, 45) %>
   <div class="row">
     <div class="alert alert-danger col-md-6 col-md-offset-3 text-center">
-      You'll be leaving early if you sign out now since the time is <%= Time.zone.now.strftime('%H:%M') %>.
+      You'll be leaving early if you sign out now since the time is <%= Time.zone.now.strftime('%l:%M %p') %>.
     </div>
   </div>
 <% end %>
