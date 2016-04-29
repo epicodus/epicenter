@@ -101,7 +101,7 @@ feature "Student signs in while class is not in session" do
   context "before adding a payment method" do
     it "takes them to the page to choose payment method" do
       student = FactoryGirl.create(:user_with_all_documents_signed)
-      sign_in(student)
+      sign_in_as(student)
       visit new_payment_method_path
       expect(page).to have_content "How would you like to make payments"
     end
@@ -110,7 +110,7 @@ feature "Student signs in while class is not in session" do
   context "after entering bank account info but before verifying" do
     it "takes them to the payment methods page", :vcr do
       bank_account = FactoryGirl.create(:bank_account, student: student)
-      sign_in student
+      sign_in_as student
       visit payment_methods_path
       expect(page).to have_content "Your payment methods"
       expect(page).to have_link "Verify Account"
@@ -120,7 +120,7 @@ feature "Student signs in while class is not in session" do
   context "after verifying their bank account", :vcr do
     it "shows them their payment history" do
       verified_bank_account = FactoryGirl.create(:verified_bank_account, student: student)
-      sign_in(student)
+      sign_in_as(student)
       visit student_payments_path(student)
       expect(page).to have_content "Your payments"
     end
@@ -129,7 +129,7 @@ feature "Student signs in while class is not in session" do
   context "after adding a credit card", :vcr, :stripe_mock do
     it "shows them their payment history" do
       credit_card = FactoryGirl.create(:credit_card, student: student)
-      sign_in(student)
+      sign_in_as(student)
       visit student_payments_path(student)
       expect(page).to have_content "Your payments"
     end
@@ -140,7 +140,7 @@ feature "Student visits homepage after logged in" do
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
   it "takes them to the correct path" do
-    sign_in(student)
+    sign_in_as(student)
     visit root_path
     expect(current_path).to_not eq root_path
   end
@@ -151,13 +151,13 @@ feature "Student signs in while class is in session" do
 
   context "not at school" do
     it "takes them to the courses page" do
-      sign_in(student)
+      sign_in_as(student)
       expect(current_path).to eq student_courses_path(student)
       expect(page).to have_content "Your courses"
     end
 
     it "does not create an attendance record" do
-      expect { sign_in(student) }.to change { AttendanceRecord.count }.by 0
+      expect { sign_in_as(student) }.to change { AttendanceRecord.count }.by 0
     end
   end
 
@@ -169,14 +169,14 @@ feature "Student signs in while class is in session" do
 
     context "when soloing" do
       it "takes them to the welcome page" do
-        sign_in(student)
+        sign_in_as(student)
         expect(current_path).to eq welcome_path
       end
 
       it "creates an attendance record for them during the week" do
         thursday = Time.zone.now.to_date.beginning_of_week + 3.days
         travel_to thursday do
-          expect { sign_in(student) }.to change { student.attendance_records.count }.by 1
+          expect { sign_in_as(student) }.to change { student.attendance_records.count }.by 1
         end
       end
 
@@ -184,25 +184,25 @@ feature "Student signs in while class is in session" do
         allow_any_instance_of(ApplicationController).to receive(:is_weekday?).and_return(false)
         saturday = Time.zone.now.to_date.beginning_of_week + 5.days
         travel_to saturday do
-          expect { sign_in(student) }.to change { student.attendance_records.count }.by 0
+          expect { sign_in_as(student) }.to change { student.attendance_records.count }.by 0
         end
       end
 
       it "takes them to the courses page if they've already signed in" do
         FactoryGirl.create(:attendance_record, student: student)
-        sign_in(student)
+        sign_in_as(student)
         expect(current_path).to eq student_courses_path(student)
       end
 
       it 'does not update the attendance record on subsequent solo sign ins during the day' do
         travel_to student.course.start_date + 8.hours do
-          sign_in(student)
+          sign_in_as(student)
         end
         attendance_record = AttendanceRecord.find_by(student: student)
         travel_to student.course.start_date + 12.hours do
           visit root_path
           logout :student
-          sign_in(student)
+          sign_in_as(student)
           expect(attendance_record.tardy).to be false
         end
       end
@@ -237,47 +237,47 @@ feature "Student signs in while class is in session" do
       before { allow(IpLocation).to receive(:is_local_computer?).and_return(true) }
 
       it "takes them to the welcome page" do
-        sign_in(student, pair)
+        sign_in_as(student, pair)
         expect(current_path).to eq welcome_path
       end
 
       it "creates an attendance record for them" do
-        expect { sign_in(student, pair) }.to change { AttendanceRecord.count }.by 2
+        expect { sign_in_as(student, pair) }.to change { AttendanceRecord.count }.by 2
       end
 
       it 'creates attendance records if one student has already signed in for the day' do
         FactoryGirl.create(:attendance_record, student: student)
-        expect { sign_in(student, pair) }.to change { AttendanceRecord.count }.by 1
+        expect { sign_in_as(student, pair) }.to change { AttendanceRecord.count }.by 1
       end
 
       it 'updates the pair id if one student has already signed in for the day' do
         FactoryGirl.create(:attendance_record, student: student)
-        expect { sign_in(student, pair) }.to change { AttendanceRecord.first.pair_id }.from(nil).to(pair.id)
+        expect { sign_in_as(student, pair) }.to change { AttendanceRecord.first.pair_id }.from(nil).to(pair.id)
       end
 
       it 'does not update the attendance record when signing as pairs, then solo during same day' do
         travel_to student.course.start_date + 8.hours do
-          sign_in(student, pair)
+          sign_in_as(student, pair)
         end
         attendance_record = AttendanceRecord.find_by(student: pair)
         travel_to student.course.start_date + 12.hours do
-          sign_in(pair)
+          sign_in_as(pair)
           expect(attendance_record.tardy).to be false
         end
       end
 
       it 'does not update the attendance record when signing in solo, then as pairs, then solo again during same day' do
         travel_to student.course.start_date + 8.hours do
-          sign_in(student)
+          sign_in_as(student)
           visit root_path
           logout :student
         end
         travel_to student.course.start_date + 10.hours do
-          sign_in(student, pair)
+          sign_in_as(student, pair)
         end
         attendance_record = AttendanceRecord.find_by(student: student)
         travel_to student.course.start_date + 14.hours do
-          sign_in(student)
+          sign_in_as(student)
           expect(attendance_record.tardy).to be false
         end
       end

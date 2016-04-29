@@ -8,21 +8,21 @@ class ApplicationController < ActionController::Base
 
 protected
   def configure_permitted_params
-    devise_parameter_sanitizer.for(:sign_up) do |u|
+    devise_parameter_sanitizer.permit(:sign_up) do |u|
       u.permit(:name, :email, :password, :password_confirmation,
                internships_attributes: [:name, :description, :website, :address,
                                         :ideal_intern, :clearance_required,
                                         :clearance_description, :number_of_students,
                                         track_ids: [], course_ids: []])
     end
-    devise_parameter_sanitizer.for(:invite) do |u|
+    devise_parameter_sanitizer.permit(:invite) do |u|
       u.permit(:name, :email, :course_id)
     end
-    devise_parameter_sanitizer.for(:accept_invitation) do |u|
+    devise_parameter_sanitizer.permit(:accept_invitation) do |u|
       u.permit(:name, :email, :current_course_id, :plan_id, :password, :password_confirmation,
              :invitation_token)
     end
-    devise_parameter_sanitizer.for(:account_update) do |u|
+    devise_parameter_sanitizer.permit(:account_update) do |u|
       u.permit(:plan_id, :course_id, :name, :email, :password, :password_confirmation, :current_password)
     end
   end

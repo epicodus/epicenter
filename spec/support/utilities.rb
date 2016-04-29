@@ -1,4 +1,4 @@
-def sign_in(user, pair=nil)
+def sign_in_as(user, pair=nil)
   visit new_user_session_path
   fill_in 'user_email', with: user.email
   fill_in 'user_password', with: user.password
