@@ -15,7 +15,7 @@ feature "print completion certificate" do
       login_as(student, scope: :student)
       visit edit_student_registration_path
       click_link "View certificate of completion"
-      expect(page).to have_content "Certificate of Completion for Epicodus"
+      expect(page).to have_content "Epicodus Certificate of Completion"
       expect(page).to have_content student.name
     end
   end
