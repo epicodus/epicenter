@@ -2,13 +2,15 @@
 http_interactions:
 - request:
     method: post
-    uri: https://<HELLO_SIGN_API_KEY>:@api.hellosign.com/v3/signature_request/create_embedded
+    uri: https://api.hellosign.com/v3/signature_request/create_embedded
     body:
       encoding: UTF-8
-      string: client_id=<HELLO_SIGN_CLIENT_ID>&file_url%5B%5D=http%3A%2F%2Finvestors.shopify.com%2Ffiles%2Fdoc_downloads%2Ftest.pdf&signers%5B0%5D%5Bemail_address%5D=student5%40example.com&signers%5B0%5D%5Bname%5D=Example+Brown+5&subject=Sign+to+accept+the+Epicodus+Code+of+Conduct&test_mode=1
+      string: client_id=<HELLO_SIGN_CLIENT_ID>&file_url%5B%5D=https%3A%2F%2Fwww.dropbox.com%2Fs%2Fxgzr0enutnpbdq5%2Fenrollment_agreement.pdf%3Fdl%3D1&signers%5B0%5D%5Bemail_address%5D=student1%40example.com&signers%5B0%5D%5Bname%5D=Example+Brown+1&subject=Sign+to+accept+the+Epicodus+Enrollment+Agreement&test_mode=1
     headers:
       User-Agent:
-      - hellosign-ruby-sdk/3.0.21
+      - hellosign-ruby-sdk/3.2.11
+      Authorization:
+      - Basic YWJkM2Q3ZmY2OTE2MzJkYWVmNzI1N2ZiMzhmZDY4NmU2MmI5M2RjODhlYjIyNWRlZjRiYmI3NzY4NTFiZDczZDo=
       Content-Type:
       - application/x-www-form-urlencoded
       Accept-Encoding:
@@ -29,7 +31,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 26 Jun 2015 18:15:02 GMT
+      - Fri, 06 May 2016 18:31:35 GMT
       P3p:
       - CP="NOP3PPOLICY"
       Server:
@@ -41,31 +43,33 @@ http_interactions:
       X-Ratelimit-Limit:
       - '50'
       X-Ratelimit-Limit-Remaining:
-      - '47'
+      - '44'
       X-Ratelimit-Reset:
-      - '1435342502'
+      - '1462559495'
       X-Xss-Protection:
       - 1; mode=block
       Content-Length:
-      - '1092'
+      - '1118'
       Connection:
       - keep-alive
     body:
       encoding: UTF-8
       string: |2-
 
-        {"signature_request":{"signature_request_id":"a3171184026ad863ad64d16e70fdb746f1097110","title":"Sign to accept the Epicodus Code of Conduct","original_title":"Sign to accept the Epicodus Code of Conduct","subject":"Sign to accept the Epicodus Code of Conduct","message":null,"test_mode":true,"metadata":{},"is_complete":false,"has_error":false,"custom_fields":[],"response_data":[],"signing_url":null,"signing_redirect_url":null,"final_copy_uri":"\/v3\/signature_request\/final_copy\/a3171184026ad863ad64d16e70fdb746f1097110","files_url":"https:\/\/api.hellosign.com\/\/v3\/signature_request\/files\/a3171184026ad863ad64d16e70fdb746f1097110","details_url":"https:\/\/www.hellosign.com\/home\/manage?guid=a3171184026ad863ad64d16e70fdb746f1097110","requester_email_address":"chris@epicodus.com","signatures":[{"signature_id":"ab7bafb664f09422d32900f7e45dc57c","has_pin":false,"signer_email_address":"student5@example.com","signer_name":"Example Brown 5","order":null,"status_code":"awaiting_signature","signed_at":null,"last_viewed_at":null,"last_reminded_at":null}],"cc_email_addresses":[]}}
+        {"signature_request":{"signature_request_id":"9332b54261f188563f41db77820a8085a1745256","test_mode":true,"title":"Sign to accept the Epicodus Enrollment Agreement","original_title":"Sign to accept the Epicodus Enrollment Agreement","subject":"Sign to accept the Epicodus Enrollment Agreement","message":null,"metadata":{},"is_complete":false,"has_error":false,"custom_fields":[],"response_data":[],"signing_url":null,"signing_redirect_url":null,"final_copy_uri":"\/v3\/signature_request\/final_copy\/9332b54261f188563f41db77820a8085a1745256","files_url":"https:\/\/api.hellosign.com\/v3\/signature_request\/files\/9332b54261f188563f41db77820a8085a1745256","details_url":"https:\/\/www.hellosign.com\/home\/manage?guid=9332b54261f188563f41db77820a8085a1745256","requester_email_address":"chris@epicodus.com","signatures":[{"signature_id":"cc1ae87a6666f5ce98efd5a50f8d3970","has_pin":false,"signer_email_address":"student1@example.com","signer_name":"Example Brown 1","order":null,"status_code":"awaiting_signature","signed_at":null,"last_viewed_at":null,"last_reminded_at":null,"error":null}],"cc_email_addresses":[]}}
     http_version: 
-  recorded_at: Fri, 26 Jun 2015 18:15:03 GMT
+  recorded_at: Fri, 06 May 2016 18:31:36 GMT
 - request:
     method: get
-    uri: https://<HELLO_SIGN_API_KEY>:@api.hellosign.com/v3/embedded/sign_url/ab7bafb664f09422d32900f7e45dc57c
+    uri: https://api.hellosign.com/v3/embedded/sign_url/cc1ae87a6666f5ce98efd5a50f8d3970
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
-      - hellosign-ruby-sdk/3.0.21
+      - hellosign-ruby-sdk/3.2.11
+      Authorization:
+      - Basic YWJkM2Q3ZmY2OTE2MzJkYWVmNzI1N2ZiMzhmZDY4NmU2MmI5M2RjODhlYjIyNWRlZjRiYmI3NzY4NTFiZDczZDo=
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
@@ -84,7 +88,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 26 Jun 2015 18:15:04 GMT
+      - Fri, 06 May 2016 18:31:36 GMT
       P3p:
       - CP="NOP3PPOLICY"
       Server:
@@ -94,11 +98,11 @@ http_interactions:
       X-Content-Type-Options:
       - nosniff
       X-Ratelimit-Limit:
-      - '500'
+      - '2000'
       X-Ratelimit-Limit-Remaining:
-      - '497'
+      - '1998'
       X-Ratelimit-Reset:
-      - '1435342505'
+      - '1462559496'
       X-Xss-Protection:
       - 1; mode=block
       Content-Length:
@@ -109,58 +113,7 @@ http_interactions:
       encoding: UTF-8
       string: |2-
 
-        {"embedded":{"sign_url":"https:\/\/www.hellosign.com\/editor\/embeddedSign?signature_id=ab7bafb664f09422d32900f7e45dc57c&token=e66fc67f1043d7849881f58cbaeda417","expires_at":1435346105}}
+        {"embedded":{"sign_url":"https:\/\/www.hellosign.com\/editor\/embeddedSign?signature_id=cc1ae87a6666f5ce98efd5a50f8d3970&token=42916b7dcccdf997552ca6fca08be61b","expires_at":1462563096}}
     http_version: 
-  recorded_at: Fri, 26 Jun 2015 18:15:04 GMT
-- request:
-    method: post
-    uri: https://api.hellosign.com/v3/signature_request/create_embedded
-    body:
-      encoding: UTF-8
-      string: client_id=&file_url%5B%5D=&signers%5B0%5D%5Bemail_address%5D=student165%40example.com&signers%5B0%5D%5Bname%5D=Example+Brown+159&subject=Sign+to+accept+the+Epicodus+Enrollment+Agreement&test_mode=
-    headers:
-      User-Agent:
-      - hellosign-ruby-sdk/3.0.21
-      Content-Type:
-      - application/x-www-form-urlencoded
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-  response:
-    status:
-      code: 401
-      message: Unauthorized
-    headers:
-      Access-Control-Allow-Headers:
-      - Authorization, Origin, X-Requested-With, Content-Type, Accept
-      Access-Control-Allow-Methods:
-      - GET, POST, OPTIONS
-      Access-Control-Allow-Origin:
-      - "*"
-      Content-Type:
-      - application/json
-      Date:
-      - Mon, 03 Aug 2015 18:34:56 GMT
-      P3p:
-      - CP="NOP3PPOLICY"
-      Server:
-      - Apache
-      User-Agent:
-      - HelloSign API
-      Www-Authenticate:
-      - Basic realm="API"
-      X-Content-Type-Options:
-      - nosniff
-      X-Xss-Protection:
-      - 1; mode=block
-      Content-Length:
-      - '97'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: '{"error":{"error_msg":"Unauthorized user. No credentials supplied.","error_name":"unauthorized"}}'
-    http_version: 
-  recorded_at: Mon, 03 Aug 2015 18:34:54 GMT
-recorded_with: VCR 2.9.3
+  recorded_at: Fri, 06 May 2016 18:31:36 GMT
+recorded_with: VCR 3.0.1

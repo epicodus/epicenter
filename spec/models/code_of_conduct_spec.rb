@@ -1,3 +1,3 @@
 describe CodeOfConduct do
-  it_behaves_like 'signature', 'd32ff1d275f2e6d7af7bd8c8f923c0e3'
+  it_behaves_like 'signature', '6e5a020640d5543b6950ea229fd0e96a'
 end
