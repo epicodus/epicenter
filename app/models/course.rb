@@ -34,6 +34,10 @@ class Course < ActiveRecord::Base
     where('start_date <= ? AND end_date >= ? OR start_date >= ?', today, today, today)
   end
 
+  def total_internship_students_requested
+    internships.pluck(:number_of_students).compact.sum
+  end
+
   def teacher
     admin ? admin.name : 'Unknown teacher'
   end

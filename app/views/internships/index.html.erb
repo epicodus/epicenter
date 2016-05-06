@@ -1,6 +1,7 @@
 <h1>All internships</h1>
 <% @courses.reverse.each do |course| %>
   <h3><%= course.description %></h3>
+  <h4>Students requested: <%= course.total_internship_students_requested %></h4>
   <div class="table-responsive">
     <table class="table table-hover">
       <thead>
