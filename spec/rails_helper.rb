@@ -15,6 +15,8 @@ require 'stripe_mock'
 include Warden::Test::Helpers
 Warden.test_mode!
 
+WebMock.enable!
+
 include ActiveSupport::Testing::TimeHelpers
 
 Capybara.javascript_driver = :poltergeist_billy

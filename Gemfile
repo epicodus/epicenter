@@ -58,7 +58,7 @@ group :test do
   gem 'launchy'
   gem 'poltergeist'
   gem 'database_cleaner'
-  gem 'webmock', '~> 1.24.6', require: false
+  gem 'webmock'
   gem 'vcr'
   gem 'puffing-billy'
   gem 'simplecov', require: false
