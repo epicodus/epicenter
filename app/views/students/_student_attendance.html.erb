@@ -33,7 +33,7 @@
             <td><%= @student.attendance_record_on_day(day).try(:signed_out_time).try(:strftime, '%l:%M %p') %></td>
             <td class="edit-attendance">
               <% if current_admin && can?(:manage, AttendanceRecord) %>
-                <%= link_to 'Edit', new_attendance_record_amendment_path(student: @student, day: day) %>
+                <%= link_to 'Edit', new_attendance_record_amendment_path(course: @course, student: @student, day: day) %>
               <% end %>
             </td>
             <td>

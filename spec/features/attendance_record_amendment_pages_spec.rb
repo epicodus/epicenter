@@ -9,7 +9,8 @@ feature "creating an attendance record amendment" do
     fill_in "attendance_record_amendment_date", with: student.course.start_date.strftime("%F")
     select "On time", from: "attendance_record_amendment_status"
     click_button "Submit"
-    expect(page).to have_content "#{student.name}'s attendance record has been amended."
+    attendance_record_amendment = AttendanceRecord.last
+    expect(page).to have_content "The attendance record for #{student.name} on #{attendance_record_amendment.date.to_date.strftime('%A, %B %d, %Y')} has been amended to"
   end
 
   scenario "when a new record needs to be created" do
@@ -20,7 +21,8 @@ feature "creating an attendance record amendment" do
     fill_in "attendance_record_amendment_date", with: student.course.start_date.strftime("%F")
     select "Tardy and Left early", from: "attendance_record_amendment_status"
     click_button "Submit"
-    expect(page).to have_content "#{student.name}'s attendance record has been amended."
+    attendance_record_amendment = AttendanceRecord.last
+    expect(page).to have_content "The attendance record for #{student.name} on #{attendance_record_amendment.date.to_date.strftime('%A, %B %d, %Y')} has been amended to"
     expect(page).to have_content 'Tardy'
     expect(page).to have_content 'Left early'
     expect(page).to_not have_content 'On time'
