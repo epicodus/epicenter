@@ -10,7 +10,7 @@ class AttendanceRecordAmendmentsController < ApplicationController
     @attendance_record_amendment = AttendanceRecordAmendment.new(attendance_record_amendment_params)
     if @attendance_record_amendment.save
       student = Student.find(params[:attendance_record_amendment][:student_id])
-      redirect_to student_courses_path(student), notice: "The attendance record for #{student.name} on #{@attendance_record_amendment.date.to_date.strftime('%A, %B %d, %Y')} has been amended to #{@attendance_record_amendment.status}."
+      redirect_to course_student_path(student.course, student), notice: "The attendance record for #{student.name} on #{@attendance_record_amendment.date.to_date.strftime('%A, %B %d, %Y')} has been amended to #{@attendance_record_amendment.status}."
     else
       @course = params[:course] ? Course.find(params[:course]) : current_course
       render 'new'
