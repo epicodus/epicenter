@@ -55,7 +55,7 @@ VCR.configure do |config|
   config.filter_sensitive_data('<HELLO_SIGN_CLIENT_ID>') { ENV['HELLO_SIGN_CLIENT_ID'] }
   config.filter_sensitive_data('<CODE_OF_CONDUCT_DOCUMENT_URL>') { ENV['CODE_OF_CONDUCT_DOCUMENT_URL'] }
   config.filter_sensitive_data('<REFUND_POLICY_DOCUMENT_URL>') { ENV['REFUND_POLICY_DOCUMENT_URL'] }
-  config.filter_sensitive_data('<ENROLLMENT_AGREEMENT_DOCUMENT_URL>') { ENV['ENROLLMENT_AGREEMENT_DOCUMENT_URL'] }
+  config.filter_sensitive_data('<ENROLLMENT_AGREEMENT_TEMPLATE_ID>') { ENV['ENROLLMENT_AGREEMENT_TEMPLATE_ID'] }
   config.filter_sensitive_data('<CLOSE_IO_API_KEY>') { ENV['CLOSE_IO_API_KEY'] }
 end
 
