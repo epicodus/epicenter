@@ -18,8 +18,8 @@ class Rating < ActiveRecord::Base
 private
 
   def no_more_than_five_lowest
-    if interest == "3" && student.ratings.where(interest: 3).count == 5
-      errors.add(:interest, "cannot be low for more than 5 companies.")
+    if interest == "3" && student.ratings.where(interest: 3).count == 3
+      errors.add(:interest, "cannot be low for more than 3 companies.")
       false
     end
   end

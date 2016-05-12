@@ -11,7 +11,7 @@ describe Rating do
     let(:student) { FactoryGirl.create(:student) }
 
     before do
-      FactoryGirl.create_list(:rating, 3, student: student, interest: 3)
+      FactoryGirl.create(:rating, student: student, interest: 3)
     end
 
     it 'marks an internship as low priority if a student has <= 5 low priority internships' do

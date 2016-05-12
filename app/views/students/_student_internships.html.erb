@@ -21,8 +21,10 @@
       </table>
     </div>
   <% elsif can? :read, Internship %>
-    <p class="text-info">* You may only rank 5 companies as "Low" interest.</p>
+    <p class="text-info">* You may only rank 3 companies as "Low" interest.</p>
     <%= form_for @student do |f| %>
+      <%= render 'layouts/errors', object: @student %>
+
       <div class="row">
         <div class="col-xs-10">
           <table class="table">
