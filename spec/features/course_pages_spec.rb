@@ -38,7 +38,7 @@ feature 'creating a course' do
         find('td', text: 16).click
         find('td', text: 19).click
         click_on 'Create Course'
-        expect(page).to have_content 'Class has been created'
+        expect(page).to have_content 'Course has been created'
         expect(page).to have_content 'Code reviews'
       end
     end
@@ -54,7 +54,7 @@ feature 'creating a course' do
       find('#course_class_days', visible: false).set "2015-09-06,2015-09-07,2015-09-08"
       select previous_course.description, from: 'Import code reviews from previous course'
       click_on 'Create Course'
-      expect(page).to have_content 'Class has been created'
+      expect(page).to have_content 'Course has been created'
       expect(page).to have_content code_review.title
     end
   end

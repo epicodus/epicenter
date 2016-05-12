@@ -32,7 +32,7 @@
         </tr>
       </thead>
       <tbody>
-        <% internship.courses.each do |course| %>
+        <% internship.courses.order(:description).reverse.each do |course| %>
           <tr>
             <td class="col-md-4">
               <%= course.description %>

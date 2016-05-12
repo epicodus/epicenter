@@ -164,14 +164,6 @@ describe Course do
     end
   end
 
-  describe 'default scope order' do
-    it 'orders the course by start date by default' do
-      course = FactoryGirl.create(:course, class_days: [Date.new(2015, 1, 1), Date.new(2015, 1, 2)])
-      course2 = FactoryGirl.create(:course, class_days: [Date.new(2014, 1, 1), Date.new(2014, 1, 2)])
-      expect(Course.all).to eq [course2, course]
-    end
-  end
-
   context 'after_destroy' do
     let(:course) { FactoryGirl.create(:course) }
 

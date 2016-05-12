@@ -30,7 +30,9 @@ feature 'updating an internship' do
 
   scenario 'admin can navigate to the edit page' do
     visit internships_path
-    click_link 'Edit'
+    within("#internship-#{internship.id}") do
+      click_link 'Edit'
+    end
     expect(page).to have_content 'Describe your company and internship. Get students excited about what you do!'
   end
 
@@ -182,12 +184,6 @@ feature "admin viewing a student's internship page" do
   let(:student) { FactoryGirl.create(:student, course: course) }
   let!(:internship) { FactoryGirl.create(:internship, courses: [student.course]) }
   before { login_as(admin, scope: :admin) }
-
-  scenario "an admin can navigate to a student's internship page from the student list" do
-    visit root_path
-    click_link student.name
-    expect(page).to have_content internship.name
-  end
 
   scenario "an admin can see internships from that student's course" do
     visit course_student_path(student.course, student)

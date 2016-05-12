@@ -61,25 +61,13 @@ feature 'Changing current course', js: true do
   let(:admin) { FactoryGirl.create(:admin) }
 
   scenario 'admin selects a course from the drop down' do
-    course = FactoryGirl.create(:course, description: 'Winter 2015')
+    FactoryGirl.create(:course, description: 'Winter 2015')
     course2 = FactoryGirl.create(:course, description: 'Spring 2015')
     login_as(admin, scope: :admin)
     visit root_path
     click_link admin.current_course.description
     click_link course2.description
     expect(page).to have_content "You have switched to #{course2.description}"
-  end
-
-  context 'when viewing a course code review page' do
-    it 'redirects them to the code reviews for their current course' do
-      course = FactoryGirl.create(:course, description: 'Winter 2015')
-      code_review = FactoryGirl.create(:code_review, course: course)
-      login_as(admin, scope: :admin)
-      visit course_code_reviews_path(admin.current_course)
-      expect(page).to have_content code_review.title
-      click_link admin.current_course.description
-      expect(page).to have_content code_review.title
-    end
   end
 end
 

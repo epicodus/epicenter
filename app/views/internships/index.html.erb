@@ -34,12 +34,18 @@
       <% if course.active? %>
         <%= form_for course, method: :put do |f| %>
           <%= f.hidden_field :active, value: false %>
-          <%= f.submit 'Mark as inactive', class: 'btn btn-default' %>
+          <div class="btn-group">
+            <%= link_to 'Edit', edit_course_path(course), class: 'btn btn-success' %>
+            <%= f.submit 'Mark as inactive', class: 'btn btn-default' %>
+          </div>
         <% end %>
       <% else %>
         <%= form_for course, method: :put do |f| %>
           <%= f.hidden_field :active, value: true %>
-          <%= f.submit 'Mark as active', class: 'btn btn-default' %>
+          <div class="btn-group">
+            <%= link_to 'Edit', edit_course_path(course), class: 'btn btn-success' %>
+            <%= f.submit 'Mark as active', class: 'btn btn-default' %>
+          </div>
         <% end %>
       <% end %>
 
@@ -57,8 +63,8 @@
             </tr>
           </thead>
           <tbody>
-            <% course.internships.order('name').each do |internship| %>
-              <tr>
+            <% course.internships.order(:name).each do |internship| %>
+              <tr id="internship-<%= internship.id %>">
                 <td><%= link_to internship.name, course_internship_path(course, internship) %></td>
                 <td><%= internship.number_of_students %></td>
                 <td><%= internship.tracks.pluck(:description).join(', ') %></td>

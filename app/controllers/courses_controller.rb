@@ -19,7 +19,7 @@ class CoursesController < ApplicationController
     @course = Course.new(course_params)
     if @course.save
       current_admin.update(current_course: @course)
-      redirect_to course_students_path(@course), notice: 'Class has been created!'
+      redirect_to course_students_path(@course), notice: 'Course has been created.'
     else
       render :new
     end
