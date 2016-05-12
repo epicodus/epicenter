@@ -76,7 +76,7 @@ feature 'viewing courses' do
 end
 
 feature 'editing a course' do
-  let(:course) { FactoryGirl.create(:course) }
+  let(:course) { FactoryGirl.create(:internship_course) }
 
   scenario 'not logged in' do
     visit edit_course_path(course)
@@ -116,6 +116,12 @@ feature 'editing a course' do
       click_on 'Update Course'
       expect(page).to have_content "PHP/Drupal - Summer 2015 has been updated"
       expect(page).to have_content 'Code reviews'
+    end
+
+    scenario 'from the internships index page' do
+      visit internships_path
+      click_on 'Mark as inactive'
+      expect(page).to have_content "#{course.description} has been updated"
     end
   end
 end
