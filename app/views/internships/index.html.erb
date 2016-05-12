@@ -5,14 +5,14 @@
   <% else %>
     <li class="active">
   <% end %>
-    <%= link_to 'Active internship courses', internships_path %>
+    <%= link_to 'Active', internships_path %>
   </li>
   <% if params[:inactive] %>
     <li class="active">
   <% else %>
     <li>
   <% end %>
-    <%= link_to 'Inactive internship courses', internships_path(inactive: true) %>
+    <%= link_to 'Inactive', internships_path(inactive: true) %>
   </li>
 </ul>
 <br>

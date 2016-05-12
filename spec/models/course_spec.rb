@@ -209,13 +209,29 @@ describe Course do
     end
   end
 
+  describe '#active_internship_courses' do
+    it 'returns all courses that are internship courses' do
+      internship_course = FactoryGirl.create(:internship_course, active: true)
+      FactoryGirl.create(:course)
+      expect(Course.active_internship_courses).to eq [internship_course]
+    end
+  end
+
+  describe '#inactive_internship_courses' do
+    it 'returns all courses that are internship courses' do
+      internship_course = FactoryGirl.create(:internship_course, active: false)
+      FactoryGirl.create(:course)
+      expect(Course.inactive_internship_courses).to eq [internship_course]
+    end
+  end
+
   describe '#total_internship_students_requested' do
     it 'returns the total number of students requested for an internship course' do
       internship_course = FactoryGirl.create(:internship_course)
       company_1 = FactoryGirl.create(:company)
       company_2 = FactoryGirl.create(:company)
-      internship_1 = FactoryGirl.create(:internship, company: company_1, courses: [internship_course])
-      internship_2 = FactoryGirl.create(:internship, company: company_2, courses: [internship_course])
+      FactoryGirl.create(:internship, company: company_1, courses: [internship_course])
+      FactoryGirl.create(:internship, company: company_2, courses: [internship_course])
       expect(internship_course.total_internship_students_requested).to eq 4
     end
   end

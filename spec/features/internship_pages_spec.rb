@@ -17,7 +17,7 @@ feature 'viewing the internships index page' do
 
     scenario 'admins can see all the internships' do
       visit internships_path
-      expect(page).to have_content 'Active internship courses'
+      expect(page).to have_content 'Internships'
     end
   end
 end
