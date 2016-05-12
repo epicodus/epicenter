@@ -63,8 +63,9 @@ private
       @payments = current_student.payments
       render 'payments/index'
     else
+      @student = Student.find(params[:id])
       @course = Course.find(Rails.application.routes.recognize_path(request.referrer)[:course_id])
-      render 'internships/index'
+      render 'students/show'
     end
   end
 end
