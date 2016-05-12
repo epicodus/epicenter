@@ -22,7 +22,7 @@
           </tr>
         </thead>
         <tbody>
-          <% @student.courses.each do |course| %>
+          <% @student.courses.order(:start_date).each do |course| %>
             <tr id="student-course-<%= course.id %>">
               <td><%= link_to course.description, course_student_path(course, @student) %></td>
               <td>

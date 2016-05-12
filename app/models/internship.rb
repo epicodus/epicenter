@@ -21,7 +21,7 @@ class Internship < ActiveRecord::Base
   before_save :check_number_of_students
 
   def other_internship_courses
-    Course.internship_courses.where.not(id: courses.map(&:id))
+    Course.internship_courses.where(active: true).where.not(id: courses.map(&:id))
   end
 
 private

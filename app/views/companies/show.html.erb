@@ -26,11 +26,23 @@
   <div class="table-responsive">
     <table class="table">
       <thead>
-        <tr><th>Your internship periods</th></tr>
+        <tr>
+          <th>Your internship periods</th>
+          <th></th>
+        </tr>
       </thead>
       <tbody>
-        <% internship.courses.each do |course| %>
-          <tr><td><%= course.description %></td></tr>
+        <% internship.courses.order(:description).reverse.each do |course| %>
+          <tr>
+            <td class="col-md-4">
+              <%= course.description %>
+            </td>
+            <td>
+              <% if !course.active? %>
+                <span class="text-info">Finished</span>
+              <% end %>
+            </td>
+          </tr>
         <% end %>
       </tbody>
     </table>

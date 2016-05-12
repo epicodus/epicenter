@@ -1,33 +1,82 @@
-<h1>All internships</h1>
+<h1>Internships</h1>
+<ul class="nav nav-tabs">
+  <% if params[:inactive] %>
+    <li>
+  <% else %>
+    <li class="active">
+  <% end %>
+    <%= link_to 'Active', internships_path %>
+  </li>
+  <% if params[:inactive] %>
+    <li class="active">
+  <% else %>
+    <li>
+  <% end %>
+    <%= link_to 'Inactive', internships_path(inactive: true) %>
+  </li>
+</ul>
+<br>
+
 <% @courses.reverse.each do |course| %>
-  <h3><%= course.description %></h3>
-  <h4>Students requested: <%= course.total_internship_students_requested %></h4>
-  <div class="table-responsive">
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th>Company</th>
-          <th>Students requested</th>
-          <th>Technologies</th>
-          <th>Contact</th>
-          <th>Email</th>
-          <th></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% course.internships.order('name').each do |internship| %>
-          <tr>
-            <td><%= link_to internship.name, course_internship_path(course, internship) %></td>
-            <td><%= internship.number_of_students %></td>
-            <td><%= internship.tracks.pluck(:description).join(', ') %></td>
-            <td><%= internship.try(:company).try(:name) %></td>
-            <td><%= mail_to internship.try(:company).try(:email) %></td>
-            <td><%= link_to 'Edit', edit_internship_path(internship) %></td>
-            <td><%= link_to 'Withdraw', course_internships_path(course_id: course.id, internship_id: internship.id), data: { method: :delete, confirm: 'Are you sure?' } %></td>
-          </tr>
+  <% if params[:inactive] %>
+    <div class="panel panel-primary">
+  <% else %>
+    <div class="panel panel-info">
+  <% end %>
+    <div class="panel-heading">
+      <%= course.description %>
+    </div>
+
+    <div class="panel-body">
+      <p><%= pluralize(course.internships.count, 'internship') %></p>
+      <p><%= pluralize(course.total_internship_students_requested, 'student') %> requested</p>
+
+      <% if course.active? %>
+        <%= form_for course, method: :put do |f| %>
+          <%= f.hidden_field :active, value: false %>
+          <div class="btn-group">
+            <%= link_to 'Edit', edit_course_path(course), class: 'btn btn-success' %>
+            <%= f.submit 'Mark as inactive', class: 'btn btn-default' %>
+          </div>
         <% end %>
-      </tbody>
-    </table>
+      <% else %>
+        <%= form_for course, method: :put do |f| %>
+          <%= f.hidden_field :active, value: true %>
+          <div class="btn-group">
+            <%= link_to 'Edit', edit_course_path(course), class: 'btn btn-success' %>
+            <%= f.submit 'Mark as active', class: 'btn btn-default' %>
+          </div>
+        <% end %>
+      <% end %>
+
+      <div class="table-responsive">
+        <table class="table table-hover internships-datatable">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Students requested</th>
+              <th>Technologies</th>
+              <th>Contact</th>
+              <th>Email</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% course.internships.order(:name).each do |internship| %>
+              <tr id="internship-<%= internship.id %>">
+                <td><%= link_to internship.name, course_internship_path(course, internship) %></td>
+                <td><%= internship.number_of_students %></td>
+                <td><%= internship.tracks.pluck(:description).join(', ') %></td>
+                <td><%= internship.try(:company).try(:name) %></td>
+                <td><%= mail_to internship.try(:company).try(:email) %></td>
+                <td><%= link_to 'Edit', edit_internship_path(internship) %></td>
+                <td><%= link_to 'Withdraw', course_internships_path(course_id: course.id, internship_id: internship.id), data: { method: :delete, confirm: 'Are you sure?' } %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 <% end %>

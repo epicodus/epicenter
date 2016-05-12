@@ -79,6 +79,7 @@ FactoryGirl.define do
 
     factory :internship_course do
       internship_course true
+      active true
     end
   end
 

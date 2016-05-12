@@ -164,14 +164,6 @@ describe Course do
     end
   end
 
-  describe 'default scope order' do
-    it 'orders the course by start date by default' do
-      course = FactoryGirl.create(:course, class_days: [Date.new(2015, 1, 1), Date.new(2015, 1, 2)])
-      course2 = FactoryGirl.create(:course, class_days: [Date.new(2014, 1, 1), Date.new(2014, 1, 2)])
-      expect(Course.all).to eq [course2, course]
-    end
-  end
-
   context 'after_destroy' do
     let(:course) { FactoryGirl.create(:course) }
 
@@ -201,15 +193,6 @@ describe Course do
     end
   end
 
-  describe '#with_internships' do
-    it 'returns all courses with internships' do
-      course_1 = FactoryGirl.create(:course)
-      course_2 = FactoryGirl.create(:course)
-      FactoryGirl.create(:internship, courses: [course_1])
-      expect(Course.with_internships).to_not include course_2
-    end
-  end
-
   describe '#internship_courses' do
     it 'returns all courses that are internship courses' do
       internship_course = FactoryGirl.create(:internship_course)
@@ -218,13 +201,29 @@ describe Course do
     end
   end
 
+  describe '#active_internship_courses' do
+    it 'returns all courses that are internship courses' do
+      internship_course = FactoryGirl.create(:internship_course, active: true)
+      FactoryGirl.create(:course)
+      expect(Course.active_internship_courses).to eq [internship_course]
+    end
+  end
+
+  describe '#inactive_internship_courses' do
+    it 'returns all courses that are internship courses' do
+      internship_course = FactoryGirl.create(:internship_course, active: false)
+      FactoryGirl.create(:course)
+      expect(Course.inactive_internship_courses).to eq [internship_course]
+    end
+  end
+
   describe '#total_internship_students_requested' do
     it 'returns the total number of students requested for an internship course' do
       internship_course = FactoryGirl.create(:internship_course)
       company_1 = FactoryGirl.create(:company)
       company_2 = FactoryGirl.create(:company)
-      internship_1 = FactoryGirl.create(:internship, company: company_1, courses: [internship_course])
-      internship_2 = FactoryGirl.create(:internship, company: company_2, courses: [internship_course])
+      FactoryGirl.create(:internship, company: company_1, courses: [internship_course])
+      FactoryGirl.create(:internship, company: company_2, courses: [internship_course])
       expect(internship_course.total_internship_students_requested).to eq 4
     end
   end

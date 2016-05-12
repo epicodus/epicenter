@@ -38,7 +38,7 @@ feature 'creating a course' do
         find('td', text: 16).click
         find('td', text: 19).click
         click_on 'Create Course'
-        expect(page).to have_content 'Class has been created'
+        expect(page).to have_content 'Course has been created'
         expect(page).to have_content 'Code reviews'
       end
     end
@@ -54,7 +54,7 @@ feature 'creating a course' do
       find('#course_class_days', visible: false).set "2015-09-06,2015-09-07,2015-09-08"
       select previous_course.description, from: 'Import code reviews from previous course'
       click_on 'Create Course'
-      expect(page).to have_content 'Class has been created'
+      expect(page).to have_content 'Course has been created'
       expect(page).to have_content code_review.title
     end
   end
@@ -76,7 +76,7 @@ feature 'viewing courses' do
 end
 
 feature 'editing a course' do
-  let(:course) { FactoryGirl.create(:course) }
+  let(:course) { FactoryGirl.create(:internship_course) }
 
   scenario 'not logged in' do
     visit edit_course_path(course)
@@ -116,6 +116,12 @@ feature 'editing a course' do
       click_on 'Update Course'
       expect(page).to have_content "PHP/Drupal - Summer 2015 has been updated"
       expect(page).to have_content 'Code reviews'
+    end
+
+    scenario 'from the internships index page' do
+      visit internships_path
+      click_on 'Mark as inactive'
+      expect(page).to have_content "#{course.description} has been updated"
     end
   end
 end

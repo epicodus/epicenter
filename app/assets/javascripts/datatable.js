@@ -15,6 +15,18 @@ $(function() {
     }
   });
 
+  $('.internships-datatable').DataTable({
+    paging: false,
+    autoWidth: false,
+    info: false,
+    language: {
+      search: 'Search table:'
+    },
+    columnDefs: [
+      { orderable: false, targets: [5,6] }
+    ]
+  });
+
   $('#previous-courses-datatable').DataTable({
     paging: false,
     autoWidth: false,

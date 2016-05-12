@@ -8,7 +8,7 @@
 
     <p>Courses:</p>
     <ul>
-      <% current_student.courses.each do |course| %>
+      <% current_student.courses.order(:start_date).each do |course| %>
       <li>
         <%= course.description %>
         <ul>
