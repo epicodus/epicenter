@@ -2,7 +2,7 @@ class InternshipsController < ApplicationController
   authorize_resource
 
   def index
-    @courses = Course.with_internships
+    @courses = Course.internship_courses
     authorize! :manage, Course
   end
 

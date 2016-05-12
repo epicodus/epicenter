@@ -32,7 +32,12 @@ class CoursesController < ApplicationController
   def update
     @course = Course.find(params[:id])
     if @course.update(course_params)
-      redirect_to course_students_path(@course), notice: "#{@course.description} has been updated."
+      flash[:notice] = "#{@course.description} has been updated."
+      if request.referer.include?('internships')
+        redirect_to internships_path
+      else
+        redirect_to course_students_path(@course)
+      end
     else
       render :edit
     end
@@ -47,7 +52,7 @@ class CoursesController < ApplicationController
 private
 
   def course_params
-    params[:course][:class_days] = params[:course][:class_days].split(',').map { |day| Date.parse(day) }
-    params.require(:course).permit(:admin_id, :description, :importing_course_id, :start_time, :end_time, :internship_course, class_days: [])
+    params[:course][:class_days] = params[:course][:class_days].split(',').map { |day| Date.parse(day) } if params[:course][:class_days]
+    params.require(:course).permit(:admin_id, :description, :importing_course_id, :start_time, :end_time, :internship_course, :active, class_days: [])
   end
 end
