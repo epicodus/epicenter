@@ -1,6 +1,7 @@
 class Course < ActiveRecord::Base
   default_scope { order(:start_date) }
   scope :internship_courses, -> { where(internship_course: true) }
+  scope :active_internship_courses, -> { where(internship_course: true, active: true) }
   scope :previous_courses, -> { where('end_date <= ?', Time.zone.now.to_date) }
 
   validates :description, :start_date, :end_date, :start_time, :end_time, presence: true
@@ -23,10 +24,6 @@ class Course < ActiveRecord::Base
 
   def self.with_code_reviews
     includes(:code_reviews).where.not(code_reviews: { id: nil })
-  end
-
-  def self.with_internships
-    includes(:internships).where.not(internships: { id: nil })
   end
 
   def self.current_and_future_courses
