@@ -14,16 +14,13 @@
     <% end %>
     <tr>
       <th>Technologies:</th>
-      <td>
-        <%= @internship.tracks.pluck(:description).join(', ') %>
-      </td>
+      <td><%= @internship.tracks.pluck(:description).join(', ') %></td>
     </tr>
     <tr>
       <th>Company info:</th>
       <td>
         <%= link_to @internship.website, @internship.website %><br>
-        <%= @internship.address %><br><br>
-        <%= @internship.description %>
+        <%= @internship.address %>
       </td>
     </tr>
     <tr>
@@ -65,15 +62,15 @@
         </tr>
       </thead>
       <% if params[:tab].nil? %>
-        <% Student.find_students_by_interest(@internship, '1').each do |student| %>
+        <% @course.students.find_students_by_interest(@internship, '1').each do |student| %>
         <%= render 'student_row', student: student, internship: @internship %>
         <% end %>
       <% elsif params[:tab] == 'medium' %>
-        <% Student.find_students_by_interest(@internship, '2').each do |student| %>
+        <% @course.students.find_students_by_interest(@internship, '2').each do |student| %>
         <%= render 'student_row', student: student, internship: @internship %>
         <% end %>
       <% elsif params[:tab] == 'low' %>
-        <% Student.find_students_by_interest(@internship, '3').each do |student| %>
+        <% @course.students.find_students_by_interest(@internship, '3').each do |student| %>
         <%= render 'student_row', student: student, internship: @internship %>
         <% end %>
       <% end %>

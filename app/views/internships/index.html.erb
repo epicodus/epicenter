@@ -1,9 +1,29 @@
 <h1>All internships</h1>
 <% @courses.reverse.each do |course| %>
   <h3><%= course.description %></h3>
+
+  <% if course.active? %>
+    <h4>Status: <span class="label label-success">Active</span></h4>
+  <% else %>
+    <h4>Status: <span class="label label-primary">Inactive</span></h4>
+  <% end %>
+
   <h4>Students requested: <%= course.total_internship_students_requested %></h4>
+
+  <% if course.active? %>
+    <%= form_for course, method: :put do |f| %>
+      <%= f.hidden_field :active, value: false %>
+      <%= f.submit 'Mark as inactive', class: 'btn btn-default' %>
+    <% end %>
+  <% else %>
+    <%= form_for course, method: :put do |f| %>
+      <%= f.hidden_field :active, value: true %>
+      <%= f.submit 'Mark as active', class: 'btn btn-default' %>
+    <% end %>
+  <% end %>
+
   <div class="table-responsive">
-    <table class="table table-hover">
+    <table class="table table-hover internships-datatable">
       <thead>
         <tr>
           <th>Company</th>
