@@ -21,7 +21,7 @@ $(function() {
   });
 
   $('input:radio[value=3]').change(function() {
-    if ($('input:radio:checked[value=3]').length > 5) {
+    if ($('input:radio:checked[value=3]').length > 3) {
       $(this).attr('checked', false);
       $(this).parent().removeClass('active');
       $(this).tooltip('toggle');

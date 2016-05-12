@@ -100,8 +100,6 @@ feature 'rating an internship' do
   let!(:low_rating_1) { FactoryGirl.create(:low_rating, internship: low_rated_internship_1, student: student)}
   let!(:low_rating_2) { FactoryGirl.create(:low_rating, internship: low_rated_internship_2, student: student)}
   let!(:low_rating_3) { FactoryGirl.create(:low_rating, internship: low_rated_internship_3, student: student)}
-  let!(:low_rating_4) { FactoryGirl.create(:low_rating, internship: low_rated_internship_4, student: student)}
-  let!(:low_rating_5) { FactoryGirl.create(:low_rating, internship: low_rated_internship_5, student: student)}
   before { login_as(student, scope: :student) }
 
   scenario 'a student can rate an internship from the internships index page' do
@@ -129,7 +127,7 @@ feature 'rating an internship' do
       fill_in 'Notes: minimum 10 characters', with: 'Note about the sixth internship.'
       choose "Low"
     end
-    expect(page).to have_content 'You may only rank 5 companies as "Low" interest.'
+    expect(page).to have_content 'You may only rank 3 companies as "Low" interest.'
   end
 end
 
