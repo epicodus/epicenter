@@ -1,7 +1,8 @@
 class Course < ActiveRecord::Base
   default_scope { order(:start_date) }
   scope :internship_courses, -> { where(internship_course: true) }
-  scope :active_internship_courses, -> { where(internship_course: true, active: true) }
+  scope :active_internship_courses, -> { unscoped.where(internship_course: true, active: true).order('description') }
+  scope :inactive_internship_courses, -> { unscoped.where(internship_course: true, active: false).order('description') }
   scope :previous_courses, -> { where('end_date <= ?', Time.zone.now.to_date) }
 
   validates :description, :start_date, :end_date, :start_time, :end_time, presence: true

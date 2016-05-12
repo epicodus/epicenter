@@ -2,7 +2,7 @@ class InternshipsController < ApplicationController
   authorize_resource
 
   def index
-    @courses = Course.internship_courses
+    @courses = params[:inactive] ? Course.inactive_internship_courses : Course.active_internship_courses
     authorize! :manage, Course
   end
 
