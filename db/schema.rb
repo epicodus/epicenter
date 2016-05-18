@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160511210609) do
+ActiveRecord::Schema.define(version: 20160518214207) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -140,6 +140,8 @@ ActiveRecord::Schema.define(version: 20160511210609) do
     t.integer  "total_amount"
     t.string   "close_io_description"
     t.boolean  "archived"
+    t.boolean  "loan"
+    t.boolean  "standard"
   end
 
   create_table "ratings", force: :cascade do |t|

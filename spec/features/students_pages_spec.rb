@@ -24,13 +24,12 @@ end
 
 feature 'Student signs up via invitation', :vcr do
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: 'test@test.com') }
-  let!(:plan) { FactoryGirl.create(:upfront_payment_only_plan, name: '5-class up-front discount') }
 
   scenario 'with valid information' do
     student.invite!
     visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
     fill_in 'Name', with: 'Ryan Larson'
-    select plan.name, from: 'student_plan_id'
+    select student.plan.name, from: 'student_plan_id'
     fill_in 'Password', with: 'password'
     fill_in 'Password confirmation', with: 'password'
     click_on 'Submit'
@@ -41,14 +40,14 @@ feature 'Student signs up via invitation', :vcr do
     student.invite!
     visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
     fill_in 'Name', with: ''
-    select plan.name, from: 'student_plan_id'
+    select student.plan.name, from: 'student_plan_id'
     click_on 'Submit'
     expect(page).to have_content 'error'
   end
 end
 
 feature 'Student cannot invite other students' do
-  let (:student) { FactoryGirl.create(:student) }
+  let(:student) { FactoryGirl.create(:student) }
 
   scenario 'student visits new_student_invitation path' do
     login_as(student)
@@ -58,7 +57,7 @@ feature 'Student cannot invite other students' do
 end
 
 feature 'Student signs in with GitHub' do
-  let (:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
   after { OmniAuth.config.mock_auth[:github] = nil }
 
@@ -109,7 +108,7 @@ feature "Student signs in while class is not in session" do
 
   context "after entering bank account info but before verifying" do
     it "takes them to the payment methods page", :vcr do
-      bank_account = FactoryGirl.create(:bank_account, student: student)
+      FactoryGirl.create(:bank_account, student: student)
       sign_in_as student
       visit payment_methods_path
       expect(page).to have_content "Your payment methods"
@@ -119,7 +118,7 @@ feature "Student signs in while class is not in session" do
 
   context "after verifying their bank account", :vcr do
     it "shows them their payment history" do
-      verified_bank_account = FactoryGirl.create(:verified_bank_account, student: student)
+      FactoryGirl.create(:verified_bank_account, student: student)
       sign_in_as(student)
       visit student_payments_path(student)
       expect(page).to have_content "Your payments"
@@ -128,7 +127,7 @@ feature "Student signs in while class is not in session" do
 
   context "after adding a credit card", :vcr, :stripe_mock do
     it "shows them their payment history" do
-      credit_card = FactoryGirl.create(:credit_card, student: student)
+      FactoryGirl.create(:credit_card, student: student)
       sign_in_as(student)
       visit student_payments_path(student)
       expect(page).to have_content "Your payments"

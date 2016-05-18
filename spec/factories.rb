@@ -138,11 +138,24 @@ FactoryGirl.define do
   end
 
   factory :plan do
-    name "summer 2014"
-
     factory :upfront_payment_only_plan do
+      name '5-class up-front discount'
       upfront_amount 3400_00
       total_amount 3400_00
+    end
+
+    factory :standard_plan do
+      name 'Standard tuition'
+      standard true
+      upfront_amount 120_00
+      total_amount 120_00
+    end
+
+    factory :loan_plan do
+      name 'Loan'
+      loan true
+      upfront_amount 120_00
+      total_amount 120_00
     end
   end
 
