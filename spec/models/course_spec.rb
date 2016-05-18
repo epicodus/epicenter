@@ -241,7 +241,7 @@ describe Course do
 
     it 'realizes the tuition for a course when it has concluded' do
       student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
-      payment = FactoryGirl.create(:payment_with_credit_card, student: student)
+      FactoryGirl.create(:payment_with_credit_card, student: student)
       student.course.realize_tuition_in_less_accounting
       payment_amount = (student.course.credit_cost * (student.plan.total_amount / student.plan.credits)) / 100
       expect(RestClient::Request).to have_received(:execute).with(
