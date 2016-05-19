@@ -27,7 +27,7 @@ describe CodeReview do
 
   it 'prevents code review deletion when submissions exist' do
     code_review = FactoryGirl.create(:code_review)
-    submission = FactoryGirl.create(:submission, code_review: code_review)
+    FactoryGirl.create(:submission, code_review: code_review)
     expect(code_review.destroy).to be false
   end
 
@@ -96,7 +96,7 @@ describe CodeReview do
     end
 
     it "gives 0 if the student's submission hasn't been reviewed" do
-      submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
+      FactoryGirl.create(:submission, code_review: code_review, student: student)
       expect(code_review.latest_total_score_for(student)).to eq 0
     end
   end
@@ -122,7 +122,7 @@ describe CodeReview do
     end
 
     it 'returns the overall student status when a student did not make a submission for a code review' do
-      expect(code_review.status(student)).to eq 'Did not meet requirements'
+      expect(code_review.status(student)).to eq 'Not yet graded'
     end
   end
 end
