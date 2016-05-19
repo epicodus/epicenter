@@ -25,10 +25,10 @@
 
     <p>Attendance:</p>
     <ul>
-      <li>Present: <%= number_to_percentage(current_student.attendance_percentage_for(:on_time), precision: 0) %></li>
-      <li>Tardy: <%= number_to_percentage(current_student.attendance_percentage_for(:tardy), precision: 0) %></li>
-      <li>Left early: <%= number_to_percentage(current_student.attendance_percentage_for(:left_early), precision: 0) %></li>
-      <li>Absent: <%= number_to_percentage(current_student.attendance_percentage_for(:absent), precision: 0) %></li>
+      <li>Present <%= pluralize(current_student.attendance_records_for(:on_time), 'day') %></li>
+      <li>Tardy <%= pluralize(current_student.attendance_records_for(:tardy), 'day') %></li>
+      <li>Left early <%= pluralize(current_student.attendance_records_for(:left_early), 'day') %></li>
+      <li>Absent <%= pluralize(current_student.attendance_records_for(:absent), 'day') %></li>
     </ul>
     <p><%= image_tag "signature.png" %></p>
     <p><strong>Michael Kaiser-Nyman, President</strong></p>

@@ -7,7 +7,7 @@
         </div>
         <div class="modal-body">
           <% submission.reviews.each do |review| %>
-            <%= markdown(review.note) %>
+            <%= review.note %>
           <% end %>
         </div>
         <div class="modal-footer">

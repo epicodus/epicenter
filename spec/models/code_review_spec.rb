@@ -108,12 +108,12 @@ describe CodeReview do
 
     it 'returns the overall student status when a student meets the requirements for a code review', :stub_mailgun do
       FactoryGirl.create(:passing_review, submission: submission)
-      expect(code_review.status(student)).to eq 'Met requirements all of the time'
+      expect(code_review.status(student)).to eq 'Met requirements'
     end
 
     it 'returns the overall student status when a student mostly meets the requirements for a code review', :stub_mailgun do
       FactoryGirl.create(:in_between_review, submission: submission)
-      expect(code_review.status(student)).to eq 'Met requirements most of the time'
+      expect(code_review.status(student)).to eq 'Met requirements'
     end
 
     it 'returns the overall student status when a student does not meet the requirements for a code review', :stub_mailgun do
@@ -122,7 +122,7 @@ describe CodeReview do
     end
 
     it 'returns the overall student status when a student did not make a submission for a code review' do
-      expect(code_review.status(student)).to eq 'Not yet graded'
+      expect(code_review.status(student)).to eq 'Pending'
     end
   end
 end

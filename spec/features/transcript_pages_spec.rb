@@ -24,7 +24,7 @@ feature "viewing transcript" do
       student = FactoryGirl.create(:student, course: course)
       code_review = FactoryGirl.create(:code_review, course: course)
       submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
-      review = FactoryGirl.create(:passing_review, submission: submission)
+      FactoryGirl.create(:passing_review, submission: submission)
 
       login_as(student, scope: :student)
       visit transcript_path
@@ -36,7 +36,7 @@ feature "viewing transcript" do
       student = FactoryGirl.create(:student, course: course)
       login_as(student, scope: :student)
       visit transcript_path
-      expect(page).to have_content "Present: 0%"
+      expect(page).to have_content "Present 0 days"
     end
   end
 end
