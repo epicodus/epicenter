@@ -56,6 +56,7 @@ FactoryGirl.define do
   end
 
   factory :course do
+    internship_course false
     description 'Current course'
     class_days (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 4.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? }
     start_time '8:00 AM'

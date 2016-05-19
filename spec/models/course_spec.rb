@@ -201,6 +201,14 @@ describe Course do
     end
   end
 
+  describe '#non_internship_courses' do
+    it 'returns all courses that are internship courses' do
+      FactoryGirl.create(:internship_course)
+      course = FactoryGirl.create(:course)
+      expect(Course.non_internship_courses).to eq [course]
+    end
+  end
+
   describe '#active_internship_courses' do
     it 'returns all courses that are internship courses' do
       internship_course = FactoryGirl.create(:internship_course, active: true)
