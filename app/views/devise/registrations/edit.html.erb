@@ -1,6 +1,6 @@
 <h1>Your profile</h1>
 
-<% if can? :manage, @student %>
+<% if can?(:manage, @student) && @student.courses.any? %>
   <% if @student.class_over? %>
     <p><%= link_to "View certificate of completion", certificate_path, target: '_blank' %></p>
   <% end %>
