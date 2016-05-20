@@ -199,7 +199,7 @@ class Student < User
 private
 
   def total_number_of_course_days
-    courses.map(&:class_days).flatten.count
+    courses.non_internship_courses.map(&:class_days).flatten.count
   end
 
   def update_close_io_payment_plan
