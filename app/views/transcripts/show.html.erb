@@ -28,7 +28,7 @@
       <li>Present <%= pluralize(current_student.attendance_records_for(:on_time), 'day') %></li>
       <li>Tardy <%= pluralize(current_student.attendance_records_for(:tardy), 'day') %></li>
       <li>Left early <%= pluralize(current_student.attendance_records_for(:left_early), 'day') %></li>
-      <li>Absent <%= pluralize(current_student.attendance_records_for(:absent) - 1, 'day') %></li>
+      <li>Absent <%= pluralize(current_student.attendance_records_for(:absent), 'day') %></li>
     </ul>
     <p><%= image_tag "signature.png" %></p>
     <p><strong>Michael Kaiser-Nyman, President</strong></p>
