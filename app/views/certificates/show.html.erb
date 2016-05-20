@@ -1,8 +1,8 @@
-<div class="certificate col-md-10">
+<div class="text-center certificate col-md-8 col-md-offset-2">
   <h1>Epicodus Certificate of Completion</h1>
 
-  <h2>Web and Mobile Development</h2>
-  <h3><%= @student.course.end_date.strftime('%B %d, %Y') %></h3>
+  <p><em><strong>Web and Mobile Development</strong></em></p>
+  <p><%= @student.courses.non_internship_courses.order(:start_date).last.end_date.strftime('%B %d, %Y') %></p>
 
   <p>
     <strong><%= @student.name %></strong> has completed Epicodus's Web and
