@@ -6,8 +6,8 @@
           <h4>Notes</h4>
         </div>
         <div class="modal-body">
-          <% submission.reviews.each do |review| %>
-            <%= review.note %>
+          <% if submission.has_been_reviewed? %>
+            <%= markdown(submission.try(:latest_review).try(:note)) %>
           <% end %>
         </div>
         <div class="modal-footer">

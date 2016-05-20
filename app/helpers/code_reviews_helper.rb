@@ -1,7 +1,7 @@
 module CodeReviewsHelper
   def markdown(text)
-    html = HTMLRenderer.new(prettify: true)
-    markdown = Redcarpet::Markdown.new(html, space_after_headers: true, fenced_code_blocks: true)
+    html = Redcarpet::Render::HTML.new(prettify: true, escape_html: true)
+    markdown = Redcarpet::Markdown.new(html, space_after_headers: true, fenced_code_blocks: true, disable_indented_code_blocks: true)
     markdown.render(text).html_safe
   end
 
