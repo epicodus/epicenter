@@ -145,6 +145,17 @@ feature "Student visits homepage after logged in" do
   end
 end
 
+feature "Unenrolled student signs in" do
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+
+  it "successfully and is redirected" do
+    Enrollment.find_by(student_id: student.id, course_id: student.course.id).destroy
+    sign_in_as(student)
+    expect(current_path).to eq new_payment_method_path
+    expect(page).to have_content 'Welcome to Epicodus'
+  end
+end
+
 feature "Student signs in while class is in session" do
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
 
