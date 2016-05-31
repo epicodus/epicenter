@@ -36,6 +36,16 @@ describe Student do
     end
   end
 
+  describe '#internship_course' do
+    let(:internship_course) { FactoryGirl.create(:internship_course) }
+    let(:non_internship_course) { FactoryGirl.create(:course) }
+    let(:student) { FactoryGirl.create(:student, courses: [internship_course, non_internship_course]) }
+
+    it 'returns the internship course for a student' do
+      expect(student.internship_course).to eq internship_course
+    end
+  end
+
   describe "#other_courses" do
     let!(:first_course) { FactoryGirl.create(:past_course) }
     let!(:second_course) { FactoryGirl.create(:course) }
