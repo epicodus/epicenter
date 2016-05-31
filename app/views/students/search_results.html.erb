@@ -3,7 +3,10 @@
     <div class="col-md-6 col-md-offset-3">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <%= link_to student.name, student_payments_path(student) %>
+          <%= link_to student.name, student_payments_path(student), class: 'search-name-link' %>
+          <% if student.internship_course %>
+            <%= link_to 'Internships', course_student_path(student.internship_course, student) %>
+          <% end %>
           <% if student.courses.empty? %>
             <span class="label label-primary pull-right">Not enrolled</span>
           <% elsif student.class_over? %>

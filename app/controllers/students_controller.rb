@@ -23,7 +23,7 @@ class StudentsController < ApplicationController
 
   def update
     if current_admin
-      update_student_enrollment
+      update_student_as_admin
     elsif current_student
       if current_student.update(student_params)
         redirect_appropriately
@@ -35,14 +35,18 @@ class StudentsController < ApplicationController
 
 private
   def student_params
-    params.require(:student).permit(:primary_payment_method_id, :course_id,
+    params.require(:student).permit(:primary_payment_method_id, :course_id, :interview_feedback,
                                     ratings_attributes: [:id, :interest, :internship_id, :notes])
   end
 
-  def update_student_enrollment
+  def update_student_as_admin
     @student = Student.find(params[:id])
     if @student.update(student_params)
-      redirect_to student_courses_path(@student), notice: "Courses for #{@student.name} have been updated"
+      if params[:student][:interview_feedback]
+        redirect_to course_student_path(Course.find(params[:course_id]), @student), notice: "Interview feedback added for #{@student.name}."
+      else
+        redirect_to student_courses_path(@student), notice: "Courses for #{@student.name} have been updated."
+      end
     else
       @course = Course.find(params[:student][:course_id])
       render 'show'

@@ -34,6 +34,10 @@ class Student < User
     100 - (((absences_penalty + tardies_penalty + left_earlies_penalty) / filtered_course.number_of_days_since_start) * 100)
   end
 
+  def internship_course
+    courses.find_by(internship_course: true)
+  end
+
   def other_courses
     Course.where.not(id: courses.map(&:id))
   end
