@@ -10,7 +10,7 @@ class Enrollment < ActiveRecord::Base
 private
 
   def check_student_credits
-    if student.courses.count >= student.plan.credits
+    if student.courses.count * 100 >= student.plan.credits
       errors.add(:student, 'has run out of credits and needs to pay for additional courses')
       false
     end
