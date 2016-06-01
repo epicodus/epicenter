@@ -281,7 +281,7 @@ describe Payment do
   describe 'updating LessAccounting when a payment is made', :vcr, :stripe_mock, :stub_mailgun do
     before { allow(RestClient::Request).to receive(:execute) }
 
-    it "successfully" do
+    it "successfully makes the update" do
         student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
         payment = FactoryGirl.create(:payment_with_credit_card, student: student)
         expect(RestClient::Request).to have_received(:execute).with(

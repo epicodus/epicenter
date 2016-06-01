@@ -34,7 +34,7 @@ RSpec.configure do |config|
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
     end
     StripeMock.start if example.metadata[:stripe_mock]
-    allow_any_instance_of(Payment).to receive(:add_to_less_accounting).and_return(true) if example.metadata[:stub_less_accounting]
+    allow_any_instance_of(Payment).to receive(:defer_revenue_for_accounting).and_return(true) if example.metadata[:stub_less_accounting]
   end
   config.after(:each) do |example|
     StripeMock.stop if example.metadata[:stripe_mock]

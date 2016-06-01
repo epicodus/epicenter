@@ -24,5 +24,11 @@ describe Enrollment do
       enrollment = Enrollment.new(student_id: student.id, course_id: course_6.id)
       expect(enrollment.save).to be false
     end
+
+    it 'enrolls a student if the student has credits remaining' do
+      student = FactoryGirl.create(:student, courses: [course_1, course_2, course_3, course_4])
+      enrollment = Enrollment.new(student_id: student.id, course_id: course_5.id)
+      expect(enrollment.save).to be true
+    end
   end
 end

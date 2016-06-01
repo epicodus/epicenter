@@ -1,6 +1,6 @@
 class SeedCreditCostInCourses < ActiveRecord::Migration
   def up
-    Course.update_all(credit_cost: 1)
+    Course.update_all(credit_cost: 100)
   end
 
   def down

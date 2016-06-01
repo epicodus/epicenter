@@ -140,10 +140,10 @@ ActiveRecord::Schema.define(version: 20160531170040) do
     t.datetime "updated_at"
     t.integer  "total_amount"
     t.string   "close_io_description"
-    t.integer  "credits"
     t.boolean  "archived"
     t.boolean  "loan"
     t.boolean  "standard"
+    t.integer  "credits"
   end
 
   create_table "ratings", force: :cascade do |t|

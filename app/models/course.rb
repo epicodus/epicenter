@@ -83,7 +83,7 @@ class Course < ActiveRecord::Base
     class_days.select { |day| day <= last_date }.sort
   end
 
-  def realize_tuition_in_less_accounting
+  def realize_tuition
     students.each do |student|
       payment_amount = (credit_cost * (student.plan.total_amount / student.plan.credits)) / 100
       RestClient::Request.execute(
