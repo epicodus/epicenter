@@ -100,21 +100,59 @@ describe Payment do
   end
 
   describe "#send_payment_receipt" do
-    it "emails the student a receipt after successful payment", :vcr, :stripe_mock, :stub_less_accounting do
+    it "emails the student a receipt after successful payment when the student is on the standard tuition plan", :vcr, :stripe_mock, :stub_less_accounting do
+      standard_plan = FactoryGirl.create(:standard_plan)
+      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com', plan: standard_plan)
+
+      mailgun_client = spy("mailgun client")
+      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+
+      FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
+
+      expect(mailgun_client).to have_received(:send_message).with(
+        "epicodus.com",
+        { from: ENV['FROM_EMAIL_PAYMENT'],
+          to: student.email,
+          bcc: ENV['FROM_EMAIL_PAYMENT'],
+          subject: "Epicodus tuition payment receipt",
+          text: "Hi #{student.name}. This is to confirm your payment of $618.21 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the Standard tuition plan and that we will be charging you the remaining $1,080 on the first day of class. I want to be sure we know your intentions and don't mistakenly charge you. Thanks so much!" }
+      )
+    end
+
+    it "emails the student a receipt after successful payment when the student is on the loan plan", :vcr, :stripe_mock, :stub_less_accounting do
+      loan_plan = FactoryGirl.create(:loan_plan)
+      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com', plan: loan_plan)
+
+      mailgun_client = spy("mailgun client")
+      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+
+      FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
+
+      expect(mailgun_client).to have_received(:send_message).with(
+        "epicodus.com",
+        { from: ENV['FROM_EMAIL_PAYMENT'],
+          to: student.email,
+          bcc: ENV['FROM_EMAIL_PAYMENT'],
+          subject: "Epicodus tuition payment receipt",
+          text: "Hi #{student.name}. This is to confirm your payment of $618.21 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the Loan plan. Since you are in the process of obtaining a loan for program tuition, would you please let me know (which loan company, date you applied, etc.)? I want to be sure we know your intentions and don't mistakenly charge you. Thanks so much!" }
+      )
+    end
+
+    it "emails the student a receipt after successful payment when the student is on the upfront plan", :vcr, :stripe_mock, :stub_less_accounting do
       student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
 
       mailgun_client = spy("mailgun client")
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
 
-      payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
+      FactoryGirl.create(:payment_with_credit_card, student: student, amount: 4875_00)
 
       expect(mailgun_client).to have_received(:send_message).with(
         "epicodus.com",
-        { :from => ENV['FROM_EMAIL_PAYMENT'],
-          :to => student.email,
-          :bcc => ENV['FROM_EMAIL_PAYMENT'],
-          :subject => "Epicodus tuition payment receipt",
-          :text => "Hi #{student.name}. This is to confirm your payment of $618.21 for Epicodus tuition. Thanks so much!" }
+        { from: ENV['FROM_EMAIL_PAYMENT'],
+          to: student.email,
+          bcc: ENV['FROM_EMAIL_PAYMENT'],
+          subject: "Epicodus tuition payment receipt",
+          text: "Hi #{student.name}. This is to confirm your payment of $5,020.89 for Epicodus tuition. Thanks so much!" }
       )
     end
   end

@@ -140,9 +140,8 @@ FactoryGirl.define do
   end
 
   factory :plan do
-    name '5-class up-front discount'
-
     factory :upfront_payment_only_plan do
+      name '5-class up-front discount'
       upfront_amount 4875_00
       total_amount 4875_00
       credits 5
@@ -153,6 +152,7 @@ FactoryGirl.define do
       standard true
       upfront_amount 120_00
       total_amount 120_00
+      credits 1
     end
 
     factory :loan_plan do
@@ -160,6 +160,7 @@ FactoryGirl.define do
       loan true
       upfront_amount 120_00
       total_amount 120_00
+      credits 5
     end
   end
 
