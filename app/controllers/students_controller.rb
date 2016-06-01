@@ -9,6 +9,7 @@ class StudentsController < ApplicationController
       render 'search_results'
     elsif params[:course_id]
       @course = Course.find(params[:course_id])
+      @students = @course.students.includes(:submissions)
       @enrollment = Enrollment.new
     else
       redirect_to root_path

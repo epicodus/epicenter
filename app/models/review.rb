@@ -13,7 +13,7 @@ class Review < ActiveRecord::Base
   after_create :email_student
 
   def meets_expectations?
-    grades.includes(:score).pluck(:value).all? { |value| value > 1 }
+    grades.pluck(:value).all? { |value| value > 1 }
   end
 
 private
