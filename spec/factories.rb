@@ -61,7 +61,7 @@ FactoryGirl.define do
     class_days (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 4.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? }
     start_time '8:00 AM'
     end_time '5:00 PM'
-    credit_cost 100
+    credit_cost 1
 
     factory :past_course do
       description 'Past course'
@@ -144,7 +144,7 @@ FactoryGirl.define do
       name '5-class up-front discount'
       upfront_amount 4875_00
       total_amount 4875_00
-      credits 500
+      credits 5
     end
 
     factory :standard_plan do
@@ -152,7 +152,7 @@ FactoryGirl.define do
       standard true
       upfront_amount 120_00
       total_amount 120_00
-      credits 100
+      credits 1
     end
 
     factory :loan_plan do
@@ -160,7 +160,7 @@ FactoryGirl.define do
       loan true
       upfront_amount 120_00
       total_amount 120_00
-      credits 500
+      credits 5
     end
   end
 
