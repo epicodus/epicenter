@@ -28,8 +28,8 @@
       <tbody>
         <% @student.payments.order_by_latest.each do |payment| %>
           <tr>
-            <td><%= payment.status.capitalize %></td>
-            <td><%= payment.created_at.strftime("%A, %B %d, %Y") %></td>
+            <td><%= payment.try(:status).try(:capitalize) %></td>
+            <td><%= payment.try(:created_at).try(:strftime, "%A, %B %d, %Y") %></td>
             <td><%= number_to_currency(payment.total_amount / 100.00) %></td>
             <td>
               <% if payment.payment_method %>
