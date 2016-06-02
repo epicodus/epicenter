@@ -2,7 +2,7 @@ class IpLocation
 
   def self.is_local?(ip)
     ip = IPAddr.new(ip)
-    local_ip_ranges = ["::1", ENV['SCHOOL_IP_ADDRESS'], ENV['SCHOOL_WIFI_IP_ADDRESS']]
+    local_ip_ranges = ["::1", ENV['SCHOOL_IP_ADDRESS'], ENV['SCHOOL_WIFI_IP_ADDRESS'], ENV['SEATTLE_WIFI_IP_ADDRESS']]
     local_ip_ranges.any? { |range| IPAddr.new(range).include?(ip) }
   end
 
