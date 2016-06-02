@@ -4,7 +4,7 @@
     <%= f.check_box :offline, id: 'offline-payment-checkbox' %>
   </div>
 
-  <% if !@payment.offline? %>
+  <% if !@payment.offline? && @student.payment_methods.any? %>
     <div class="row" id="payment-method-options">
       <div class="col-md-10">
         <div class="form-group">

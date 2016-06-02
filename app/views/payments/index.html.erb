@@ -67,14 +67,16 @@
 
   <p>All payments will be made using your primary payment method.</p>
   <p>If you need help or have any questions regarding your payments, contact us.</p>
-<% elsif can?(:manage, Payment) && @student.primary_payment_method && params[:action] != 'update' %>
+<% elsif can?(:manage, Payment) && params[:action] != 'update' %>
   <h3>Manual payment <small class="text-info">($5,000 limit)</small></h3>
+
+  <% if !@student.primary_payment_method %>
+    <p>No primary payment method has been selected.</p>
+  <% end %>
 
   <div class="row">
     <div class="col-md-5">
       <%= render 'form' %>
     </div>
   </div>
-<% else %>
-  No primary payment method has been selected.
 <% end %>
