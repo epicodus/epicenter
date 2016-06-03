@@ -83,6 +83,18 @@ class Course < ActiveRecord::Base
     class_days.select { |day| day <= last_date }.sort
   end
 
+  def realize_tuition
+    students.each do |student|
+      payment_amount = (credit_cost * (student.plan.total_amount / student.plan.credits)) / 100
+      RestClient::Request.execute(
+        url: "https://epicodus.lessaccounting.com/payments.json?api_key=#{ENV['LESS_ACCOUNTING_API_KEY']}&payment[title]=#{student.name}&payment[amount]=#{payment_amount}&payment[date]=#{Date.today.strftime('%Y-%m-%d')}&payment[bank_account_id]=120215&payment[expense_category_id]=1496063&payment[payment_type]=expense%20refund",
+        method: :post,
+        user: ENV['LESS_ACCOUNTING_EMAIL'],
+        password: ENV['LESS_ACCOUNTING_PASSWORD']
+      )
+    end
+  end
+
 private
 
   def set_start_and_end_dates

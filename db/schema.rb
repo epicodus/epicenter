@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20160531170040) do
     t.string   "end_time"
     t.integer  "admin_id"
     t.boolean  "internship_course"
+    t.decimal  "credit_cost"
     t.boolean  "active"
   end
 
@@ -139,6 +140,7 @@ ActiveRecord::Schema.define(version: 20160531170040) do
     t.datetime "updated_at"
     t.integer  "total_amount"
     t.string   "close_io_description"
+    t.decimal  "credits"
     t.boolean  "archived"
     t.boolean  "loan"
     t.boolean  "standard"

@@ -11,6 +11,7 @@ class Payment < ActiveRecord::Base
   before_create :check_amount
   before_create :make_payment, :send_payment_receipt, unless: ->(payment) { payment.offline? }
   before_create :set_offline_status, if: ->(payment) { payment.offline? }
+  after_create :defer_revenue_for_accounting
   after_save :update_close_io, unless: ->(payment) { payment.refund_amount? || payment.offline? }
   before_update :issue_refund, if: ->(payment) { payment.refund_amount? && !payment.offline? }
   after_update :send_refund_receipt, if: ->(payment) { payment.refund_amount? && !payment.offline? }
@@ -48,6 +49,15 @@ private
       errors.add(:base, exception.message)
       false
     end
+  end
+
+  def defer_revenue_for_accounting
+    RestClient::Request.execute(
+      url: "https://epicodus.lessaccounting.com/expenses.json?api_key=#{ENV['LESS_ACCOUNTING_API_KEY']}&expense[title]=#{student.name}&expense[amount]=#{amount / 100}&expense[paid_date]=#{Date.today.strftime('%Y-%m-%d')}&expense[bank_account_id]=120215&expense[expense_category_id]=1496063",
+      method: :post,
+      user: ENV['LESS_ACCOUNTING_EMAIL'],
+      password: ENV['LESS_ACCOUNTING_PASSWORD']
+    )
   end
 
   def update_close_io

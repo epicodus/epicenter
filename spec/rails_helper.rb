@@ -34,6 +34,7 @@ RSpec.configure do |config|
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
     end
     StripeMock.start if example.metadata[:stripe_mock]
+    allow_any_instance_of(Payment).to receive(:defer_revenue_for_accounting).and_return(true) if example.metadata[:stub_less_accounting]
   end
   config.after(:each) do |example|
     StripeMock.stop if example.metadata[:stripe_mock]
@@ -57,6 +58,11 @@ VCR.configure do |config|
   config.filter_sensitive_data('<REFUND_POLICY_DOCUMENT_URL>') { ENV['REFUND_POLICY_DOCUMENT_URL'] }
   config.filter_sensitive_data('<ENROLLMENT_AGREEMENT_TEMPLATE_ID>') { ENV['ENROLLMENT_AGREEMENT_TEMPLATE_ID'] }
   config.filter_sensitive_data('<CLOSE_IO_API_KEY>') { ENV['CLOSE_IO_API_KEY'] }
+  config.filter_sensitive_data('<GITHUB_CLIENT_ID>') { ENV['GITHUB_CLIENT_ID'] }
+  config.filter_sensitive_data('<GITHUB_CLIENT_SECRET>') { ENV['GITHUB_CLIENT_SECRET'] }
+  config.filter_sensitive_data('<LESS_ACCOUNTING_API_KEY>') { ENV['LESS_ACCOUNTING_API_KEY'] }
+  config.filter_sensitive_data('<LESS_ACCOUNTING_EMAIL>') { ENV['LESS_ACCOUNTING_EMAIL'] }
+  config.filter_sensitive_data('<LESS_ACCOUNTING_PASSWORD>') { ENV['LESS_ACCOUNTING_PASSWORD'] }
 end
 
 Billy.configure do |c|
