@@ -38,7 +38,7 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.4.0)
     arel (6.0.3)
-    autoprefixer-rails (6.3.6.1)
+    autoprefixer-rails (6.3.6.2)
       execjs
     awesome_print (1.6.1)
     bcrypt (3.1.11)
@@ -98,8 +98,8 @@ GEM
     dante (0.2.0)
     database_cleaner (1.5.3)
     debug_inspector (0.0.2)
-    deep_cloneable (2.2.0)
-      activerecord (>= 3.1.0, < 5.0.0)
+    deep_cloneable (2.2.1)
+      activerecord (>= 3.1.0, < 5.2.0)
     devise (4.1.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -235,7 +235,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    puffing-billy (0.7.0)
+    puffing-billy (0.8.0)
       addressable
       em-http-request (~> 1.1.0)
       em-synchrony
@@ -341,7 +341,7 @@ GEM
       activerecord (>= 3.0, <= 5.0)
     thor (0.19.1)
     thread_safe (0.3.5)
-    tilt (2.0.4)
+    tilt (2.0.5)
     tins (1.6.0)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
@@ -357,7 +357,7 @@ GEM
     vcr (3.0.3)
     warden (1.2.6)
       rack (>= 1.0)
-    webmock (2.0.3)
+    webmock (2.1.0)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
@@ -386,7 +386,7 @@ DEPENDENCIES
   coffee-script
   coveralls
   database_cleaner
-  deep_cloneable (= 2.2.0)
+  deep_cloneable
   devise
   devise_invitable
   dotenv-rails
