@@ -13,7 +13,12 @@
     <p><span class="label label-success">Current student</span></p>
   <% end %>
 
-  <p>Primary payment method: <%= @student.primary_payment_method.class.name.underscore.humanize + ' ending in ' + @student.primary_payment_method.last_four_string[-4,4] if @student.primary_payment_method %></p>
+  <% if @student.primary_payment_method %>
+    <p>Primary payment method: <%= @student.primary_payment_method.class.name.underscore.humanize + ' ending in ' + @student.primary_payment_method.last_four_string[-4,4] if @student.primary_payment_method %></p>
+  <% else %>
+    <p>No primary payment method has been selected</p>
+  <% end %>
+
   <p>Total paid: <%= number_to_currency(@student.total_paid / 100.00) %></p>
 
   <% if current_admin && !@student.invitation_accepted_at? && @student.invitation_token? %>

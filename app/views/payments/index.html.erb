@@ -70,10 +70,6 @@
 <% elsif can?(:manage, Payment) && params[:action] != 'update' %>
   <h3>Manual payment <small class="text-info">($5,000 limit)</small></h3>
 
-  <% if !@student.primary_payment_method %>
-    <p>No primary payment method has been selected.</p>
-  <% end %>
-
   <div class="row">
     <div class="col-md-5">
       <%= render 'form' %>

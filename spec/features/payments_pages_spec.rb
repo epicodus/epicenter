@@ -35,7 +35,7 @@ feature 'Viewing payment index page' do
     context 'after a payment has been made with bank account', :vcr, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
         student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com')
-        payment = FactoryGirl.create(:payment_with_bank_account, amount: 600_00, student: student)
+        FactoryGirl.create(:payment_with_bank_account, amount: 600_00, student: student)
         login_as(student, scope: :student)
         visit student_payments_path(student)
         expect(page).to have_content 600.00
@@ -85,7 +85,7 @@ feature 'Viewing payment index page' do
       student = FactoryGirl.create(:user_with_all_documents_signed)
       visit student_payments_path(student)
       expect(page).to have_content "No payments have been made yet."
-      expect(page).to have_content "No primary payment method has been selected."
+      expect(page).to have_content "No primary payment method has been selected"
     end
 
     context 'before any payments have been made', :stripe_mock do
@@ -267,7 +267,7 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
   scenario 'with no primary payment method selected' do
     student = FactoryGirl.create(:user_with_all_documents_signed)
     visit student_payments_path(student)
-    expect(page).to have_content 'No primary payment method has been selected.'
+    expect(page).to have_content 'No primary payment method has been selected'
   end
 
   scenario 'successfully with mismatching Epicenter and Close.io emails', :vcr do
