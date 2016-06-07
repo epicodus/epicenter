@@ -4,22 +4,28 @@
 [![Dependency status](https://gemnasium.com/epicodus/epicenter.svg)](https://gemnasium.com/epicodus/epicenter)
 # Epicenter
 
-This is app handles a few different things for Epicodus students and staff, including:
+This app handles a few different things for Epicodus students, staff, and partner internship companies, including:
 
 * Tuition
+* Enrollment
 * Attendance
 * Code Reviews
+* Internships
 
 It's designed to be flexible enough that other schools can adopt it with minimal changes.
 
-Contributions from students, alumni, and other schools are welcome! If you're considering adding a feature, please open a Github issue to discuss it with the project's maintainers first.
+Contributions from students, alumni, and other schools are welcome! If you'd like to add a feature, please open a GitHub issue to discuss it with the project's maintainers first.
 
 
 ## Configuration
 
-Epicenter uses several environmental variables loaded from the `.env` file.
-An example `.env.example` file is provided; you should copy it to `.env` and
-update the example values.
+1. `git clone https://github.com/epicodus/epicenter.git`
+1. `cd epicenter`
+1. `cp .env.example .env`
+1. Update the example values in `.env` as needed
+1. `bundle`
+1. `rake db:create && rake db:schema:load && rake:db:seed`
+1. `rails s` and visit [localhost:3000](http://localhost:3000)
 
 ## License
 GPL2
