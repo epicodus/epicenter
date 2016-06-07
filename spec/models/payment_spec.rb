@@ -278,4 +278,59 @@ describe Payment do
       )
     end
   end
+
+  describe '#send_referral_email', :stripe_mock, :vcr do
+    let(:student) { FactoryGirl.create(:user_with_credit_card, email: 'test@test.com') }
+
+    it 'does not email the student a referral email for an offline payment' do
+      mailgun_client = spy("mailgun client")
+      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+
+      FactoryGirl.create(:payment_with_credit_card, student: student, offline: true)
+
+      expect(mailgun_client).to_not have_received(:send_message).with(
+        "epicodus.com",
+        { from: ENV['FROM_EMAIL_PAYMENT'],
+          to: student.email,
+          bcc: ENV['FROM_EMAIL_PAYMENT'],
+          subject: "Epicodus tuition discount",
+          text: "Hi #{student.name}! We hope you're as excited to start your time at Epicodus as we are to have you. Many of our students learn about Epicodus from their friends, and we always like to thank people for spreading the word. If you mention Epicodus to someone you know and they enroll, we'll take $100 off both of your tuition. Just tell your friend to mention that you referred them in their interview." }
+      )
+      expect(student.referral_email_sent).to eq nil
+    end
+
+    it 'emails the student a referral email when the first tuition payment is made' do
+      mailgun_client = spy("mailgun client")
+      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+
+      FactoryGirl.create(:payment_with_credit_card, student: student)
+
+      expect(mailgun_client).to have_received(:send_message).with(
+        "epicodus.com",
+        { from: ENV['FROM_EMAIL_PAYMENT'],
+          to: student.email,
+          bcc: ENV['FROM_EMAIL_PAYMENT'],
+          subject: "Epicodus tuition discount",
+          text: "Hi #{student.name}! We hope you're as excited to start your time at Epicodus as we are to have you. Many of our students learn about Epicodus from their friends, and we always like to thank people for spreading the word. If you mention Epicodus to someone you know and they enroll, we'll take $100 off both of your tuition. Just tell your friend to mention that you referred them in their interview." }
+      )
+      expect(student.referral_email_sent).to eq true
+    end
+
+    it 'does not email the student a referral email if one has already been sent' do
+      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com', referral_email_sent: true)
+      mailgun_client = spy("mailgun client")
+      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+
+      FactoryGirl.create(:payment_with_credit_card, student: student)
+
+      expect(mailgun_client).to_not have_received(:send_message).with(
+        "epicodus.com",
+        { from: ENV['FROM_EMAIL_PAYMENT'],
+          to: student.email,
+          bcc: ENV['FROM_EMAIL_PAYMENT'],
+          subject: "Epicodus tuition discount",
+          text: "Hi #{student.name}! We hope you're as excited to start your time at Epicodus as we are to have you. Many of our students learn about Epicodus from their friends, and we always like to thank people for spreading the word. If you mention Epicodus to someone you know and they enroll, we'll take $100 off both of your tuition. Just tell your friend to mention that you referred them in their interview." }
+      )
+    end
+  end
 end
