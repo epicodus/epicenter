@@ -7,6 +7,7 @@ class Internship < ActiveRecord::Base
   has_many :courses, through: :course_internships
   has_many :students, through: :ratings
   has_many :internship_tracks
+  has_many :interview_assignments
   has_many :tracks, through: :internship_tracks
 
   validates :name, presence: true

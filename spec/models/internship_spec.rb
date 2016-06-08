@@ -1,6 +1,7 @@
 describe Internship do
   it { should belong_to :company }
   it { should have_many :ratings }
+  it { should have_many :interview_assignments }
   it { should have_many(:courses).through(:course_internships) }
   it { should have_many(:students).through(:ratings) }
   it { should have_many(:tracks).through(:internship_tracks) }

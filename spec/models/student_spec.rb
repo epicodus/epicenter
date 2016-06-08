@@ -10,6 +10,7 @@ describe Student do
   it { should have_many(:courses).through(:enrollments) }
   it { should belong_to(:primary_payment_method).class_name('PaymentMethod') }
   it { should have_many :signatures }
+  it { should have_many :interview_assignments }
 
   describe 'validations' do
     context 'validates plan_id when a student has accepted the epicenter invitation and created an account' do
