@@ -1,5 +1,6 @@
 class Internship < ActiveRecord::Base
   default_scope { order('name') }
+  scope :non_interview_assigned_internships, ->(student) { includes(:interview_assignments) - includes(:interview_assignments).where( interview_assignments: {student_id: student.id}) }
 
   belongs_to :company
   has_many :ratings

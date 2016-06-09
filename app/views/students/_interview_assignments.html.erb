@@ -10,7 +10,7 @@
             <%= form_for @interview_assignment do |f| %>
               <%= render 'layouts/errors', object: @interview_assignment %>
                 <div class="input-group">
-                  <%= f.select :internship_id, @course.internships.collect {|i| [ i.name, i.id ] }, {}, { class: 'form-control', required: true} %>
+                  <%= f.select :internship_id, @course.internships.non_interview_assigned_internships(@student).collect {|i| [ i.name, i.id ] }, { prompt: 'Please select an internship' }, { class: 'form-control', required: true } %>
                   <span class="input-group-btn">
                     <%= f.submit 'Add', class: 'btn btn-success' %>
                   </span>
