@@ -38,7 +38,7 @@ describe Internship do
     let(:student) { FactoryGirl.create(:student, courses: [internship.courses.first, internship_2.courses.first]) }
 
     it "returns internships that a student doesn't have assigned interviews with" do
-      InterviewAssignment.create(student_id: student.id, internship_id: internship.id)
+      FactoryGirl.create(:interview_assignment, student_id: student.id, internship_id: internship.id)
       expect(Internship.non_interview_assigned_internships(student)).to eq [internship_2]
     end
   end

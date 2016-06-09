@@ -22,15 +22,5 @@ feature 'adding an interview assignment' do
       click_on 'Add'
       expect(page).to have_content "Interview assignment added for #{student.name}"
     end
-
-    scenario 'unsuccessfully' do
-      login_as(admin, scope: :admin)
-      visit course_student_path(internship.courses.first, student)
-      select internship.name, from: 'interview_assignment_internship_id'
-      click_on 'Add'
-      select internship.name, from: 'interview_assignment_internship_id'
-      click_on 'Add'
-      expect(page).to have_content 'Please correct these problems'
-    end
   end
 end

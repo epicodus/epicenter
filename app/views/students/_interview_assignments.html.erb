@@ -5,29 +5,21 @@
   <div class="panel-body">
     <div class="panel-body">
       <% if can?(:manage, Internship) && @course.internship_course %>
-        <div class="row">
-          <div class="col-md-9">
-            <%= form_for @interview_assignment do |f| %>
-              <%= render 'layouts/errors', object: @interview_assignment %>
-                <div class="input-group">
-                  <%= f.select :internship_id, @course.internships.non_interview_assigned_internships(@student).collect {|i| [ i.name, i.id ] }, { prompt: 'Please select an internship' }, { class: 'form-control', required: true } %>
-                  <span class="input-group-btn">
-                    <%= f.submit 'Add', class: 'btn btn-success' %>
-                  </span>
-                </div>
-              <%= hidden_field_tag :course_id, @course.id %>
-              <%= f.hidden_field :student_id, value: @student.id %>
-            <% end %>
-          </div>
-        </div>
+        <%= form_for @interview_assignment do |f| %>
+          <%= render 'layouts/errors', object: @interview_assignment %>
+            <div class="input-group">
+              <%= f.select :internship_id, @course.internships.non_interview_assigned_internships(@student).collect {|i| [ i.name, i.id ] }, { prompt: 'Please select an internship' }, { class: 'form-control', required: true } %>
+              <span class="input-group-btn">
+                <%= f.submit 'Add', class: 'btn btn-success' %>
+              </span>
+            </div>
+          <%= hidden_field_tag :course_id, @course.id %>
+          <%= f.hidden_field :student_id, value: @student.id %>
+        <% end %>
         <br>
-        <% @student.interview_assignments.each do |interview_assignment| %>
-          <p><%= interview_assignment.internship.name %></p>
-        <% end %>
-      <% elsif @student.interview_feedback? && @course.internship_course %>
-        <% @student.interview_assignments.each do |interview_assignment| %>
-          <%= interview_assignment.internship.name %>
-        <% end %>
+      <% end %>
+      <% @student.interview_assignments.order_by_internship_name.each do |interview_assignment| %>
+        <p><%= interview_assignment.internship.name %></p>
       <% end %>
     </div>
   </div>
