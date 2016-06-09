@@ -1,0 +1,34 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3 class="panel-title">Interview assignments</h3>
+  </div>
+  <div class="panel-body">
+    <div class="panel-body">
+      <% if can?(:manage, Internship) && @course.internship_course %>
+        <div class="row">
+          <div class="col-md-9">
+            <%= form_for @interview_assignment do |f| %>
+              <%= render 'layouts/errors', object: @interview_assignment %>
+                <div class="input-group">
+                  <%= f.select :internship_id, @course.internships.collect {|i| [ i.name, i.id ] }, {}, { class: 'form-control', required: true} %>
+                  <span class="input-group-btn">
+                    <%= f.submit 'Add', class: 'btn btn-success' %>
+                  </span>
+                </div>
+              <%= hidden_field_tag :course_id, @course.id %>
+              <%= f.hidden_field :student_id, value: @student.id %>
+            <% end %>
+          </div>
+        </div>
+        <br>
+        <% @student.interview_assignments.each do |interview_assignment| %>
+          <p><%= interview_assignment.internship.name %></p>
+        <% end %>
+      <% elsif @student.interview_feedback? && @course.internship_course %>
+        <% @student.interview_assignments.each do |interview_assignment| %>
+          <%= interview_assignment.internship.name %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

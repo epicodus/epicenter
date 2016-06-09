@@ -62,4 +62,5 @@ Rails.application.routes.draw do
   resources :enrollments, only: [:create, :destroy]
   resource :sign_out, controller: 'attendance_sign_out', only: [:create]
   resource :course_internships, only: [:create, :destroy]
+  resource :interview_assignments, only: [:create]
 end
