@@ -6,7 +6,6 @@
         <div class="table-responsive">
           <table class="table">
             <thead>
-              <th>Number</th>
               <th>Title</th>
               <th>Expectations met?</th>
               <th>Teacher notes</th>
@@ -16,7 +15,6 @@
             <% @course.code_reviews.each do |code_review| %>
             <tbody>
               <tr>
-                <td><%= code_review.number %></td>
                 <td><%= code_review.title %></td>
                 <td>
                   <% if code_review.expectations_met_by?(@student) %>
