@@ -1,6 +1,5 @@
 class Internship < ActiveRecord::Base
   default_scope { order('name') }
-  scope :non_interview_assigned_internships, ->(student) { includes(:interview_assignments) - includes(:interview_assignments).where( interview_assignments: {student_id: student.id}) }
 
   belongs_to :company
   has_many :ratings
@@ -21,6 +20,10 @@ class Internship < ActiveRecord::Base
 
   before_validation :fix_url
   before_save :check_number_of_students
+
+  def self.non_interview_assigned_internships(student)
+    all - includes(:interview_assignments).where(interview_assignments: { student_id: student.id })
+  end
 
   def other_internship_courses
     Course.internship_courses.where(active: true).where.not(id: courses.map(&:id))
