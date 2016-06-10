@@ -25,43 +25,7 @@
             </table>
           </div>
         <% elsif can? :read, Internship %>
-          <p class="text-primary">* You may only rank 3 companies as "Low" interest.</p>
-          <%= form_for @student do |f| %>
-            <%= render 'layouts/errors', object: @student %>
-            <div class="row">
-              <div class="col-xs-10">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Company</th>
-                      <th>Technologies</th>
-                      <th>Rating</th>
-                      <th>Notes</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% @course.internships.each do |internship| %>
-                      <tr id="internship_<%= internship.id %>">
-                        <td class="col-xs-2">
-                          <%= link_to internship.name, course_internship_path(@course, internship) %>
-                          <p><%= set_rating_label(@student, internship) %></p>
-                        </td>
-                        <td class="col-xs-2"><%= internship.tracks.pluck(:description).join(', ') %></td>
-                        <%= render 'ratings_fields', f: f, internship: internship %>
-                      </tr>
-                    <% end %>
-                  </tbody>
-                </table>
-              </div>
-              <% if @course.internships.any? %>
-                <div class="col-xs-2">
-                  <div class="form-group">
-                    <%= f.submit 'Submit ratings', class: 'btn btn-success', id: 'fixed-ratings-button' %>
-                  </div>
-                </div>
-              <% end %>
-            </div>
-          <% end %>
+          <%= render 'ratings/form' %>
         <% end %>
       </div>
     </div>
