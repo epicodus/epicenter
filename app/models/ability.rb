@@ -22,7 +22,8 @@ class Ability
 private
 
   def set_admin_permissions
-    can :manage, [AttendanceRecord, CodeReview, Company, Course, Enrollment, Internship, Payment, Student, Submission]
+    can :manage, [AttendanceRecord, CodeReview, Company, Course, Enrollment,
+                  Internship, InterviewAssignment, Payment, Student, Submission]
     can :create, [AttendanceRecordAmendment, Review]
   end
 
