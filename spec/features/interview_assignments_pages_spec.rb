@@ -1,6 +1,7 @@
 feature 'adding an interview assignment' do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:internship) { FactoryGirl.create(:internship) }
+  let!(:internship_2) { FactoryGirl.create(:internship, courses: [internship.courses.first]) }
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: internship.courses.first) }
 
   scenario 'as a guest' do
@@ -19,8 +20,13 @@ feature 'adding an interview assignment' do
       login_as(admin, scope: :admin)
       visit course_student_path(internship.courses.first, student)
       select internship.name, from: 'interview_assignment_internship_id'
+      select internship_2.name, from: 'interview_assignment_internship_id'
       click_on 'Add'
-      expect(page).to have_content "Interview assignment added for #{student.name}"
+      expect(page).to have_content "Interview assignments added for #{student.name}"
+      within '#interview-assignments-table' do
+        expect(page).to have_content internship.name
+        expect(page).to have_content internship_2.name
+      end
     end
   end
 end

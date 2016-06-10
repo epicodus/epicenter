@@ -1,12 +1,14 @@
 class InterviewAssignmentsController < ApplicationController
 
-  def create
+  def create_multiple
     @course = Course.find(params[:course_id])
-    @interview_assignment = InterviewAssignment.new(interview_assignment_params)
-    if @interview_assignment.save
-      redirect_to course_student_path(@course, @interview_assignment.student), notice: "Interview assignment added for #{@interview_assignment.student.name}"
+    @student = Student.find(params[:student_id])
+    interview_assignments = interview_assignment_params[:internship_id].map do |internship_id|
+      InterviewAssignment.new(student_id: @student.id, internship_id: internship_id)
+    end
+    if interview_assignments.each { |interview_assignment| interview_assignment.save }
+      redirect_to course_student_path(@course, @student), notice: "Interview assignments added for #{@student.name}"
     else
-      @student = @interview_assignment.student
       render 'students/show'
     end
   end
@@ -23,6 +25,6 @@ class InterviewAssignmentsController < ApplicationController
   private
 
   def interview_assignment_params
-    params.require(:interview_assignment).permit(:student_id, :internship_id)
+    params.require(:interview_assignment).permit(:student_id, internship_id: [])
   end
 end

@@ -30,14 +30,8 @@
                   <span class="label label-info">Current course</span>
                 <% end %>
               </td>
-              <td><%= course.teacher %></td>
-              <td>
-                <% if course.internship_course? || @student.attendance_score(course).nan? %>
-                  N/A
-                <% else %>
-                  <%= number_to_percentage(@student.attendance_score(course), precision: 0) %>
-                <% end %>
-              </td>
+              <td><%= course.teacher unless course.internship_course? %></td>
+              <td><%= number_to_percentage(@student.attendance_score(course), precision: 0) unless course.internship_course? %></td>
               <td>
                 <% if @student.submissions.for_course(course).empty? %>
                   No submissions made yet
