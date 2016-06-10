@@ -1,23 +1,33 @@
 <% if @results.any? %>
-  <% @results.each do |student| %>
-    <div class="col-md-6 col-md-offset-3">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <%= link_to student.name, student_payments_path(student), class: 'search-name-link' %>
-          <% if student.internship_course %>
-            <%= link_to 'Internships', course_student_path(student.internship_course, student) %>
-          <% end %>
-          <% if student.courses.empty? %>
-            <span class="label label-primary pull-right">Not enrolled</span>
-          <% elsif student.class_over? %>
-            <span class="label label-info pull-right">Graduate</span>
-          <% elsif student.courses.any? %>
-            <span class="label label-success pull-right">Current student</span>
-          <% end %>
-        </div>
-      </div>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <ul class="list-group">
+        <% @results.each do |student| %>
+          <li class="list-group-item">
+            <div class="row">
+              <div class="col-xs-5">
+                <%= link_to student.name, student_payments_path(student) %>
+              </div>
+              <div class="col-xs-6">
+                <% if student.internship_course %>
+                  <%= link_to 'Internships', course_student_path(student.internship_course, student) %>
+                <% end %>
+              </div>
+              <div class="col-xs-1">
+                <% if student.courses.empty? %>
+                  <span class="label label-primary pull-right">Not enrolled</span>
+                <% elsif student.class_over? %>
+                  <span class="label label-info pull-right">Graduate</span>
+                <% elsif student.courses.any? %>
+                  <span class="label label-success pull-right">Current student</span>
+                <% end %>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
     </div>
-  <% end %>
+  </div>
 <% else %>
   <h3 class="text-center">No students found.</h3>
 <% end %>

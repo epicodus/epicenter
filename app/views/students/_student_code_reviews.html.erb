@@ -27,13 +27,7 @@
                 </td>
                 <% if @student.submission_for(code_review) %>
                   <td><%= link_to "Notes", "##{@student.submission_for(code_review).id}", data: { toggle: "modal" } %></td>
-                  <td>
-                    <% if @student.submission_for(code_review).link %>
-                      <%= link_to "Submission", @student.submission_for(code_review).link, target: '_blank' %>
-                    <% else %>
-                      N/A
-                    <% end %>
-                  </td>
+                  <td><%= link_to "Submission", @student.submission_for(code_review).link, target: '_blank' if @student.submission_for(code_review).link %></td>
                   <td>
                     <% if @student.submission_for(code_review).has_been_reviewed? %>
                       <% if can? :manage, CodeReview %>

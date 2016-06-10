@@ -297,6 +297,5 @@ feature 'make an offline payment', :stripe_mock, :js do
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Offline'
     expect(page).to have_content '$60.18'
-    expect(page).to have_content 'N/A'
   end
 end

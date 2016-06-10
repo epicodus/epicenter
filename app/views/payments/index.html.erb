@@ -31,25 +31,21 @@
             <td><%= payment.try(:status).try(:capitalize) %></td>
             <td><%= payment.try(:created_at).try(:strftime, "%A, %B %d, %Y") %></td>
             <td><%= number_to_currency(payment.total_amount / 100.00) %></td>
-            <td>
-              <% if payment.payment_method %>
-                <%= payment.payment_method.description %>
-              <% elsif payment.offline? %>
-                N/A
-              <% end %>
-            </td>
+            <td><%= payment.payment_method.description if payment.payment_method %></td>
             <% if can? :manage, Payment %>
               <td><%= payment.notes %></td>
             <% end %>
-            <td class="col-md-3">
               <% if payment.refund_amount? %>
-                <%= number_to_currency(payment.refund_amount / 100.00) %>
+                <td class="col-md-3">
+                  <%= number_to_currency(payment.refund_amount / 100.00) %>
+                </td>
               <% else %>
                 <% if can? :manage, Payment %>
-                  <%= render 'payments/refund_form', payment: payment %>
+                  <td class="col-md-3">
+                    <%= render 'payments/refund_form', payment: payment %>
+                  </td>
                 <% end %>
               <% end %>
-            </td>
           </tr>
         <% end %>
       </tbody>

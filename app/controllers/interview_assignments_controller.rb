@@ -7,7 +7,7 @@ class InterviewAssignmentsController < ApplicationController
       InterviewAssignment.new(student_id: @student.id, internship_id: internship_id)
     end
     if interview_assignments.each { |interview_assignment| interview_assignment.save }
-      redirect_to course_student_path(@course, @student), notice: "Interview assignments added for #{@student.name}"
+      redirect_to course_student_path(@course, @student), notice: "Interview assignments added for #{@student.name}."
     else
       render 'students/show'
     end
@@ -19,7 +19,7 @@ class InterviewAssignmentsController < ApplicationController
     internship = Internship.find(params[:internship_id])
     interview_assignment = InterviewAssignment.find_by(internship_id: internship.id, student_id: student.id)
     interview_assignment.destroy
-    redirect_to course_student_path(course, student), notice: "Interview assignment removed for #{student.name}"
+    redirect_to course_student_path(course, student), notice: "Interview assignment removed for #{student.name}."
   end
 
   private
