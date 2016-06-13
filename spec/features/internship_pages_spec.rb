@@ -25,29 +25,45 @@ end
 feature 'updating an internship' do
   let(:admin) { FactoryGirl.create(:admin) }
   let!(:internship) { FactoryGirl.create(:internship) }
+  let(:company) { FactoryGirl.create(:company, internships: [internship]) }
   let(:new_information) { FactoryGirl.build(:internship) }
-  before { login_as(admin, scope: :admin) }
 
-  scenario 'admin can navigate to the edit page' do
-    visit internships_path
-    within("#internship-#{internship.id}") do
-      click_link 'Edit'
+  context 'as an admin' do
+    before { login_as(admin, scope: :admin) }
+
+    scenario 'admin can navigate to the edit page' do
+      visit internships_path
+      within("#internship-#{internship.id}") do
+        click_link 'Edit'
+      end
+      expect(page).to have_content 'Describe your company and internship. Get students excited about what you do!'
     end
-    expect(page).to have_content 'Describe your company and internship. Get students excited about what you do!'
+
+    scenario 'an internship can be updated with valid input' do
+      visit edit_internship_path(internship)
+      fill_in 'Describe your company and internship. Get students excited about what you do!', with: new_information.description
+      click_on 'Update internship'
+      expect(page).to have_content 'Internship has been updated'
+    end
+
+    scenario 'an internship cannot be updated with invalid input' do
+      visit edit_internship_path(internship)
+      fill_in 'Describe your company and internship. Get students excited about what you do!', with: ''
+      click_on 'Update internship'
+      expect(page).to have_content 'Please correct these problems:'
+    end
   end
 
-  scenario 'an internship can be updated with valid input' do
-    visit edit_internship_path(internship)
-    fill_in 'Describe your company and internship. Get students excited about what you do!', with: new_information.description
-    click_on 'Update internship'
-    expect(page).to have_content 'Internship has been updated'
-  end
+  context 'as a company' do
+    before { login_as(company, scope: :company) }
 
-  scenario 'an internship cannot be updated with invalid input' do
-    visit edit_internship_path(internship)
-    fill_in 'Describe your company and internship. Get students excited about what you do!', with: ''
-    click_on 'Update internship'
-    expect(page).to have_content 'Please correct these problems:'
+    scenario 'successfully' do
+      visit internships_path
+      click_on 'Edit internship details'
+      fill_in 'Describe your company and internship. Get students excited about what you do!', with: new_information.description
+      click_on 'Update internship'
+      expect(page).to have_content 'Internship has been updated'
+    end
   end
 end
 

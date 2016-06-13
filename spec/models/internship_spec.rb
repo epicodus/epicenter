@@ -14,7 +14,9 @@ describe Internship do
 
   describe 'validations' do
     it 'returns false if an internship is saved with number_of_students not equal to 2, 4, or 6' do
-      internship = FactoryGirl.build(:internship, number_of_students: 5)
+      course = FactoryGirl.create(:internship_course)
+      track = FactoryGirl.create(:track)
+      internship = FactoryGirl.build(:internship, courses: [course], tracks: [track], number_of_students: 5)
       expect(internship.save).to eq false
     end
   end
