@@ -16,6 +16,14 @@
     <%= f.text_field :website, required: true, class: 'form-control' %>
   </div>
 
+  <% if current_admin %>
+    <div class="form-group">
+      <%= f.label :course_ids, "Choose which internship period(s) you'd like to participate in." %>
+      <br>
+      <%= f.collection_select :course_ids, Course.internship_courses, :id, :description, {}, { class: 'multiselect-dropdown', multiple: true, include_hidden: false, required: true } %>
+    </div>
+  <% end %>
+
   <div class='form-group'>
     <%= f.label :number_of_students, "Number of students that you'd like to work with." %>
     <div class="radio">
