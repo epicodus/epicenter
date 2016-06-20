@@ -5,7 +5,7 @@
   <%= render 'students/student_nav' %>
 <% end %>
 
-<p class="text-primary">* Payments made with a credit card will be charged a 2.9% processing fee + 30¢ per transaction.</p>
+<p class="text-primary">* Payments made with a credit/debit card will be charged a 2.9% processing fee + 30¢ per transaction.</p>
 
 <%= render 'layouts/errors', object: @payment %>
 <% if @student.payments.present? %>
