@@ -8,6 +8,7 @@ class CoursesController < ApplicationController
       authorize! :manage, @student
     else
       @courses = Course.previous_courses
+      authorize! :manage, Course
     end
   end
 

@@ -140,12 +140,19 @@ end
 
 feature 'visiting the previous courses page' do
   let(:admin) { FactoryGirl.create(:admin) }
-  before { login_as(admin, scope: :admin) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
   scenario 'as an admin' do
+    login_as(admin, scope: :admin)
     visit root_path
     click_on admin.current_course.description
     click_on 'Previous courses'
     expect(page).to have_content 'Previous courses'
+  end
+
+  scenario 'as a student' do
+    login_as(student, scope: :student)
+    visit courses_path
+    expect(page).to have_content 'You are not authorized'
   end
 end
