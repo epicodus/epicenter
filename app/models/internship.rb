@@ -21,7 +21,7 @@ class Internship < ActiveRecord::Base
   before_validation :fix_url
   before_save :check_number_of_students
 
-  def self.non_interview_assigned_internships(student)
+  def self.not_assigned_as_interview_for(student)
     all - includes(:interview_assignments).where(interview_assignments: { student_id: student.id })
   end
 
