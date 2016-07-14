@@ -124,11 +124,11 @@ feature 'rating an internship' do
     visit course_student_path(student.course, student)
     within "#internship_#{low_rated_internship_1.id}" do
       choose "Medium"
-      fill_in 'Notes: minimum 10 characters', with: 'Note about the first internship.'
+      fill_in 'Minimum 10 characters', with: 'Note about the first internship.'
     end
     within "#internship_#{low_rated_internship_2.id}" do
       choose "High"
-      fill_in 'Notes: minimum 10 characters', with: 'Note about the second internship.'
+      fill_in 'Minimum 10 characters', with: 'Note about the second internship.'
     end
     click_on "Submit ratings"
     within "#internship_#{low_rated_internship_2.id}" do
@@ -140,7 +140,7 @@ feature 'rating an internship' do
   scenario 'a student cannot rate five internships as low' do
     visit course_student_path(student.course, student)
     within "#internship_#{unrated_internship.id}" do
-      fill_in 'Notes: minimum 10 characters', with: 'Note about the sixth internship.'
+      fill_in 'Minimum 10 characters', with: 'Note about the sixth internship.'
       choose "Low"
     end
     expect(page).to have_content 'You may only rank 3 companies as "Low" interest.'
