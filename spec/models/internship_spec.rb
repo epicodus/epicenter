@@ -1,6 +1,7 @@
 describe Internship do
   it { should belong_to :company }
   it { should have_many :ratings }
+  it { should have_many :interview_assignments }
   it { should have_many(:courses).through(:course_internships) }
   it { should have_many(:students).through(:ratings) }
   it { should have_many(:tracks).through(:internship_tracks) }
@@ -28,6 +29,17 @@ describe Internship do
 
     it 'should be organized alphabetically by name' do
       expect(Internship.all).to eq [internship_two, internship_three, internship]
+    end
+  end
+
+  describe '#not_assigned_as_interview_for' do
+    let(:internship) { FactoryGirl.create(:internship) }
+    let(:internship_2) { FactoryGirl.create(:internship) }
+    let(:student) { FactoryGirl.create(:student, courses: [internship.courses.first, internship_2.courses.first]) }
+
+    it "returns internships that a student doesn't have assigned interviews with" do
+      FactoryGirl.create(:interview_assignment, student_id: student.id, internship_id: internship.id)
+      expect(Internship.not_assigned_as_interview_for(student)).to eq [internship_2]
     end
   end
 

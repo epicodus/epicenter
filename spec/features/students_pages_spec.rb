@@ -392,7 +392,7 @@ feature 'adding interview feedback for a student' do
   scenario 'as an admin' do
     login_as(admin, scope: :admin)
     visit course_student_path(course, student)
-    fill_in 'Interview feedback', with: 'Great job!'
+    fill_in 'student_interview_feedback', with: 'Great job!'
     click_on 'Add interview feedback'
     expect(page).to have_content "Interview feedback added for #{student.name}."
   end

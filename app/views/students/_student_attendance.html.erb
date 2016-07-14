@@ -1,47 +1,52 @@
-<div class="student-div student-attendance">
-  <div class="table-responsive">
-    <table class="table table-hover">
-      <thead>
-        <th>Date</th>
-        <th>Status</th>
-        <th>Signed in</th>
-        <th>Signed out</th>
-        <th></th>
-        <th>Pair</th>
-      </thead>
-      <% @course.class_dates_until(Time.zone.now.to_date).sort.reverse.each do |day| %>
-        <tbody>
-          <tr>
-            <td class="col-md-4">
-              <%= day.strftime("%A, %B %d, %Y") %>
-            </td>
-            <td class="col-md-2">
-              <% if @student.attendance_record_on_day(day) == nil %>
-                <span class="label label-primary">Absent</span>
-              <% elsif @student.attendance_record_on_day(day).tardy && @student.attendance_record_on_day(day).left_early %>
-                <span class="label label-danger">Tardy</span>
-                <span class="label label-danger">Left early</span>
-              <% elsif @student.attendance_record_on_day(day).tardy %>
-                <span class="label label-danger">Tardy</span>
-              <% elsif @student.attendance_record_on_day(day).left_early %>
-                <span class="label label-danger">Left early</span>
-              <% else %>
-                <span class="label label-success">On time</span>
-              <% end %>
-            </td>
-            <td><%= @student.attendance_record_on_day(day).try(:created_at).try(:strftime, '%l:%M %p') %></td>
-            <td><%= @student.attendance_record_on_day(day).try(:signed_out_time).try(:strftime, '%l:%M %p') %></td>
-            <td class="edit-attendance">
-              <% if current_admin && can?(:manage, AttendanceRecord) %>
-                <%= link_to 'Edit', new_attendance_record_amendment_path(course: @course, student: @student, day: day) %>
-              <% end %>
-            </td>
-            <td>
-              <%= @student.pair_on_day(day) ? @student.pair_on_day(day).name : 'Solo' %>
-            </td>
-          </tr>
-        </tbody>
-      <% end %>
-    </table>
+<h3>Attendance</h3>
+<div class="panel panel-info">
+  <div class="panel-body">
+    <div class="panel-body">
+      <div class="student-div student-attendance">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Signed in</th>
+              <th>Signed out</th>
+              <th>Pair</th>
+              <th></th>
+            </thead>
+            <% @course.class_dates_until(Time.zone.now.to_date).sort.reverse.each do |day| %>
+              <tbody>
+                <tr>
+                  <td class="col-md-4">
+                    <%= day.strftime("%A, %B %d, %Y") %>
+                  </td>
+                  <td class="col-md-2">
+                    <% if @student.attendance_record_on_day(day) == nil %>
+                      <span class="label label-primary">Absent</span>
+                    <% elsif @student.attendance_record_on_day(day).tardy && @student.attendance_record_on_day(day).left_early %>
+                      <span class="label label-danger">Tardy</span>
+                      <span class="label label-danger">Left early</span>
+                    <% elsif @student.attendance_record_on_day(day).tardy %>
+                      <span class="label label-danger">Tardy</span>
+                    <% elsif @student.attendance_record_on_day(day).left_early %>
+                      <span class="label label-danger">Left early</span>
+                    <% else %>
+                      <span class="label label-success">On time</span>
+                    <% end %>
+                  </td>
+                  <td><%= @student.attendance_record_on_day(day).try(:created_at).try(:strftime, '%l:%M %p') %></td>
+                  <td><%= @student.attendance_record_on_day(day).try(:signed_out_time).try(:strftime, '%l:%M %p') %></td>
+                  <td><%= @student.pair_on_day(day) ? @student.pair_on_day(day).name : 'Solo' %></td>
+                  <td class="edit-attendance">
+                    <% if current_admin && can?(:manage, AttendanceRecord) %>
+                      <%= link_to 'Edit', new_attendance_record_amendment_path(course: @course, student: @student, day: day) %>
+                    <% end %>
+                  </td>
+                </tr>
+              </tbody>
+            <% end %>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -1,63 +1,33 @@
-<div class="student-div student-internships">
-  <% if can? :manage, Internship %>
-    <div class="table-responsive">
-      <table class="datatable table table-hover">
-        <thead>
-          <tr>
-            <th>Company</th>
-            <th>Rating</th>
-            <th>Notes</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @course.internships.each do |internship| %>
-            <tr>
-              <td class="col-xs-3"><%= link_to internship.name, course_internship_path(@course, internship) %></td>
-              <td class="col-xs-1"><p><%= set_rating_label(@student, internship) %></p></td>
-              <td class="col-xs-8"><p><%= @student.find_rating(internship).try(:notes) %></p></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-  <% elsif can? :read, Internship %>
-    <p class="text-info">* You may only rank 3 companies as "Low" interest.</p>
-    <%= form_for @student do |f| %>
-      <%= render 'layouts/errors', object: @student %>
-
-      <div class="row">
-        <div class="col-xs-10">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Company</th>
-                <th>Technologies</th>
-                <th>Rating</th>
-                <th>Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @course.internships.each do |internship| %>
-                <tr id="internship_<%= internship.id %>">
-                  <td class="col-xs-2">
-                    <%= link_to internship.name, course_internship_path(@course, internship) %>
-                    <p><%= set_rating_label(@student, internship) %></p>
-                  </td>
-                  <td class="col-xs-2"><%= internship.tracks.pluck(:description).join(', ') %></td>
-                  <%= render 'ratings_fields', f: f, internship: internship %>
+<h3>Internship rankings</h3>
+<div class="panel panel-info">
+  <div class="panel-body">
+    <div class="panel-body">
+      <div class="student-div student-internships">
+        <% if can? :manage, Internship %>
+          <div class="table-responsive">
+            <table class="datatable table">
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>Rating</th>
+                  <th>Notes</th>
                 </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-        <% if @course.internships.any? %>
-          <div class="col-xs-2">
-            <div class="form-group">
-              <%= f.submit 'Submit ratings', class: 'btn btn-info', id: 'fixed-ratings-button' %>
-            </div>
+              </thead>
+              <tbody>
+                <% @course.internships.each do |internship| %>
+                  <tr>
+                    <td class="col-xs-3"><%= link_to internship.name, course_internship_path(@course, internship) %></td>
+                    <td class="col-xs-1"><p><%= set_rating_label(@student, internship) %></p></td>
+                    <td class="col-xs-8"><p><%= @student.find_rating(internship).try(:notes) %></p></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
           </div>
+        <% elsif can? :read, Internship %>
+          <%= render 'ratings/form' %>
         <% end %>
       </div>
-    <% end %>
-  <% end %>
+    </div>
+  </div>
 </div>

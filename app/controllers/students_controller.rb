@@ -19,6 +19,7 @@ class StudentsController < ApplicationController
   def show
     @student = Student.find(params[:id])
     @course = Course.find(params[:course_id]) if params[:course_id]
+    @interview_assignment = InterviewAssignment.new
     authorize! :read, @student
   end
 

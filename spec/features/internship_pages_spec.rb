@@ -122,7 +122,6 @@ feature 'rating an internship' do
 
   scenario 'a student can rate an internship from the internships index page' do
     visit course_student_path(student.course, student)
-    find('li.student-internships').click
     within "#internship_#{low_rated_internship_1.id}" do
       choose "Medium"
       fill_in 'Notes: minimum 10 characters', with: 'Note about the first internship.'
@@ -140,7 +139,6 @@ feature 'rating an internship' do
 
   scenario 'a student cannot rate five internships as low' do
     visit course_student_path(student.course, student)
-    find('li.student-internships').click
     within "#internship_#{unrated_internship.id}" do
       fill_in 'Notes: minimum 10 characters', with: 'Note about the sixth internship.'
       choose "Low"

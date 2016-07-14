@@ -387,4 +387,9 @@ FactoryGirl.define do
   factory :track do
     description 'Ruby/Rails'
   end
+
+  factory :interview_assignment do
+    student
+    internship
+  end
 end

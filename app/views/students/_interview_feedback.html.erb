@@ -1,0 +1,18 @@
+<h3>Interview feedback</h3>
+<div class="panel panel-info">
+  <div class="panel-body">
+    <div class="panel-body">
+      <% if can?(:manage, Internship) && @course.internship_course %>
+        <%= form_for @student do |f| %>
+          <div class='form-group'>
+            <%= f.text_area :interview_feedback, rows: 8, required: true, class: 'form-control' %>
+          </div>
+          <%= hidden_field_tag :course_id, @course.id %>
+          <%= f.submit 'Add interview feedback', class: 'btn btn-success' %>
+        <% end %>
+      <% elsif @student.interview_feedback? && @course.internship_course %>
+        <%= @student.try(:interview_feedback) %>
+      <% end %>
+    </div>
+  </div>
+</div>

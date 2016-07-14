@@ -4,54 +4,32 @@
       <%= @student.name %>
     <% end %>
   </h1>
-  <h3><%= @course.description %></h3>
+  <h2><%= @course.description %></h2>
 <% else %>
   <h1><%= @course.description %></h1>
 <% end %>
 
-<h4>Teacher: <%= @course.teacher %></h4>
-
 <% unless @course.internship_course? %>
+  <h4>Teacher: <%= @course.teacher %></h4>
   <h4>Attendance: <%= number_to_percentage(@student.attendance_score(@course), precision: 0) %></h4>
 <% end %>
-
-<ul class="nav nav-tabs list-group" id="student-nav">
-  <li class="student-code-reviews">
-    <a>Code reviews</a>
-  </li>
-  <% if @course.internship_course? %>
-    <li class="student-internships">
-      <a>Internships</a>
-    </li>
-  <% else %>
-    <li class="student-attendance">
-      <a>Attendance</a>
-    </li>
-  <% end %>
-</ul>
 
 <%= render 'students/student_code_reviews' %>
 
 <% if @course.internship_course? %>
+  <div class="row">
+    <% if can?(:manage, InterviewAssignment) || @student.interview_assignments.any? %>
+      <div class="col-md-4">
+        <%= render 'students/interview_assignments' %>
+      </div>
+    <% end %>
+    <% if can?(:manage, InterviewAssignment) || @student.interview_feedback? %>
+      <div class="col-md-8">
+        <%= render 'students/interview_feedback' %>
+      </div>
+    <% end %>
+  </div>
   <%= render 'students/student_internships' %>
 <% else %>
   <%= render 'students/student_attendance' %>
-<% end %>
-
-<% if can?(:manage, Internship) && @course.internship_course %>
-  <div class="row">
-    <div class="col-md-6">
-      <%= form_for @student do |f| %>
-        <div class='form-group'>
-          <%= f.label :interview_feedback %>
-          <%= f.text_area :interview_feedback, rows: 8, required: true, class: 'form-control' %>
-        </div>
-        <%= hidden_field_tag :course_id, @course.id %>
-        <%= f.submit 'Add interview feedback', class: 'btn btn-info' %>
-      <% end %>
-    </div>
-  </div>
-<% elsif @student.interview_feedback? && @course.internship_course %>
-  <h3>Interview feedback</h3>
-  <%= @student.try(:interview_feedback) %>
 <% end %>

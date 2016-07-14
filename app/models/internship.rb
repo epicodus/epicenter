@@ -7,6 +7,7 @@ class Internship < ActiveRecord::Base
   has_many :courses, through: :course_internships
   has_many :students, through: :ratings
   has_many :internship_tracks
+  has_many :interview_assignments
   has_many :tracks, through: :internship_tracks
 
   validates :name, presence: true
@@ -19,6 +20,10 @@ class Internship < ActiveRecord::Base
 
   before_validation :fix_url
   before_save :check_number_of_students
+
+  def self.not_assigned_as_interview_for(student)
+    all - includes(:interview_assignments).where(interview_assignments: { student_id: student.id })
+  end
 
   def other_internship_courses
     Course.internship_courses.where(active: true).where.not(id: courses.map(&:id))
