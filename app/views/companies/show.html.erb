@@ -1,50 +1,55 @@
-<% current_company.internships.each do |internship| %>
-  <p><%= link_to 'Edit internship details', edit_internship_path(internship), class: 'btn btn-success' %></p>
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <h1>Internship periods for <%= current_company.internships.first.name %></h1>
+    <% current_company.internships.each do |internship| %>
+      <% if internship.other_internship_courses.any? %>
+        <div class="form-group">
+          <%= form_for @course_internship do |f| %>
+            <%= render 'layouts/errors', object: @course_internship %>
+            <div class="row">
+              <div class="col-md-6">
+                <%= f.hidden_field :company_id, value: current_company.id %>
+                <%= f.hidden_field :internship_id, value: internship.id %>
+                <div class="input-group">
+                  <%= f.collection_select :course_id, internship.other_internship_courses, :id, :description, { include_blank: 'Join an internship period' }, { class: 'form-control', required: true } %>
+                  <span class="input-group-btn">
+                    <%= f.submit 'Join', class: 'btn btn-info' %>
+                  </span>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p><span class="text-primary">* You've signed up for all internship periods</span></p>
+      <% end %>
 
-  <% if internship.other_internship_courses.any? %>
-    <div class="form-group">
-      <%= form_for @course_internship do |f| %>
-        <%= render 'layouts/errors', object: @course_internship %>
-        <div class="row">
-          <div class="col-md-4">
-            <%= f.hidden_field :company_id, value: current_company.id %>
-            <%= f.hidden_field :internship_id, value: internship.id %>
-            <div class="input-group">
-              <%= f.collection_select :course_id, internship.other_internship_courses, :id, :description, { include_blank: 'Join an internship period' }, { class: 'form-control', required: true } %>
-              <span class="input-group-btn">
-                <%= f.submit 'Join', class: 'btn btn-info' %>
-              </span>
+      <p><%= link_to 'Edit internship details', edit_internship_path(internship), class: 'btn btn-success' %></p>
+
+      <% internship.courses.order(:description).reverse.each do |course| %>
+        <% if course.active? %>
+          <h3><%= course.description %></h3>
+          <div class="panel panel-info">
+        <% else %>
+          <h3><%= course.description %> - Inactive</h3>
+          <div class="panel panel-primary">
+        <% end %>
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr><th>Interviewees</th></tr>
+                </thead>
+                <% course.students.assigned_interviews_for(internship).each do |student| %>
+                  <tbody>
+                    <tr><td><%= student.name %></td></tr>
+                  </tbody>
+                <% end %>
+              </table>
             </div>
           </div>
         </div>
       <% end %>
-    </div>
-  <% else %>
-  <p><span class="text-primary">* You've signed up for all internship periods</span></p>
-  <% end %>
-
-  <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Your internship periods</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% internship.courses.order(:description).reverse.each do |course| %>
-          <tr>
-            <td class="col-md-4">
-              <%= course.description %>
-            </td>
-            <td>
-              <% if !course.active? %>
-                <span class="text-info">Inactive</span>
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+    <% end %>
   </div>
-<% end %>
+</div>

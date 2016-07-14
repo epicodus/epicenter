@@ -97,7 +97,8 @@ feature 'joining an internship course as a company' do
 end
 
 feature 'signing in as a company' do
-  let(:company) { FactoryGirl.create(:company) }
+  let(:internship) { FactoryGirl.create(:internship) }
+  let(:company) { FactoryGirl.create(:company, internships: [internship]) }
 
   scenario 'successfully' do
     visit root_path
