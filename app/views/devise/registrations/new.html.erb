@@ -3,28 +3,7 @@
   <h1>Welcome to the Epicodus internship program!</h1>
 </div>
 
-<p>
-  Thanks so much for your interest in Epicodus's internship program!
-  Your involvement is a key part of the success of this generation of programmers.
-</p>
-
-<p>
-  Once you've committed to taking interns from Epicodus, our students
-  will be counting on your involvement. If you need to withdraw after
-  signing up, it may mean that some of our students do not have a place
-  to go for an internship. So please double-check that you've accounted
-  for these common issues:
-</p>
-
-<ul>
-  <li>Does your team have the capacity to mentor your interns?</li>
-  <li>Do you have time to conduct interviews in the week specified for them?</li>
-  <li>Is your developer(s) who will be mentoring available during the internship dates?</li>
-  <li>Has your HR department approved of taking interns?</li>
-  <li>If you are paying your interns, do you have the budget to do so?</li>
-</ul>
-
-<p>Thanks for taking the time up-front to make sure that you can commit to participating!</p>
+<%= render 'internships/internship_instructions' %>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <% if resource.errors.any? %>
@@ -35,12 +14,18 @@
   <span class="text-primary">* Indicates required field</span>
   <div class="row">
     <div class="col-md-6">
-      <%= render 'internships_fields', f: f %>
+      <h3>Company and internship details</h3>
+
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <%= render 'internships_fields', f: f %>
+        </div>
+      </div>
     </div>
 
     <div class="col-md-6">
       <h3>Your account details</h3>
-      <div class="panel panel-success">
+      <div class="panel panel-default">
         <div class="panel-body">
           <div class='form-group'>
             <%= f.label :name, '* Name' %>

@@ -1,25 +1,6 @@
-<p>
-  Thanks so much for your interest in Epicodus's internship program!
-  Your involvement is a key part of the success of this generation of programmers.
-</p>
-
-<p>
-  Once you've committed to taking interns from Epicodus, our students
-  will be counting on your involvement. If you need to withdraw after
-  signing up, it may mean that some of our students do not have a place
-  to go for an internship. So please double-check that you've accounted
-  for these common issues:
-</p>
-
-<ul>
-  <li>Does your team have the capacity to mentor your interns?</li>
-  <li>Do you have time to conduct interviews in the week specified for them?</li>
-  <li>Is your developer(s) who will be mentoring available during the internship dates?</li>
-  <li>Has your HR department approved of taking interns?</li>
-  <li>If you are paying your interns, do you have the budget to do so?</li>
-</ul>
-
-<p>Thanks for taking the time up-front to make sure that you can commit to participating!</p>
+<% if current_company %>
+  <%= render 'internships/internship_instructions' %>
+<% end %>
 
 <%= form_for @internship do |f| %>
   <%= render 'layouts/errors', object: @internship %>
