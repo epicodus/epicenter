@@ -28,6 +28,10 @@ class Student < User
   NUMBER_OF_RANDOM_PAIRS = 5
   TARDY_WEIGHT = 0.5
 
+  def self.assigned_interviews_for(internship)
+    includes(:interview_assignments).where(interview_assignments: { internship_id: internship.id })
+  end
+
   def attendance_score(filtered_course)
     absences_penalty = attendance_records_for(:absent, filtered_course)
     tardies_penalty = attendance_records_for(:tardy, filtered_course) * TARDY_WEIGHT
