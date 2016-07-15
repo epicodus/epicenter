@@ -11,6 +11,11 @@ class InterviewAssignmentsController < ApplicationController
     end
   end
 
+  def update_multiple
+    InterviewAssignment.update(params[:interview_assignments].keys, params[:interview_assignments].values)
+    redirect_to current_company, notice: 'Order has been saved.'
+  end
+
   def destroy
     course = Course.find(params[:course_id])
     student = Student.find(params[:student_id])
