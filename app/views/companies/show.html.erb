@@ -40,25 +40,29 @@
                 <table class="table">
                   <thead>
                     <tr>
-                      <th>Interviewees</th>
-                      <th>Rankings</th>
+                      <th>Ranking</th>
+                      <th>Interviewee</th>
                     </tr>
                   </thead>
                   <% course.students.assigned_interviews_for(internship).each do |student| %>
                     <tbody>
                       <tr>
-                        <td><%= student.name %></td>
-                        <td>
+                        <td class="col-md-3">
                           <%= fields_for 'interview_assignments[]', InterviewAssignment.find_or_initialize_by(student_id: student.id, internship_id: internship.id) do |f| %>
-                            <%= f.text_field :company_ranking %>
+                            <%= InterviewAssignment.find_or_initialize_by(student_id: student.id, internship_id: internship.id).company_ranking %>
                           <% end %>
                         </td>
+                        <td><%= student.name %></td>
                       </tr>
                     </tbody>
                   <% end %>
                 </table>
               </div>
-              <%= submit_tag 'Save order', class: "btn btn-info" %>
+              <%= hidden_field_tag :course_id, course.id %>
+
+              <% if course.students.assigned_interviews_for(internship).any? %>
+                <%= submit_tag 'Save order', class: "btn btn-info" %>
+              <% end %>
             <% end %>
           </div>
         </div>
