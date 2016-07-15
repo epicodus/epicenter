@@ -59,7 +59,7 @@ class Course < ActiveRecord::Base
   end
 
   def other_students
-    Student.where.not(id: students.map(&:id))
+    Student.where.not(id: students.map(&:id)).order(:name)
   end
 
   def number_of_days_since_start
