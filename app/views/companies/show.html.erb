@@ -1,90 +1,105 @@
-<div class="row">
-  <div class="col-md-6 col-md-offset-3">
-    <h1>Internship periods for <%= current_company.internships.first.name %></h1>
-    <% current_company.internships.each do |internship| %>
-      <p><%= link_to 'Edit internship details', edit_internship_path(internship) %></p>
+<% current_company.internships.each do |internship| %>
+  <h1><%= internship.name %></h1>
+  <h4><%= internship.tracks.order(:description).map(&:description).join(', ') %></h4>
+  <h4><%= pluralize(internship.number_of_students, 'student') %> requested</h4>
+  <p><%= link_to 'Edit internship details', edit_internship_path(internship) %></p>
 
-      <% if internship.other_internship_courses.any? %>
-        <div class="form-group">
-          <%= form_for @course_internship do |f| %>
-            <%= render 'layouts/errors', object: @course_internship %>
-            <div class="row">
-              <div class="col-md-6">
-                <%= f.hidden_field :company_id, value: current_company.id %>
-                <%= f.hidden_field :internship_id, value: internship.id %>
-                <div class="input-group">
-                  <%= f.collection_select :course_id, internship.other_internship_courses, :id, :description, { include_blank: 'Join an internship period' }, { class: 'form-control', required: true } %>
-                  <span class="input-group-btn">
-                    <%= f.submit 'Join', class: 'btn btn-info' %>
-                  </span>
-                </div>
-              </div>
+  <% if internship.other_internship_courses.any? %>
+    <div class="form-group">
+      <%= form_for @course_internship do |f| %>
+        <%= render 'layouts/errors', object: @course_internship %>
+        <div class="row">
+          <div class="col-md-6">
+            <%= f.hidden_field :company_id, value: current_company.id %>
+            <%= f.hidden_field :internship_id, value: internship.id %>
+            <div class="input-group">
+              <%= f.collection_select :course_id, internship.other_internship_courses, :id, :description, { include_blank: 'Join an internship period' }, { class: 'form-control', required: true } %>
+              <span class="input-group-btn">
+                <%= f.submit 'Join', class: 'btn btn-info' %>
+              </span>
             </div>
-          <% end %>
-        </div>
-      <% else %>
-        <div class="alert alert-info text-center">
-          You've signed up for all internship periods
+          </div>
         </div>
       <% end %>
+    </div>
+  <% end %>
 
-      <% internship.courses.order(:description).reverse.each do |course| %>
-        <% if course.active? %>
-          <h3><%= course.description %></h3>
+  <div class="row">
+    <div class="col-md-6">
+      <h2>Current Internships</h2>
+      <p>* Rank students by dragging names into the correct order</p>
+      <% internship.courses.where(active: true).order(:description).reverse.each do |course| %>
           <div class="panel panel-info">
-        <% else %>
-          <h3><%= course.description %> - Inactive</h3>
-          <div class="panel panel-primary">
-        <% end %>
-          <div class="panel-body">
-            <%= form_tag update_multiple_interview_assignments_path, method: :patch, class: 'update-multiple' do %>
-              <div class="table-responsive">
-                <% if course.active? %>
+            <div class="panel-heading">
+              <h3 class="panel-title"><%= course.description %></h3>
+            </div>
+            <div class="panel-body">
+              <%= form_tag update_multiple_interview_assignments_path, method: :patch, class: 'update-multiple' do %>
+                <div class="table-responsive">
                   <table class="table table-hover">
-                <% else %>
-                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Ranking</th>
+                        <th>Interviewee</th>
+                      </tr>
+                    </thead>
+                    <tbody class="sortable-list">
+                      <% course.students.assigned_interviews_for(internship).each do |student| %>
+                        <tr class="sortable-list-item">
+                          <td class="col-md-3">
+                            <%= fields_for 'interview_assignments[]', InterviewAssignment.find_or_initialize_by(student_id: student.id, internship_id: internship.id) do |f| %>
+                              <%= InterviewAssignment.find_or_initialize_by(student_id: student.id, internship_id: internship.id).company_ranking %>
+                              <%= f.hidden_field :company_ranking, class: 'sortable-number' %>
+                            <% end %>
+                          </td>
+                          <td><%= student.name %></td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+                <%= hidden_field_tag :course_id, course.id %>
+
+                <% if course.students.assigned_interviews_for(internship).any? && course.active? %>
+                  <%= submit_tag 'Save order', class: "btn btn-info" %>
                 <% end %>
+              <% end %>
+            </div>
+          </div>
+      <% end %>
+    </div>
+
+    <div class="col-md-6">
+      <h2>Previous Internships</h2>
+      <% internship.courses.where(active: false).order(:description).reverse.each do |course| %>
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title"><%= course.description %></h3>
+            </div>
+            <div class="panel-body">
+              <div class="table-responsive">
+                <table class="table">
                   <thead>
                     <tr>
                       <th>Ranking</th>
                       <th>Interviewee</th>
                     </tr>
                   </thead>
-                  <% if course.active? %>
-                    <tbody class="sortable-list">
-                      <p>* Rank students by dragging names into the correct order.</p>
-                  <% else %>
-                    <tbody>
-                  <% end %>
+                  <tbody>
                     <% course.students.assigned_interviews_for(internship).each do |student| %>
-                      <% if course.active? %>
-                        <tr class="sortable-list-item">
-                      <% else %>
-                        <tr>
-                      <% end %>
+                      <tr>
                         <td class="col-md-3">
-                          <%= fields_for 'interview_assignments[]', InterviewAssignment.find_or_initialize_by(student_id: student.id, internship_id: internship.id) do |f| %>
-                            <%= InterviewAssignment.find_or_initialize_by(student_id: student.id, internship_id: internship.id).company_ranking %>
-                            <%= f.hidden_field :company_ranking, class: 'sortable-number' %>
-                          <% end %>
+                          <%= InterviewAssignment.find_or_initialize_by(student_id: student.id, internship_id: internship.id).company_ranking %>
                         </td>
-                        <td>
-                          <%= student.name %>
-                        </td>
+                        <td><%= student.name %></td>
                       </tr>
                     <% end %>
                   </tbody>
                 </table>
               </div>
-              <%= hidden_field_tag :course_id, course.id %>
-
-              <% if course.students.assigned_interviews_for(internship).any? && course.active? %>
-                <%= submit_tag 'Save order', class: "btn btn-info" %>
-              <% end %>
-            <% end %>
+            </div>
           </div>
-        </div>
       <% end %>
-    <% end %>
+    </div>
   </div>
-</div>
+<% end %>
