@@ -210,7 +210,7 @@ describe Course do
   end
 
   describe '#active_internship_courses' do
-    it 'returns all courses that are internship courses' do
+    it 'returns all courses that are internship courses and active' do
       internship_course = FactoryGirl.create(:internship_course, active: true)
       FactoryGirl.create(:course)
       expect(Course.active_internship_courses).to eq [internship_course]
@@ -218,10 +218,26 @@ describe Course do
   end
 
   describe '#inactive_internship_courses' do
-    it 'returns all courses that are internship courses' do
+    it 'returns all courses that are internship courses and inactive' do
       internship_course = FactoryGirl.create(:internship_course, active: false)
       FactoryGirl.create(:course)
       expect(Course.inactive_internship_courses).to eq [internship_course]
+    end
+  end
+
+  describe '#active_courses' do
+    it 'returns all courses that are active' do
+      active_course = FactoryGirl.create(:course, active: true)
+      FactoryGirl.create(:course, active: false)
+      expect(Course.active_courses).to eq [active_course]
+    end
+  end
+
+  describe '#inactive_courses' do
+    it 'returns all courses that are inactive' do
+      inactive_course = FactoryGirl.create(:course, active: false)
+      FactoryGirl.create(:course, active: true)
+      expect(Course.inactive_courses).to eq [inactive_course]
     end
   end
 
