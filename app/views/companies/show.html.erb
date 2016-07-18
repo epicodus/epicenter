@@ -56,20 +56,19 @@
                   <% else %>
                     <tbody>
                   <% end %>
-
                     <% course.students.assigned_interviews_for(internship).each do |student| %>
-                      <tr>
+                      <% if course.active? %>
+                        <tr class="sortable-list-item">
+                      <% else %>
+                        <tr>
+                      <% end %>
                         <td class="col-md-3">
                           <%= fields_for 'interview_assignments[]', InterviewAssignment.find_or_initialize_by(student_id: student.id, internship_id: internship.id) do |f| %>
                             <%= InterviewAssignment.find_or_initialize_by(student_id: student.id, internship_id: internship.id).company_ranking %>
                             <%= f.hidden_field :company_ranking, class: 'sortable-number' %>
                           <% end %>
                         </td>
-                        <% if course.active? %>
-                          <td class="sortable-list-item">
-                        <% else %>
-                          <td>
-                        <% end %>
+                        <td>
                           <%= student.name %>
                         </td>
                       </tr>

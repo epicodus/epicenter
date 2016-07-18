@@ -1,4 +1,4 @@
-<tr>
+<tr class="sortable-list-item">
   <td class="col-md-1">
     <%= code_review.number %>
   </td>
@@ -18,11 +18,11 @@
       <% end %>
     <% elsif can? :read, CodeReview %>
       <% if code_review.submission_for(current_student).nil? %>
-      Not submitted
+        Not submitted
       <% elsif code_review.submission_for(current_student).has_been_reviewed? %>
-      Reviewed
+        Reviewed
       <% else %>
-      Submitted - Pending review
+        Submitted - Pending review
       <% end %>
     <% end %>
   </td>
