@@ -1,6 +1,6 @@
 <h1>Code reviews for <%= @course.description %></h1>
 
-<%= form_tag update_multiple_code_reviews_path, method: :patch, class: 'update-multiple-code-reviews' do %>
+<%= form_tag update_multiple_code_reviews_path, method: :patch, class: 'update-multiple' do %>
   <div class="btn-group">
     <%= link_to 'New code review', new_code_review_path, class: "btn btn-success" %>
     <%= submit_tag 'Save order', class: "btn btn-info" %>
@@ -15,7 +15,7 @@
           <th></th>
         </tr>
       </thead>
-      <tbody class="sortable-code-reviews">
+      <tbody class="sortable-list">
         <%= render @course.code_reviews %>
       </tbody>
     </table>
