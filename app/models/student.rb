@@ -28,7 +28,7 @@ class Student < User
   TARDY_WEIGHT = 0.5
 
   def self.assigned_interviews_for(internship)
-    includes(:interview_assignments).where(interview_assignments: { internship_id: internship.id }).order('interview_assignments.company_ranking')
+    includes(:interview_assignments).where(interview_assignments: { internship_id: internship.id }).order('interview_assignments.ranking_from_company')
   end
 
   def attendance_score(filtered_course)

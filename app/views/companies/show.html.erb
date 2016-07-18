@@ -47,11 +47,11 @@
                   <tbody>
                     <% course.students.assigned_interviews_for(internship).each do |student| %>
                       <tr>
-                        <td class="col-md-3">
-                          <%= InterviewAssignment.find_or_initialize_by(student_id: student.id, internship_id: internship.id).company_ranking %>
+                        <td class="col-md-1">
+                          <%= InterviewAssignment.find_or_initialize_by(student_id: student.id, internship_id: internship.id).ranking_from_company %>
                         </td>
                         <td><%= student.name %></td>
-                        <td><%= InterviewAssignment.find_or_initialize_by(student_id: student.id, internship_id: internship.id).company_feedback %></td>
+                        <td class="col-md-7"><%= InterviewAssignment.find_or_initialize_by(student_id: student.id, internship_id: internship.id).feedback_from_company %></td>
                       </tr>
                     <% end %>
                   </tbody>

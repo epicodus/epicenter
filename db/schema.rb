@@ -101,8 +101,8 @@ ActiveRecord::Schema.define(version: 20160718204026) do
     t.integer  "internship_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "company_ranking"
-    t.text     "company_feedback"
+    t.integer  "ranking_from_company"
+    t.text     "feedback_from_company"
   end
 
   create_table "objectives", force: :cascade do |t|

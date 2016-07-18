@@ -14,21 +14,21 @@
                   <tr>
                     <th>Ranking</th>
                     <th>Interviewee</th>
-                    <th>Feedback</th>
+                    <th>Feedback <span class="text-danger">(required)</span></th>
                   </tr>
                 </thead>
                 <tbody class="sortable-list">
                   <% course.students.assigned_interviews_for(internship).each do |student| %>
                     <tr class="sortable-list-item">
                       <%= fields_for 'interview_assignments[]', InterviewAssignment.find_or_initialize_by(student_id: student.id, internship_id: internship.id) do |f| %>
-                        <td class="col-md-3">
-                          <%= InterviewAssignment.find_or_initialize_by(student_id: student.id, internship_id: internship.id).company_ranking %>
-                          <%= f.hidden_field :company_ranking, class: 'sortable-number' %>
+                        <td class="col-md-1">
+                          <%= InterviewAssignment.find_or_initialize_by(student_id: student.id, internship_id: internship.id).ranking_from_company %>
+                          <%= f.hidden_field :ranking_from_company, class: 'sortable-number' %>
                         </td>
                         <td><%= student.name %></td>
-                        <td>
+                        <td class="col-md-7">
                           <div class="form-group">
-                            <%= f.text_area :company_feedback, rows: 3, required: true, class: 'form-control' %>
+                            <%= f.text_area :feedback_from_company, class: 'form-control' %>
                           </div>
                         </td>
                       <% end %>
