@@ -1,0 +1,49 @@
+<div class="col-md-6">
+  <h2>Current Internships</h2>
+  <p>* Rank students by dragging names into the correct order</p>
+  <% internship.courses.where(active: true).order(:description).reverse.each do |course| %>
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title"><%= course.description %></h3>
+        </div>
+        <div class="panel-body">
+          <%= form_tag update_multiple_interview_assignments_path, method: :patch, class: 'update-multiple' do %>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Ranking</th>
+                    <th>Interviewee</th>
+                    <th>Feedback</th>
+                  </tr>
+                </thead>
+                <tbody class="sortable-list">
+                  <% course.students.assigned_interviews_for(internship).each do |student| %>
+                    <tr class="sortable-list-item">
+                      <%= fields_for 'interview_assignments[]', InterviewAssignment.find_or_initialize_by(student_id: student.id, internship_id: internship.id) do |f| %>
+                        <td class="col-md-3">
+                          <%= InterviewAssignment.find_or_initialize_by(student_id: student.id, internship_id: internship.id).company_ranking %>
+                          <%= f.hidden_field :company_ranking, class: 'sortable-number' %>
+                        </td>
+                        <td><%= student.name %></td>
+                        <td>
+                          <div class="form-group">
+                            <%= f.text_area :company_feedback, rows: 3, required: true, class: 'form-control' %>
+                          </div>
+                        </td>
+                      <% end %>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+            <%= hidden_field_tag :course_id, course.id %>
+
+            <% if course.students.assigned_interviews_for(internship).any? && course.active? %>
+              <%= submit_tag 'Save order and feedback', class: "btn btn-info" %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+  <% end %>
+</div>
