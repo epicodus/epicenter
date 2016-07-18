@@ -29,6 +29,10 @@ class Internship < ActiveRecord::Base
     Course.internship_courses.where(active: true).where.not(id: courses.map(&:id))
   end
 
+  def tracks_ordered_by_description
+    tracks.order(:description).map(&:description).join(', ')
+  end
+
 private
 
   def fix_url

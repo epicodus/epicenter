@@ -1,6 +1,6 @@
 <% current_company.internships.each do |internship| %>
   <h1><%= internship.name %></h1>
-  <h4><%= internship.tracks.order(:description).map(&:description).join(', ') %></h4>
+  <h4><%= internship.tracks_ordered_by_description %></h4>
   <h4><%= pluralize(internship.number_of_students, 'student') %> requested</h4>
   <p><%= link_to 'Edit internship details', edit_internship_path(internship) %></p>
 
