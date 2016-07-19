@@ -14,7 +14,7 @@
     <% end %>
     <tr>
       <th>Technologies:</th>
-      <td><%= @internship.tracks.pluck(:description).join(', ') %></td>
+      <td><%= @internship.tracks_ordered_by_description %></td>
     </tr>
     <tr>
       <th>Company info:</th>

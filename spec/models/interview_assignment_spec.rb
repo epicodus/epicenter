@@ -28,4 +28,14 @@ describe InterviewAssignment do
       expect(InterviewAssignment.for_course(course)).to eq [interview_assignment_for_course]
     end
   end
+
+  describe '#for_internship' do
+    let(:internship) { FactoryGirl.create(:internship) }
+    let(:interview_assignment_with_high_company_ranking) { FactoryGirl.create(:interview_assignment, internship_id: internship.id, ranking_from_company: 1) }
+    let(:interview_assignment_with_low_company_ranking) { FactoryGirl.create(:interview_assignment, internship_id: internship.id, ranking_from_company: 2) }
+
+    it 'returns the interview assignments for a particular internship ordered by company ranking' do
+      expect(InterviewAssignment.for_internship(internship)).to eq [interview_assignment_with_high_company_ranking, interview_assignment_with_low_company_ranking]
+    end
+  end
 end
