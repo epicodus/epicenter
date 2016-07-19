@@ -1,4 +1,4 @@
-<% current_company.internships.each do |internship| %>
+<% @company.internships.each do |internship| %>
   <h1><%= internship.name %></h1>
   <h4><%= internship.tracks_ordered_by_description %></h4>
   <h4><%= pluralize(internship.number_of_students, 'student') %> requested</h4>
@@ -10,7 +10,7 @@
         <div class="form-group">
           <%= form_for @course_internship do |f| %>
             <%= render 'layouts/errors', object: @course_internship %>
-            <%= f.hidden_field :company_id, value: current_company.id %>
+            <%= f.hidden_field :company_id, value: @company.id %>
             <%= f.hidden_field :internship_id, value: internship.id %>
             <div class="input-group">
               <%= f.collection_select :course_id, internship.other_internship_courses, :id, :description, { include_blank: 'Join an internship period' }, { class: 'form-control', required: true } %>
