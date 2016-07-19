@@ -11,6 +11,8 @@
                 <th>Contact name</th>
                 <th>Contact email</th>
                 <% if can? :manage, InterviewAssignment %>
+                  <th>Ranking from company</th>
+                  <th>Feedback from company</th>
                   <th></th>
                 <% end %>
               </tr>
@@ -22,6 +24,8 @@
                   <td><%= interview_assignment.internship.company.name %></td>
                   <td><%= mail_to interview_assignment.internship.company.email %></td>
                   <% if can? :manage, InterviewAssignment %>
+                    <td><%= interview_assignment.ranking_from_company %></td>
+                    <td><%= interview_assignment.feedback_from_company %></td>
                     <td><%= link_to 'Remove', interview_assignments_path(student_id: @student.id, course_id: @course.id, internship_id: interview_assignment.internship.id), data: { method: :delete }, class: 'unstyled-link pull-right' %></td>
                   <% end %>
                 </tr>
