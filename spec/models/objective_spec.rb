@@ -26,7 +26,7 @@ describe Objective do
       student = FactoryGirl.create(:student)
       code_review = FactoryGirl.create(:code_review)
       first_objective = code_review.objectives.first
-      submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
+      FactoryGirl.create(:submission, code_review: code_review, student: student)
       expect(first_objective.score_for(student)).to eq 0
     end
   end

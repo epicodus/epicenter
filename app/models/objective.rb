@@ -6,7 +6,7 @@ class Objective < ActiveRecord::Base
 
   def score_for(student)
     student_submission = code_review.submission_for(student)
-    if student_submission && student_submission.has_been_reviewed?
+    if student_submission && student_submission.has_been_reviewed? && student_submission.latest_review.grades.where(objective: self).any?
       student_submission.latest_review.grades.where(objective: self).last.score.value
     else
       0
