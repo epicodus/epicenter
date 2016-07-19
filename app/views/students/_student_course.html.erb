@@ -17,7 +17,7 @@
 <%= render 'students/student_code_reviews' %>
 
 <% if @course.internship_course? %>
-    <% if can?(:manage, InterviewAssignment) || @student.interview_assignments.any? %>
+    <% if can?(:manage, InterviewAssignment) || @student.interview_assignments.for_course(@course).any? %>
       <%= render 'students/interview_assignments' %>
     <% end %>
     <% if can?(:manage, InterviewAssignment) || @student.interview_feedback? %>

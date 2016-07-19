@@ -38,7 +38,7 @@ feature 'removing an interview assignment' do
 
   context 'as an admin' do
     scenario 'removing it successfully' do
-      FactoryGirl.create(:interview_assignment, student: student, internship: internship)
+      FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
       login_as(admin, scope: :admin)
       visit course_student_path(internship.courses.first, student)
       click_on 'Remove'

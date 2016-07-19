@@ -2,7 +2,7 @@
 <div class="panel panel-info">
   <div class="panel-body">
     <div class="panel-body">
-      <% if @student.interview_assignments.any? %>
+      <% if @student.interview_assignments.for_course(@course).any? %>
         <div class="table-responsive" id="interview-assignments-table">
           <table class="table">
             <thead>
@@ -16,7 +16,7 @@
               </tr>
             </thead>
             <tbody>
-              <% @student.interview_assignments.order_by_internship_name.each do |interview_assignment| %>
+              <% @student.interview_assignments.for_course(@course).order_by_internship_name.each do |interview_assignment| %>
                 <tr>
                   <td><%= link_to interview_assignment.internship.name, course_internship_path(@course, interview_assignment.internship) %></td>
                   <td><%= interview_assignment.internship.company.name %></td>
