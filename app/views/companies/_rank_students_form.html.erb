@@ -1,57 +1,49 @@
-<div class="col-md-6">
-  <h2>Current Internships</h2>
-
-  <% if internship.courses.active_courses.any? %>
-    <p>* Rank students by dragging names into the correct order</p>
-  <% end %>
-
-  <% internship.courses.active_courses.reverse.each do |course| %>
-      <div class="panel panel-info">
-        <div class="panel-heading">
-          <h3 class="panel-title"><%= course.description %></h3>
-        </div>
-        <div class="panel-body">
-          <% if course.interview_assignments.for_internship(internship).any? %>
-            <%= form_tag update_multiple_interview_assignments_path, method: :patch, class: 'update-multiple' do %>
-              <div class="table-responsive">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th>Ranking</th>
-                      <th>Interviewee</th>
-                      <th>Feedback <span class="text-danger">(required)</span></th>
-                    </tr>
-                  </thead>
-                  <tbody class="sortable-list">
-                    <% course.interview_assignments.for_internship(internship).each do |interview_assignment| %>
-                      <tr class="sortable-list-item">
-                        <%= fields_for 'interview_assignments[]', interview_assignment do |f| %>
-                          <td class="col-md-1">
-                            <%= interview_assignment.ranking_from_company %>
-                            <%= f.hidden_field :ranking_from_company, class: 'sortable-number' %>
-                          </td>
-                          <td><%= interview_assignment.student.name %></td>
-                          <td class="col-md-6">
-                            <div class="form-group">
-                              <%= f.text_area :feedback_from_company, required: true, class: 'form-control' %>
-                            </div>
-                          </td>
-                        <% end %>
-                      </tr>
-                    <% end %>
-                  </tbody>
-                </table>
-              </div>
-              <%= hidden_field_tag :course_id, course.id %>
-
-              <% if course.interview_assignments.any? && course.active? %>
-                <%= submit_tag 'Save order and feedback', class: "btn btn-info" %>
-              <% end %>
-            <% end %>
-          <% else %>
-            No interview assignments
-          <% end %>
-        </div>
+<% internship.courses.active_courses.reverse.each do |course| %>
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        <h3 class="panel-title"><%= course.description %></h3>
       </div>
-  <% end %>
-</div>
+      <div class="panel-body">
+        <% if course.interview_assignments.for_internship(internship).any? %>
+          <%= form_tag update_multiple_interview_assignments_path, method: :patch, class: 'update-multiple' do %>
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Ranking</th>
+                    <th>Interviewee</th>
+                    <th>Feedback <span class="text-danger">(required)</span></th>
+                  </tr>
+                </thead>
+                <tbody class="sortable-list">
+                  <% course.interview_assignments.for_internship(internship).each do |interview_assignment| %>
+                    <tr class="sortable-list-item">
+                      <%= fields_for 'interview_assignments[]', interview_assignment do |f| %>
+                        <td class="col-md-1">
+                          <%= interview_assignment.ranking_from_company %>
+                          <%= f.hidden_field :ranking_from_company, class: 'sortable-number' %>
+                        </td>
+                        <td><%= interview_assignment.student.name %></td>
+                        <td class="col-md-6">
+                          <div class="form-group">
+                            <%= f.text_area :feedback_from_company, required: true, class: 'form-control' %>
+                          </div>
+                        </td>
+                      <% end %>
+                    </tr>
+                  <% end %>
+                </tbody>
+              </table>
+            </div>
+            <%= hidden_field_tag :course_id, course.id %>
+
+            <% if course.interview_assignments.any? && course.active? %>
+              <%= submit_tag 'Save order and feedback', class: "btn btn-info" %>
+            <% end %>
+          <% end %>
+        <% else %>
+          No interview assignments
+        <% end %>
+      </div>
+    </div>
+<% end %>

@@ -26,7 +26,12 @@
 
   <div class="row">
     <% if internship.courses.active_courses.any? %>
-      <%= render 'companies/rank_students_form', internship: internship %>
+      <div class="col-md-6">
+        <h2>Current Internships</h2>
+        <p>* Rank students by dragging names into the correct order</p>
+
+        <%= render 'companies/rank_students_form', internship: internship %>
+      </div>
     <% end %>
 
     <% if internship.courses.inactive_courses.any? %>
