@@ -76,4 +76,12 @@ describe Internship do
       expect(internship.other_internship_courses).to eq [other_internship_course]
     end
   end
+
+  describe '#tracks_ordered_by_description' do
+    it 'returns the track descriptions for an internship ordered by description' do
+      php_track = FactoryGirl.create(:track, description: 'PHP/Drupal')
+      internship = FactoryGirl.create(:internship, tracks: [php_track])
+      expect(internship.tracks_ordered_by_description).to eq 'PHP/Drupal, Ruby/Rails'
+    end
+  end
 end

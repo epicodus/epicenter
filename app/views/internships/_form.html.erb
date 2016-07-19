@@ -1,86 +1,92 @@
-<% if current_company %>
-  <%= render 'internships/internship_instructions' %>
-<% end %>
+<div class="row">
+  <div class="col-md-6">
+    <%= form_for @internship do |f| %>
+      <%= render 'layouts/errors', object: @internship %>
 
-<%= form_for @internship do |f| %>
-  <%= render 'layouts/errors', object: @internship %>
+      <div class='form-group'>
+        <%= f.label :name, 'Company name' %>
+        <%= f.text_field :name, autofocus: true, required: true, class: 'form-control' %>
+      </div>
 
-  <div class='form-group'>
-    <%= f.label :name, 'Company name' %>
-    <%= f.text_field :name, autofocus: true, required: true, class: 'form-control' %>
-  </div>
+      <div class='form-group'>
+        <%= f.label :description, 'Describe your company and internship. Get students excited about what you do!' %>
+        <%= f.text_area :description, rows: 8, required: true, class: 'form-control' %>
+      </div>
 
-  <div class='form-group'>
-    <%= f.label :description, 'Describe your company and internship. Get students excited about what you do!' %>
-    <%= f.text_area :description, rows: 8, required: true, class: 'form-control' %>
-  </div>
+      <div class='form-group'>
+        <%= f.label :website, 'Website' %>
+        <%= f.text_field :website, required: true, class: 'form-control' %>
+      </div>
 
-  <div class='form-group'>
-    <%= f.label :website, 'Website' %>
-    <%= f.text_field :website, required: true, class: 'form-control' %>
-  </div>
-
-  <% if current_admin %>
-    <div class="form-group">
-      <%= f.label :course_ids, "Choose which internship period(s) you'd like to participate in." %>
-      <br>
-      <%= f.collection_select :course_ids, Course.internship_courses, :id, :description, {}, { class: 'multiselect-dropdown', multiple: true, include_hidden: false, required: true } %>
-    </div>
-  <% end %>
-
-  <div class='form-group'>
-    <%= f.label :number_of_students, "Number of students that you'd like to work with." %>
-    <div class="radio">
-      <%= f.label :number_of_students do %>
-        <%= f.radio_button :number_of_students, 2, required: true %> 2
+      <% if current_admin %>
+        <div class="form-group">
+          <%= f.label :course_ids, "Choose which internship period(s) you'd like to participate in." %>
+          <br>
+          <%= f.collection_select :course_ids, Course.internship_courses, :id, :description, {}, { class: 'multiselect-dropdown', multiple: true, include_hidden: false, required: true } %>
+        </div>
       <% end %>
-      </label>
-    </div>
 
-    <div class="radio">
-      <%= f.label :number_of_students do %>
-        <%= f.radio_button :number_of_students, 4 %> 4
-      <% end %>
-      </label>
-    </div>
+      <div class='form-group'>
+        <%= f.label :number_of_students, "Number of students that you'd like to work with." %>
+        <div class="radio">
+          <%= f.label :number_of_students do %>
+            <%= f.radio_button :number_of_students, 2, required: true %> 2
+          <% end %>
+          </label>
+        </div>
 
-    <div class="radio">
-      <%= f.label :number_of_students do %>
-        <%= f.radio_button :number_of_students, 6 %> 6
-      <% end %>
-      </label>
-    </div>
-  </div>
+        <div class="radio">
+          <%= f.label :number_of_students do %>
+            <%= f.radio_button :number_of_students, 4 %> 4
+          <% end %>
+          </label>
+        </div>
 
-  <div class="form-group" id="course-multiselect">
-    <%= f.label :track_ids, "Which classes are you willing to interview students from? (all include JavaScript)" %>
-    <br>
-    <%= f.collection_select :track_ids, Track.all, :id, :description, {}, { class: 'multiselect-dropdown', multiple: true, include_hidden: false, required: true } %>
-  </div>
+        <div class="radio">
+          <%= f.label :number_of_students do %>
+            <%= f.radio_button :number_of_students, 6 %> 6
+          <% end %>
+          </label>
+        </div>
+      </div>
 
-  <div class='form-group'>
-    <%= f.label :ideal_intern, 'Describe your ideal intern.' %>
-    <%= f.text_area :ideal_intern, rows: 8, required: true, class: 'form-control' %>
-  </div>
+      <div class="form-group" id="course-multiselect">
+        <%= f.label :track_ids, "Which classes are you willing to interview students from? (all include JavaScript)" %>
+        <br>
+        <%= f.collection_select :track_ids, Track.all, :id, :description, {}, { class: 'multiselect-dropdown', multiple: true, include_hidden: false, required: true } %>
+      </div>
 
-  <div class='form-group'>
-    <%= f.label :address %>
-    <%= f.text_field :address, class: 'form-control' %>
-  </div>
+      <div class='form-group'>
+        <%= f.label :ideal_intern, 'Describe your ideal intern.' %>
+        <%= f.text_area :ideal_intern, rows: 8, required: true, class: 'form-control' %>
+      </div>
 
-  <div class='form-group'>
-    <%= f.label :clearance_required do %>
-      Clearance required?
+      <div class='form-group'>
+        <%= f.label :address %>
+        <%= f.text_field :address, class: 'form-control' %>
+      </div>
+
+      <div class='form-group'>
+        <%= f.label :clearance_required do %>
+          Clearance required?
+        <% end %>
+        <%= f.check_box :clearance_required %>
+      </div>
+
+      <div class='form-group'>
+        <%= f.label :clearance_description %>
+        <%= f.text_area :clearance_description, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= f.submit 'Update internship', class: 'btn btn-primary btn-block' %>
+      </div>
     <% end %>
-    <%= f.check_box :clearance_required %>
   </div>
 
-  <div class='form-group'>
-    <%= f.label :clearance_description %>
-    <%= f.text_area :clearance_description, class: 'form-control' %>
+  <div class="col-md-6">
+    <% if current_company %>
+      <%= render 'internships/internship_instructions' %>
+    <% end %>
   </div>
-
-  <div class="form-group">
-    <%= f.submit 'Update internship', class: 'btn btn-primary btn-block' %>
-  </div>
-<% end %>
+</div>

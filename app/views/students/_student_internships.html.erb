@@ -1,33 +1,31 @@
 <h3>Internship rankings</h3>
 <div class="panel panel-info">
   <div class="panel-body">
-    <div class="panel-body">
-      <div class="student-div student-internships">
-        <% if can? :manage, Internship %>
-          <div class="table-responsive">
-            <table class="datatable table">
-              <thead>
+    <div class="student-div student-internships">
+      <% if can? :manage, Internship %>
+        <div class="table-responsive">
+          <table class="datatable table">
+            <thead>
+              <tr>
+                <th>Company</th>
+                <th>Rating</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @course.internships.each do |internship| %>
                 <tr>
-                  <th>Company</th>
-                  <th>Rating</th>
-                  <th>Notes</th>
+                  <td class="col-xs-3"><%= link_to internship.name, course_internship_path(@course, internship) %></td>
+                  <td class="col-xs-1"><p><%= set_rating_label(@student, internship) %></p></td>
+                  <td class="col-xs-8"><p><%= @student.find_rating(internship).try(:notes) %></p></td>
                 </tr>
-              </thead>
-              <tbody>
-                <% @course.internships.each do |internship| %>
-                  <tr>
-                    <td class="col-xs-3"><%= link_to internship.name, course_internship_path(@course, internship) %></td>
-                    <td class="col-xs-1"><p><%= set_rating_label(@student, internship) %></p></td>
-                    <td class="col-xs-8"><p><%= @student.find_rating(internship).try(:notes) %></p></td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
-        <% elsif can? :read, Internship %>
-          <%= render 'ratings/form' %>
-        <% end %>
-      </div>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      <% elsif can? :read, Internship %>
+        <%= render 'ratings/form' %>
+      <% end %>
     </div>
   </div>
 </div>

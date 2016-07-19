@@ -66,5 +66,8 @@ Rails.application.routes.draw do
     collection do
       post :create_multiple, path: ''
     end
+    collection do
+      patch :update_multiple, path: ''
+    end
   end
 end

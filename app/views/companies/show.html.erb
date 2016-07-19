@@ -1,13 +1,16 @@
-<% current_company.internships.each do |internship| %>
-  <p><%= link_to 'Edit internship details', edit_internship_path(internship), class: 'btn btn-success' %></p>
+<% @company.internships.each do |internship| %>
+  <h1><%= internship.name %></h1>
+  <h4><%= internship.tracks_ordered_by_description %></h4>
+  <h4><%= pluralize(internship.number_of_students, 'student') %> requested</h4>
+  <p><%= link_to 'Edit internship details', edit_internship_path(internship) %></p>
 
-  <% if internship.other_internship_courses.any? %>
-    <div class="form-group">
-      <%= form_for @course_internship do |f| %>
-        <%= render 'layouts/errors', object: @course_internship %>
-        <div class="row">
-          <div class="col-md-4">
-            <%= f.hidden_field :company_id, value: current_company.id %>
+  <div class="row">
+    <div class="col-md-3">
+      <% if internship.other_internship_courses.any? %>
+        <div class="form-group">
+          <%= form_for @course_internship do |f| %>
+            <%= render 'layouts/errors', object: @course_internship %>
+            <%= f.hidden_field :company_id, value: @company.id %>
             <%= f.hidden_field :internship_id, value: internship.id %>
             <div class="input-group">
               <%= f.collection_select :course_id, internship.other_internship_courses, :id, :description, { include_blank: 'Join an internship period' }, { class: 'form-control', required: true } %>
@@ -15,36 +18,61 @@
                 <%= f.submit 'Join', class: 'btn btn-info' %>
               </span>
             </div>
-          </div>
+          <% end %>
         </div>
       <% end %>
     </div>
-  <% else %>
-  <p><span class="text-primary">* You've signed up for all internship periods</span></p>
-  <% end %>
+  </div>
 
-  <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Your internship periods</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% internship.courses.order(:description).reverse.each do |course| %>
-          <tr>
-            <td class="col-md-4">
-              <%= course.description %>
-            </td>
-            <td>
-              <% if !course.active? %>
-                <span class="text-info">Inactive</span>
-              <% end %>
-            </td>
-          </tr>
+  <div class="row">
+    <% if internship.courses.active_courses.any? %>
+      <div class="col-md-6">
+        <h2>Current Internships</h2>
+        <p>* Rank students by dragging names into the correct order</p>
+
+        <%= render 'companies/rank_students_form', internship: internship %>
+      </div>
+    <% end %>
+
+    <% if internship.courses.inactive_courses.any? %>
+      <div class="col-md-6">
+        <h2>Previous Internships</h2>
+        <% internship.courses.inactive_courses.reverse.each do |course| %>
+            <div class="panel panel-primary">
+              <div class="panel-heading">
+                <h3 class="panel-title"><%= course.description %></h3>
+              </div>
+              <div class="panel-body">
+                <% if course.interview_assignments.for_internship(internship).any? %>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Ranking</th>
+                          <th>Interviewee</th>
+                          <th>Feedback</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% course.interview_assignments.for_internship(internship).each do |interview_assignment| %>
+                          <tr>
+                            <td class="col-md-1">
+                              <%= interview_assignment.ranking_from_company %>
+                            </td>
+                            <td><%= interview_assignment.student.name %></td>
+                            <td class="col-md-6"><%= interview_assignment.feedback_from_company %></td>
+                          </tr>
+                        <% end %>
+                      </tbody>
+                    </table>
+                  </div>
+                <% else %>
+                  No interview assignments
+                <% end %>
+              </div>
+            </div>
         <% end %>
-      </tbody>
-    </table>
+      </div>
+    <% end %>
   </div>
 <% end %>

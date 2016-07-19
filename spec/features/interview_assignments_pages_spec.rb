@@ -16,9 +16,12 @@ feature 'adding an interview assignment' do
   end
 
   context 'as an admin' do
-    scenario 'adding it successfully' do
+    before do
       login_as(admin, scope: :admin)
       visit course_student_path(internship.courses.first, student)
+    end
+
+    scenario 'adding it successfully' do
       select internship.name, from: 'interview_assignment_internship_id'
       select internship_2.name, from: 'interview_assignment_internship_id'
       click_on 'Add'
@@ -27,6 +30,13 @@ feature 'adding an interview assignment' do
         expect(page).to have_content internship.name
         expect(page).to have_content internship_2.name
       end
+    end
+
+    scenario 'adding it unsuccessfully' do
+      FactoryGirl.create(:interview_assignment, student: student, internship: internship)
+      select internship.name, from: 'interview_assignment_internship_id'
+      click_on 'Add'
+      expect(page).to have_content 'Something went wrong'
     end
   end
 end
@@ -38,7 +48,7 @@ feature 'removing an interview assignment' do
 
   context 'as an admin' do
     scenario 'removing it successfully' do
-      FactoryGirl.create(:interview_assignment, student: student, internship: internship)
+      FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
       login_as(admin, scope: :admin)
       visit course_student_path(internship.courses.first, student)
       click_on 'Remove'

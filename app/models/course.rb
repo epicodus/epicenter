@@ -1,6 +1,8 @@
 class Course < ActiveRecord::Base
   scope :internship_courses, -> { where(internship_course: true) }
   scope :non_internship_courses, -> { where(internship_course: false) }
+  scope :active_courses, -> { where(active: true).order(:description) }
+  scope :inactive_courses, -> { where(active: false).order(:description) }
   scope :previous_courses, -> { where('end_date <= ?', Time.zone.now.to_date) }
 
   validates :description, :start_date, :end_date, :start_time, :end_time, presence: true
@@ -13,6 +15,7 @@ class Course < ActiveRecord::Base
   has_many :code_reviews
   has_many :course_internships
   has_many :internships, through: :course_internships
+  has_many :interview_assignments
 
   serialize :class_days, Array
 
@@ -59,7 +62,7 @@ class Course < ActiveRecord::Base
   end
 
   def other_students
-    Student.where.not(id: students.map(&:id))
+    Student.where.not(id: students.map(&:id)).order(:name)
   end
 
   def number_of_days_since_start

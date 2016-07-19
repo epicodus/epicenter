@@ -1,10 +1,10 @@
 $(function() {
-  $('.sortable-code-reviews').sortable({
+  $('.sortable-list').sortable({
   });
 
-  $('form.update-multiple-code-reviews').submit(function() {
+  $('.update-multiple').submit(function() {
     var count = 1;
-    $('input.code-review-number').each(function() {
+    $(this).first('form').find('input.sortable-number').each(function() {
       $(this).val(count++);
     });
   });

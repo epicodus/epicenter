@@ -2,7 +2,7 @@
   <%= render 'layouts/errors', object: @attendance_record_amendment %>
   <div class="form-group">
     <%= f.label :student_id %>
-    <%= f.collection_select :student_id, @course.students, :id, :name, {}, { class: "form-control" } %>
+    <%= f.collection_select :student_id, @course.students.order(:name), :id, :name, {}, { class: "form-control" } %>
   </div>
   <div class="form-group">
     <%= f.label :date %>

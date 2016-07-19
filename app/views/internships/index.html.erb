@@ -1,4 +1,6 @@
 <h1>Internships</h1>
+<p><%= link_to 'Add internship course', new_course_path %></p>
+
 <ul class="nav nav-tabs">
   <% if params[:inactive] %>
     <li>
@@ -67,7 +69,7 @@
               <tr id="internship-<%= internship.id %>">
                 <td><%= link_to internship.name, course_internship_path(course, internship) %></td>
                 <td><%= internship.number_of_students %></td>
-                <td><%= internship.tracks.pluck(:description).join(', ') %></td>
+                <td><%= internship.tracks_ordered_by_description %></td>
                 <td><%= internship.try(:company).try(:name) %></td>
                 <td><%= mail_to internship.try(:company).try(:email) %></td>
                 <td><%= link_to 'Edit', edit_internship_path(internship) %></td>

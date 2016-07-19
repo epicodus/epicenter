@@ -391,5 +391,6 @@ FactoryGirl.define do
   factory :interview_assignment do
     student
     internship
+    course
   end
 end

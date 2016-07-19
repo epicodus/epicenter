@@ -1,5 +1,4 @@
 class Student < User
-  default_scope { order(:name) }
   scope :with_activated_accounts, -> { where('sign_in_count > ?', 0 ) }
 
   validates :plan_id, presence: true, if: ->(student) { student.invitation_accepted_at? }
@@ -198,7 +197,7 @@ class Student < User
   end
 
   def self.find_students_by_interest(internship, interest_level)
-    internship.students.select { |student| student.try(:find_rating, internship).try(:interest) == interest_level }
+    internship.students.order(:name).select { |student| student.try(:find_rating, internship).try(:interest) == interest_level }
   end
 
 private
@@ -239,7 +238,7 @@ private
   end
 
   def same_course
-    course.students.where.not(id: id)
+    course.students.order(:name).where.not(id: id)
   end
 
   def most_recent_submission_grades

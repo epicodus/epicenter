@@ -19,7 +19,7 @@
                 <%= link_to internship.name, course_internship_path(@course, internship) %>
                 <p><%= set_rating_label(@student, internship) %></p>
               </td>
-              <td class="col-xs-2"><%= internship.tracks.pluck(:description).join(', ') %></td>
+              <td class="col-xs-2"><%= internship.tracks_ordered_by_description %></td>
               <%= render 'ratings_fields', f: f, internship: internship %>
             </tr>
           <% end %>

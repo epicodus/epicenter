@@ -281,14 +281,6 @@ describe Student do
     end
   end
 
-  describe "default scope" do
-    it "alphabetizes the students by name" do
-      student1 = FactoryGirl.create(:student, name: "Bob Test")
-      student2 = FactoryGirl.create(:student, name: "Annie Test")
-      expect(Student.all).to eq [student2, student1]
-    end
-  end
-
   it "validates that the primary payment method belongs to the user", :stripe_mock do
     student = FactoryGirl.create(:student)
     other_students_credit_card = FactoryGirl.create(:credit_card)

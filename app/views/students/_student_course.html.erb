@@ -17,18 +17,12 @@
 <%= render 'students/student_code_reviews' %>
 
 <% if @course.internship_course? %>
-  <div class="row">
-    <% if can?(:manage, InterviewAssignment) || @student.interview_assignments.any? %>
-      <div class="col-md-4">
-        <%= render 'students/interview_assignments' %>
-      </div>
+    <% if can?(:manage, InterviewAssignment) || @student.interview_assignments.for_course(@course).any? %>
+      <%= render 'students/interview_assignments' %>
     <% end %>
     <% if can?(:manage, InterviewAssignment) || @student.interview_feedback? %>
-      <div class="col-md-8">
-        <%= render 'students/interview_feedback' %>
-      </div>
+      <%= render 'students/interview_feedback' %>
     <% end %>
-  </div>
   <%= render 'students/student_internships' %>
 <% else %>
   <%= render 'students/student_attendance' %>

@@ -2,22 +2,30 @@
 <div class="panel panel-info">
   <div class="panel-body">
     <div class="panel-body">
-      <% if @student.interview_assignments.any? %>
+      <% if @student.interview_assignments.for_course(@course).any? %>
         <div class="table-responsive" id="interview-assignments-table">
           <table class="table">
             <thead>
               <tr>
                 <th>Company</th>
+                <th>Contact name</th>
+                <th>Contact email</th>
                 <% if can? :manage, InterviewAssignment %>
+                  <th>Ranking from company</th>
+                  <th>Feedback from company</th>
                   <th></th>
                 <% end %>
               </tr>
             </thead>
             <tbody>
-              <% @student.interview_assignments.order_by_internship_name.each do |interview_assignment| %>
+              <% @student.interview_assignments.for_course(@course).order_by_internship_name.each do |interview_assignment| %>
                 <tr>
                   <td><%= link_to interview_assignment.internship.name, course_internship_path(@course, interview_assignment.internship) %></td>
+                  <td><%= interview_assignment.internship.company.name %></td>
+                  <td><%= mail_to interview_assignment.internship.company.email %></td>
                   <% if can? :manage, InterviewAssignment %>
+                    <td><%= interview_assignment.ranking_from_company %></td>
+                    <td><%= interview_assignment.feedback_from_company %></td>
                     <td><%= link_to 'Remove', interview_assignments_path(student_id: @student.id, course_id: @course.id, internship_id: interview_assignment.internship.id), data: { method: :delete }, class: 'unstyled-link pull-right' %></td>
                   <% end %>
                 </tr>
