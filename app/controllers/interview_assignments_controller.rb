@@ -30,7 +30,7 @@ class InterviewAssignmentsController < ApplicationController
 
   def create_interview_assignments
     interview_assignments = interview_assignment_params[:internship_id].map do |internship_id|
-      InterviewAssignment.create(student_id: @student.id, internship_id: internship_id)
+      InterviewAssignment.create(student_id: @student.id, internship_id: internship_id, course_id: @course.id)
     end
     !interview_assignments.map(&:persisted?).include?(false)
   end

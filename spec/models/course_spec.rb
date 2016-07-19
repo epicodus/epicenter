@@ -4,6 +4,7 @@ describe Course do
   it { should have_many(:attendance_records).through(:students) }
   it { should have_many :code_reviews }
   it { should have_many(:internships).through(:course_internships) }
+  it { should have_many(:interview_assignments) }
 
   describe "validations" do
     it "validates the presence of description" do

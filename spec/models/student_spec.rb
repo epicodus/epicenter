@@ -43,7 +43,7 @@ describe Student do
     let(:unassigned_student) { FactoryGirl.create(:student) }
 
     it 'returns all students who have been assigned interviews for a particular internship' do
-      InterviewAssignment.create(student: assigned_student, internship: internship)
+      InterviewAssignment.create(student: assigned_student, internship: internship, course: assigned_student.course)
       expect(Student.assigned_interviews_for(internship)).to eq [assigned_student]
     end
   end
