@@ -74,4 +74,14 @@ describe Internship do
       expect(internship.tracks_ordered_by_description).to eq 'PHP/Drupal, Ruby/Rails'
     end
   end
+
+  describe '#ordered_by_ratings' do
+    it 'orders internships by rating' do
+      high_rated_internship = FactoryGirl.create(:internship)
+      low_rated_internship = FactoryGirl.create(:internship)
+      FactoryGirl.create(:rating, number: 1, internship: high_rated_internship)
+      FactoryGirl.create(:rating, number: 2, internship: low_rated_internship)
+      expect(Internship.ordered_by_ratings).to eq [high_rated_internship, low_rated_internship]
+    end
+  end
 end
