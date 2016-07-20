@@ -1,22 +1,19 @@
-<h1><%= "#{@course.description}" %> student roster</h1>
-<h4>Teacher: <%= @course.teacher %></h4>
+<h1>
+  <%= @course.description %>
+  <%= link_to 'Edit', edit_course_path(@course) %>
+</h1>
+<h4><%= @course.teacher %></h4>
 <h4><%= pluralize(@course.students.count, 'student') %></h4>
+
 <div class="form-group">
-  <% if @course.internship_course? %>
-    <div class="form-group">
-      <%= link_to "Edit #{@course.description}", edit_course_path(@course), class: 'btn btn-success' %>
-    </div>
-  <% else %>
-    <div class="btn-group">
-      <%= link_to "Edit #{@course.description}", edit_course_path(@course), class: 'btn btn-success' %>
+  <% unless @course.internship_course? %>
       <%= link_to 'Attendance by day', course_day_attendance_records_path(@course), class: 'btn btn-default' %>
-    </div>
   <% end %>
 </div>
 
 <%= form_for @enrollment do |f| %>
   <div class="row">
-    <div class="col-md-5">
+    <div class="col-md-4">
       <%= render 'layouts/errors', object: @enrollment %>
       <%= f.hidden_field :course_id, value: @course.id %>
       <div class="input-group">

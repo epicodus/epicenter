@@ -96,7 +96,7 @@ feature 'editing a course' do
 
     scenario 'navigation to course#edit page' do
       visit root_path
-      click_on "Edit #{course.description}"
+      click_on 'Edit'
       expect(page).to have_content "Edit #{course.description}"
     end
 
