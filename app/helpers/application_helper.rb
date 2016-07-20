@@ -19,14 +19,4 @@ module ApplicationHelper
       content_tag(:li, &block)
     end
   end
-
-  def set_rating_label(student, internship)
-    if student.find_rating(internship).try(:interest) == '1'
-      content_tag(:span, 'High', class: 'label label-success')
-    elsif student.find_rating(internship).try(:interest) == '2'
-      content_tag(:span, 'Medium', class: 'label label-danger')
-    elsif student.find_rating(internship).try(:interest) == '3'
-      content_tag(:span, 'Low', class: 'label label-primary')
-    end
-  end
 end

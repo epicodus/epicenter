@@ -36,4 +36,12 @@ $(function() {
       search: 'Search table:'
     }
   });
+
+  $('#student-internship-rankings-datatable').DataTable({
+    paging: false,
+    autoWidth: false,
+    info: false,
+    searching: false,
+    order: [[ 1, "asc" ]],
+  });
 });

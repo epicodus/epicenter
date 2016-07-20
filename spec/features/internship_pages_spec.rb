@@ -106,47 +106,6 @@ feature 'visiting the internships show page' do
   end
 end
 
-feature 'rating an internship' do
-  let(:internship_course) { FactoryGirl.create(:internship_course) }
-  let(:student) { FactoryGirl.create(:student, course: internship_course) }
-  let!(:low_rated_internship_1) { FactoryGirl.create(:internship, courses: [student.course]) }
-  let!(:low_rated_internship_2) { FactoryGirl.create(:internship, courses: [student.course]) }
-  let!(:low_rated_internship_3) { FactoryGirl.create(:internship, courses: [student.course]) }
-  let!(:low_rated_internship_4) { FactoryGirl.create(:internship, courses: [student.course]) }
-  let!(:low_rated_internship_5) { FactoryGirl.create(:internship, courses: [student.course]) }
-  let!(:unrated_internship) { FactoryGirl.create(:internship, courses: [student.course]) }
-  let!(:low_rating_1) { FactoryGirl.create(:low_rating, internship: low_rated_internship_1, student: student)}
-  let!(:low_rating_2) { FactoryGirl.create(:low_rating, internship: low_rated_internship_2, student: student)}
-  let!(:low_rating_3) { FactoryGirl.create(:low_rating, internship: low_rated_internship_3, student: student)}
-  before { login_as(student, scope: :student) }
-
-  scenario 'a student can rate an internship from the internships index page' do
-    visit course_student_path(student.course, student)
-    within "#internship_#{low_rated_internship_1.id}" do
-      choose "Medium"
-      fill_in 'Minimum 10 characters', with: 'Note about the first internship.'
-    end
-    within "#internship_#{low_rated_internship_2.id}" do
-      choose "High"
-      fill_in 'Minimum 10 characters', with: 'Note about the second internship.'
-    end
-    click_on "Submit ratings"
-    within "#internship_#{low_rated_internship_2.id}" do
-      internship_2_selected_radio_button = find('#student_ratings_attributes_1_interest_1')
-      expect(internship_2_selected_radio_button).to be_checked
-    end
-  end
-
-  scenario 'a student cannot rate five internships as low' do
-    visit course_student_path(student.course, student)
-    within "#internship_#{unrated_internship.id}" do
-      fill_in 'Minimum 10 characters', with: 'Note about the sixth internship.'
-      choose "Low"
-    end
-    expect(page).to have_content 'You may only rank 3 companies as "Low" interest.'
-  end
-end
-
 feature 'admin viewing students interested in an internship' do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:student) { FactoryGirl.create(:student) }
@@ -155,37 +114,14 @@ feature 'admin viewing students interested in an internship' do
 
   context 'on an internship page' do
     scenario 'an admin can see students highly interested in that internship' do
-      FactoryGirl.create(:rating, interest: '1', student: student, internship: internship)
+      FactoryGirl.create(:rating, number: '1', student: student, internship: internship)
       visit course_internship_path(internship.courses.first, internship)
-      click_on 'Highly interested students'
-      expect(page).to have_content student.name
-    end
-
-    scenario "an admin can't see students not-highly interested in that internship when on the 'high tab'" do
-      FactoryGirl.create(:rating, interest: '2', student: student, internship: internship)
-      visit course_internship_path(internship.courses.first, internship)
-      click_on 'Highly interested students'
-      expect(page).to_not have_content student.name
-    end
-
-    scenario 'an admin can see students moderately interested in that internship' do
-      FactoryGirl.create(:rating, interest: '2', student: student, internship: internship)
-      visit course_internship_path(internship.courses.first, internship)
-      click_on 'Moderately interested students'
-      expect(page).to have_content student.name
-    end
-
-    scenario 'an admin can see students not interested in that internship' do
-      FactoryGirl.create(:rating, interest: '3', student: student, internship: internship)
-      visit course_internship_path(internship.courses.first, internship)
-      click_on 'Not interested students'
       expect(page).to have_content student.name
     end
 
     scenario "an admin can click on a student's name to view their internships page" do
       FactoryGirl.create(:rating, interest: '3', student: student, internship: internship)
       visit course_internship_path(internship.courses.first, internship)
-      click_on 'Not interested students'
       click_link student.name
       expect(page).to have_content 'Internships'
     end
@@ -202,12 +138,6 @@ feature "admin viewing a student's internship page" do
   scenario "an admin can see internships from that student's course" do
     visit course_student_path(student.course, student)
     expect(page).to have_content internship.name
-  end
-
-  scenario "rated internships display their correct background color" do
-    FactoryGirl.create(:rating, interest: '3', student: student, internship: internship)
-    visit course_student_path(student.course, student)
-    expect(page).to have_css 'span.label-primary'
   end
 
   scenario "an admin can navigate through to an internship's show page" do

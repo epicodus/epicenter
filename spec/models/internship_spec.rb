@@ -22,16 +22,6 @@ describe Internship do
     end
   end
 
-  describe 'default scope' do
-    let!(:internship) { FactoryGirl.create(:internship, name: "z labs") }
-    let!(:internship_two) { FactoryGirl.create(:internship, name: "a labs") }
-    let!(:internship_three) { FactoryGirl.create(:internship, name: 'k labs') }
-
-    it 'should be organized alphabetically by name' do
-      expect(Internship.all).to eq [internship_two, internship_three, internship]
-    end
-  end
-
   describe '#not_assigned_as_interview_for' do
     let(:internship) { FactoryGirl.create(:internship) }
     let(:internship_2) { FactoryGirl.create(:internship) }
