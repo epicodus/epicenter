@@ -5,7 +5,7 @@ class StudentsController < ApplicationController
     authorize! :manage, Course
     if params[:search]
       @query = params[:search]
-      @results = Student.includes(:courses).search(@query)
+      @results = Student.includes(:courses).search(@query).order(:name)
       render 'search_results'
     elsif params[:course_id]
       @course = Course.find(params[:course_id])

@@ -1,29 +1,25 @@
 <% if @results.any? %>
   <div class="row">
-    <div class="col-md-8 col-md-offset-2">
+    <div class="col-md-4 col-md-offset-4">
       <ul class="list-group">
         <% @results.each do |student| %>
-          <li class="list-group-item">
-            <div class="row">
-              <div class="col-xs-5">
-                <%= link_to student.name, student_payments_path(student) %>
-              </div>
-              <div class="col-xs-6">
-                <% if student.internship_course %>
-                  <%= link_to 'Internships', course_student_path(student.internship_course, student) %>
-                <% end %>
-              </div>
-              <div class="col-xs-1">
-                <% if student.courses.empty? %>
-                  <span class="label label-primary pull-right">Not enrolled</span>
-                <% elsif student.class_over? %>
-                  <span class="label label-info pull-right">Graduate</span>
-                <% elsif student.courses.any? %>
-                  <span class="label label-success pull-right">Current student</span>
-                <% end %>
-              </div>
+          <h3><%= student.name %></h3>
+
+          <div class="panel panel-info">
+            <div class="panel-body">
+              <% if student.courses.empty? %>
+                <span class="label label-primary pull-right">Not enrolled</span>
+              <% elsif student.class_over? %>
+                <span class="label label-info pull-right">Graduate</span>
+              <% elsif student.courses.any? %>
+                <span class="label label-success pull-right">Current student</span>
+              <% end %>
+
+              <p><%= link_to 'Courses', student_courses_path(student) %></p>
+              <p><%= link_to 'Payments', student_payments_path(student) %></p>
+              <p><%= link_to 'Internships', course_student_path(student.internship_course, student) if student.internship_course %></p>
             </div>
-          </li>
+          </div>
         <% end %>
       </ul>
     </div>
