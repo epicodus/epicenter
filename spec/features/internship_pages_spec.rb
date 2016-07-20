@@ -106,6 +106,19 @@ feature 'visiting the internships show page' do
   end
 end
 
+feature 'rating an internship' do
+  let(:internship_course) { FactoryGirl.create(:internship_course) }
+  let(:student) { FactoryGirl.create(:student, course: internship_course) }
+
+  scenario 'a student can rate an internship from the internships index page', :js do
+    FactoryGirl.create(:internship, courses: [student.course])
+    login_as(student, scope: :student)
+    visit course_student_path(student.course, student)
+    click_on "Submit rankings"
+    expect(page).to have_content 'Internship rankings have been updated'
+  end
+end
+
 feature 'admin viewing students interested in an internship' do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:student) { FactoryGirl.create(:student) }

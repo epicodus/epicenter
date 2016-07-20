@@ -60,7 +60,7 @@ private
       redirect_to payment_methods_path, notice: 'Primary payment method has been updated.'
     else
       @course = Course.find(Rails.application.routes.recognize_path(request.referrer)[:course_id])
-      redirect_to course_student_path(@course, current_student), notice: 'Internship ratings have been updated.'
+      redirect_to course_student_path(@course, current_student), notice: 'Internship rankings have been updated.'
     end
   end
 
