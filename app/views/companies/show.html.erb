@@ -28,8 +28,6 @@
     <% if internship.courses.active_courses.any? %>
       <div class="col-md-6">
         <h2>Current Internships</h2>
-        <p>* Rank students by dragging names into the correct order</p>
-
         <%= render 'companies/rank_students_form', internship: internship %>
       </div>
     <% end %>
@@ -38,39 +36,38 @@
       <div class="col-md-6">
         <h2>Previous Internships</h2>
         <% internship.courses.inactive_courses.reverse.each do |course| %>
-            <div class="panel panel-primary">
-              <div class="panel-heading">
-                <h3 class="panel-title"><%= course.description %></h3>
-              </div>
-              <div class="panel-body">
-                <% if course.interview_assignments.for_internship(internship).any? %>
-                  <div class="table-responsive">
-                    <table class="table">
-                      <thead>
+          <h3><%= course.description %></h3>
+
+          <div class="panel panel-primary">
+            <div class="panel-body">
+              <% if course.interview_assignments.for_internship(internship).any? %>
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Ranking</th>
+                        <th>Interviewee</th>
+                        <th>Feedback</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% course.interview_assignments.for_internship(internship).each do |interview_assignment| %>
                         <tr>
-                          <th>Ranking</th>
-                          <th>Interviewee</th>
-                          <th>Feedback</th>
+                          <td class="col-md-1">
+                            <%= interview_assignment.ranking_from_company %>
+                          </td>
+                          <td><%= interview_assignment.student.name %></td>
+                          <td class="col-md-6"><%= interview_assignment.feedback_from_company %></td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        <% course.interview_assignments.for_internship(internship).each do |interview_assignment| %>
-                          <tr>
-                            <td class="col-md-1">
-                              <%= interview_assignment.ranking_from_company %>
-                            </td>
-                            <td><%= interview_assignment.student.name %></td>
-                            <td class="col-md-6"><%= interview_assignment.feedback_from_company %></td>
-                          </tr>
-                        <% end %>
-                      </tbody>
-                    </table>
-                  </div>
-                <% else %>
-                  No interview assignments
-                <% end %>
-              </div>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+              <% else %>
+                No interview assignments
+              <% end %>
             </div>
+          </div>
         <% end %>
       </div>
     <% end %>
