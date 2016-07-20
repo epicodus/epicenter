@@ -1,6 +1,4 @@
 class Internship < ActiveRecord::Base
-  default_scope { order('name') }
-
   belongs_to :company
   has_many :ratings
   has_many :course_internships
@@ -20,6 +18,10 @@ class Internship < ActiveRecord::Base
 
   before_validation :fix_url
   before_save :check_number_of_students
+
+  def self.ordered_by_ratings
+    includes(:ratings).order('ratings.number')
+  end
 
   def self.not_assigned_as_interview_for(student)
     all - includes(:interview_assignments).where(interview_assignments: { student_id: student.id })

@@ -196,10 +196,6 @@ class Student < User
     ratings.where(internship_id: internship.id).first
   end
 
-  def self.find_students_by_interest(internship, interest_level)
-    internship.students.order(:name).select { |student| student.try(:find_rating, internship).try(:interest) == interest_level }
-  end
-
 private
 
   def total_number_of_course_days

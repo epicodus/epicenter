@@ -22,16 +22,6 @@ describe Internship do
     end
   end
 
-  describe 'default scope' do
-    let!(:internship) { FactoryGirl.create(:internship, name: "z labs") }
-    let!(:internship_two) { FactoryGirl.create(:internship, name: "a labs") }
-    let!(:internship_three) { FactoryGirl.create(:internship, name: 'k labs') }
-
-    it 'should be organized alphabetically by name' do
-      expect(Internship.all).to eq [internship_two, internship_three, internship]
-    end
-  end
-
   describe '#not_assigned_as_interview_for' do
     let(:internship) { FactoryGirl.create(:internship) }
     let(:internship_2) { FactoryGirl.create(:internship) }
@@ -82,6 +72,16 @@ describe Internship do
       php_track = FactoryGirl.create(:track, description: 'PHP/Drupal')
       internship = FactoryGirl.create(:internship, tracks: [php_track])
       expect(internship.tracks_ordered_by_description).to eq 'PHP/Drupal, Ruby/Rails'
+    end
+  end
+
+  describe '#ordered_by_ratings' do
+    it 'orders internships by rating' do
+      high_rated_internship = FactoryGirl.create(:internship)
+      low_rated_internship = FactoryGirl.create(:internship)
+      FactoryGirl.create(:rating, number: 1, internship: high_rated_internship)
+      FactoryGirl.create(:rating, number: 2, internship: low_rated_internship)
+      expect(Internship.ordered_by_ratings).to eq [high_rated_internship, low_rated_internship]
     end
   end
 end
