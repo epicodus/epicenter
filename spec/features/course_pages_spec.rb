@@ -126,18 +126,6 @@ feature 'editing a course' do
   end
 end
 
-feature 'deleting a course' do
-  let(:course) { FactoryGirl.create(:course) }
-  let(:admin) { FactoryGirl.create(:admin) }
-  before { login_as(admin, scope: :admin) }
-
-  scenario 'admin clicks delete button' do
-    visit edit_course_path(course)
-    click_on 'Delete'
-    expect(page).to have_content "#{course.description} has been deleted"
-  end
-end
-
 feature 'visiting the previous courses page' do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }

@@ -44,12 +44,6 @@ class CoursesController < ApplicationController
     end
   end
 
-  def destroy
-    @course = Course.find(params[:id])
-    @course.destroy
-    redirect_to root_path, notice: "#{@course.description} has been deleted."
-  end
-
 private
 
   def course_params
