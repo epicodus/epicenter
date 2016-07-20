@@ -15,7 +15,7 @@
       <% @submissions.each do |submission| %>
           <tr>
             <td><%= link_to submission.student.name, course_student_path(@code_review.course, submission.student) %></td>
-            <td><%= link_to 'view code', submission.link, target: '_blank' if submission.link %></td>
+            <td><%= link_to 'View code', submission.link, target: '_blank' if submission.link %></td>
             <td><%= submission.updated_at.strftime("%a, %b %d, %Y at %l:%M %P") %></td>
             <td><%= link_to 'Review', new_submission_review_path(submission) %></td>
           </tr>
