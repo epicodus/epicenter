@@ -37,7 +37,7 @@ $(function() {
     }
   });
 
-  $('#student-internship-rankings-datatable').DataTable({
+  $('.student-internship-rankings-datatable').DataTable({
     paging: false,
     autoWidth: false,
     info: false,
