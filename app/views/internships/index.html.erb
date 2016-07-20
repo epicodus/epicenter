@@ -20,15 +20,12 @@
 <br>
 
 <% @courses.reverse.each do |course| %>
-  <% if params[:inactive] %>
-    <div class="panel panel-primary">
-  <% else %>
-    <div class="panel panel-info">
-  <% end %>
-    <div class="panel-heading">
-      <%= course.description %>
-    </div>
+  <h3>
+    <%= course.description %>
+    <%= link_to 'Edit', edit_course_path(course) %>
+  </h3>
 
+  <div class="panel panel-info">
     <div class="panel-body">
       <p><%= pluralize(course.internships.count, 'internship') %></p>
       <p><%= pluralize(course.total_internship_students_requested, 'student') %> requested</p>
@@ -36,18 +33,12 @@
       <% if course.active? %>
         <%= form_for course, method: :put do |f| %>
           <%= f.hidden_field :active, value: false %>
-          <div class="btn-group">
-            <%= link_to 'Edit', edit_course_path(course), class: 'btn btn-success' %>
-            <%= f.submit 'Mark as inactive', class: 'btn btn-default' %>
-          </div>
+          <%= f.submit 'Mark as inactive', class: 'btn btn-default' %>
         <% end %>
       <% else %>
         <%= form_for course, method: :put do |f| %>
           <%= f.hidden_field :active, value: true %>
-          <div class="btn-group">
-            <%= link_to 'Edit', edit_course_path(course), class: 'btn btn-success' %>
-            <%= f.submit 'Mark as active', class: 'btn btn-default' %>
-          </div>
+          <%= f.submit 'Mark as active', class: 'btn btn-default' %>
         <% end %>
       <% end %>
 

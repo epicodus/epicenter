@@ -7,7 +7,7 @@
 
 <div class="form-group">
   <% unless @course.internship_course? %>
-      <%= link_to 'Attendance by day', course_day_attendance_records_path(@course), class: 'btn btn-default' %>
+      <%= link_to 'Attendance by day', course_day_attendance_records_path(@course) %>
   <% end %>
 </div>
 

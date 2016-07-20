@@ -1,6 +1,6 @@
 <h1>Attendance for <%= day_value.strftime("%A %B %d, %Y") %></h1>
-<h4>Course: <%= @course.description %></h4>
-<h4>Teacher: <%= @course.teacher %></h4>
+<h4><%= @course.description %></h4>
+<h4><%= @course.teacher %></h4>
 
 <%= form_for :attendance_records, url: course_day_attendance_records_path(@course), html: { method: :post } do |f| %>
   <div class="row">
