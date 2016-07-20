@@ -79,11 +79,6 @@ feature 'visiting the code review show page' do
       click_on 'Delete'
       expect(page).to have_content "#{code_review.title} has been deleted"
     end
-
-    scenario 'has a link to create a new code_review' do
-      click_on 'New'
-      expect(page).to have_content 'New code review'
-    end
   end
 
   context 'as a student' do

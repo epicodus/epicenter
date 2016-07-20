@@ -1,11 +1,8 @@
 <h1>Code reviews for <%= @course.description %></h1>
 
-<%= form_tag update_multiple_code_reviews_path, method: :patch, class: 'update-multiple' do %>
-  <div class="btn-group">
-    <%= link_to 'New code review', new_code_review_path, class: "btn btn-success" %>
-    <%= submit_tag 'Save order', class: "btn btn-info" %>
-  </div>
+<p><%= link_to 'New code review', new_code_review_path %></p>
 
+<%= form_tag update_multiple_code_reviews_path, method: :patch, class: 'update-multiple' do %>
   <div class="table-responsive">
     <table class="table table-hover">
       <thead>
@@ -20,4 +17,5 @@
       </tbody>
     </table>
   </div>
+  <%= submit_tag 'Save order', class: "btn btn-info" %>
 <% end %>

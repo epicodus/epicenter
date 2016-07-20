@@ -2,12 +2,8 @@
 
 <h1>
   <%= @code_review.title %>
-  <% if current_admin %>
-    <div class="btn-group pull-right">
-      <%= link_to 'Edit', edit_code_review_path(@code_review), class: 'btn btn-info' %>
-      <%= link_to 'Delete', @code_review, data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
-      <%= link_to 'New', new_code_review_path, class: 'btn btn-success' %>
-    </div>
+  <% if can? :manage, @code_review %>
+    <%= link_to 'Edit', edit_code_review_path(@code_review) %>
   <% end %>
 </h1>
 
@@ -55,4 +51,8 @@
       <%= render 'submissions/form' %>
     </div>
   </div>
+<% end %>
+
+<% if current_admin %>
+  <%= link_to 'Delete', @code_review, data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
 <% end %>
