@@ -39,7 +39,7 @@
         <%= form_tag create_multiple_interview_assignments_path, method: :post do %>
           <%= render 'layouts/errors', object: @interview_assignment %>
             <div class="form-group">
-              <%= collection_select :interview_assignment, :internship_id, @course.internships.not_assigned_as_interview_for(@student), :id, :name, {}, { class: 'multiselect-dropdown', multiple: true, include_hidden: false, required: true } %>
+              <%= collection_select :interview_assignment, :internship_id, @course.internships.order(:name).not_assigned_as_interview_for(@student), :id, :name, {}, { class: 'multiselect-dropdown', multiple: true, include_hidden: false, required: true } %>
             </div>
           <%= hidden_field_tag :course_id, @course.id %>
           <%= hidden_field_tag :student_id, @student.id %>
