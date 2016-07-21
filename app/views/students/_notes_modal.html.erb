@@ -1,17 +1,15 @@
 <% @student.submissions.each do |submission| %>
-  <div class="modal fade notes-modal" data-backdrop="static" id="<%= submission.id %>" tabindex="-1">
+  <div class="modal" data-backdrop="static" id="<%= submission.id %>" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4>Notes</h4>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
         <div class="modal-body">
+          <p><strong>Notes</strong></p>
           <% if submission.has_been_reviewed? %>
             <%= markdown(submission.try(:latest_review).try(:note)) %>
           <% end %>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>

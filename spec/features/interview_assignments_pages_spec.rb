@@ -56,3 +56,34 @@ feature 'removing an interview assignment' do
     end
   end
 end
+
+feature 'navigating to the internship page from the interview assignments list' do
+  let(:admin) { FactoryGirl.create(:admin) }
+  let(:internship) { FactoryGirl.create(:internship) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: internship.courses.first) }
+
+  scenario 'as an admin' do
+    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
+    login_as(admin, scope: :admin)
+    visit course_student_path(internship.courses.first, student)
+    within '#interview-assignments-table' do
+      click_on internship.name
+    end
+    expect(page).to have_content 'Rankings from students'
+  end
+end
+
+feature 'shows internship details modal from the interview assignments list' do
+  let(:internship) { FactoryGirl.create(:internship) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: internship.courses.first) }
+
+  scenario 'as a student' do
+    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
+    login_as(student, scope: :student)
+    visit course_student_path(internship.courses.first, student)
+    within '#interview-assignments-table' do
+      click_on internship.name
+    end
+    expect(page).to have_content 'Details'
+  end
+end

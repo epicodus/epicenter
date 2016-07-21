@@ -22,7 +22,7 @@
                 <td class="col-xs-1">
                   <%= Rating.find_or_initialize_by(internship_id: internship.id, student_id: @student.id).number %>
                 </td>
-                <td class="col-xs-2"><%= link_to internship.name, course_internship_path(@course, internship) %></td>
+                <td class="col-xs-2"><%= link_to internship.name, "##{internship.id}", data: { toggle: "modal" } %></td>
                 <td class="col-xs-2"><%= internship.tracks_ordered_by_description %></td>
                 <td>
                   <div class='form-group'>
@@ -47,3 +47,5 @@
     <% end %>
   </div>
 <% end %>
+
+<%= render 'ratings/internships_modal' %>

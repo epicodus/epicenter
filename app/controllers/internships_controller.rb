@@ -9,6 +9,7 @@ class InternshipsController < ApplicationController
   def show
     @internship = Internship.find(params[:id])
     @course = Course.find(params[:course_id])
+    authorize! :manage, @internship
   end
 
   def edit

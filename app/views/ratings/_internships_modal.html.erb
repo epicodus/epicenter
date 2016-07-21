@@ -1,0 +1,33 @@
+<% @course.internships.ordered_by_ratings.each do |internship| %>
+  <div class="modal" data-backdrop="static" id="<%= internship.id %>" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+        <div class="modal-body">
+          <h1><%= internship.name %></h1>
+          <h4><%= internship.tracks_ordered_by_description %></h4>
+          <h4><%= internship.address %></h4>
+          <h4><%= link_to internship.website, internship.website %></h4>
+
+          <h3>Details</h3>
+          <div class="panel panel-info">
+            <div class="panel-body">
+              <p><strong>Description</strong></p>
+              <p><%= internship.description %></p>
+              <hr>
+              <p><strong>Ideal intern</strong></p>
+              <p><%= internship.ideal_intern %></p>
+              <% if internship.clearance_required %>
+                <hr>
+                <p><strong>Clearance description</strong></p>
+                <p><%= internship.clearance_description %></p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

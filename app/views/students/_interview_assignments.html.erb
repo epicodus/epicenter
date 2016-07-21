@@ -20,7 +20,13 @@
             <tbody>
               <% @student.interview_assignments.for_course(@course).order_by_internship_name.each do |interview_assignment| %>
                 <tr>
-                  <td><%= link_to interview_assignment.internship.name, course_internship_path(@course, interview_assignment.internship) %></td>
+                  <td>
+                    <% if can? :manage, InterviewAssignment %>
+                      <%= link_to interview_assignment.internship.name, course_internship_path(@course, interview_assignment.internship) %>
+                    <% else %>
+                      <%= link_to interview_assignment.internship.name, "##{interview_assignment.internship.id}", data: { toggle: "modal" } %>
+                    <% end %>
+                  </td>
                   <td><%= interview_assignment.internship.company.name %></td>
                   <td><%= mail_to interview_assignment.internship.company.email %></td>
                   <% if can? :manage, InterviewAssignment %>
