@@ -75,13 +75,23 @@ describe Internship do
     end
   end
 
-  describe '#ordered_by_ratings' do
+  describe '#ordered_by_student_ratings' do
     it 'orders internships by rating' do
-      high_rated_internship = FactoryGirl.create(:internship)
-      low_rated_internship = FactoryGirl.create(:internship)
-      FactoryGirl.create(:rating, number: 1, internship: high_rated_internship)
-      FactoryGirl.create(:rating, number: 2, internship: low_rated_internship)
-      expect(Internship.ordered_by_ratings).to eq [high_rated_internship, low_rated_internship]
+      student = FactoryGirl.create(:student)
+      high_rated_internship_from_student = FactoryGirl.create(:internship)
+      low_rated_internship_from_student = FactoryGirl.create(:internship)
+      not_rated_by_student = FactoryGirl.create(:internship)
+      FactoryGirl.create(:rating, number: 1, internship: high_rated_internship_from_student, student: student)
+      FactoryGirl.create(:rating, number: 2, internship: low_rated_internship_from_student, student: student)
+      expect(Internship.ordered_by_student_ratings(student)).to eq [high_rated_internship_from_student, low_rated_internship_from_student]
+      expect(Internship.ordered_by_student_ratings(student)).to_not include not_rated_by_student
+    end
+
+    it 'returns all internships if no ratings exist yet' do
+      student = FactoryGirl.create(:student)
+      internship_1 = FactoryGirl.create(:internship)
+      internship_2 = FactoryGirl.create(:internship)
+      expect(Internship.ordered_by_student_ratings(student)).to eq [internship_1, internship_2]
     end
   end
 end

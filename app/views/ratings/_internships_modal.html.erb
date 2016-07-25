@@ -1,4 +1,4 @@
-<% @course.internships.ordered_by_ratings.each do |internship| %>
+<% @course.internships.each do |internship| %>
   <div class="modal" data-backdrop="static" id="<%= internship.id %>" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
