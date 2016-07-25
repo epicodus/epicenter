@@ -5,7 +5,7 @@
     <div class="panel-body">
       <% if course.interview_assignments.for_internship(internship).any? %>
         <div class="alert alert-info">
-          <p class="text-center">Rank students by dragging names into the correct order</p>
+          <p class="text-center">Rank students by dragging rows into the correct order</p>
         </div>
         <%= form_tag update_multiple_interview_assignments_path, method: :patch, class: 'update-multiple' do %>
           <div class="table-responsive">
