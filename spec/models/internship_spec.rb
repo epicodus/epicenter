@@ -87,10 +87,10 @@ describe Internship do
       expect(Internship.ordered_by_student_ratings(student)).to_not include not_rated_by_student
     end
 
-    it 'returns all internships if no ratings exist yet' do
+    it 'returns all internships ordered by name if no ratings exist yet' do
       student = FactoryGirl.create(:student)
-      internship_1 = FactoryGirl.create(:internship)
-      internship_2 = FactoryGirl.create(:internship)
+      internship_1 = FactoryGirl.create(:internship, name: 'First Internship')
+      internship_2 = FactoryGirl.create(:internship, name: 'Last Internship')
       expect(Internship.ordered_by_student_ratings(student)).to eq [internship_1, internship_2]
     end
   end

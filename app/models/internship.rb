@@ -24,7 +24,7 @@ class Internship < ActiveRecord::Base
     if internships_with_student_ratings.any?
       internships_with_student_ratings.order('ratings.number')
     else
-      all
+      all.order(:name)
     end
   end
 
