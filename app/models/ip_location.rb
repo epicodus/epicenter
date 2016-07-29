@@ -7,6 +7,6 @@ class IpLocation
   end
 
   def self.is_local_computer?(ip)
-    IPAddr.new(ip) == ENV['SCHOOL_IP_ADDRESS'] || IPAddr.new(ip) == ENV['SEATTLE_WIFI_IP_ADDRESS']
+    IPAddr.new(ip) == ENV['SCHOOL_IP_ADDRESS'] || IPAddr.new(ip) == ENV['SEATTLE_WIFI_IP_ADDRESS'] || IPAddr.new(ip) == "::1"
   end
 end
