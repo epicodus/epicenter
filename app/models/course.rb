@@ -5,10 +5,11 @@ class Course < ActiveRecord::Base
   scope :inactive_courses, -> { where(active: false).order(:description) }
   scope :previous_courses, -> { where('end_date <= ?', Time.zone.now.to_date) }
 
-  validates :description, :start_date, :end_date, :start_time, :end_time, presence: true
+  validates :description, :start_date, :end_date, :start_time, :end_time, :office_id, presence: true
   before_validation :set_start_and_end_dates
 
   belongs_to :admin
+  belongs_to :office
   has_many :enrollments
   has_many :students, through: :enrollments
   has_many :attendance_records, through: :students

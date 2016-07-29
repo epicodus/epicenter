@@ -61,6 +61,7 @@ FactoryGirl.define do
     class_days (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 4.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? }
     start_time '8:00 AM'
     end_time '5:00 PM'
+    office
 
     factory :past_course do
       description 'Past course'
@@ -93,6 +94,10 @@ FactoryGirl.define do
       :exp_year => '2020',
       :cvc => '123'
     })
+  end
+
+  factory :office do
+    name 'Portland'
   end
 
   factory :grade do

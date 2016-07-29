@@ -1,10 +1,12 @@
 describe Course do
   it { should belong_to :admin }
+  it { should belong_to :office }
   it { should have_many :students }
   it { should have_many(:attendance_records).through(:students) }
   it { should have_many :code_reviews }
   it { should have_many(:internships).through(:course_internships) }
   it { should have_many(:interview_assignments) }
+  it { should validate_presence_of(:office_id) }
 
   describe "validations" do
     it "validates the presence of description" do
