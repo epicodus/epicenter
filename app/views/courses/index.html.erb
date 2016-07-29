@@ -1,94 +1,38 @@
 <% if @student %>
-  <% if current_student %>
-    <h1>Your courses</h1>
-  <% else %>
-    <%= render 'students/student_header' %>
-    <%= render 'students/student_nav' %>
-  <% end %>
+  <%= render 'students/student_courses' %>
+<% else %>
+  <h1>
+    Courses
+    <%= link_to 'New', new_course_path %>
+  </h1>
 
-  <% if @student.courses.any? %>
-    <div class="table-responsive">
-      <table class="table">
-        <thead>
-          <tr>
+  <h3>Current and future courses</h3>
+  <div class="panel panel-info">
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table id="previous-courses-datatable" class="table table-hover">
+          <thead>
             <th>Description</th>
-            <th></th>
+            <th>Office</th>
             <th>Teacher</th>
-            <th>Attendance</th>
-            <th>Code reviews</th>
-            <% if can? :manage, Enrollment %>
-              <th></th>
-            <% end %>
-          </tr>
-        </thead>
-        <tbody>
-          <% @student.courses.order(:description).each do |course| %>
-            <tr id="student-course-<%= course.id %>">
-              <td><%= link_to course.description, course_student_path(course, @student) %></td>
-              <td>
-                <% if course.in_session? %>
-                  <span class="label label-info">Current course</span>
-                <% end %>
-              </td>
-              <td><%= course.teacher unless course.internship_course? %></td>
-              <td><%= number_to_percentage(@student.attendance_score(course), precision: 0) unless course.internship_course? %></td>
-              <td>
-                <% if @student.submissions.for_course(course).empty? %>
-                  No submissions made yet
-                <% elsif @student.submissions.for_course(course).needing_review.count == 0 %>
-                  All submissions have been reviewed
-                <% else %>
-                  <%= @student.submissions.for_course(course).needing_review.count %> pending review
-                <% end %>
-              </td>
-              <% if can? :manage, Enrollment %>
-                <td><%= link_to 'Withdraw', enrollment_path(id: @student.id, course_id: course.id), data: { method: :delete, confirm: 'Are you sure?' }, class: 'unstyled-link col-md-6' %></td>
+            <th>Students</th>
+            <th>Start date</th>
+            <th>End date</th>
+          </thead>
+            <tbody>
+              <% @courses.current_and_future_courses.includes(:admin).each do |course| %>
+                <tr>
+                  <td><%= link_to course.description, admin_path(current_admin, admin: { current_course_id: course.id }), method: :patch %></td>
+                  <td><%= course.office.name %></td>
+                  <td><%= course.teacher %></td>
+                  <td><%= course.students.count %></td>
+                  <td><%= course.start_date %></td>
+                  <td><%= course.end_date %></td>
+                </tr>
               <% end %>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-  <% end %>
-
-  <% if can? :manage, Enrollment %>
-    <div class="row">
-      <div class="col-md-4">
-        <%= form_for @student, method: :patch do |f| %>
-        <%= render 'layouts/errors', object: @student %>
-        <div class="input-group">
-          <%= f.collection_select :course_id, @student.other_courses.order(:description).reverse, :id, :teacher_and_description, { include_blank: 'Please select a course' }, { class: 'col-md-4 form-control', required: true } %>
-          <span class="input-group-btn">
-            <%= f.submit 'Add course', class: 'btn btn-info' %>
-          </span>
-        </div>
-        <% end %>
+            </tbody>
+        </table>
       </div>
     </div>
-  <% end %>
-<% else %>
-  <h1>Previous courses</h1>
-
-  <div class="table-responsive">
-    <table id="previous-courses-datatable" class="table table-hover">
-      <thead>
-        <th>Description</th>
-        <th>Teacher</th>
-        <th>Students</th>
-        <th>Start date</th>
-        <th>End date</th>
-      </thead>
-        <tbody>
-          <% @courses.includes(:admin).each do |course| %>
-            <tr>
-              <td><%= link_to course.description, admin_path(current_admin, admin: { current_course_id: course.id }), method: :patch %></td>
-              <td><%= course.teacher %></td>
-              <td><%= course.students.count %></td>
-              <td><%= course.start_date %></td>
-              <td><%= course.end_date %></td>
-            </tr>
-          <% end %>
-        </tbody>
-    </table>
   </div>
 <% end %>

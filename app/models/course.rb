@@ -25,6 +25,10 @@ class Course < ActiveRecord::Base
   before_create :import_code_reviews
   after_destroy :reassign_admin_current_courses
 
+  def self.for_admin(admin)
+    where(admin_id: admin.id)
+  end
+
   def self.active_internship_courses
     unscoped.where(internship_course: true, active: true).order(:description)
   end

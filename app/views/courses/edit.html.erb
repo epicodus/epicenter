@@ -1,4 +1,4 @@
-<h1>Edit <%= @course.description %></h1>
+<h1>Edit <%= @course.description %> (<%= @course.office.name %>)</h1>
 
 <p>Start date: <%= @course.start_date.strftime("%A, %B %d, %Y") %></p>
 <p>End date: <%= @course.end_date.strftime("%A, %B %d, %Y") %></p>

@@ -25,8 +25,8 @@ Rails.application.routes.draw do
   resources :upfront_payments, only: [:create]
   resources :attendance_record_amendments, only: [:new, :create]
   resources :internships, only: [:index, :edit, :update]
-  resources :courses, except: [:show, :destroy] do
-    resources :code_reviews, only: [:index] do
+  resources :courses, except: [:destroy] do
+    resources :code_reviews do
       resource :report, only: [:show], to: 'code_review_reports#show'
     end
     resources :internships, only: [:show]

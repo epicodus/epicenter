@@ -1,86 +1,39 @@
 <h1>
-  <%= @course.description %>
+  <%= @course.description %> (<%= @course.office.name %>)
   <%= link_to 'Edit', edit_course_path(@course) %>
 </h1>
-<h4><%= @course.teacher %></h4>
-<h4><%= pluralize(@course.students.count, 'student') %></h4>
 
-<div class="form-group">
-  <% unless @course.internship_course? %>
-      <%= link_to 'Attendance by day', course_day_attendance_records_path(@course) %>
-  <% end %>
-</div>
+<div class="row">
+  <div class="col-md-4">
+    <h3>Details</h3>
+    <div class="panel panel-info">
+      <div class="panel-body">
+        <h4><%= @course.teacher %></h4>
+        <h4><%= pluralize(@course.students.count, 'student') %></h4>
+        <% unless @course.internship_course? %>
+          <h4><%= @course.start_date.strftime('%B %d') %> to <%= @course.end_date.strftime('%B %d') %></h4>
+          <div class="form-group">
+            <%= link_to 'Attendance by day', course_day_attendance_records_path(@course) %>
+          </div>
+        <% end %>
 
-<%= form_for @enrollment do |f| %>
-  <div class="row">
-    <div class="col-md-4">
-      <%= render 'layouts/errors', object: @enrollment %>
-      <%= f.hidden_field :course_id, value: @course.id %>
-      <div class="input-group">
-        <%= f.collection_select :student_id, @course.other_students.with_activated_accounts, :id, :name, { include_blank: 'Add a student to this course' }, { class: 'form-control', required: true } %>
-        <span class="input-group-btn">
-          <%= f.submit 'Add student', class: 'btn btn-info' %>
-        </span>
+        <%= form_for @enrollment do |f| %>
+          <%= render 'layouts/errors', object: @enrollment %>
+          <%= f.hidden_field :course_id, value: @course.id %>
+          <div class="input-group">
+            <%= f.collection_select :student_id, @course.other_students.with_activated_accounts, :id, :name, { include_blank: 'Add a student to this course' }, { class: 'form-control', required: true } %>
+            <span class="input-group-btn">
+              <%= f.submit 'Add student', class: 'btn btn-info' %>
+            </span>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
-<% end %>
 
-<div class="table-responsive">
-  <table class="searchable-datatable table table-hover">
-    <thead>
-      <tr>
-        <th>Student</th>
-        <% unless @course.internship_course? %>
-          <th>Attendance</th>
-        <% end %>
-          <% @course.code_reviews.each do |code_review| %>
-            <th><%= code_review.title %></th>
-          <% end %>
-      </tr>
-    </thead>
-    <tbody>
-      <% @students.each do |student| %>
-        <tr>
-          <td><%= link_to student.name, course_student_path(@course, student), class: "unstyled-link" %></td>
-          <% unless @course.internship_course? %>
-            <td>
-              <% if student.attendance_score(@course) <= 92 %>
-                  <p class="text-danger">
-                <% else %>
-                  <p>
-              <% end %>
-              <% if student.attendance_score(@course).nan? %>
-                No records yet
-              <% else %>
-                <%= number_to_percentage(student.attendance_score(@course), precision: 0) %>
-              <% end %>
-              </p>
-            </td>
-          <% end %>
-          <% @course.code_reviews.each do |code_review| %>
-            <td>
-              <% if student.submission_for(code_review).nil? %>
-                <% if code_review.submissions_not_required? %>
-                  <%= form_for [code_review, Submission.new] do |f| %>
-                    <%= f.hidden_field :needs_review, value: true %>
-                    <%= f.hidden_field :student_id, value: student.id %>
-                    <%= f.submit 'Missing', class: 'failing-submission-link btn btn-link', id: 'create-submission-link' %>
-                  <% end %>
-                <% else %>
-                  <p class="text-danger">Missing</p>
-                <% end %>
-              <% elsif student.submission_for(code_review).has_been_reviewed? && student.submission_for(code_review).meets_expectations? %>
-                <%= link_to 'Pass', new_submission_review_path(student.submission_for(code_review)), class: 'passing-submission-link' %>
-              <% elsif student.submission_for(code_review).has_been_reviewed? && !student.submission_for(code_review).meets_expectations? %>
-                <%= link_to 'Fail', new_submission_review_path(student.submission_for(code_review)), class: 'failing-submission-link' %>
-              <% else %>
-                <%= link_to 'Pending', new_submission_review_path(student.submission_for(code_review)), class: 'pending-submission-link' %>
-              <% end %>
-            </td>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <div class="col-md-8">
+    <%= render 'courses/course_code_reviews' %>
+  </div>
 </div>
+
+<%= render 'courses/course_students' %>
