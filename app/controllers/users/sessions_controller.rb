@@ -87,6 +87,7 @@ private
     users.map do |user|
       record = AttendanceRecord.find_or_initialize_by(student: user, date: Time.zone.now.to_date)
       record.pair_id = (users - [user]).try(:first).try(:id)
+      record.station = params[:pair][:station]
       record.save
     end
   end

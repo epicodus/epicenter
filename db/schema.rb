@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160719214931) do
+ActiveRecord::Schema.define(version: 20160729044242) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20160719214931) do
     t.boolean  "left_early"
     t.datetime "signed_out_time"
     t.integer  "pair_id"
+    t.string   "station"
   end
 
   add_index "attendance_records", ["created_at"], name: "index_attendance_records_on_created_at", using: :btree
