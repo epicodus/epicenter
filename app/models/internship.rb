@@ -19,15 +19,6 @@ class Internship < ActiveRecord::Base
   before_validation :fix_url
   before_save :check_number_of_students
 
-  def self.ordered_by_student_ratings(student)
-    internships_with_student_ratings = includes(:ratings).where(ratings: { student_id: student.id })
-    if internships_with_student_ratings.any?
-      internships_with_student_ratings.order('ratings.number')
-    else
-      all.order(:name)
-    end
-  end
-
   def self.not_assigned_as_interview_for(student)
     all - includes(:interview_assignments).where(interview_assignments: { student_id: student.id })
   end
