@@ -8,6 +8,10 @@ class Admin < User
   devise :database_authenticatable, :validatable
   include DeviseInvitable::Inviter
 
+  def other_courses
+    Course.where.not(id: courses.map(&:id))
+  end
+
 private
 
   def assign_current_course

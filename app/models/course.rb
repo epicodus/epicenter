@@ -41,6 +41,16 @@ class Course < ActiveRecord::Base
     includes(:code_reviews).where.not(code_reviews: { id: nil })
   end
 
+  def self.current_courses
+    today = Time.zone.now.to_date
+    where('start_date <= ? AND end_date >= ?', today, today).order(:description)
+  end
+
+  def self.future_courses
+    today = Time.zone.now.to_date
+    where('start_date >= ?', today).order(:description)
+  end
+
   def self.current_and_future_courses
     today = Time.zone.now.to_date
     where('start_date <= ? AND end_date >= ? OR start_date >= ?', today, today, today).order(:description)
