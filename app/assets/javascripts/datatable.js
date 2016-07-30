@@ -27,7 +27,7 @@ $(function() {
     ]
   });
 
-  $('#previous-courses-datatable').DataTable({
+  $('.courses-datatable').DataTable({
     paging: false,
     autoWidth: false,
     info: false,
