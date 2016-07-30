@@ -12,6 +12,7 @@
 <% unless @course.internship_course? %>
   <h4><%= @course.teacher %></h4>
   <h4>Attendance: <%= number_to_percentage(@student.attendance_score(@course), precision: 0) %></h4>
+  <h4><%= @course.start_date.strftime('%B %d') %> to <%= @course.end_date.strftime('%B %d') %></h4>
 <% end %>
 
 <%= render 'students/student_code_reviews' %>
