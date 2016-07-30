@@ -7,7 +7,7 @@ feature 'code_review report' do
     grade = FactoryGirl.create(:passing_grade, review: review, objective: code_review.objectives.first)
     admin = FactoryGirl.create(:admin, current_course: student.course)
     login_as(admin, scope: :admin)
-    visit course_code_reviews_path(code_review.course)
+    visit course_path(code_review.course)
     click_link 'Grades report'
     expect(page).to have_css '.submission-success'
   end
@@ -24,7 +24,7 @@ feature 'code_review report' do
     passing_grade = FactoryGirl.create(:passing_grade, review: better_review, objective: code_review.objectives.first)
     admin = FactoryGirl.create(:admin, current_course: student.course)
     login_as(admin, scope: :admin)
-    visit course_code_reviews_path(code_review.course)
+    visit course_path(code_review.course)
     click_link 'Grades report'
     within('tr', text: better_student.name) do
       expect(page).to have_css '.submission-success'

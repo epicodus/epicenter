@@ -43,7 +43,7 @@
             <%= link_to 'Profile', edit_student_registration_path %>
           <% end %>
         <% elsif current_admin %>
-          <li><%= link_to "#{current_admin.current_course.description}", course_students_path(current_admin.current_course), class: 'first-navbar-link' %></li>
+          <li><%= link_to "#{current_admin.current_course.description}", course_path(current_admin.current_course), class: 'first-navbar-link' %></li>
           <li><%= link_to 'Courses', courses_path %></li>
           <li><%= link_to "Internships", internships_path %></li>
           <li><%= link_to 'Invite', new_student_invitation_path %></li>

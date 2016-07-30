@@ -104,7 +104,7 @@ feature 'Creating a student submission for an internship course code review' do
 
   scenario 'as an admin' do
     FactoryGirl.create(:code_review, course: student.course, submissions_not_required: true)
-    visit course_students_path(student.course)
+    visit course_path(student.course)
     expect { click_on('Missing') }.to change { student.submissions.count }.by 1
   end
 end

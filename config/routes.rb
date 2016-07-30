@@ -30,7 +30,7 @@ Rails.application.routes.draw do
       resource :report, only: [:show], to: 'code_review_reports#show'
     end
     resources :internships, only: [:show]
-    resources :students, only: [:index, :show]
+    resources :students, only: [:show]
     resources :day_attendance_records, only: [:index, :create]
   end
   resources :ratings, only: [:create]

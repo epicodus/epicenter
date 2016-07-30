@@ -29,7 +29,7 @@ protected
 
   def after_sign_in_path_for(user)
     if user.is_a? Admin
-      course_students_path(user.current_course)
+      course_path(user.current_course)
     elsif user.is_a? Student
       if user.class_in_session? && user.signed_main_documents?
         student_courses_path(current_student)
