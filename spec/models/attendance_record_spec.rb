@@ -18,22 +18,20 @@ describe AttendanceRecord do
   end
 
   describe 'adds station to student record if entered' do
+    let(:first_user) { FactoryGirl.create(:student) }
+    let(:second_user) { FactoryGirl.create(:student) }
+    let(:first_attendance_record) { FactoryGirl.create(:attendance_record, student: first_user) }
+    let(:second_attendance_record) { FactoryGirl.create(:attendance_record, student: second_user) }
+
     it 'adds station if entered on pair signin' do
-      first_user = FactoryGirl.create(:student)
-      second_user = FactoryGirl.create(:student)
-      first_attendance_record = FactoryGirl.create(:attendance_record, student: first_user)
-      second_attendance_record = FactoryGirl.build(:attendance_record, student: second_user)
       first_attendance_record.station = "1A"
       second_attendance_record.station = "1A"
       expect(first_attendance_record.station).to eq "1A"
       expect(second_attendance_record.station).to eq "1A"
     end
+
     it 'allows login even if no station entered' do
-      first_user = FactoryGirl.create(:student)
-      second_user = FactoryGirl.create(:student)
-      first_attendance_record = FactoryGirl.create(:attendance_record, student: first_user)
-      second_attendance_record = FactoryGirl.build(:attendance_record, student: second_user)
-      expect(second_attendance_record.valid?).to eq true
+      expect(first_attendance_record.valid?).to eq true
       expect(second_attendance_record.valid?).to eq true
     end
   end
