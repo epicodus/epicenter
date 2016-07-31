@@ -1,20 +1,15 @@
 <h1>Bank account information</h1>
 
-<p>
-  After entering your bank account information, two small test deposits will be
-  made in your account to confirm that it is yours. When you receive those
-  deposits, you can return to this site to start your payments.
-</p>
-
-<p>
-  Currently only US bank accounts are supported. For payments from foreign
-  accounts, please contact us. Thanks!
-</p>
-
-<p><%= image_tag "check.png" %></p>
-
 <div class="row">
-  <div class="col-md-6">
-    <%= render 'form' %>
+  <div class="col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <p>After entering your bank account information, two small test deposits will be made in your account to confirm that it is yours. When you receive those deposits, you can return to this site to start your payments.</p>
+        <p>Currently only US bank accounts are supported. For payments from foreign accounts, please contact us. Thanks!</p>
+        <p><%= image_tag "check.png" %></p>
+
+        <%= render 'form' %>
+      </div>
+    </div>
   </div>
 </div>

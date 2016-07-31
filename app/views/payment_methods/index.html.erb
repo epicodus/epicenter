@@ -1,62 +1,68 @@
 <h1>Your payment methods</h1>
-<p class="text-primary">* Payments made with a credit card will be charged a 2.9% processing fee + 30¢ per transaction.</p>
+<div class="row">
+  <div class="col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <p class="text-primary">* Payments made with a credit card will be charged a 2.9% processing fee + 30¢ per transaction.</p>
 
-<% if @payment_methods.present? %>
-  <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Primary</th>
-          <th>Type</th>
-          <th>Number</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @payment_methods.each do |payment_method| %>
-          <% if payment_method == @primary_payment_method %>
-            <tr class="info">
-              <td class="primary-payment-method">
-                <span class="check-mark">✓</span>
-              </td>
-          <% elsif !payment_method.verified? %>
-            <tr class="alert">
-              <td>
-              </td>
-          <% else %>
-            <tr>
-              <td>
-                <% if payment_method.verified? %>
-                  <%= form_for payment_method.student, html: {class: 'payment-button-form'} do |f| %>
-                    <%= f.hidden_field :primary_payment_method_id, value: payment_method.id %>
-                    <%= f.submit 'Make Primary', class: 'btn btn-primary', data: { confirm: "Change primary payment method?" } %>
+        <% if @payment_methods.present? %>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Primary</th>
+                  <th>Type</th>
+                  <th>Number</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @payment_methods.each do |payment_method| %>
+                  <% if payment_method == @primary_payment_method %>
+                    <tr class="info">
+                      <td class="primary-payment-method">
+                        <span class="check-mark">✓</span>
+                      </td>
+                  <% elsif !payment_method.verified? %>
+                    <tr class="alert">
+                      <td>
+                      </td>
+                  <% else %>
+                    <tr>
+                      <td>
+                        <% if payment_method.verified? %>
+                          <%= form_for payment_method.student, html: {class: 'payment-button-form'} do |f| %>
+                            <%= f.hidden_field :primary_payment_method_id, value: payment_method.id %>
+                            <%= f.submit 'Make Primary', class: 'btn btn-primary', data: { confirm: "Change primary payment method?" } %>
+                          <% end %>
+                        <% end %>
+                      </td>
                   <% end %>
+                    <td>
+                      <%= payment_method.class.name.underscore.humanize %>
+                    </td>
+                    <td>
+                      <%= payment_method.last_four_string %>
+                    </td>
+                    <td>
+                      <% unless payment_method.verified? %>
+                        <%= link_to 'Verify Account', edit_bank_account_path(payment_method), class: 'btn btn-info verify-button-link' %>
+                      <% else %>
+                        Verified
+                      <% end %>
+                    </td>
+                  </tr>
                 <% end %>
-              </td>
-          <% end %>
-            <td>
-              <%= payment_method.class.name.underscore.humanize %>
-            </td>
-            <td>
-              <%= payment_method.last_four_string %>
-            </td>
-            <td>
-              <% unless payment_method.verified? %>
-                <%= link_to 'Verify Account', edit_bank_account_path(payment_method), class: 'btn btn-info verify-button-link' %>
-              <% else %>
-                Verified
-              <% end %>
-            </td>
-          </tr>
+              </tbody>
+            </table>
+          </div>
+        <% else %>
+          <p>Looks like you haven't added any payment methods yet.</p>
         <% end %>
-      </tbody>
-    </table>
-  </div>
-<% else %>
-  <p>Looks like you haven't added any payment methods yet.</p>
-<% end %>
 
-<div class="btn-group">
-  <%= link_to 'Add credit card', new_credit_card_path, class: 'btn btn-success' %>
-  <%= link_to 'Add bank account', new_bank_account_path, class: 'btn btn-info' %>
+        <p><%= link_to 'Add credit card', new_credit_card_path %></p>
+        <p><%= link_to 'Add bank account', new_bank_account_path %></p>
+      </div>
+    </div>
+  </div>
 </div>

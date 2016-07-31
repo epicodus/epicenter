@@ -1,12 +1,16 @@
 <%= render 'layouts/errors', object: @review %>
 
 <h1>Submission for <%= @submission.code_review.title %></h1>
-<h3>
-  <%= link_to course_student_path(@submission.code_review.course, @submission.student), class: 'h3 text-primary' do %>
-    <%= @submission.student.name %>
-  <% end %>
-</h3>
-<h4>Submitted <%= time_ago_in_words(@submission.updated_at) %> ago</h4>
-<h4><%= link_to 'View code', @submission.link, target: '_blank' if @submission.link %></h4>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h3>
+      <%= link_to course_student_path(@submission.code_review.course, @submission.student), class: 'h3 text-primary' do %>
+        <%= @submission.student.name %>
+      <% end %>
+    </h3>
+    <h4>Submitted <%= time_ago_in_words(@submission.updated_at) %> ago</h4>
+    <h4><%= link_to 'View code', @submission.link, target: '_blank' if @submission.link %></h4>
 
-<%= render 'form' %>
+    <%= render 'form' %>
+  </div>
+</div>

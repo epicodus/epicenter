@@ -17,42 +17,46 @@
   </div>
 <% end %>
 
-<div class="table-responsive">
-  <table class="table">
-    <thead>
-      <tr><th>Objectives</th></tr>
-    </thead>
-    <tbody>
-      <% if @submission.has_been_reviewed? %>
-        <%= render @submission.latest_review.grades %>
-      <% else %>
-        <%= render @code_review.objectives %>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-
-<% if @submission.has_been_reviewed? %>
-  <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr><th>Feedback</th></tr>
-      </thead>
-      <tbody>
-        <tr><td><%= markdown(@submission.latest_review.note) %></td></tr>
-      </tbody>
-    </table>
-  </div>
-<% end %>
-
-<% if current_student && !@submission.code_review.submissions_not_required? %>
-  <div class="row">
-    <div class="col-md-6">
-      <%= render 'submissions/form' %>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr><th>Objectives</th></tr>
+        </thead>
+        <tbody>
+          <% if @submission.has_been_reviewed? %>
+            <%= render @submission.latest_review.grades %>
+          <% else %>
+            <%= render @code_review.objectives %>
+          <% end %>
+        </tbody>
+      </table>
     </div>
-  </div>
-<% end %>
 
-<% if current_admin %>
-  <%= link_to 'Delete', @code_review, data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
-<% end %>
+    <% if @submission.has_been_reviewed? %>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr><th>Feedback</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><%= markdown(@submission.latest_review.note) %></td></tr>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+
+    <% if current_student && !@submission.code_review.submissions_not_required? %>
+      <div class="row">
+        <div class="col-md-6">
+          <%= render 'submissions/form' %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if current_admin %>
+      <%= link_to 'Delete', @code_review, data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
+    <% end %>
+  </div>
+</div>
