@@ -5,7 +5,7 @@
         <% @results.each do |student| %>
           <h3><%= student.name %></h3>
 
-          <div class="panel panel-info">
+          <div class="panel panel-default">
             <div class="panel-body">
               <% if student.courses.empty? %>
                 <span class="label label-primary pull-right">Not enrolled</span>

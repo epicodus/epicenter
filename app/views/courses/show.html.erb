@@ -8,7 +8,7 @@
     <div class="row">
       <div class="col-md-12">
         <h3>Details</h3>
-        <div class="panel panel-info">
+        <div class="panel panel-default">
           <div class="panel-body">
             <h4><%= @course.teacher %></h4>
             <h4><%= pluralize(@course.students.count, 'student') %></h4>
@@ -36,7 +36,7 @@
             Attendance for today
             <%= link_to 'Other days', course_day_attendance_records_path(@course) %>
           </h3>
-          <div class="panel panel-info">
+          <div class="panel panel-default">
             <div class="panel-body">
               <% if @course.class_days.include?(Time.zone.now.to_date) %>
                 <div class="row">

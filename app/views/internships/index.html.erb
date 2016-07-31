@@ -27,7 +27,7 @@
     <%= link_to 'Edit', edit_course_path(course) %>
   </h3>
 
-  <div class="panel panel-info">
+  <div class="panel panel-default">
     <div class="panel-body">
       <p><%= pluralize(course.internships.count, 'internship') %></p>
       <p><%= pluralize(course.total_internship_students_requested, 'student') %> requested</p>
