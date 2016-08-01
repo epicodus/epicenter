@@ -52,7 +52,7 @@ describe Course do
     it 'returns the teacher name and course description' do
       admin = FactoryGirl.create(:admin)
       course = FactoryGirl.create(:course, admin: admin)
-      expect(course.teacher_and_description).to eq "#{course.description} (#{course.teacher})"
+      expect(course.teacher_and_description).to eq "#{course.office.name} - #{course.description} (#{course.teacher})"
     end
   end
 

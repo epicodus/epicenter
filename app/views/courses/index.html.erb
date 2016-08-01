@@ -8,163 +8,18 @@
 
   <% if current_admin.courses.any? %>
     <h3>Your courses</h3>
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <div class="table-responsive">
-          <table class="courses-datatable table table-hover">
-            <thead>
-              <th>Description</th>
-              <th>Office</th>
-              <th>Teacher</th>
-              <th>Students</th>
-              <th>Start date</th>
-              <th>End date</th>
-              <th></th>
-            </thead>
-              <tbody>
-                <% current_admin.courses.includes(:office).each do |course| %>
-                  <tr>
-                    <td><%= link_to course.description, admin_path(current_admin, admin: { current_course_id: course.id }), method: :patch %></td>
-                    <td><%= course.office.name %></td>
-                    <td><%= course.teacher %></td>
-                    <td><%= course.students.count %></td>
-                    <td><%= course.start_date.strftime("%B %d") %></td>
-                    <td><%= course.end_date.strftime("%B %d") %></td>
-                    <td><%= link_to 'Edit', edit_course_path(course) %></td>
-                  </tr>
-                <% end %>
-              </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+    <%= render 'courses/course_list', courses: current_admin.courses.includes(:office) %>
 
     <h3>Other courses</h3>
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <div class="table-responsive">
-          <table class="courses-datatable table table-hover">
-            <thead>
-              <th>Description</th>
-              <th>Office</th>
-              <th>Teacher</th>
-              <th>Students</th>
-              <th>Start date</th>
-              <th>End date</th>
-              <th></th>
-            </thead>
-              <tbody>
-                <% current_admin.other_courses.includes(:admin).includes(:office).each do |course| %>
-                  <tr>
-                    <td><%= link_to course.description, admin_path(current_admin, admin: { current_course_id: course.id }), method: :patch %></td>
-                    <td><%= course.office.name %></td>
-                    <td><%= course.teacher %></td>
-                    <td><%= course.students.count %></td>
-                    <td><%= course.start_date.strftime("%B %d") %></td>
-                    <td><%= course.end_date.strftime("%B %d") %></td>
-                    <td><%= link_to 'Edit', edit_course_path(course) %></td>
-                  </tr>
-                <% end %>
-              </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+    <%= render 'courses/course_list', courses: current_admin.other_courses %>
   <% else %>
     <h3>Future courses</h3>
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <div class="table-responsive">
-          <table class="courses-datatable table table-hover">
-            <thead>
-              <th>Description</th>
-              <th>Office</th>
-              <th>Teacher</th>
-              <th>Students</th>
-              <th>Start date</th>
-              <th>End date</th>
-              <th></th>
-            </thead>
-              <tbody>
-                <% @courses.future_courses.includes(:admin).each do |course| %>
-                  <tr>
-                    <td><%= link_to course.description, admin_path(current_admin, admin: { current_course_id: course.id }), method: :patch %></td>
-                    <td><%= course.office.name %></td>
-                    <td><%= course.teacher %></td>
-                    <td><%= course.students.count %></td>
-                    <td><%= course.start_date.strftime("%B %d") %></td>
-                    <td><%= course.end_date.strftime("%B %d") %></td>
-                    <td><%= link_to 'Edit', edit_course_path(course) %></td>
-                  </tr>
-                <% end %>
-              </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+    <%= render 'courses/course_list', courses: @courses.future_courses %>
 
     <h3>Current courses</h3>
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <div class="table-responsive">
-          <table class="courses-datatable table table-hover">
-            <thead>
-              <th>Description</th>
-              <th>Office</th>
-              <th>Teacher</th>
-              <th>Students</th>
-              <th>Start date</th>
-              <th>End date</th>
-              <th></th>
-            </thead>
-              <tbody>
-                <% @courses.current_courses.includes(:admin).each do |course| %>
-                  <tr>
-                    <td><%= link_to course.description, admin_path(current_admin, admin: { current_course_id: course.id }), method: :patch %></td>
-                    <td><%= course.office.name %></td>
-                    <td><%= course.teacher %></td>
-                    <td><%= course.students.count %></td>
-                    <td><%= course.start_date.strftime("%B %d") %></td>
-                    <td><%= course.end_date.strftime("%B %d") %></td>
-                    <td><%= link_to 'Edit', edit_course_path(course) %></td>
-                  </tr>
-                <% end %>
-              </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+    <%= render 'courses/course_list', courses: @courses.current_courses %>
 
     <h3>Previous courses</h3>
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <div class="table-responsive">
-          <table class="courses-datatable table table-hover">
-            <thead>
-              <th>Description</th>
-              <th>Office</th>
-              <th>Teacher</th>
-              <th>Students</th>
-              <th>Start date</th>
-              <th>End date</th>
-              <th></th>
-            </thead>
-              <tbody>
-                <% @courses.previous_courses.includes(:admin).each do |course| %>
-                  <tr>
-                    <td><%= link_to course.description, admin_path(current_admin, admin: { current_course_id: course.id }), method: :patch %></td>
-                    <td><%= course.office.name %></td>
-                    <td><%= course.teacher %></td>
-                    <td><%= course.students.count %></td>
-                    <td><%= course.start_date.strftime("%B %d") %></td>
-                    <td><%= course.end_date.strftime("%B %d") %></td>
-                    <td><%= link_to 'Edit', edit_course_path(course) %></td>
-                  </tr>
-                <% end %>
-              </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+    <%= render 'courses/course_list', courses: @courses.previous_courses %>
   <% end %>
 <% end %>

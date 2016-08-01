@@ -9,7 +9,7 @@ class Admin < User
   include DeviseInvitable::Inviter
 
   def other_courses
-    Course.where.not(id: courses.map(&:id))
+    Course.where.not(id: courses.map(&:id)).includes(:admin).includes(:office)
   end
 
 private
