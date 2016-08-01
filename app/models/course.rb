@@ -3,12 +3,12 @@ class Course < ActiveRecord::Base
   scope :non_internship_courses, -> { where(internship_course: false) }
   scope :active_courses, -> { where(active: true).order(:description) }
   scope :inactive_courses, -> { where(active: false).order(:description) }
-  scope :previous_courses, -> { where('end_date <= ?', Time.zone.now.to_date) }
 
-  validates :description, :start_date, :end_date, :start_time, :end_time, presence: true
+  validates :description, :start_date, :end_date, :start_time, :end_time, :office_id, presence: true
   before_validation :set_start_and_end_dates
 
   belongs_to :admin
+  belongs_to :office
   has_many :enrollments
   has_many :students, through: :enrollments
   has_many :attendance_records, through: :students
@@ -36,6 +36,19 @@ class Course < ActiveRecord::Base
     includes(:code_reviews).where.not(code_reviews: { id: nil })
   end
 
+  def self.previous_courses
+    where('end_date < ?', Time.zone.now.to_date).includes(:admin).order(:description)
+  end
+
+  def self.current_courses
+    today = Time.zone.now.to_date
+    where('start_date <= ? AND end_date >= ?', today, today).includes(:admin).order(:description)
+  end
+
+  def self.future_courses
+    where('start_date > ?', Time.zone.now.to_date).includes(:admin).order(:description)
+  end
+
   def self.current_and_future_courses
     today = Time.zone.now.to_date
     where('start_date <= ? AND end_date >= ? OR start_date >= ?', today, today, today).order(:description)
@@ -50,7 +63,7 @@ class Course < ActiveRecord::Base
   end
 
   def teacher_and_description
-    "#{description} (#{teacher})"
+    "#{office.name} - #{description} (#{teacher})"
   end
 
   def in_session?

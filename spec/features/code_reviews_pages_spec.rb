@@ -2,7 +2,7 @@ feature 'viewing the code review index page' do
   let!(:code_review) { FactoryGirl.create(:code_review) }
 
   scenario 'as a guest' do
-    visit course_code_reviews_path(code_review.course)
+    visit course_path(code_review.course)
     expect(page).to have_content 'need to sign in'
   end
 
@@ -11,7 +11,7 @@ feature 'viewing the code review index page' do
     before { login_as(student, scope: :student) }
 
     scenario 'redirects the student to the root path' do
-      visit course_code_reviews_path(code_review.course)
+      visit course_path(code_review.course)
       expect(page).to have_content 'You are not authorized'
     end
   end
@@ -23,32 +23,32 @@ feature 'viewing the code review index page' do
     before { login_as(admin, scope: :admin) }
 
     scenario 'has a link to create a new code review' do
-      visit course_code_reviews_path(code_review.course)
-      click_on 'New code review'
+      visit course_path(code_review.course)
+      click_on 'New'
       expect(page).to have_content 'New code review'
     end
 
     scenario 'shows the number of submissions needing review for each code_review' do
       FactoryGirl.create(:submission, code_review: code_review)
-      visit course_code_reviews_path(code_review.course)
+      visit course_path(code_review.course)
       expect(page).to have_content '1 new submission'
     end
 
     scenario 'admin clicks on number of submission badge and is taken to submissions index of that code_review' do
       FactoryGirl.create(:submission, code_review: code_review)
-      visit course_code_reviews_path(code_review.course)
+      visit course_path(code_review.course)
       click_link '1 new submission'
       expect(page).to have_content "Submissions for #{code_review.title}"
     end
 
     scenario 'has a button to save order of code reviews' do
-      visit course_code_reviews_path(code_review.course)
+      visit course_path(code_review.course)
       expect(page).to have_button 'Save order'
     end
 
     scenario 'changes lesson order' do
       another_assesment = FactoryGirl.create(:code_review, course: code_review.course)
-      visit course_code_reviews_path(code_review.course)
+      visit course_path(code_review.course)
       click_on 'Save order'
       expect(page).to have_content 'Order has been saved'
     end

@@ -9,12 +9,30 @@
   <h1><%= @course.description %></h1>
 <% end %>
 
-<% unless @course.internship_course? %>
-  <h4><%= @course.teacher %></h4>
-  <h4>Attendance: <%= number_to_percentage(@student.attendance_score(@course), precision: 0) %></h4>
-<% end %>
+<% if @course.internship_course? %>
+  <div class="row">
+    <div class="col-md-12">
+      <%= render 'students/student_code_reviews' %>
+    </div>
+  </div>
+<% else %>
+  <div class="row">
+    <div class="col-md-4">
+      <h3>Details</h3>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h4><%= @course.teacher %></h4>
+          <h4>Attendance: <%= number_to_percentage(@student.attendance_score(@course), precision: 0) %></h4>
+          <h4><%= @course.start_date.strftime('%B %d') %> to <%= @course.end_date.strftime('%B %d') %></h4>
+        </div>
+      </div>
+    </div>
 
-<%= render 'students/student_code_reviews' %>
+    <div class="col-md-8">
+      <%= render 'students/student_code_reviews' %>
+    </div>
+  </div>
+<% end %>
 
 <% if @course.internship_course? %>
     <% if can?(:manage, InterviewAssignment) || @student.interview_assignments.for_course(@course).any? %>

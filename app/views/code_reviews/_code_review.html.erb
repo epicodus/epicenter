@@ -6,13 +6,13 @@
   <td>
     <% if can? :manage, CodeReview %>
       <%= link_to 'Grades report', course_code_review_report_path(@course, code_review) %>
-      <% if code_review.submissions.needing_review.any? %>
-        <%= link_to code_review_submissions_path(code_review) do %>
-          <span class="pull-right badge badge-info">
-            <%= pluralize(code_review.submissions.needing_review.count, 'new submission') %>
-          </span>
-        <% end %>
-      <% end %>
+  </td>
+  <td>
+    <% if code_review.submissions.needing_review.any? %>
+      <%= link_to pluralize(code_review.submissions.needing_review.count, 'new submission'), code_review_submissions_path(code_review) %>
+    <% end %>
+  </td>
+  <td><span class="pull-right glyphicon glyphicon-menu-hamburger"></span></td>
       <%= fields_for 'code_reviews[]', code_review do |f| %>
         <%= f.hidden_field :number, class: 'sortable-number' %>
       <% end %>
@@ -25,5 +25,4 @@
         Submitted - Pending review
       <% end %>
     <% end %>
-  </td>
 </tr>

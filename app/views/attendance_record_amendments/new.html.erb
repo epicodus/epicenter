@@ -1,8 +1,12 @@
 <div class="col-md-12">
-  <h1>Amend student attendance record for <%= @course.description %></h1>
+  <h1>Amend attendance for <%= @course.description %></h1>
   <div class="row">
     <div class="col-md-6">
-      <%= render 'form' %>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <%= render 'form' %>
+        </div>
+      </div>
     </div>
   </div>
 </div>

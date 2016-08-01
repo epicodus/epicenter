@@ -4,7 +4,7 @@ class CodeReviewCopiesController < ApplicationController
     copy_code_review = code_review.duplicate_code_review(current_course)
     if copy_code_review.save
       flash[:notice] = "Code review successfully copied."
-      redirect_to course_code_reviews_path(current_course)
+      redirect_to course_path(current_course)
     end
   end
 end

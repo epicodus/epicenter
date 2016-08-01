@@ -1,0 +1,83 @@
+<h1>
+  <%= @course.description %> (<%= @course.office.name %>)
+  <%= link_to 'Edit', edit_course_path(@course) %>
+</h1>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Details</h3>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <h4><%= @course.teacher %></h4>
+            <h4><%= pluralize(@course.students.count, 'student') %></h4>
+            <% unless @course.internship_course? %>
+              <h4><%= @course.start_date.strftime('%B %d') %> to <%= @course.end_date.strftime('%B %d') %></h4>
+            <% end %>
+
+            <%= form_for @enrollment do |f| %>
+              <%= render 'layouts/errors', object: @enrollment %>
+              <%= f.hidden_field :course_id, value: @course.id %>
+              <div class="input-group">
+                <%= f.collection_select :student_id, @course.other_students.with_activated_accounts, :id, :name, { include_blank: 'Add a student to this course' }, { class: 'form-control', required: true } %>
+                <span class="input-group-btn">
+                  <%= f.submit 'Add student', class: 'btn btn-info' %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <% unless @course.internship_course? %>
+        <div class="col-md-12">
+          <h3>
+            Attendance for today
+            <%= link_to 'Other days', course_day_attendance_records_path(@course) %>
+          </h3>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <% if @course.class_days.include?(Time.zone.now.to_date) %>
+                <div class="row">
+                  <div class="text-center col-xs-3">
+                    <p>O.T.</p>
+                    <div class="text-center alert alert-success">
+                      <%= AttendanceRecord.todays_totals_for(@course, :on_time) %>
+                    </div>
+                  </div>
+                  <div class="text-center col-xs-3">
+                    <p>Tardy</p>
+                    <div class="text-center alert alert-warning">
+                      <%= AttendanceRecord.todays_totals_for(@course, :tardy) %>
+                    </div>
+                  </div>
+                  <div class="text-center col-xs-3">
+                    <p>L.E.</p>
+                    <div class="text-center alert alert-warning">
+                      <%= AttendanceRecord.todays_totals_for(@course, :left_early) %>
+                    </div>
+                  </div>
+                  <div class="text-center col-xs-3">
+                    <p>Absent</p>
+                    <div class="text-center alert alert-danger">
+                      <%= AttendanceRecord.todays_totals_for(@course, :absent) %>
+                    </div>
+                  </div>
+                </div>
+              <% else %>
+                No class today
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <%= render 'courses/course_code_reviews' %>
+  </div>
+</div>
+
+<%= render 'courses/course_students' %>

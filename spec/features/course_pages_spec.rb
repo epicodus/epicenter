@@ -17,8 +17,8 @@ feature 'creating a course' do
 
     scenario 'navigation to course#new page', js: true do
       visit root_path
-      click_on admin.current_course.description
-      click_on 'Add a course'
+      click_on 'Courses'
+      click_on 'New'
       expect(page).to have_content 'New course'
     end
 
@@ -126,16 +126,15 @@ feature 'editing a course' do
   end
 end
 
-feature 'visiting the previous courses page' do
+feature 'visiting the course index page' do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
   scenario 'as an admin' do
     login_as(admin, scope: :admin)
     visit root_path
-    click_on admin.current_course.description
-    click_on 'Previous courses'
-    expect(page).to have_content 'Previous courses'
+    click_on 'Courses'
+    expect(page).to have_content 'Courses'
   end
 
   scenario 'as a student' do

@@ -1,11 +1,6 @@
 class CodeReviewsController < ApplicationController
   authorize_resource
 
-  def index
-    @course = Course.find(params[:course_id])
-    authorize! :manage, @course
-  end
-
   def new
     @code_review = CodeReview.new
     3.times { @code_review.objectives.build }
@@ -41,7 +36,7 @@ class CodeReviewsController < ApplicationController
   def destroy
     @code_review = CodeReview.find(params[:id])
     if @code_review.destroy
-      redirect_to course_code_reviews_path(current_admin.current_course), alert: "#{@code_review.title} has been deleted."
+      redirect_to course_path(current_admin.current_course), alert: "#{@code_review.title} has been deleted."
     else
       @submission = @code_review.submission_for(current_student) || Submission.new(code_review: @code_review)
       render 'show'

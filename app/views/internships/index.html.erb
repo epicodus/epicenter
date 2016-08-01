@@ -1,5 +1,7 @@
-<h1>Internships</h1>
-<p><%= link_to 'Add internship course', new_course_path %></p>
+<h1>
+  Internships
+  <%= link_to 'New', new_course_path %>
+</h1>
 
 <ul class="nav nav-tabs">
   <% if params[:inactive] %>
@@ -25,7 +27,7 @@
     <%= link_to 'Edit', edit_course_path(course) %>
   </h3>
 
-  <div class="panel panel-info">
+  <div class="panel panel-default">
     <div class="panel-body">
       <p><%= pluralize(course.internships.count, 'internship') %></p>
       <p><%= pluralize(course.total_internship_students_requested, 'student') %> requested</p>

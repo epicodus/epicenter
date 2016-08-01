@@ -46,7 +46,7 @@ describe AttendanceRecord do
     it 'allows multiple users to check in on a single day' do
       first_user = FactoryGirl.create(:student)
       second_user = FactoryGirl.create(:student)
-      first_attendance_record = FactoryGirl.create(:attendance_record, student: first_user)
+      FactoryGirl.create(:attendance_record, student: first_user)
       second_attendance_record = FactoryGirl.build(:attendance_record, student: second_user)
       expect(second_attendance_record.valid?).to eq true
     end
@@ -54,11 +54,40 @@ describe AttendanceRecord do
 
   describe '.today' do
     it 'returns all the attendance records for today' do
-      past_attendance_record = FactoryGirl.create(:attendance_record)
+      FactoryGirl.create(:attendance_record)
       travel_to Time.now + 1.day do
         current_attendance_record = FactoryGirl.create(:attendance_record)
         expect(AttendanceRecord.today).to eq [current_attendance_record]
       end
+    end
+  end
+
+  describe '#todays_totals_for' do
+    let(:course) { FactoryGirl.create(:course) }
+    let(:student) { FactoryGirl.create(:student, course: course) }
+    let!(:student_2) { FactoryGirl.create(:student, course: course) }
+
+    it 'returns number of on time attendance records for today for a particular course' do
+      FactoryGirl.create(:on_time_attendance_record, student: student)
+      FactoryGirl.create(:on_time_attendance_record, student: student_2)
+      expect(AttendanceRecord.todays_totals_for(course, :on_time)).to eq 2
+    end
+
+    it 'returns number of tardy attendance records for today for a particular course' do
+      FactoryGirl.create(:on_time_attendance_record, student: student)
+      FactoryGirl.create(:tardy_attendance_record, student: student_2)
+      expect(AttendanceRecord.todays_totals_for(course, :tardy)).to eq 1
+    end
+
+    it 'returns number of left early attendance records for today for a particular course' do
+      FactoryGirl.create(:left_early_attendance_record, student: student)
+      FactoryGirl.create(:tardy_attendance_record, student: student_2)
+      expect(AttendanceRecord.todays_totals_for(course, :left_early)).to eq 1
+    end
+
+    it 'returns number of absences for today for a particular course' do
+      FactoryGirl.create(:on_time_attendance_record, student: student)
+      expect(AttendanceRecord.todays_totals_for(course, :absent)).to eq 1
     end
   end
 

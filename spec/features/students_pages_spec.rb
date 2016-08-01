@@ -11,13 +11,13 @@ feature 'Visiting students index page' do
 
   scenario 'as a student' do
     login_as(student, scope: :student)
-    visit course_students_path(student.course)
+    visit course_path(student.course)
     expect(page).to have_content 'You are not authorized'
   end
 
   scenario 'as an admin' do
     login_as(admin, scope: :admin)
-    visit course_students_path(admin.current_course)
+    visit course_path(admin.current_course)
     expect(page).to have_content admin.current_course.description
   end
 end

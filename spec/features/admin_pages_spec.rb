@@ -52,20 +52,18 @@ feature 'Admin signs in' do
   scenario 'and sees navigation links' do
     login_as(admin, scope: :admin)
     visit root_path
-    expect(page).to have_link 'Code reviews'
     expect(page).to have_link 'Invite'
   end
 end
 
-feature 'Changing current course', js: true do
+feature 'Changing current course' do
   let(:admin) { FactoryGirl.create(:admin) }
 
-  scenario 'admin selects a course from the drop down' do
-    FactoryGirl.create(:course, description: 'Winter 2015')
+  scenario 'admin selects a new course' do
     course2 = FactoryGirl.create(:course, description: 'Spring 2015')
     login_as(admin, scope: :admin)
     visit root_path
-    click_link admin.current_course.description
+    click_link 'Courses'
     click_link course2.description
     expect(page).to have_content "You have switched to #{course2.description}"
   end
@@ -168,14 +166,14 @@ feature 'student roster page' do
   before { login_as(admin, scope: :admin) }
 
   scenario 'when a teacher visits the sudent roster page when there are no students' do
-    visit course_students_path(course)
+    visit course_path(course)
     expect(page).to have_content 'Student'
     expect(page).to have_content 'Attendance'
   end
 
   scenario 'when a teacher visits the sudent roster page when there are students' do
     student = FactoryGirl.create(:student, course: course)
-    visit course_students_path(course)
+    visit course_path(course)
     expect(page).to have_content student.name
   end
 end

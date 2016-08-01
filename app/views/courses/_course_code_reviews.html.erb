@@ -1,0 +1,27 @@
+<h3>
+  Code reviews
+  <%= link_to 'New', new_code_review_path %>
+</h3>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <%= form_tag update_multiple_code_reviews_path, method: :patch, class: 'update-multiple' do %>
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Number</th>
+              <th>Title</th>
+              <th>Report</th>
+              <th>Submissions</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody class="sortable-list">
+            <%= render @course.code_reviews %>
+          </tbody>
+        </table>
+      </div>
+      <%= submit_tag 'Save order', class: "btn btn-info" %>
+    <% end %>
+  </div>
+</div>

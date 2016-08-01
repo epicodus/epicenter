@@ -24,11 +24,7 @@
                 </td>
                 <td class="col-xs-2"><%= link_to internship.name, "##{internship.id}", data: { toggle: "modal" } %></td>
                 <td class="col-xs-2"><%= internship.tracks_ordered_by_description %></td>
-                <td>
-                  <div class='form-group'>
-                    <%= ff.text_area :notes, rows: 1, class: 'form-control' %>
-                  </div>
-                </td>
+                <td><%= ff.text_area :notes, rows: 1, class: 'form-control internship-ranking-notes' %></td>
 
                 <%= ff.hidden_field :internship_id, value: internship.id %>
                 <%= ff.hidden_field :number, class: 'sortable-number' %>

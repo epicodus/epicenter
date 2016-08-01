@@ -13,7 +13,7 @@ feature 'adding another course for a student' do
   end
 
   scenario 'as an admin on the student roster page' do
-    visit course_students_path(student.course)
+    visit course_path(student.course)
     select other_student.name, from: 'enrollment_student_id'
     click_on 'Add student'
     expect(page).to have_content "#{other_student.name} has been added to #{student.course.description}"
