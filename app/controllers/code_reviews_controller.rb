@@ -1,11 +1,6 @@
 class CodeReviewsController < ApplicationController
   authorize_resource
 
-  def index
-    @course = Course.find(params[:course_id])
-    authorize! :manage, @course
-  end
-
   def new
     @code_review = CodeReview.new
     3.times { @code_review.objectives.build }
