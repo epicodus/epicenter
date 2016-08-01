@@ -3,7 +3,8 @@ class Course < ActiveRecord::Base
   scope :non_internship_courses, -> { where(internship_course: false) }
   scope :active_courses, -> { where(active: true).order(:description) }
   scope :inactive_courses, -> { where(active: false).order(:description) }
-  scope :previous_courses, -> { where('end_date <= ?', Time.zone.now.to_date) }
+  scope :previous_courses, -> { where('end_date < ?', Time.zone.now.to_date).order(:description) }
+  scope :future_courses, -> { where('start_date > ?', Time.zone.now.to_date).order(:description) }
 
   validates :description, :start_date, :end_date, :start_time, :end_time, :office_id, presence: true
   before_validation :set_start_and_end_dates
@@ -44,11 +45,6 @@ class Course < ActiveRecord::Base
   def self.current_courses
     today = Time.zone.now.to_date
     where('start_date <= ? AND end_date >= ?', today, today).order(:description)
-  end
-
-  def self.future_courses
-    today = Time.zone.now.to_date
-    where('start_date >= ?', today).order(:description)
   end
 
   def self.current_and_future_courses

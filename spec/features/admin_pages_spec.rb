@@ -56,11 +56,10 @@ feature 'Admin signs in' do
   end
 end
 
-feature 'Changing current course', js: true do
+feature 'Changing current course' do
   let(:admin) { FactoryGirl.create(:admin) }
 
-  scenario 'admin selects a course from the drop down' do
-    FactoryGirl.create(:course, description: 'Winter 2015')
+  scenario 'admin selects a new course' do
     course2 = FactoryGirl.create(:course, description: 'Spring 2015')
     login_as(admin, scope: :admin)
     visit root_path
