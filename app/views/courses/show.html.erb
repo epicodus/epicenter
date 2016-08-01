@@ -43,25 +43,25 @@
                   <div class="text-center col-xs-3">
                     <p>O.T.</p>
                     <div class="text-center alert alert-success">
-                      <%= AttendanceRecord.today.where(student_id: @course.students(&:id), left_early: false, tardy: false).count %>
+                      <%= AttendanceRecord.todays_totals_for(@course, :on_time) %>
                     </div>
                   </div>
                   <div class="text-center col-xs-3">
                     <p>Tardy</p>
                     <div class="text-center alert alert-warning">
-                      <%= AttendanceRecord.today.where(student_id: @course.students(&:id), tardy: true).count %>
+                      <%= AttendanceRecord.todays_totals_for(@course, :tardy) %>
                     </div>
                   </div>
                   <div class="text-center col-xs-3">
                     <p>L.E.</p>
                     <div class="text-center alert alert-warning">
-                      <%= AttendanceRecord.today.where(student_id: @course.students(&:id), left_early: true).count %>
+                      <%= AttendanceRecord.todays_totals_for(@course, :left_early) %>
                     </div>
                   </div>
                   <div class="text-center col-xs-3">
                     <p>Absent</p>
                     <div class="text-center alert alert-danger">
-                      <%= @course.students.count - AttendanceRecord.today.where(student_id: @course.students(&:id)).count %>
+                      <%= AttendanceRecord.todays_totals_for(@course, :absent) %>
                     </div>
                   </div>
                 </div>

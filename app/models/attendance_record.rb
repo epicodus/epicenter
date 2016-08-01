@@ -10,6 +10,20 @@ class AttendanceRecord < ActiveRecord::Base
   before_update :sign_out, if: :signing_out
   belongs_to :student
 
+  def self.todays_totals_for(course, status)
+    student_ids = course.students(&:id)
+    attributes = { tardy: { student_id: student_ids, tardy: true },
+                   left_early: { student_id: student_ids, left_early: true },
+                   on_time: { student_id: student_ids, tardy: false, left_early: false }
+                 }[status]
+    results = today.where(attributes)
+    if status == :absent
+      course.students.count - today.where(student_id: student_ids).count
+    else
+      results.count
+    end
+  end
+
 private
 
   def sign_out
