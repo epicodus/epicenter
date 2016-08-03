@@ -24,7 +24,7 @@ feature 'adding an interview assignment' do
     scenario 'adding it successfully' do
       select internship.name, from: 'interview_assignment_internship_id'
       select internship_2.name, from: 'interview_assignment_internship_id'
-      click_on 'Add'
+      click_on 'Add interview assignments'
       expect(page).to have_content "Interview assignments added for #{student.name}"
       within '#interview-assignments-table' do
         expect(page).to have_content internship.name
@@ -35,7 +35,7 @@ feature 'adding an interview assignment' do
     scenario 'adding it unsuccessfully' do
       FactoryGirl.create(:interview_assignment, student: student, internship: internship)
       select internship.name, from: 'interview_assignment_internship_id'
-      click_on 'Add'
+      click_on 'Add interview assignments'
       expect(page).to have_content 'Something went wrong'
     end
   end
