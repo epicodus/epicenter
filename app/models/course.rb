@@ -16,6 +16,7 @@ class Course < ActiveRecord::Base
   has_many :course_internships
   has_many :internships, through: :course_internships
   has_many :interview_assignments
+  has_many :internship_assignments
 
   serialize :class_days, Array
 
