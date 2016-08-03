@@ -1,0 +1,61 @@
+<h3>Internship assignment</h3>
+<%= render 'layouts/errors', object: @internship_assignment %>
+
+<div class="row">
+  <% if can?(:manage, InternshipAssignment) && !@student.internship_assignment %>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <%= form_for @internship_assignment do |f| %>
+            <div class="input-group">
+              <%= f.select :internship_id, @course.internships.assigned_as_interview_for(@student).collect { |i| [ i.name, i.id ] }, {}, { class: 'form-control' } %>
+              <span class="input-group-btn">
+                <%= f.submit 'Assign internship', class: 'btn btn-success' %>
+              </span>
+            </div>
+
+            <%= f.hidden_field :course_id, value: @course.id %>
+            <%= f.hidden_field :student_id, value: @student.id %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% elsif @student.internship_assignment %>
+    <div class="col-md-8">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>Contact name</th>
+                  <th>Contact email</th>
+                  <% if can? :manage, InternshipAssignment %>
+                    <th></th>
+                  <% end %>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <% if can? :manage, InternshipAssignment %>
+                      <%= link_to @student.internship_assignment.internship.name, course_internship_path(@course, @student.internship_assignment.internship) %>
+                    <% else %>
+                      <%= link_to @student.internship_assignment.internship.name, "##{@student.internship_assignment.internship.id}", data: { toggle: "modal" } %>
+                    <% end %>
+                  </td>
+                  <td><%= @student.internship_assignment.internship.company.name %></td>
+                  <td><%= mail_to @student.internship_assignment.internship.company.email %></td>
+                  <% if can? :manage, InternshipAssignment %>
+                    <td><%= link_to 'Remove', @student.internship_assignment, data: { method: :delete }, class: 'unstyled-link pull-right' %></td>
+                  <% end %>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
