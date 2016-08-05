@@ -1,15 +1,19 @@
 class AttendanceSignOutController < ApplicationController
 
   def create
-    # if is_weekday? && IpLocation.is_local_computer?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip)
-    student = Student.find_by(email: params[:email].downcase)
-    attendance_record = AttendanceRecord.find_by(date: Time.zone.now.to_date, student: student)
-    if attendance_record && student.try(:valid_password?, params[:password])
-      sign_out_student(student, attendance_record)
-    elsif !attendance_record && student.try(:valid_password?, params[:password])
-      alert_about_not_signing_in
+    if is_weekday? && IpLocation.is_local_computer?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip)
+      student = Student.find_by(email: params[:email].downcase)
+      attendance_record = AttendanceRecord.find_by(date: Time.zone.now.to_date, student: student)
+      if attendance_record && student.try(:valid_password?, params[:password])
+        sign_out_student(student, attendance_record)
+      elsif !attendance_record && student.try(:valid_password?, params[:password])
+        alert_about_not_signing_in
+      else
+        flash.now[:alert] = 'Invalid email or password.'
+        render 'new'
+      end
     else
-      flash.now[:alert] = 'Invalid email or password.'
+      flash.now[:alert] = 'Unable to update attendance record.'
       render 'new'
     end
   end
