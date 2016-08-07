@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   end
   get 'sign_in', to: 'attendance_sign_in#new'
   get 'sign_out', to: 'attendance_sign_out#new'
+  get '/sign-in' => redirect('/sign_in')
+  get '/signin' => redirect('/sign_in')
+  get '/sign-out' => redirect('/sign_out')
+  get '/signout' => redirect('/sign_out')
   get 'welcome', to: 'static_pages#show'
   get 'auth/:provider/callback', to: 'omniauth_callbacks#create'
 
