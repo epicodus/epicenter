@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_scope :user do
     root 'users/sessions#new'
   end
+  get 'sign_in', to: 'attendance_sign_in#new'
   get 'sign_out', to: 'attendance_sign_out#new'
   get 'welcome', to: 'static_pages#show'
   get 'auth/:provider/callback', to: 'omniauth_callbacks#create'
@@ -60,6 +61,7 @@ Rails.application.routes.draw do
   resource :code_review_copy, only: [:create]
   resource :random_pairs, only: [:show]
   resources :enrollments, only: [:create, :destroy]
+  resource :sign_in, controller: 'attendance_sign_in', only: [:create]
   resource :sign_out, controller: 'attendance_sign_out', only: [:create]
   resource :course_internships, only: [:create, :destroy]
   resource :interview_assignments, only: [:destroy] do
