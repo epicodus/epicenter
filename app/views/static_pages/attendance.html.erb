@@ -1,0 +1,10 @@
+<div class="text-center">
+  <p><%= image_tag "logo.png", id: 'logo' %></p>
+</div>
+
+<div class="row" id="attendance-links">
+  <div class="col-md-4 col-md-offset-4">
+    <%= link_to 'Attendance sign in', sign_in_path, class: 'btn btn-epicodus btn-lg btn-block' %>
+    <%= link_to 'Attendance sign out', sign_out_path, class: 'btn btn-default btn-lg btn-block' %>
+  </div>
+</div>
