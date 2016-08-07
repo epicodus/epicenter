@@ -14,3 +14,29 @@
 #student-nav li {
   cursor: pointer;
 }
+
+.btn-epicodus { 
+  color: #FFFFFF; 
+  background-color: #00B3B4; 
+  border-color: #04CCCC; 
+ 
+  &:hover, 
+  &:focus, 
+  &:active, 
+  &.active, 
+  .open .dropdown-toggle.btn-epicodus { 
+    color: #FFFFFF; 
+    background-color: #00B3B4; 
+    border-color: #04CCCC; 
+  } 
+   
+  &:active, 
+  &.active, 
+  .open .dropdown-toggle.btn-epicodus { 
+    background-image: none; 
+  } 
+}
+
+#attendance-signin-label {
+  margin-bottom: 1em;
+} 
