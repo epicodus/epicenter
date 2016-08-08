@@ -10,3 +10,11 @@
 </div>
 
 <%= render 'form' %>
+
+<% if is_weekday? && IpLocation.is_local_computer?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip) %>
+  <div id="not-attendance-warning-panel" class="panel panel-danger">
+    <div class="panel-body">
+      <h1 class="text-center not-attendance-warning">This is not attendance sign-in. For attendance sign-in, click <%= link_to 'here', sign_in_path, class: "not-attendance-warning-text" %>.</h1>
+    </div>
+  </div>
+<% end %>
