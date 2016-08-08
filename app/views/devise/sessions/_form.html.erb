@@ -25,30 +25,5 @@
         <%= render "devise/shared/links" %>
       </div>
     </div>
-
-    <% if is_weekday? && IpLocation.is_local_computer?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip) %>
-      <div class="col-md-4 col-md-offset-4">
-        <h2 class="text-center">Pair sign in</h2>
-
-        <div class="form-group">
-          <%= label :pair, :email %>
-          <%= email_field :pair, :email, class: "form-control" %>
-        </div>
-
-        <div class="form-group">
-          <%= label :pair, :password %>
-          <%= password_field :pair, :password, autocomplete: "off", class: "form-control" %>
-        </div>
-
-        <div class="form-group">
-          <%= label :pair, :station %>
-          <%= text_field :pair, :station, class: "form-control" %>
-        </div>
-
-        <div class="form-group">
-          <%= f.submit "Pair sign in", class: 'btn btn-primary btn-block' %>
-        </div>
-      </div>
-    <% end %>
   <% end %>
 </div>
