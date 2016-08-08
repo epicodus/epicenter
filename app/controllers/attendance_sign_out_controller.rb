@@ -9,12 +9,10 @@ class AttendanceSignOutController < ApplicationController
       elsif !attendance_record && student.try(:valid_password?, params[:password])
         alert_about_not_signing_in
       else
-        flash.now[:alert] = 'Invalid email or password.'
-        render 'new'
+        redirect_to sign_out_path, alert: 'Invalid email or password.'
       end
     else
-      flash.now[:alert] = 'Unable to update attendance record.'
-      render 'new'
+      redirect_to sign_out_path, alert: 'Unable to update attendance record.'
     end
   end
 
@@ -30,13 +28,11 @@ private
       sign_out student
       redirect_to sign_out_path, notice: "Goodbye #{attendance_record.student.name}. Your attendance record has been updated."
     else
-      flash.now[:alert] = "Something went wrong: " + attendance_record.errors.full_messages.join(", ")
-      render 'new'
+      redirect_to sign_out_path, alert: "Something went wrong: " + attendance_record.errors.full_messages.join(", ")
     end
   end
 
   def alert_about_not_signing_in
-    flash.now[:alert] = "You haven't signed in yet today."
-    render 'new'
+    redirect_to sign_out_path, alert: "You haven't signed in yet today."
   end
 end
