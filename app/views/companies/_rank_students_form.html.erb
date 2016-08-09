@@ -18,6 +18,7 @@
                   <th>Ranking</th>
                   <th>Interviewee</th>
                   <th>Feedback <span class="text-danger">(required)</span></th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody class="sortable-list">
@@ -34,6 +35,7 @@
                           <%= f.text_area :feedback_from_company, required: true, class: 'form-control' %>
                         </div>
                       </td>
+                      <td><span class="pull-right glyphicon glyphicon-menu-hamburger"></span></td>
                     <% end %>
                   </tr>
                 <% end %>

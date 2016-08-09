@@ -38,7 +38,7 @@
         <% internship.courses.inactive_courses.reverse.each do |course| %>
           <h3><%= course.description %></h3>
 
-          <div class="panel panel-primary">
+          <div class="panel panel-default">
             <div class="panel-body">
               <% if course.interview_assignments.for_internship(internship).any? %>
                 <div class="table-responsive">
