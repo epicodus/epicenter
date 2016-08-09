@@ -372,28 +372,3 @@ feature 'viewing the student show page' do
     expect(page).to have_content 'You are not authorized to access this page.'
   end
 end
-
-feature 'adding interview feedback for a student' do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:course) { FactoryGirl.create(:internship_course) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: course) }
-
-  scenario 'as a guest' do
-    visit course_student_path(course, student)
-    expect(page).to have_content 'You need to sign in'
-  end
-
-  scenario 'as a student' do
-    login_as(student, scope: :student)
-    visit course_student_path(course, student)
-    expect(page).to_not have_content 'Add interview feedback'
-  end
-
-  scenario 'as an admin' do
-    login_as(admin, scope: :admin)
-    visit course_student_path(course, student)
-    fill_in 'student_interview_feedback', with: 'Great job!'
-    click_on 'Add interview feedback'
-    expect(page).to have_content "Interview feedback added for #{student.name}."
-  end
-end

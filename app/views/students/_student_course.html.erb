@@ -35,12 +35,14 @@
 <% end %>
 
 <% if @course.internship_course? %>
-    <% if can?(:manage, InterviewAssignment) || @student.interview_assignments.for_course(@course).any? %>
-      <%= render 'students/interview_assignments' %>
-    <% end %>
-    <% if can?(:manage, InterviewAssignment) || @student.interview_feedback? %>
-      <%= render 'students/interview_feedback' %>
-    <% end %>
+  <% if @student.interview_assignments.for_course(@course).with_feedback_from_company.any? %>
+    <%= render 'students/interview_feedback' %>
+  <% end %>
+
+  <% if can?(:manage, InterviewAssignment) || @student.interview_assignments.for_course(@course).any? %>
+    <%= render 'students/interview_assignments' %>
+  <% end %>
+
   <%= render 'students/student_internships' %>
 <% else %>
   <%= render 'students/student_attendance' %>
