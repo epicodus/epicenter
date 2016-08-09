@@ -38,4 +38,13 @@ describe InterviewAssignment do
       expect(InterviewAssignment.for_internship(internship)).to eq [interview_assignment_with_high_company_ranking, interview_assignment_with_low_company_ranking]
     end
   end
+
+  describe '#with_feedback_from_company' do
+    let(:interview_assignment_with_feedback_from_company) { FactoryGirl.create(:interview_assignment, ranking_from_company: 1, feedback_from_company: 'Great fit!') }
+    let(:interview_assignment_without_feedback_from_company) { FactoryGirl.create(:interview_assignment) }
+
+    it 'returns the interview assignments for a particular internship ordered by company ranking' do
+      expect(InterviewAssignment.with_feedback_from_company).to eq [interview_assignment_with_feedback_from_company]
+    end
+  end
 end
