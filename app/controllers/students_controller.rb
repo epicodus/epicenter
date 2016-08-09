@@ -33,18 +33,14 @@ class StudentsController < ApplicationController
 
 private
   def student_params
-    params.require(:student).permit(:primary_payment_method_id, :course_id, :interview_feedback,
+    params.require(:student).permit(:primary_payment_method_id, :course_id,
                                     ratings_attributes: [:id, :internship_id, :notes, :number])
   end
 
   def update_student_as_admin
     @student = Student.find(params[:id])
     if @student.update(student_params)
-      if params[:student][:interview_feedback]
-        redirect_to course_student_path(Course.find(params[:course_id]), @student), notice: "Interview feedback added for #{@student.name}."
-      else
-        redirect_to student_courses_path(@student), notice: "Courses for #{@student.name} have been updated."
-      end
+      redirect_to student_courses_path(@student), notice: "Courses for #{@student.name} have been updated."
     else
       @course = Course.find(params[:student][:course_id])
       render 'show'
