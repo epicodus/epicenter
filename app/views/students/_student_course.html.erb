@@ -39,7 +39,7 @@
     <%= render 'students/interview_feedback' %>
   <% end %>
 
-  <% if can?(:manage, InterviewAssignment) || @student.interview_assignments.for_course(@course).any? %>
+  <% if can?(:manage, InterviewAssignment) || @student.interview_assignments.for_course(@course).any? && !@student.interview_assignments.for_course(@course).with_feedback_from_company.any? %>
     <%= render 'students/interview_assignments' %>
   <% end %>
 
