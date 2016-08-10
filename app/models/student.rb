@@ -19,6 +19,7 @@ class Student < User
   has_many :interview_assignments
   belongs_to :primary_payment_method, class_name: 'PaymentMethod'
   has_many :signatures
+  has_one :internship_assignment
 
   after_update :update_close_io_payment_plan
 

@@ -78,6 +78,14 @@ ActiveRecord::Schema.define(version: 20160809174539) do
     t.integer  "review_id"
   end
 
+  create_table "internship_assignments", force: :cascade do |t|
+    t.integer  "student_id"
+    t.integer  "internship_id"
+    t.integer  "course_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "internship_tracks", force: :cascade do |t|
     t.integer "internship_id"
     t.integer "track_id"

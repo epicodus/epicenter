@@ -70,4 +70,5 @@ Rails.application.routes.draw do
       patch :update_multiple, path: ''
     end
   end
+  resources :internship_assignments, only: [:create, :destroy]
 end

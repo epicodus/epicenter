@@ -9,6 +9,7 @@ class InterviewAssignmentsController < ApplicationController
     if interview_assignments_created_successfully(interview_assignments)
       redirect_to course_student_path(@course, @student), notice: "Interview assignments added for #{@student.name}."
     else
+      @internship_assignment = InternshipAssignment.new
       flash.now[:alert] = "Something went wrong: " + interview_assignments.first.errors.full_messages.join(", ")
       render 'students/show'
     end

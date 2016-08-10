@@ -6,6 +6,7 @@ describe Course do
   it { should have_many :code_reviews }
   it { should have_many(:internships).through(:course_internships) }
   it { should have_many(:interview_assignments) }
+  it { should have_many(:internship_assignments) }
   it { should validate_presence_of(:office_id) }
 
   describe "validations" do
