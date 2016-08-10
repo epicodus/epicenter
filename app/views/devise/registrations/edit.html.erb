@@ -30,7 +30,7 @@
       <% if can? :manage, @student %>
         <div class="form-group">
           <%= f.label :plan_id, "Payment plan" %>
-          <%= f.select(:plan_id, Plan.active.collect {|p| [ p.name, p.id ] }, {}, class: 'form-control') %>
+          <%= f.select(:plan_id, Plan.active.collect {|p| [ p.name, p.id ] }, { include_blank: true }, class: 'form-control') %>
         </div>
       <% end %>
 
