@@ -58,6 +58,10 @@ describe Admin do
       it { is_expected.to have_abilities(:manage, InterviewAssignment.new) }
     end
 
+    context 'for internship assignments' do
+      it { is_expected.to have_abilities(:manage, InternshipAssignment.new) }
+    end
+
     context 'for students' do
       it { is_expected.to have_abilities(:manage, Student.new) }
     end
