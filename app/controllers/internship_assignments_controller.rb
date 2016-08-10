@@ -14,11 +14,8 @@ class InternshipAssignmentsController < ApplicationController
 
   def destroy
     internship_assignment = InternshipAssignment.find(params[:id])
-    student = internship_assignment.student
-    course = internship_assignment.course
-    internship = internship_assignment.internship
     internship_assignment.destroy
-    redirect_to course_student_path(course, student), notice: "#{internship.name} has been unassigned from #{student.name}"
+    redirect_to course_student_path(internship_assignment.course, internship_assignment.student), notice: "#{internship_assignment.internship.name} has been unassigned from #{internship_assignment.student.name}"
   end
 
   private
