@@ -53,7 +53,7 @@
             <tbody>
               <% @course.interview_assignments.for_internship(@internship).each do |interview_assignment| %>
                 <tr>
-                  <td><%= interview_assignment.student.name %></td>
+                  <td><%= link_to interview_assignment.student.name, course_student_path(@course, interview_assignment.student) %></td>
                   <td><%= interview_assignment.ranking_from_company %></td>
                   <td><%= interview_assignment.feedback_from_company %></td>
                 </tr>

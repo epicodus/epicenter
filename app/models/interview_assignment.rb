@@ -10,6 +10,6 @@ class InterviewAssignment < ActiveRecord::Base
 
   scope :order_by_internship_name, -> { includes(internship: :company).order('internships.name') }
   scope :for_course, ->(course) { where(course_id: course.id) }
-  scope :for_internship, ->(internship) { where(internship_id: internship.id).order(:ranking_from_company) }
+  scope :for_internship, ->(internship) { where(internship_id: internship.id).includes(:student).order(:ranking_from_company) }
   scope :with_feedback_from_company, -> { where.not(feedback_from_company: nil) }
 end
