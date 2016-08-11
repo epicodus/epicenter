@@ -97,7 +97,8 @@ FactoryGirl.define do
   end
 
   factory :office do
-    name 'Portland'
+    name 'Philadelphia'
+    time_zone 'Eastern Time (US & Canada)'
   end
 
   factory :grade do
