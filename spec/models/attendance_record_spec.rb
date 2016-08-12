@@ -93,9 +93,9 @@ describe AttendanceRecord do
 
   describe '#tardy' do
     let(:student) { FactoryGirl.create(:student) }
-    let(:start_time) { Time.zone.parse(student.course.start_time) }
+    let(:start_time) { student.course.start_time.in_time_zone(student.course.office.time_zone) }
     let(:part_time_student) { FactoryGirl.create(:part_time_student) }
-    let(:part_time_start_time) { Time.zone.parse(part_time_student.course.start_time) }
+    let(:part_time_start_time) { part_time_student.course.start_time.in_time_zone(part_time_student.course.office.time_zone) }
 
     it 'is true if the student checks in after the start of class' do
       travel_to start_time + 30.minute do
@@ -128,9 +128,9 @@ describe AttendanceRecord do
 
   describe '#left_early' do
     let(:student) { FactoryGirl.create(:student) }
-    let(:end_time) { Time.zone.parse(student.course.end_time) }
+    let(:end_time) { student.course.end_time.in_time_zone(student.course.office.time_zone) }
     let(:part_time_student) { FactoryGirl.create(:part_time_student) }
-    let(:part_time_end_time) { Time.zone.parse(part_time_student.course.end_time) }
+    let(:part_time_end_time) { part_time_student.course.end_time.in_time_zone(part_time_student.course.office.time_zone) }
 
     it 'is true by default' do
       attendance_record = FactoryGirl.create(:attendance_record)

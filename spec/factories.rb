@@ -61,7 +61,12 @@ FactoryGirl.define do
     class_days (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 4.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? }
     start_time '8:00 AM'
     end_time '5:00 PM'
-    office
+    association :office, factory: :philadelphia_office
+
+    factory :portland_course do
+      description 'Portland course'
+      association :office, factory: :portland_office
+    end
 
     factory :past_course do
       description 'Past course'
@@ -97,7 +102,15 @@ FactoryGirl.define do
   end
 
   factory :office do
-    name 'Portland'
+    factory :portland_office do
+      name 'Portland'
+      time_zone 'Pacific Time (US & Canada)'
+    end
+
+    factory :philadelphia_office do
+      name 'Philadelphia'
+      time_zone 'Eastern Time (US & Canada)'
+    end
   end
 
   factory :grade do
@@ -241,6 +254,15 @@ FactoryGirl.define do
     sequence(:email) { |n| "student#{n}@example.com" }
     password "password"
     password_confirmation "password"
+
+    factory :portland_student_with_all_documents_signed do
+      association :course, factory: :portland_course
+      after(:create) do |student|
+        create(:completed_code_of_conduct, student: student)
+        create(:completed_refund_policy, student: student)
+        create(:completed_enrollment_agreement, student: student)
+      end
+    end
 
     factory :unenrolled_student do
       after(:create) do |student|

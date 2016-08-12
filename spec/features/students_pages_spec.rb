@@ -156,7 +156,166 @@ feature "Unenrolled student signs in" do
   end
 end
 
-feature "Student signs in while class is in session" do
+feature "Portland student signs in while class is in session" do
+  let(:student) { FactoryGirl.create(:portland_student_with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
+
+  context "not at school" do
+    it "takes them to the courses page" do
+      sign_in_as(student)
+      expect(current_path).to eq student_courses_path(student)
+      expect(page).to have_content "Your courses"
+    end
+
+    it "does not create an attendance record" do
+      expect { sign_in_as(student) }.to change { AttendanceRecord.count }.by 0
+    end
+  end
+
+  context "at school" do
+    before do
+      allow(IpLocation).to receive(:is_local?).and_return(true)
+      allow_any_instance_of(ApplicationController).to receive(:is_weekday?).and_return(true)
+    end
+
+    context "when soloing" do
+      it "takes them to the welcome page" do
+        sign_in_as(student)
+        expect(current_path).to eq welcome_path
+      end
+
+      it "creates an attendance record for them during the week" do
+        thursday = Time.zone.now.to_date.beginning_of_week + 3.days
+        travel_to thursday do
+          expect { sign_in_as(student) }.to change { student.attendance_records.count }.by 1
+        end
+      end
+
+      it "does not create an attendance record for them on weekends" do
+        allow_any_instance_of(ApplicationController).to receive(:is_weekday?).and_return(false)
+        saturday = Time.zone.now.to_date.beginning_of_week + 5.days
+        travel_to saturday do
+          expect { sign_in_as(student) }.to change { student.attendance_records.count }.by 0
+        end
+      end
+
+      it "takes them to the courses page if they've already signed in" do
+        FactoryGirl.create(:attendance_record, student: student)
+        sign_in_as(student)
+        expect(current_path).to eq student_courses_path(student)
+      end
+
+      it 'does not update the attendance record on subsequent solo sign ins during the day' do
+        travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 8.hours do
+          sign_in_as(student)
+        end
+        attendance_record = AttendanceRecord.find_by(student: student)
+        travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 12.hours do
+          visit root_path
+          logout :student
+          sign_in_as(student)
+          expect(attendance_record.tardy).to be false
+        end
+      end
+    end
+
+    context 'when soloing and signing in with GitHub' do
+      scenario 'creates an attendance record with valid credentials during the week' do
+        travel_to Time.zone.now.to_date.beginning_of_week + 3.days do
+          OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: student.email }})
+          visit root_path
+          expect { click_on('Sign in with GitHub') }.to change { student.attendance_records.count }.by 1
+          expect(page).to have_content 'Signed in successfully and attendance record created.'
+          OmniAuth.config.mock_auth[:github] = nil
+        end
+      end
+
+      scenario 'does not create an attendance record on the weekend' do
+        allow_any_instance_of(ApplicationController).to receive(:is_weekday?).and_return(false)
+        travel_to Time.zone.now.to_date.beginning_of_week + 5.days do
+          OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: student.email }})
+          visit root_path
+          expect { click_on('Sign in with GitHub') }.to change { student.attendance_records.count }.by 0
+          expect(page).to have_content 'Signed in successfully.'
+          OmniAuth.config.mock_auth[:github] = nil
+        end
+      end
+    end
+
+    context "when pairing on a school computer" do
+      let(:pair) { FactoryGirl.create(:portland_student_with_all_documents_signed, password: 'password2', password_confirmation: 'password2') }
+
+      before { allow(IpLocation).to receive(:is_local_computer?).and_return(true) }
+
+      it "takes them to the welcome page" do
+        sign_in_as(student, pair)
+        expect(current_path).to eq welcome_path
+      end
+
+      it "creates an attendance record for them" do
+        expect { sign_in_as(student, pair) }.to change { AttendanceRecord.count }.by 2
+      end
+
+      it 'creates attendance records if one student has already signed in for the day' do
+        FactoryGirl.create(:attendance_record, student: student)
+        expect { sign_in_as(student, pair) }.to change { AttendanceRecord.count }.by 1
+      end
+
+      it 'updates the pair id if one student has already signed in for the day' do
+        FactoryGirl.create(:attendance_record, student: student)
+        expect { sign_in_as(student, pair) }.to change { AttendanceRecord.first.pair_id }.from(nil).to(pair.id)
+      end
+
+      it 'does not update the attendance record when signing as pairs, then solo during same day' do
+        travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 8.hours do
+          sign_in_as(student, pair)
+        end
+        attendance_record = AttendanceRecord.find_by(student: pair)
+        travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 12.hours do
+          sign_in_as(pair)
+          expect(attendance_record.tardy).to be false
+        end
+      end
+
+      it 'does not update the attendance record when signing in solo, then as pairs, then solo again during same day' do
+        travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 8.hours do
+          sign_in_as(student)
+          visit root_path
+          logout :student
+        end
+        travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 10.hours do
+          sign_in_as(student, pair)
+        end
+        attendance_record = AttendanceRecord.find_by(student: student)
+        travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 14.hours do
+          sign_in_as(student)
+          expect(attendance_record.tardy).to be false
+        end
+      end
+
+      it "gives an error for an incorrect email" do
+        visit new_user_session_path
+        fill_in 'user_email', with: 'wrong'
+        fill_in 'user_password', with: student.password
+        fill_in 'pair_email', with: pair.email
+        fill_in 'pair_password', with: pair.password
+        click_button 'Pair sign in'
+        expect(page).to have_content 'Invalid email or password.'
+      end
+
+      it "gives an error for an incorrect password" do
+        visit new_user_session_path
+        fill_in 'user_email', with: student.email
+        fill_in 'user_password', with: 'wrong'
+        fill_in 'pair_email', with: pair.email
+        fill_in 'pair_password', with: pair.password
+        click_button 'Pair sign in'
+        expect(page).to have_content 'Invalid email or password.'
+      end
+    end
+  end
+end
+
+feature "Philadelphia student signs in while class is in session" do
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
 
   context "not at school" do
@@ -205,11 +364,11 @@ feature "Student signs in while class is in session" do
       end
 
       it 'does not update the attendance record on subsequent solo sign ins during the day' do
-        travel_to student.course.start_date + 8.hours do
+        travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 8.hours do
           sign_in_as(student)
         end
         attendance_record = AttendanceRecord.find_by(student: student)
-        travel_to student.course.start_date + 12.hours do
+        travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 12.hours do
           visit root_path
           logout :student
           sign_in_as(student)
@@ -266,27 +425,27 @@ feature "Student signs in while class is in session" do
       end
 
       it 'does not update the attendance record when signing as pairs, then solo during same day' do
-        travel_to student.course.start_date + 8.hours do
+        travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 8.hours do
           sign_in_as(student, pair)
         end
         attendance_record = AttendanceRecord.find_by(student: pair)
-        travel_to student.course.start_date + 12.hours do
+        travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 12.hours do
           sign_in_as(pair)
           expect(attendance_record.tardy).to be false
         end
       end
 
       it 'does not update the attendance record when signing in solo, then as pairs, then solo again during same day' do
-        travel_to student.course.start_date + 8.hours do
+        travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 8.hours do
           sign_in_as(student)
           visit root_path
           logout :student
         end
-        travel_to student.course.start_date + 10.hours do
+        travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 10.hours do
           sign_in_as(student, pair)
         end
         attendance_record = AttendanceRecord.find_by(student: student)
-        travel_to student.course.start_date + 14.hours do
+        travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 14.hours do
           sign_in_as(student)
           expect(attendance_record.tardy).to be false
         end
