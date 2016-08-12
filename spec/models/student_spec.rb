@@ -483,7 +483,7 @@ describe Student do
     end
 
     it "calculates the student attendance score with perfect attendance records" do
-      day_one = student.course.start_date
+      day_one = student.course.start_date.in_time_zone(student.course.office.time_zone)
       student.course.update(class_days: [day_one])
 
       travel_to day_one.beginning_of_day + 8.hours do
@@ -505,7 +505,7 @@ describe Student do
     let(:student) { FactoryGirl.create(:student, course: course) }
 
     it 'counts the number of days the student has been on time to class' do
-      travel_to course.start_date + 8.hours do
+      travel_to course.start_date.in_time_zone(course.office.time_zone) + 8.hours do
         attendance_record = FactoryGirl.create(:attendance_record, student: student)
         travel 15.hours do
           attendance_record.update({:signing_out => true})
@@ -515,16 +515,17 @@ describe Student do
     end
 
     it 'counts the number of days the student has been tardy' do
-      travel_to Time.new(course.start_date.year, course.start_date.month, course.start_date.day, 9, 20, 00, Time.zone.formatted_offset) do
+      travel_to course.start_date.in_time_zone(course.office.time_zone) + 9.hours + 20.minutes do
         FactoryGirl.create(:attendance_record, student: student)
-        travel 1.day
-        FactoryGirl.create(:attendance_record, student: student)
-        expect(student.attendance_records_for(:tardy)).to eq 2
+        travel 1.day do
+          FactoryGirl.create(:attendance_record, student: student)
+          expect(student.attendance_records_for(:tardy)).to eq 2
+        end
       end
     end
 
     it 'counts the number of days the student has left early (failed to sign out)' do
-      travel_to Time.new(course.start_date.year, course.start_date.month, course.start_date.day, 8, 55, 00) do
+      travel_to course.start_date.in_time_zone(course.office.time_zone) + 8.hours + 55.minutes do
         attendance_record = FactoryGirl.create(:attendance_record, student: student)
         travel 7.hours do
           attendance_record.update({:signing_out => true})
@@ -544,13 +545,13 @@ describe Student do
     end
 
     it 'counts the number of days the student has been on time to class for a particular course' do
-      travel_to (course.start_date - 5).to_time.change({ hour: 8, min: 00 }) do
+      travel_to course.start_date.in_time_zone(course.office.time_zone) - 5.days + 8.hours do
         attendance_record_outside_current_course_date_range = FactoryGirl.create(:attendance_record, student: student)
         travel 9.hours do
           attendance_record_outside_current_course_date_range.update({ signing_out: true })
         end
       end
-      travel_to course.start_date + 8.hours do
+      travel_to course.start_date.in_time_zone(course.office.time_zone) + 8.hours do
         attendance_record = FactoryGirl.create(:attendance_record, student: student)
         travel 9.hours do
           attendance_record.update({ signing_out: true })
@@ -560,12 +561,12 @@ describe Student do
     end
 
     it 'counts the number of days the student has been tardy for a particular course' do
-      travel_to (course.start_date - 5).to_time.change({ hour: 9, min: 10 }) do
+      travel_to course.start_date.in_time_zone(course.office.time_zone) - 5.days + 9.hours + 10.minutes do
         FactoryGirl.create(:attendance_record, student: student)
         travel 1.day
         FactoryGirl.create(:attendance_record, student: student)
       end
-      travel_to Time.new(course.start_date.year, course.start_date.month, course.start_date.day, 9, 20, 00, Time.zone.formatted_offset) do
+      travel_to course.start_date.in_time_zone(course.office.time_zone) + 9.hours + 20.minutes do
         FactoryGirl.create(:attendance_record, student: student)
         travel 1.day
         FactoryGirl.create(:attendance_record, student: student)
@@ -574,13 +575,13 @@ describe Student do
     end
 
     it 'counts the number of days the student has left early (failed to sign out) for a particular course' do
-      travel_to (course.start_date - 5).to_time.change({ hour: 8, min: 55 }) do
+      travel_to course.start_date.in_time_zone(course.office.time_zone) - 5.days + 8.hours + 55.minutes do
         attendance_record_outside_current_course_date_range = FactoryGirl.create(:attendance_record, student: student)
         travel 7.hours do
           attendance_record_outside_current_course_date_range.update({ signing_out: true })
         end
       end
-      travel_to Time.new(course.start_date.year, course.start_date.month, course.start_date.day, 8, 55, 00) do
+      travel_to course.start_date.in_time_zone(course.office.time_zone) + 8.hours + 55.minutes do
         attendance_record = FactoryGirl.create(:attendance_record, student: student)
         travel 7.hours do
           attendance_record.update({ signing_out: true })
