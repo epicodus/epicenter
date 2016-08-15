@@ -31,6 +31,20 @@ describe Submission do
     end
   end
 
+  describe 'updating the number of times submitted' do
+    let(:submission) { FactoryGirl.create(:submission) }
+
+    it 'returns 1 when a submission is first made' do
+      expect(submission.times_submitted).to eq 1
+    end
+
+    it 'returns 3 when a submission has been updated twice' do
+      submission.update(link: 'http://github.com')
+      submission.update(link: 'http://github.com')
+      expect(submission.times_submitted).to eq 3
+    end
+  end
+
   describe '#needs_review?' do
     it 'is true if no review has been created for this submission' do
       submission = FactoryGirl.create(:submission)

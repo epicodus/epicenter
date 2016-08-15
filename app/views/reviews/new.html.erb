@@ -9,6 +9,9 @@
       <% end %>
     </h3>
     <h4>Submitted <%= time_ago_in_words(@submission.updated_at) %> ago</h4>
+    <% unless @submission.times_submitted.nil? %>
+      <h4>Submitted <%= pluralize(@submission.times_submitted, 'time') %></h4>
+    <% end %>
     <h4><%= link_to 'View code', @submission.link, target: '_blank' if @submission.link %></h4>
 
     <%= render 'form' %>

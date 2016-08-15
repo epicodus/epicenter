@@ -7,6 +7,7 @@
           <thead>
             <th>Title</th>
             <th>Expectations met?</th>
+            <th>Times submitted</th>
             <th>Teacher notes</th>
             <th>Submission link</th>
             <th>Status</th>
@@ -23,6 +24,7 @@
                 <% end %>
               </td>
               <% if @student.submission_for(code_review) %>
+                <td><%= @student.submission_for(code_review).times_submitted %></td>
                 <td><%= link_to "Notes", "##{@student.submission_for(code_review).id}", data: { toggle: "modal" } %></td>
                 <td><%= link_to "Submission", @student.submission_for(code_review).link, target: '_blank' if @student.submission_for(code_review).link %></td>
                 <td>
