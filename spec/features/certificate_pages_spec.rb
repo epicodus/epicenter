@@ -10,13 +10,16 @@ feature "print completion certificate" do
 
   context "after class ends" do
     it "allows student to print certificate" do
-      course = FactoryGirl.create(:past_course)
-      student = FactoryGirl.create(:student, course: course)
-      login_as(student, scope: :student)
-      visit edit_student_registration_path
-      click_link "View certificate of completion"
-      expect(page).to have_content "Epicodus Certificate of Completion"
-      expect(page).to have_content student.name
+      course = FactoryGirl.create(:course)
+      internship_course = FactoryGirl.create(:internship_course)
+      student = FactoryGirl.create(:student, courses: [course, internship_course])
+      travel_to internship_course.end_date + 1.day do
+        login_as(student, scope: :student)
+        visit edit_student_registration_path
+        click_link "View certificate of completion"
+        expect(page).to have_content "Epicodus Certificate of Completion"
+        expect(page).to have_content student.name
+      end
     end
   end
 end

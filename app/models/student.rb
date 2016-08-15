@@ -175,6 +175,11 @@ class Student < User
     Time.zone.now.to_date > course.end_date
   end
 
+  def completed_internship_course?
+    internship_course = courses.find_by(internship_course: true)
+    internship_course && Time.zone.now.to_date > internship_course.end_date ? true : false
+  end
+
   def attendance_records_for(status, filtered_course=nil)
     attributes = { tardy: { tardy: true },
                    left_early: { left_early: true },

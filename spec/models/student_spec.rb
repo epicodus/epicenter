@@ -454,6 +454,24 @@ describe Student do
     end
   end
 
+  describe '#completed_internship_course?' do
+    let(:internship_course) { FactoryGirl.create(:internship_course) }
+    let(:student_with_internship_course) { FactoryGirl.create(:student, course: internship_course) }
+    let(:student_without_internship_course) { FactoryGirl.create(:student) }
+
+    it 'returns true when a student has completed an internship course' do
+      travel_to internship_course.end_date + 1.day do
+        expect(student_with_internship_course.completed_internship_course?).to eq true
+      end
+    end
+
+    it 'returns false when a student has completed an internship course' do
+      travel_to internship_course.end_date + 1.day do
+        expect(student_without_internship_course.completed_internship_course?).to eq false
+      end
+    end
+  end
+
   describe '#submission_for' do
     let(:student) { FactoryGirl.create(:student) }
     let(:code_review_1) { FactoryGirl.create(:code_review, course: student.course) }
