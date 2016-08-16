@@ -114,7 +114,6 @@ ActiveRecord::Schema.define(version: 20160816213056) do
     t.integer  "ranking_from_company"
     t.text     "feedback_from_company"
     t.integer  "course_id"
-    t.integer  "ranking_from_student"
   end
 
   create_table "objectives", force: :cascade do |t|
