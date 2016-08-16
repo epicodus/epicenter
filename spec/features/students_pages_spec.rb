@@ -29,7 +29,6 @@ feature 'Student signs up via invitation', :vcr do
     student.invite!
     visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
     fill_in 'Name', with: 'Ryan Larson'
-    select student.plan.name, from: 'student_plan_id'
     fill_in 'Password', with: 'password'
     fill_in 'Password confirmation', with: 'password'
     click_on 'Submit'
@@ -40,7 +39,6 @@ feature 'Student signs up via invitation', :vcr do
     student.invite!
     visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
     fill_in 'Name', with: ''
-    select student.plan.name, from: 'student_plan_id'
     click_on 'Submit'
     expect(page).to have_content 'error'
   end

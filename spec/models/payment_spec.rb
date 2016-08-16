@@ -1,4 +1,6 @@
 describe Payment do
+  include ActionView::Helpers::NumberHelper  #for number_to_currency
+
   it { should belong_to :student }
   it { should belong_to :payment_method }
   it { should validate_presence_of :student_id }
@@ -102,7 +104,7 @@ describe Payment do
   describe "#send_payment_receipt" do
     it "emails the student a receipt after successful payment when the student is on the standard tuition plan", :vcr, :stripe_mock do
       standard_plan = FactoryGirl.create(:standard_plan)
-      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com', plan: standard_plan)
+      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com', plan: standard_plan, referral_email_sent: true)
 
       mailgun_client = spy("mailgun client")
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
@@ -115,7 +117,7 @@ describe Payment do
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
           subject: "Epicodus tuition payment receipt",
-          text: "Hi #{student.name}. This is to confirm your payment of $618.21 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the Standard tuition plan and that we will be charging you the remaining $1,100 on the first day of class. I want to be sure we know your intentions and don't mistakenly charge you. Thanks so much!" }
+          text: "Hi #{student.name}. This is to confirm your payment of $618.21 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the Standard tuition plan and that we will be charging you the remaining #{number_to_currency(standard_plan.first_day_amount / 100, precision: 0)} on the first day of class. I want to be sure we know your intentions and don't mistakenly charge you. Thanks so much!" }
       )
     end
 
