@@ -31,6 +31,25 @@ describe Submission do
     end
   end
 
+  describe 'updating the number of times submitted' do
+    let(:submission) { FactoryGirl.create(:submission, needs_review: true) }
+
+    it 'updates times_submitted when a submission is first made' do
+      expect(submission.times_submitted).to eq 1
+    end
+
+    it 'updates times_submitted when a submission has been updated multiple times' do
+      submission.update(link: 'http://github.com')
+      submission.update(link: 'http://github.com')
+      expect(submission.times_submitted).to eq 3
+    end
+
+    it "doesn't update times_submitted when a review is created", :stub_mailgun do
+      FactoryGirl.create(:review, submission: submission)
+      expect(submission.times_submitted).to eq 1
+    end
+   end
+
   describe '#needs_review?' do
     it 'is true if no review has been created for this submission' do
       submission = FactoryGirl.create(:submission)

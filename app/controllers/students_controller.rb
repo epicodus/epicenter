@@ -17,7 +17,7 @@ class StudentsController < ApplicationController
     @course = Course.find(params[:course_id]) if params[:course_id]
     @interview_assignment = InterviewAssignment.new
     @internship_assignment = InternshipAssignment.new
-    authorize! :read, @student
+    authorize! :read, @student && @course
   end
 
   def update

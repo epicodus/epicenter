@@ -25,7 +25,7 @@ describe Review do
         "epicodus.com",
         { :from => ENV['FROM_EMAIL_REVIEW'],
           :to => student.email,
-          :subject => "CodeReview reviewed",
+          :subject => "Code review reviewed",
           :text => "Hi #{student.name}. Your #{submission.code_review.title} code has been reviewed. You can view it at #{Rails.application.routes.url_helpers.code_review_url(submission.code_review)}."
         }
       )

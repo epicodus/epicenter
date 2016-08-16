@@ -10,6 +10,7 @@
             <th>Student</th>
             <th></th>
             <th>Submitted</th>
+            <th>Times submitted</th>
             <th></th>
           </tr>
         </thead>
@@ -19,6 +20,7 @@
                 <td><%= link_to submission.student.name, course_student_path(@code_review.course, submission.student) %></td>
                 <td><%= link_to 'View code', submission.link, target: '_blank' if submission.link %></td>
                 <td><%= submission.updated_at.try(:in_time_zone, @code_review.course.office.time_zone).strftime("%a, %b %d, %Y at %l:%M %p") %></td>
+                <td><%= submission.times_submitted %></td>
                 <td><%= link_to 'Review', new_submission_review_path(submission) %></td>
               </tr>
           <% end %>

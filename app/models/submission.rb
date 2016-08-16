@@ -10,6 +10,7 @@ class Submission < ActiveRecord::Base
   has_many :reviews
 
   before_create :mark_as_needing_review
+  before_save :update_times_submitted
 
   def has_been_reviewed?
     needs_review == false
@@ -34,6 +35,12 @@ class Submission < ActiveRecord::Base
   end
 
 private
+
+  def update_times_submitted
+    if needs_review == true
+      times_submitted.nil? ? self.times_submitted = 1 : self.times_submitted += 1
+    end
+  end
 
   def mark_as_needing_review
     self.needs_review = true

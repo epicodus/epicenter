@@ -33,7 +33,7 @@ private
     can [:create, :update], Submission, student_id: user.id
     can :manage, AttendanceRecord if IpLocation.is_local?(ip)
     can :read, CodeReview, course_id: user.course_id
-    can :read, Course, id: user.course_id
+    can :read, Course, id: user.courses.map(&:id)
     can :read, :certificate
     can :create, CreditCard
     can :read, Internship, courses: { id: user.course_id }
