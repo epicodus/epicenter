@@ -1,5 +1,11 @@
 <%= render 'layouts/errors', object: @code_review %>
 
+<% if @submission.needs_review? %>
+  <div class="alert alert-warning">
+    Your submission is pending review.
+  </div>
+<% end %>
+
 <h1>
   <%= @code_review.title %>
   <% if can? :manage, @code_review %>
@@ -7,14 +13,12 @@
   <% end %>
 </h1>
 
-<% if can?(:manage, @code_review) && @code_review.submissions_not_required? %>
-  <p><span class="label label-info">Submissions not required</span></p>
+<% unless @submission.times_submitted.nil? %>
+  <h4>Submitted <%= pluralize(@submission.times_submitted, 'time') %></h4>
 <% end %>
 
-<% if @submission.needs_review? %>
-  <div class="alert alert-warning">
-    Your submission is pending review.
-  </div>
+<% if can?(:manage, @code_review) && @code_review.submissions_not_required? %>
+  <p><span class="label label-info">Submissions not required</span></p>
 <% end %>
 
 <div class="panel panel-default">
