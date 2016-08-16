@@ -1,15 +1,18 @@
 class AttendanceSignOutController < ApplicationController
 
   def create
-    student = Student.find_by(email: params[:email].downcase)
-    attendance_record = AttendanceRecord.find_by(date: Time.zone.now.to_date, student: student)
-    if attendance_record && student.try(:valid_password?, params[:password])
-      sign_out_student(student, attendance_record)
-    elsif !attendance_record && student.try(:valid_password?, params[:password])
-      alert_about_not_signing_in
+    if is_weekday? && IpLocation.is_local_computer?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip)
+      student = Student.find_by(email: params[:email].downcase)
+      attendance_record = AttendanceRecord.find_by(date: Time.zone.now.to_date, student: student)
+      if attendance_record && student.try(:valid_password?, params[:password])
+        sign_out_student(student, attendance_record)
+      elsif !attendance_record && student.try(:valid_password?, params[:password])
+        fail("You haven't signed in yet today.")
+      else
+        fail('Invalid email or password.')
+      end
     else
-      flash.now[:alert] = 'Invalid email or password.'
-      render 'new'
+      fail('Unable to update attendance record.')
     end
   end
 
@@ -25,13 +28,12 @@ private
       sign_out student
       redirect_to sign_out_path, notice: "Goodbye #{attendance_record.student.name}. Your attendance record has been updated."
     else
-      flash.now[:alert] = "Something went wrong: " + attendance_record.errors.full_messages.join(", ")
-      render 'new'
+      fail("Something went wrong: " + attendance_record.errors.full_messages.join(", "))
     end
   end
 
-  def alert_about_not_signing_in
-    flash.now[:alert] = "You haven't signed in yet today."
-    render 'new'
+  def fail(message)
+    redirect_to sign_out_path, alert: message
   end
+
 end

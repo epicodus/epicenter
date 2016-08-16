@@ -3,6 +3,7 @@ feature 'student logging out on attendance page' do
 
   before do
     allow(IpLocation).to receive(:is_local?).and_return(true)
+    allow(IpLocation).to receive(:is_local_computer?).and_return(true)
     allow_any_instance_of(ApplicationController).to receive(:is_weekday?).and_return(true)
   end
 
