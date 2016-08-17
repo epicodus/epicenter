@@ -33,6 +33,7 @@ var stripeBankAccountResponseHandler = function(status, response) {
       '</div>'
     );
     var errorMapping = {
+      "You cannot use a live bank account number when making transfers or debits in test mode": "Invalid bank account number.",
       "Must only use a test bank account number when making transfers or debits in test mode": "Invalid bank account number.",
       "Routing number must have 9 digits": "Invalid routing number.",
       "A bank account with that routing number and account number already exists for this customer.": "Please enter a new account."
