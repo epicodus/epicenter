@@ -8,7 +8,7 @@ module ApplicationHelper
   def hide_navbar
     paths = [new_code_of_conduct_path, new_refund_policy_path, new_enrollment_agreement_path,
              certificate_path, transcript_path, welcome_path, user_session_path,
-             new_user_password_path, root_path, new_company_registration_path, sign_out_path]
+             new_user_password_path, root_path, new_company_registration_path, sign_out_path, sign_in_path]
     true if paths.map { |path| current_page?(path) }.include?(true)
   end
 
