@@ -39,11 +39,9 @@
     <% if @course.internships.any? %>
       <div class="col-xs-2">
         <div class="form-group">
-          <%= f.submit 'Submit rankings', class: 'btn btn-success', id: 'fixed-ratings-button' %>
+          <%= f.submit 'Save rankings', class: 'btn btn-success', id: 'fixed-ratings-button' %>
         </div>
       </div>
     <% end %>
   </div>
 <% end %>
-
-<%= render 'ratings/internships_modal' %>

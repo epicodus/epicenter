@@ -40,16 +40,22 @@
       <%= render 'students/internship_assignment' %>
     <% end %>
 
+    <%= render 'interview_assignments/form' if can?(:manage, InterviewAssignment) %>
+
     <% if current_student && @student.interview_assignments.for_course(@course).with_feedback_from_company.any? %>
       <%= render 'students/interview_feedback' %>
     <% end %>
   </div>
 
-  <% if can?(:manage, InterviewAssignment) || @student.interview_assignments.for_course(@course).any? && !@student.interview_assignments.for_course(@course).with_feedback_from_company.any? %>
+  <% if @student.interview_assignments.for_course(@course).any? %>
     <%= render 'students/interview_assignments' %>
   <% end %>
 
-  <%= render 'students/student_internships' %>
+  <% if can?(:manage, Internship) || !@student.interview_assignments.for_course(@course).any? %>
+    <%= render 'students/student_internships' %>
+  <% end %>
+
+  <%= render 'ratings/internships_modal' %>
 <% else %>
   <%= render 'students/student_attendance' %>
 <% end %>

@@ -1,55 +1,74 @@
-<h3>Interview assignments</h3>
-<div class="panel panel-default">
-  <div class="panel-body">
-    <% if @student.interview_assignments.for_course(@course).any? %>
+<% if can? :manage, InterviewAssignment %>
+  <h3>Interviews</h3>
+  <div class="panel panel-default">
+    <div class="panel-body">
       <div class="table-responsive" id="interview-assignments-table">
         <table class="table">
           <thead>
             <tr>
               <th>Company</th>
-              <th>Contact name</th>
-              <th>Contact email</th>
-              <% if can? :manage, InterviewAssignment %>
-                <th>Ranking from company</th>
-                <th>Feedback from company</th>
-                <th></th>
-              <% end %>
+              <th>Ranking from student</th>
+              <th>Ranking from company</th>
+              <th>Feedback from company</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             <% @student.interview_assignments.for_course(@course).order_by_internship_name.each do |interview_assignment| %>
               <tr>
-                <td>
-                  <% if can? :manage, InterviewAssignment %>
-                    <%= link_to interview_assignment.internship.name, course_internship_path(@course, interview_assignment.internship) %>
-                  <% else %>
-                    <%= link_to interview_assignment.internship.name, "##{interview_assignment.internship.id}", data: { toggle: "modal" } %>
-                  <% end %>
-                </td>
-                <td><%= interview_assignment.internship.company.name %></td>
-                <td><%= mail_to interview_assignment.internship.company.email %></td>
-                <% if can? :manage, InterviewAssignment %>
-                  <td><%= interview_assignment.ranking_from_company %></td>
-                  <td><%= interview_assignment.feedback_from_company %></td>
-                  <td><%= link_to 'Remove', interview_assignments_path(student_id: @student.id, course_id: @course.id, internship_id: interview_assignment.internship.id), data: { method: :delete }, class: 'unstyled-link pull-right' %></td>
-                <% end %>
+                <td><%= link_to interview_assignment.internship.name, course_internship_path(@course, interview_assignment.internship) %></td>
+                <td><%= interview_assignment.ranking_from_student %></td>
+                <td><%= interview_assignment.ranking_from_company %></td>
+                <td><%= interview_assignment.feedback_from_company %></td>
+                <td><%= link_to 'Remove', interview_assignments_path(student_id: @student.id, course_id: @course.id, internship_id: interview_assignment.internship.id), data: { method: :delete }, class: 'unstyled-link pull-right' %></td>
               </tr>
             <% end %>
           </tbody>
         </table>
       </div>
-    <% end %>
-
-    <% if can?(:manage, Internship) && @course.internship_course %>
-      <%= form_tag create_multiple_interview_assignments_path, method: :post do %>
-        <%= render 'layouts/errors', object: @interview_assignment %>
-          <div class="form-group">
-            <%= collection_select :interview_assignment, :internship_id, @course.internships.order(:name).not_assigned_as_interview_for(@student), :id, :name, {}, { class: 'multiselect-dropdown', multiple: true, include_hidden: false, required: true } %>
-          </div>
-        <%= hidden_field_tag :course_id, @course.id %>
-        <%= hidden_field_tag :student_id, @student.id %>
-        <%= submit_tag 'Add interview assignments', class: 'btn btn-success' %>
-      <% end %>
-    <% end %>
+    </div>
   </div>
-</div>
+<% elsif !@student.internship_assignment %>
+  <h3>Interviews</h3>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="table-responsive" id="interview-assignments-table">
+        <div class="alert alert-info">
+          <p class="text-center">Rank interviews by dragging rows into the correct order</p>
+        </div>
+        <%= form_tag update_multiple_interview_assignments_path, method: :patch, class: 'update-multiple' do %>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Ranking</th>
+                <th>Company</th>
+                <th>Contact name</th>
+                <th>Contact email</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody class="sortable-list">
+              <% @student.interview_assignments.for_course(@course).order(:ranking_from_student).each do |interview_assignment| %>
+                <tr class="sortable-list-item">
+                  <%= fields_for 'interview_assignments[]', interview_assignment do |f| %>
+                    <td>
+                      <%= interview_assignment.ranking_from_student %>
+                      <%= f.hidden_field :ranking_from_student, class: 'sortable-number' %>
+                    </td>
+                  <% end %>
+                  <td><%= link_to interview_assignment.internship.name, "##{interview_assignment.internship.id}", data: { toggle: "modal" } %></td>
+                  <td><%= interview_assignment.internship.company.name %></td>
+                  <td><%= mail_to interview_assignment.internship.company.email %></td>
+                  <td><span class="pull-right glyphicon glyphicon-menu-hamburger"></span></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+          <%= hidden_field_tag :course_id, @course.id %>
+          <%= hidden_field_tag :student_id, @student.id %>
+          <%= submit_tag 'Submit rankings', class: "btn btn-info" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

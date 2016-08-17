@@ -1,4 +1,4 @@
-<h3>Internship rankings</h3>
+<h3>Internships</h3>
 <div class="panel panel-default">
   <div class="panel-body">
     <div class="student-div student-internships">
@@ -8,7 +8,7 @@
             <thead>
               <tr>
                 <th>Company</th>
-                <th>Ranking</th>
+                <th>Ranking from student</th>
                 <th>Notes</th>
               </tr>
             </thead>
@@ -16,7 +16,7 @@
               <% @course.internships.each do |internship| %>
                 <tr>
                   <td class="col-xs-3"><%= link_to internship.name, course_internship_path(@course, internship) %></td>
-                  <td class="col-xs-1"><p><%= @student.find_rating(internship).try(:number) %></p></td>
+                  <td><p><%= @student.find_rating(internship).try(:number) %></p></td>
                   <td class="col-xs-8"><p><%= @student.find_rating(internship).try(:notes) %></p></td>
                 </tr>
               <% end %>
