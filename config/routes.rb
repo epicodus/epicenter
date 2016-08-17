@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get '/sign-out' => redirect('/sign_out')
   get '/signout' => redirect('/sign_out')
 
+  get 'attendance', to: 'static_pages#attendance'
   get 'welcome', to: 'static_pages#show'
   get 'auth/:provider/callback', to: 'omniauth_callbacks#create'
 
