@@ -1,9 +1,9 @@
-<% if can? :manage, InterviewAssignment %>
+<% if can?(:manage, InterviewAssignment) && @student.interview_assignments.for_course(@course).any? %>
   <h3>Interviews</h3>
   <div class="panel panel-default">
     <div class="panel-body">
       <div class="table-responsive" id="interview-assignments-table">
-        <table class="table">
+        <table class="table datatable">
           <thead>
             <tr>
               <th>Company</th>
@@ -28,7 +28,7 @@
       </div>
     </div>
   </div>
-<% elsif !@student.internship_assignment %>
+<% elsif !@student.internship_assignment && @student.interview_assignments.for_course(@course).any? %>
   <h3>Interviews</h3>
   <div class="panel panel-default">
     <div class="panel-body">

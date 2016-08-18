@@ -1,8 +1,8 @@
-<h3>Internships</h3>
-<div class="panel panel-default">
-  <div class="panel-body">
-    <div class="student-div student-internships">
-      <% if can? :manage, Internship %>
+<% if can?(:manage, Internship) %>
+  <h3>Internships</h3>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="student-div student-internships">
         <div class="table-responsive">
           <table class="table student-internship-rankings-datatable">
             <thead>
@@ -23,9 +23,9 @@
             </tbody>
           </table>
         </div>
-      <% elsif can? :read, Internship %>
-        <%= render 'ratings/form' %>
-      <% end %>
+      </div>
     </div>
   </div>
-</div>
+<% elsif can?(:read, Internship) && !@student.interview_assignments.for_course(@course).any? %>
+  <%= render 'ratings/form' %>
+<% end %>

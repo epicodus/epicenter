@@ -1,23 +1,25 @@
-<div class="col-md-6">  
-  <h3>Interview feedback</h3>
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <% if @student.interview_assignments.for_course(@course).any? %>
-        <div class="table-responsive">
-          <table class="table">
-            <thead>
-              <tr><th>Feedback</th></tr>
-            </thead>
-            <tbody>
-              <ol>
-                <% @student.interview_assignments.for_course(@course).with_feedback_from_company.shuffle.each do |interview_assignment| %>
-                  <tr><td><li><%= interview_assignment.feedback_from_company %></li></td></tr>
-                <% end %>
-              </ol>
-            </tbody>
-          </table>
-        </div>
-      <% end %>
+<% if current_student && @student.interview_assignments.for_course(@course).with_feedback_from_company.any? %>
+  <div class="col-md-5">
+    <h3>Interview feedback</h3>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <% if @student.interview_assignments.for_course(@course).any? %>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr><th>Feedback</th></tr>
+              </thead>
+              <tbody>
+                <ol>
+                  <% @student.interview_assignments.for_course(@course).with_feedback_from_company.shuffle.each do |interview_assignment| %>
+                    <tr><td><li><%= interview_assignment.feedback_from_company %></li></td></tr>
+                  <% end %>
+                </ol>
+              </tbody>
+            </table>
+          </div>
+        <% end %>
+      </div>
     </div>
   </div>
-</div>
+<% end %>

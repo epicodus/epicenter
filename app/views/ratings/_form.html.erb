@@ -1,47 +1,54 @@
-<div class="alert alert-info">
-  <p class="text-center">Rank internships by dragging rows into the correct order</p>
-</div>
-
-<%= form_for @student, html: { class: 'update-multiple' } do |f| %>
-  <%= render 'layouts/errors', object: @student %>
-  <div class="row">
-    <div class="col-xs-10">
-      <table class="table datatable">
-        <thead>
-          <tr>
-            <th>Ranking</th>
-            <th>Company</th>
-            <th>Technologies</th>
-            <th>Notes (optional)</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody class="sortable-list">
-          <% @course.internships.each do |internship| %>
-            <tr id="internship_<%= internship.id %>" class="sortable-list-item">
-              <%= f.fields_for :ratings, Rating.find_or_initialize_by(internship_id: internship.id, student_id: @student.id) do |ff| %>
-                <td class="col-xs-1">
-                  <%= Rating.find_or_initialize_by(internship_id: internship.id, student_id: @student.id).number %>
-                </td>
-                <td class="col-xs-2"><%= link_to internship.name, "##{internship.id}", data: { toggle: "modal" } %></td>
-                <td class="col-xs-2"><%= internship.tracks_ordered_by_description %></td>
-                <td><%= ff.text_area :notes, rows: 1, class: 'form-control internship-ranking-notes' %></td>
-                <td><span class="pull-right glyphicon glyphicon-menu-hamburger"></span></td>
-
-                <%= ff.hidden_field :internship_id, value: internship.id %>
-                <%= ff.hidden_field :number, class: 'sortable-number' %>
-              <% end %>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-    <% if @course.internships.any? %>
-      <div class="col-xs-2">
-        <div class="form-group">
-          <%= f.submit 'Save rankings', class: 'btn btn-success', id: 'fixed-ratings-button' %>
-        </div>
+<h3>Internships</h3>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="student-div student-internships">
+      <div class="alert alert-info">
+        <p class="text-center">Rank internships by dragging rows into the correct order</p>
       </div>
-    <% end %>
+
+      <%= form_for @student, html: { class: 'update-multiple' } do |f| %>
+        <%= render 'layouts/errors', object: @student %>
+        <div class="row">
+          <div class="col-xs-10">
+            <table class="table datatable">
+              <thead>
+                <tr>
+                  <th>Ranking</th>
+                  <th>Company</th>
+                  <th>Technologies</th>
+                  <th>Notes (optional)</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody class="sortable-list">
+                <% @course.internships.each do |internship| %>
+                  <tr id="internship_<%= internship.id %>" class="sortable-list-item">
+                    <%= f.fields_for :ratings, Rating.find_or_initialize_by(internship_id: internship.id, student_id: @student.id) do |ff| %>
+                      <td class="col-xs-1">
+                        <%= Rating.find_or_initialize_by(internship_id: internship.id, student_id: @student.id).number %>
+                      </td>
+                      <td class="col-xs-2"><%= link_to internship.name, "##{internship.id}", data: { toggle: "modal" } %></td>
+                      <td class="col-xs-2"><%= internship.tracks_ordered_by_description %></td>
+                      <td><%= ff.text_area :notes, rows: 1, class: 'form-control internship-ranking-notes' %></td>
+                      <td><span class="pull-right glyphicon glyphicon-menu-hamburger"></span></td>
+
+                      <%= ff.hidden_field :internship_id, value: internship.id %>
+                      <%= ff.hidden_field :number, class: 'sortable-number' %>
+                    <% end %>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+          <% if @course.internships.any? %>
+            <div class="col-xs-2">
+              <div class="form-group">
+                <%= f.submit 'Save rankings', class: 'btn btn-success', id: 'fixed-ratings-button' %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
-<% end %>
+</div>
