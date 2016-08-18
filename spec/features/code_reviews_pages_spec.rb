@@ -47,7 +47,7 @@ feature 'viewing the code review index page' do
     end
 
     scenario 'changes lesson order' do
-      another_assesment = FactoryGirl.create(:code_review, course: code_review.course)
+      FactoryGirl.create(:code_review, course: code_review.course)
       visit course_path(code_review.course)
       click_on 'Save order'
       expect(page).to have_content 'Order has been saved'
@@ -328,7 +328,7 @@ feature 'deleting a code review' do
   end
 
   scenario 'with existing submissions' do
-    submission = FactoryGirl.create(:submission, code_review: code_review)
+    FactoryGirl.create(:submission, code_review: code_review)
     visit code_review_path(code_review)
     click_link 'Delete'
     expect(page).to have_content "Cannot delete a code review with existing submissions."

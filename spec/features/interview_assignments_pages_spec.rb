@@ -87,3 +87,26 @@ feature 'shows internship details modal from the interview assignments list' do
     expect(page).to have_content 'Details'
   end
 end
+
+feature 'interview rankings' do
+  let(:internship) { FactoryGirl.create(:internship) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: internship.courses.first) }
+  let(:company) { FactoryGirl.create(:company, internships: [internship]) }
+
+  scenario 'as a student ranking companies' do
+    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
+    login_as(student, scope: :student)
+    visit course_student_path(internship.courses.first, student)
+    click_on 'Save rankings'
+    expect(page).to have_content 'Interview rankings have been updated.'
+  end
+
+  scenario 'as a company ranking students' do
+    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
+    login_as(company, scope: :company)
+    visit company_path(company)
+    fill_in 'company-interview-feedback', with: 'Great interviewer!'
+    click_on 'Save rankings'
+    expect(page).to have_content "Student rankings have been saved for #{internship.courses.first.description}."
+  end
+end

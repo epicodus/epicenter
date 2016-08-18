@@ -17,7 +17,7 @@ class InterviewAssignmentsController < ApplicationController
 
   def update_multiple
     course = Course.find(params[:course_id])
-    student = Student.find(params[:student_id])
+    student = Student.find(params[:student_id]) if params[:student_id]
     InterviewAssignment.update(params[:interview_assignments].keys, params[:interview_assignments].values)
     if current_company
       redirect_to current_company, notice: "Student rankings have been saved for #{course.description}."
