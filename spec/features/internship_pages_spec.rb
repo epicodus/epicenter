@@ -114,7 +114,7 @@ feature 'rating an internship' do
     FactoryGirl.create(:internship, courses: [student.course])
     login_as(student, scope: :student)
     visit course_student_path(student.course, student)
-    click_on "Submit rankings"
+    click_on "Save rankings"
     expect(page).to have_content 'Internship rankings have been updated'
   end
 end

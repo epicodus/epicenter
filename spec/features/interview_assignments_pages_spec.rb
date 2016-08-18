@@ -24,7 +24,7 @@ feature 'adding an interview assignment' do
     scenario 'adding it successfully' do
       select internship.name, from: 'interview_assignment_internship_id'
       select internship_2.name, from: 'interview_assignment_internship_id'
-      click_on 'Add interview assignments'
+      click_on 'Add interviews'
       expect(page).to have_content "Interview assignments added for #{student.name}"
       within '#interview-assignments-table' do
         expect(page).to have_content internship.name
@@ -35,7 +35,7 @@ feature 'adding an interview assignment' do
     scenario 'adding it unsuccessfully' do
       FactoryGirl.create(:interview_assignment, student: student, internship: internship)
       select internship.name, from: 'interview_assignment_internship_id'
-      click_on 'Add interview assignments'
+      click_on 'Add interviews'
       expect(page).to have_content 'Something went wrong'
     end
   end
@@ -85,5 +85,28 @@ feature 'shows internship details modal from the interview assignments list' do
       click_on internship.name
     end
     expect(page).to have_content 'Details'
+  end
+end
+
+feature 'interview rankings' do
+  let(:internship) { FactoryGirl.create(:internship) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: internship.courses.first) }
+  let(:company) { FactoryGirl.create(:company, internships: [internship]) }
+
+  scenario 'as a student ranking companies' do
+    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
+    login_as(student, scope: :student)
+    visit course_student_path(internship.courses.first, student)
+    click_on 'Save rankings'
+    expect(page).to have_content 'Interview rankings have been updated.'
+  end
+
+  scenario 'as a company ranking students' do
+    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
+    login_as(company, scope: :company)
+    visit company_path(company)
+    fill_in 'company-interview-feedback', with: 'Great interviewer!'
+    click_on 'Save rankings'
+    expect(page).to have_content "Student rankings have been saved for #{internship.courses.first.description}."
   end
 end

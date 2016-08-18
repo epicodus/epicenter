@@ -32,7 +32,7 @@
                       <td><%= interview_assignment.student.name %></td>
                       <td class="col-md-6">
                         <div class="form-group">
-                          <%= f.text_area :feedback_from_company, required: true, class: 'form-control' %>
+                          <%= f.text_area :feedback_from_company, required: true, class: 'form-control', id: 'company-interview-feedback' %>
                         </div>
                       </td>
                       <td><span class="pull-right glyphicon glyphicon-menu-hamburger"></span></td>
@@ -45,7 +45,7 @@
           <%= hidden_field_tag :course_id, course.id %>
 
           <% if course.interview_assignments.any? && course.active? %>
-            <%= submit_tag 'Save order and feedback', class: "btn btn-info" %>
+            <%= submit_tag 'Save rankings', class: "btn btn-info" %>
           <% end %>
         <% end %>
       <% else %>

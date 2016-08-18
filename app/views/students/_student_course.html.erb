@@ -1,4 +1,4 @@
-<% if current_admin %>
+<% if can? :manage, Student %>
   <h1>
     <%= link_to student_courses_path(@student), class: 'h1 text-primary' do %>
       <%= @student.name %>
@@ -10,11 +10,17 @@
 <% end %>
 
 <% if @course.internship_course? %>
+  <%= render 'students/student_code_reviews' %>
+
   <div class="row">
-    <div class="col-md-12">
-      <%= render 'students/student_code_reviews' %>
-    </div>
+    <%= render 'students/internship_assignment' %>
+    <%= render 'interview_assignments/form' %>
+    <%= render 'students/interview_feedback' %>
   </div>
+
+  <%= render 'students/interview_assignments' %>
+  <%= render 'students/student_internships' %>
+  <%= render 'ratings/internships_modal' %>
 <% else %>
   <div class="row">
     <div class="col-md-4">
@@ -32,24 +38,6 @@
       <%= render 'students/student_code_reviews' %>
     </div>
   </div>
-<% end %>
 
-<% if @course.internship_course? %>
-  <div class="row">
-    <% if can?(:manage, InternshipAssignment) && @student.interview_assignments.any? || @student.internship_assignment %>
-      <%= render 'students/internship_assignment' %>
-    <% end %>
-
-    <% if current_student && @student.interview_assignments.for_course(@course).with_feedback_from_company.any? %>
-      <%= render 'students/interview_feedback' %>
-    <% end %>
-  </div>
-
-  <% if can?(:manage, InterviewAssignment) || @student.interview_assignments.for_course(@course).any? && !@student.interview_assignments.for_course(@course).with_feedback_from_company.any? %>
-    <%= render 'students/interview_assignments' %>
-  <% end %>
-
-  <%= render 'students/student_internships' %>
-<% else %>
   <%= render 'students/student_attendance' %>
 <% end %>
