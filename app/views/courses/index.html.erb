@@ -6,20 +6,55 @@
     <%= link_to 'New', new_course_path %>
   </h1>
 
-  <% if current_admin.courses.any? %>
-    <h3>Your courses</h3>
-    <%= render 'courses/course_list', courses: current_admin.courses.includes(:office) %>
+  <div class="row">
+    <div class="col-xs-2">
+      <ul class="nav nav-pills nav-stacked" id="courses-nav">
+        <%= set_course_nav_link_class(:all) do %>
+          <%= link_to 'All', courses_path(all: true) %>
+        <% end %>
 
-    <h3>Other courses</h3>
-    <%= render 'courses/course_list', courses: current_admin.other_courses %>
-  <% else %>
-    <h3>Future courses</h3>
-    <%= render 'courses/course_list', courses: @courses.future_courses %>
+        <% if current_admin.courses.any? %>
+          <%= set_course_nav_link_class(:admin_courses) do %>
+            <%= link_to 'Yours', courses_path(admin_courses: true) %>
+          <% end %>
+        <% end %>
 
-    <h3>Current courses</h3>
-    <%= render 'courses/course_list', courses: @courses.current_courses %>
+        <%= set_course_nav_link_class(:future) do %>
+          <%= link_to 'Future', courses_path(future: true) %>
+        <% end %>
 
-    <h3>Previous courses</h3>
-    <%= render 'courses/course_list', courses: @courses.previous_courses %>
-  <% end %>
+        <%= set_course_nav_link_class(:current) do %>
+          <%= link_to 'Current', courses_path(current: true) %>
+        <% end %>
+
+        <%= set_course_nav_link_class(:previous) do %>
+          <%= link_to 'Previous', courses_path(previous: true) %>
+        <% end %>
+
+        <%= set_course_nav_link_class(:internships) do %>
+          <%= link_to 'Internships', courses_path(internships: true), id: 'bottom-course-nav-link' %>
+        <% end %>
+
+        <li id="course-nav-locations"><h4>Locations</h4></li>
+
+        <% Office.all.order(:name).each do |office| %>
+          <%= set_course_nav_link_class(office.name.downcase.to_sym) do %>
+            <%= link_to office.name, courses_path(office.name.downcase.to_sym => true) %>
+          <% end %>
+        <% end %>
+      </ul>
+    </div>
+
+    <div class="col-xs-10">
+      <%= render 'courses/course_list', courses: @courses if params[:all] %>
+      <%= render 'courses/course_list', courses: @courses.future_courses if params[:future] %>
+      <%= render 'courses/course_list', courses: @courses.current_courses if params[:current] %>
+      <%= render 'courses/course_list', courses: @courses.previous_courses if params[:previous] %>
+      <%= render 'courses/course_list', courses: @courses.internship_courses if params[:internships] %>
+      <%= render 'courses/course_list', courses: @courses.portland_courses if params[:portland] %>
+      <%= render 'courses/course_list', courses: @courses.seattle_courses if params[:seattle] %>
+      <%= render 'courses/course_list', courses: @courses.philadelphia_courses if params[:philadelphia] %>
+      <%= render 'courses/course_list', courses: current_admin.courses.includes(:office) if params[:admin_courses] %>
+    </div>
+  </div>
 <% end %>

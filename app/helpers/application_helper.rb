@@ -20,4 +20,12 @@ module ApplicationHelper
       content_tag(:li, &block)
     end
   end
+
+  def set_course_nav_link_class(param, &block)
+    if params[param]
+      content_tag(:li, class: 'active course-nav-link', &block)
+    else
+      content_tag(:li, class: 'course-nav-link', &block)
+    end
+  end
 end

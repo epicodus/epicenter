@@ -25,6 +25,18 @@ class Course < ActiveRecord::Base
   before_create :import_code_reviews
   after_destroy :reassign_admin_current_courses
 
+  def self.portland_courses
+    includes(:office).where(offices: { name: 'Portland' })
+  end
+
+  def self.seattle_courses
+    includes(:office).where(offices: { name: 'Seattle' })
+  end
+
+  def self.philadelphia_courses
+    includes(:office).where(offices: { name: 'Philadelphia' })
+  end
+
   def self.active_internship_courses
     unscoped.where(internship_course: true, active: true).order(:description)
   end
