@@ -254,28 +254,11 @@ describe Course do
     end
   end
 
-  describe '#portland_courses' do
-    it 'returns all Portland courses' do
+  describe '#courses_for' do
+    it 'returns all courses for a certain office' do
       portland_course = FactoryGirl.create(:portland_course)
       FactoryGirl.create(:course)
-      expect(Course.portland_courses).to eq [portland_course]
-    end
-  end
-
-  describe '#seattle_courses' do
-    it 'returns all Seattle courses' do
-      seattle_office = FactoryGirl.create(:office, name: 'Seattle', time_zone: 'Pacific Time (US & Canada)')
-      seattle_course = FactoryGirl.create(:course, office: seattle_office)
-      FactoryGirl.create(:course)
-      expect(Course.seattle_courses).to eq [seattle_course]
-    end
-  end
-
-  describe '#philadelphia_courses' do
-    it 'returns all Philadelphia courses' do
-      philadelphia_course = FactoryGirl.create(:course)
-      FactoryGirl.create(:portland_course)
-      expect(Course.philadelphia_courses).to eq [philadelphia_course]
+      expect(Course.courses_for(portland_course.office)).to eq [portland_course]
     end
   end
 

@@ -51,10 +51,11 @@
       <%= render 'courses/course_list', courses: @courses.current_courses if params[:current] %>
       <%= render 'courses/course_list', courses: @courses.previous_courses if params[:previous] %>
       <%= render 'courses/course_list', courses: @courses.internship_courses if params[:internships] %>
-      <%= render 'courses/course_list', courses: @courses.portland_courses if params[:portland] %>
-      <%= render 'courses/course_list', courses: @courses.seattle_courses if params[:seattle] %>
-      <%= render 'courses/course_list', courses: @courses.philadelphia_courses if params[:philadelphia] %>
       <%= render 'courses/course_list', courses: current_admin.courses.includes(:office) if params[:admin_courses] %>
+
+      <% Office.all.each do |office| %>
+        <%= render 'courses/course_list', courses: @courses.courses_for(office) if params[office.name.downcase.to_sym] %>
+      <% end %>
     </div>
   </div>
 <% end %>
