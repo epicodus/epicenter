@@ -189,6 +189,15 @@ describe Course do
     end
   end
 
+  describe '#future_courses' do
+    it 'returns all future courses' do
+      FactoryGirl.create(:past_course)
+      FactoryGirl.create(:course)
+      future_course = FactoryGirl.create(:future_course)
+      expect(Course.future_courses).to eq [future_course]
+    end
+  end
+
   describe '#previous_courses' do
     it 'returns all current and future courses' do
       past_course = FactoryGirl.create(:past_course)
@@ -242,6 +251,14 @@ describe Course do
       inactive_course = FactoryGirl.create(:course, active: false)
       FactoryGirl.create(:course, active: true)
       expect(Course.inactive_courses).to eq [inactive_course]
+    end
+  end
+
+  describe '#courses_for' do
+    it 'returns all courses for a certain office' do
+      portland_course = FactoryGirl.create(:portland_course)
+      FactoryGirl.create(:course)
+      expect(Course.courses_for(portland_course.office)).to eq [portland_course]
     end
   end
 

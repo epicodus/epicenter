@@ -44,7 +44,13 @@
           <% end %>
         <% elsif current_admin %>
           <li><%= link_to "#{current_admin.current_course.description}", course_path(current_admin.current_course), class: 'first-navbar-link' %></li>
-          <li><%= link_to 'Courses', courses_path %></li>
+          <li>
+            <% if current_admin.courses.any? %>
+              <%= link_to 'Courses', courses_path(admin_courses: true) %>
+            <% else %>
+              <%= link_to 'Courses', courses_path(current: true) %>
+            <% end %>
+          </li>
           <li><%= link_to "Internships", internships_path %></li>
           <li><%= link_to 'Invite', new_student_invitation_path %></li>
         <% elsif current_company %>
