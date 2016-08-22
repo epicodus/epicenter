@@ -1,6 +1,7 @@
 class AttendanceSignInController < ApplicationController
 
   def create
+    params[:email1] = params[:email1].downcase
     if is_weekday? && IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip)
       if params[:email2] == ""
         sign_in_solo_student
@@ -27,36 +28,35 @@ private
   end
 
   def sign_in_pair
-    student1 = User.find_by(email: params[:email1])
-    student2 = User.find_by(email: params[:email2])
-    if student1 != student2 && valid_credentials(student1, params[:password1]) && valid_credentials(student2, params[:password2])
-      record1 = AttendanceRecord.find_or_initialize_by(student: student1, date: Time.zone.now.to_date)
-      record2 = AttendanceRecord.find_or_initialize_by(student: student2, date: Time.zone.now.to_date)
-      if record1 && record2 && record1.student && record2.student # This should always be the case, but is extra check.
-        record1.station = params[:station]
-        record2.station = params[:station]
-        record1.pair_id = student2.id
-        record2.pair_id = student1.id
-        if record1.save && record2.save
-          redirect_to welcome_path, notice: "Welcome #{student1.name} and #{student2.name}. Your attendance records have been created."
-        else
-          fail('There was a problem saving attendance records. Please notify a teacher.')
-        end
-      else
-        fail('There was a problem initializing attendance records. Please notify a teacher.')
-      end
+    params[:email2] = params[:email2].downcase
+    student_1 = User.find_by(email: params[:email1])
+    student_2 = User.find_by(email: params[:email2])
+    if student_1 != student_2 && valid_credentials(student_1, params[:password1]) && valid_credentials(student_2, params[:password2])
+      sign_in_pairs_with_valid_credentials(student_1, student_2)
     else
       fail('Invalid login credentials.')
     end
-
   end
 
-  def valid_credentials(user, pw)
-    user.try(:valid_password?, pw)
+  def valid_credentials(user, password)
+    user.try(:valid_password?, password)
+  end
+
+  def sign_in_pairs_with_valid_credentials(student_1, student_2)
+    record_1 = AttendanceRecord.find_or_initialize_by(student: student_1, date: Time.zone.now.to_date)
+    record_2 = AttendanceRecord.find_or_initialize_by(student: student_2, date: Time.zone.now.to_date)
+    record_1.station = params[:station]
+    record_2.station = params[:station]
+    record_1.pair_id = student_2.id
+    record_2.pair_id = student_1.id
+    if record_1.save && record_2.save
+      redirect_to welcome_path, notice: "Welcome #{student_1.name} and #{student_2.name}. Your attendance records have been created."
+    else
+      fail('There was a problem saving attendance records. Please notify a teacher.')
+    end
   end
 
   def fail(message)
     redirect_to sign_in_path, alert: message
   end
-
 end
