@@ -16,8 +16,8 @@ class AttendanceSignOutController < ApplicationController
 private
 
   def redirect_if_not_authorized_to_sign_out
-    if !is_weekday? && !IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip)
-      redirect_to root_path
+    if !is_weekday? || !IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip)
+      redirect_to root_path, alert: 'Unable to update attendance record.'
     end
   end
 
