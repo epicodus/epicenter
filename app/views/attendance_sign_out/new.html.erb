@@ -1,4 +1,4 @@
-<% if is_weekday? && IpLocation.is_local_computer?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip) %>
+<% if is_weekday? && IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip) %>
   <% if in_class_hours(8, 16, 45) || in_class_hours(18, 20, 45) %>
     <div class="row">
       <div class="alert alert-danger col-md-6 col-md-offset-3 text-center">

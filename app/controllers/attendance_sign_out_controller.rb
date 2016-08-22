@@ -1,7 +1,7 @@
 class AttendanceSignOutController < ApplicationController
 
   def create
-    if is_weekday? && IpLocation.is_local_computer?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip)
+    if is_weekday? && IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip)
       student = Student.find_by(email: params[:email].downcase)
       attendance_record = AttendanceRecord.find_by(date: Time.zone.now.to_date, student: student)
       if attendance_record && student.try(:valid_password?, params[:password])
