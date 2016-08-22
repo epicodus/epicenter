@@ -1,22 +1,25 @@
 class AttendanceSignOutController < ApplicationController
+  before_filter :redirect_if_not_authorized_to_sign_out, only: [:create]
 
   def create
-    if is_weekday? && IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip)
-      student = Student.find_by(email: params[:email].downcase)
-      attendance_record = AttendanceRecord.find_by(date: Time.zone.now.to_date, student: student)
-      if attendance_record && student.try(:valid_password?, params[:password])
-        sign_out_student(student, attendance_record)
-      elsif !attendance_record && student.try(:valid_password?, params[:password])
-        fail("You haven't signed in yet today.")
-      else
-        fail('Invalid email or password.')
-      end
+    student = Student.find_by(email: params[:email].downcase)
+    attendance_record = AttendanceRecord.find_by(date: Time.zone.now.to_date, student: student)
+    if attendance_record && student.try(:valid_password?, params[:password])
+      sign_out_student(student, attendance_record)
+    elsif !attendance_record && student.try(:valid_password?, params[:password])
+      fail("You haven't signed in yet today.")
     else
-      fail('Unable to update attendance record.')
+      fail('Invalid email or password.')
     end
   end
 
 private
+
+  def redirect_if_not_authorized_to_sign_out
+    if !is_weekday? && !IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip)
+      redirect_to root_path
+    end
+  end
 
   def attendance_record_params
     params.permit(:signing_out, :student_id)
