@@ -3,75 +3,33 @@
   <%= link_to 'New', new_course_path %>
 </h1>
 
-<ul class="nav nav-pills">
-  <% if params[:inactive] %>
-    <li>
-  <% else %>
-    <li class="active">
-  <% end %>
-    <%= link_to 'Active', internships_path %>
-  </li>
-  <% if params[:inactive] %>
-    <li class="active">
-  <% else %>
-    <li>
-  <% end %>
-    <%= link_to 'Inactive', internships_path(inactive: true) %>
-  </li>
-</ul>
-<br>
-
-<% @courses.reverse.each do |course| %>
-  <h3>
-    <%= course.description %>
-    <%= link_to 'Edit', edit_course_path(course) %>
-  </h3>
-
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <p><%= pluralize(course.internships.count, 'internship') %></p>
-      <p><%= pluralize(course.total_internship_students_requested, 'student') %> requested</p>
-
-      <% if course.active? %>
-        <%= form_for course, method: :put do |f| %>
-          <%= f.hidden_field :active, value: false %>
-          <%= f.submit 'Mark as inactive', class: 'btn btn-default' %>
-        <% end %>
-      <% else %>
-        <%= form_for course, method: :put do |f| %>
-          <%= f.hidden_field :active, value: true %>
-          <%= f.submit 'Mark as active', class: 'btn btn-default' %>
-        <% end %>
+<div class="row">
+  <div class="col-xs-2">
+    <ul class="nav nav-pills nav-stacked side-nav">
+      <%= set_nav_link_class(:active) do %>
+        <%= link_to 'Active', internships_path(active: true) %>
       <% end %>
 
-      <div class="table-responsive">
-        <table class="table table-hover internships-datatable">
-          <thead>
-            <tr>
-              <th>Company</th>
-              <th>Students requested</th>
-              <th>Technologies</th>
-              <th>Contact</th>
-              <th>Email</th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% course.internships.order(:name).each do |internship| %>
-              <tr id="internship-<%= internship.id %>">
-                <td><%= link_to internship.name, course_internship_path(course, internship) %></td>
-                <td><%= internship.number_of_students %></td>
-                <td><%= internship.tracks_ordered_by_description %></td>
-                <td><%= internship.try(:company).try(:name) %></td>
-                <td><%= mail_to internship.try(:company).try(:email) %></td>
-                <td><%= link_to 'Edit', edit_internship_path(internship) %></td>
-                <td><%= link_to 'Withdraw', course_internships_path(course_id: course.id, internship_id: internship.id), data: { method: :delete, confirm: 'Are you sure?' } %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>
+      <%= set_nav_link_class(:inactive) do %>
+        <%= link_to 'Inactive', internships_path(inactive: true), class: 'bottom-side-nav-link' %>
+      <% end %>
+
+      <li class="locations-nav"><h4>Locations</h4></li>
+
+      <% Office.all.order(:name).each do |office| %>
+        <%= set_nav_link_class(office.name.downcase.to_sym) do %>
+          <%= link_to office.name, internships_path(office.name.downcase.to_sym => true) %>
+        <% end %>
+      <% end %>
+    </ul>
   </div>
-<% end %>
+
+  <div class="col-xs-10">
+    <% Office.all.each do |office| %>
+      <%= render 'internships', courses: @courses.courses_for(office) if params[office.name.downcase.to_sym] %>
+    <% end %>
+
+    <%= render 'internships', courses: @courses.active_internship_courses if params[:active] %>
+    <%= render 'internships', courses: @courses.inactive_internship_courses if params[:inactive] %>
+  </div>
+</div>

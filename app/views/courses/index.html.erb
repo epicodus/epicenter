@@ -8,37 +8,37 @@
 
   <div class="row">
     <div class="col-xs-2">
-      <ul class="nav nav-pills nav-stacked" id="courses-nav">
-        <%= set_course_nav_link_class(:all) do %>
+      <ul class="nav nav-pills nav-stacked side-nav">
+        <%= set_nav_link_class(:all) do %>
           <%= link_to 'All', courses_path(all: true) %>
         <% end %>
 
         <% if current_admin.courses.any? %>
-          <%= set_course_nav_link_class(:admin_courses) do %>
+          <%= set_nav_link_class(:admin_courses) do %>
             <%= link_to 'Yours', courses_path(admin_courses: true) %>
           <% end %>
         <% end %>
 
-        <%= set_course_nav_link_class(:future) do %>
+        <%= set_nav_link_class(:future) do %>
           <%= link_to 'Future', courses_path(future: true) %>
         <% end %>
 
-        <%= set_course_nav_link_class(:current) do %>
+        <%= set_nav_link_class(:current) do %>
           <%= link_to 'Current', courses_path(current: true) %>
         <% end %>
 
-        <%= set_course_nav_link_class(:previous) do %>
+        <%= set_nav_link_class(:previous) do %>
           <%= link_to 'Previous', courses_path(previous: true) %>
         <% end %>
 
-        <%= set_course_nav_link_class(:internships) do %>
-          <%= link_to 'Internships', courses_path(internships: true), id: 'bottom-course-nav-link' %>
+        <%= set_nav_link_class(:internships) do %>
+          <%= link_to 'Internships', courses_path(internships: true), class: 'bottom-side-nav-link' %>
         <% end %>
 
-        <li id="course-nav-locations"><h4>Locations</h4></li>
+        <li class="locations-nav"><h4>Locations</h4></li>
 
         <% Office.all.order(:name).each do |office| %>
-          <%= set_course_nav_link_class(office.name.downcase.to_sym) do %>
+          <%= set_nav_link_class(office.name.downcase.to_sym) do %>
             <%= link_to office.name, courses_path(office.name.downcase.to_sym => true) %>
           <% end %>
         <% end %>
