@@ -1,0 +1,2 @@
+$('#course-students').html('<%= escape_javascript(render(@students)) %>');
+$('#paginator').html('<%= escape_javascript(paginate(@students, remote: true).to_s) %>');

@@ -30,6 +30,7 @@ gem 'factory_girl_rails'
 gem 'omniauth-github'
 gem 'font-awesome-rails'
 gem 'bootstrap-multiselect-rails'
+gem 'kaminari'
 
 group :development do
   gem 'spring'
