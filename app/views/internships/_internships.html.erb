@@ -1,6 +1,6 @@
 <% courses.reverse.each do |course| %>
   <h3>
-    <%= course.description %>
+    <%= course.description %> (<%= course.office.name %>)
     <%= link_to 'Edit', edit_course_path(course) %>
   </h3>
 

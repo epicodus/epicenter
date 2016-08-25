@@ -119,7 +119,7 @@ feature 'editing a course' do
     end
 
     scenario 'from the internships index page' do
-      visit internships_path
+      visit internships_path(active: true)
       click_on 'Mark as inactive'
       expect(page).to have_content "#{course.description} has been updated"
     end
