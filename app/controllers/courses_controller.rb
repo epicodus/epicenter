@@ -14,7 +14,7 @@ class CoursesController < ApplicationController
 
   def show
     @course = Course.find(params[:id])
-    @students = @course.students.includes(:submissions)
+    @students = @course.students.order(:name).includes(:submissions).page(params[:page]).per(15)
     @enrollment = Enrollment.new
     authorize! :manage, @course
   end
