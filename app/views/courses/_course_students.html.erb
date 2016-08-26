@@ -1,8 +1,14 @@
 <h3>Students</h3>
 <div class="panel panel-default">
   <div class="panel-body">
+    <p><%= link_to 'View all', course_path(@course, all: true),class: 'btn btn-default' unless params[:all] %></p>
+
     <div class="table-responsive">
-      <table class="searchable-datatable table table-hover">
+      <% if params[:all] %>
+        <table class="searchable-datatable table table-hover">
+      <% else %>
+        <table class="table table-hover">
+      <% end %>
         <thead>
           <tr>
             <th>Student</th>
