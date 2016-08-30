@@ -71,6 +71,10 @@ class Course < ActiveRecord::Base
     "#{office.name} - #{description} (#{teacher})"
   end
 
+  def description_and_office
+    "#{description} (#{office.name})"
+  end
+
   def in_session?
     start_date <= Time.zone.now.to_date && end_date >= Time.zone.now.to_date
   end
