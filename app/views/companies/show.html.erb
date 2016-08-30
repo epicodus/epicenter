@@ -13,7 +13,7 @@
             <%= f.hidden_field :company_id, value: @company.id %>
             <%= f.hidden_field :internship_id, value: internship.id %>
             <div class="input-group">
-              <%= f.collection_select :course_id, internship.other_internship_courses, :id, :description, { include_blank: 'Join an internship period' }, { class: 'form-control', required: true } %>
+              <%= f.collection_select :course_id, internship.other_internship_courses, :id, :description_and_office, { include_blank: 'Join an internship period' }, { class: 'form-control', required: true } %>
               <span class="input-group-btn">
                 <%= f.submit 'Join', class: 'btn btn-info' %>
               </span>
@@ -36,7 +36,7 @@
       <div class="col-md-6">
         <h2>Previous Internships</h2>
         <% internship.courses.inactive_courses.reverse.each do |course| %>
-          <h3><%= course.description %></h3>
+          <h3><%= course.description_and_office %></h3>
 
           <div class="panel panel-default">
             <div class="panel-body">
