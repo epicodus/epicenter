@@ -1,0 +1,61 @@
+<% courses.reverse.each do |course| %>
+  <h3>
+    <%= course.description %> (<%= course.office.name %>)
+    <%= link_to 'Edit', edit_course_path(course) %>
+  </h3>
+
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-lg-10">
+          <p><%= pluralize(course.internships.count, 'internship') %></p>
+          <p><%= pluralize(course.total_internship_students_requested, 'student') %> requested</p>
+          <p><%= link_to 'Interview rankings', course_ratings_path(course) %></p>
+        </div>
+
+        <div class="col-lg-2">
+          <% if course.active? %>
+            <%= form_for course, method: :put do |f| %>
+              <%= f.hidden_field :active, value: false %>
+              <%= f.submit 'Mark as inactive', class: 'btn btn-default' %>
+            <% end %>
+          <% else %>
+            <%= form_for course, method: :put do |f| %>
+              <%= f.hidden_field :active, value: true %>
+              <%= f.submit 'Mark as active', class: 'btn btn-default' %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table table-hover internships-datatable">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Students requested</th>
+              <th>Technologies</th>
+              <th>Contact</th>
+              <th>Email</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% course.internships.order(:name).each do |internship| %>
+              <tr id="internship-<%= internship.id %>">
+                <td><%= link_to internship.name, course_internship_path(course, internship) %></td>
+                <td><%= internship.number_of_students %></td>
+                <td><%= internship.tracks_ordered_by_description %></td>
+                <td><%= internship.try(:company).try(:name) %></td>
+                <td><%= mail_to internship.try(:company).try(:email) %></td>
+                <td><%= link_to 'Edit', edit_internship_path(internship) %></td>
+                <td><%= link_to 'Withdraw', course_internships_path(course_id: course.id, internship_id: internship.id), data: { method: :delete, confirm: 'Are you sure?' } %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+<% end %>

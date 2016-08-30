@@ -32,7 +32,7 @@ feature 'updating an internship' do
     before { login_as(admin, scope: :admin) }
 
     scenario 'admin can navigate to the edit page' do
-      visit internships_path
+      visit internships_path(active: true)
       within("#internship-#{internship.id}") do
         click_link 'Edit'
       end
@@ -73,7 +73,7 @@ feature 'removing an internship from a particular session' do
   before { login_as(admin, scope: :admin) }
 
   scenario 'it deletes the record' do
-    visit internships_path
+    visit internships_path(active: true)
     click_link 'Withdraw'
     expect(page).to_not have_content 'Withdraw'
   end
@@ -86,21 +86,21 @@ feature 'visiting the internships show page' do
 
   scenario 'you can navigate to the show page from the index' do
     internship = FactoryGirl.create(:internship)
-    visit internships_path
+    visit internships_path(active: true)
     click_link internship.name
     expect(page).to have_content internship.description
   end
 
   scenario 'clearance description is hidden if there is no clearance requirement' do
     internship = FactoryGirl.create(:internship, clearance_required: false)
-    visit internships_path
+    visit internships_path(active: true)
     click_link internship.name
     expect(page).to_not have_content 'Clearance description'
   end
 
   scenario 'clearance description is visible if there is a clearance requirement' do
     internship = FactoryGirl.create(:internship)
-    visit internships_path
+    visit internships_path(active: true)
     click_link internship.name
     expect(page).to have_content 'Clearance description'
   end
