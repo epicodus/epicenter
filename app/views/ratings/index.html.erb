@@ -1,0 +1,29 @@
+<h1>Rankings for <%= @course.description %> (<%= @course.office.name %>)</h1>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <p><%= link_to 'View all', course_ratings_path(@course, all: true),class: 'btn btn-default' unless params[:all] %></p>
+
+    <div class="table-responsive">
+      <% if params[:all] %>
+        <table class="table table-hover datatable">
+      <% else %>
+        <table class="table table-hover">
+      <% end %>
+        <thead>
+          <th></th>
+          <% @course.internships.order(:name).each do |internship| %>
+            <th><%= internship.name %></th>
+          <% end %>
+        </thead>
+        <tbody id="ranking-students">
+          <%= render 'ratings_students' %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="paginator">
+      <%= paginate @students, remote: true %>
+    </div>
+  </div>
+</div>

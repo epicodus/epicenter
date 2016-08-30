@@ -1,0 +1,8 @@
+<% @students.each do |student| %>
+  <tr>
+    <td><%= link_to student.name, course_student_path(@course, student) %></td>
+    <% @course.internships.order(:name).each do |internship| %>
+        <td><%= internship.ratings.find_by(student_id: student.id).try(:number) %></td>
+    <% end %>
+  </tr>
+<% end %>

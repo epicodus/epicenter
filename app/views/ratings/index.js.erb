@@ -1,2 +1,2 @@
-$('#course-students').html('<%= escape_javascript(render(@students)) %>');
+$('#ranking-students').html('<%= escape_javascript(render("ratings_students")) %>');
 $('.paginator').html('<%= escape_javascript(paginate(@students, remote: true).to_s) %>');

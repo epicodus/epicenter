@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     resources :internships, only: [:show]
     resources :students, only: [:show]
     resources :day_attendance_records, only: [:index, :create]
+    resources :ratings, only: [:index]
   end
   resources :ratings, only: [:create]
   resources :companies, only: [:show]
