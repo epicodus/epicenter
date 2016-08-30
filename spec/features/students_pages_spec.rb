@@ -15,10 +15,20 @@ feature 'Visiting students index page' do
     expect(page).to have_content 'You are not authorized'
   end
 
-  scenario 'as an admin' do
-    login_as(admin, scope: :admin)
-    visit course_path(admin.current_course)
-    expect(page).to have_content admin.current_course.description
+  context 'as an admin' do
+    before do
+      login_as(admin, scope: :admin)
+      visit course_path(student.course)
+    end
+
+    scenario 'viewing paginated student list' do
+      expect(page).to have_content admin.current_course.description
+    end
+
+    scenario 'viewing all students' do
+      click_on 'View all'
+      expect(page).to have_content admin.current_course.description
+    end
   end
 end
 

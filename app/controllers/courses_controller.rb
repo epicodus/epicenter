@@ -14,11 +14,8 @@ class CoursesController < ApplicationController
 
   def show
     @course = Course.find(params[:id])
-    if params[:all]
-      @students = @course.students.per(@course.students.count)
-    else
-      @students = @course.students.order(:name).includes(:submissions).page(params[:page]).per(15)
-    end
+    @students = @course.students.order(:name).includes(:submissions).page(params[:page]).per(15)
+    @students = @students.per(@course.students.count) if params[:all]
     @enrollment = Enrollment.new
     authorize! :manage, @course
   end
