@@ -31,7 +31,7 @@ $(function() {
     paging: false,
     autoWidth: false,
     info: false,
-    order: [[ 0, "desc" ]],
+    order: [[ 0, "asc" ]],
     language: {
       search: 'Search table:'
     }
