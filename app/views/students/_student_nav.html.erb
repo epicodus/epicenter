@@ -7,5 +7,9 @@
     <%= set_navbar_link_class('payments') do %>
       <%= link_to 'Payments', student_payments_path(@student) %>
     <% end %>
+
+    <%= set_navbar_link_class('attendance_records') do %>
+      <%= link_to 'Attendance', student_attendance_records_path(@student) %>
+    <% end %>
   </ul>
 <% end %>

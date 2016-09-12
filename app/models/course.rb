@@ -59,6 +59,10 @@ class Course < ActiveRecord::Base
     where('start_date <= ? AND end_date >= ? OR start_date >= ?', today, today, today).order(:description)
   end
 
+  def self.total_class_days_until(date)
+    all.map(&:class_days).flatten.select { |day| day <= date }.sort.reverse
+  end
+
   def total_internship_students_requested
     internships.pluck(:number_of_students).compact.sum
   end

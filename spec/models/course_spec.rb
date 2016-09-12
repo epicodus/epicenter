@@ -280,4 +280,17 @@ describe Course do
       expect(internship_course.total_internship_students_requested).to eq 4
     end
   end
+
+  describe '#total_class_days_until' do
+    it 'returns the total number of students requested for an internship course' do
+      monday = Time.zone.now.to_date.beginning_of_week
+      tuesday = Time.zone.now.to_date.beginning_of_week + 1.day
+      wednesday = Time.zone.now.to_date.beginning_of_week + 2.day
+      course_1 = FactoryGirl.create(:past_course, class_days: [monday])
+      course_2 = FactoryGirl.create(:course, class_days: [tuesday])
+      course_3 = FactoryGirl.create(:future_course, class_days: [wednesday])
+      student = FactoryGirl.create(:student, courses: [course_1, course_2, course_3])
+      expect(student.courses.total_class_days_until(Time.zone.now.to_date.end_of_week)).to eq [wednesday, tuesday, monday]
+    end
+  end
 end
