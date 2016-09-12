@@ -13,7 +13,7 @@
             <th>Station</th>
             <th></th>
           </thead>
-          <% @course.class_dates_until(Time.zone.now.to_date).sort.reverse.each do |day| %>
+          <% class_days.each do |day| %>
             <tbody>
               <tr>
                 <td class="col-md-4">
@@ -33,8 +33,8 @@
                     <span class="label label-success">On time</span>
                   <% end %>
                 </td>
-                <td><%= @student.attendance_record_on_day(day).try(:created_at).try(:in_time_zone, @course.office.time_zone).try(:strftime, '%l:%M %p') %></td>
-                <td><%= @student.attendance_record_on_day(day).try(:signed_out_time).try(:in_time_zone, @course.office.time_zone).try(:strftime, '%l:%M %p') %></td>
+                <td><%= @student.attendance_record_on_day(day).try(:created_at).try(:in_time_zone, course.office.time_zone).try(:strftime, '%l:%M %p') %></td>
+                <td><%= @student.attendance_record_on_day(day).try(:signed_out_time).try(:in_time_zone, course.office.time_zone).try(:strftime, '%l:%M %p') %></td>
                 <td><%= @student.pair_on_day(day) ? @student.pair_on_day(day).name : 'Solo' %></td>
                 <td><%= @student.attendance_record_on_day(day) && @student.attendance_record_on_day(day).station ? @student.attendance_record_on_day(day).station : '-' %></td>
                 <td class="edit-attendance">
