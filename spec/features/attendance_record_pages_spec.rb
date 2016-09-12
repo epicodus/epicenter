@@ -69,3 +69,26 @@ feature "admin viewing an individual student's attendance" do
     end
   end
 end
+
+feature 'viewing attendance records index page' do
+  let(:admin) { FactoryGirl.create(:admin) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+  let(:attendance_record) { FactoryGirl.create(:attendance_record, student: student, date: student.course.start_date) }
+
+  scenario 'as an admin' do
+    login_as(admin, scope: :admin)
+    visit student_attendance_records_path(student)
+    expect(page).to have_content attendance_record.date.strftime("%B %d, %Y")
+  end
+
+  scenario 'as a student' do
+    login_as(student, scope: :student)
+    visit student_attendance_records_path(student)
+    expect(page).to have_content attendance_record.date.strftime("%B %d, %Y")
+  end
+
+  scenario 'as a guest' do
+    visit student_attendance_records_path(student)
+    expect(page).to have_content 'You need to sign in'
+  end
+end

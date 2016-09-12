@@ -39,5 +39,5 @@
     </div>
   </div>
 
-  <%= render 'students/student_attendance' %>
+  <%= render 'students/student_attendance', course: @course, class_days: @course.class_dates_until(Time.zone.now.to_date).sort.reverse %>
 <% end %>
