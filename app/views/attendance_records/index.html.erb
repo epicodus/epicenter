@@ -1,4 +1,4 @@
 <%= render 'students/student_header' %>
 <%= render 'students/student_nav' %>
 
-<%= render 'students/student_attendance', course: @student.course, class_days: @student.courses.non_internship_courses.total_class_days_until(Time.zone.now.to_date) %>
+<%= render 'students/student_attendance', course: @student.course, class_days: @attendance_days %>
