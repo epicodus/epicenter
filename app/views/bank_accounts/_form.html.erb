@@ -25,5 +25,7 @@
   <%= hidden_field_tag :currency, value = "USD" %>
   <%= f.hidden_field :stripe_token %>
 
+  <p>By clicking Verify bank account, you authorize Epicodus, Inc. to electronically debit your bank account and, if necessary, electronically credit your account to correct erroneous debits. To revoke your authorization, email <%= mail_to ENV['FROM_EMAIL_PAYMENT'] %>.</p>
+
   <%= f.submit "Verify bank account", class: "btn btn-info", id: "account-submit-button" %>
 <% end %>
