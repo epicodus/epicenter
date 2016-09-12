@@ -129,7 +129,7 @@ http_interactions:
             "param": "bank_account"
           }
         }
-    http_version:
+    http_version: 
   recorded_at: Wed, 17 Aug 2016 20:17:51 GMT
 - request:
     method: get
@@ -195,7 +195,7 @@ http_interactions:
           }
         }
         , 400)
-    http_version:
+    http_version: 
   recorded_at: Wed, 17 Aug 2016 20:18:53 GMT
 - request:
     method: get
@@ -261,6 +261,72 @@ http_interactions:
           }
         }
         , 400)
-    http_version:
+    http_version: 
   recorded_at: Thu, 18 Aug 2016 18:14:20 GMT
+- request:
+    method: get
+    uri: https://api.stripe.com/v1/tokens?_accept_language=en-US&_method=POST&bank_account%5Baccount_holder_name%5D=Example%20Brown%2075&bank_account%5Baccount_holder_type%5D=individual&bank_account%5Baccount_number%5D=000123456789&bank_account%5Bcountry%5D=US&bank_account%5Bcurrency%5D=USD&bank_account%5Brouting_number%5D=12345689&callback=sjsonp1473715357135&key=<STRIPE_PUBLIC_KEY>&payment_user_agent=stripe.js/d31b455
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Accept:
+      - "*/*"
+      Referer:
+      - http://127.0.0.1:55553/bank_accounts/new
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/538.1 (KHTML, like Gecko)
+        PhantomJS/2.1.1 Safari/538.1
+      Connection:
+      - Keep-Alive
+      Accept-Language:
+      - en-US,*
+      Host:
+      - api.stripe.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 12 Sep 2016 21:22:37 GMT
+      Content-Type:
+      - application/javascript
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - close
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, HEAD, OPTIONS, DELETE
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Max-Age:
+      - '300'
+      Cache-Control:
+      - no-cache, no-store
+      Request-Id:
+      - req_9BOgbQGBUobXxG
+      Stripe-Version:
+      - '2016-03-07'
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains
+      Content-Encoding:
+      - gzip
+    body:
+      encoding: UTF-8
+      string: |
+        sjsonp1473715357135({
+          "error": {
+            "type": "invalid_request_error",
+            "message": "Routing number must have 9 digits",
+            "param": "bank_account"
+          }
+        }
+        , 400)
+    http_version: 
+  recorded_at: Mon, 12 Sep 2016 21:22:37 GMT
 recorded_with: VCR 3.0.3
