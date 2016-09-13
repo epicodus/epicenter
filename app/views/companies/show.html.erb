@@ -39,7 +39,22 @@
 
     <div class="panel panel-default">
       <div class="panel-body">
-        <% if course.interview_assignments.for_internship(internship).any? %>
+        <% if course.internship_assignments.for_internship(internship).any? %>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr><th>Interns</th></tr>
+              </thead>
+              <tbody>
+                <% course.internship_assignments.for_internship(internship).each do |internship_assignment| %>
+                  <tr><td><%= internship_assignment.student.name %></td></tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        <% elsif course.interview_assignments.for_internship(internship).any? && !course.internship_assignments.for_internship(internship).any? && !course.active? %>
+          No intern assignments
+        <% elsif course.interview_assignments.for_internship(internship).any? %>
           <% if params[:previous] %>
             <%= render 'companies/previous_internships', course: course, internship: internship %>
           <% else %>
