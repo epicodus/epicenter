@@ -414,4 +414,10 @@ FactoryGirl.define do
     internship
     course
   end
+
+  factory :internship_assignment do
+    student
+    internship
+    course
+  end
 end
