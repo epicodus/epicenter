@@ -21,7 +21,7 @@ class InternshipsController < ApplicationController
     @internship = Internship.find(params[:id])
     if @internship.update(internship_params)
       if current_admin
-        redirect_to internships_path, notice: 'Internship has been updated'
+        redirect_to internships_path(active: true), notice: 'Internship has been updated'
       elsif current_company
         redirect_to root_path, notice: 'Internship has been updated'
       end

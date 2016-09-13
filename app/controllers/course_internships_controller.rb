@@ -16,7 +16,7 @@ class CourseInternshipsController < ApplicationController
     internship = Internship.find(params[:internship_id])
     course_internship = CourseInternship.find_by(course_id: course.id, internship_id: internship.id)
     course_internship.destroy
-    redirect_to internships_path, notice: "#{internship.name} has been withdrawn from the #{course.description} session."
+    redirect_to internships_path(active: true), notice: "#{internship.name} has been withdrawn from the #{course.description} session."
   end
 
 private

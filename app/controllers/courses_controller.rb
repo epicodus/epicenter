@@ -43,7 +43,7 @@ class CoursesController < ApplicationController
     if @course.update(course_params)
       flash[:notice] = "#{@course.description} has been updated."
       if request.referer.include?('internships')
-        redirect_to internships_path
+        redirect_to internships_path(active: true)
       else
         redirect_to course_path(@course)
       end
