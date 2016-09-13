@@ -59,7 +59,7 @@ feature 'updating an internship' do
 
     scenario 'successfully' do
       visit internships_path
-      click_on 'Edit internship details'
+      click_on 'Edit'
       fill_in 'Describe your company and internship. Get students excited about what you do!', with: new_information.description
       click_on 'Update internship'
       expect(page).to have_content 'Internship has been updated'
