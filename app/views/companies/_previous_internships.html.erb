@@ -1,0 +1,22 @@
+<div class="table-responsive">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Ranking</th>
+        <th>Interviewee</th>
+        <th>Feedback</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% course.interview_assignments.for_internship(internship).each do |interview_assignment| %>
+        <tr>
+          <td class="col-md-1">
+            <%= interview_assignment.ranking_from_company %>
+          </td>
+          <td><%= interview_assignment.student.name %></td>
+          <td class="col-md-6"><%= interview_assignment.feedback_from_company %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

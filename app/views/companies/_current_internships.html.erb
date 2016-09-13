@@ -1,0 +1,44 @@
+<div class="alert alert-info">
+  <p class="text-center">Rank students by dragging rows into the correct order</p>
+</div>
+<div class="alert alert-danger">
+  <p class="text-center">Feedback will be anonymously displayed to students</p>
+</div>
+<%= form_tag update_multiple_interview_assignments_path, method: :patch, class: 'update-multiple' do %>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Ranking</th>
+          <th>Interviewee</th>
+          <th>Feedback <span class="text-danger">(required)</span></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="sortable-list">
+        <% course.interview_assignments.for_internship(internship).each do |interview_assignment| %>
+          <tr class="sortable-list-item">
+            <%= fields_for 'interview_assignments[]', interview_assignment do |f| %>
+              <td class="col-md-1">
+                <%= interview_assignment.ranking_from_company %>
+                <%= f.hidden_field :ranking_from_company, class: 'sortable-number' %>
+              </td>
+              <td><%= interview_assignment.student.name %></td>
+              <td class="col-md-6">
+                <div class="form-group">
+                  <%= f.text_area :feedback_from_company, required: true, rows: 4, class: 'form-control', id: 'company-interview-feedback' %>
+                </div>
+              </td>
+              <td><span class="pull-right glyphicon glyphicon-menu-hamburger"></span></td>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+  <%= hidden_field_tag :course_id, course.id %>
+
+  <% if course.interview_assignments.any? && course.active? %>
+    <%= submit_tag 'Save rankings', class: "btn btn-info" %>
+  <% end %>
+<% end %>

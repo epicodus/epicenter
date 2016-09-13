@@ -7,4 +7,6 @@ class InternshipAssignment < ActiveRecord::Base
   validates :internship, presence: true
   validates :course, presence: true
   validates :student_id, uniqueness: { scope: :course_id }
+
+  scope :for_internship, ->(internship) { where(internship_id: internship.id) }
 end

@@ -42,7 +42,7 @@
             </tr>
           </thead>
           <tbody>
-            <% course.internships.order(:name).each do |internship| %>
+            <% course.internships.order(:name).includes(:company).each do |internship| %>
               <tr id="internship-<%= internship.id %>">
                 <td><%= link_to internship.name, course_internship_path(course, internship) %></td>
                 <td><%= internship.number_of_students %></td>
