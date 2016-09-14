@@ -59,7 +59,7 @@ feature 'visiting the code review show page' do
   let(:code_review) { FactoryGirl.create(:code_review) }
 
   scenario 'as a guest' do
-    visit code_review_path(code_review)
+    visit course_code_review_path(code_review.course, code_review)
     expect(page).to have_content 'need to sign in'
   end
 
@@ -67,7 +67,7 @@ feature 'visiting the code review show page' do
     let(:admin) { FactoryGirl.create(:admin) }
     before do
       login_as(admin, scope: :admin)
-      visit code_review_path(code_review)
+      visit course_code_review_path(code_review.course, code_review)
     end
 
     scenario 'has a link to edit code_review' do
@@ -98,7 +98,7 @@ feature 'visiting the code review show page' do
     end
 
     context 'when submitting' do
-      before { visit code_review_path(code_review) }
+      before { visit course_code_review_path(code_review.course, code_review) }
 
       scenario 'with valid input' do
         fill_in 'submission_link', with: 'http://github.com'
@@ -116,7 +116,7 @@ feature 'visiting the code review show page' do
     context 'after having submitted' do
       before do
         FactoryGirl.create(:submission, code_review: code_review, student: student)
-        visit code_review_path(code_review)
+        visit course_code_review_path(code_review.course, code_review)
       end
 
       it { is_expected.to have_button 'Resubmit' }
@@ -128,9 +128,7 @@ feature 'visiting the code review show page' do
       let(:submission) { FactoryGirl.create(:submission, code_review: code_review, student: student) }
       let!(:review) { FactoryGirl.create(:passing_review, submission: submission) }
 
-      before do
-        visit code_review_path(code_review)
-      end
+      before { visit course_code_review_path(code_review.course, code_review) }
 
       it { is_expected.to_not have_content 'pending review' }
       it { is_expected.to have_content review.note }
@@ -142,7 +140,7 @@ feature 'visiting the code review show page' do
 
       before do
         FactoryGirl.create(:passing_review, submission: submission)
-        visit code_review_path(code_review)
+        visit course_code_review_path(code_review.course, code_review)
       end
 
       scenario 'successfully' do
@@ -324,14 +322,14 @@ feature 'deleting a code review' do
   before { login_as(admin, scope: :admin) }
 
   scenario 'without existing submissions' do
-    visit code_review_path(code_review)
+    visit course_code_review_path(code_review.course, code_review)
     click_link 'Delete'
     expect(page).to have_content "#{code_review.title} has been deleted."
   end
 
   scenario 'with existing submissions' do
     FactoryGirl.create(:submission, code_review: code_review)
-    visit code_review_path(code_review)
+    visit course_code_review_path(code_review.course, code_review)
     click_link 'Delete'
     expect(page).to have_content "Cannot delete a code review with existing submissions."
   end
