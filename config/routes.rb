@@ -45,7 +45,7 @@ Rails.application.routes.draw do
   resources :ratings, only: [:create]
   resources :companies, only: [:show]
 
-  resources :code_reviews, except: [:index] do
+  resources :code_reviews, except: [:index, :new, :edit] do
     resources :submissions, only: [:index, :create, :update]
     collection do
       patch :update_multiple, :path => ''

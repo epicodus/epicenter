@@ -161,8 +161,10 @@ feature 'visiting the code review show page' do
 end
 
 feature 'creating a code review' do
+  let(:course) { FactoryGirl.create(:course) }
+
   scenario 'as a guest' do
-    visit new_code_review_path
+    visit new_course_code_review_path(course)
     expect(page).to have_content 'need to sign in'
   end
 
@@ -172,7 +174,7 @@ feature 'creating a code review' do
 
     before do
       login_as(admin, scope: :admin)
-      visit new_code_review_path
+      visit new_course_code_review_path(course)
     end
 
     scenario 'with valid input' do
@@ -214,7 +216,7 @@ feature 'creating a code review' do
 
     scenario 'you are not authorized' do
       login_as(student, scope: :student)
-      visit new_code_review_path
+      visit new_course_code_review_path(student.course)
       expect(page).to have_content 'not authorized'
     end
   end
@@ -224,7 +226,7 @@ feature 'editing a code review' do
   let(:code_review) { FactoryGirl.create(:code_review) }
 
   scenario 'as a guest' do
-    visit edit_code_review_path(code_review)
+    visit edit_course_code_review_path(code_review.course, code_review)
     expect(page).to have_content 'need to sign in'
   end
 
@@ -233,7 +235,7 @@ feature 'editing a code review' do
 
     before do
       login_as(admin, scope: :admin)
-      visit edit_code_review_path(code_review)
+      visit edit_course_code_review_path(code_review.course, code_review)
     end
 
     scenario 'with valid input' do
@@ -273,7 +275,7 @@ feature 'editing a code review' do
 
     scenario 'you are not authorized' do
       login_as(student, scope: :student)
-      visit edit_code_review_path(code_review)
+      visit edit_course_code_review_path(code_review.course, code_review)
       expect(page).to have_content 'not authorized'
     end
   end
@@ -286,7 +288,7 @@ feature 'copying an existing code review' do
 
   scenario 'successful copy of code review' do
     code_review = FactoryGirl.create(:code_review, course: admin.current_course)
-    visit new_code_review_path
+    visit new_course_code_review_path(admin.current_course)
     select code_review.title, from: 'code_review_id'
     click_button 'Copy'
     expect(page).to have_content 'Code review successfully copied.'
