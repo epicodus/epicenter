@@ -9,7 +9,7 @@
 <h1>
   <%= @code_review.title %>
   <% if can? :manage, @code_review %>
-    <%= link_to 'Edit', edit_code_review_path(@code_review) %>
+    <%= link_to 'Edit', edit_course_code_review_path(@code_review.course, @code_review) %>
   <% end %>
 </h1>
 

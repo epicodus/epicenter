@@ -2,7 +2,7 @@
   <td class="col-md-1">
     <%= code_review.number %>
   </td>
-  <td><p><%= link_to code_review.title, code_review %></p></td>
+  <td><p><%= link_to code_review.title, course_code_review_path(@course, code_review) %></p></td>
   <td>
     <% if can? :manage, CodeReview %>
       <%= link_to 'Grades report', course_code_review_report_path(@course, code_review) %>

@@ -3,13 +3,15 @@ class CodeReviewsController < ApplicationController
 
   def new
     @code_review = CodeReview.new
+    @course = Course.find(params[:course_id])
     3.times { @code_review.objectives.build }
   end
 
   def create
     @code_review = CodeReview.new(code_review_params)
+    @course = Course.find(params[:course_id])
     if @code_review.save
-      redirect_to @code_review, notice: "Code review has been saved!"
+      redirect_to course_code_review_path(@course, @code_review), notice: "Code review has been saved!"
     else
       render 'new'
     end
@@ -22,12 +24,14 @@ class CodeReviewsController < ApplicationController
 
   def edit
     @code_review = CodeReview.find(params[:id])
+    @course = @code_review.course
   end
 
   def update
     @code_review = CodeReview.find(params[:id])
+    @course = @code_review.course
     if @code_review.update(code_review_params)
-      redirect_to @code_review, notice: "Code review updated."
+      redirect_to course_code_review_path(@course, @code_review), notice: "Code review updated."
     else
       render 'edit'
     end
@@ -51,6 +55,7 @@ class CodeReviewsController < ApplicationController
 private
 
   def code_review_params
-    params.require(:code_review).permit(:title, :section, :url, :submissions_not_required, objectives_attributes: [:id, :content, :_destroy]).merge(course_id: current_admin.current_course.id)
+    params.require(:code_review).permit(:course_id, :title, :section, :url, :submissions_not_required,
+                                        objectives_attributes: [:id, :content, :_destroy])
   end
 end

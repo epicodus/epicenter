@@ -1,4 +1,4 @@
-<%= form_for code_review do |f| %>
+<%= form_for [@course, code_review] do |f| %>
   <%= render 'layouts/errors', object: code_review %>
 
   <div class="form-group">
@@ -28,5 +28,6 @@
     <%= f.add_nested_fields_link :objectives, 'Add objective' %>
   </div>
 
+  <%= f.hidden_field :course_id, value: @course.id %>
   <%= f.submit nil, class: 'btn btn-info' %>
 <% end %>

@@ -32,13 +32,13 @@
                     <% if can? :manage, CodeReview %>
                       <%= link_to 'Reviewed', new_submission_review_path(@student.submission_for(code_review)) %>
                     <% else %>
-                      <%= link_to 'Reviewed', code_review_path(code_review) %>
+                      <%= link_to 'Reviewed', course_code_review_path(@course, code_review) %>
                     <% end %>
                   <% else %>
                     <% if can? :manage, CodeReview %>
                       <%= link_to 'Pending', new_submission_review_path(@student.submission_for(code_review)) %>
                     <% else %>
-                      <%= link_to 'Pending', code_review_path(code_review) %>
+                      <%= link_to 'Pending', course_code_review_path(@course, code_review) %>
                     <% end %>
                   <% end %>
                 </td>
@@ -49,9 +49,9 @@
                   <% if can? :manage, CodeReview %>
                     Not submitted
                   <% elsif code_review.submissions_not_required? %>
-                    <%= link_to 'Pending', code_review_path(code_review) %>
+                    <%= link_to 'Pending', course_code_review_path(@course, code_review) %>
                   <% else %>
-                    <%= link_to 'Submit', code_review_path(code_review), class: 'text-info' %>
+                    <%= link_to 'Submit', course_code_review_path(@course, code_review), class: 'text-info' %>
                   <% end %>
                 </td>
               <% end %>
