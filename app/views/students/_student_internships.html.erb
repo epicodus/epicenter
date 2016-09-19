@@ -28,7 +28,7 @@
   </div>
 <% elsif can?(:read, Internship) && !@student.interview_assignments.for_course(@course).any? && @course.rankings_visible? %>
   <%= render 'ratings/form' %>
-<% else %>
+<% elsif !@student.interview_assignments.for_course(@course).any? && !@course.rankings_visible? %>
   <h3>Internships</h3>
   <div class="panel panel-default">
     <div class="panel-body">

@@ -106,8 +106,21 @@ feature 'visiting the internships show page' do
   end
 end
 
-feature 'rating an internship' do
+feature 'viewing internships before rankings are live' do
   let(:internship_course) { FactoryGirl.create(:internship_course) }
+  let(:student) { FactoryGirl.create(:student, course: internship_course) }
+
+  scenario 'a student can rate an internship from the internships index page' do
+    internship = FactoryGirl.create(:internship, courses: [student.course])
+    login_as(student, scope: :student)
+    visit course_student_path(student.course, student)
+    expect(page).to have_content internship.name
+    expect(page).to_not have_content 'Save rankings'
+  end
+end
+
+feature 'rating an internship' do
+  let(:internship_course) { FactoryGirl.create(:internship_course, rankings_visible: true) }
   let(:student) { FactoryGirl.create(:student, course: internship_course) }
 
   scenario 'a student can rate an internship from the internships index page', :js do
