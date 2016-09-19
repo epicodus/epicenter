@@ -26,6 +26,28 @@
       </div>
     </div>
   </div>
-<% elsif can?(:read, Internship) && !@student.interview_assignments.for_course(@course).any? %>
+<% elsif can?(:read, Internship) && !@student.interview_assignments.for_course(@course).any? && @course.rankings_visible? %>
   <%= render 'ratings/form' %>
+<% else %>
+  <h3>Internships</h3>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <table class="table datatable">
+        <thead>
+          <tr>
+            <th>Company</th>
+            <th>Technologies</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @course.internships.each do |internship| %>
+            <tr>
+              <td><%= link_to internship.name, "##{internship.id}", data: { toggle: "modal" } %></td>
+              <td><%= internship.tracks_ordered_by_description %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
 <% end %>

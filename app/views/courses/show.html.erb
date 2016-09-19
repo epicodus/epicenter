@@ -16,6 +16,8 @@
               <h4><%= @course.start_date.strftime('%B %d') %> to <%= @course.end_date.strftime('%B %d') %></h4>
             <% end %>
 
+            <p><%= render 'courses/toggle_rankings_form', course: @course %></p>
+
             <%= form_for @enrollment do |f| %>
               <%= render 'layouts/errors', object: @enrollment %>
               <%= f.hidden_field :course_id, value: @course.id %>

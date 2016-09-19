@@ -1,0 +1,9 @@
+<%= form_for course, method: :put do |f| %>
+  <% if course.active? %>
+    <%= f.hidden_field :active, value: false %>
+    <%= f.submit 'Mark as inactive', class: 'btn btn-default' %>
+  <% else %>
+    <%= f.hidden_field :active, value: true %>
+    <%= f.submit 'Mark as active', class: 'btn btn-default' %>
+  <% end %>
+<% end %>

@@ -14,17 +14,7 @@
         </div>
 
         <div class="col-lg-2">
-          <% if course.active? %>
-            <%= form_for course, method: :put do |f| %>
-              <%= f.hidden_field :active, value: false %>
-              <%= f.submit 'Mark as inactive', class: 'btn btn-default' %>
-            <% end %>
-          <% else %>
-            <%= form_for course, method: :put do |f| %>
-              <%= f.hidden_field :active, value: true %>
-              <%= f.submit 'Mark as active', class: 'btn btn-default' %>
-            <% end %>
-          <% end %>
+          <%= render 'courses/toggle_active_form', course: course %>
         </div>
       </div>
 

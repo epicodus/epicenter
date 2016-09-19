@@ -1,0 +1,11 @@
+<% if course.internship_course? %>
+  <%= form_for course, method: :put do |f| %>
+    <% if course.rankings_visible? %>
+      <%= f.hidden_field :rankings_visible, value: false %>
+      <%= f.submit 'Turn off rankings', class: 'btn btn-default' %>
+    <% else %>
+      <%= f.hidden_field :rankings_visible, value: true %>
+      <%= f.submit 'Turn on rankings', class: 'btn btn-default' %>
+    <% end %>
+  <% end %>
+<% end %>
