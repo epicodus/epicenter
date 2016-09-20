@@ -47,6 +47,9 @@ Rails.application.routes.draw do
 
   resources :code_reviews, only: [:destroy] do
     resources :submissions, only: [:index, :create, :update]
+    member do
+      get :export
+    end
     collection do
       patch :update_multiple, :path => ''
     end
