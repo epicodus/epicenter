@@ -334,3 +334,18 @@ feature 'deleting a code review' do
     expect(page).to have_content "Cannot delete a code review with existing submissions."
   end
 end
+
+feature 'exporting code review details to a file' do
+  let(:admin) { FactoryGirl.create(:admin) }
+  let(:code_review) { FactoryGirl.create(:code_review) }
+
+  before { login_as(admin, scope: :admin) }
+
+  scenario 'exports info on all submissions for a code review' do
+    FactoryGirl.create(:submission, code_review: code_review)
+    visit code_review_submissions_path(code_review)
+    click_link 'export-btn'
+    filename = Rails.root.join('tmp','students.txt')
+    expect(filename).to exist
+  end
+end
