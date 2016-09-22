@@ -57,7 +57,6 @@ Rails.application.routes.draw do
     resources :reviews, only: [:new, :create]
   end
 
-
   resources :stripe_callbacks, only: [:create]
 
   resources :signatures, only: [:create] do

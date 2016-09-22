@@ -51,6 +51,15 @@ class CodeReview < ActiveRecord::Base
     end
   end
 
+  def export_submissions(filename)
+    submissions = self.submissions.needing_review.includes(:student)
+    File.open(filename, 'w') do |file|
+      submissions.each do |submission|
+        file.puts submission.student.name.parameterize + " " + submission.link
+      end
+    end
+  end
+
 private
 
   def check_for_submissions
