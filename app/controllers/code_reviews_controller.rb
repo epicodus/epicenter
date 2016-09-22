@@ -52,18 +52,6 @@ class CodeReviewsController < ApplicationController
     redirect_to :back, notice: 'Order has been saved.'
   end
 
-  def export
-    @code_review = CodeReview.find(params[:id])
-    @submissions = @code_review.submissions.needing_review.includes(:student)
-    filename = File.join(Rails.root.join('tmp'), "students.txt")
-    File.open(filename, 'w') do |file|
-      @submissions.each do |submission|
-        file.puts submission.student.name.parameterize + " " + submission.link
-      end
-    end
-    send_file(filename)
-  end
-
 private
 
   def code_review_params

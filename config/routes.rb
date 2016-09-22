@@ -46,10 +46,8 @@ Rails.application.routes.draw do
   resources :companies, only: [:show]
 
   resources :code_reviews, only: [:destroy] do
+    resource :export, only: [:show], to: 'code_review_export#show'
     resources :submissions, only: [:index, :create, :update]
-    member do
-      get :export
-    end
     collection do
       patch :update_multiple, :path => ''
     end
@@ -58,6 +56,7 @@ Rails.application.routes.draw do
   resources :submissions, only: [] do
     resources :reviews, only: [:new, :create]
   end
+
 
   resources :stripe_callbacks, only: [:create]
 
