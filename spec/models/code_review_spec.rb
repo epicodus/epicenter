@@ -125,4 +125,15 @@ describe CodeReview do
       expect(code_review.status(student)).to eq 'Pending'
     end
   end
+
+  describe '#export_submissions' do
+    it 'exports submissions info for code review to students.txt file' do
+      code_review = FactoryGirl.create(:code_review)
+      submission = FactoryGirl.create(:submission, code_review: code_review)
+      filename = Rails.root.join('tmp','students.txt')
+      code_review.export_submissions(filename)
+      expect(File.read(filename)).to include submission.link
+    end
+  end
+
 end
