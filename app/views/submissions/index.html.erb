@@ -1,5 +1,8 @@
 <h1>Submissions for <%= @code_review.title %></h1>
-<h3><%= @code_review.course.description %></h3>
+<h3>
+  <%= @code_review.course.description %>
+  <%= link_to 'EXPORT', code_review_export_path(@code_review), id: "export-btn", :class => "btn btn-xs btn-default" %>
+</h3>
 
 <div class="panel panel-default">
   <div class="panel-body">
