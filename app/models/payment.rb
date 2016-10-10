@@ -9,6 +9,7 @@ class Payment < ActiveRecord::Base
   validates :payment_method, presence: true, unless: ->(payment) { payment.offline? }
 
   before_create :check_amount
+  before_create :set_description
   before_create :make_payment, :send_payment_receipt, unless: ->(payment) { payment.offline? }
   before_create :set_offline_status, if: ->(payment) { payment.offline? }
   after_create :send_referral_email, if: ->(payment) { !payment.student.referral_email_sent? && student.payments.any? && !payment.offline? }
@@ -96,11 +97,30 @@ private
     )
   end
 
+  def set_description
+    begin
+      first_course = student.courses.order(:start_date).first
+      location = first_course.office.name
+      start_date = first_course.start_date.strftime("%Y-%m-%d")
+      attendance_status = "Full-time"
+      if first_course.description.include?("Evening")
+        if student.courses.count == 1 || student.payments.count == 0
+          attendance_status = "Part-time"
+        else
+          start_date = student.courses[1].start_date.strftime("%Y-%m-%d")
+        end
+      end
+      self.description = "#{location}; #{start_date}; #{attendance_status}"
+    rescue
+      self.description = "unknown" # should never hit this
+    end
+  end
+
   def make_payment
     customer = student.stripe_customer
     self.fee = payment_method.calculate_fee(amount)
     begin
-      charge = Stripe::Charge.create(amount: total_amount, currency: 'usd', customer: customer.id, source: payment_method.stripe_id)
+      charge = Stripe::Charge.create(amount: total_amount, currency: 'usd', customer: customer.id, source: payment_method.stripe_id, description: description)
       self.status = payment_method.starting_status
       self.stripe_transaction = charge.balance_transaction
     rescue Stripe::StripeError => exception
