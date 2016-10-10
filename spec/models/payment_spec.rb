@@ -101,6 +101,40 @@ describe Payment do
     end
   end
 
+  describe '#set_description' do
+    it 'sets stripe charge description for regular full-time', :vcr, :stripe_mock, :stub_mailgun do
+      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
+      expect(payment.description).to eq "#{student.courses.first.office.name}; #{student.courses.first.start_date.strftime("%Y-%m-%d")}; Full-time"
+    end
+
+    it 'sets stripe charge description for regular part-time', :vcr, :stripe_mock, :stub_mailgun do
+      part_time_course = FactoryGirl.create(:part_time_course, description: "Intro Evening")
+      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com', course: part_time_course)
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
+      expect(payment.description).to eq "#{part_time_course.office.name}; #{part_time_course.start_date.strftime("%Y-%m-%d")}; Part-time"
+    end
+
+    it 'sets stripe charge descriptions for full-time payment after part-time payment', :vcr, :stripe_mock, :stub_mailgun do
+      part_time_course = FactoryGirl.create(:part_time_course, description: "Intro Evening")
+      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com', course: part_time_course)
+      first_payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
+      full_time_course = FactoryGirl.create(:course)
+      student.courses.push(full_time_course)
+      second_payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
+      expect(first_payment.description).to eq "#{part_time_course.office.name}; #{part_time_course.start_date.strftime("%Y-%m-%d")}; Part-time"
+      expect(second_payment.description).to eq "#{full_time_course.office.name}; #{full_time_course.start_date.strftime("%Y-%m-%d")}; Full-time"
+    end
+
+    it 'raises exception if payment made for student not enrolled in any course', :vcr, :stripe_mock, :stub_mailgun do
+      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
+      student.courses.delete_all
+      expect {FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)}.to raise_error(PaymentError)
+      expect(student.payments).to eq []
+      expect(student).to_not receive(:update_close_io)
+    end
+  end
+
   describe "#send_payment_receipt" do
     it "emails the student a receipt after successful payment when the student is on the standard tuition plan", :vcr, :stripe_mock do
       standard_plan = FactoryGirl.create(:standard_plan)
