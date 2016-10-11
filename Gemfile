@@ -31,6 +31,7 @@ gem 'omniauth-github'
 gem 'font-awesome-rails'
 gem 'bootstrap-multiselect-rails'
 gem 'kaminari'
+gem 'paranoia'
 
 group :development do
   gem 'spring'

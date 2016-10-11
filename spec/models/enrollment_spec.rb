@@ -10,4 +10,16 @@ describe Enrollment do
       should validate_uniqueness_of(:student_id).scoped_to(:course_id)
     end
   end
+
+  describe 'paranoia' do
+    it 'archives destroyed enrollment' do
+      student = FactoryGirl.create(:student)
+      enrollment = student.enrollments.first
+      enrollment.destroy
+      student.reload
+      expect(student.enrollments).to eq []
+      expect(student.enrollments.with_deleted).to eq [enrollment]
+    end
+  end
+
 end
