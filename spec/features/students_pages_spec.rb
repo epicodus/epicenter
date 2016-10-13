@@ -242,14 +242,20 @@ feature 'viewing the student show page' do
 
   before { login_as(student, scope: :student) }
 
-  scenario 'as a student viewing his/her own page' do
+  scenario 'as a student viewing their own page' do
     visit course_student_path(student.course, student)
     expect(page).to have_content student.course.description
   end
 
-  scenario 'as a student viewing another student page' do
+  scenario 'as a student viewing another student page in different course' do
     other_student = FactoryGirl.create(:user_with_all_documents_signed)
     visit course_student_path(other_student.course, other_student)
+    expect(page).to have_content 'You are not authorized to access this page.'
+  end
+
+  scenario 'as a student viewing another student page in same course' do
+    other_student = FactoryGirl.create(:user_with_all_documents_signed, course: student.course)
+    visit course_student_path(student.course, other_student)
     expect(page).to have_content 'You are not authorized to access this page.'
   end
 end
