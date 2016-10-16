@@ -36,8 +36,13 @@ task :add_description_to_stripe_payments => [:environment] do
                 begin
                   stripe_charge_id = Stripe::BalanceTransaction.retrieve(payment.stripe_transaction).source
                   stripe_charge = Stripe::Charge.retrieve(stripe_charge_id)
-                  stripe_charge.description = description
-                  stripe_charge.save
+                  
+                  if !stripe_charge
+                    description += "; STRIPE CHARGE NOT FOUND"
+                  end
+                  
+                  # stripe_charge.description = description
+                  # stripe_charge.save
                   file.puts(description)
                   payments_updated.push(payment)
                 rescue Stripe::StripeError => exception
