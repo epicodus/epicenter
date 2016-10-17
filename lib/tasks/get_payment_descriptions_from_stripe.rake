@@ -8,7 +8,7 @@ task :get_payment_descriptions_from_stripe => [:environment] do
           stripe_charge_id = Stripe::BalanceTransaction.retrieve(payment.stripe_transaction).source
           stripe_charge = Stripe::Charge.retrieve(stripe_charge_id)
           if stripe_charge.description && stripe_charge.description != ""
-            payment.update(description, stripe_charge.description)
+            payment.update_columns(description: stripe_charge.description)
             file.puts("#{payment.id}; #{payment.description}")
           else
             file.puts("#{payment.id}; NO STRIPE DESCRIPTION")
