@@ -27,13 +27,6 @@
           <%= f.email_field :email, autofocus: true, class: 'form-control' %>
       </div>
 
-      <% if can? :manage, @student %>
-        <div class="form-group">
-          <%= f.label :plan_id, "Payment plan" %>
-          <%= f.select(:plan_id, Plan.active.collect {|p| [ p.name, p.id ] }, { include_blank: true }, class: 'form-control') %>
-        </div>
-      <% end %>
-
       <div class="form-group">
         <%= f.label :password, 'New password' %>
           <i>(leave blank if you don't want to change it)</i>

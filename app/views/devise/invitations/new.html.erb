@@ -20,6 +20,11 @@
               <%= f.label :course_id, class: "control-label" %>
               <%= f.select :course_id, Course.current_and_future_courses.reverse.collect {|c| [ c.teacher_and_description, c.id ] }, {}, { class: "form-control" } %>
             </div>
+
+            <div class="form-group">
+              <%= f.label :plan_id, "Payment plan" %>
+              <%= f.select(:plan_id, Plan.active.collect {|p| [ p.name, p.id ] }, {}, class: 'form-control') %>
+            </div>
           <% end %>
 
           <div class="form-group">
