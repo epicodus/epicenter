@@ -1,7 +1,7 @@
 class Student < User
   scope :with_activated_accounts, -> { where('sign_in_count > ?', 0 ) }
 
-  validates :plan_id, presence: true, if: ->(student) { student.invitation_accepted_at? }
+  validates :plan_id, presence: true
   validate :primary_payment_method_belongs_to_student
   validate :student_has_course
 

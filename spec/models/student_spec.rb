@@ -12,18 +12,9 @@ describe Student do
   it { should have_many :signatures }
   it { should have_many :interview_assignments }
   it { should have_one :internship_assignment }
+  it { should validate_presence_of :plan_id }
 
   describe 'validations' do
-    context 'validates plan_id when a student has accepted the epicenter invitation and created an account' do
-      before { allow(subject).to receive(:invitation_accepted_at?).and_return(true) }
-      it { should validate_presence_of :plan_id }
-    end
-
-    context 'does not validate plan_id when a student has not accepted the epicenter invitation' do
-      before { allow(subject).to receive(:invitation_accepted_at?).and_return(false) }
-      it { should_not validate_presence_of :plan_id }
-    end
-
     it "validates that a student is created with an assigned course" do
       student = FactoryGirl.build(:student, course: nil)
       expect(student.valid?).to be false
