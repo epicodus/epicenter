@@ -330,7 +330,7 @@ describe Payment do
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
           subject: "Epicodus tuition discount",
-          text: "Hi #{student.name}! We hope you're as excited to start your time at Epicodus as we are to have you. Many of our students learn about Epicodus from their friends, and we always like to thank people for spreading the word. If you mention Epicodus to someone you know and they enroll, we'll take $100 off both of your tuition. Just tell your friend to mention that you referred them in their interview." }
+          text: "Hi #{student.name}! We hope you're as excited to start your time at Epicodus as we are to have you. Many of our students learn about Epicodus from their friends, and we always like to thank people for spreading the word. If you mention Epicodus to someone you know and they enroll, we'll take $100 off both of your tuition. Just tell your friend to mention this promotion and your name during their interview." }
       )
       expect(student.referral_email_sent).to eq nil
     end
@@ -347,7 +347,7 @@ describe Payment do
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
           subject: "Epicodus tuition discount",
-          text: "Hi #{student.name}! We hope you're as excited to start your time at Epicodus as we are to have you. Many of our students learn about Epicodus from their friends, and we always like to thank people for spreading the word. If you mention Epicodus to someone you know and they enroll, we'll take $100 off both of your tuition. Just tell your friend to mention that you referred them in their interview." }
+          text: "Hi #{student.name}! We hope you're as excited to start your time at Epicodus as we are to have you. Many of our students learn about Epicodus from their friends, and we always like to thank people for spreading the word. If you mention Epicodus to someone you know and they enroll, we'll take $100 off both of your tuition. Just tell your friend to mention this promotion and your name during their interview." }
       )
       expect(student.referral_email_sent).to eq true
     end
@@ -365,7 +365,7 @@ describe Payment do
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
           subject: "Epicodus tuition discount",
-          text: "Hi #{student.name}! We hope you're as excited to start your time at Epicodus as we are to have you. Many of our students learn about Epicodus from their friends, and we always like to thank people for spreading the word. If you mention Epicodus to someone you know and they enroll, we'll take $100 off both of your tuition. Just tell your friend to mention that you referred them in their interview." }
+          text: "Hi #{student.name}! We hope you're as excited to start your time at Epicodus as we are to have you. Many of our students learn about Epicodus from their friends, and we always like to thank people for spreading the word. If you mention Epicodus to someone you know and they enroll, we'll take $100 off both of your tuition. Just tell your friend to mention this promotion and your name during their interview." }
       )
     end
   end
