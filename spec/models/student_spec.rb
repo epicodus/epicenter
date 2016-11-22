@@ -472,6 +472,39 @@ describe Student do
     end
   end
 
+  describe '#passed_all_code_reviews?', :stub_mailgun do
+    let(:student) { FactoryGirl.create(:student) }
+    let(:code_review) { FactoryGirl.create(:code_review, course: student.course) }
+    let(:code_review_2) { FactoryGirl.create(:code_review, course: student.course) }
+    let(:submission) { FactoryGirl.create(:submission, code_review: code_review, student: student) }
+    let(:submission_2) { FactoryGirl.create(:submission, code_review: code_review_2, student: student) }
+
+    it 'true if all code reviews are passing' do
+      FactoryGirl.create(:passing_review, submission: submission)
+      FactoryGirl.create(:passing_review, submission: submission_2)
+      expect(student.passed_all_code_reviews?).to eq(true)
+    end
+
+    it 'false if all code reviews are failing' do
+      FactoryGirl.create(:failing_review, submission: submission)
+      FactoryGirl.create(:failing_review, submission: submission_2)
+      expect(student.passed_all_code_reviews?).to eq(false)
+    end
+
+    it 'false if any code reviews are failing' do
+      FactoryGirl.create(:passing_review, submission: submission)
+      FactoryGirl.create(:failing_review, submission: submission_2)
+      expect(student.passed_all_code_reviews?).to eq(false)
+    end
+
+    it 'false if any code reviews are missing' do
+      code_review_3 = FactoryGirl.create(:code_review, course: student.course)
+      FactoryGirl.create(:passing_review, submission: submission)
+      FactoryGirl.create(:passing_review, submission: submission_2)
+      expect(student.passed_all_code_reviews?).to eq(false)
+    end
+  end
+
   describe '#submission_for' do
     let(:student) { FactoryGirl.create(:student) }
     let(:code_review_1) { FactoryGirl.create(:code_review, course: student.course) }
