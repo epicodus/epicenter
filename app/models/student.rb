@@ -180,6 +180,18 @@ class Student < User
     internship_course && Time.zone.now.to_date > internship_course.end_date ? true : false
   end
 
+  def passed_all_code_reviews?
+    passed = true;
+    courses.each do |course|
+      course.code_reviews.each do |cr|
+        if cr.status(self) != 'Met requirements'
+          passed = false
+        end
+      end
+    end
+    passed
+  end
+
   def attendance_records_for(status, filtered_course=nil)
     attributes = { tardy: { tardy: true },
                    left_early: { left_early: true },
