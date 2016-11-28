@@ -1,0 +1,62 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://app.close.io/api/v1/lead/?query=email:no_name@example.com
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Authorization:
+      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
+      User-Agent:
+      - Faraday v0.9.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 02 Dec 2016 20:42:27 GMT
+      Set-Cookie:
+      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Length:
+      - '775'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "addresses":
+        [], "date_updated": "2016-12-02T20:33:46.413000+00:00", "created_by_name":
+        "Michael Kaiser-Nyman", "opportunities": [], "id": "lead_TXqhOjIItqrgdZ6bpNK4QyLagpiPUNzH6fUHvz4TQ6v",
+        "description": "Used in Epicenter testing.", "display_name": "no_name@example.com",
+        "contacts": [{"name": "", "title": "", "date_updated": "2016-12-02T20:33:18.634000+00:00",
+        "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "id": "cont_aU1GP8IsCxkYomUwKjhcYWnfxAhkDTg2K15CilTWGbz", "organization_id":
+        "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "urls": [], "date_created":
+        "2016-12-02T20:32:47.453000+00:00", "integration_links": [], "emails": [{"type":
+        "office", "email": "no_name@example.com"}], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}],
+        "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "custom":
+        {"Class": "* Placement Test"}, "updated_by_name": "Michael Kaiser-Nyman",
+        "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "status_id":
+        "stat_YyLMZ87A0CRjpfrjQphQMu1Eotz0u9oXl6AWZboR13G", "html_url": "https://app.close.io/lead/lead_TXqhOjIItqrgdZ6bpNK4QyLagpiPUNzH6fUHvz4TQ6v/",
+        "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "integration_links":
+        [{"url": "https://epicenter.epicodus.com/students?utf8=%E2%9C%93&search=no_name%40example.com&button=",
+        "name": "Epicenter Link"}], "custom.lcf_Gm7m9WYKo5s8r8hOllbu1FHZEcHFLYjckMecIFdeg0a":
+        "* Placement Test", "name": "", "url": null, "status_label": "Outreach Respondent",
+        "date_created": "2016-12-02T20:32:47.457000+00:00"}]}'
+    http_version: 
+  recorded_at: Fri, 02 Dec 2016 20:42:27 GMT
+recorded_with: VCR 3.0.3

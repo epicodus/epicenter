@@ -755,4 +755,27 @@ describe Student do
       it { is_expected.to have_abilities(:read, Transcript) }
     end
   end
+
+  describe '.pull_info_from_crm', :vcr do
+    it 'returns name & Epicenter course id for close_io lead given email' do
+      course = FactoryGirl.create(:course, description: "* Placement Test")
+      expect(Student.pull_info_from_crm("example@example.com")).to eq({name: "TEST TEST", course_id: course.id, errors: []})
+    end
+    it 'returns error if email not found in Close' do
+      expect(Student.pull_info_from_crm("email_not_in_close@example.com")[:errors]).to include "Email not found"
+    end
+    it 'returns error if duplicate email found in Close' do
+      expect(Student.pull_info_from_crm("duplicate_email@example.com")[:errors]).to include "Multiple emails found"
+    end
+    it 'returns error if name not listed in Close lead' do
+      course = FactoryGirl.create(:course, description: "* Placement Test")
+      expect(Student.pull_info_from_crm("no_name@example.com")[:errors]).to include "Name not found"
+    end
+    it 'returns error if course not listed in Close lead' do
+      expect(Student.pull_info_from_crm("no_course@example.com")[:errors]).to include "Valid course not found"
+    end
+    it 'returns error if matching course not found in Epicenter' do
+      expect(Student.pull_info_from_crm("non_matching_course@example.com")[:errors]).to include "Valid course not found"
+    end
+  end
 end
