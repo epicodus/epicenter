@@ -71,7 +71,7 @@ end
 
 feature 'Inviting new users', :vcr do
   let(:admin) { FactoryGirl.create(:admin) }
-  let!(:course) { FactoryGirl.create(:course, description: '2017-01 Intro') }
+  let!(:course) { FactoryGirl.create(:course, description: '* Placement Test') }
 
   before { login_as(admin, scope: :admin) }
 
@@ -79,7 +79,7 @@ feature 'Inviting new users', :vcr do
     visit new_student_invitation_path
     fill_in 'Email', with: 'example@example.com'
     click_on 'Invite student'
-    expect(page).to have_content "An invitation email has been sent to example@example.com to join 2017-01 Intro. Wrong course?"
+    expect(page).to have_content "An invitation email has been sent to example@example.com to join #{course.description}. Wrong course?"
   end
 
   scenario 'admin fails to send invitation to a student' do
