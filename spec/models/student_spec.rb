@@ -180,7 +180,7 @@ describe Student do
 
   describe '#close_io_lead_exists?', :vcr do
     it 'returns true if the Close.io lead for the student exists' do
-      student = FactoryGirl.create(:student, email: 'test@test.com')
+      student = FactoryGirl.create(:student, email: 'example@example.com')
       expect(student.close_io_lead_exists?).to eq true
     end
 
@@ -191,7 +191,7 @@ describe Student do
   end
 
   describe "updating close.io when documents have been signed" do
-    let(:student) { FactoryGirl.create(:student, email: 'test@test.com') }
+    let(:student) { FactoryGirl.create(:student, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
     let(:lead_id) { close_io_client.list_leads('email:' + student.email).data.first.id }
 
@@ -227,7 +227,7 @@ describe Student do
   end
 
   describe 'updating close.io when the payment plan is updated' do
-    let(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: 'test@test.com') }
+    let(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
     let(:lead_id) { close_io_client.list_leads('email:' + student.email).data.first.id }
 
@@ -343,7 +343,7 @@ describe Student do
   end
 
   describe "#upfront_payment_due?", :stripe_mock do
-    let(:student) { FactoryGirl.create :user_with_credit_card, email: 'test@test.com' }
+    let(:student) { FactoryGirl.create :user_with_credit_card, email: 'example@example.com' }
 
     it "is true if student has upfront payment and no payments have been made" do
       expect(student.upfront_payment_due?).to be true
@@ -362,7 +362,7 @@ describe Student do
 
   describe "#make_upfront_payment" do
     it "makes a payment for the upfront amount of the student's plan", :vcr, :stripe_mock, :stub_mailgun do
-      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com')
       student.make_upfront_payment
       expect(student.payments.first.amount).to eq student.plan.upfront_amount
     end
@@ -656,14 +656,14 @@ describe Student do
 
   describe '#total_paid', :vcr, :stripe_mock, :stub_mailgun do
     it 'sums all of the students payments' do
-      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com')
       FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00)
       FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00)
       expect(student.total_paid).to eq 400_00
     end
 
     it 'does not include failed payments' do
-      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com')
       FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00)
       failed_payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00)
       failed_payment.update(status: 'failed')

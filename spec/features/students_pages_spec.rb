@@ -33,7 +33,7 @@ feature 'Visiting students index page' do
 end
 
 feature 'Student signs up via invitation', :vcr do
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: 'test@test.com') }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: 'example@example.com') }
 
   scenario 'with valid information' do
     student.invite!

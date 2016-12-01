@@ -34,7 +34,7 @@ feature 'Viewing payment index page' do
 
     context 'after a payment has been made with bank account', :vcr, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
-        student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com')
+        student = FactoryGirl.create(:user_with_verified_bank_account, email: 'example@example.com')
         FactoryGirl.create(:payment_with_bank_account, amount: 600_00, student: student)
         login_as(student, scope: :student)
         visit student_payments_path(student)
@@ -46,7 +46,7 @@ feature 'Viewing payment index page' do
 
     context 'after a payment has been made with credit card', :vcr, :stripe_mock, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
-        student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
+        student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
         FactoryGirl.create(:payment_with_credit_card, amount: 600_00, student: student)
         login_as(student, scope: :student)
         visit student_payments_path(student)
@@ -59,7 +59,7 @@ feature 'Viewing payment index page' do
     context 'with upfront payment due using a bank account', :vcr do
       it 'only shows a link to make an upfront payment with correct amount' do
         plan = FactoryGirl.create(:upfront_payment_only_plan, upfront_amount: 200_00)
-        student = FactoryGirl.create(:user_with_verified_bank_account, email: 'test@test.com', plan: plan)
+        student = FactoryGirl.create(:user_with_verified_bank_account, email: 'example@example.com', plan: plan)
         login_as(student, scope: :student)
         visit student_payments_path(student)
         expect(page).to have_button('Make upfront payment of $200.00')
@@ -98,7 +98,7 @@ feature 'Viewing payment index page' do
 
     context 'after a payment has been made with bank account', :vcr, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
-        student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'test@test.com')
+        student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
         payment = FactoryGirl.create(:payment_with_bank_account, amount: 600_00, student: student)
         visit student_payments_path(student)
         expect(page).to have_content 600.00
@@ -110,7 +110,7 @@ feature 'Viewing payment index page' do
 
     context 'after a payment has been made with credit card', :vcr, :stripe_mock, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
-        student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
+        student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
         payment = FactoryGirl.create(:payment_with_credit_card, amount: 600_00, student: student)
         visit student_payments_path(student)
         expect(page).to have_content 618.21
@@ -122,7 +122,7 @@ feature 'Viewing payment index page' do
 
     context 'after a refund has been issued to a bank account payment', :vcr, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
-        student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'test@test.com')
+        student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
         payment = FactoryGirl.create(:payment_with_bank_account, amount: 600_00, student: student)
         payment.update(refund_amount: 300_00)
         visit student_payments_path(student)
@@ -132,7 +132,7 @@ feature 'Viewing payment index page' do
 
     context 'after a refund has been issued to a credit card payment', :vcr, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
-        student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
+        student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
         payment = FactoryGirl.create(:payment_with_credit_card, amount: 600_00, student: student)
         payment.update(refund_amount: 200_00)
         visit student_payments_path(student)
@@ -160,7 +160,7 @@ end
 
 feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
   let(:admin) { FactoryGirl.create(:admin) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com') }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com') }
   let!(:payment) { FactoryGirl.create(:payment_with_credit_card, amount: 100_00, student: student) }
 
   before { login_as(admin, scope: :admin) }
@@ -207,7 +207,7 @@ end
 
 feature 'make a manual payment', :stripe_mock, :stub_mailgun do
   let(:admin) { FactoryGirl.create(:admin) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com') }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com') }
 
   before { login_as(admin, scope: :admin) }
 
