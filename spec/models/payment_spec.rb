@@ -28,7 +28,7 @@ describe Payment do
 
   describe '.order_by_latest scope' do
     it 'orders by created_at, descending', :vcr, :stripe_mock, :stub_mailgun do
-      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com')
       payment_one = FactoryGirl.create(:payment_with_credit_card, student: student)
       payment_two = FactoryGirl.create(:payment_with_credit_card, student: student)
       expect(Payment.order_by_latest).to eq [payment_two, payment_one]
@@ -37,7 +37,7 @@ describe Payment do
 
   describe '.without_failed' do
     it "doesn't include failed payments", :vcr, :stripe_mock, :stub_mailgun do
-      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com')
       failed_payment = FactoryGirl.create(:payment_with_credit_card, student: student)
       failed_payment.update(status: 'failed')
       expect(Payment.without_failed).to eq []
@@ -46,20 +46,20 @@ describe Payment do
 
   describe "make a payment with a bank account", :vcr, :stub_mailgun do
     it "makes a successful payment" do
-      student = FactoryGirl.create :user_with_verified_bank_account, email: 'test@test.com'
+      student = FactoryGirl.create :user_with_verified_bank_account, email: 'example@example.com'
       FactoryGirl.create(:payment_with_bank_account, student: student)
       student.reload
       expect(student.payments).to_not eq []
     end
 
     it "sets the fee for the payment type" do
-      student = FactoryGirl.create :user_with_verified_bank_account, email: 'test@test.com'
+      student = FactoryGirl.create :user_with_verified_bank_account, email: 'example@example.com'
       payment = FactoryGirl.create(:payment_with_bank_account, student: student)
       expect(payment.fee).to eq 0
     end
 
     it "sets the status for the payment type" do
-      student = FactoryGirl.create :user_with_verified_bank_account, email: 'test@test.com'
+      student = FactoryGirl.create :user_with_verified_bank_account, email: 'example@example.com'
       payment = FactoryGirl.create(:payment_with_bank_account, student: student)
       expect(payment.status).to eq "pending"
     end
@@ -67,26 +67,26 @@ describe Payment do
 
   describe "make a payment with a credit card", :vcr, :stripe_mock, :stub_mailgun do
     it "makes a successful payment" do
-      student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
+      student = FactoryGirl.create :user_with_credit_card, email: 'example@example.com'
       FactoryGirl.create(:payment_with_credit_card, student: student)
       student.reload
       expect(student.payments).to_not eq []
     end
 
     it "sets the fee for the payment type" do
-      student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
+      student = FactoryGirl.create :user_with_credit_card, email: 'example@example.com'
       payment = FactoryGirl.create(:payment_with_credit_card, student: student)
       expect(payment.fee).to eq 32
     end
 
     it 'unsuccessfully with an amount that is too high' do
-      student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
+      student = FactoryGirl.create :user_with_credit_card, email: 'example@example.com'
       payment = FactoryGirl.build(:payment_with_credit_card, student: student, amount: 5250_00)
       expect(payment.save).to be false
     end
 
     it "sets the status for the payment type" do
-      student = FactoryGirl.create :user_with_credit_card, email: 'test@test.com'
+      student = FactoryGirl.create :user_with_credit_card, email: 'example@example.com'
       payment = FactoryGirl.create(:payment_with_credit_card, student: student)
       expect(payment.status).to eq "succeeded"
     end
@@ -94,7 +94,7 @@ describe Payment do
 
   describe '#total_amount' do
     it 'returns payment amount plus fees', :vcr, :stripe_mock, :stub_mailgun do
-      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com')
       FactoryGirl.create(:payment_with_credit_card, student: student)
       payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
       expect(payment.total_amount).to be 618_21
@@ -103,21 +103,21 @@ describe Payment do
 
   describe '#set_description' do
     it 'sets stripe charge description for regular full-time', :vcr, :stripe_mock, :stub_mailgun do
-      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com')
       payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
       expect(payment.description).to eq "#{student.courses.first.office.name}; #{student.courses.first.start_date.strftime("%Y-%m-%d")}; Full-time"
     end
 
     it 'sets stripe charge description for regular part-time', :vcr, :stripe_mock, :stub_mailgun do
       part_time_course = FactoryGirl.create(:part_time_course, description: "Intro Evening")
-      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com', course: part_time_course)
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com', course: part_time_course)
       payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
       expect(payment.description).to eq "#{part_time_course.office.name}; #{part_time_course.start_date.strftime("%Y-%m-%d")}; Part-time"
     end
 
     it 'sets stripe charge descriptions for full-time payment after part-time payment', :vcr, :stripe_mock, :stub_mailgun do
       part_time_course = FactoryGirl.create(:part_time_course, description: "Intro Evening")
-      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com', course: part_time_course)
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com', course: part_time_course)
       first_payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
       full_time_course = FactoryGirl.create(:course)
       student.courses.push(full_time_course)
@@ -127,7 +127,7 @@ describe Payment do
     end
 
     it 'raises exception if payment made for student not enrolled in any course', :vcr, :stripe_mock, :stub_mailgun do
-      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com')
       student.courses.delete_all
       expect {FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)}.to raise_error(PaymentError)
       expect(student.payments).to eq []
@@ -138,7 +138,7 @@ describe Payment do
   describe "#send_payment_receipt" do
     it "emails the student a receipt after successful payment when the student is on the standard tuition plan", :vcr, :stripe_mock do
       standard_plan = FactoryGirl.create(:standard_plan)
-      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com', plan: standard_plan, referral_email_sent: true)
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com', plan: standard_plan, referral_email_sent: true)
 
       mailgun_client = spy("mailgun client")
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
@@ -157,7 +157,7 @@ describe Payment do
 
     it "emails the student a receipt after successful payment when the student is on the loan plan", :vcr, :stripe_mock do
       loan_plan = FactoryGirl.create(:loan_plan)
-      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com', plan: loan_plan)
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com', plan: loan_plan)
 
       mailgun_client = spy("mailgun client")
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
@@ -175,7 +175,7 @@ describe Payment do
     end
 
     it "emails the student a receipt after successful payment when the student is on the upfront plan", :vcr, :stripe_mock do
-      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com')
 
       mailgun_client = spy("mailgun client")
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
@@ -196,7 +196,7 @@ describe Payment do
 
   describe "failed" do
     it "emails the student a failure notice if payment status is updated to 'failed'", :vcr, :stripe_mock do
-      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com')
 
       mailgun_client = spy("mailgun client")
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
@@ -216,7 +216,7 @@ describe Payment do
   end
 
   describe 'updating Close.io when a payment is made' do
-    let(:student) { FactoryGirl.create :user_with_all_documents_signed_and_verified_bank_account, email: 'test@test.com' }
+    let(:student) { FactoryGirl.create :user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com' }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
     let(:lead_id) { close_io_client.list_leads('email:' + student.email).data.first.id }
 
@@ -249,45 +249,45 @@ describe Payment do
     end
 
     it 'refunds a credit card payment' do
-      student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
+      student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
       payment = FactoryGirl.create(:payment_with_credit_card, student: student)
       payment.update(refund_amount: 51)
       expect(payment.refund_amount).to eq 51
     end
 
     it 'fails to refund a credit card payment when the refund amount is more than the payment amount' do
-      student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
+      student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
       payment = FactoryGirl.create(:payment_with_credit_card, student: student)
       expect(payment.update(refund_amount: 200)).to eq false
     end
 
     it 'fails to refund a credit card payment when the refund amount is negative' do
-      student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'test@test.com')
+      student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
       payment = FactoryGirl.create(:payment_with_credit_card, student: student)
       expect(payment.update(refund_amount: -37)).to eq false
     end
 
     it 'refunds a bank account payment' do
-      student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'test@test.com')
+      student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
       payment = FactoryGirl.create(:payment_with_bank_account, student: student)
       payment.update(refund_amount: 75)
       expect(payment.refund_amount).to eq 75
     end
 
     it 'fails to refund a bank account payment when the refund amount is more than the payment amount' do
-      student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'test@test.com')
+      student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
       payment = FactoryGirl.create(:payment_with_bank_account, student: student)
       expect(payment.update(refund_amount: 200)).to eq false
     end
 
     it 'fails to refund a bank account payment when the refund amount is negative' do
-      student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'test@test.com')
+      student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
       payment = FactoryGirl.create(:payment_with_bank_account, student: student)
       expect(payment.update(refund_amount: -40)).to eq false
     end
 
     it 'does not update Close.io', :vcr, :stub_mailgun do
-      student = FactoryGirl.create :user_with_all_documents_signed_and_credit_card, email: 'test@test.com'
+      student = FactoryGirl.create :user_with_all_documents_signed_and_credit_card, email: 'example@example.com'
       payment = FactoryGirl.create(:payment_with_credit_card, student: student)
       payment.update(refund_amount: 51)
       expect(student).to_not receive(:update_close_io)
@@ -296,7 +296,7 @@ describe Payment do
 
   describe "#send_refund_receipt" do
     it "emails the student a receipt after successful refund", :vcr do
-      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com')
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com')
 
       mailgun_client = spy("mailgun client")
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
@@ -316,7 +316,7 @@ describe Payment do
   end
 
   describe '#send_referral_email', :stripe_mock, :vcr do
-    let(:student) { FactoryGirl.create(:user_with_credit_card, email: 'test@test.com') }
+    let(:student) { FactoryGirl.create(:user_with_credit_card, email: 'example@example.com') }
 
     it 'does not email the student a referral email for an offline payment' do
       mailgun_client = spy("mailgun client")
@@ -353,7 +353,7 @@ describe Payment do
     end
 
     it 'does not email the student a referral email if one has already been sent' do
-      student = FactoryGirl.create(:user_with_credit_card, email: 'test@test.com', referral_email_sent: true)
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com', referral_email_sent: true)
       mailgun_client = spy("mailgun client")
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
 
