@@ -91,6 +91,23 @@ feature 'Visiting the submissions index page' do
             expect(find_field('Note (Markdown compatible)').value).to eq review.note
           end
         end
+
+        describe 'updating submission times_submitted', js: true do
+          before do
+            submission.update_columns(times_submitted: 2)
+            click_on 'Review'
+          end
+          it 'increments when click plus sign' do
+            click_link '+'
+            expect(page).to have_content "Submitted 3 times"
+            expect(submission.reload.times_submitted).to eq 3
+          end
+          it 'decrements when click minus sign' do
+            click_on '-'
+            expect(page).to have_content "Submitted 1 time"
+            expect(submission.reload.times_submitted).to eq 1
+          end
+        end
       end
     end
   end
