@@ -755,4 +755,11 @@ describe Student do
       it { is_expected.to have_abilities(:read, Transcript) }
     end
   end
+
+  describe '.pull_info_from_crm', :vcr do
+    it 'returns name & Epicenter course id for close_io lead given email' do
+      course = FactoryGirl.create(:course, description: "2017-01 Intro")
+      expect(Student.pull_info_from_crm("example@example.com")).to eq({name: "TEST TEST", course_id: course.id})
+    end
+  end
 end

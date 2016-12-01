@@ -69,37 +69,34 @@ feature 'Changing current course' do
   end
 end
 
-feature 'Inviting new users' do
+feature 'Inviting new users', :vcr do
   let(:admin) { FactoryGirl.create(:admin) }
-  let(:course) { FactoryGirl.build(:course) }
+  let!(:course) { FactoryGirl.create(:course, description: '2017-01 Intro') }
 
   before { login_as(admin, scope: :admin) }
 
   scenario 'admin sends invitation to a student' do
     visit new_student_invitation_path
-    select course.description, from: 'student_course_id'
-    fill_in 'Email', with: 'newstudent@example.com'
+    fill_in 'Email', with: 'example@example.com'
     click_on 'Invite student'
-    expect(page).to have_content "An invitation email has been sent to newstudent@example.com to join #{course.description}. Wrong course?"
+    expect(page).to have_content "An invitation email has been sent to example@example.com to join 2017-01 Intro. Wrong course?"
   end
 
   scenario 'admin fails to send invitation to a student' do
     visit new_student_invitation_path
-    select course.description, from: 'student_course_id'
     fill_in 'Email', with: 'bad_email'
     click_on 'Invite student'
-    expect(page).to have_content "Email is invalid"
+    expect(page).to have_content "Invalid email / name / course"
   end
 
   scenario 'admin resends invitation to a student' do
     visit new_student_invitation_path
-    select course.description, from: 'student_course_id'
-    fill_in 'Email', with: 'newstudent@example.com'
+    fill_in 'Email', with: 'example@example.com'
     click_on 'Invite student'
-    student = Student.find_by(email: 'newstudent@example.com')
+    student = Student.find_by(email: 'example@example.com')
     visit student_courses_path(student)
     click_on 'Resend invitation'
-    expect(page).to have_content "A new invitation email has been sent to newstudent@example.com"
+    expect(page).to have_content "A new invitation email has been sent to example@example.com"
   end
 
   scenario 'admin sends invitation to an admin' do

@@ -280,4 +280,18 @@ private
       errors.add(:primary_payment_method, 'must belong to you.')
     end
   end
+
+  def self.pull_info_from_crm(email)
+    close_io_client = Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false)
+    lead = close_io_client.list_leads('email:' + email)
+    if lead.total_results == 1
+      name = lead.data.first.contacts.first.name
+      course = Course.find_by(description: lead.data.first.custom.Class)
+      if name && course
+        return {name: name, course_id: course.id}
+      end
+    end
+    return {}
+  end
+
 end
