@@ -98,13 +98,6 @@ feature 'Inviting new users', :vcr do
     click_on 'Resend invitation'
     expect(page).to have_content "A new invitation email has been sent to example@example.com"
   end
-
-  scenario 'admin sends invitation to an admin' do
-    visit new_admin_invitation_path
-    fill_in 'Email', with: 'newadmin@example.com'
-    click_on 'Invite admin'
-    expect(page).to have_content "An invitation email has been sent to newadmin@example.com"
-  end
 end
 
 feature 'Admin signs up via invitation' do
