@@ -4,8 +4,16 @@ class InvitationsController < Devise::InvitationsController
     if params[:student_id]
       resend_invitation
     else
-      super
-      set_flash_for_student
+      email = params[:student][:email]
+      response = Student.pull_info_from_crm(email)
+      if response[:name] && response[:course_id]
+        params[:student][:name] = response[:name]
+        params[:student][:course_id] = response[:course_id]
+        super
+        set_flash_for_student
+      else
+        redirect_to new_student_invitation_path, alert: response[:errors].to_s
+      end
     end
   end
 
