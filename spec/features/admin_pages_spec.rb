@@ -86,7 +86,7 @@ feature 'Inviting new users', :vcr do
     visit new_student_invitation_path
     fill_in 'Email', with: 'bad_email'
     click_on 'Invite student'
-    expect(page).to have_content "Invalid email / name / course"
+    expect(page).to have_content "Email not found"
   end
 
   scenario 'admin resends invitation to a student' do

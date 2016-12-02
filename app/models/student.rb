@@ -284,14 +284,18 @@ private
   def self.pull_info_from_crm(email)
     close_io_client = Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false)
     lead = close_io_client.list_leads('email:' + email)
+    response = { errors: [] }
     if lead.total_results == 1
       name = lead.data.first.contacts.first.name
       course = Course.find_by(description: lead.data.first.custom.Class)
-      if name && course
-        return {name: name, course_id: course.id}
-      end
+      name && name != "" ? response[:name] = name : response[:errors].push("Name not found")
+      course ? response[:course_id] = course.id : response[:errors].push("Valid course not found")
+    elsif lead.total_results == 0
+      response[:errors].push("Email not found")
+    elsif lead.total_results > 1
+      response[:errors].push("Multiple emails found")
     end
-    return {}
+    response
   end
 
 end

@@ -12,7 +12,7 @@ class InvitationsController < Devise::InvitationsController
         super
         set_flash_for_student
       else
-        redirect_to new_student_invitation_path, alert: "Invalid email / name / course for #{email} in Close"
+        redirect_to new_student_invitation_path, alert: response[:errors].to_s
       end
     end
   end
