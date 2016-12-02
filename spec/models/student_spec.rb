@@ -761,11 +761,16 @@ describe Student do
       course = FactoryGirl.create(:course, description: "* Placement Test")
       expect(Student.pull_info_from_crm("example@example.com")).to eq({name: "TEST TEST", course_id: course.id, errors: []})
     end
+    it 'returns info for correct student even if similar email exists in Close' do
+      course = FactoryGirl.create(:course, description: "* Placement Test")
+      expect(Student.pull_info_from_crm("example@example.com")).to eq({name: "TEST TEST", course_id: course.id, errors: []})
+    end
+    it 'returns info even if two identical entries exist in Close' do
+      course = FactoryGirl.create(:course, description: "* Placement Test")
+      expect(Student.pull_info_from_crm("duplicate_email@example.com")).to eq({name: "Test Duplicate Email", course_id: course.id, errors: []})
+    end
     it 'returns error if email not found in Close' do
       expect(Student.pull_info_from_crm("email_not_in_close@example.com")[:errors]).to include "Email not found"
-    end
-    it 'returns error if duplicate email found in Close' do
-      expect(Student.pull_info_from_crm("duplicate_email@example.com")[:errors]).to include "Multiple emails found"
     end
     it 'returns error if name not listed in Close lead' do
       course = FactoryGirl.create(:course, description: "* Placement Test")
@@ -776,6 +781,10 @@ describe Student do
     end
     it 'returns error if matching course not found in Epicenter' do
       expect(Student.pull_info_from_crm("non_matching_course@example.com")[:errors]).to include "Valid course not found"
+    end
+    it 'returns error if user already exists in Epicenter' do
+      Admin.create(email: "example@example.com", name: "Test", password: "password")
+      expect(Student.pull_info_from_crm("example@example.com")[:errors]).to include "Email already used in Epicenter"
     end
   end
 end
