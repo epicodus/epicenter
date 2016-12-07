@@ -21,18 +21,24 @@ class SubmissionsController < ApplicationController
   end
 
   def update
-    @code_review = CodeReview.find(params[:code_review_id])
-    @submission = @code_review.submission_for(current_student)
-    if @submission.update(submission_params)
-      redirect_to course_code_review_path(@code_review.course, @code_review), notice: "Submission updated!"
+    if submission_params['times_submitted']
+      @submission = Submission.find(params[:id])
+      @submission.update_columns(submission_params)
+      render 'update_submission_times'
     else
-      render 'code_reviews/show'
+      @code_review = CodeReview.find(params[:code_review_id])
+      @submission = @code_review.submission_for(current_student)
+      if @submission.update(submission_params)
+        redirect_to course_code_review_path(@code_review.course, @code_review), notice: "Submission updated!"
+      else
+        render 'code_reviews/show'
+      end
     end
   end
 
 private
 
   def submission_params
-    params.require(:submission).permit(:link, :needs_review, :student_id)
+    params.require(:submission).permit(:link, :needs_review, :student_id, :times_submitted)
   end
 end

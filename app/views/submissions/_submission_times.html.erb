@@ -1,0 +1,3 @@
+Submitted <%= pluralize(@submission.times_submitted, 'time') %></span>
+(<%= link_to "+", code_review_submission_path(@submission.code_review, @submission, submission: {times_submitted: @submission.times_submitted.to_i + 1}), method: :patch, remote: true %>
+<%= link_to "-", code_review_submission_path(@submission.code_review, @submission, submission: {times_submitted: @submission.times_submitted.to_i - 1}), method: :patch, remote: true %>)
