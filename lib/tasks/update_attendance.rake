@@ -37,12 +37,6 @@ task :update_attendance, [:day] => [:environment] do |t, args|
       puts "Successfully updated attendance records for #{course.id} - #{course.description} (#{course.office.name})"
     end
   else
-    puts "Task canceled!"
+    puts "Task canceled. No records updated."
   end
 end
-
-  #   end
-  # else
-  #   puts 'To mark as on time only tardy / left_early students: rake "update_attendance[yyyy-mm-dd, course_id, false]"'
-  #   puts 'To mark as on time *all* students, including those absent: rake "update_attendance[yyyy-mm-dd, course_id, true]"'
-  # end

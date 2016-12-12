@@ -23,7 +23,9 @@
 
   <p>The weekend before class starts, you'll have a few videos to watch for homework, so make sure to budget time to watch them. If you'd like to get a head start on your studies, feel free to review some early lessons for your class at learnhowtoprogram.com.</p>
 
-  <p>Finally, if you want to get plugged into the Portland tech community, pretty much every tech event around town is listed at <%= link_to 'calagator.org', 'http://calagator.org' %>. Check it out!
+  <% if @resource.course.office.name == "Portland" %>
+    <p>Finally, if you want to get plugged into the Portland tech community, pretty much every tech event around town is listed at <%= link_to 'calagator.org', 'http://calagator.org' %>. Check it out!
+  <% end %>
 
   <p>Thanks so much, <%= @resource.name %>! We're really excited to have you at Epicodus.</p>
 <% end %>
