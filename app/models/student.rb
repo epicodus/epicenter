@@ -120,7 +120,11 @@ class Student < User
   end
 
   def signed_main_documents?
-    signed?(CodeOfConduct) && signed?(RefundPolicy) && signed?(EnrollmentAgreement)
+    if course && course.office.name == "Seattle"
+      signed?(CodeOfConduct) && signed?(RefundPolicy) && signed?(ComplaintDisclosure) && signed?(EnrollmentAgreement)
+    else
+      signed?(CodeOfConduct) && signed?(RefundPolicy) && signed?(EnrollmentAgreement)
+    end
   end
 
   def stripe_customer
