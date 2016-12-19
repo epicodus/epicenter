@@ -3,16 +3,22 @@ class SignaturesController < ApplicationController
 
   protect_from_forgery except: [:create]
 
-  def new(signed_signature_model, signature_model, controller_for_next_page, controller_action)
+  def new(signature_model)
     update_signature_request
     if current_student.signed?(signature_model)
       redirect_to root_path
       flash[:alert] = "You've already signed this document."
-    elsif current_user.signed?(signed_signature_model)
+    else
       signature = signature_model.create(student_id: current_student.id)
       @sign_url = signature.sign_url
-      @controller_for_next_page = controller_for_next_page
-      @controller_action = controller_action
+      case signature_model.name
+      when "CodeOfConduct"
+        @controller_for_next_page = 'refund_policy'
+      when "RefundPolicy"
+        @controller_for_next_page = 'enrollment_agreement'
+      when "EnrollmentAgreement"
+        @controller_for_next_page = 'payment_methods'
+      end
     end
   end
 

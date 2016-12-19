@@ -1,7 +1,7 @@
 class EnrollmentAgreement < Signature
 
   attr_accessor :sign_url
-  after_initialize :create_signature_request
+  before_create :create_signature_request
 
 private
 
