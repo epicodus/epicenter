@@ -47,7 +47,11 @@ protected
     if user.signed_main_documents?
       proper_payments_path(user)
     elsif user.signed?(RefundPolicy)
-      new_enrollment_agreement_path
+      if user.course.office.name == "Seattle" && !user.signed?(ComplaintDisclosure)
+        new_complaint_disclosure_path
+      else
+        new_enrollment_agreement_path
+      end
     elsif user.signed?(CodeOfConduct)
       new_refund_policy_path
     elsif !user.signed?(CodeOfConduct)
