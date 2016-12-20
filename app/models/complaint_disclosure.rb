@@ -7,7 +7,6 @@ private
 
   def create_signature_request
     @subject = 'Sign to accept the Seattle Complaint Disclosure'
-    @file = ENV['COMPLAINT_DISCLOSURE_SEATTLE_DOCUMENT_URL']
     super
   end
 end

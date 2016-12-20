@@ -1,3 +1,3 @@
 describe ComplaintDisclosure do
-  it_behaves_like 'signature', 'e82009fc3f1b85d21ce5ca1dc9faef97'
+  it_behaves_like 'signature', 'e396f11fa95c2b881f16722599d4f618'
 end

@@ -116,4 +116,122 @@ http_interactions:
       string: '{"embedded":{"sign_url":"https:\/\/www.hellosign.com\/editor\/embeddedSign?signature_id=e82009fc3f1b85d21ce5ca1dc9faef97&token=62b8dad320c9c55dd9249274d03ef4ae","expires_at":1482181740}}'
     http_version: 
   recorded_at: Mon, 19 Dec 2016 20:09:04 GMT
+- request:
+    method: post
+    uri: https://api.hellosign.com/v3/signature_request/create_embedded_with_template
+    body:
+      encoding: UTF-8
+      string: client_id=<HELLO_SIGN_CLIENT_ID>&custom_fields%5Bsign_date%5D=Tuesday%2C+December+20%2C+2016&custom_fields%5Bstudent_name%5D=Example+Brown+293&signers%5BStudent%5D%5Bemail_address%5D=student270%40example.com&signers%5BStudent%5D%5Bname%5D=Example+Brown+293&subject=Sign+to+accept+the+Seattle+Complaint+Disclosure&template_id=<COMPLAINT_DISCLOSURE_WA_TEMPLATE_ID>&test_mode=1
+    headers:
+      User-Agent:
+      - hellosign-ruby-sdk/3.2.11
+      Authorization:
+      - Basic MmZjMzFjYWM3YTY0MGQzZGUxNTIxZDk5YmNjMTRmMmJlNGNjMDVkNzg5ZGVhMDI4Y2Q3MjE2ODZlMWJmNmQ2OTo=
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Headers:
+      - Authorization, Origin, X-Requested-With, Content-Type, Accept
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 20 Dec 2016 21:43:32 GMT
+      P3p:
+      - CP="NOP3PPOLICY"
+      Server:
+      - Apache
+      User-Agent:
+      - HelloSign API
+      X-Content-Type-Options:
+      - nosniff
+      X-Ratelimit-Limit:
+      - '50'
+      X-Ratelimit-Limit-Remaining:
+      - '46'
+      X-Ratelimit-Reset:
+      - '1482270212'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '1411'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"signature_request":{"signature_request_id":"ad64e73bb534d5e60880b70e7823baf62f5aeb7e","test_mode":true,"title":"Sign
+        to accept the Seattle Complaint Disclosure","original_title":"Sign to accept
+        the Seattle Complaint Disclosure","subject":"Sign to accept the Seattle Complaint
+        Disclosure","message":"Washington Student Complaint Disclosure","metadata":{},"is_complete":false,"is_declined":false,"has_error":false,"custom_fields":[{"name":"student_name","type":"text","required":null,"api_id":"90d651_13","editor":null,"value":"Example
+        Brown 293"},{"name":"sign_date","type":"text","required":null,"api_id":"90d651_14","editor":null,"value":"Tuesday,
+        December 20, 2016"}],"response_data":[],"signing_url":null,"signing_redirect_url":null,"final_copy_uri":"\/v3\/signature_request\/final_copy\/ad64e73bb534d5e60880b70e7823baf62f5aeb7e","files_url":"https:\/\/api.hellosign.com\/v3\/signature_request\/files\/ad64e73bb534d5e60880b70e7823baf62f5aeb7e","details_url":"https:\/\/www.hellosign.com\/home\/manage?guid=ad64e73bb534d5e60880b70e7823baf62f5aeb7e","requester_email_address":"it@epicodus.com","signatures":[{"signature_id":"e396f11fa95c2b881f16722599d4f618","has_pin":false,"signer_email_address":"student270@example.com","signer_name":"Example
+        Brown 293","order":null,"status_code":"awaiting_signature","signed_at":null,"last_viewed_at":null,"last_reminded_at":null,"error":null}],"cc_email_addresses":[]}}'
+    http_version: 
+  recorded_at: Tue, 20 Dec 2016 21:43:35 GMT
+- request:
+    method: get
+    uri: https://api.hellosign.com/v3/embedded/sign_url/e396f11fa95c2b881f16722599d4f618
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - hellosign-ruby-sdk/3.2.11
+      Authorization:
+      - Basic MmZjMzFjYWM3YTY0MGQzZGUxNTIxZDk5YmNjMTRmMmJlNGNjMDVkNzg5ZGVhMDI4Y2Q3MjE2ODZlMWJmNmQ2OTo=
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Headers:
+      - Authorization, Origin, X-Requested-With, Content-Type, Accept
+      Access-Control-Allow-Methods:
+      - GET, POST, OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 20 Dec 2016 21:43:37 GMT
+      P3p:
+      - CP="NOP3PPOLICY"
+      Server:
+      - Apache
+      User-Agent:
+      - HelloSign API
+      X-Content-Type-Options:
+      - nosniff
+      X-Ratelimit-Limit:
+      - '2000'
+      X-Ratelimit-Limit-Remaining:
+      - '1998'
+      X-Ratelimit-Reset:
+      - '1482270217'
+      X-Xss-Protection:
+      - 1; mode=block
+      Content-Length:
+      - '186'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"embedded":{"sign_url":"https:\/\/www.hellosign.com\/editor\/embeddedSign?signature_id=e396f11fa95c2b881f16722599d4f618&token=81d6576bd1b0bce65a54335d5c3bbc5c","expires_at":1482273817}}'
+    http_version: 
+  recorded_at: Tue, 20 Dec 2016 21:43:37 GMT
 recorded_with: VCR 3.0.3
