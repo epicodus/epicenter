@@ -336,16 +336,27 @@ feature 'deleting a code review' do
 end
 
 feature 'exporting code review details to a file' do
-  let(:admin) { FactoryGirl.create(:admin) }
   let(:code_review) { FactoryGirl.create(:code_review) }
 
-  before { login_as(admin, scope: :admin) }
+  context 'as an admin' do
+    let(:admin) { FactoryGirl.create(:admin) }
+    before { login_as(admin, scope: :admin) }
+    scenario 'exports info on all submissions for a code review' do
+      FactoryGirl.create(:submission, code_review: code_review)
+      visit code_review_submissions_path(code_review)
+      click_link 'export-btn'
+      filename = Rails.root.join('tmp','students.txt')
+      expect(filename).to exist
+    end
+  end
 
-  scenario 'exports info on all submissions for a code review' do
-    FactoryGirl.create(:submission, code_review: code_review)
-    visit code_review_submissions_path(code_review)
-    click_link 'export-btn'
-    filename = Rails.root.join('tmp','students.txt')
-    expect(filename).to exist
+  context 'as a student' do
+    let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+    before { login_as(student, scope: :student) }
+    scenario 'without permission to export code review submissions' do
+      FactoryGirl.create(:submission, code_review: code_review)
+      visit code_review_export_path(code_review)
+      expect(page).to have_content "You are not authorized to access this page."
+    end
   end
 end
