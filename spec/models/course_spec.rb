@@ -293,4 +293,13 @@ describe Course do
       expect(student.courses.total_class_days_until(Time.zone.now.to_date.end_of_week)).to eq [wednesday, tuesday, monday]
     end
   end
+
+  describe '#export_students_emails' do
+    it 'exports to students.txt file email addresses for students in course' do
+      student = FactoryGirl.create(:student)
+      filename = Rails.root.join('tmp','students.txt')
+      student.course.export_students_emails(filename)
+      expect(File.read(filename)).to include student.email
+    end
+  end
 end
