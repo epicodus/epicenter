@@ -143,3 +143,26 @@ feature 'visiting the course index page' do
     expect(page).to have_content 'You are not authorized'
   end
 end
+
+feature 'exporting course students emails to a file' do
+  let(:admin) { FactoryGirl.create(:admin) }
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+
+  context 'as an admin' do
+    before { login_as(admin, scope: :admin) }
+    scenario 'exports email addresses for students in a course' do
+      visit course_path(student.course)
+      click_link 'export-btn'
+      filename = Rails.root.join('tmp','students.txt')
+      expect(filename).to exist
+    end
+  end
+
+  context 'as a student' do
+    before { login_as(student, scope: :student) }
+    scenario 'without permission' do
+      visit course_export_path(student.course)
+      expect(page).to have_content "You are not authorized to access this page."
+    end
+  end
+end

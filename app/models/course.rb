@@ -112,6 +112,14 @@ class Course < ActiveRecord::Base
     class_days.select { |day| day <= last_date }.sort
   end
 
+  def export_students_emails(filename)
+    File.open(filename, 'w') do |file|
+      students.each do |student|
+        file.puts student.email
+      end
+    end
+  end
+
 private
 
   def set_start_and_end_dates
