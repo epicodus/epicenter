@@ -54,7 +54,8 @@
           </div>
         <% elsif course.interview_assignments.for_internship(internship).any? && !course.internship_assignments.for_internship(internship).any? && !course.active? %>
           No intern assignments
-        <% elsif course.interview_assignments.for_internship(internship).any? %>
+        <% end %>
+        <% if course.interview_assignments.for_internship(internship).any? %>
           <% if params[:previous] %>
             <%= render 'companies/previous_internships', course: course, internship: internship %>
           <% else %>
