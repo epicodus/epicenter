@@ -53,11 +53,18 @@
         <hr>
         <p><strong>Ideal intern</strong></p>
         <p><%= @internship.ideal_intern %></p>
+        <hr>
+        <p><strong>On-Site / Remote</strong></p>
+        <p>Internship is <%= @internship.remote ? "remote" : "on-site" %></p>
         <% if @internship.clearance_required %>
           <hr>
           <p><strong>Clearance description</strong></p>
           <p><%= @internship.clearance_description %></p>
         <% end %>
+        <hr>
+        <p><strong>Interview location</strong></p>
+        <p><%= @internship.interview_location && @internship.interview_location != "" ? @internship.interview_location : @internship.address %></p>
+        <hr>
       </div>
     </div>
   </div>

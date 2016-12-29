@@ -50,6 +50,23 @@
         </div>
       </div>
 
+      <div class='form-group'>
+        <%= f.label :remote, "* Will the students be working on-site or remotely?" %>
+        <div class="radio">
+          <%= f.label :remote do %>
+            <%= f.radio_button :remote, false, required: true %> on-site
+          <% end %>
+          </label>
+        </div>
+
+        <div class="radio">
+          <%= f.label :remote do %>
+            <%= f.radio_button :remote, true %> remote
+          <% end %>
+          </label>
+        </div>
+      </div>
+
       <div class="form-group" id="course-multiselect">
         <%= f.label :track_ids, "Which classes are you willing to interview students from? (all include JavaScript)" %>
         <br>
@@ -64,6 +81,11 @@
       <div class='form-group'>
         <%= f.label :address %>
         <%= f.text_field :address, class: 'form-control' %>
+      </div>
+
+      <div class='form-group'>
+        <%= f.label :interview_location, "interview location (if different)" %>
+        <%= f.text_field :interview_location, class: 'form-control' %>
       </div>
 
       <div class='form-group'>
