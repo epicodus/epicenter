@@ -7,6 +7,8 @@ private
     student.signatures.where(type: self.class, is_complete: nil).delete_all
     if self.is_a?(EnrollmentAgreement)
       create_enrollment_agreement_signature_request_with_template
+    elsif self.is_a?(ComplaintDisclosure)
+      create_complaint_disclosure_signature_request_with_template
     else
       create_signature_request_without_template
     end
@@ -33,16 +35,34 @@ private
     )
   end
 
+  def create_complaint_disclosure_signature_request_with_template
+    @signature_request = HelloSign.create_embedded_signature_request_with_template(
+      test_mode: ENV['HELLO_SIGN_TEST_MODE'],
+      client_id: ENV['HELLO_SIGN_CLIENT_ID'],
+      template_id: ENV['COMPLAINT_DISCLOSURE_WA_TEMPLATE_ID'],
+      subject: @subject,
+      signers: [{
+        email_address: student.email,
+        name: student.name,
+        role: 'Student'
+      }],
+      custom_fields: {
+        student_name: student.name,
+        sign_date: Time.zone.now.to_date.strftime("%A, %B %d, %Y"),
+      }
+    )
+  end
+
   def create_signature_request_without_template
     @signature_request = HelloSign.create_embedded_signature_request(
-    test_mode: ENV['HELLO_SIGN_TEST_MODE'],
-    client_id: ENV['HELLO_SIGN_CLIENT_ID'],
-    subject: @subject,
-    signers: [{
-      email_address: student.email,
-      name: student.name
-    }],
-    file_url: [@file]
+      test_mode: ENV['HELLO_SIGN_TEST_MODE'],
+      client_id: ENV['HELLO_SIGN_CLIENT_ID'],
+      subject: @subject,
+      signers: [{
+        email_address: student.email,
+        name: student.name
+      }],
+      file_url: [@file]
     )
   end
 end

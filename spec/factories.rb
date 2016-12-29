@@ -68,6 +68,11 @@ FactoryGirl.define do
       association :office, factory: :portland_office
     end
 
+    factory :seattle_course do
+      description 'Seattle course'
+      association :office, factory: :seattle_office
+    end
+
     factory :past_course do
       description 'Past course'
       class_days ((Time.zone.now.to_date - 18.weeks).beginning_of_week..(Time.zone.now.to_date - 14.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? }
@@ -104,6 +109,11 @@ FactoryGirl.define do
   factory :office do
     factory :portland_office do
       name 'Portland'
+      time_zone 'Pacific Time (US & Canada)'
+    end
+
+    factory :seattle_office do
+      name 'Seattle'
       time_zone 'Pacific Time (US & Canada)'
     end
 
@@ -239,6 +249,11 @@ FactoryGirl.define do
       is_complete true
     end
 
+    factory :completed_complaint_disclosure do
+      type ComplaintDisclosure
+      is_complete true
+    end
+
     factory :completed_enrollment_agreement do
       type EnrollmentAgreement
       is_complete true
@@ -252,6 +267,10 @@ FactoryGirl.define do
     sequence(:email) { |n| "student#{n}@example.com" }
     password "password"
     password_confirmation "password"
+
+    factory :seattle_student do
+      association :course, factory: :seattle_course
+    end
 
     factory :portland_student_with_all_documents_signed do
       association :course, factory: :portland_course
