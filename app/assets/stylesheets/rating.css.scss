@@ -2,6 +2,11 @@
   width: 100% !important;
 }
 
-#fixed-ratings-button {
-  position: fixed;
+.ratings-button {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+    -ms-flex-pack: center;
+      justify-content: center;
 }
