@@ -267,6 +267,7 @@ describe Student do
 
   describe "#signed_main_documents?" do
     let(:student) { FactoryGirl.create(:student) }
+    let(:seattle_student) { FactoryGirl.create(:seattle_student) }
 
     it "returns true if all 3 main documents have been signed" do
       FactoryGirl.create(:completed_code_of_conduct, student: student)
@@ -280,6 +281,23 @@ describe Student do
       FactoryGirl.create(:completed_refund_policy, student: student)
       expect(student.signed_main_documents?).to eq false
     end
+
+    it "returns true if all 4 documents have been signed for a Seattle student" do
+      FactoryGirl.create(:completed_code_of_conduct, student: seattle_student)
+      FactoryGirl.create(:completed_refund_policy, student: seattle_student)
+      FactoryGirl.create(:completed_complaint_disclosure, student: seattle_student)
+      FactoryGirl.create(:completed_enrollment_agreement, student: seattle_student)
+      expect(seattle_student.signed_main_documents?).to eq true
+    end
+
+    it "returns false if extra required Seattle document not signed" do
+      FactoryGirl.create(:completed_code_of_conduct, student: seattle_student)
+      FactoryGirl.create(:completed_refund_policy, student: seattle_student)
+      FactoryGirl.create(:completed_enrollment_agreement, student: seattle_student)
+      expect(student.signed_main_documents?).to eq false
+    end
+
+
   end
 
   it "validates that the primary payment method belongs to the user", :stripe_mock do

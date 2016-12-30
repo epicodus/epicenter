@@ -21,6 +21,14 @@ feature 'document signing for new students' do
     end
   end
 
+  xscenario 'signing the Seattle complaint disclosure policy', js: true do
+    visit new_complaint_disclosure_path
+    within_frame 'hsEmbeddedFrame' do
+      create_hello_sign_signature
+      expect(page).to have_content 'Sign to accept the Seattle Complaint Disclosure'
+    end
+  end
+
   xscenario 'signing the enrollment agreement', js: true do
     visit new_enrollment_agreement_path
     within_frame 'hsEmbeddedFrame' do

@@ -65,6 +65,7 @@ Rails.application.routes.draw do
       resources :enrollment_agreement, only: [:new]
       resources :code_of_conduct, only: [:new]
       resources :refund_policy, only: [:new]
+      resources :complaint_disclosure, only: [:new]
     end
   end
 
