@@ -104,6 +104,20 @@ feature 'visiting the internships show page' do
     click_link internship.name
     expect(page).to have_content 'Clearance description'
   end
+
+  scenario 'interview location is shown if field has been entered' do
+    internship = FactoryGirl.create(:internship, interview_location: "test location")
+    visit internships_path(active: true)
+    click_link internship.name
+    expect(page).to have_content internship.interview_location
+  end
+
+  scenario 'company location is shown if interview location field has not been entered' do
+    internship = FactoryGirl.create(:internship)
+    visit internships_path(active: true)
+    click_link internship.name
+    expect(page).to have_content internship.address
+  end
 end
 
 feature 'viewing internships before rankings are live' do
