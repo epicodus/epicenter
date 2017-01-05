@@ -102,12 +102,14 @@ feature 'visiting the code review show page' do
 
       scenario 'with valid input' do
         fill_in 'submission_link', with: 'http://github.com'
+        check 'understand-guidelines'
         click_button 'Submit'
         is_expected.to have_content 'Thank you for submitting'
         is_expected.to have_content code_review.title
       end
 
       scenario 'with invalid input' do
+        check 'understand-guidelines'
         click_button 'Submit'
         is_expected.to have_content "can't be blank"
       end
