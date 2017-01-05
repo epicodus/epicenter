@@ -80,7 +80,7 @@ FactoryGirl.define do
 
     factory :future_course do
       description 'Future course'
-      class_days ((Time.zone.now.to_date + 4.weeks).beginning_of_week..(Time.zone.now.to_date + 8.weeks).beginning_of_week).select { |day| day if !day.saturday? && !day.sunday? }
+      class_days ((Time.zone.now.to_date + 5.weeks).beginning_of_week..(Time.zone.now.to_date + 8.weeks).beginning_of_week).select { |day| day if !day.saturday? && !day.sunday? }
     end
 
     factory :part_time_course do

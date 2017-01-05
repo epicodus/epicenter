@@ -571,6 +571,9 @@ describe Student do
 
   describe '#attendance_records_for' do
     let(:course) { FactoryGirl.create(:course) }
+    let(:past_course) { FactoryGirl.create(:past_course) }
+    let(:future_course) { FactoryGirl.create(:future_course) }
+    let(:internship_course) { FactoryGirl.create(:internship_course) }
     let(:student) { FactoryGirl.create(:student, course: course) }
 
     it 'counts the number of days the student has been on time to class' do
@@ -613,61 +616,91 @@ describe Student do
       end
     end
 
-    it 'counts the number of days the student has been on time to class for a particular course' do
-      travel_to course.start_date.in_time_zone(course.office.time_zone) - 5.days + 8.hours do
-        attendance_record_outside_current_course_date_range = FactoryGirl.create(:attendance_record, student: student)
-        travel 9.hours do
-          attendance_record_outside_current_course_date_range.update({ signing_out: true })
+    context 'for a particular course' do
+      it 'counts the number of days the student has been on time to class' do
+        travel_to course.start_date.in_time_zone(course.office.time_zone) - 5.days + 8.hours do
+          attendance_record_outside_current_course_date_range = FactoryGirl.create(:attendance_record, student: student)
+          travel 9.hours do
+            attendance_record_outside_current_course_date_range.update({ signing_out: true })
+          end
+        end
+        travel_to course.start_date.in_time_zone(course.office.time_zone) + 8.hours do
+          attendance_record = FactoryGirl.create(:attendance_record, student: student)
+          travel 9.hours do
+            attendance_record.update({ signing_out: true })
+            expect(student.attendance_records_for(:on_time, student.course)).to eq 1
+          end
         end
       end
-      travel_to course.start_date.in_time_zone(course.office.time_zone) + 8.hours do
-        attendance_record = FactoryGirl.create(:attendance_record, student: student)
-        travel 9.hours do
-          attendance_record.update({ signing_out: true })
-          expect(student.attendance_records_for(:on_time, student.course)).to eq 1
+
+      it 'counts the number of days the student has been tardy' do
+        travel_to course.start_date.in_time_zone(course.office.time_zone) - 5.days + 9.hours + 10.minutes do
+          FactoryGirl.create(:attendance_record, student: student)
+          travel 1.day
+          FactoryGirl.create(:attendance_record, student: student)
+        end
+        travel_to course.start_date.in_time_zone(course.office.time_zone) + 9.hours + 20.minutes do
+          FactoryGirl.create(:attendance_record, student: student)
+          travel 1.day
+          FactoryGirl.create(:attendance_record, student: student)
+          expect(student.attendance_records_for(:tardy, student.course)).to eq 2
+        end
+      end
+
+      it 'counts the number of days the student has left early (failed to sign out)' do
+        travel_to course.start_date.in_time_zone(course.office.time_zone) - 5.days + 8.hours + 55.minutes do
+          attendance_record_outside_current_course_date_range = FactoryGirl.create(:attendance_record, student: student)
+          travel 7.hours do
+            attendance_record_outside_current_course_date_range.update({ signing_out: true })
+          end
+        end
+        travel_to course.start_date.in_time_zone(course.office.time_zone) + 8.hours + 55.minutes do
+          attendance_record = FactoryGirl.create(:attendance_record, student: student)
+          travel 7.hours do
+            attendance_record.update({ signing_out: true })
+            expect(student.attendance_records_for(:left_early, student.course)).to eq 1
+          end
+        end
+      end
+
+      it 'counts the number of days the student has been absent' do
+        travel_to course.start_date - 5 do
+          travel 1.day
+          FactoryGirl.create(:attendance_record, student: student)
+        end
+        travel_to course.start_date do
+          travel 1.day
+          FactoryGirl.create(:attendance_record, student: student)
+          expect(student.attendance_records_for(:absent, student.course)).to eq 1
         end
       end
     end
 
-    it 'counts the number of days the student has been tardy for a particular course' do
-      travel_to course.start_date.in_time_zone(course.office.time_zone) - 5.days + 9.hours + 10.minutes do
-        FactoryGirl.create(:attendance_record, student: student)
-        travel 1.day
-        FactoryGirl.create(:attendance_record, student: student)
-      end
-      travel_to course.start_date.in_time_zone(course.office.time_zone) + 9.hours + 20.minutes do
-        FactoryGirl.create(:attendance_record, student: student)
-        travel 1.day
-        FactoryGirl.create(:attendance_record, student: student)
-        expect(student.attendance_records_for(:tardy, student.course)).to eq 2
-      end
-    end
-
-    it 'counts the number of days the student has left early (failed to sign out) for a particular course' do
-      travel_to course.start_date.in_time_zone(course.office.time_zone) - 5.days + 8.hours + 55.minutes do
-        attendance_record_outside_current_course_date_range = FactoryGirl.create(:attendance_record, student: student)
-        travel 7.hours do
-          attendance_record_outside_current_course_date_range.update({ signing_out: true })
+    context 'for a particular range of courses' do
+      before do
+        student.courses = [past_course, course, future_course]
+        student.courses.each do |c|
+          create_attendance_record_in_course(c, "on_time")
+          create_attendance_record_in_course(c, "tardy")
+          create_attendance_record_in_course(c, "left_early")
         end
       end
-      travel_to course.start_date.in_time_zone(course.office.time_zone) + 8.hours + 55.minutes do
-        attendance_record = FactoryGirl.create(:attendance_record, student: student)
-        travel 7.hours do
-          attendance_record.update({ signing_out: true })
-          expect(student.attendance_records_for(:left_early, student.course)).to eq 1
-        end
-      end
-    end
 
-    it 'counts the number of days the student has been absent for a particular course' do
-      travel_to course.start_date - 5 do
-        travel 1.day
-        FactoryGirl.create(:attendance_record, student: student)
+      it 'counts the number of days the student has been on time to class' do
+        expect(student.attendance_records_for(:on_time, course, future_course)).to eq 2
       end
-      travel_to course.start_date do
-        travel 1.day
-        FactoryGirl.create(:attendance_record, student: student)
-        expect(student.attendance_records_for(:absent, student.course)).to eq 1
+
+      it 'counts the number of days the student has been tardy' do
+        expect(student.attendance_records_for(:tardy, past_course, course)).to eq 2
+      end
+
+      it 'counts the number of days the student has left early (failed to sign out)' do
+        expect(student.attendance_records_for(:left_early, past_course, future_course)).to eq 3
+      end
+
+      it 'counts the number of days the student has been absent' do
+        attended = past_course.total_class_days + course.total_class_days + future_course.total_class_days - AttendanceRecord.count
+        expect(student.attendance_records_for(:absent, past_course, future_course)).to eq attended
       end
     end
   end

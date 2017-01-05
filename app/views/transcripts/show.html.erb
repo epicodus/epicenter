@@ -4,35 +4,37 @@
     <p class="text-center"><em><strong>Web and Mobile Development</strong></em></p>
     <p class="text-center">400 SW 6th Ave, Suite 800, Portland OR 97204</p>
     <p>Student: <strong><%= current_student.name %></strong></p>
-    <p>Dates Enrolled: <%= current_student.courses.non_internship_courses.order(:start_date).first.start_date.strftime('%B %d, %Y') %> - <%= current_student.courses.non_internship_courses.order(:start_date).last.end_date.strftime('%B %d, %Y') %></p>
+    <p>Dates Enrolled: <%= current_student.courses.non_internship_courses.order(:start_date).first.start_date.strftime('%B %d, %Y') %> - <%= (current_student.courses.non_internship_courses.order(:start_date).last.end_date + 7.weeks).strftime('%B %d, %Y') %></p>
 
     <p>Courses:</p>
     <ul>
-      <% current_student.courses.order(:start_date).each do |course| %>
-      <li>
-        <%= course.description %>
-        <ul>
-          <% course.code_reviews.each do |code_review| %>
-          <li>
-            <%= code_review.title %>
-            <span class="pull-right"><em><%= code_review.status(current_student) %></em></span>
-          </li>
-          <% end %>
-        </ul>
-      </li>
+      <% @completed_courses.each do |course| %>
+        <li>
+          <%= course.description %>
+          <ul>
+            <% course.code_reviews.each do |code_review| %>
+            <li>
+              <%= code_review.title %>
+              <span class="pull-right"><em><%= code_review.status(current_student) %></em></span>
+            </li>
+            <% end %>
+          </ul>
+        </li>
       <% end %>
     </ul>
 
     <p>Attendance:</p>
     <ul>
-      <li>Present <%= pluralize(current_student.attendance_records_for(:on_time), 'day') %></li>
-      <li>Tardy <%= pluralize(current_student.attendance_records_for(:tardy), 'day') %></li>
-      <li>Left early <%= pluralize(current_student.attendance_records_for(:left_early), 'day') %></li>
-      <li>Absent <%= pluralize(current_student.attendance_records_for(:absent), 'day') %></li>
+      <li>Present <%= pluralize(current_student.attendance_records_for(:all, @completed_courses.first, @completed_courses.last), 'day') %></li>
+      <ul>
+        <li>Tardy <%= pluralize(current_student.attendance_records_for(:tardy, @completed_courses.first, @completed_courses.last), 'day') %></li>
+        <li>Left early <%= pluralize(current_student.attendance_records_for(:left_early, @completed_courses.first, @completed_courses.last), 'day') %></li>
+      </ul>
+      <li>Absent <%= pluralize(current_student.attendance_records_for(:absent, @completed_courses.first, @completed_courses.last), 'day') %></li>
     </ul>
     <p><%= image_tag "signature.png" %></p>
     <p><strong>Michael Kaiser-Nyman, President</strong></p>
-    <p>Date: <%= current_student.courses.non_internship_courses.order(:start_date).last.end_date.strftime('%B %d, %Y') %></p>
+    <p>Date: <%= @completed_courses.last.end_date.strftime('%B %d, %Y') %></p>
     <br>
     <p>Epicodus maintains student transcripts for 50 years.</p>
   </div>

@@ -196,16 +196,25 @@ class Student < User
     passed
   end
 
-  def attendance_records_for(status, filtered_course=nil)
+  def attendance_records_for(status, start_course=nil, end_course=nil)
     attributes = { tardy: { tardy: true },
                    left_early: { left_early: true },
-                   on_time: { tardy: false, left_early: false }
+                   on_time: { tardy: false, left_early: false },
+                   all: {}
                  }[status]
     results = attendance_records.where(attributes)
-    filtered_results = results.where("date between ? and ?", filtered_course.try(:start_date), filtered_course.try(:end_date))
-    if filtered_course && status == :absent
-      filtered_course.number_of_days_since_start - filtered_results.count
-    elsif filtered_course
+    if start_course && end_course
+      filtered_results = results.where("date between ? and ?", start_course.try(:start_date), end_course.try(:end_date))
+    else
+      filtered_results = results.where("date between ? and ?", start_course.try(:start_date), start_course.try(:end_date))
+    end
+    if start_course && end_course && status == :absent
+      filtered_results = results.where("date between ? and ?", start_course.try(:start_date), end_course.try(:end_date))
+      total_number_of_course_days(start_course, end_course) - filtered_results.count
+    elsif start_course && status == :absent
+      filtered_results = results.where("date between ? and ?", start_course.try(:start_date), start_course.try(:end_date))
+      start_course.number_of_days_since_start - filtered_results.count
+    elsif start_course
       filtered_results.count
     elsif status == :absent
       total_number_of_course_days - attendance_records.count
@@ -220,8 +229,13 @@ class Student < User
 
 private
 
-  def total_number_of_course_days
-    courses.non_internship_courses.map(&:class_days).flatten.count
+  def total_number_of_course_days(start_course=nil, end_course=nil)
+    if start_course
+      filtered_courses = courses.where('start_date >= ? AND end_date <= ?', start_course.start_date, end_course.end_date)
+      filtered_courses.non_internship_courses.where.not(description: "* Placement Test").map(&:class_days).flatten.count
+    else
+      courses.non_internship_courses.map(&:class_days).flatten.count
+    end
   end
 
   def update_close_io_payment_plan
