@@ -2,7 +2,7 @@
   <h1>Epicodus Certificate of Completion</h1>
 
   <p><em><strong>Web and Mobile Development</strong></em></p>
-  <p><%= @student.courses.non_internship_courses.order(:start_date).last.end_date.strftime('%B %d, %Y') %></p>
+  <p><%= @student.courses.order(:start_date).last.end_date.strftime('%B %d, %Y') %></p>
 
   <p>
     <strong><%= @student.name %></strong> has completed Epicodus's Web and
