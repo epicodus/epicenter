@@ -8,5 +8,13 @@
     <%= f.text_field :link, class: 'form-control', placeholder: 'http://github.com/your-username/your-repository' %>
   </div>
 
+  <div class="form-group">
+    <p>
+      I confirm that I have read and understand the <a href="https://www.learnhowtoprogram.com/lessons/independent-projects-and-code-reviews" target=_blank>guidelines</a> for Independent Projects.
+      &nbsp;&nbsp;<%= check_box_tag nil, 1, checked = false, { required: true, id: 'understand-guidelines' } %>
+    </p>
+    <p>&nbsp;</p>
+  </div>
+
   <%= f.submit @submission.new_record? ? 'Submit' : 'Resubmit', class: 'btn btn-info' %>
 <% end %>
