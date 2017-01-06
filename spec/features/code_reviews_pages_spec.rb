@@ -337,15 +337,24 @@ feature 'deleting a code review' do
   end
 end
 
-feature 'exporting code review details to a file' do
+feature 'exporting code review submissions info to a file' do
   let(:code_review) { FactoryGirl.create(:code_review) }
 
   context 'as an admin' do
     let(:admin) { FactoryGirl.create(:admin) }
     before { login_as(admin, scope: :admin) }
-    scenario 'exports info on all submissions for a code review' do
+
+    scenario 'exports all submissions needing review from code review submissions needing review list' do
       FactoryGirl.create(:submission, code_review: code_review)
       visit code_review_submissions_path(code_review)
+      click_link 'export-btn'
+      filename = Rails.root.join('tmp','students.txt')
+      expect(filename).to exist
+    end
+
+    scenario 'exports all submissions from code review show page' do
+      FactoryGirl.create(:submission, code_review: code_review)
+      visit course_code_review_path(code_review.course, code_review)
       click_link 'export-btn'
       filename = Rails.root.join('tmp','students.txt')
       expect(filename).to exist
