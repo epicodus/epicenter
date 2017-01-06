@@ -127,12 +127,25 @@ describe CodeReview do
   end
 
   describe '#export_submissions' do
-    it 'exports submissions info for code review to students.txt file' do
+    it 'exports info on all submissions for this code review to students.txt file' do
       code_review = FactoryGirl.create(:code_review)
-      submission = FactoryGirl.create(:submission, code_review: code_review)
+      new_submission = FactoryGirl.create(:submission, code_review: code_review, link: "http://new-link")
+      reviewed_submission = FactoryGirl.create(:submission, code_review: code_review, link: "http://reviewed-link")
+      reviewed_submission.update(needs_review: false)
       filename = Rails.root.join('tmp','students.txt')
-      code_review.export_submissions(filename)
-      expect(File.read(filename)).to include submission.link
+      code_review.export_submissions(filename, true)
+      expect(File.read(filename)).to include new_submission.link
+      expect(File.read(filename)).to include reviewed_submission.link
+    end
+    it 'exports info on code review submissions needing review to students.txt file' do
+      code_review = FactoryGirl.create(:code_review)
+      new_submission = FactoryGirl.create(:submission, code_review: code_review, link: "http://new-link")
+      reviewed_submission = FactoryGirl.create(:submission, code_review: code_review, link: "http://reviewed-link")
+      reviewed_submission.update(needs_review: false)
+      filename = Rails.root.join('tmp','students.txt')
+      code_review.export_submissions(filename, false)
+      expect(File.read(filename)).to include new_submission.link
+      expect(File.read(filename)).not_to include reviewed_submission.link
     end
   end
 

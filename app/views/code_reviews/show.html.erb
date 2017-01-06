@@ -10,6 +10,7 @@
   <%= @code_review.title %>
   <% if can? :manage, @code_review %>
     <%= link_to 'Edit', edit_course_code_review_path(@code_review.course, @code_review) %>
+    <%= link_to 'Export-all-submissions', code_review_export_path(@code_review, all: "true"), id: "export-btn" %>
   <% end %>
 </h1>
 
