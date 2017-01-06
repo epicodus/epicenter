@@ -71,7 +71,8 @@ describe Course do
       student_1 = FactoryGirl.create(:student, course: course)
       student_2 = FactoryGirl.create(:student, course: course)
       student_3 = FactoryGirl.create(:student, course: course)
-      expect(course.other_course_students(student_3)).to eq [student_1, student_2]
+      expect(course.other_course_students(student_3)).to include(student_1, student_2)
+      expect(course.other_course_students(student_3)).not_to include(student_3)
     end
   end
 
