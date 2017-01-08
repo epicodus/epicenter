@@ -4,8 +4,9 @@
   <% if @student.completed_internship_course? && @student.passed_all_code_reviews? %>
     <p><%= link_to "View certificate of completion", certificate_path, target: '_blank' %></p>
   <% end %>
-
-  <p><%= link_to "View transcript", transcript_path, target: '_blank' %></p>
+  <% if @student.courses.previous_courses.any? %>
+    <p><%= link_to "View transcript", transcript_path, target: '_blank' %></p>
+  <% end %>
 <% end %>
 
 <div class='row'>
