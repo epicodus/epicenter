@@ -420,7 +420,6 @@ FactoryGirl.define do
   factory :rating do
     student
     internship
-    notes 'This one looks great!'
     number 1
   end
 

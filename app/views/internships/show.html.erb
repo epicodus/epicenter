@@ -81,7 +81,6 @@
               <tr>
                 <th>Student</th>
                 <th>Ranking</th>
-                <th>Notes</th>
               </tr>
             </thead>
             <tbody>
@@ -89,7 +88,6 @@
                 <tr>
                   <td class="col-md-3"><%= link_to student.name, course_student_path(@course, student) %></td>
                   <td class="col-md-2"><%= student.ratings.find_by(internship: @internship).try(:number) %></td>
-                  <td><%= student.find_rating(@internship).try(:notes) %></td>
                 </tr>
               <% end %>
             </tbody>
