@@ -36,7 +36,7 @@ class StudentsController < ApplicationController
 private
   def student_params
     params.require(:student).permit(:primary_payment_method_id, :course_id,
-                                    ratings_attributes: [:id, :internship_id, :notes, :number])
+                                    ratings_attributes: [:id, :internship_id, :number])
   end
 
   def update_student_as_admin

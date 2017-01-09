@@ -21,7 +21,6 @@
                   <th>Ranking</th>
                   <th>Company</th>
                   <th>Technologies</th>
-                  <th>Notes (optional)</th>
                   <th></th>
                 </tr>
               </thead>
@@ -32,9 +31,8 @@
                       <td class="col-xs-1">
                         <%= Rating.find_or_initialize_by(internship_id: internship.id, student_id: @student.id).number %>
                       </td>
-                      <td class="col-xs-2"><%= link_to internship.name, "##{internship.id}", data: { toggle: "modal" } %></td>
-                      <td class="col-xs-2"><%= internship.tracks_ordered_by_description %></td>
-                      <td><%= ff.text_area :notes, rows: 1, class: 'form-control internship-ranking-notes' %></td>
+                      <td class="col-xs-4"><%= link_to internship.name, "##{internship.id}", data: { toggle: "modal" } %></td>
+                      <td class="col-xs-6"><%= internship.tracks_ordered_by_description %></td>
                       <td><span class="pull-right glyphicon glyphicon-menu-hamburger"></span></td>
 
                       <%= ff.hidden_field :internship_id, value: internship.id %>
