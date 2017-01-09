@@ -14,7 +14,7 @@
 //= require jquery_ujs
 //= require dataTables/jquery.dataTables
 //= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
-//= require jquery-ui/sortable
+//= require jquery-ui/widgets/sortable
 //= require nested_form_fields
 //= require bootstrap-datepicker
 //= require jquery.timepicker.js
