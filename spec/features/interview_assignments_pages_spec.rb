@@ -92,6 +92,7 @@ feature 'interview rankings' do
   let(:internship) { FactoryGirl.create(:internship) }
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: internship.courses.first) }
   let(:company) { FactoryGirl.create(:company, internships: [internship]) }
+  let(:admin) { FactoryGirl.create(:admin) }
 
   scenario 'as a student ranking companies' do
     FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
@@ -108,5 +109,28 @@ feature 'interview rankings' do
     fill_in 'company-interview-feedback', with: 'Great interviewer!'
     click_on 'Save rankings'
     expect(page).to have_content "Student rankings have been saved for #{internship.courses.first.description}."
+  end
+
+  scenario 'as a student can not view company feedback until 1 week after internship start date' do
+    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 1, feedback_from_company: 'Great fit!')
+    login_as(student, scope: :student)
+    visit course_student_path(internship.courses.first, student)
+    expect(page).to have_content "Not yet available."
+  end
+
+  scenario 'as a student can view company feedback 1 week after internship start date' do
+    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 1, feedback_from_company: 'Great fit!')
+    login_as(student, scope: :student)
+    travel_to student.course.start_date + 1.week do
+      visit course_student_path(internship.courses.first, student)
+      expect(page).to have_content "Great fit!"
+    end
+  end
+
+  scenario 'as admin can view company feedback immediately' do
+    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 1, feedback_from_company: 'Great fit!')
+    login_as(admin, scope: :admin)
+    visit course_student_path(internship.courses.first, student)
+    expect(page).to have_content "Great fit!"
   end
 end
