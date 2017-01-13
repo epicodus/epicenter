@@ -5,12 +5,12 @@ desc "enroll students in courses based on csv"
 task :enroll_students => [:environment] do
   filename = File.join(Rails.root.join('tmp'), 'enrollments.txt')
   File.open(filename, 'w') do |file|
-    # csv_text = File.read('enrollment_import.csv') # for local testing
     uri = URI('http://mortalwombat.net/tmp/enrollment_import.csv')
+    # csv_text = File.read('enrollment_import.csv') # for local testing
     csv_text = Net::HTTP.get(uri)
     csv = CSV.parse(csv_text)
     csv.each do |row|
-      student = User.find_by(name: row[0])
+      student = User.find_by(email: row[0])
       if student
         row.each do |column|
           begin
@@ -20,15 +20,15 @@ task :enroll_students => [:environment] do
               if enrollment.save
                 file.puts "enrollment successful: #{student.name} in #{course.description}"
               else
-                file.puts "FAILURE TO ENROLL: Enrollment not made for #{student.name} in #{course.description}"
+                file.puts "ERROR - FAILURE TO ENROLL: Enrollment not made for #{student.name} in #{course.description}"
               end
             end
           rescue
-            file.puts "UNEXPECTED ERROR: #{student.name}"
+            file.puts "ERROR - UNEXPECTED ERROR: #{student.name}"
           end
         end
       else
-        file.puts "STUDENT NOT FOUND: #{row[0]}"
+        file.puts "ERROR - STUDENT NOT FOUND: #{row[0]}"
       end
     end
   end
