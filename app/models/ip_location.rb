@@ -9,4 +9,12 @@ class IpLocation
   def self.is_local_computer?(ip)
     IPAddr.new(ip) == ENV['SCHOOL_IP_ADDRESS'] || IPAddr.new(ip) == ENV['SEATTLE_WIFI_IP_ADDRESS'] || IPAddr.new(ip) == ENV['PHILADELPHIA_WIFI_IP_ADDRESS'] || IPAddr.new(ip) == "::1"
   end
+
+  def self.is_local_computer_portland?(ip)
+    IPAddr.new(ip) == ENV['SCHOOL_IP_ADDRESS']
+  end
+
+  def self.is_local_computer_seattle?(ip)
+    IPAddr.new(ip) == ENV['SEATTLE_WIFI_IP_ADDRESS']
+  end
 end

@@ -195,6 +195,20 @@ feature "Portland student does attendance sign in" do
         end
       end
     end
+
+    describe "links to help queue for correct office" do
+      it "links to Seattle queue if connecting from Seattle IP" do
+        allow(IpLocation).to receive(:is_local_computer_seattle?).and_return(true)
+        visit welcome_path
+        expect(page).to have_link("Queue", href: "https://seattle-help.epicodus.com")
+      end
+
+      it "links to Portland queue unless connecting from Seattle IP" do
+        allow(IpLocation).to receive(:is_local_computer_seattle?).and_return(false)
+        visit welcome_path
+        expect(page).to have_link("Queue", href: "https://help.epicodus.com")
+      end
+    end
   end
 end
 
@@ -397,5 +411,3 @@ feature "Philadelphia student does attendance sign in" do
     end
   end
 end
-
-
