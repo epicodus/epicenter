@@ -11,6 +11,7 @@ feature 'viewing the ratings index page' do
   end
 
   scenario 'with all ratings' do
+    FactoryGirl.create(:student, course: internship_course)
     visit internships_path(active: true)
     click_on 'Interview rankings'
     click_on 'View all'
