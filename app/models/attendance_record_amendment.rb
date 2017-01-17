@@ -26,9 +26,9 @@ private
     when "On time"
       attendance_record.update(tardy: false, left_early: false)
     when "Tardy"
-      attendance_record.update(tardy: true)
+      attendance_record.update(tardy: true, left_early: false)
     when "Left early"
-      attendance_record.update(left_early: true)
+      attendance_record.update(left_early: true, tardy: false)
     when "Absent"
       attendance_record.try(:destroy)
     when "Tardy and Left early"
