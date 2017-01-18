@@ -303,4 +303,17 @@ describe Course do
       expect(File.read(filename)).to include student.email
     end
   end
+
+  describe '#export_internship_ratings' do
+    it 'exports to ratings.txt file how students rated internships' do
+      filename = Rails.root.join('tmp','ratings.txt')
+      student = FactoryGirl.create(:student)
+      internship = FactoryGirl.create(:internship, courses: [student.course])
+      rating = FactoryGirl.create(:rating, student: student, internship: internship)
+      student.course.export_internship_ratings(filename)
+      expect(File.read(filename)).to include student.name
+      expect(File.read(filename)).to include internship.name
+      expect(File.read(filename)).to include rating.number.to_s
+    end
+  end
 end
