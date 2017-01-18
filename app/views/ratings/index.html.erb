@@ -2,7 +2,10 @@
 
 <div class="panel panel-default">
   <div class="panel-body">
-    <p><%= link_to 'View all', course_ratings_path(@course, all: true),class: 'btn btn-default' unless params[:all] %></p>
+    <p>
+      <%= link_to 'View all', course_ratings_path(@course, all: true),class: 'btn btn-default' unless params[:all] %>
+      <%= link_to 'Export', course_export_path(@course, ratings: "true"), id: "export-btn", class: "btn btn-default" %>
+    </p>
 
     <div class="table-responsive">
       <% if params[:all] %>
