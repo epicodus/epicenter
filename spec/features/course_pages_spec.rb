@@ -166,3 +166,27 @@ feature 'exporting course students emails to a file' do
     end
   end
 end
+
+feature 'exporting internship ratings to a file' do
+  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+  let(:internship_course) { FactoryGirl.create(:internship_course) }
+  let(:admin) { FactoryGirl.create(:admin, current_course: internship_course) }
+
+  context 'as an admin' do
+    before { login_as(admin, scope: :admin) }
+    scenario 'exports internship ratings to a file' do
+      visit course_ratings_path(internship_course)
+      click_link 'export-btn'
+      filename = Rails.root.join('tmp','ratings.txt')
+      expect(filename).to exist
+    end
+  end
+
+  context 'as a student' do
+    before { login_as(student, scope: :student) }
+    scenario 'without permission' do
+      visit course_export_path(student.course)
+      expect(page).to have_content "You are not authorized to access this page."
+    end
+  end
+end
