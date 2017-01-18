@@ -21,7 +21,7 @@ feature 'viewing the ratings index page' do
   end
 
   context 'as a student' do
-    let(:student) { FactoryGirl.create(:student) }
+    let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
     before { login_as(student, scope: :student) }
 
     scenario 'without permission' do
