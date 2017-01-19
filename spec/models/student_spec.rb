@@ -838,4 +838,13 @@ describe Student do
       expect(Student.pull_info_from_crm("example@example.com")[:errors]).to include "Email already used in Epicenter"
     end
   end
+
+  describe 'paranoia' do
+    it 'archives destroyed user' do
+      student = FactoryGirl.create(:student)
+      student.destroy
+      expect(Student.count).to eq 0
+      expect(Student.with_deleted.count).to eq 1
+    end
+  end
 end
