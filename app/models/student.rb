@@ -303,7 +303,9 @@ private
 
   def self.pull_info_from_crm(email)
     response = { errors: [] }
-    if User.find_by(email: email)
+    if Student.only_deleted.find_by(email: email)
+      response[:errors].push("Student exists in Epicenter but has been archived.")
+    elsif User.find_by(email: email)
       response[:errors].push("Email already used in Epicenter")
     else
       close_io_client = Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false)
