@@ -837,6 +837,11 @@ describe Student do
       Admin.create(email: "example@example.com", name: "Test", password: "password")
       expect(Student.pull_info_from_crm("example@example.com")[:errors]).to include "Email already used in Epicenter"
     end
+    it 'returns error if user already exists in Epicenter but is archived' do
+      student = FactoryGirl.create(:student)
+      student.destroy
+      expect(Student.pull_info_from_crm(student.email)[:errors]).to include "Student exists in Epicenter but has been archived."
+    end
   end
 
   describe 'paranoia' do

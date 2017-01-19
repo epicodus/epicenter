@@ -21,17 +21,29 @@ feature 'adding another course for a student' do
 end
 
 feature 'deleting a course for a student' do
-  let(:student) { FactoryGirl.create(:student) }
-  let!(:other_course) { FactoryGirl.create(:course, description: 'Other course') }
+  let(:course1) { FactoryGirl.create(:course, description: 'course1') }
+  let(:course2) { FactoryGirl.create(:course, description: 'course2') }
+  let(:student) { FactoryGirl.create(:student, courses: [course1, course2]) }
   let(:admin) { FactoryGirl.create(:admin) }
   before { login_as(admin, scope: :admin) }
 
-  scenario 'as an admin' do
-    student.update(course: other_course)
+  scenario 'as an admin deleting a course that is not the last course for that student' do
     visit student_courses_path(student)
-    within "#student-course-#{other_course.id}" do
+    within "#student-course-#{course2.id}" do
       click_on 'Withdraw'
     end
-    expect(page).to have_content "#{other_course.description} has been removed"
+    expect(page).to have_content "#{course2.description} has been removed"
+    expect(page).to have_content "#{course1.description}"
+  end
+
+  scenario 'as an admin deleting the last course for that student' do
+    visit student_courses_path(student)
+    within "#student-course-#{course2.id}" do
+      click_on 'Withdraw'
+    end
+    within "#student-course-#{course1.id}" do
+      click_on 'Withdraw'
+    end
+    expect(page).to have_content "#{course1.description} has been removed. #{student.name} has been archived!"
   end
 end
