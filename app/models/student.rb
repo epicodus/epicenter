@@ -21,6 +21,8 @@ class Student < User
   has_many :signatures
   has_one :internship_assignment
 
+  acts_as_paranoid
+
   after_update :update_close_io_payment_plan
 
   accepts_nested_attributes_for :ratings
