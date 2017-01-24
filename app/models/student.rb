@@ -105,7 +105,7 @@ class Student < User
   end
 
   def update_close_io(update_fields)
-    if close_io_lead_exists? && enrollment_complete?
+    if close_io_lead_exists?
       lead_id = close_io_client.list_leads('email:' + email).data.first.id
       close_io_client.update_lead(lead_id, update_fields)
     elsif !close_io_lead_exists?
@@ -123,9 +123,9 @@ class Student < User
 
   def signed_main_documents?
     if course && course.office.name == "Seattle"
-      signed?(CodeOfConduct) && signed?(RefundPolicy) && signed?(ComplaintDisclosure) && signed?(EnrollmentAgreement)
+      signed?(CodeOfConduct) && signed?(RefundPolicy) && signed?(ComplaintDisclosure) && signed?(EnrollmentAgreement) && demographics?
     else
-      signed?(CodeOfConduct) && signed?(RefundPolicy) && signed?(EnrollmentAgreement)
+      signed?(CodeOfConduct) && signed?(RefundPolicy) && signed?(EnrollmentAgreement) && demographics?
     end
   end
 
@@ -241,7 +241,7 @@ private
   end
 
   def update_close_io_payment_plan
-    update_close_io({ 'custom.Payment plan': plan.close_io_description }) if plan_id_changed?
+    update_close_io({ 'custom.Payment plan': plan.close_io_description }) if plan_id_changed? && enrollment_complete?
   end
 
   def next_course
