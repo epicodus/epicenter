@@ -1,0 +1,56 @@
+<h2 class="text-center">Demographics</h2>
+<div class="row">
+  <%= form_tag demographics_path do %>
+    <div class="well">
+      <p class="text-center">To help us make sure we provide all students with equal opportunity, you have the option of disclosing demographic information about yourself.</p>
+      <p class="text-center">Filling this out is voluntary and, if you choose not to, you will not be negatively affected in any way.</p>
+      <hr>
+      <div class="form-group">
+        <%= label_tag :genders, "Gender (check all that apply):" %>
+        <ul class="list-unstyled">
+          <% ["Female", "Male", "Non-binary", "Transgender"].each do |gender| %>
+            <li>
+              <%= check_box_tag "genders[]", gender %>
+              <%= gender %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+      <div class="form-group">
+        <%= label_tag :age, "Age: " %>
+        <%= number_field_tag 'age' %>
+      </div>
+      <div class="form-group">
+        <%= label_tag :education, "Level of Education Completed: " %>
+        <%= select_tag :education, options_for_select(["Please select one", "High school diploma or equivalent", "Postsecondary certificate", "Some college, no degree", "Associate's degree", "Bachelor's degree", "Master's degree or higher"]) %>
+      </div>
+      <div class="form-group">
+        <%= label_tag :job, "Current occupation: " %>
+        <%= text_field_tag 'job', nil, maxlength: 35, size: 35 %>
+      </div>
+      <div class="form-group">
+        <%= label_tag :salary, "Current yearly income: " %>
+        <%= number_field_tag 'salary' %>
+      </div>
+      <div class="form-group">
+        <%= label_tag :races, "Race (check multiple for bi/multiracial):" %>
+        <ul class="list-unstyled">
+          <% ["Asian or Asian American", "American Indian or Alaska Native", "Black or African American", "Hispanic or Latino", "Middle Eastern", "Native Hawaiian or Other Pacific Islander", "White", "Other"].each do |race| %>
+            <li>
+              <%= check_box_tag "races[]", race %>
+              <%= race %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+      <div class="form-group">
+        <%= label_tag :veteran, "Have you ever served on active duty in the U.S. Armed Forces, Reserves, or National Guard?" %>
+        <ul class="list-unstyled">
+          <li><%= radio_button_tag "veteran", "Yes" %> Yes</li>
+          <li><%= radio_button_tag "veteran", "No" %> No</li>
+        </ul>
+      </div>
+      <%= submit_tag 'Submit (may take a few seconds)', class: "btn btn-epicodus" %>
+    </div>
+  <% end %>
+</div>

@@ -105,12 +105,24 @@ class Student < User
   end
 
   def update_close_io(update_fields)
-    if close_io_lead_exists? && enrollment_complete?
+    if close_io_lead_exists?
       lead_id = close_io_client.list_leads('email:' + email).data.first.id
       close_io_client.update_lead(lead_id, update_fields)
     elsif !close_io_lead_exists?
      raise "The Close.io lead for #{email} was not found."
     end
+  end
+
+  def update_demographics(demographics)
+    fields = {}
+    fields['custom.Gender'] = demographics[:genders].join(", ") if demographics[:genders]
+    fields['custom.Age'] = demographics[:age] if demographics[:age]
+    fields['custom.Education'] = demographics[:education] if demographics[:education]
+    fields['custom.Previous job'] = demographics[:job] if demographics[:job]
+    fields['custom.Previous salary'] = demographics[:salary] if demographics[:salary]
+    fields['custom.Race'] = demographics[:races].join(", ") if demographics[:races]
+    fields['custom.veteran'] = demographics[:veteran] if demographics[:veteran]
+    update_close_io(fields) if fields.any?
   end
 
   def signed?(signature_model)
@@ -123,9 +135,9 @@ class Student < User
 
   def signed_main_documents?
     if course && course.office.name == "Seattle"
-      signed?(CodeOfConduct) && signed?(RefundPolicy) && signed?(ComplaintDisclosure) && signed?(EnrollmentAgreement)
+      signed?(CodeOfConduct) && signed?(RefundPolicy) && signed?(ComplaintDisclosure) && signed?(EnrollmentAgreement) && demographics?
     else
-      signed?(CodeOfConduct) && signed?(RefundPolicy) && signed?(EnrollmentAgreement)
+      signed?(CodeOfConduct) && signed?(RefundPolicy) && signed?(EnrollmentAgreement) && demographics?
     end
   end
 
@@ -241,7 +253,7 @@ private
   end
 
   def update_close_io_payment_plan
-    update_close_io({ 'custom.Payment plan': plan.close_io_description }) if plan_id_changed?
+    update_close_io({ 'custom.Payment plan': plan.close_io_description }) if plan_id_changed? && enrollment_complete?
   end
 
   def next_course

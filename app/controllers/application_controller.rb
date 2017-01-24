@@ -46,6 +46,8 @@ protected
   def signatures_check_path(user)
     if user.signed_main_documents?
       proper_payments_path(user)
+    elsif user.signed?(EnrollmentAgreement)
+      new_demographic_path
     elsif user.signed?(RefundPolicy)
       if user.course.office.name == "Seattle" && !user.signed?(ComplaintDisclosure)
         new_complaint_disclosure_path

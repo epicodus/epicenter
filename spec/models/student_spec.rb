@@ -248,6 +248,22 @@ describe Student do
     end
   end
 
+  describe 'updating close.io with demographics info' do
+    let(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: 'example@example.com') }
+    let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
+    let(:lead_id) { close_io_client.list_leads('email:' + student.email).data.first.id }
+
+    before do
+      allow(student).to receive(:close_io_client).and_return(close_io_client)
+    end
+
+    it 'updates the record successfully', :vcr do
+      demographics = {:genders=>["Female"], :age=>50, :education=>"High school diploma or equivalent", :job=>"test occupation", :salary=>15000, :races=>["Asian or Asian American"], :veteran=>"No"}
+      expect(close_io_client).to receive(:update_lead).with(lead_id, {'custom.Gender' => demographics[:genders].join(", "), 'custom.Age' => demographics[:age], 'custom.Education' => demographics[:education], 'custom.Previous job' => demographics[:job], 'custom.Previous salary' => demographics[:salary], 'custom.Race' => demographics[:races].join(', '), 'custom.veteran' => demographics[:veteran]})
+      student.update_demographics(demographics)
+    end
+  end
+
   describe "#signed?" do
     let(:student) { FactoryGirl.create(:student) }
 
@@ -269,35 +285,52 @@ describe Student do
     let(:student) { FactoryGirl.create(:student) }
     let(:seattle_student) { FactoryGirl.create(:seattle_student) }
 
-    it "returns true if all 3 main documents have been signed" do
+    it "returns true if all 3 main documents have been signed and demographics form submitted" do
       FactoryGirl.create(:completed_code_of_conduct, student: student)
       FactoryGirl.create(:completed_refund_policy, student: student)
       FactoryGirl.create(:completed_enrollment_agreement, student: student)
+      student.update(demographics: true)
       expect(student.signed_main_documents?).to eq true
+    end
+
+    it "returns false if demographics form not submitted" do
+      FactoryGirl.create(:completed_code_of_conduct, student: student)
+      FactoryGirl.create(:completed_refund_policy, student: student)
+      FactoryGirl.create(:completed_enrollment_agreement, student: student)
+      expect(student.signed_main_documents?).to eq false
     end
 
     it "returns false if all 3 main documents have not been signed" do
       FactoryGirl.create(:completed_code_of_conduct, student: student)
       FactoryGirl.create(:completed_refund_policy, student: student)
+      student.update(demographics: true)
       expect(student.signed_main_documents?).to eq false
     end
 
-    it "returns true if all 4 documents have been signed for a Seattle student" do
+    it "returns true if all 4 documents have been signed for a Seattle student and demographics form submitted" do
       FactoryGirl.create(:completed_code_of_conduct, student: seattle_student)
       FactoryGirl.create(:completed_refund_policy, student: seattle_student)
       FactoryGirl.create(:completed_complaint_disclosure, student: seattle_student)
       FactoryGirl.create(:completed_enrollment_agreement, student: seattle_student)
+      seattle_student.update(demographics: true)
       expect(seattle_student.signed_main_documents?).to eq true
+    end
+
+    it "returns false if demographics form not submitted for a Seattle student" do
+      FactoryGirl.create(:completed_code_of_conduct, student: seattle_student)
+      FactoryGirl.create(:completed_refund_policy, student: seattle_student)
+      FactoryGirl.create(:completed_complaint_disclosure, student: seattle_student)
+      FactoryGirl.create(:completed_enrollment_agreement, student: seattle_student)
+      expect(seattle_student.signed_main_documents?).to eq false
     end
 
     it "returns false if extra required Seattle document not signed" do
       FactoryGirl.create(:completed_code_of_conduct, student: seattle_student)
       FactoryGirl.create(:completed_refund_policy, student: seattle_student)
       FactoryGirl.create(:completed_enrollment_agreement, student: seattle_student)
-      expect(student.signed_main_documents?).to eq false
+      seattle_student.update(demographics: true)
+      expect(seattle_student.signed_main_documents?).to eq false
     end
-
-
   end
 
   it "validates that the primary payment method belongs to the user", :stripe_mock do
