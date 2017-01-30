@@ -55,7 +55,7 @@ class CodeReview < ActiveRecord::Base
     submissions = all ? self.submissions.includes(:student) : self.submissions.needing_review.includes(:student)
     File.open(filename, 'w') do |file|
       submissions.each do |submission|
-        file.puts submission.student.name.parameterize + " " + submission.link
+        file.puts submission.student.name.parameterize + " " + submission.link if submission.student
       end
     end
   end
