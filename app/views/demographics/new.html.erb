@@ -10,7 +10,7 @@
         <ul class="list-unstyled">
           <% ["Female", "Male", "Non-binary", "Transgender"].each do |gender| %>
             <li>
-              <%= check_box_tag "genders[]", gender %>
+              <%= check_box_tag "demographics[genders][]", gender %>
               <%= gender %>
             </li>
           <% end %>
@@ -18,26 +18,26 @@
       </div>
       <div class="form-group">
         <%= label_tag :age, "Age: " %>
-        <%= number_field_tag 'age' %>
+        <%= number_field_tag 'demographics[age]' %>
       </div>
       <div class="form-group">
         <%= label_tag :education, "Level of Education Completed: " %>
-        <%= select_tag :education, options_for_select(["Please select one", "High school diploma or equivalent", "Postsecondary certificate", "Some college, no degree", "Associate's degree", "Bachelor's degree", "Master's degree or higher"]) %>
+        <%= select_tag 'demographics[education]', options_for_select(["Please select one", "High school diploma or equivalent", "Postsecondary certificate", "Some college, no degree", "Associate's degree", "Bachelor's degree", "Master's degree or higher"]) %>
       </div>
       <div class="form-group">
         <%= label_tag :job, "Current occupation: " %>
-        <%= text_field_tag 'job', nil, maxlength: 35, size: 35 %>
+        <%= text_field_tag 'demographics[job]', nil, maxlength: 35, size: 35 %>
       </div>
       <div class="form-group">
         <%= label_tag :salary, "Current yearly income: " %>
-        <%= number_field_tag 'salary' %>
+        <%= number_field_tag 'demographics[salary]' %>
       </div>
       <div class="form-group">
         <%= label_tag :races, "Race (check multiple for bi/multiracial):" %>
         <ul class="list-unstyled">
           <% ["Asian or Asian American", "American Indian or Alaska Native", "Black or African American", "Hispanic or Latino", "Middle Eastern", "Native Hawaiian or Other Pacific Islander", "White", "Other"].each do |race| %>
             <li>
-              <%= check_box_tag "races[]", race %>
+              <%= check_box_tag "demographics[races][]", race %>
               <%= race %>
             </li>
           <% end %>
@@ -46,8 +46,8 @@
       <div class="form-group">
         <%= label_tag :veteran, "Have you ever served on active duty in the U.S. Armed Forces, Reserves, or National Guard?" %>
         <ul class="list-unstyled">
-          <li><%= radio_button_tag "veteran", "Yes" %> Yes</li>
-          <li><%= radio_button_tag "veteran", "No" %> No</li>
+          <li><%= radio_button_tag "demographics[veteran]", "Yes" %> Yes</li>
+          <li><%= radio_button_tag "demographics[veteran]", "No" %> No</li>
         </ul>
       </div>
       <%= submit_tag 'Submit (may take a few seconds)', class: "btn btn-epicodus" %>

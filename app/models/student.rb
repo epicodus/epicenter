@@ -113,18 +113,6 @@ class Student < User
     end
   end
 
-  def update_demographics(demographics)
-    fields = {}
-    fields['custom.Gender'] = demographics[:genders].join(", ") if demographics[:genders]
-    fields['custom.Age'] = demographics[:age] if demographics[:age]
-    fields['custom.Education'] = demographics[:education] if demographics[:education]
-    fields['custom.Previous job'] = demographics[:job] if demographics[:job]
-    fields['custom.Previous salary'] = demographics[:salary] if demographics[:salary]
-    fields['custom.Race'] = demographics[:races].join(", ") if demographics[:races]
-    fields['custom.veteran'] = demographics[:veteran] if demographics[:veteran]
-    update_close_io(fields) if fields.any?
-  end
-
   def signed?(signature_model)
     if signature_model.nil?
       true
