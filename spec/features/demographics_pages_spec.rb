@@ -22,7 +22,7 @@ feature 'Submitting demographics info' do
     end
 
     scenario "can submit demographics form after filling it out" do
-      fill_in 'demographics_age', with: '25'
+      fill_in 'Age', with: '25'
       click_on 'Submit'
       expect(page).to have_content "Your payment methods"
     end
