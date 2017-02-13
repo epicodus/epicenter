@@ -1,6 +1,7 @@
 <h2 class="text-center">Demographics</h2>
 <div class="row">
   <%= form_for @demographic_info, url: {controller: "demographics", action: "create"} do |f| %>
+    <%= render 'layouts/errors', object: @demographic_info %>
     <div class="well">
       <p class="text-center">To help us make sure we provide all students with equal opportunity, you have the option of disclosing demographic information about yourself.</p>
       <p class="text-center">Filling this out is voluntary and, if you choose not to, you will not be negatively affected in any way.</p>
@@ -40,8 +41,8 @@
       <div class="form-group">
         <%= f.label :veteran, "Have you ever served on active duty in the U.S. Armed Forces, Reserves, or National Guard?" %>
         <ul class="list-unstyled">
-          <li><%= f.radio_button :veteran, "Yes" %> Yes</li>
-          <li><%= f.radio_button :veteran, "No" %> No</li>
+          <li><%= f.radio_button :veteran, DemographicInfo::VETERAN_OPTIONS.first %> <%= DemographicInfo::VETERAN_OPTIONS.first %></li>
+          <li><%= f.radio_button :veteran, DemographicInfo::VETERAN_OPTIONS.last %> <%= DemographicInfo::VETERAN_OPTIONS.last %></li>
         </ul>
       </div>
       <%= submit_tag 'Submit (may take a few seconds)', class: "btn btn-epicodus" %>

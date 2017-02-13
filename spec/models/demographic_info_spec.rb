@@ -1,4 +1,25 @@
 describe DemographicInfo do
+  it { should validate_numericality_of(:age).is_greater_than(0).with_message("must be greater than 0") }
+  it { should validate_length_of(:job).is_at_most(35) }
+  it { should validate_inclusion_of(:education).in_array(DemographicInfo::EDUCATION_OPTIONS) }
+  it { should validate_inclusion_of(:veteran).in_array(DemographicInfo::VETERAN_OPTIONS) }
+
+  # it { should validate_numericality_of(:salary).is_greater_than_or_equal_to(0).with_message("must be greater than or equal to 0") }
+  it 'validates salary is greater than or equal to 0' do # test written out due to bug in greater_than_or_equal_to shoulda matcher
+    demographic_info = DemographicInfo.new(nil, {salary: -1})
+    expect(demographic_info).to_not be_valid
+  end
+
+  it 'validates that gender form input is included in list' do
+    demographic_info = DemographicInfo.new(nil, {genders: ["not in list"]})
+    expect(demographic_info).to_not be_valid
+  end
+
+  it 'validates that race form input is included in list' do
+    demographic_info = DemographicInfo.new(nil, {races: ["not in list"]})
+    expect(demographic_info).to_not be_valid
+  end
+
   describe 'updating close.io with demographics info' do
     let(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }

@@ -16,15 +16,28 @@ feature 'Submitting demographics info' do
       expect(page).to have_content "Demographics"
     end
 
-    scenario "can submit demographics form without filling it out" do
+    scenario "can submit demographics form without filling it out", vcr: true do
       click_on 'Submit'
       expect(page).to have_content "Your payment methods"
     end
 
-    scenario "can submit demographics form after filling it out" do
-      fill_in 'Age', with: '25'
+    scenario "can submit demographics form after filling it out", vcr: true do
+      check 'demographic_info_genders_female'
+      check 'demographic_info_genders_non-binary'
+      fill_in 'demographic_info_age', with: '25'
+      select 'High school diploma or equivalent', from: 'demographic_info_education'
+      fill_in 'demographic_info_job', with: 'test job'
+      fill_in 'demographic_info_salary', with: '10000'
+      check 'Other'
+      choose 'demographic_info_veteran_no'
       click_on 'Submit'
       expect(page).to have_content "Your payment methods"
+    end
+
+    scenario "sees errors if enters invalid info" do
+      fill_in 'demographic_info_age', with: '-25'
+      click_on 'Submit'
+      expect(page).to have_content "Please correct these problems"
     end
   end
 end

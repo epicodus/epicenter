@@ -273,12 +273,12 @@ FactoryGirl.define do
     end
 
     factory :portland_student_with_all_documents_signed do
+      demographics true
       association :course, factory: :portland_course
       after(:create) do |student|
         create(:completed_code_of_conduct, student: student)
         create(:completed_refund_policy, student: student)
         create(:completed_enrollment_agreement, student: student)
-        student.update(demographics: true)
       end
     end
 
@@ -335,41 +335,41 @@ FactoryGirl.define do
     end
 
     factory :user_with_all_documents_signed do
+      demographics true
       after(:create) do |student|
         create(:completed_code_of_conduct, student: student)
         create(:completed_refund_policy, student: student)
         create(:completed_enrollment_agreement, student: student)
-        student.update(demographics: true)
       end
     end
 
     factory :user_with_all_documents_signed_and_verified_bank_account do
+      demographics true
       after(:create) do |student|
         create(:completed_code_of_conduct, student: student)
         create(:completed_refund_policy, student: student)
         create(:completed_enrollment_agreement, student: student)
         create(:verified_bank_account, student: student)
-        student.update(demographics: true)
       end
     end
 
     factory :user_with_all_documents_signed_and_unverified_bank_account do
+      demographics true
       after(:create) do |student|
         create(:completed_code_of_conduct, student: student)
         create(:completed_refund_policy, student: student)
         create(:completed_enrollment_agreement, student: student)
         create(:bank_account, student: student)
-        student.update(demographics: true)
       end
     end
 
     factory :user_with_all_documents_signed_and_credit_card do
+      demographics true
       after(:create) do |student|
         create(:completed_code_of_conduct, student: student)
         create(:completed_refund_policy, student: student)
         create(:completed_enrollment_agreement, student: student)
         create(:credit_card, student: student)
-        student.update(demographics: true)
       end
     end
 

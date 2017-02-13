@@ -9,11 +9,12 @@ class DemographicsController < ApplicationController
   end
 
   def create
-    demographic_info = DemographicInfo.new(current_student, demographic_info_params)
-    if demographic_info.save
+    @demographic_info = DemographicInfo.new(current_student, demographic_info_params)
+    if @demographic_info.save
+      current_student.update(demographics: true)
       redirect_to payment_methods_path
     else
-      redirect_to payment_methods_path, alert: "Unable to save demographics info."
+      render :new
     end
   end
 
