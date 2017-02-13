@@ -1,0 +1,50 @@
+<h2 class="text-center">Demographics</h2>
+<div class="row">
+  <%= form_for @demographic_info, url: {controller: "demographics", action: "create"} do |f| %>
+    <div class="well">
+      <p class="text-center">To help us make sure we provide all students with equal opportunity, you have the option of disclosing demographic information about yourself.</p>
+      <p class="text-center">Filling this out is voluntary and, if you choose not to, you will not be negatively affected in any way.</p>
+      <hr>
+      <div class="form-group">
+        <%= f.label :genders, "Gender (check all that apply):" %>
+        <ul class="list-unstyled">
+          <%= f.collection_check_boxes :genders, DemographicInfo::GENDER_OPTIONS, :to_s, :to_s, include_hidden: false do |b| %>
+            <li><%= b.check_box %> <%= b.label %></li>
+          <% end %>
+        </ul>
+      </div>
+      <div class="form-group">
+        <%= f.label :age, "Age: " %>
+        <%= f.number_field :age %>
+      </div>
+      <div class="form-group">
+        <%= f.label :education, "Level of Education Completed: " %>
+        <%= f.select :education, options_for_select(DemographicInfo::EDUCATION_OPTIONS), include_blank: true %>
+      </div>
+      <div class="form-group">
+        <%= f.label :job, "Current occupation: " %>
+        <%= f.text_field :job, maxlength: 35, size: 35 %>
+      </div>
+      <div class="form-group">
+        <%= f.label :salary, "Current yearly income: " %>
+        <%= f.number_field :salary %>
+      </div>
+      <div class="form-group">
+        <%= label_tag :races, "Race (check multiple for bi/multiracial):" %>
+        <ul class="list-unstyled">
+          <%= f.collection_check_boxes :races, DemographicInfo::RACE_OPTIONS, :to_s, :to_s, include_hidden: false do |b| %>
+            <li><%= b.check_box %> <%= b.label %></li>
+          <% end %>
+        </ul>
+      </div>
+      <div class="form-group">
+        <%= f.label :veteran, "Have you ever served on active duty in the U.S. Armed Forces, Reserves, or National Guard?" %>
+        <ul class="list-unstyled">
+          <li><%= f.radio_button :veteran, "Yes" %> Yes</li>
+          <li><%= f.radio_button :veteran, "No" %> No</li>
+        </ul>
+      </div>
+      <%= submit_tag 'Submit (may take a few seconds)', class: "btn btn-epicodus" %>
+    </div>
+  <% end %>
+</div>

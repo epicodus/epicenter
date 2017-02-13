@@ -278,6 +278,7 @@ FactoryGirl.define do
         create(:completed_code_of_conduct, student: student)
         create(:completed_refund_policy, student: student)
         create(:completed_enrollment_agreement, student: student)
+        student.update(demographics: true)
       end
     end
 
@@ -325,11 +326,20 @@ FactoryGirl.define do
       end
     end
 
+    factory :user_waiting_on_demographics do
+      after(:create) do |student|
+        create(:completed_code_of_conduct, student: student)
+        create(:completed_refund_policy, student: student)
+        create(:completed_enrollment_agreement, student: student)
+      end
+    end
+
     factory :user_with_all_documents_signed do
       after(:create) do |student|
         create(:completed_code_of_conduct, student: student)
         create(:completed_refund_policy, student: student)
         create(:completed_enrollment_agreement, student: student)
+        student.update(demographics: true)
       end
     end
 
@@ -339,6 +349,7 @@ FactoryGirl.define do
         create(:completed_refund_policy, student: student)
         create(:completed_enrollment_agreement, student: student)
         create(:verified_bank_account, student: student)
+        student.update(demographics: true)
       end
     end
 
@@ -348,6 +359,7 @@ FactoryGirl.define do
         create(:completed_refund_policy, student: student)
         create(:completed_enrollment_agreement, student: student)
         create(:bank_account, student: student)
+        student.update(demographics: true)
       end
     end
 
@@ -357,6 +369,7 @@ FactoryGirl.define do
         create(:completed_refund_policy, student: student)
         create(:completed_enrollment_agreement, student: student)
         create(:credit_card, student: student)
+        student.update(demographics: true)
       end
     end
 

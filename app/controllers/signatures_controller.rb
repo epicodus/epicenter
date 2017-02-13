@@ -23,7 +23,7 @@ class SignaturesController < ApplicationController
       when "ComplaintDisclosure"
         @controller_for_next_page = 'enrollment_agreement'
       when "EnrollmentAgreement"
-        @controller_for_next_page = 'payment_methods'
+        @controller_for_next_page = 'demographics'
       end
     end
   end

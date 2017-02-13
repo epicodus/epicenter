@@ -84,4 +84,6 @@ Rails.application.routes.draw do
     end
   end
   resources :internship_assignments, only: [:create, :destroy]
+
+  resources :demographics, only: [:new, :create]
 end
