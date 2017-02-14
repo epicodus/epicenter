@@ -4,7 +4,8 @@ feature "print completion certificate" do
       student = FactoryGirl.create(:student)
       login_as(student, scope: :student)
       visit edit_student_registration_path
-      expect(page).to_not have_link "View your certificate of completion"
+      expect(page).to_not have_link "View certificate of completion"
+      expect(page).to have_content "Certificate will be available"
     end
     it "doesn't show certificate even if student directly enters URL" do
       student = FactoryGirl.create(:student)
@@ -28,6 +29,7 @@ feature "print completion certificate" do
           login_as(student, scope: :student)
           visit edit_student_registration_path
           expect(page).to_not have_content "View certificate of completion."
+          expect(page).to have_content "Certificate will be available"
         end
       end
 

@@ -1,11 +1,15 @@
 <h1>Your profile</h1>
 
 <% if can?(:manage, @student) && @student.courses.any? %>
-  <% if @student.completed_internship_course? && @student.passed_all_code_reviews? %>
-    <p><%= link_to "View certificate of completion", certificate_path, target: '_blank' %></p>
-  <% end %>
   <% if @student.courses.previous_courses.any? %>
     <p><%= link_to "View transcript", transcript_path, target: '_blank' %></p>
+  <% else %>
+    <p>Transcript will be available after at least one course is completed.</p>
+  <% end %>
+  <% if @student.completed_internship_course? && @student.passed_all_code_reviews? %>
+    <p><%= link_to "View certificate of completion", certificate_path, target: '_blank' %></p>
+  <% else %>
+    <p>Certificate will be available after internship is completed and all code reviews are passing.</p>
   <% end %>
 <% end %>
 
