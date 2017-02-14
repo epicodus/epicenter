@@ -6,7 +6,7 @@ feature "viewing transcript & certificate" do
       visit edit_student_registration_path
       expect(page).to_not have_link "View transcript"
       visit transcript_path
-      expect(page).to have_content "Transcript not yet available."
+      expect(page).to have_content "Transcript will be available"
     end
 
     it "doesn't show certificate" do
