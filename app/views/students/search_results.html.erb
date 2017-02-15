@@ -7,7 +7,9 @@
 
           <div class="panel panel-default">
             <div class="panel-body">
-              <% if student.courses.empty? %>
+              <% if student.deleted? %>
+                <span class="label label-primary pull-right">Archived</span>
+              <% elsif student.courses.empty? %>
                 <span class="label label-primary pull-right">Not enrolled</span>
               <% elsif student.class_over? %>
                 <span class="label label-info pull-right">Graduate</span>
@@ -15,9 +17,13 @@
                 <span class="label label-success pull-right">Current student</span>
               <% end %>
 
-              <p><%= link_to 'Courses', student_courses_path(student) %></p>
-              <p><%= link_to 'Payments', student_payments_path(student) %></p>
-              <p><%= link_to 'Internships', course_student_path(student.internship_course, student) if student.internship_course %></p>
+              <% if student.deleted? %>
+                <p><%= button_to 'Restore', student_restore_path(student), method: :patch, class: "btn btn-default" %></p>
+              <% else %>
+                <p><%= link_to 'Courses', student_courses_path(student) %></p>
+                <p><%= link_to 'Payments', student_payments_path(student) %></p>
+                <p><%= link_to 'Internships', course_student_path(student.internship_course, student) if student.internship_course %></p>
+              <% end %>
             </div>
           </div>
         <% end %>

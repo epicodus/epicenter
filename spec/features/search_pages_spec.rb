@@ -68,5 +68,18 @@ feature 'searching for a student' do
         expect(page).to have_content 'Graduate'
       end
     end
+
+    scenario 'when a query is made for an archived student' do
+      archived_student = FactoryGirl.create(:student)
+      Enrollment.find_by(student: archived_student).destroy
+      archived_student.destroy
+      visit root_path
+      within '#navbar-search' do
+        fill_in 'search', with: archived_student.name
+        click_on 'student-search'
+      end
+      expect(page).to have_content archived_student.name
+      expect(page).to have_content 'Archived'
+    end
   end
 end

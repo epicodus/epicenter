@@ -868,5 +868,12 @@ describe Student do
       expect(Student.count).to eq 0
       expect(Student.with_deleted.count).to eq 1
     end
+
+    it 'restores archived user' do
+      student = FactoryGirl.create(:student)
+      student.destroy
+      student.restore
+      expect(Student.count).to eq 1
+    end
   end
 end
