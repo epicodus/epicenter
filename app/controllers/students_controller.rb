@@ -5,7 +5,7 @@ class StudentsController < ApplicationController
     authorize! :manage, Course
     if params[:search]
       @query = params[:search]
-      @results = Student.includes(:courses).search(@query).order(:name)
+      @results = Student.with_deleted.includes(:courses).search(@query).order(:name)
       render 'search_results'
     else
       redirect_to root_path
