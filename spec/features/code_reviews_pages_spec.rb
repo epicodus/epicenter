@@ -79,6 +79,10 @@ feature 'visiting the code review show page' do
       click_on 'Delete'
       expect(page).to have_content "#{code_review.title} has been deleted"
     end
+
+    scenario 'shows code review content' do
+      expect(page).to have_content "test content"
+    end
   end
 
   context 'as a student' do
@@ -95,6 +99,39 @@ feature 'visiting the code review show page' do
       it { is_expected.to have_button 'Submit' }
       it { is_expected.to_not have_content 'pending review' }
       it { is_expected.to_not have_link 'has been reviewed' }
+    end
+
+    it 'displays message before code review is visible' do
+      travel_to code_review.date - 5.days do
+        visit course_code_review_path(code_review.course, code_review)
+        expect(page).to have_content "Not yet available."
+      end
+    end
+
+    it 'displays code review content when code review is visible' do
+      travel_to code_review.date + 1.day do
+        visit course_code_review_path(code_review.course, code_review)
+        expect(page).to have_content "test content"
+      end
+    end
+
+    it 'displays message after code review completed passing', :stub_mailgun do
+      submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
+      FactoryGirl.create(:passing_review, submission: submission)
+      visit course_code_review_path(code_review.course, code_review)
+      expect(page).to have_content "Completed successfully!"
+    end
+
+    it 'does not display code review content section if review has no content' do
+      code_review.update(content: nil)
+      visit course_code_review_path(code_review.course, code_review)
+      expect(page).to_not have_content "Submit your code for review by"
+    end
+
+    it 'does not display code review content section if review has no date' do
+      code_review.update(date: nil)
+      visit course_code_review_path(code_review.course, code_review)
+      expect(page).to_not have_content "Submit your code for review by"
     end
 
     context 'when submitting' do

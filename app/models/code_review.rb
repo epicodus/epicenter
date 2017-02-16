@@ -60,6 +60,21 @@ class CodeReview < ActiveRecord::Base
     end
   end
 
+  def visible?(student)
+    if expectations_met_by?(student)
+      false
+    else
+      zone = ActiveSupport::TimeZone[course.office.time_zone]
+      if course.parttime?
+        visible_time = zone.local(date.year, date.month, date.day, course.end_time) - 3.days
+      else
+        visible_time = zone.local(date.year, date.month, date.day, course.start_time)
+      end
+      current_time = Time.now.in_time_zone(zone)
+      current_time >= visible_time
+    end
+  end
+
 private
 
   def check_for_submissions

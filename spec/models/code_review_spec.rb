@@ -149,4 +149,33 @@ describe CodeReview do
     end
   end
 
+  describe '#visible?' do
+    let(:student) { FactoryGirl.create(:student) }
+    let(:code_review) { FactoryGirl.create(:code_review, course: student.course) }
+
+    it 'returns false if code review expectations met', :stub_mailgun do
+      submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
+      FactoryGirl.create(:passing_review, submission: submission)
+      expect(code_review.visible?(student)).to eq false
+    end
+
+    it 'returns false if before class start time on code review date for full-time course' do
+      travel_to code_review.date do
+        expect(code_review.visible?(student)).to eq false
+      end
+    end
+
+    it 'returns true if on code review date at class start time for full-time course' do
+      travel_to code_review.date.in_time_zone(student.course.office.time_zone) + 8.hours do
+        expect(code_review.visible?(student)).to eq true
+      end
+    end
+
+    it 'returns true if on day before code review date for part-time course' do
+      student.course.update(parttime: true)
+      travel_to code_review.date - 1.day do
+        expect(code_review.visible?(student)).to eq true
+      end
+    end
+  end
 end
