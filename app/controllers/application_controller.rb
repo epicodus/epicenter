@@ -23,7 +23,7 @@ protected
              :invitation_token)
     end
     devise_parameter_sanitizer.permit(:account_update) do |u|
-      u.permit(:plan_id, :course_id, :name, :email, :password, :password_confirmation, :current_password)
+      u.permit(:course_id, :name, :email, :password, :password_confirmation, :current_password)
     end
   end
 

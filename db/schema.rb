@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170208212700) do
+ActiveRecord::Schema.define(version: 20170218010427) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -178,6 +178,9 @@ ActiveRecord::Schema.define(version: 20170208212700) do
     t.boolean  "loan"
     t.boolean  "standard"
     t.integer  "first_day_amount"
+    t.date     "start_date"
+    t.boolean  "parttime"
+    t.boolean  "upfront"
   end
 
   create_table "ratings", force: :cascade do |t|
