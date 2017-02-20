@@ -861,6 +861,26 @@ describe Student do
     end
   end
 
+  describe 'validate_plan_id' do
+    let(:plan) { FactoryGirl.create(:old_rate_plan) }
+    let(:student) { FactoryGirl.create(:student, plan_id: nil) }
+    before { allow(subject).to receive(:invitation_accepted_at?).and_return(true) }
+
+    it 'triggers validate_plan_id on update' do
+      expect(student).to receive(:validate_plan_id)
+      student.update(plan_id: plan.id)
+    end
+
+    it 'validates plan is an option for course' do
+      expect(student.update(plan_id: plan.id)).to be(true)
+    end
+
+    it 'validates plan is not an option for course' do
+      plan.update(parttime: true)
+      expect(student.update(plan_id: plan.id)).to be(false)
+    end
+  end
+
   describe 'paranoia' do
     it 'archives destroyed user' do
       student = FactoryGirl.create(:student)

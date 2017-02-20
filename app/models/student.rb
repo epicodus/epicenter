@@ -1,9 +1,10 @@
 class Student < User
   scope :with_activated_accounts, -> { where('sign_in_count > ?', 0 ) }
 
-  validates :plan_id, presence: true, if: ->(student) { student.invitation_accepted_at? }
   validate :primary_payment_method_belongs_to_student
   validate :student_has_course
+  validates :plan_id, presence: true, if: ->(student) { student.invitation_accepted_at? }
+  before_update :validate_plan_id, if: ->(student) { student.plan_id_changed? && student.course.present? }
 
   belongs_to :plan
   has_many :enrollments
@@ -320,6 +321,22 @@ private
       end
     end
     response
+  end
+
+  def validate_plan_id
+    if course.start_date < Time.new(2017, 5, 22).to_date
+      if course.parttime?
+        return Plan.active.parttime.old_rates.include? plan
+      else
+        return Plan.active.fulltime.old_rates.include? plan
+      end
+    else
+      if course.parttime?
+        return Plan.active.parttime.new_rates.include? plan
+      else
+        return Plan.active.fulltime.new_rates.include? plan
+      end
+    end
   end
 
 end
