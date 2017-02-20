@@ -26,6 +26,7 @@
               <%= f.select(:plan_id, Plan.active.fulltime.new_rates.collect {|p| [ p.name, p.id ] }.reverse, { selected: Plan.active.upfront.new_rates.first.id }, { class: 'form-control' }) %>
             <% end %>
           <% end %>
+          <p>For more information on tuition, <a href="https://www.epicodus.com/tuition/" target="_blank">click here</a>.</p>
         </div>
       <% end %>
 
