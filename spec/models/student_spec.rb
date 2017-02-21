@@ -248,6 +248,34 @@ describe Student do
     end
   end
 
+  describe 'updating close.io when student email is updated' do
+    let(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: 'example@example.com') }
+    let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
+    let(:contact_id) { close_io_client.list_leads('email:' + student.email).data.first.contacts.first.id }
+
+    before do
+      allow(student).to receive(:close_io_client).and_return(close_io_client)
+    end
+
+    it 'updates the record successfully', :vcr do
+      allow(close_io_client).to receive(:update_contact).and_return({})
+      old_entry = Hashie::Mash.new({ type: "office", email: student.email })
+      new_entry = Hashie::Mash.new({ type: "office", email: "second-email@example.com" })
+      expect(close_io_client).to receive(:update_contact).with(contact_id, { 'emails': [new_entry, old_entry] })
+      student.update_close_email(new_entry.email)
+    end
+
+    it 'does not update the record when the email is not found', :vcr do
+      student.update(email: "no_close_entry@example.com")
+      expect { student.update_close_email("second-email@example.com") }.to raise_error(CrmError, 'The student record for no_close_entry@example.com was not found.')
+    end
+
+    it 'raises an error when the new email is invalid', :vcr do
+      allow(close_io_client).to receive(:update_contact).and_return({"errors"=>[], "field-errors"=>{"emails"=>{"errors"=>{"0"=>{"errors"=>[], "field-errors"=>{"email"=>"Invalid email address."}}}}}})
+      expect { student.update_close_email("invalid@inavlid") }.to raise_error(CrmError, 'Invalid email address.')
+    end
+  end
+
   describe "#signed?" do
     let(:student) { FactoryGirl.create(:student) }
 

@@ -105,6 +105,19 @@ class Student < User
     lead.total_results == 1
   end
 
+  def update_close_email(new_email)
+    if close_io_lead_exists?
+      contact = close_io_client.list_leads('email:' + email).data.first.contacts.first
+      updated_emails = contact.emails.unshift(Hashie::Mash.new({ type: "office", email: new_email }))
+      result = close_io_client.update_contact(contact.id, emails: updated_emails)
+      if result['field-errors']
+        raise CrmError, "Invalid email address."
+      end
+    elsif !close_io_lead_exists?
+      raise CrmError, "The student record for #{email} was not found."
+    end
+  end
+
   def update_close_io(update_fields)
     if close_io_lead_exists?
       lead_id = close_io_client.list_leads('email:' + email).data.first.id

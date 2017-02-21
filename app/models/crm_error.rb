@@ -1,0 +1,2 @@
+class CrmError < StandardError
+end
