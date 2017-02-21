@@ -614,6 +614,37 @@ describe Student do
     end
   end
 
+  describe '#absences' do
+    let(:course) { FactoryGirl.create(:course) }
+    let(:student) { FactoryGirl.create(:student, course: course) }
+
+    it "calculates the number of absences" do
+      day_one = student.course.start_date
+      student.course.update(class_days: [day_one])
+
+      travel_to day_one.beginning_of_day do
+        FactoryGirl.create(:attendance_record, student: student)
+      end
+
+      travel_to day_one.end_of_day do
+        expect(student.absences(course)).to eq 0.5
+      end
+    end
+
+    it "calculates the number of absences with perfect attendance records" do
+      day_one = student.course.start_date.in_time_zone(student.course.office.time_zone)
+      student.course.update(class_days: [day_one])
+
+      travel_to day_one.beginning_of_day + 8.hours do
+        attendance_record = FactoryGirl.create(:attendance_record, student: student)
+        travel_to day_one.beginning_of_day + 17.hours do
+          attendance_record.update({signing_out: true})
+          expect(student.absences(course)).to eq 0
+        end
+      end
+    end
+  end
+
   describe '#attendance_records_for' do
     let(:course) { FactoryGirl.create(:course) }
     let(:past_course) { FactoryGirl.create(:past_course) }
