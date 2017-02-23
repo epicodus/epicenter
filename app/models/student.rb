@@ -45,6 +45,10 @@ class Student < User
     absences_penalty + tardies_penalty + left_earlies_penalty
   end
 
+  def solos(filtered_course)
+    attendance_records.where(pair_id: nil, ignore: nil).where("date between ? and ?", filtered_course.try(:start_date), filtered_course.try(:end_date)).select { |ar| !ar.date.friday? }.count
+  end
+
   def internship_course
     courses.find_by(internship_course: true)
   end

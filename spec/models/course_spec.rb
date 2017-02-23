@@ -215,6 +215,22 @@ describe Course do
     end
   end
 
+  describe '#fulltime_courses' do
+    it 'returns all courses that are full-time courses' do
+      ft_course = FactoryGirl.create(:course)
+      pt_course = FactoryGirl.create(:part_time_course)
+      expect(Course.fulltime_courses).to eq [ft_course]
+    end
+  end
+
+  describe '#parttime_courses' do
+    it 'returns all courses that are part-time courses' do
+      ft_course = FactoryGirl.create(:course)
+      pt_course = FactoryGirl.create(:part_time_course)
+      expect(Course.parttime_courses).to eq [pt_course]
+    end
+  end
+
   describe '#internship_courses' do
     it 'returns all courses that are internship courses' do
       internship_course = FactoryGirl.create(:internship_course)

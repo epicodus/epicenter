@@ -645,6 +645,61 @@ describe Student do
     end
   end
 
+  describe '#solos' do
+    let(:course) { FactoryGirl.create(:course) }
+    let(:student) { FactoryGirl.create(:student, course: course) }
+
+    it "calculates the number of solos when none" do
+      travel_to course.start_date do
+        FactoryGirl.create(:attendance_record, student: student)
+        travel 2.day do
+          FactoryGirl.create(:attendance_record, student: student)
+        end
+        expect(student.solos(course)).to eq 2
+      end
+    end
+
+    it "calculates the number of solos when some" do
+      travel_to course.start_date do
+        FactoryGirl.create(:attendance_record, student: student, pair_id: 1)
+        travel 2.day do
+          FactoryGirl.create(:attendance_record, student: student)
+        end
+        expect(student.solos(course)).to eq 1
+      end
+    end
+
+    it "ignores solos when attendance record is marked ignore" do
+      travel_to course.start_date do
+        FactoryGirl.create(:attendance_record, student: student, ignore: true)
+        travel 2.day do
+          FactoryGirl.create(:attendance_record, student: student)
+        end
+        expect(student.solos(course)).to eq 1
+      end
+    end
+
+    it "ignores friday solos" do
+      travel_to course.start_date do
+        FactoryGirl.create(:attendance_record, student: student)
+        travel 4.day do
+          FactoryGirl.create(:attendance_record, student: student)
+        end
+        expect(student.solos(course)).to eq 1
+      end
+    end
+
+    it "only counts within this course" do
+      travel_to course.start_date do
+        FactoryGirl.create(:attendance_record, student: student)
+        travel -5.day do
+          FactoryGirl.create(:attendance_record, student: student)
+        end
+        expect(student.solos(course)).to eq 1
+      end
+    end
+  end
+
   describe '#attendance_records_for' do
     let(:course) { FactoryGirl.create(:course) }
     let(:past_course) { FactoryGirl.create(:past_course) }

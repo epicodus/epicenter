@@ -84,6 +84,7 @@ FactoryGirl.define do
     end
 
     factory :part_time_course do
+      parttime true
       description 'Part-time course'
       start_time '6:00 PM'
       end_time '9:00 PM'
