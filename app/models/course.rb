@@ -1,6 +1,8 @@
 require 'csv'
 
 class Course < ActiveRecord::Base
+  scope :fulltime_courses, -> { where(parttime: false) }
+  scope :parttime_courses, -> { where(parttime: true) }
   scope :internship_courses, -> { where(internship_course: true) }
   scope :non_internship_courses, -> { where(internship_course: false) }
   scope :active_courses, -> { where(active: true).order(:description) }
