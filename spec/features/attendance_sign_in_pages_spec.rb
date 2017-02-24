@@ -69,7 +69,7 @@ feature "Portland student does attendance sign in" do
       it "takes them to the welcome page" do
         attendance_sign_in_solo
         expect(current_path).to eq welcome_path
-        expect(page).to have_content 'Your attendance record has been created.'
+        expect(page).to have_content 'Your sign in time has been recorded'
       end
 
       it "creates an attendance record for them" do
@@ -280,10 +280,22 @@ feature "Philadelphia student does attendance sign in" do
         end
       end
 
-      it "takes them to the welcome page" do
-        attendance_sign_in_solo
-        expect(current_path).to eq welcome_path
-        expect(page).to have_content 'Your attendance record has been created.'
+      it "takes them to the welcome page with a warning about solo if not on a friday" do
+        monday = Time.zone.now.to_date.beginning_of_week
+        travel_to monday do
+          attendance_sign_in_solo
+          expect(current_path).to eq welcome_path
+          expect(page).to have_content 'Your sign in time has been recorded, but you are signed in without a pair.'
+        end
+      end
+
+      it "takes them to the welcome page with confirmation if on a friday" do
+        friday = Time.zone.now.to_date.beginning_of_week + 4.days
+        travel_to friday do
+          attendance_sign_in_solo
+          expect(current_path).to eq welcome_path
+          expect(page).to have_content 'Your sign in time has been recorded.'
+        end
       end
 
       it "creates an attendance record for them" do

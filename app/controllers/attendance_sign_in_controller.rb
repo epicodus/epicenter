@@ -21,7 +21,11 @@ private
       record = AttendanceRecord.find_or_initialize_by(student: student, date: Time.zone.now.to_date)
       record.station = params[:station]
       record.save
-      redirect_to welcome_path, notice: "Welcome #{student.name}. Your attendance record has been created."
+      if Time.zone.now.to_date.friday?
+        redirect_to welcome_path, notice: "Welcome #{student.name}. Your sign in time has been recorded."
+      else
+        redirect_to welcome_path, alert: "Welcome #{student.name}. <strong>Your sign in time has been recorded, but you are signed in without a pair.</strong><br>Sign in again at <a href='/sign_in'>epicenter.epicodus.com/sign_in</a> to record your pair. (Doing so will not affect your sign in time.)"
+      end
     else
       fail('Invalid email or password.')
     end
