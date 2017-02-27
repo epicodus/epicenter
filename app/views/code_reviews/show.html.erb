@@ -52,6 +52,27 @@
       </div>
     <% end %>
 
+    <% if @code_review.content && @code_review.date %>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4><strong>Project</strong></h4>
+        </div>
+        <div class="panel-body">
+          <% if current_admin || @code_review.visible?(current_student) %>
+            <%= markdown @code_review.content %>
+          <% elsif @code_review.expectations_met_by?(current_student) %>
+            <h4>Completed successfully!</h4>
+          <% else %>
+            <h4>Not yet available.</h4>
+          <% end %>
+        </div>
+        <div class="panel-footer">
+          <p>Submit your code for review by 5pm on <%= @code_review.date.strftime("%A %B %d") %>.</p>
+          <p>Visit <a href="https://www.learnhowtoprogram.com/lessons/independent-projects-and-code-reviews" target="_blank">Independent Projects and Code Reviews</a> for details on how to submit, how feedback works and course completion requirements.</p>
+        </div>
+      </div>
+    <% end %>
+
     <% if current_student && !@submission.code_review.submissions_not_required? %>
       <div class="row">
         <div class="col-md-6">

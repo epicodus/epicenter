@@ -56,6 +56,6 @@ private
 
   def code_review_params
     params.require(:code_review).permit(:course_id, :title, :section, :url, :submissions_not_required,
-                                        objectives_attributes: [:id, :content, :_destroy])
+                                        :content, :date, objectives_attributes: [:id, :content, :_destroy])
   end
 end

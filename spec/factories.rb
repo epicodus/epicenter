@@ -49,6 +49,8 @@ FactoryGirl.define do
   factory :code_review do
     sequence(:title) { |n| "code_review #{n}" }
     course
+    content "test content"
+    date Date.today
 
     before(:create) do |code_review|
       code_review.objectives << build(:objective)

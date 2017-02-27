@@ -28,6 +28,16 @@
     <%= f.add_nested_fields_link :objectives, 'Add objective' %>
   </div>
 
+  <div class="form-group">
+    <%= f.label :content, "Content (use Markdown)" %>
+    <%= f.text_area :content, rows: 25, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :date, "Code Review date" %>
+    <%= f.date_field :date, value: code_review.date || Date.today.beginning_of_week + 4.days, class: 'form-control' %>
+  </div>
+
   <%= f.hidden_field :course_id, value: @course.id %>
   <%= f.submit nil, class: 'btn btn-info' %>
 <% end %>

@@ -40,6 +40,8 @@ ActiveRecord::Schema.define(version: 20170223222250) do
     t.integer  "course_id"
     t.integer  "number"
     t.boolean  "submissions_not_required"
+    t.text     "content"
+    t.date     "date"
   end
 
   create_table "course_internships", force: :cascade do |t|
