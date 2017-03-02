@@ -236,6 +236,21 @@ describe Payment do
       expect(student).to receive(:update_close_io).with({ 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
       payment_2.save
     end
+
+    it 'updates amount paid for offline payments', :vcr, :stub_mailgun do
+      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method)
+      payment_2 = Payment.new(student: student, amount: 50_00, offline: true)
+      expect(student).to receive(:update_close_io).with({ 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
+      payment_2.save
+    end
+
+    it 'updates amount paid for refunds', :vcr, :stub_mailgun do
+      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method)
+      payment_2 = Payment.new(student: student, amount: 50_00, offline: true)
+      payment_2.update(refund_amount: 5000)
+      expect(student).to receive(:update_close_io).with({ 'custom.Amount paid': (payment.amount + payment_2.amount - payment_2.refund_amount) / 100 })
+      payment_2.save
+    end
   end
 
   describe 'issuing a refund', :vcr, :stub_mailgun do
@@ -284,13 +299,6 @@ describe Payment do
       student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
       payment = FactoryGirl.create(:payment_with_bank_account, student: student)
       expect(payment.update(refund_amount: -40)).to eq false
-    end
-
-    it 'does not update Close.io', :vcr, :stub_mailgun do
-      student = FactoryGirl.create :user_with_all_documents_signed_and_credit_card, email: 'example@example.com'
-      payment = FactoryGirl.create(:payment_with_credit_card, student: student)
-      payment.update(refund_amount: 51)
-      expect(student).to_not receive(:update_close_io)
     end
   end
 

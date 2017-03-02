@@ -139,6 +139,16 @@ feature 'Viewing payment index page' do
         expect(page).to have_content '$200.00'
       end
     end
+
+    context 'after an offline refund has been issued', :vcr, :stub_mailgun do
+      it 'shows payment history with correct charge and status' do
+        student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
+        payment = FactoryGirl.create(:payment_with_credit_card, amount: -600_00, student: student, offline: true)
+        visit student_payments_path(student)
+        expect(page).to have_content '-$600.00'
+        expect(page).to have_content 'offline refund'
+      end
+    end
   end
 end
 
