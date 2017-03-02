@@ -4,11 +4,11 @@ task :update_payment_status => [:environment] do
   File.open(filename, 'w') do |file|
     Payment.all.each do |payment|
       if payment.stripe_transaction
-        begin
-          stripe_charge_id = Stripe::BalanceTransaction.retrieve(payment.stripe_transaction).source
-          stripe_charge = Stripe::Charge.retrieve(stripe_charge_id)
+        stripe_charge_id = Stripe::BalanceTransaction.retrieve(payment.stripe_transaction).source
+        stripe_charge = Stripe::Charge.retrieve(stripe_charge_id) if stripe_charge_id
+        if stripe_charge && stripe_charge.status
           payment.update_columns(status: stripe_charge.status)
-        rescue
+        else
           file.puts "FAILED: #{payment.stripe_transaction}"
         end
       end
@@ -21,7 +21,7 @@ task :update_payment_status => [:environment] do
     mb_obj.set_from_address("mike@epicodus.com", {"first"=>"Mike", "last" => "Goren"});
     mb_obj.add_recipient(:to, "mike@epicodus.com", {"first" => "Mike", "last" => "Goren"});
     mb_obj.set_subject("payments.txt");
-    mb_obj.set_text_body("rake task: get_payment_descriptions_from_stripe");
+    mb_obj.set_text_body("rake task: update_payment_status");
     mb_obj.add_attachment(filename, "payments.txt");
     result = mg_client.send_message("epicodus.com", mb_obj)
     puts result.body.to_s
