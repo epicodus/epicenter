@@ -851,6 +851,19 @@ describe Student do
       failed_payment.update(status: 'failed')
       expect(student.total_paid).to eq 200_00
     end
+
+    it 'subtracts refunds' do
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com')
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 200_00, offline: true)
+      payment.update(refund_amount: 5000)
+      expect(student.total_paid).to eq 150_00
+    end
+
+    it 'includes negative offline transactions' do
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com')
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: -200_00, offline: true)
+      expect(student.total_paid).to eq -200_00
+    end
   end
 
   describe '#find_rating' do

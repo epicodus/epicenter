@@ -13,7 +13,7 @@ class Payment < ActiveRecord::Base
   before_create :make_payment, :send_payment_receipt, unless: ->(payment) { payment.offline? }
   before_create :set_offline_status, if: ->(payment) { payment.offline? }
   after_create :send_referral_email, if: ->(payment) { !payment.student.referral_email_sent? && student.payments.any? && !payment.offline? }
-  after_save :update_close_io, unless: ->(payment) { payment.refund_amount? || payment.offline? }
+  after_save :update_close_io
   before_update :issue_refund, if: ->(payment) { payment.refund_amount? && !payment.offline? }
   after_update :send_refund_receipt, if: ->(payment) { payment.refund_amount? && !payment.offline? }
   after_update :send_payment_failure_notice, if: ->(payment) { payment.status == "failed" }
