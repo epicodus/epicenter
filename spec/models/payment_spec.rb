@@ -146,7 +146,7 @@ describe Payment do
       FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
 
       expect(mailgun_client).to have_received(:send_message).with(
-        "epicodus.com",
+        ENV['MAILGUN_DOMAIN'],
         { from: ENV['FROM_EMAIL_PAYMENT'],
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
@@ -165,7 +165,7 @@ describe Payment do
       FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
 
       expect(mailgun_client).to have_received(:send_message).with(
-        "epicodus.com",
+        ENV['MAILGUN_DOMAIN'],
         { from: ENV['FROM_EMAIL_PAYMENT'],
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
@@ -184,7 +184,7 @@ describe Payment do
       FactoryGirl.create(:payment_with_credit_card, student: student)
 
       expect(mailgun_client).to have_received(:send_message).with(
-        "epicodus.com",
+        ENV['MAILGUN_DOMAIN'],
         { from: ENV['FROM_EMAIL_PAYMENT'],
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
@@ -205,7 +205,7 @@ describe Payment do
       payment.update(status: 'failed')
 
       expect(mailgun_client).to have_received(:send_message).with(
-        "epicodus.com",
+        ENV['MAILGUN_DOMAIN'],
         { :from => ENV['FROM_EMAIL_PAYMENT'],
           :to => student.email,
           :bcc => ENV['FROM_EMAIL_PAYMENT'],
@@ -313,7 +313,7 @@ describe Payment do
       payment.update(refund_amount: 50_00)
 
       expect(mailgun_client).to have_received(:send_message).with(
-        "epicodus.com",
+        ENV['MAILGUN_DOMAIN'],
         { :from => ENV['FROM_EMAIL_PAYMENT'],
           :to => student.email,
           :bcc => ENV['FROM_EMAIL_PAYMENT'],
@@ -333,7 +333,7 @@ describe Payment do
       FactoryGirl.create(:payment_with_credit_card, student: student, offline: true)
 
       expect(mailgun_client).to_not have_received(:send_message).with(
-        "epicodus.com",
+        ENV['MAILGUN_DOMAIN'],
         { from: ENV['FROM_EMAIL_PAYMENT'],
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
@@ -350,7 +350,7 @@ describe Payment do
       FactoryGirl.create(:payment_with_credit_card, student: student)
 
       expect(mailgun_client).to have_received(:send_message).with(
-        "epicodus.com",
+        ENV['MAILGUN_DOMAIN'],
         { from: ENV['FROM_EMAIL_PAYMENT'],
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
@@ -368,7 +368,7 @@ describe Payment do
       FactoryGirl.create(:payment_with_credit_card, student: student)
 
       expect(mailgun_client).to_not have_received(:send_message).with(
-        "epicodus.com",
+        ENV['MAILGUN_DOMAIN'],
         { from: ENV['FROM_EMAIL_PAYMENT'],
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],

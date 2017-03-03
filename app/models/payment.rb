@@ -40,7 +40,7 @@ private
 
   def send_referral_email
     Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message(
-      "epicodus.com",
+      ENV['MAILGUN_DOMAIN'],
       { :from => ENV['FROM_EMAIL_PAYMENT'],
         :to => student.email,
         :bcc => ENV['FROM_EMAIL_PAYMENT'],
@@ -77,7 +77,7 @@ private
 
   def send_payment_receipt
     Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message(
-      "epicodus.com",
+      ENV['MAILGUN_DOMAIN'],
       { :from => ENV['FROM_EMAIL_PAYMENT'],
         :to => student.email,
         :bcc => ENV['FROM_EMAIL_PAYMENT'],
@@ -88,7 +88,7 @@ private
 
   def send_payment_failure_notice
     Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message(
-      "epicodus.com",
+      ENV['MAILGUN_DOMAIN'],
       { :from => ENV['FROM_EMAIL_PAYMENT'],
         :to => student.email,
         :bcc => ENV['FROM_EMAIL_PAYMENT'],
@@ -133,7 +133,7 @@ private
 
   def send_refund_receipt
     Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message(
-      "epicodus.com",
+      ENV['MAILGUN_DOMAIN'],
       { :from => ENV['FROM_EMAIL_PAYMENT'],
         :to => student.email,
         :bcc => ENV['FROM_EMAIL_PAYMENT'],
