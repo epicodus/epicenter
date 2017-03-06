@@ -19,7 +19,10 @@ private
 
   def update_payment_status(event, status)
     payment = Payment.find_by(stripe_transaction: stripe_transaction(event))
-    payment.update_columns(status: status) if payment
+    if payment
+      payment.update_columns(status: status)
+      payment.update_close_io
+    end
   end
 
   def stripe_transaction(event)
