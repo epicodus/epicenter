@@ -24,7 +24,7 @@ private
 
   def email_student
     Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message(
-      "epicodus.com",
+      ENV['MAILGUN_DOMAIN'],
       { :from => ENV['FROM_EMAIL_REVIEW'],
         :to => student.email,
         :subject => "Code review reviewed",

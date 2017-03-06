@@ -22,7 +22,7 @@ describe Review do
       student = submission.student
 
       expect(mailgun_client).to have_received(:send_message).with(
-        "epicodus.com",
+        ENV['MAILGUN_DOMAIN'],
         { :from => ENV['FROM_EMAIL_REVIEW'],
           :to => student.email,
           :subject => "Code review reviewed",
