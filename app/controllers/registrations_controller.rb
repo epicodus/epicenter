@@ -9,7 +9,7 @@ class RegistrationsController < Devise::RegistrationsController
   end
 
   def update
-    if params[:student][:email] != current_student.email && current_student.valid_password?(params[:student][:current_password])
+    if current_student && params[:student][:email] != current_student.email && current_student.valid_password?(params[:student][:current_password])
       begin
         current_student.update_close_email(params[:student][:email])
       rescue CrmError => e
