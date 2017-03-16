@@ -18,7 +18,7 @@ describe Payment do
     end
   end
 
-  describe 'offline payment status' do
+  describe 'offline payment status', :vcr do
     it 'sets it successfully' do
       student = FactoryGirl.create(:student)
       payment = FactoryGirl.create(:payment, student: student, offline: true)
@@ -109,14 +109,14 @@ describe Payment do
     end
 
     it 'sets stripe charge description for regular part-time', :vcr, :stripe_mock, :stub_mailgun do
-      part_time_course = FactoryGirl.create(:part_time_course, description: "Intro Evening")
+      part_time_course = FactoryGirl.create(:part_time_course)
       student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com', course: part_time_course)
       payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
       expect(payment.description).to eq "#{part_time_course.office.name}; #{part_time_course.start_date.strftime("%Y-%m-%d")}; Part-time"
     end
 
     it 'sets stripe charge descriptions for full-time payment after part-time payment', :vcr, :stripe_mock, :stub_mailgun do
-      part_time_course = FactoryGirl.create(:part_time_course, description: "Intro Evening")
+      part_time_course = FactoryGirl.create(:part_time_course)
       student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com', course: part_time_course)
       first_payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
       full_time_course = FactoryGirl.create(:course)

@@ -58,9 +58,10 @@ end
 
 feature 'Changing current course' do
   let(:admin) { FactoryGirl.create(:admin) }
+  let(:course) { FactoryGirl.create(:course) }
 
   scenario 'admin selects a new course' do
-    course2 = FactoryGirl.create(:course, description: 'Spring 2015')
+    course2 = FactoryGirl.create(:internship_course)
     login_as(admin, scope: :admin)
     visit root_path
     click_link 'Courses'
@@ -71,9 +72,12 @@ end
 
 feature 'Inviting new users', :vcr do
   let(:admin) { FactoryGirl.create(:admin) }
-  let!(:course) { FactoryGirl.create(:course, description: '* Placement Test') }
+  let!(:course) { FactoryGirl.create(:course) }
 
-  before { login_as(admin, scope: :admin) }
+  before do
+    login_as(admin, scope: :admin)
+    course.update_columns(description: '* Placement Test')
+  end
 
   scenario 'admin sends invitation to a student' do
     visit new_student_invitation_path
