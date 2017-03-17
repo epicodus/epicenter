@@ -8,11 +8,15 @@ class Course < ActiveRecord::Base
   scope :active_courses, -> { where(active: true).order(:description) }
   scope :inactive_courses, -> { where(active: false).order(:description) }
 
-  validates :description, :start_date, :end_date, :start_time, :end_time, :office_id, presence: true
+  validates :language_id, :start_date, :end_date, :start_time, :end_time, :office_id, presence: true
   before_validation :set_start_and_end_dates
+  before_save :set_parttime
+  before_save :set_internship_course
+  before_save :set_description
 
   belongs_to :admin
   belongs_to :office
+  belongs_to :language
   has_many :enrollments
   has_many :students, through: :enrollments
   has_many :attendance_records, through: :students
@@ -156,5 +160,27 @@ private
 
   def reassign_admin_current_courses
     Admin.where(current_course_id: self.id).update_all(current_course_id: Course.last.id)
+  end
+
+  def set_parttime
+    self.parttime = language.name.downcase.include? "evening"
+    return true
+  end
+
+  def set_internship_course
+    self.internship_course = language.name.downcase.include? "internship"
+    return true
+  end
+
+  def set_description
+    if language.level == 4
+      level_3_graduated = Course.courses_for(office).where('end_date > ? AND end_date < ?', start_date - 3.weeks, start_date).select {|course| course.language && course.language.level == 3 }
+      languages = level_3_graduated.map { |course| course.language.name }.sort.join(", ")
+      self.description = "#{start_date.strftime('%Y-%m')} #{language.name} (#{languages})"
+    elsif language.level == 0 && office.name != "Portland"
+      self.description = "#{start_date.strftime('%Y-%m')} #{language.name} #{office.name.upcase}"
+    else
+      self.description = "#{start_date.strftime('%Y-%m')} #{language.name}"
+    end
   end
 end

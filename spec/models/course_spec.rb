@@ -1,6 +1,7 @@
 describe Course do
   it { should belong_to :admin }
   it { should belong_to :office }
+  it { should belong_to :language }
   it { should have_many :students }
   it { should have_many(:attendance_records).through(:students) }
   it { should have_many :code_reviews }
@@ -10,11 +11,6 @@ describe Course do
   it { should validate_presence_of(:office_id) }
 
   describe "validations" do
-    it "validates the presence of description" do
-      course = FactoryGirl.build(:course, description: nil)
-      expect(course).to_not be_valid
-    end
-
     it "validates the presence of start_date" do
       course = FactoryGirl.build(:course, class_days: nil)
       expect(course.start_date).to eq nil
@@ -332,5 +328,48 @@ describe Course do
       expect(File.read(filename)).to include internship.name
       expect(File.read(filename)).to include rating.number.to_s
     end
+  end
+
+  describe '#set_parttime' do
+    it 'sets parttime flag for evening course' do
+      course = FactoryGirl.create(:part_time_course)
+      expect(course.parttime).to eq true
+    end
+
+    it 'does not set parttime flag for intro course' do
+      course = FactoryGirl.create(:course)
+      expect(course.parttime).to eq false
+    end
+  end
+
+  describe '#set_internship_course' do
+    it 'sets internship_course flag for internship course' do
+      course = FactoryGirl.create(:internship_course)
+      expect(course.internship_course).to eq true
+    end
+
+    it 'does not set internship_course flag for intro course' do
+      course = FactoryGirl.create(:course)
+      expect(course.internship_course).to eq false
+    end
+  end
+
+  describe '#set_description' do
+    it 'sets description for course to date and language' do
+      course = FactoryGirl.create(:portland_course)
+      expect(course.description).to eq "#{course.start_date.strftime('%Y-%m')} #{course.language.name}"
+    end
+
+    it 'sets description for intro course in location other than portland to date, language, location' do
+      course = FactoryGirl.create(:seattle_course)
+      expect(course.description).to eq "#{course.start_date.strftime('%Y-%m')} #{course.language.name} #{course.office.name.upcase}"
+    end
+
+    it 'sets description for internship course to include languages just graduated' do
+      level_3_just_finished_course = FactoryGirl.create(:level_3_just_finished_course)
+      internship_course = FactoryGirl.create(:internship_course, office: level_3_just_finished_course.office)
+      expect(internship_course.description).to eq "#{internship_course.start_date.strftime('%Y-%m')} Internship (#{level_3_just_finished_course.language.name})"
+    end
+
   end
 end

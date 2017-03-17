@@ -953,22 +953,26 @@ describe Student do
 
   describe '.pull_info_from_crm', :vcr do
     it 'returns name & Epicenter course id for close_io lead given email' do
-      course = FactoryGirl.create(:course, description: "* Placement Test")
+      course = FactoryGirl.create(:course)
+      course.update_columns(description: "* Placement Test")
       expect(Student.pull_info_from_crm("example@example.com")).to eq({name: "TEST TEST", course_id: course.id, errors: []})
     end
     it 'returns info for correct student even if similar email exists in Close' do
-      course = FactoryGirl.create(:course, description: "* Placement Test")
+      course = FactoryGirl.create(:course)
+      course.update_columns(description: "* Placement Test")
       expect(Student.pull_info_from_crm("example@example.com")).to eq({name: "TEST TEST", course_id: course.id, errors: []})
     end
     it 'returns info even if two identical entries exist in Close' do
-      course = FactoryGirl.create(:course, description: "* Placement Test")
+      course = FactoryGirl.create(:course)
+      course.update_columns(description: "* Placement Test")
       expect(Student.pull_info_from_crm("duplicate_email@example.com")).to eq({name: "Test Duplicate Email", course_id: course.id, errors: []})
     end
     it 'returns error if email not found in Close' do
       expect(Student.pull_info_from_crm("email_not_in_close@example.com")[:errors]).to include "Email not found"
     end
     it 'returns error if name not listed in Close lead' do
-      course = FactoryGirl.create(:course, description: "* Placement Test")
+      course = FactoryGirl.create(:course)
+      course.update_columns(description: "* Placement Test")
       expect(Student.pull_info_from_crm("no_name@example.com")[:errors]).to include "Name not found"
     end
     it 'returns error if course not listed in Close lead' do

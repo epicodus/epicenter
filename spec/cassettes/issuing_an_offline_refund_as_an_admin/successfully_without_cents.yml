@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://app.close.io/api/v1/lead/?query=email:student344@example.com
+    uri: https://app.close.io/api/v1/lead/?query=email:student9@example.com
     body:
       encoding: US-ASCII
       string: ''
@@ -23,7 +23,54 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 02 Mar 2017 22:05:14 GMT
+      - Fri, 17 Mar 2017 22:44:08 GMT
+      Set-Cookie:
+      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Rate-Limit-Limit:
+      - '600'
+      X-Rate-Limit-Remaining:
+      - '599'
+      X-Rate-Limit-Reset:
+      - '15'
+      Content-Length:
+      - '51'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"has_more": false, "total_results": 0, "data": []}'
+    http_version: 
+  recorded_at: Fri, 17 Mar 2017 22:44:16 GMT
+- request:
+    method: get
+    uri: https://app.close.io/api/v1/lead/?query=email:student9@example.com
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      User-Agent:
+      - closeio-ruby-gem/v2.6.4
+      Authorization:
+      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 17 Mar 2017 22:44:08 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -37,7 +84,7 @@ http_interactions:
       X-Rate-Limit-Remaining:
       - '598'
       X-Rate-Limit-Reset:
-      - '7'
+      - '15'
       Content-Length:
       - '51'
       Connection:
@@ -46,10 +93,10 @@ http_interactions:
       encoding: UTF-8
       string: '{"has_more": false, "total_results": 0, "data": []}'
     http_version: 
-  recorded_at: Thu, 02 Mar 2017 22:05:14 GMT
+  recorded_at: Fri, 17 Mar 2017 22:44:17 GMT
 - request:
     method: get
-    uri: https://app.close.io/api/v1/lead/?query=email:student344@example.com
+    uri: https://app.close.io/api/v1/lead/?query=email:student169@example.com
     body:
       encoding: US-ASCII
       string: ''
@@ -70,7 +117,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 02 Mar 2017 22:05:14 GMT
+      - Fri, 17 Mar 2017 23:03:04 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -82,9 +129,9 @@ http_interactions:
       X-Rate-Limit-Limit:
       - '600'
       X-Rate-Limit-Remaining:
-      - '597'
+      - '599'
       X-Rate-Limit-Reset:
-      - '7'
+      - '15'
       Content-Length:
       - '51'
       Connection:
@@ -93,10 +140,10 @@ http_interactions:
       encoding: UTF-8
       string: '{"has_more": false, "total_results": 0, "data": []}'
     http_version: 
-  recorded_at: Thu, 02 Mar 2017 22:05:14 GMT
+  recorded_at: Fri, 17 Mar 2017 23:03:04 GMT
 - request:
     method: get
-    uri: https://app.close.io/api/v1/lead/?query=email:student2@example.com
+    uri: https://app.close.io/api/v1/lead/?query=email:student169@example.com
     body:
       encoding: US-ASCII
       string: ''
@@ -117,101 +164,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Fri, 03 Mar 2017 01:20:26 GMT
-      Set-Cookie:
-      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '600'
-      X-Rate-Limit-Remaining:
-      - '598'
-      X-Rate-Limit-Reset:
-      - '10'
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: '{"has_more": false, "total_results": 0, "data": []}'
-    http_version: 
-  recorded_at: Fri, 03 Mar 2017 01:20:26 GMT
-- request:
-    method: get
-    uri: https://app.close.io/api/v1/lead/?query=email:student2@example.com
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      User-Agent:
-      - closeio-ruby-gem/v2.6.4
-      Authorization:
-      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 03 Mar 2017 01:20:26 GMT
-      Set-Cookie:
-      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '600'
-      X-Rate-Limit-Remaining:
-      - '597'
-      X-Rate-Limit-Reset:
-      - '10'
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: '{"has_more": false, "total_results": 0, "data": []}'
-    http_version: 
-  recorded_at: Fri, 03 Mar 2017 01:20:26 GMT
-- request:
-    method: get
-    uri: https://app.close.io/api/v1/lead/?query=email:student110@example.com
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      User-Agent:
-      - closeio-ruby-gem/v2.6.4
-      Authorization:
-      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 17 Mar 2017 00:44:08 GMT
+      - Fri, 17 Mar 2017 23:03:05 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -225,7 +178,7 @@ http_interactions:
       X-Rate-Limit-Remaining:
       - '598'
       X-Rate-Limit-Reset:
-      - '5'
+      - '14'
       Content-Length:
       - '51'
       Connection:
@@ -234,52 +187,5 @@ http_interactions:
       encoding: UTF-8
       string: '{"has_more": false, "total_results": 0, "data": []}'
     http_version: 
-  recorded_at: Fri, 17 Mar 2017 00:44:08 GMT
-- request:
-    method: get
-    uri: https://app.close.io/api/v1/lead/?query=email:student110@example.com
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      User-Agent:
-      - closeio-ruby-gem/v2.6.4
-      Authorization:
-      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 17 Mar 2017 00:44:08 GMT
-      Set-Cookie:
-      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '600'
-      X-Rate-Limit-Remaining:
-      - '597'
-      X-Rate-Limit-Reset:
-      - '5'
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: '{"has_more": false, "total_results": 0, "data": []}'
-    http_version: 
-  recorded_at: Fri, 17 Mar 2017 00:44:08 GMT
+  recorded_at: Fri, 17 Mar 2017 23:03:05 GMT
 recorded_with: VCR 3.0.3

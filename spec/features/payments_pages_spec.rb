@@ -159,7 +159,7 @@ feature 'issuing an offline refund as an admin', :stripe_mock do
 
   before { login_as(admin, scope: :admin) }
 
-  scenario 'successfully without cents' do
+  scenario 'successfully without cents', :vcr do
     visit student_payments_path(student)
     fill_in "refund-#{payment.id}-input", with: 60
     click_on 'Refund'
@@ -298,7 +298,7 @@ feature 'make an offline payment', :stripe_mock, :js do
 
   before { login_as(admin, scope: :admin) }
 
-  scenario 'successfully with cents' do
+  scenario 'successfully with cents', :vcr do
     visit student_payments_path(student)
     check 'offline-payment-checkbox'
     fill_in 'Notes', with: 'Test offline payment'
