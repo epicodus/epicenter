@@ -85,10 +85,14 @@ end
 feature 'joining an internship course as a company' do
   let(:company) { FactoryGirl.create(:company) }
   let!(:internship) { FactoryGirl.create(:internship, company: company) }
-  let!(:other_internship_course) { FactoryGirl.create(:internship_course, description: 'Other course') }
-  before { login_as(company, scope: :company) }
+  let!(:other_internship_course) { FactoryGirl.create(:internship_course) }
 
-  scenario 'as a compnay on the company show page' do
+  before do
+    other_internship_course.update_columns(description: 'Other course')
+    login_as(company, scope: :company)
+  end
+
+  scenario 'as a company on the company show page' do
     visit company_path(company)
     select other_internship_course.description
     click_on 'Join'

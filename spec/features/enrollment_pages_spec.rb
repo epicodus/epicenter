@@ -1,6 +1,6 @@
 feature 'adding another course for a student' do
   let(:student) { FactoryGirl.create(:student) }
-  let!(:other_course) { FactoryGirl.create(:course, description: 'Other course') }
+  let!(:other_course) { FactoryGirl.create(:portland_ruby_course) }
   let!(:other_student) { FactoryGirl.create(:student, sign_in_count: 1) }
   let(:admin) { FactoryGirl.create(:admin) }
   before { login_as(admin, scope: :admin) }
@@ -21,8 +21,8 @@ feature 'adding another course for a student' do
 end
 
 feature 'deleting a course for a student' do
-  let(:course1) { FactoryGirl.create(:course, description: 'course1') }
-  let(:course2) { FactoryGirl.create(:course, description: 'course2') }
+  let(:course1) { FactoryGirl.create(:course) }
+  let(:course2) { FactoryGirl.create(:internship_course) }
   let(:student) { FactoryGirl.create(:student, courses: [course1, course2]) }
   let(:admin) { FactoryGirl.create(:admin) }
   before { login_as(admin, scope: :admin) }

@@ -172,7 +172,8 @@ describe CodeReview do
     end
 
     it 'returns true if on day before code review date for part-time course' do
-      student.course.update(parttime: true)
+      parttime_course = FactoryGirl.create(:part_time_course)
+      student.update(course: parttime_course)
       travel_to code_review.date - 1.day do
         expect(code_review.visible?(student)).to eq true
       end

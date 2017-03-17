@@ -174,8 +174,8 @@ private
 
   def set_description
     if language.level == 4
-      level_3_graduated = Course.courses_for(office).previous_courses.where('end_date > ?', start_date - 3.weeks).select {|c| c.language && c.language.level == 3 }
-      languages = level_3_graduated.map { |course| course.description.split[1] }.sort.join(", ")
+      level_3_graduated = Course.courses_for(office).where('end_date > ? AND end_date < ?', start_date - 3.weeks, start_date).select {|course| course.language && course.language.level == 3 }
+      languages = level_3_graduated.map { |course| course.language.name }.sort.join(", ")
       self.description = "#{start_date.strftime('%Y-%m')} #{language.name} (#{languages})"
     elsif language.level == 0 && office.name != "Portland"
       self.description = "#{start_date.strftime('%Y-%m')} #{language.name} #{office.name.upcase}"

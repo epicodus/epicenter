@@ -58,43 +58,48 @@ FactoryGirl.define do
   end
 
   factory :course do
-    internship_course false
-    description 'Current course'
     class_days (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 4.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? }
     start_time '8:00 AM'
     end_time '5:00 PM'
     association :office, factory: :philadelphia_office
+    association :language, factory: :intro_language
 
     factory :portland_course do
-      description 'Portland course'
       association :office, factory: :portland_office
     end
 
     factory :seattle_course do
-      description 'Seattle course'
       association :office, factory: :seattle_office
     end
 
     factory :past_course do
-      description 'Past course'
       class_days ((Time.zone.now.to_date - 18.weeks).beginning_of_week..(Time.zone.now.to_date - 14.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? }
     end
 
+    factory :level_3_just_finished_course do
+      association :language, factory: :rails_language
+      class_days ((Time.zone.now.to_date - 5.weeks).beginning_of_week..(Time.zone.now.to_date - 1.week).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? }
+    end
+
     factory :future_course do
-      description 'Future course'
       class_days ((Time.zone.now.to_date + 5.weeks).beginning_of_week..(Time.zone.now.to_date + 8.weeks).beginning_of_week).select { |day| day if !day.saturday? && !day.sunday? }
     end
 
     factory :part_time_course do
-      parttime true
-      description 'Part-time course'
       start_time '6:00 PM'
       end_time '9:00 PM'
+      association :language, factory: :evening_language
     end
 
     factory :internship_course do
-      internship_course true
       active true
+      association :language, factory: :internship_language
+    end
+
+    factory :portland_ruby_course do
+      active true
+      association :office, factory: :portland_office
+      association :language, factory: :ruby_language
     end
   end
 
@@ -124,6 +129,39 @@ FactoryGirl.define do
       name 'Philadelphia'
       time_zone 'Eastern Time (US & Canada)'
     end
+  end
+
+  factory :language do
+    factory :intro_language do
+      name 'Intro'
+      level 0
+    end
+
+    factory :evening_language do
+      name 'Evening'
+      level 0
+    end
+
+    factory :ruby_language do
+      name 'Ruby'
+      level 1
+    end
+
+    factory :js_language do
+      name 'JavaScript'
+      level 2
+    end
+
+    factory :rails_language do
+      name 'Rails'
+      level 3
+    end
+
+    factory :internship_language do
+      name 'Internship'
+      level 4
+    end
+
   end
 
   factory :grade do
