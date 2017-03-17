@@ -43,7 +43,8 @@ feature "viewing transcript & certificate" do
 
   context "after internship class ends" do
     it "allows student to view their transcript" do
-      course = FactoryGirl.create(:past_course, internship_course: true)
+      internship_language = FactoryGirl.create(:internship_language)
+      course = FactoryGirl.create(:past_course, language: internship_language)
       student = FactoryGirl.create(:student, course: course)
       login_as(student, scope: :student)
       visit edit_student_registration_path
@@ -53,7 +54,8 @@ feature "viewing transcript & certificate" do
     end
 
     it "allows student to view their certificate if passed all code reviews", :stub_mailgun do
-      course = FactoryGirl.create(:past_course, internship_course: true)
+      internship_language = FactoryGirl.create(:internship_language)
+      course = FactoryGirl.create(:past_course, language: internship_language)
       student = FactoryGirl.create(:student, course: course)
       code_review = FactoryGirl.create(:code_review, course: course)
       submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
@@ -66,7 +68,8 @@ feature "viewing transcript & certificate" do
     end
 
     it "doesn't show certificate if student has any failing code reviews", :stub_mailgun do
-      course = FactoryGirl.create(:past_course, internship_course: true)
+      internship_language = FactoryGirl.create(:internship_language)
+      course = FactoryGirl.create(:past_course, language: internship_language)
       student = FactoryGirl.create(:student, course: course)
       code_review = FactoryGirl.create(:code_review, course: course)
       submission = FactoryGirl.create(:submission, code_review: code_review, student: student)

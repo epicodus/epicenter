@@ -31,7 +31,8 @@ feature 'creating a course' do
     scenario 'from scratch', js: true do
       travel_to Date.parse('November 16, 2015') do
         visit new_course_path
-        fill_in 'Description', with: 'Ruby/Rails - Summer 2015'
+        select admin.current_course.language.name, from: 'Language'
+        select admin.current_course.office.name, from: 'Office'
         select admin.name, from: 'Teacher'
         fill_in 'Start time', with: '8:00 AM'
         fill_in 'End time', with: '5:00 PM'
@@ -44,10 +45,11 @@ feature 'creating a course' do
     end
 
     scenario 'cloned from another course' do
-      previous_course = FactoryGirl.create(:course, description: 'Ruby/Rails - Fall 2014')
+      previous_course = FactoryGirl.create(:portland_ruby_course)
       code_review = FactoryGirl.create(:code_review, course: previous_course)
       visit new_course_path
-      fill_in 'Description', with: 'Ruby/Rails - Summer 2015'
+      select admin.current_course.language.name, from: 'Language'
+      select admin.current_course.office.name, from: 'Office'
       select admin.name, from: 'Teacher'
       fill_in 'Start time', with: '8:00 AM'
       fill_in 'End time', with: '5:00 PM'
@@ -102,19 +104,20 @@ feature 'editing a course' do
 
     scenario 'with invalid input' do
       visit edit_course_path(course)
-      fill_in 'Description', with: ''
+      fill_in 'Start time', with: ''
       click_on 'Update Course'
       expect(page).to have_content "can't be blank"
     end
 
     scenario 'with valid input' do
       visit edit_course_path(course)
-      fill_in 'Description', with: 'PHP/Drupal - Summer 2015'
+      select admin.current_course.language.name, from: 'Language'
+      select admin.current_course.office.name, from: 'Office'
       fill_in 'Start time', with: '8:00 AM'
       fill_in 'End time', with: '5:00 PM'
       find('#course_class_days', visible: false).set "2015-09-06,2015-09-07,2015-09-08"
       click_on 'Update Course'
-      expect(page).to have_content "PHP/Drupal - Summer 2015 has been updated"
+      expect(page).to have_content "has been updated"
       expect(page).to have_content 'Code reviews'
     end
 

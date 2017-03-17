@@ -2,18 +2,18 @@
   <%= render 'layouts/errors', object: course %>
 
   <div class="form-group">
-    <%= f.label :description %>
-    <%= f.text_field :description, autofocus: true, class: 'form-control' %>
+    <%= f.label :language_id, 'Language' %>
+    <%= f.select :language_id, Language.all.order(:id).collect {|c| [ c.name, c.id ] }, {include_blank: true}, { class: 'form-control' } %>
   </div>
 
   <div class="form-group">
     <%= f.label :office_id, 'Office' %>
-    <%= f.select :office_id, Office.all.order(:name).collect {|c| [ c.name, c.id ] }, {}, { class: 'form-control' } %>
+    <%= f.select :office_id, Office.all.order(:name).collect {|c| [ c.name, c.id ] }, {include_blank: true}, { class: 'form-control' } %>
   </div>
 
   <div class="form-group">
     <%= f.label :admin_id, 'Teacher' %>
-    <%= f.select :admin_id, Admin.all.collect {|c| [ c.name, c.id ] }, {}, { class: 'form-control' } %>
+    <%= f.select :admin_id, Admin.all.collect {|c| [ c.name, c.id ] }, {include_blank: true}, { class: 'form-control' } %>
   </div>
 
   <div class="form-group">
@@ -24,20 +24,6 @@
   <div class="form-group">
     <%= f.label :end_time %>
     <%= f.text_field :end_time, value: @course.end_time, class: 'timepicker form-control', required: true %>
-  </div>
-
-  <div class='form-group'>
-    <%= f.label :internship_course do %>
-      Is this an internship course ?
-    <% end %>
-    <%= f.check_box :internship_course %>
-  </div>
-
-  <div class='form-group'>
-    <%= f.label :parttime do %>
-      Is this a part-time course ?
-    <% end %>
-    <%= f.check_box :parttime %>
   </div>
 
   <%= f.hidden_field :active %>
