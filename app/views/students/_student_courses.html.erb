@@ -51,6 +51,20 @@
 <% end %>
 
 <% if can? :manage, Enrollment %>
+  <div class="well">
+    <% if @student.courses_withdrawn.any? %>
+      <strong>Withdrawn:</strong>
+      <ul>
+        <% @student.courses_withdrawn.each do |course| %>
+          <li>
+            <%= link_to course.description, course_student_path(course, @student) %>
+            (<%= @student.attendance_records_for(:all, course) %> sign-ins, withdrawn <%= Enrollment.only_deleted.find_by(student: @student, course: course).deleted_at.strftime("%Y-%m-%d") %>)
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+
   <div class="row">
     <div class="col-md-4">
       <%= form_for @student, method: :patch do |f| %>

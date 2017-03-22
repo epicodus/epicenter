@@ -69,6 +69,16 @@ feature 'viewing courses' do
     login_as(student, scope: :student)
     visit student_courses_path(student)
     expect(page).to have_content 'Your courses'
+    expect(page).to have_content student.course.description
+  end
+
+  scenario 'as a student logged in, with a withdrawn course' do
+    future_course = FactoryGirl.create(:future_course)
+    Enrollment.create(student: student, course: future_course)
+    Enrollment.find_by(student: student, course: future_course).destroy
+    login_as(student, scope: :student)
+    visit student_courses_path(student)
+    expect(page).to_not have_content 'Withdrawn:'
   end
 
   scenario 'as a guest' do

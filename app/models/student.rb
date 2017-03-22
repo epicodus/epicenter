@@ -254,6 +254,10 @@ class Student < User
     ratings.where(internship_id: internship.id).first
   end
 
+  def courses_withdrawn
+    enrollments.only_deleted.select { |enrollment| !courses.include? enrollment.course }.map {|enrollment| enrollment.course }.compact.sort
+  end
+
 private
 
   def total_number_of_course_days(start_course=nil, end_course=nil)
