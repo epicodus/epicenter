@@ -283,6 +283,14 @@ describe Course do
     end
   end
 
+  describe '.level' do
+    it 'returns all courses with given language level' do
+      intro_course = FactoryGirl.create(:course)
+      rails_course = FactoryGirl.create(:level_3_just_finished_course)
+      expect(Course.level(3)).to eq [rails_course]
+    end
+  end
+
   describe '#total_internship_students_requested' do
     it 'returns the total number of students requested for an internship course' do
       internship_course = FactoryGirl.create(:internship_course)
