@@ -7,6 +7,7 @@ class Course < ActiveRecord::Base
   scope :non_internship_courses, -> { where(internship_course: false) }
   scope :active_courses, -> { where(active: true).order(:description) }
   scope :inactive_courses, -> { where(active: false).order(:description) }
+  scope :level, -> (level) { joins(:language).where('level = ?', level) }
 
   validates :language_id, :start_date, :end_date, :start_time, :end_time, :office_id, presence: true
   before_validation :set_start_and_end_dates
