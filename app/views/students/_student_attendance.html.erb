@@ -35,7 +35,13 @@
                 </td>
                 <td><%= @student.attendance_record_on_day(day).try(:created_at).try(:in_time_zone, course.office.time_zone).try(:strftime, '%l:%M %p') %></td>
                 <td><%= @student.attendance_record_on_day(day).try(:signed_out_time).try(:in_time_zone, course.office.time_zone).try(:strftime, '%l:%M %p') %></td>
-                <td><%= @student.pair_on_day(day) ? @student.pair_on_day(day).name : 'Solo' %></td>
+                <td>
+                  <% if day.friday? || @student.attendance_record_on_day(day) == nil %>
+                    -
+                  <% else %>
+                    <%= @student.pair_on_day(day) ? @student.pair_on_day(day).name : 'Solo' %>
+                  <% end %>
+                </td>
                 <td><%= @student.attendance_record_on_day(day) && @student.attendance_record_on_day(day).station ? @student.attendance_record_on_day(day).station : '-' %></td>
                 <td class="edit-attendance">
                   <% if current_admin && can?(:manage, AttendanceRecord) %>

@@ -3,12 +3,13 @@ class AttendanceRecordAmendment
 
   validates :student_id, :date, :status, presence: true
 
-  attr_accessor :student_id, :date, :status
+  attr_accessor :student_id, :date, :status, :pair_id
 
   def initialize(attributes={})
     @student_id = attributes[:student_id]
     @date = attributes[:date] unless attributes[:date].blank?
     @status = attributes[:status]
+    @pair_id = attributes[:pair_id]
   end
 
   def save
@@ -34,6 +35,7 @@ private
     when "Tardy and Left early"
       attendance_record.update(tardy: true, left_early: true)
     end
+    attendance_record.update(pair_id: pair_id) if AttendanceRecord.exists?(attendance_record.id)
   end
 
   def attendance_record
