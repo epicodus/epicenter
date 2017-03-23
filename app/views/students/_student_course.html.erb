@@ -4,7 +4,14 @@
       <%= @student.name %>
     <% end %>
   </h1>
-  <h2><%= @course.description %></h2>
+  <h2>
+    <%= @course.description %>
+    <% if @student.courses_withdrawn.include? @course %>
+      <strong>(withdrawn)</strong>
+    <% elsif !@student.courses.include? @course %>
+      <strong>(not enrolled)</strong>
+    <% end %>
+  </h2>
 <% else %>
   <h1><%= @course.description %></h1>
 <% end %>

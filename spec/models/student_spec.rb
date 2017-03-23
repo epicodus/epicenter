@@ -48,6 +48,18 @@ describe Student do
     end
   end
 
+  describe '#courses_withdrawn' do
+    let!(:first_course) { FactoryGirl.create(:past_course) }
+    let!(:second_course) { FactoryGirl.create(:course) }
+    let!(:student) { FactoryGirl.create(:student, courses: [first_course, second_course]) }
+
+    it 'returns courses student was withdrawn from' do
+      Enrollment.find_by(student: student, course: second_course).destroy
+      student.reload
+      expect(student.courses_withdrawn).to eq [second_course]
+    end
+  end
+
   describe "#other_courses" do
     let!(:first_course) { FactoryGirl.create(:past_course) }
     let!(:second_course) { FactoryGirl.create(:course) }
@@ -628,6 +640,20 @@ describe Student do
 
       travel_to day_one.end_of_day do
         expect(student.absences(course)).to eq 0.5
+      end
+    end
+
+    it "calculates the number of absences before start of class on the next day" do
+      day_one = student.course.start_date
+      day_two = day_one + 1.day
+      student.course.update(class_days: [day_one, day_two])
+
+      travel_to day_one.beginning_of_day do
+        FactoryGirl.create(:attendance_record, student: student)
+      end
+
+      travel_to day_two.beginning_of_day do
+        expect(student.absences(course)).to eq 1.5
       end
     end
 

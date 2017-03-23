@@ -137,6 +137,9 @@ feature 'viewing the student page' do
     visit course_student_path(student.course, student)
     expect(page).to have_content 'Attendance'
     expect(page).to have_content 'Code reviews'
+    expect(page).to have_content student.course.description
+    expect(page).to_not have_content 'withdrawn'
+    expect(page).to_not have_content 'not enrolled'
   end
 
   scenario 'when a student is enrolled in a course with internships' do
@@ -150,6 +153,51 @@ feature 'viewing the student page' do
   scenario 'when a student is not enrolled in any courses' do
     visit student_courses_path(unenrolled_student)
     expect(page).to have_content 'Not enrolled'
+  end
+
+  scenario 'when a student has withdrawn from a course' do
+    Enrollment.find_by(student: student, course: student.course).destroy
+    visit course_student_path(student.course, student)
+    expect(page).to have_content 'withdrawn'
+  end
+
+  scenario 'when a student was never enrolled in a course' do
+    other_course = FactoryGirl.create(:past_course)
+    visit course_student_path(other_course, student)
+    expect(page).to have_content 'not enrolled'
+  end
+end
+
+feature 'viewing the student courses list' do
+  let(:admin) { FactoryGirl.create(:admin) }
+  let(:student) { FactoryGirl.create(:student) }
+
+  before { login_as(admin, scope: :admin) }
+
+  it 'shows enrolled course' do
+    visit student_courses_path(student)
+    expect(page).to have_content student.course.description
+    expect(page).to_not have_content 'Withdrawn'
+  end
+
+  it 'shows withdrawn course in separate section' do
+    other_course = FactoryGirl.create(:future_course)
+    Enrollment.create(student: student, course: other_course)
+    Enrollment.find_by(student: student, course: other_course).destroy
+    visit student_courses_path(student)
+    expect(page).to have_content other_course.description
+    expect(page).to have_content 'Withdrawn:'
+    expect(page).to have_content "#{other_course.description} (0 sign-ins, withdrawn"
+  end
+
+  it 'allows admin to click through to view code reviews for withdrawn course' do
+    other_course = FactoryGirl.create(:future_course)
+    Enrollment.create(student: student, course: other_course)
+    Enrollment.find_by(student: student, course: other_course).destroy
+    visit student_courses_path(student)
+    click_link other_course.description
+    expect(page).to have_content "#{other_course.description} (withdrawn)"
+    expect(page).to have_content 'Code reviews'
   end
 end
 
