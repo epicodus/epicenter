@@ -43,7 +43,7 @@ describe AttendanceRecordAmendment do
       expect(student.attendance_records.first.tardy).to eq(true)
     end
 
-    it 'updates the status if an attendance record alread exists for the given day' do
+    it 'updates the status if an attendance record alreads exists for the given day' do
       FactoryGirl.create(:attendance_record, student: student, date: Time.zone.now.to_date, tardy: true)
       attendance_record_amendment = AttendanceRecordAmendment.new(student_id: student.id, date: Time.zone.now.to_date, status: 'On time')
       attendance_record_amendment.save
@@ -55,6 +55,21 @@ describe AttendanceRecordAmendment do
       attendance_record_amendment = AttendanceRecordAmendment.new(student_id: student.id, date: Time.zone.now.to_date, status: 'Absent')
       attendance_record_amendment.save
       expect(student.attendance_records.count).to eq 0
+    end
+
+    it 'updates the pair_id to solo' do
+      FactoryGirl.create(:attendance_record, student: student, date: Time.zone.now.to_date, tardy: true)
+      attendance_record_amendment = AttendanceRecordAmendment.new(student_id: student.id, date: Time.zone.now.to_date, status: 'On time', pair_id: nil)
+      attendance_record_amendment.save
+      expect(AttendanceRecord.last.pair_id).to eq nil
+    end
+
+    it 'updates the pair_id to another student' do
+      pair = FactoryGirl.create(:student)
+      FactoryGirl.create(:attendance_record, student: student, date: Time.zone.now.to_date, tardy: true)
+      attendance_record_amendment = AttendanceRecordAmendment.new(student_id: student.id, date: Time.zone.now.to_date, status: 'On time', pair_id: pair.id)
+      attendance_record_amendment.save
+      expect(AttendanceRecord.last.pair_id).to eq pair.id
     end
   end
 end

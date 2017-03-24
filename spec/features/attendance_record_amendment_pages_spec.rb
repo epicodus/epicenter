@@ -28,6 +28,35 @@ feature "creating an attendance record amendment" do
     expect(page).to_not have_content 'On time'
   end
 
+  scenario "changing pair to solo" do
+    admin = FactoryGirl.create(:admin, current_course: student.course)
+    login_as(admin, scope: :admin)
+    visit new_attendance_record_amendment_path
+    select student.name, from: "attendance_record_amendment_student_id"
+    fill_in "attendance_record_amendment_date", with: student.course.start_date.strftime("%F")
+    select "On time", from: "attendance_record_amendment_status"
+    select "Solo", from: "Pair"
+    click_button "Submit"
+    attendance_record_amendment = AttendanceRecord.last
+    expect(page).to have_content "The attendance record for #{student.name} on #{attendance_record_amendment.date.to_date.strftime('%A, %B %d, %Y')} has been amended to"
+    expect(page).to have_content "Solo"
+  end
+
+  scenario "changing pair to another student" do
+    admin = FactoryGirl.create(:admin, current_course: student.course)
+    pair = FactoryGirl.create(:student, courses: [student.course])
+    login_as(admin, scope: :admin)
+    visit new_attendance_record_amendment_path
+    select student.name, from: "attendance_record_amendment_student_id"
+    fill_in "attendance_record_amendment_date", with: student.course.start_date.strftime("%F")
+    select "On time", from: "attendance_record_amendment_status"
+    select pair.name, from: "Pair"
+    click_button "Submit"
+    attendance_record_amendment = AttendanceRecord.last
+    expect(page).to have_content "The attendance record for #{student.name} on #{attendance_record_amendment.date.to_date.strftime('%A, %B %d, %Y')} has been amended to"
+    expect(page).to have_content pair.name
+  end
+
   scenario 'as a student' do
     login_as(student, scope: :student)
     visit new_attendance_record_amendment_path

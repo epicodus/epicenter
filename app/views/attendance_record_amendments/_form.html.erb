@@ -12,5 +12,9 @@
     <%= f.label :status %>
     <%= f.select :status, options_for_select(["On time", "Tardy", "Left early", "Absent", "Tardy and Left early"]), {}, { class: "form-control" } %>
   </div>
+  <div class="form-group">
+    <%= f.label :pair_id %>
+    <%= f.select :pair_id, @course.students.all.order(:name).collect {|c| [ c.name, c.id ] }, {include_blank: "Solo"}, { class: 'form-control' } %>
+  </div>
   <%= f.submit "Submit", class: 'btn btn-info' %>
 <% end %>
