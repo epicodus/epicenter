@@ -177,4 +177,26 @@ describe AttendanceRecord do
       expect(attendance_record.signed_out_time.min).to eq Time.now.min
     end
   end
+
+  describe '#status' do
+    it 'reports status as on time' do
+      attendance_record = FactoryGirl.create(:attendance_record, tardy: false, left_early: false)
+      expect(attendance_record.status).to eq "On time"
+    end
+
+    it 'reports status as tardy' do
+      attendance_record = FactoryGirl.create(:attendance_record, tardy: true, left_early: false)
+      expect(attendance_record.status).to eq "Tardy"
+    end
+
+    it 'reports status as left early' do
+      attendance_record = FactoryGirl.create(:attendance_record, tardy: false, left_early: true)
+      expect(attendance_record.status).to eq "Left early"
+    end
+
+    it 'reports status as tardy and left early' do
+      attendance_record = FactoryGirl.create(:attendance_record, tardy: true, left_early: true)
+      expect(attendance_record.status).to eq "Tardy and Left early"
+    end
+  end
 end

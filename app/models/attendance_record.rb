@@ -24,6 +24,18 @@ class AttendanceRecord < ActiveRecord::Base
     end
   end
 
+  def status
+    if tardy && left_early
+      "Tardy and Left early"
+    elsif tardy
+      "Tardy"
+    elsif left_early
+      "Left early"
+    else
+      "On time"
+    end
+  end
+
 private
 
   def sign_out
