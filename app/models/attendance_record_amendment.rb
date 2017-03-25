@@ -23,6 +23,7 @@ class AttendanceRecordAmendment
 private
 
   def amend_attendance_record
+    attendance_record.update(pair_id: pair_id)
     case status
     when "On time"
       attendance_record.update(tardy: false, left_early: false)
@@ -30,12 +31,11 @@ private
       attendance_record.update(tardy: true, left_early: false)
     when "Left early"
       attendance_record.update(left_early: true, tardy: false)
-    when "Absent"
-      attendance_record.try(:destroy)
     when "Tardy and Left early"
       attendance_record.update(tardy: true, left_early: true)
+    when "Absent"
+      attendance_record.try(:destroy)
     end
-    attendance_record.update(pair_id: pair_id) if AttendanceRecord.exists?(attendance_record.id)
   end
 
   def attendance_record
