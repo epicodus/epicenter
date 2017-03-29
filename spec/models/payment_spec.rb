@@ -213,6 +213,25 @@ describe Payment do
           :text => "Hi #{student.name}. This is to notify you that a recent payment you made for Epicodus tuition has failed. Please reply to this email so we can sort it out together. Thanks!" }
       )
     end
+
+    it "does not email the student a failure notice twice for the same payment", :vcr, :stripe_mock do
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com')
+
+      mailgun_client = spy("mailgun client")
+      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00, failure_notice_sent: true)
+      payment.update(status: 'failed')
+
+      expect(mailgun_client).to_not have_received(:send_message).with(
+        ENV['MAILGUN_DOMAIN'],
+        { :from => ENV['FROM_EMAIL_PAYMENT'],
+          :to => student.email,
+          :bcc => ENV['FROM_EMAIL_PAYMENT'],
+          :subject => "Epicodus payment failure notice",
+          :text => "Hi #{student.name}. This is to notify you that a recent payment you made for Epicodus tuition has failed. Please reply to this email so we can sort it out together. Thanks!" }
+      )
+    end
   end
 
   describe 'updating Close.io when a payment is made' do
@@ -225,6 +244,7 @@ describe Payment do
     end
 
     it 'updates status and amount paid on the first payment', :vcr, :stub_mailgun do
+      allow(student).to receive(:get_crm_status).and_return("Accepted")
       payment = Payment.new(student: student, amount: 270_00, payment_method: student.primary_payment_method)
       expect(student).to receive(:update_close_io).with({ status: "Enrolled", 'custom.Amount paid': payment.amount / 100 })
       payment.save
@@ -300,6 +320,21 @@ describe Payment do
       payment = FactoryGirl.create(:payment_with_bank_account, student: student)
       expect(payment.update(refund_amount: -40)).to eq false
     end
+
+    it 'issues refund' do
+      student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
+      payment = FactoryGirl.create(:payment_with_bank_account, student: student)
+      expect(payment).to receive(:issue_refund)
+      payment.update(refund_amount: 50)
+    end
+
+    it 'does not issue refund if already issued' do
+      student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
+      payment = FactoryGirl.create(:payment_with_bank_account, student: student)
+      payment.update(refund_amount: 50)
+      expect(payment).to_not receive(:issue_refund)
+      payment.update(status: "successful")
+    end
   end
 
   describe "#send_refund_receipt" do
@@ -313,6 +348,25 @@ describe Payment do
       payment.update(refund_amount: 50_00)
 
       expect(mailgun_client).to have_received(:send_message).with(
+        ENV['MAILGUN_DOMAIN'],
+        { :from => ENV['FROM_EMAIL_PAYMENT'],
+          :to => student.email,
+          :bcc => ENV['FROM_EMAIL_PAYMENT'],
+          :subject => "Epicodus tuition refund receipt",
+          :text => "Hi #{student.name}. This is to confirm your refund of $50.00 from your Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
+      )
+    end
+
+    it "does not send second copy of refund receipt for payment", :vcr do
+      student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com')
+
+      mailgun_client = spy("mailgun client")
+      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00, refund_issued: true)
+      payment.update(refund_amount: 50_00)
+
+      expect(mailgun_client).to_not have_received(:send_message).with(
         ENV['MAILGUN_DOMAIN'],
         { :from => ENV['FROM_EMAIL_PAYMENT'],
           :to => student.email,
