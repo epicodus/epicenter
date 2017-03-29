@@ -116,6 +116,15 @@ class Student < User
     lead.total_results == 1
   end
 
+  def get_crm_status
+    begin
+      lead = close_io_client.list_leads('email:' + email)
+      lead['data'].first['status_label']
+    rescue NoMethodError
+      nil
+    end
+  end
+
   def update_close_email(new_email)
     if close_io_lead_exists?
       contact = close_io_client.list_leads('email:' + email).data.first.contacts.first

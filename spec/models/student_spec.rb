@@ -238,6 +238,13 @@ describe Student do
     end
   end
 
+  describe '#get_crm_status', :vcr do
+    it 'returns lead status' do
+      student = FactoryGirl.create(:student, email: 'example@example.com')
+      expect(student.get_crm_status).to eq "Outreach Respondent"
+    end
+  end
+
   describe 'updating close.io when the payment plan is updated' do
     let(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }

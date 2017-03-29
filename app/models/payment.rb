@@ -14,9 +14,8 @@ class Payment < ActiveRecord::Base
   before_create :set_offline_status, if: ->(payment) { payment.offline? }
   after_create :send_referral_email, if: ->(payment) { !payment.student.referral_email_sent? && student.payments.any? && !payment.offline? }
   after_save :update_close_io
-  before_update :issue_refund, if: ->(payment) { payment.refund_amount? && !payment.offline? }
-  after_update :send_refund_receipt, if: ->(payment) { payment.refund_amount? && !payment.offline? }
-  after_update :send_payment_failure_notice, if: ->(payment) { payment.status == "failed" }
+  before_update :issue_refund, if: ->(payment) { payment.refund_amount? && !payment.offline? && !payment.refund_issued? }
+  after_update :send_payment_failure_notice, if: ->(payment) { payment.status == "failed" && !payment.failure_notice_sent? }
 
   scope :order_by_latest, -> { order('created_at DESC') }
   scope :without_failed, -> { where.not(status: 'failed') }
@@ -25,18 +24,19 @@ class Payment < ActiveRecord::Base
     amount + fee
   end
 
+private
+
   def update_close_io
+    logger.info "Updating Close with payment_amount 0" if student.total_paid == 0
     amount_paid = { 'custom.Amount paid': student.total_paid / 100 }
     if student.close_io_lead_exists?
-      if student.payments.count == 1
+      if student.payments.count == 1 && student.get_crm_status == "Accepted"
         student.update_close_io({ status: "Enrolled" }.merge(amount_paid))
       else
         student.update_close_io(amount_paid)
       end
     end
   end
-
-private
 
   def send_referral_email
     Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message(
@@ -69,10 +69,23 @@ private
     begin
       charge_id = Stripe::BalanceTransaction.retrieve(stripe_transaction).source
       refund = Stripe::Refund.create(charge: charge_id, amount: refund_amount)
+      self.refund_issued = true
+      send_refund_receipt
     rescue Stripe::StripeError => exception
       errors.add(:base, exception.message)
       false
     end
+  end
+
+  def send_refund_receipt
+    Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message(
+      ENV['MAILGUN_DOMAIN'],
+      { :from => ENV['FROM_EMAIL_PAYMENT'],
+        :to => student.email,
+        :bcc => ENV['FROM_EMAIL_PAYMENT'],
+        :subject => "Epicodus tuition refund receipt",
+        :text => "Hi #{student.name}. This is to confirm your refund of #{number_to_currency(refund_amount / 100.00)} from your Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
+    )
   end
 
   def send_payment_receipt
@@ -95,6 +108,7 @@ private
         :subject => "Epicodus payment failure notice",
         :text => "Hi #{student.name}. This is to notify you that a recent payment you made for Epicodus tuition has failed. Please reply to this email so we can sort it out together. Thanks!" }
     )
+    update_attribute(:failure_notice_sent, true)
   end
 
   def set_description
@@ -129,17 +143,6 @@ private
       errors.add(:base, exception.message)
       false
     end
-  end
-
-  def send_refund_receipt
-    Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message(
-      ENV['MAILGUN_DOMAIN'],
-      { :from => ENV['FROM_EMAIL_PAYMENT'],
-        :to => student.email,
-        :bcc => ENV['FROM_EMAIL_PAYMENT'],
-        :subject => "Epicodus tuition refund receipt",
-        :text => "Hi #{student.name}. This is to confirm your refund of #{number_to_currency(refund_amount / 100.00)} from your Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
-    )
   end
 
   def check_amount

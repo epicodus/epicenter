@@ -6,7 +6,6 @@ class StripeCallback
     check_event_type(event)
   end
 
-
 private
 
   def check_event_type(event)
@@ -19,14 +18,10 @@ private
 
   def update_payment_status(event, status)
     payment = Payment.find_by(stripe_transaction: stripe_transaction(event))
-    if payment
-      payment.update_columns(status: status)
-      payment.update_close_io
-    end
+    payment.try(:update, status: status)
   end
 
   def stripe_transaction(event)
     event["data"]["object"]["balance_transaction"]
   end
-
 end
