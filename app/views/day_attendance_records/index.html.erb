@@ -54,7 +54,7 @@
               <td><%= student.pair_on_day(@day) ? student.pair_on_day(@day).name : 'Solo' %></td>
               <td class="edit-attendance">
                 <% if current_admin && can?(:manage, AttendanceRecord) %>
-                  <%= link_to 'Edit', new_attendance_record_amendment_path(course: @course, student: student, day: @day) %>
+                  <%= link_to 'Edit', new_attendance_record_amendment_path(course: @course, student: student, day: @day, status: student.attendance_record_on_day(@day).try(:status)) %>
                 <% end %>
               </td>
             </tr>
