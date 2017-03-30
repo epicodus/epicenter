@@ -9,9 +9,9 @@ class StripeCallback
 private
 
   def check_event_type(event)
-    if event["type"] == "charge.succeeded"
+    if event["type"] == "charge.succeeded" && stripe_transaction(event) != nil
       update_payment_status(event, "succeeded")
-    elsif event["type"] == "charge.failed"
+    elsif event["type"] == "charge.failed" && stripe_transaction(event) != nil
       update_payment_status(event, "failed")
     end
   end
