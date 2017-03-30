@@ -28,13 +28,14 @@ task :update_attendance, [:day] => [:environment] do |t, args|
     puts "Enter course id:"
     course_ids = [Course.find(STDIN.gets.chomp)]
   end
+  day_of_week = Date.parse(day).strftime('%A').upcase
   modifier = update_absent_students ? "INCLUDING" : "EXCLUDING"
   if tardy && leftearly
-    puts "Set all attendance records to ON TIME for the following courses on #{day} (#{modifier} absent students)? (y/N)"
+    puts "Set all attendance records to ON TIME for the following courses on #{day_of_week} #{day} (#{modifier} absent students)? (y/N)"
   elsif tardy
-    puts "Change only TARDY attendance records for the following courses on #{day}? (y/N)"
+    puts "Change only TARDY attendance records for the following courses on #{day_of_week} #{day}? (y/N)"
   elsif leftearly
-    puts "Change only LEFT_EARLY attendance records for the following courses on #{day}? (y/N)"
+    puts "Change only LEFT_EARLY attendance records for the following courses on #{day_of_week} #{day}? (y/N)"
   end
   course_ids.each {|course_id| puts "#{Course.find(course_id).description} (#{Course.find(course_id).office.name})"}
   input = STDIN.gets.chomp.downcase
