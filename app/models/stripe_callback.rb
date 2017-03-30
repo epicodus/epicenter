@@ -17,7 +17,7 @@ private
   end
 
   def update_payment_status(event, status)
-    logger.info "Stripe Callback: #{status} - stripe_transaction id: #{stripe_transaction(event)}"
+    Rails.logger.info "Stripe Callback: #{status} - stripe_transaction id: #{stripe_transaction(event)}"
     payment = Payment.find_by(stripe_transaction: stripe_transaction(event))
     payment.try(:update, status: status)
   end
