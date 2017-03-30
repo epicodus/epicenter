@@ -39,8 +39,12 @@ class AttendanceRecord < ActiveRecord::Base
 private
 
   def sign_out
-    class_end_time = student.course.end_time.in_time_zone(student.course.office.time_zone) - 15.minutes
-    current_time = Time.zone.now
+    if Time.zone.now.friday? && student.course.end_time_friday
+      class_end_time = student.course.end_time_friday.in_time_zone(student.course.office.time_zone) - 15.minutes
+    else
+      class_end_time = student.course.end_time.in_time_zone(student.course.office.time_zone) - 15.minutes
+    end
+    current_time = Time.zone.now.in_time_zone(student.course.office.time_zone)
     self.left_early = current_time < class_end_time
     self.signed_out_time = current_time
   end
