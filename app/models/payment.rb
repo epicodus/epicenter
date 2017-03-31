@@ -27,12 +27,13 @@ class Payment < ActiveRecord::Base
 private
 
   def update_close_io
-    logger.info "Updating Close with payment_amount 0" if student.total_paid == 0
     amount_paid = { 'custom.Amount paid': student.total_paid / 100 }
     if student.close_io_lead_exists?
       if student.payments.count == 1 && student.get_crm_status == "Accepted"
+        logger.info "Updating Close with status Enrolled and amount paid of #{student.total_paid}."
         student.update_close_io({ status: "Enrolled" }.merge(amount_paid))
       else
+        logger.info "Updating Close with amount paid of #{student.total_paid}."
         student.update_close_io(amount_paid)
       end
     end

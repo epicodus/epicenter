@@ -17,9 +17,15 @@ private
   end
 
   def update_payment_status(event, status)
-    Rails.logger.info "Stripe Callback: #{status} - stripe_transaction id: #{stripe_transaction(event)}"
     payment = Payment.find_by(stripe_transaction: stripe_transaction(event))
-    payment.try(:update, status: status)
+    if payment && payment.status == "pending"
+      Rails.logger.info "Stripe Callback: updating #{stripe_transaction(event)} to #{status}"
+      payment.try(:update, status: status)
+    elsif payment
+      Rails.logger.info "Ignoring callback: #{stripe_transaction(event)} status was not pending"
+    else
+      Rails.logger.info "Ignoring callback: #{stripe_transaction(event)} not found"
+    end
   end
 
   def stripe_transaction(event)
