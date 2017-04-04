@@ -137,11 +137,28 @@ describe AttendanceRecord do
       expect(attendance_record.left_early).to eq true
     end
 
-    it 'is true when a student leaves early' do
-      travel_to end_time - 21.minute do
+    it 'is true when a student leaves early mon-thu' do
+      travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 17.hours - 21.minute do
         shirker_attendance_record = FactoryGirl.create(:attendance_record)
         shirker_attendance_record.update({:signing_out => true})
         expect(shirker_attendance_record.left_early).to eq true
+      end
+    end
+
+    it 'is true when an intro student leaves between 12-5 Fri' do
+      travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 4.days + 17.hours - 21.minute do
+        shirker_attendance_record = FactoryGirl.create(:attendance_record)
+        shirker_attendance_record.update({:signing_out => true})
+        expect(shirker_attendance_record.left_early).to eq true
+      end
+    end
+
+    it 'is false when a non-intro student leaves between 12-5 Fri' do
+      ruby_student = FactoryGirl.create(:student, courses: [FactoryGirl.create(:portland_ruby_course)])
+      travel_to ruby_student.course.start_date.in_time_zone(ruby_student.course.office.time_zone) + 4.days + 17.hours - 21.minute do
+        shirker_attendance_record = FactoryGirl.create(:attendance_record, student: ruby_student)
+        shirker_attendance_record.update({:signing_out => true})
+        expect(shirker_attendance_record.left_early).to eq false
       end
     end
 

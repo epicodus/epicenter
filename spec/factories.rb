@@ -77,6 +77,7 @@ FactoryGirl.define do
     end
 
     factory :level_3_just_finished_course do
+      end_time_friday '12:00 PM'
       association :language, factory: :rails_language
       class_days ((Time.zone.now.to_date - 5.weeks).beginning_of_week..(Time.zone.now.to_date - 1.week).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? }
     end
@@ -97,6 +98,7 @@ FactoryGirl.define do
     end
 
     factory :portland_ruby_course do
+      end_time_friday '12:00 PM'
       active true
       association :office, factory: :portland_office
       association :language, factory: :ruby_language
