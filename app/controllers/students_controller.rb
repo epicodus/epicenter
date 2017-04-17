@@ -35,17 +35,25 @@ class StudentsController < ApplicationController
 
 private
   def student_params
-    params.require(:student).permit(:primary_payment_method_id, :course_id,
+    params.require(:student).permit(:primary_payment_method_id, :course_id, :plan_id,
                                     ratings_attributes: [:id, :internship_id, :number])
   end
 
   def update_student_as_admin
     @student = Student.find(params[:id])
     if @student.update(student_params)
-      redirect_to student_courses_path(@student), notice: "Courses for #{@student.name} have been updated."
+      if student_params[:plan_id]
+        redirect_to student_payments_path(@student), notice: "Payment plan for #{@student.name} has been updated."
+      else
+        redirect_to student_courses_path(@student), notice: "Courses for #{@student.name} have been updated."
+      end
     else
-      @course = Course.find(params[:student][:course_id])
-      render 'show'
+      if student_params[:plan_id]
+        redirect_to student_payments_path(@student), alert: "Payment plan update failed."
+      else
+        @course = Course.find(params[:student][:course_id])
+        render 'show'
+      end
     end
   end
 
