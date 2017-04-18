@@ -24,8 +24,6 @@ class Student < User
 
   acts_as_paranoid
 
-  after_update :update_close_io_payment_plan
-
   accepts_nested_attributes_for :ratings
 
   NUMBER_OF_RANDOM_PAIRS = 5
@@ -267,6 +265,26 @@ class Student < User
     enrollments.only_deleted.select { |enrollment| !courses.include? enrollment.course }.map {|enrollment| enrollment.course }.compact.sort
   end
 
+  def valid_plans
+    if course
+      if course.start_date < Time.new(2017, 5, 22).to_date
+        if course.parttime?
+          return Plan.active.parttime.old_rates
+        else
+          return Plan.active.fulltime.old_rates
+        end
+      else
+        if course.parttime?
+          return Plan.active.parttime.new_rates
+        else
+          return Plan.active.fulltime.new_rates
+        end
+      end
+    else
+      return Plan.active
+    end
+  end
+
 private
 
   def total_number_of_course_days(start_course=nil, end_course=nil)
@@ -276,10 +294,6 @@ private
     else
       courses.non_internship_courses.map(&:class_days).flatten.count
     end
-  end
-
-  def update_close_io_payment_plan
-    update_close_io({ 'custom.Payment plan': plan.close_io_description }) if plan_id_changed? && enrollment_complete?
   end
 
   def next_course
@@ -361,19 +375,6 @@ private
   end
 
   def validate_plan_id
-    if course.start_date < Time.new(2017, 5, 22).to_date
-      if course.parttime?
-        return Plan.active.parttime.old_rates.include? plan
-      else
-        return Plan.active.fulltime.old_rates.include? plan
-      end
-    else
-      if course.parttime?
-        return Plan.active.parttime.new_rates.include? plan
-      else
-        return Plan.active.fulltime.new_rates.include? plan
-      end
-    end
+    valid_plans.include? plan
   end
-
 end
