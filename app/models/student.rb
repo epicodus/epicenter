@@ -24,8 +24,6 @@ class Student < User
 
   acts_as_paranoid
 
-  after_update :update_close_io_payment_plan
-
   accepts_nested_attributes_for :ratings
 
   NUMBER_OF_RANDOM_PAIRS = 5
@@ -296,10 +294,6 @@ private
     else
       courses.non_internship_courses.map(&:class_days).flatten.count
     end
-  end
-
-  def update_close_io_payment_plan
-    update_close_io({ 'custom.Payment plan': plan.close_io_description }) if plan_id_changed? && enrollment_complete?
   end
 
   def next_course

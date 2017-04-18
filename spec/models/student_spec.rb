@@ -245,28 +245,6 @@ describe Student do
     end
   end
 
-  describe 'updating close.io when the payment plan is updated' do
-    let(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: 'example@example.com') }
-    let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
-    let(:lead_id) { close_io_client.list_leads('email:' + student.email).data.first.id }
-
-    before do
-      allow(student).to receive(:total_paid).and_return(100)
-      allow(student).to receive(:close_io_client).and_return(close_io_client)
-    end
-
-    it 'updates the record successfully', :vcr do
-      new_plan = FactoryGirl.create(:upfront_payment_only_plan)
-      expect(close_io_client).to receive(:update_lead).with(lead_id, { 'custom.Payment plan': new_plan.close_io_description })
-      student.update(plan: new_plan)
-    end
-
-    it 'does not update the record when the payment plan is not updated', :vcr do
-      expect(close_io_client).to_not receive(:update_lead)
-      student.update(name: 'New name')
-    end
-  end
-
   describe 'updating close.io when student email is updated' do
     let(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
