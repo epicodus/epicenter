@@ -1,6 +1,8 @@
 <h1>
   <%= @internship.name %>
-  <%= link_to 'Edit', edit_internship_path(@internship) %>
+  <% if can?(:manage, @internship) %>
+    <%= link_to 'Edit', edit_internship_path(@internship) %>
+  <% end %>
 </h1>
 
 <div class="row">
@@ -70,58 +72,60 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-6">
-    <h3>Rankings from students</h3>
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <div class="table-responsive">
-          <table class='table student-internship-rankings-datatable'>
-            <thead>
-              <tr>
-                <th>Student</th>
-                <th>Ranking</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @course.students.each do |student| %>
+<% if can?(:manage, @internship) %>
+  <div class="row">
+    <div class="col-md-6">
+      <h3>Rankings from students</h3>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class='table student-internship-rankings-datatable'>
+              <thead>
                 <tr>
-                  <td class="col-md-3"><%= link_to student.name, course_student_path(@course, student) %></td>
-                  <td class="col-md-2"><%= student.ratings.find_by(internship: @internship).try(:number) %></td>
+                  <th>Student</th>
+                  <th>Ranking</th>
                 </tr>
-              <% end %>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                <% @course.students.each do |student| %>
+                  <tr>
+                    <td class="col-md-3"><%= link_to student.name, course_student_path(@course, student) %></td>
+                    <td class="col-md-2"><%= student.ratings.find_by(internship: @internship).try(:number) %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="col-md-6">
-    <h3>Rankings from company</h3>
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <div class="table-responsive">
-          <table class='table student-internship-rankings-datatable'>
-            <thead>
-              <tr>
-                <th>Student</th>
-                <th>Ranking</th>
-                <th>Feedback</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @course.interview_assignments.for_internship(@internship).each do |interview_assignment| %>
+    <div class="col-md-6">
+      <h3>Rankings from company</h3>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class='table student-internship-rankings-datatable'>
+              <thead>
                 <tr>
-                  <td><%= link_to interview_assignment.student.name, course_student_path(@course, interview_assignment.student) %></td>
-                  <td><%= interview_assignment.ranking_from_company %></td>
-                  <td><%= interview_assignment.feedback_from_company %></td>
+                  <th>Student</th>
+                  <th>Ranking</th>
+                  <th>Feedback</th>
                 </tr>
-              <% end %>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                <% @course.interview_assignments.for_internship(@internship).each do |interview_assignment| %>
+                  <tr>
+                    <td><%= link_to interview_assignment.student.name, course_student_path(@course, interview_assignment.student) %></td>
+                    <td><%= interview_assignment.ranking_from_company %></td>
+                    <td><%= interview_assignment.feedback_from_company %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+<% end %>

@@ -80,43 +80,70 @@ feature 'removing an internship from a particular session' do
 end
 
 feature 'visiting the internships show page' do
-  let(:admin) { FactoryGirl.create(:admin) }
+  context 'as a student' do
+    let(:internship_course) { FactoryGirl.create(:internship_course) }
+    let(:student) { FactoryGirl.create(:user_with_all_documents_signed, courses: [internship_course]) }
+    let(:internship) { FactoryGirl.create(:internship, courses: [internship_course]) }
+    before { login_as(student, scope: :student) }
 
-  before { login_as(admin, scope: :admin) }
+    scenario 'students can view internship contact and details sections' do
+      visit course_internship_path(student.course, internship)
+      expect(page).to have_content 'Contact'
+      expect(page).to have_content internship.company.name
+      expect(page).to have_content 'Details'
+      expect(page).to have_content internship.description
+    end
 
-  scenario 'you can navigate to the show page from the index' do
-    internship = FactoryGirl.create(:internship)
-    visit internships_path(active: true)
-    click_link internship.name
-    expect(page).to have_content internship.description
+    scenario 'students can not see edit internship link' do
+      visit course_internship_path(student.course, internship)
+      expect(page).to_not have_content 'Edit'
+    end
+
+    scenario 'students can not see rankings' do
+      visit course_internship_path(student.course, internship)
+      expect(page).to_not have_content 'Rankings'
+    end
   end
 
-  scenario 'clearance description is hidden if there is no clearance requirement' do
-    internship = FactoryGirl.create(:internship, clearance_required: false)
-    visit internships_path(active: true)
-    click_link internship.name
-    expect(page).to_not have_content 'Clearance description'
-  end
+  context 'as an admin' do
+    let(:admin) { FactoryGirl.create(:admin) }
 
-  scenario 'clearance description is visible if there is a clearance requirement' do
-    internship = FactoryGirl.create(:internship)
-    visit internships_path(active: true)
-    click_link internship.name
-    expect(page).to have_content 'Clearance description'
-  end
+    before { login_as(admin, scope: :admin) }
 
-  scenario 'interview location is shown if field has been entered' do
-    internship = FactoryGirl.create(:internship, interview_location: "test location")
-    visit internships_path(active: true)
-    click_link internship.name
-    expect(page).to have_content internship.interview_location
-  end
+    scenario 'you can navigate to the show page from the index' do
+      internship = FactoryGirl.create(:internship)
+      visit internships_path(active: true)
+      click_link internship.name
+      expect(page).to have_content internship.description
+    end
 
-  scenario 'company location is shown if interview location field has not been entered' do
-    internship = FactoryGirl.create(:internship)
-    visit internships_path(active: true)
-    click_link internship.name
-    expect(page).to have_content internship.address
+    scenario 'clearance description is hidden if there is no clearance requirement' do
+      internship = FactoryGirl.create(:internship, clearance_required: false)
+      visit internships_path(active: true)
+      click_link internship.name
+      expect(page).to_not have_content 'Clearance description'
+    end
+
+    scenario 'clearance description is visible if there is a clearance requirement' do
+      internship = FactoryGirl.create(:internship)
+      visit internships_path(active: true)
+      click_link internship.name
+      expect(page).to have_content 'Clearance description'
+    end
+
+    scenario 'interview location is shown if field has been entered' do
+      internship = FactoryGirl.create(:internship, interview_location: "test location")
+      visit internships_path(active: true)
+      click_link internship.name
+      expect(page).to have_content internship.interview_location
+    end
+
+    scenario 'company location is shown if interview location field has not been entered' do
+      internship = FactoryGirl.create(:internship)
+      visit internships_path(active: true)
+      click_link internship.name
+      expect(page).to have_content internship.address
+    end
   end
 end
 

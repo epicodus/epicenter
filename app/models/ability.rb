@@ -36,7 +36,9 @@ private
     can :read, Course, id: user.courses.map(&:id)
     can :read, :certificate
     can :create, CreditCard
-    can :read, Internship, courses: { id: user.course_id }
+    can :read, Internship do |internship|
+      internship.courses.include? user.internship_course
+    end
     can :create, Payment, student_id: user.id, payment_method: { student_id: user.id }
     can :read, Payment, student_id: user.id
     can :manage, Student, id: user.id

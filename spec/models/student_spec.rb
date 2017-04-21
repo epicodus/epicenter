@@ -948,6 +948,10 @@ describe Student do
     end
 
     context 'for internships' do
+      before do
+        student.enrollments.destroy_all
+        student.course = FactoryGirl.create(:internship_course)
+      end
       it { is_expected.to not_have_abilities([:create, :read, :update, :destroy], Internship.new)}
       it { is_expected.to have_abilities(:read, Internship.new(courses: [student.course])) }
     end
