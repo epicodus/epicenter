@@ -5,10 +5,13 @@ desc "enroll students in courses based on csv"
 task :enroll_students => [:environment] do
   filename = File.join(Rails.root.join('tmp'), 'enrollments.txt')
   File.open(filename, 'w') do |file|
-    uri = URI('http://mortalwombat.net/tmp/enrollment_import.csv')
-    # csv_text = File.read('enrollment_import.csv') # for local testing
-    csv_text = Net::HTTP.get(uri)
-    csv = CSV.parse(csv_text)
+    if Rails.env.production?
+      uri = URI('http://mortalwombat.net/tmp/enrollment_import.tsv')
+      csv_text = Net::HTTP.get(uri)
+      csv = CSV.parse(csv_text, { :col_sep => "\t" })
+    else
+      csv = CSV.read("enrollment_import.tsv", { :col_sep => "\t" }) # for local testing
+    end
     csv.each do |row|
       student = User.find_by(email: row[0])
       if student
@@ -32,8 +35,7 @@ task :enroll_students => [:environment] do
       end
     end
   end
-
-  begin
+  if Rails.env.production?
     mg_client = Mailgun::Client.new(ENV['MAILGUN_API_KEY'])
     mb_obj = Mailgun::MessageBuilder.new()
     mb_obj.set_from_address("mike@epicodus.com", {"first"=>"Mike", "last" => "Goren"});
@@ -44,8 +46,7 @@ task :enroll_students => [:environment] do
     result = mg_client.send_message("epicodus.com", mb_obj)
     puts result.body.to_s
     puts "Sent #{filename.to_s}"
-  rescue
-    puts "Unable to send file. Saved as #{filename.to_s}"
+  else
+    puts "Saved as #{filename.to_s}"
   end
-
 end
