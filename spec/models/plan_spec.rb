@@ -51,19 +51,21 @@ describe Plan do
     end
   end
 
-  describe 'old_rates scope' do
-    it 'returns all full-time plans' do
-      old_rate_plan = FactoryGirl.create(:old_rate_plan)
-      new_rate_plan = FactoryGirl.create(:new_rate_plan)
-      expect(Plan.old_rates).to eq [old_rate_plan]
-    end
-  end
+  describe 'rates scopes' do
+    let!(:rate_plan_2016) { FactoryGirl.create(:rate_plan_2016) }
+    let!(:rate_plan_2017) { FactoryGirl.create(:rate_plan_2017) }
+    let!(:rate_plan_2018) { FactoryGirl.create(:rate_plan_2018) }
 
-  describe 'new_rates scope' do
-    it 'returns all full-time plans' do
-      old_rate_plan = FactoryGirl.create(:old_rate_plan)
-      new_rate_plan = FactoryGirl.create(:new_rate_plan)
-      expect(Plan.new_rates).to eq [new_rate_plan]
+    it 'returns all 2016 plans' do
+      expect(Plan.rates_2016).to eq [rate_plan_2016]
+    end
+
+    it 'returns all 2017 plans' do
+      expect(Plan.rates_2017).to eq [rate_plan_2017]
+    end
+
+    it 'returns all 2018 plans' do
+      expect(Plan.rates_2018).to eq [rate_plan_2018]
     end
   end
 end
