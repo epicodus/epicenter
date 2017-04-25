@@ -8,6 +8,14 @@ task :send_warnings => [:environment] do
     else
       course.students.each do |student|
 
+        # set friday attendance to on time automatically
+        if Date.today.friday?
+          attendance_record = AttendanceRecord.find_or_initialize_by(student: student, date: Date.today)
+          attendance_record.tardy = false
+          attendance_record.left_early = false
+          attendance_record.save
+        end
+
         # send attendance warnings
         if student.attendance_warnings_sent == 1 && student.absences(course) >= 4
           if Rails.env.production?
