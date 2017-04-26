@@ -234,6 +234,13 @@ FactoryGirl.define do
       name 'Evening intro class'
       parttime true
       upfront_amount 600_00
+      start_date Time.new(2017, 9, 5).to_date
+    end
+
+    factory :parttime_plan_2017 do
+      name 'Evening intro class'
+      parttime true
+      upfront_amount 600_00
       start_date Time.new(2017, 5, 22).to_date
     end
 
