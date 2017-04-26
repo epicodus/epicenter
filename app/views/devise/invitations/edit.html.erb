@@ -13,18 +13,10 @@
       <% if resource.is_a?(Student) %>
         <div class="form-group">
           <%= f.label :plan_id, "Payment Plan" %>
-          <% if resource.course.start_date < Time.new(2017, 5, 22).to_date %>
-            <% if resource.course.parttime? %>
-              <%= f.select(:plan_id, Plan.active.parttime.old_rates.collect {|p| [ p.name, p.id ] }, {}, { class: 'form-control' }) %>
-            <% else %>
-              <%= f.select(:plan_id, Plan.active.fulltime.old_rates.collect {|p| [ p.name, p.id ] }, { selected: Plan.active.upfront.old_rates.first.id }, { class: 'form-control' }) %>
-            <% end %>
+          <% if resource.course.parttime? %>
+            <%= f.select(:plan_id, resource.valid_plans.collect {|p| [ p.name, p.id ] }, {}, { class: 'form-control' }) %>
           <% else %>
-            <% if resource.course.parttime? %>
-              <%= f.select(:plan_id, Plan.active.parttime.new_rates.collect {|p| [ p.name, p.id ] }, {}, { class: 'form-control' }) %>
-            <% else %>
-              <%= f.select(:plan_id, Plan.active.fulltime.new_rates.collect {|p| [ p.name, p.id ] }.reverse, { selected: Plan.active.upfront.new_rates.first.id }, { class: 'form-control' }) %>
-            <% end %>
+            <%= f.select(:plan_id, resource.valid_plans.collect {|p| [ p.name, p.id ] }, { selected: resource.valid_plans.upfront.first.id }, { class: 'form-control' }) %>
           <% end %>
           <p>For more information on tuition, <a href="https://www.epicodus.com/tuition/" target="_blank">click here</a>.</p>
         </div>

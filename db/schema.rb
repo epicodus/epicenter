@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170330181343) do
+ActiveRecord::Schema.define(version: 20170426003708) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -193,6 +193,7 @@ ActiveRecord::Schema.define(version: 20170330181343) do
     t.date     "start_date"
     t.boolean  "parttime"
     t.boolean  "upfront"
+    t.string   "description"
   end
 
   create_table "ratings", force: :cascade do |t|

@@ -83,10 +83,10 @@
 
   <div class="well">
     <h3>Change payment plan</h3>
-    <p><strong>Current plan:</strong> <%= @student.plan.close_io_description %> <%= @student.plan.start_date == Time.new(2017, 5, 22).to_date ? '' : '[OLD RATES]' %></p>
+    <p><strong>Current plan:</strong> <%= @student.plan.close_io_description %> [<%= @student.plan.description %>]</p>
     <%= form_for @student do |f| %>
       <%= f.label :plan_id, "Other options:" %>
-      <%= f.select :plan_id, @student.valid_plans.where.not(id: @student.plan.id).collect {|p| [ "#{p.close_io_description} #{p.start_date == Time.new(2017, 5, 22).to_date ? '' : '[OLD RATES]'}", p.id ] }, {include_blank: true} %>
+      <%= f.select :plan_id, @student.valid_plans.where.not(id: @student.plan.id).collect {|p| [ "#{p.close_io_description} [#{p.description}]", p.id ] }, {include_blank: true} %>
       <%= f.submit 'Change Plan', class: 'btn-sm btn-primary', data: { confirm: "Change payment plan?" } %>
     <% end %>
   </div>
