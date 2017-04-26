@@ -8,14 +8,12 @@ task :send_warnings => [:environment] do
     else
       course.students.each do |student|
 
-        # set friday attendance to on time automatically (except week 1 of intro)
-        unless course.language.level == 0 && course.number_of_days_since_start < 6
-          if Date.today.friday?
-            attendance_record = AttendanceRecord.find_or_initialize_by(student: student, date: Date.today)
-            attendance_record.tardy = false
-            attendance_record.left_early = false
-            attendance_record.save
-          end
+        # set friday attendance to on time automatically for portland classes (except week 1 of intro)
+        if Date.today.friday? && course.office.name == "Portland" && (course.language.level > 0 || course.number_of_days_since_start > 5)
+          attendance_record = AttendanceRecord.find_or_initialize_by(student: student, date: Date.today)
+          attendance_record.tardy = false
+          attendance_record.left_early = false
+          attendance_record.save
         end
 
         # send attendance warnings
