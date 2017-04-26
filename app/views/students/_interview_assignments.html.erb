@@ -9,6 +9,7 @@
               <th>Company</th>
               <th>Ranking from student</th>
               <th>Ranking from company</th>
+              <th>Feedback from student</th>
               <th>Feedback from company</th>
               <th></th>
             </tr>
@@ -19,6 +20,7 @@
                 <td><%= link_to interview_assignment.internship.name, course_internship_path(@course, interview_assignment.internship) %></td>
                 <td><%= interview_assignment.ranking_from_student %></td>
                 <td><%= interview_assignment.ranking_from_company %></td>
+                <td><%= interview_assignment.feedback_from_student %></td>
                 <td><%= interview_assignment.feedback_from_company %></td>
                 <td><%= link_to 'Remove', interview_assignments_path(student_id: @student.id, course_id: @course.id, internship_id: interview_assignment.internship.id), data: { method: :delete }, class: 'unstyled-link pull-right' %></td>
               </tr>
@@ -44,6 +46,7 @@
                 <th>Company</th>
                 <th>Contact name</th>
                 <th>Contact email</th>
+                <th>Notes</th>
                 <th></th>
               </tr>
             </thead>
@@ -59,6 +62,11 @@
                   <td><%= link_to interview_assignment.internship.name, "##{interview_assignment.internship.id}", data: { toggle: "modal" } %></td>
                   <td><%= interview_assignment.internship.company.name %></td>
                   <td><%= mail_to interview_assignment.internship.company.email %></td>
+                  <%= fields_for 'interview_assignments[]', interview_assignment do |f| %>
+                    <td>
+                      <%= f.text_field :feedback_from_student, id: 'student-interview-feedback' %>
+                    </td>
+                  <% end %>
                   <td><span class="pull-right glyphicon glyphicon-menu-hamburger"></span></td>
                 </tr>
               <% end %>

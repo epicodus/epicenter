@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170426003708) do
+ActiveRecord::Schema.define(version: 20170426223640) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -127,6 +127,7 @@ ActiveRecord::Schema.define(version: 20170426003708) do
     t.text     "feedback_from_company"
     t.integer  "course_id"
     t.integer  "ranking_from_student"
+    t.text     "feedback_from_student"
   end
 
   create_table "languages", force: :cascade do |t|
