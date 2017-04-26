@@ -102,6 +102,15 @@ feature 'interview rankings' do
     expect(page).to have_content 'Interview rankings have been updated.'
   end
 
+  scenario 'as a student ranking companies can add feedback' do
+    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
+    login_as(student, scope: :student)
+    visit course_student_path(internship.courses.first, student)
+    fill_in 'student-interview-feedback', with: 'Great company!'
+    click_on 'Save rankings'
+    expect(student.interview_assignments.last.feedback_from_student).to eq 'Great company!'
+  end
+
   scenario 'as a company ranking students' do
     FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
     login_as(company, scope: :company)
@@ -109,6 +118,13 @@ feature 'interview rankings' do
     fill_in 'company-interview-feedback', with: 'Great interviewer!'
     click_on 'Save rankings'
     expect(page).to have_content "Student rankings have been saved for #{internship.courses.first.description}."
+  end
+
+  scenario 'as a company can not view student feedback' do
+    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 1, feedback_from_student: 'Great company!')
+    login_as(company, scope: :company)
+    visit company_path(company)
+    expect(page).to_not have_content "Great company!"
   end
 
   scenario 'as a student can not view company feedback until 1 week after internship start date' do
@@ -132,5 +148,12 @@ feature 'interview rankings' do
     login_as(admin, scope: :admin)
     visit course_student_path(internship.courses.first, student)
     expect(page).to have_content "Great fit!"
+  end
+
+  scenario 'as an admin can view student feedback' do
+    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 1, feedback_from_student: 'Great company!')
+    login_as(admin, scope: :admin)
+    visit course_student_path(internship.courses.first, student)
+    expect(page).to have_content "Great company!"
   end
 end
