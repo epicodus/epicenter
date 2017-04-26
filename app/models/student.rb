@@ -266,11 +266,12 @@ class Student < User
   end
 
   def valid_plans
-    if course
+    first_course = courses.order(:start_date).first
+    if first_course
       filtered_plans = course.parttime? ? Plan.active.parttime : Plan.active.fulltime
-      if course.start_date < Time.new(2017, 5, 22).to_date
+      if first_course.start_date < Time.new(2017, 5, 22).to_date
         return filtered_plans.rates_2016
-      elsif course.start_date < Time.new(2017, 9, 5).to_date
+      elsif first_course.start_date < Time.new(2017, 9, 5).to_date
         return filtered_plans.rates_2017
       else
         return filtered_plans.rates_2018
