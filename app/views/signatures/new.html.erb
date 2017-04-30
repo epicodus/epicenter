@@ -7,7 +7,7 @@
         // skipDomainVerification: true, // ONLY FOR TESTING
         messageListener: function(eventData) {
           if (eventData.event == HelloSign.EVENT_SIGNED) {
-            document.location = "<%= url_for(action: :new, controller: @controller_for_next_page) %>?signature_request_id=" + eventData.signature_id
+            $.post("<%= url_for(action: :create, controller: @controller) %>?signature_id=" + eventData.signature_id);
           }
         }
     });

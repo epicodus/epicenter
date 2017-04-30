@@ -63,10 +63,10 @@ Rails.application.routes.draw do
 
   resources :signatures, only: [:create] do
     collection do
-      resources :enrollment_agreement, only: [:new]
-      resources :code_of_conduct, only: [:new]
-      resources :refund_policy, only: [:new]
-      resources :complaint_disclosure, only: [:new]
+      resources :code_of_conduct, only: [:new, :create]
+      resources :refund_policy, only: [:new, :create]
+      resources :complaint_disclosure, only: [:new, :create]
+      resources :enrollment_agreement, only: [:new, :create]
     end
   end
 
