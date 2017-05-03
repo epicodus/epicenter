@@ -342,6 +342,12 @@ FactoryGirl.define do
       type EnrollmentAgreement
       is_complete true
     end
+
+    factory :completed_student_internship_agreement do
+      type StudentInternshipAgreement
+      is_complete true
+      signature_id 'test'
+    end
   end
 
   factory :student do

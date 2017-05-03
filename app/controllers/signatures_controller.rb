@@ -11,20 +11,7 @@ class SignaturesController < ApplicationController
     else
       signature = signature_model.create(student_id: current_student.id)
       @sign_url = signature.sign_url
-      case signature_model.name
-      when "CodeOfConduct"
-        @controller_for_next_page = 'refund_policy'
-      when "RefundPolicy"
-        if current_student.course.office.name == "Seattle"
-          @controller_for_next_page = 'complaint_disclosure'
-        else
-          @controller_for_next_page = 'enrollment_agreement'
-        end
-      when "ComplaintDisclosure"
-        @controller_for_next_page = 'enrollment_agreement'
-      when "EnrollmentAgreement"
-        @controller_for_next_page = 'demographics'
-      end
+      @controller = signature_model.name.underscore
     end
   end
 
