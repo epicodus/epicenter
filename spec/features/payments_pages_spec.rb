@@ -262,9 +262,9 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
 
   scenario 'with an invalid amount' do
     visit student_payments_path(student)
-    fill_in 'payment_amount', with: 6100
+    fill_in 'payment_amount', with: 7100
     click_on 'Manual payment'
-    expect(page).to have_content 'Amount cannot be greater than $6,000.'
+    expect(page).to have_content 'Amount cannot be greater than $7,000.'
   end
 
   scenario 'unsuccessfully with a negative amount' do

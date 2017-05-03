@@ -73,7 +73,7 @@
   <p>If you need help or have any questions regarding your payments, contact us.</p>
 <% elsif can?(:manage, Payment) && params[:action] != 'update' %>
   <div class="well">
-    <h3>Manual payment <small class="text-info">($6,000 limit)</small></h3>
+    <h3>Manual payment <small class="text-info">($7,000 limit)</small></h3>
     <div class="row">
       <div class="col-md-5">
         <%= render 'form' %>

@@ -147,8 +147,8 @@ private
   end
 
   def check_amount
-    if amount >= 6000_00
-      errors.add(:amount, 'cannot be greater than $6,000.')
+    if amount >= 7000_00
+      errors.add(:amount, 'cannot be greater than $7,000.')
       false
     end
   end
