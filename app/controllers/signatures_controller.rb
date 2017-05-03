@@ -4,7 +4,6 @@ class SignaturesController < ApplicationController
   protect_from_forgery except: [:create]
 
   def new(signature_model)
-    update_signature_request
     if current_student.signed?(signature_model)
       redirect_to root_path
       flash[:alert] = "You've already signed this document."
