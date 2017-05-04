@@ -126,12 +126,11 @@ describe Payment do
       expect(second_payment.description).to eq "#{full_time_course.office.name}; #{full_time_course.start_date.strftime("%Y-%m-%d")}; Full-time"
     end
 
-    it 'raises exception if payment made for student not enrolled in any course', :vcr, :stripe_mock, :stub_mailgun do
+    it 'description includes student id if payment made for student not enrolled in any course', :vcr, :stripe_mock, :stub_mailgun do
       student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com')
       student.courses.delete_all
-      expect {FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)}.to raise_error(PaymentError)
-      expect(student.payments).to eq []
-      expect(student).to_not receive(:update_close_io)
+      FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
+      expect(student.payments.first.description).to eq "student #{student.id} not enrolled in any courses"
     end
   end
 

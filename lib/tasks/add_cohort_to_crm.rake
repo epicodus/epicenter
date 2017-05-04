@@ -1,6 +1,6 @@
-# calculates cohort as graduation date (yyyy-mm) combined with name of level 3 language taken just beforehand
-desc "retroactively add cohort to crm based on graduation date"
-task :add_cohort_to_crm, [:day] => [:environment] do |t, args|
+# calculates ending cohort as graduation date (yyyy-mm) combined with name of level 3 language taken just beforehand
+desc "retroactively add ending cohort to crm based on graduation date"
+task :add_end_cohort_to_crm, [:day] => [:environment] do |t, args|
   day = args.day || ""
   while day.length != 10
     puts "Enter graduation date in format yyyy-mm-dd:"
@@ -23,7 +23,7 @@ task :add_cohort_to_crm, [:day] => [:environment] do |t, args|
         course.students.each do |student|
           if internship_course.students.exists?(student)
             if student.close_io_lead_exists?
-              student.update_close_io({ 'custom.Cohort': day[0..6] + " " + course.language.name })
+              student.update_close_io({ 'custom.Ending Cohort': day[0..6] + " " + course.language.name })
               file.puts "UPDATED: #{student.name}, #{student.email}, #{day[0..6] + " " + course.language.name}"
             else
               file.puts "NOT FOUND: #{student.name}, #{student.email}"
