@@ -46,4 +46,11 @@ feature 'deleting a course for a student' do
     end
     expect(page).to have_content "#{course1.description} has been removed. #{student.name} has been archived!"
   end
+
+  scenario 'as an admin permanently deleting a course from the withdrawn courses list' do
+    student.enrollments.find_by(course: course2).destroy
+    visit student_courses_path(student)
+    click_on 'destroy'
+    expect(page).to have_content "Enrollment permanently removed"
+  end
 end

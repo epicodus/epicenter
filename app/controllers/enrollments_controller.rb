@@ -12,15 +12,21 @@ class EnrollmentsController < ApplicationController
   end
 
   def destroy
-    student = Student.find(params[:id])
-    course = Course.find(params[:course_id])
-    enrollment = Enrollment.find_by(course_id: course.id, student_id: student.id)
-    enrollment.destroy
-    if student.enrollments.any?
-      redirect_to student_courses_path(student), notice: "#{course.description} has been removed"
+    if params['really_destroy'] == 'true'
+      enrollment = Enrollment.only_deleted.find(params[:id])
+      enrollment.really_destroy!
+      redirect_to student_courses_path(enrollment.student), notice: "Enrollment permanently removed: #{enrollment.course.description}"
     else
-      student.destroy
-      redirect_to root_path, notice: "#{course.description} has been removed. #{student.name} has been archived!"
+      student = Student.find(params[:id])
+      course = Course.find(params[:course_id])
+      enrollment = Enrollment.find_by(course_id: course.id, student_id: student.id)
+      enrollment.destroy
+      if student.enrollments.any?
+        redirect_to student_courses_path(student), notice: "#{course.description} has been removed"
+      else
+        student.destroy
+        redirect_to root_path, notice: "#{course.description} has been removed. #{student.name} has been archived!"
+      end
     end
   end
 
