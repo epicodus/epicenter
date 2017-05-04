@@ -6,6 +6,8 @@ describe CodeReview do
   it { should belong_to :course }
   it { should accept_nested_attributes_for :objectives }
 
+  before { allow_any_instance_of(Student).to receive(:update_close_io) }
+
   it 'duplicates a code review and its objectives' do
     course = FactoryGirl.create(:course)
     code_review = FactoryGirl.create(:code_review)
@@ -172,10 +174,11 @@ describe CodeReview do
     end
 
     it 'returns true if on day before code review date for part-time course' do
-      parttime_course = FactoryGirl.create(:part_time_course)
-      student.update(course: parttime_course)
+      part_time_course = FactoryGirl.create(:part_time_course)
+      part_time_student = FactoryGirl.create(:student, courses: [part_time_course])
+      part_time_code_review = FactoryGirl.create(:code_review, course: part_time_course)
       travel_to code_review.date - 1.day do
-        expect(code_review.visible?(student)).to eq true
+        expect(part_time_code_review.visible?(student)).to eq true
       end
     end
   end

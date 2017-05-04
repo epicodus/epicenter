@@ -6,6 +6,12 @@ describe Payment do
   it { should validate_presence_of :student_id }
   it { should validate_presence_of :amount }
 
+  before do
+    allow_any_instance_of(Student).to receive(:update_close_io)
+    allow_any_instance_of(Student).to receive(:close_io_lead_exists?).and_return(true)
+    allow_any_instance_of(Student).to receive(:get_crm_status)
+  end
+
   describe 'validations' do
     context 'if regular payment' do
       before { allow(subject).to receive(:offline?).and_return(false) }
