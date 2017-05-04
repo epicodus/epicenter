@@ -59,6 +59,9 @@
           <li>
             <%= link_to course.description, course_student_path(course, @student) %>
             (<%= @student.attendance_records_for(:all, course) %> sign-ins, withdrawn <%= Enrollment.only_deleted.find_by(student: @student, course: course).deleted_at.strftime("%Y-%m-%d") %>)
+            <%= link_to enrollment_path(Enrollment.only_deleted.find_by(student: @student, course: course), really_destroy: 'true'), data: { method: :delete, confirm: 'Are you sure?' }, id: "destroy" do %>
+              <i class="glyphicon glyphicon-trash"></i>
+            <% end %>
           </li>
         <% end %>
       </ul>
