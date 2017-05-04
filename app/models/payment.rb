@@ -113,7 +113,7 @@ private
   end
 
   def set_description
-    begin
+    if student.courses.any?
       first_course = student.courses.order(:start_date).first
       location = first_course.office.name
       start_date = first_course.start_date.strftime("%Y-%m-%d")
@@ -128,8 +128,8 @@ private
         attendance_status = "Full-time"
       end
       self.description = "#{location}; #{start_date}; #{attendance_status}"
-    rescue
-      raise PaymentError, "Unable to set payment description"
+    else
+      self.description = "student #{student.id} not enrolled in any courses"
     end
   end
 
