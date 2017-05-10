@@ -3,7 +3,11 @@ feature 'adding another course for a student' do
   let!(:other_course) { FactoryGirl.create(:portland_ruby_course) }
   let!(:other_student) { FactoryGirl.create(:student, sign_in_count: 1) }
   let(:admin) { FactoryGirl.create(:admin) }
-  before { login_as(admin, scope: :admin) }
+
+  before do
+    allow_any_instance_of(Student).to receive(:update_close_io)
+    login_as(admin, scope: :admin)
+  end
 
   scenario 'as an admin on the individual student page' do
     visit student_courses_path(student)
@@ -25,7 +29,11 @@ feature 'deleting a course for a student' do
   let(:course2) { FactoryGirl.create(:internship_course) }
   let(:student) { FactoryGirl.create(:student, courses: [course1, course2]) }
   let(:admin) { FactoryGirl.create(:admin) }
-  before { login_as(admin, scope: :admin) }
+
+  before do
+    allow_any_instance_of(Student).to receive(:update_close_io)
+    login_as(admin, scope: :admin)
+  end
 
   scenario 'as an admin deleting a course that is not the last course for that student' do
     visit student_courses_path(student)

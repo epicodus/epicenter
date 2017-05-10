@@ -2,9 +2,9 @@ class Student < User
   scope :with_activated_accounts, -> { where('sign_in_count > ?', 0 ) }
 
   validate :primary_payment_method_belongs_to_student
-  validate :student_has_course
   validates :plan_id, presence: true, if: ->(student) { student.invitation_accepted_at? }
   before_update :validate_plan_id, if: ->(student) { student.plan_id_changed? && student.course.present? }
+  after_update :update_starting_cohort_crm, if: ->(student) { student.starting_cohort_id_changed? }
 
   belongs_to :plan
   has_many :enrollments
@@ -53,6 +53,15 @@ class Student < User
 
   def other_courses
     Course.where.not(id: courses.map(&:id))
+  end
+
+  def courses_withdrawn
+    enrollments.only_deleted.select { |enrollment| !courses.include? enrollment.course }.map {|enrollment| enrollment.course }.compact.sort
+  end
+
+  def courses_with_withdrawn
+    course_ids = enrollments.with_deleted.map {|enrollment| enrollment.course.id }
+    Course.where(id: course_ids).order(:start_date)
   end
 
   def course
@@ -261,10 +270,6 @@ class Student < User
     ratings.where(internship_id: internship.id).first
   end
 
-  def courses_withdrawn
-    enrollments.only_deleted.select { |enrollment| !courses.include? enrollment.course }.map {|enrollment| enrollment.course }.compact.sort
-  end
-
   def valid_plans
     first_course = courses.order(:start_date).first
     if first_course
@@ -298,13 +303,6 @@ private
 
   def course_in_session
     @course_in_session ||= courses.where('start_date <= ? AND end_date >= ?', Time.zone.now.to_date, Time.zone.now.to_date).first
-  end
-
-  def student_has_course
-    unless course.present?
-      errors.add(:course, "cannot be blank")
-      false
-    end
   end
 
   def random_starting_point
@@ -372,5 +370,10 @@ private
 
   def validate_plan_id
     valid_plans.include? plan
+  end
+
+  def update_starting_cohort_crm
+    description = starting_cohort_id ? Course.find(starting_cohort_id).description : nil
+    update_close_io({ 'custom.Starting Cohort': description })
   end
 end
