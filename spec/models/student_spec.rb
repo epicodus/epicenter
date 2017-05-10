@@ -23,11 +23,6 @@ describe Student do
       before { allow(subject).to receive(:invitation_accepted_at?).and_return(false) }
       it { should_not validate_presence_of :plan_id }
     end
-
-    it "validates that a student is created with an assigned course" do
-      student = FactoryGirl.build(:student, course: nil)
-      expect(student.valid?).to be false
-    end
   end
 
   describe '#with_activated_accounts' do
@@ -54,9 +49,23 @@ describe Student do
     let!(:student) { FactoryGirl.create(:student, courses: [first_course, second_course]) }
 
     it 'returns courses student was withdrawn from' do
+      FactoryGirl.create(:attendance_record, student: student, date: second_course.start_date)
       Enrollment.find_by(student: student, course: second_course).destroy
       student.reload
       expect(student.courses_withdrawn).to eq [second_course]
+    end
+  end
+
+  describe '#courses_with_withdrawn' do
+    let!(:first_course) { FactoryGirl.create(:past_course) }
+    let!(:second_course) { FactoryGirl.create(:course) }
+    let!(:student) { FactoryGirl.create(:student, courses: [first_course, second_course]) }
+
+    it 'returns all courses, including withdrawn courses' do
+      FactoryGirl.create(:attendance_record, student: student, date: second_course.start_date)
+      Enrollment.find_by(student: student, course: second_course).destroy
+      student.reload
+      expect(student.courses_with_withdrawn).to eq [first_course, second_course]
     end
   end
 
@@ -820,6 +829,7 @@ describe Student do
 
     context 'for a particular range of courses' do
       before do
+        allow_any_instance_of(Student).to receive(:update_close_io)
         student.courses = [past_course, course, future_course]
         student.courses.each do |c|
           create_attendance_record_in_course(c, "on_time")
@@ -949,6 +959,7 @@ describe Student do
 
     context 'for internships' do
       before do
+        allow_any_instance_of(Student).to receive(:update_close_io)
         student.enrollments.destroy_all
         student.course = FactoryGirl.create(:internship_course)
       end
@@ -1077,6 +1088,36 @@ describe Student do
     it 'validates plan is not an option for course' do
       plan.update(parttime: true)
       expect(student.update(plan_id: plan.id)).to be(false)
+    end
+  end
+
+  describe 'update_starting_cohort_crm' do
+    let(:student) { FactoryGirl.create(:student) }
+
+    before do
+      allow(student).to receive(:update_close_io)
+    end
+
+    it 'triggers update_starting_cohort_crm on update' do
+      expect(student).to receive(:update_starting_cohort_crm)
+      student.update(starting_cohort_id: student.course.id)
+    end
+
+    it 'updates CRM on change to starting_cohort_id' do
+      expect(student).to receive(:update_close_io).with({ 'custom.Starting Cohort': student.course.description })
+      student.update(starting_cohort_id: student.course.id)
+    end
+
+    it 'clears CRM starting cohort field if starting_cohort_id is set to nil' do
+      student.update_columns(starting_cohort_id: student.course.id)
+      expect(student).to receive(:update_close_io).with({ 'custom.Starting Cohort': nil })
+      student.update(starting_cohort_id: nil)
+    end
+
+    it 'does not trigger update_starting_cohort_crm when starting_cohort_id not changed' do
+      student.update_columns(starting_cohort_id: student.course.id)
+      expect(student).to_not receive(:update_starting_cohort_crm)
+      student.update(starting_cohort_id: student.course.id)
     end
   end
 

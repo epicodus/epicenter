@@ -156,6 +156,7 @@ feature 'viewing the student page' do
   end
 
   scenario 'when a student has withdrawn from a course' do
+    FactoryGirl.create(:attendance_record, student: student, date: student.course.start_date)
     Enrollment.find_by(student: student, course: student.course).destroy
     visit course_student_path(student.course, student)
     expect(page).to have_content 'withdrawn'
@@ -170,9 +171,14 @@ end
 
 feature 'viewing the student courses list' do
   let(:admin) { FactoryGirl.create(:admin) }
-  let(:student) { FactoryGirl.create(:student) }
+  let(:course1) { FactoryGirl.create(:course) }
+  let(:course2) { FactoryGirl.create(:internship_course) }
+  let(:student) { FactoryGirl.create(:student, courses: [course1, course2]) }
 
-  before { login_as(admin, scope: :admin) }
+  before do
+    FactoryGirl.create(:attendance_record, student: student, date: course1.start_date)
+    login_as(admin, scope: :admin)
+  end
 
   it 'shows enrolled course' do
     visit student_courses_path(student)
@@ -181,22 +187,20 @@ feature 'viewing the student courses list' do
   end
 
   it 'shows withdrawn course in separate section' do
-    other_course = FactoryGirl.create(:future_course)
-    Enrollment.create(student: student, course: other_course)
-    Enrollment.find_by(student: student, course: other_course).destroy
+    Enrollment.find_by(student: student, course: course1).destroy
     visit student_courses_path(student)
-    expect(page).to have_content other_course.description
+    expect(page).to have_content course2.description
     expect(page).to have_content 'Withdrawn:'
-    expect(page).to have_content "#{other_course.description} (0 sign-ins, withdrawn"
+    expect(page).to have_content "#{course1.description} (1 sign-ins, withdrawn"
   end
 
   it 'allows admin to click through to view code reviews for withdrawn course' do
-    other_course = FactoryGirl.create(:future_course)
-    Enrollment.create(student: student, course: other_course)
-    Enrollment.find_by(student: student, course: other_course).destroy
+    Enrollment.find_by(student: student, course: course1).destroy
     visit student_courses_path(student)
-    click_link other_course.description
-    expect(page).to have_content "#{other_course.description} (withdrawn)"
+    within '.well' do
+      click_link course1.description
+    end
+    expect(page).to have_content "#{course1.description} (withdrawn)"
     expect(page).to have_content 'Code reviews'
   end
 end
