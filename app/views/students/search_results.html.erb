@@ -7,15 +7,24 @@
 
           <div class="panel panel-default">
             <div class="panel-body">
-              <% if student.deleted? %>
-                <span class="label label-primary pull-right">Archived</span>
-              <% elsif student.courses.empty? %>
-                <span class="label label-primary pull-right">Not enrolled</span>
-              <% elsif student.class_over? %>
-                <span class="label label-info pull-right">Graduate</span>
-              <% elsif student.courses.any? %>
-                <span class="label label-success pull-right">Current student</span>
-              <% end %>
+              <p>
+                <% case student.get_status %>
+                  <% when 'Not enrolled', 'Archived' %>
+                    <span class="label label-primary pull-right">
+                  <% when 'Incomplete' %>
+                    <span class="label label-default pull-right">
+                  <% when 'Graduate' %>
+                    <span class="label label-info pull-right">
+                  <% when 'Pre-2016' %>
+                    <span class="label label-danger pull-right">
+                  <% when 'Current student', 'Future student' %>
+                    <span class="label label-success pull-right">
+                  <% when 'Part-time (past)', 'Part-time (current)', 'Part-time (future)' %>
+                    <span class="label label-warning pull-right">
+                <% end %>
+                <%= student.get_status %>
+                </span>
+              </p>
 
               <% if student.deleted? %>
                 <p><%= button_to 'Restore', student_restore_path(student), method: :patch, class: "btn btn-default" %></p>

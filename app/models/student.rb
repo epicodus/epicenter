@@ -286,6 +286,34 @@ class Student < User
     end
   end
 
+  def get_status
+    if deleted?
+      "Archived"
+    elsif courses_with_withdrawn.empty?
+      "Not enrolled"
+    elsif courses.empty?
+      "Incomplete"
+    elsif completed_internship_course?
+      "Graduate"
+    elsif course.parttime?
+      if Time.zone.now.to_date < course.start_date
+        "Part-time (future)"
+      elsif class_over?
+        "Part-time (past)"
+      else
+        "Part-time (current)"
+      end
+    elsif course.end_date < Time.new(2016, 1, 1).to_date
+      "Pre-2016"
+    elsif class_over?
+      "Incomplete"
+    elsif course.start_date > Time.zone.now.to_date
+      "Future student"
+    else
+      "Current student"
+    end
+  end
+
 private
 
   def total_number_of_course_days(start_course=nil, end_course=nil)
