@@ -5,13 +5,24 @@
     <p><strong><%= @student.name %> has not signed all documents.</strong></p>
   <% end %>
 
-  <% if @student.courses.empty? %>
-    <p><span class="label label-primary">Not enrolled</span></p>
-  <% elsif @student.class_over? %>
-    <p><span class="label label-info">Graduate</span></p>
-  <% elsif @student.courses.any? %>
-    <p><span class="label label-success">Current student</span></p>
-  <% end %>
+  <p>
+    <% case @student.get_status %>
+    <% when 'Not enrolled', 'Archived' %>
+      <span class="label label-primary">
+    <% when 'Incomplete' %>
+      <span class="label label-default">
+    <% when 'Graduate' %>
+      <span class="label label-info">
+    <% when 'Pre-2016' %>
+      <span class="label label-danger">
+    <% when 'Current student', 'Future student' %>
+      <span class="label label-success">
+    <% when 'Part-time (past)', 'Part-time (current)', 'Part-time (future)' %>
+      <span class="label label-warning">
+    <% end %>
+    <%= @student.get_status %>
+    </span>
+  </p>
 
   <% if @student.primary_payment_method %>
     <p>Primary payment method: <%= @student.primary_payment_method.class.name.underscore.humanize + ' ending in ' + @student.primary_payment_method.last_four_string[-4,4] if @student.primary_payment_method %></p>
