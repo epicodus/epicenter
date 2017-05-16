@@ -10,6 +10,7 @@ class InvitationsController < Devise::InvitationsController
         params[:student][:name] = response[:name]
         params[:student][:course_id] = response[:course_id]
         super
+        set_starting_cohort
         set_flash_for_student
       else
         redirect_to new_student_invitation_path, alert: response[:errors].to_s
@@ -27,6 +28,11 @@ private
     student = Student.find(params[:student_id])
     student.invite!
     redirect_to root_path, notice: "A new invitation email has been sent to #{student.email}"
+  end
+
+  def set_starting_cohort
+    student = Student.find_by(email: params[:student][:email])
+    student.update(starting_cohort_id: student.courses_with_withdrawn.fulltime_courses.first.try(:id))
   end
 
   def set_flash_for_student

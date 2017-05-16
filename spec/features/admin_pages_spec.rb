@@ -86,6 +86,14 @@ feature 'Inviting new users', :vcr do
     expect(page).to have_content "An invitation email has been sent to example@example.com to join #{course.description}. Wrong course?"
   end
 
+  scenario 'starting cohort automatically set when admin sends invitation to a student' do
+    visit new_student_invitation_path
+    fill_in 'Email', with: 'example@example.com'
+    click_on 'Invite student'
+    student = Student.find_by(email: "example@example.com")
+    expect(student.starting_cohort_id).to eq student.course.id
+  end
+
   scenario 'admin fails to send invitation to a student' do
     visit new_student_invitation_path
     fill_in 'Email', with: 'bad_email'
