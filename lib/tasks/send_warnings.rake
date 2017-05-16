@@ -1,6 +1,6 @@
 desc "send attendance and solo warnings"
 task :send_warnings => [:environment] do
-  Course.current_courses.fulltime_courses.non_internship_courses.each do |course|
+  Course.current_courses.non_internship_courses.each do |course|
     if course.number_of_days_since_start == 1
       p "first day of course - reset attendance & solo warnings sent counters for all students in #{course.description}"
       course.students.update_all(attendance_warnings_sent: nil)
@@ -8,15 +8,15 @@ task :send_warnings => [:environment] do
     else
       course.students.each do |student|
 
-        # set friday attendance to on time automatically for portland classes (except week 1 of intro)
-        if Date.today.friday? && (course.language.level > 0 || course.number_of_days_since_start > 5)
+        # set friday attendance to on time automatically for fulltime classes (except week 1 of intro)
+        if Date.today.friday? && (course.language.level > 0 || course.number_of_days_since_start > 5) && !course.parttime?
           attendance_record = AttendanceRecord.find_or_initialize_by(student: student, date: Date.today)
           attendance_record.tardy = false
           attendance_record.left_early = false
           attendance_record.save
         end
 
-        # send attendance warnings
+        # send attendance warnings (fulltime and parttime)
         if student.attendance_warnings_sent == 1 && student.absences(course) >= 4
           if Rails.env.production?
             Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message("epicodus.com",
@@ -44,8 +44,8 @@ task :send_warnings => [:environment] do
           student.update(attendance_warnings_sent: 1)
         end
 
-        # send solo warnings
-        if !student.solo_warnings_sent && student.solos(course) >= 2
+        # send solo warnings (fulltime courses only)
+        if !student.solo_warnings_sent && student.solos(course) >= 2 && !course.parttime?
           if Rails.env.production?
             Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message("epicodus.com",
               { :from => "it@epicodus.com",
