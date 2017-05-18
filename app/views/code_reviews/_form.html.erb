@@ -35,7 +35,11 @@
 
   <div class="form-group">
     <%= f.label :date, "Code Review date" %>
-    <%= f.date_field :date, value: code_review.date || Date.today.beginning_of_week + 4.days, class: 'form-control' %>
+    <% if params[:action] == 'new' %>
+      <%= f.date_field :date, value: Date.today.beginning_of_week + 4.days, class: 'form-control' %>
+    <% else %>
+      <%= f.date_field :date, value: code_review.date, class: 'form-control' %>
+    <% end %>
   </div>
 
   <%= f.hidden_field :course_id, value: @course.id %>
