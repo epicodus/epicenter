@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170508190338) do
+ActiveRecord::Schema.define(version: 20170518224212) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,15 @@ ActiveRecord::Schema.define(version: 20170508190338) do
     t.date     "date"
   end
 
+  create_table "cohorts", force: :cascade do |t|
+    t.string  "description"
+    t.date    "start_date"
+    t.date    "end_date"
+    t.integer "office_id"
+  end
+
+  add_index "cohorts", ["office_id"], name: "index_cohorts_on_office_id", using: :btree
+
   create_table "course_internships", force: :cascade do |t|
     t.integer "course_id"
     t.integer "internship_id"
@@ -66,8 +75,10 @@ ActiveRecord::Schema.define(version: 20170508190338) do
     t.boolean  "parttime",                      default: false
     t.integer  "language_id"
     t.string   "end_time_friday"
+    t.integer  "cohort_id"
   end
 
+  add_index "courses", ["cohort_id"], name: "index_courses_on_cohort_id", using: :btree
   add_index "courses", ["start_date"], name: "index_courses_on_start_date", using: :btree
 
   create_table "enrollments", force: :cascade do |t|
@@ -301,4 +312,6 @@ ActiveRecord::Schema.define(version: 20170508190338) do
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
 
+  add_foreign_key "cohorts", "offices"
+  add_foreign_key "courses", "cohorts"
 end
