@@ -1028,7 +1028,7 @@ describe Student do
 
     it 'lists valid plans for full-time student with 2016 rates' do
       course = FactoryGirl.create(:course, class_days: [Time.new(2016, 12, 1).to_date])
-      student = FactoryGirl.create(:student, plan_id: nil)
+      student = FactoryGirl.create(:student, plan_id: nil, courses: [course])
       expect(student.valid_plans).to eq [rate_plan_2016]
     end
 
@@ -1073,8 +1073,9 @@ describe Student do
   end
 
   describe 'validate_plan_id' do
+    let(:course) { FactoryGirl.create(:course, class_days: [Time.new(2016, 12, 1).to_date]) }
     let(:plan) { FactoryGirl.create(:rate_plan_2016) }
-    let(:student) { FactoryGirl.create(:student, plan_id: nil) }
+    let(:student) { FactoryGirl.create(:student, plan_id: nil, courses: [course]) }
 
     it 'triggers validate_plan_id on update' do
       expect(student).to receive(:validate_plan_id)
