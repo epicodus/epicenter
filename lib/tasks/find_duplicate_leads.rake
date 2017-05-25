@@ -1,11 +1,12 @@
 desc "find duplicate leads in Close"
 task :find_duplicate_leads => [:environment] do
+  close_io_client ||= Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false)
   filename = File.join(Rails.root.join('tmp'), 'duplicate_or_missing_leads.txt')
   File.open(filename, 'w') do |file|
     Student.all.each do |student|
-      if !student.close_io_lead_exists?
-        file.puts("#{student.name} - #{student.email}")
-      end
+      lead = close_io_client.list_leads('email:' + student.email)
+      file.puts("NOT FOUND: #{student.email}") if lead.total_results == 0
+      file.puts("DUPLICATES FOUND: #{student.email}") if lead.total_results > 1
     end
   end
   if Rails.env.production?
