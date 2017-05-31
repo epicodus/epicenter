@@ -86,7 +86,7 @@
       </div>
     <% end %>
 
-    <% if current_student && !@submission.code_review.submissions_not_required? %>
+    <% if current_student && !@code_review.submissions_not_required? %>
       <div class="row">
         <div class="col-md-12">
           <%= render 'submissions/form' %>
