@@ -16,6 +16,7 @@ class SubmissionsController < ApplicationController
         redirect_to course_code_review_path(@code_review.course, @code_review), notice: "Thank you for submitting."
       end
     else
+      flash[:alert] = 'There was a problem submitting. Please review the form below.'
       render 'code_reviews/show'
     end
   end
@@ -31,6 +32,7 @@ class SubmissionsController < ApplicationController
       if @submission.update(submission_params)
         redirect_to course_code_review_path(@code_review.course, @code_review), notice: "Submission updated!"
       else
+        flash[:alert] = 'There was a problem submitting. Please review the form below.'
         render 'code_reviews/show'
       end
     end
@@ -39,6 +41,6 @@ class SubmissionsController < ApplicationController
 private
 
   def submission_params
-    params.require(:submission).permit(:link, :needs_review, :student_id, :times_submitted)
+    params.require(:submission).permit(:link, :needs_review, :student_id, :times_submitted, :blurb)
   end
 end

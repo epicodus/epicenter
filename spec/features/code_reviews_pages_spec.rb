@@ -125,13 +125,13 @@ feature 'visiting the code review show page' do
     it 'does not display code review content section if review has no content' do
       code_review.update(content: nil)
       visit course_code_review_path(code_review.course, code_review)
-      expect(page).to_not have_content "Submit your code for review by"
+      expect(page).to_not have_content "<h4><strong>Project</strong></h4>"
     end
 
     it 'does not display code review content section if review has no date' do
       code_review.update(date: nil)
       visit course_code_review_path(code_review.course, code_review)
-      expect(page).to_not have_content "Submit your code for review by"
+      expect(page).to_not have_content "<h4><strong>Project</strong></h4>"
     end
 
     context 'when submitting' do

@@ -22,12 +22,32 @@
   <p><span class="label label-info">Submissions not required</span></p>
 <% end %>
 
+<% if @code_review.content && @code_review.date %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4><strong>Project</strong></h4>
+    </div>
+    <div class="panel-body">
+      <% if current_admin || @code_review.visible?(current_student) %>
+        <%= markdown @code_review.content %>
+      <% elsif @code_review.expectations_met_by?(current_student) %>
+        <h4>Completed successfully!</h4>
+      <% else %>
+        <h4>Not yet available.</h4>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
 <div class="panel panel-default">
+  <div class="panel-heading">
+    <h4><strong>Objectives</strong></h4>
+  </div>
   <div class="panel-body">
     <div class="table-responsive">
       <table class="table">
         <thead>
-          <tr><th>Objectives</th></tr>
+          <tr><th>Your project will be reviewed on the following objectives:</th></tr>
         </thead>
         <tbody>
           <% if @submission.has_been_reviewed? %>
@@ -38,6 +58,20 @@
         </tbody>
       </table>
     </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading" id="submission">
+    <h4><strong>Submission</strong></h4>
+  </div>
+  <div class="panel-body">
+    <% if @code_review.date && !@code_review.expectations_met_by?(current_student) %>
+      <div class="well">
+        <p>Submit your code for review by 5pm on <%= @code_review.date.strftime("%A %B %d") %>.</p>
+        <p>Visit <a href="https://www.learnhowtoprogram.com/lessons/independent-projects-and-code-reviews" target="_blank">Independent Projects and Code Reviews</a> for details on how to submit, how feedback works and course completion requirements.</p>
+      </div>
+    <% end %>
 
     <% if @submission.has_been_reviewed? %>
       <div class="table-responsive">
@@ -52,37 +86,18 @@
       </div>
     <% end %>
 
-    <% if @code_review.content && @code_review.date %>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h4><strong>Project</strong></h4>
-        </div>
-        <div class="panel-body">
-          <% if current_admin || @code_review.visible?(current_student) %>
-            <%= markdown @code_review.content %>
-          <% elsif @code_review.expectations_met_by?(current_student) %>
-            <h4>Completed successfully!</h4>
-          <% else %>
-            <h4>Not yet available.</h4>
-          <% end %>
-        </div>
-        <div class="panel-footer">
-          <p>Submit your code for review by 5pm on <%= @code_review.date.strftime("%A %B %d") %>.</p>
-          <p>Visit <a href="https://www.learnhowtoprogram.com/lessons/independent-projects-and-code-reviews" target="_blank">Independent Projects and Code Reviews</a> for details on how to submit, how feedback works and course completion requirements.</p>
-        </div>
-      </div>
-    <% end %>
-
     <% if current_student && !@submission.code_review.submissions_not_required? %>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <%= render 'submissions/form' %>
         </div>
       </div>
     <% end %>
-
-    <% if current_admin %>
-      <%= link_to 'Delete', @code_review, data: { method: :delete, confirm: 'Are you sure?' }, class: 'btn btn-primary' %>
-    <% end %>
   </div>
 </div>
+
+<% if current_admin %>
+  <div class="panel">
+    <%= link_to 'Delete Code Review', @code_review, data: { method: :delete, confirm: 'Are you sure you want to delete this code review?' }, class: 'btn btn-primary' %>
+  </div>
+<% end %>

@@ -18,6 +18,12 @@
 
     <h4><%= link_to 'View code', @submission.link, target: '_blank' if @submission.link %></h4>
 
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <p><%= @submission.blurb %></p>
+      </div>
+    </div>
+
     <%= render 'form' %>
   </div>
 </div>
