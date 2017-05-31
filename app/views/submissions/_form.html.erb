@@ -9,6 +9,11 @@
   </div>
 
   <div class="form-group">
+    <%= f.label :blurb, "Please summarize your experience with this project in a few short sentences. Feel free to highlight challenges you faced, or questions you have. This is required, but will not be graded or contribute to your grade." %>
+    <%= f.text_area :blurb, rows: 5, class: 'form-control', required: true %>
+  </div>
+
+  <div class="form-group">
     <p>
       I confirm that I have read and understand the <a href="https://www.learnhowtoprogram.com/lessons/independent-projects-and-code-reviews" target=_blank>guidelines</a> for Independent Projects.
       &nbsp;&nbsp;<%= check_box_tag nil, 1, checked = false, { required: true, id: 'understand-guidelines' } %>

@@ -15,7 +15,7 @@
           <% @course.code_reviews.each do |code_review| %>
           <tbody>
             <tr>
-              <td><%= code_review.title %></td>
+              <td><%= link_to code_review.title, course_code_review_path(@course, code_review), class: 'text-info' %></td>
               <td>
                 <% if code_review.expectations_met_by?(@student) %>
                   <span class="glyphicon glyphicon-ok submission-success"></span>
@@ -51,7 +51,7 @@
                   <% elsif code_review.submissions_not_required? %>
                     <%= link_to 'Pending', course_code_review_path(@course, code_review) %>
                   <% else %>
-                    <%= link_to 'Submit', course_code_review_path(@course, code_review), class: 'text-info' %>
+                    <%= link_to 'Submit', course_code_review_path(@course, code_review, anchor: "submission"), class: 'text-info' %>
                   <% end %>
                 </td>
               <% end %>
