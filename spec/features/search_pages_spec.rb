@@ -121,7 +121,7 @@ feature 'searching for a student' do
     end
 
     scenario 'when a query is made for a part-time student' do
-      course = FactoryGirl.create(:part_time_course, class_days: [Time.zone.now.to_date])
+      course = FactoryGirl.create(:part_time_course, class_days: [Time.zone.now.to_date.monday])
       student = FactoryGirl.create(:student, courses: [course])
       visit root_path
       within '#navbar-search' do

@@ -1163,29 +1163,29 @@ describe Student do
     end
 
     it 'reports status of graduated student' do
-      student.courses = [FactoryGirl.create(:internship_course, class_days: [Time.zone.now.to_date - 5.weeks])]
+      student.courses = [FactoryGirl.create(:internship_course, class_days: [(Time.zone.now.to_date - 5.weeks).monday])]
       expect(student.get_status).to eq 'Graduate'
     end
 
     it 'reports status of student who finished before 2016' do
-      student.courses = [FactoryGirl.create(:internship_course, class_days: [Time.zone.now.to_date - 5.weeks])]
+      student.courses = [FactoryGirl.create(:internship_course, class_days: [(Time.zone.now.to_date - 5.weeks).monday])]
       expect(student.get_status).to eq 'Graduate'
     end
 
     it 'reports status of student who withdrew (class over without completed internship course)' do
-      student.courses = [FactoryGirl.create(:course, class_days: [Time.zone.now.to_date - 5.weeks])]
+      student.courses = [FactoryGirl.create(:course, class_days: [(Time.zone.now.to_date - 5.weeks).monday])]
       expect(student.get_status).to eq 'Incomplete'
     end
 
     it 'reports status of student who withdrew (withdrawn enrollments only)' do
-      student.courses = [FactoryGirl.create(:course, class_days: [Time.zone.now.to_date - 5.weeks])]
+      student.courses = [FactoryGirl.create(:course, class_days: [(Time.zone.now.to_date - 5.weeks).monday])]
       FactoryGirl.create(:attendance_record, student: student, date: student.course.start_date)
       Enrollment.find_by(student: student).destroy
       expect(student.get_status).to eq 'Incomplete'
     end
 
     it 'reports status of past part-time student' do
-      student.courses = [FactoryGirl.create(:part_time_course, class_days: [Time.zone.now.to_date - 5.weeks])]
+      student.courses = [FactoryGirl.create(:part_time_course, class_days: [(Time.zone.now.to_date - 5.weeks).monday])]
       expect(student.get_status).to eq 'Part-time (past)'
     end
 
@@ -1195,7 +1195,7 @@ describe Student do
     end
 
     it 'reports status of future part-time student' do
-      student.courses = [FactoryGirl.create(:part_time_course, class_days: [Time.zone.now.to_date + 5.weeks])]
+      student.courses = [FactoryGirl.create(:part_time_course, class_days: [(Time.zone.now.to_date + 5.weeks).monday])]
       expect(student.get_status).to eq 'Part-time (future)'
     end
   end
