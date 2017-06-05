@@ -15,6 +15,13 @@ describe CodeReview do
     expect(copy_code_review.save).to be true
   end
 
+  it 'sets date to next Friday when duplicating a code review with a date' do
+    course = FactoryGirl.create(:course)
+    code_review = FactoryGirl.create(:code_review)
+    copy_code_review = code_review.duplicate_code_review(course)
+    expect(copy_code_review.date).to eq Date.today.beginning_of_week + 4.days
+  end
+
   it 'validates presence of at least one objective' do
     code_review = FactoryGirl.build(:code_review)
     code_review.save

@@ -21,6 +21,7 @@ class CodeReview < ActiveRecord::Base
   def duplicate_code_review(course)
     copy_code_review = self.deep_clone include: :objectives
     copy_code_review.course = course
+    copy_code_review.date = Date.today.beginning_of_week + 4.days if self.date
     copy_code_review
   end
 
