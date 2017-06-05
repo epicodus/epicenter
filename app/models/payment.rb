@@ -29,7 +29,7 @@ private
   def update_close_io
     amount_paid = { 'custom.Amount paid': student.total_paid / 100 }
     if student.close_io_lead_exists?
-      if student.payments.count == 1 && student.get_crm_status == "Accepted"
+      if student.payments.count == 1 && student.get_crm_status == "Applicant - Accepted"
         logger.info "Updating Close with status Enrolled and amount paid of #{student.total_paid}."
         student.update_close_io({ status: "Enrolled" }.merge(amount_paid))
       else

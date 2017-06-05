@@ -249,7 +249,7 @@ describe Payment do
     end
 
     it 'updates status and amount paid on the first payment', :vcr, :stub_mailgun do
-      allow(student).to receive(:get_crm_status).and_return("Accepted")
+      allow(student).to receive(:get_crm_status).and_return("Applicant - Accepted")
       payment = Payment.new(student: student, amount: 270_00, payment_method: student.primary_payment_method)
       expect(student).to receive(:update_close_io).with({ status: "Enrolled", 'custom.Amount paid': payment.amount / 100 })
       payment.save
