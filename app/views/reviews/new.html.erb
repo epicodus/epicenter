@@ -19,10 +19,8 @@
     <h4><%= link_to 'View code', @submission.link, target: '_blank' if @submission.link %></h4>
 
     <% if @submission.blurb %>
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <p><%= @submission.blurb %></p>
-        </div>
+      <div class="well">
+        <p><%= @submission.blurb %></p>
       </div>
     <% end %>
 
