@@ -152,6 +152,7 @@ feature 'viewing the student page' do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:student) { FactoryGirl.create(:student) }
   let(:unenrolled_student) { FactoryGirl.create(:unenrolled_student) }
+  let(:internship_student) { FactoryGirl.create(:student, courses: [FactoryGirl.create(:internship_course)]) }
 
   before { login_as(admin, scope: :admin) }
 
@@ -165,9 +166,8 @@ feature 'viewing the student page' do
   end
 
   scenario 'when a student is enrolled in a course with internships' do
-    FactoryGirl.create(:internship, courses: [student.course])
-    visit course_student_path(student.course, student)
-    expect(page).to have_content 'Attendance'
+    FactoryGirl.create(:internship, courses: [internship_student.course])
+    visit course_student_path(internship_student.course, internship_student)
     expect(page).to have_content 'Code reviews'
     expect(page).to have_content 'Internships'
   end
