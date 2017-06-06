@@ -14,7 +14,11 @@
           <tbody>
             <% courses.each do |course| %>
               <tr>
-                <td><%= link_to course.description, admin_path(current_admin, admin: { current_course_id: course.id }), method: :patch %></td>
+                <% if current_admin.teacher? %>
+                  <td><%= link_to course.description, admin_path(current_admin, admin: { current_course_id: course.id }), method: :patch %></td>
+                <% else %>
+                  <td><%= link_to course.description, course_path(course) %></td>
+                <% end %>
                 <td><%= course.office.name %></td>
                 <td><%= course.teacher %></td>
                 <td><%= course.students.count %></td>

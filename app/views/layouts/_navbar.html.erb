@@ -43,7 +43,11 @@
             <%= link_to 'Profile', edit_student_registration_path %>
           <% end %>
         <% elsif current_admin %>
-          <li><%= link_to "#{current_admin.current_course.description}", course_path(current_admin.current_course), class: 'first-navbar-link' %></li>
+          <% if current_admin.teacher? %>
+            <li><%= link_to "#{current_admin.current_course.description}", course_path(current_admin.current_course), class: 'first-navbar-link' %></li>
+          <% else %>
+            <li><%= link_to "Home", course_path(current_admin.current_course), class: 'first-navbar-link' %></li>
+          <% end %>
           <li>
             <% if current_admin.courses.any? %>
               <%= link_to 'Courses', courses_path(admin_courses: true) %>
