@@ -55,7 +55,7 @@
               <%= link_to 'Courses', courses_path(current: true) %>
             <% end %>
           </li>
-          <li><%= link_to "Internships", internships_path(active: true) %></li>
+          <li><%= link_to "Companies", internships_path(active: true) %></li>
           <li><%= link_to 'Invite', new_student_invitation_path %></li>
         <% elsif current_company %>
           <%= set_navbar_link_class('companies') do %>
