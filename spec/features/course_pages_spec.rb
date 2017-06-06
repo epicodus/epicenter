@@ -166,6 +166,20 @@ feature 'visiting the course index page' do
   end
 end
 
+feature 'selecting a new course manually' do
+  let(:admin) { FactoryGirl.create(:admin) }
+
+  scenario 'as an admin' do
+    course2 = FactoryGirl.create(:internship_course)
+    login_as(admin, scope: :admin)
+    visit root_path
+    click_on 'Courses'
+    click_on course2.description
+    click_on 'Select'
+    expect(page).to have_content "You have switched to #{course2.description}"
+  end
+end
+
 feature 'exporting course students emails to a file' do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }

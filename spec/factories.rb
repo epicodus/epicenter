@@ -5,6 +5,10 @@ FactoryGirl.define do
     password "password"
     password_confirmation "password"
     association :current_course, factory: :course
+
+    factory :teacher do
+      teacher true
+    end
   end
 
   factory :attendance_record do

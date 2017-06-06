@@ -56,17 +56,31 @@ feature 'Admin signs in' do
   end
 end
 
-feature 'Changing current course' do
-  let(:admin) { FactoryGirl.create(:admin) }
+feature 'Changing current course for teacher' do
+  let(:teacher) { FactoryGirl.create(:teacher) }
   let(:course) { FactoryGirl.create(:course) }
 
   scenario 'admin selects a new course' do
+    course2 = FactoryGirl.create(:internship_course)
+    login_as(teacher, scope: :admin)
+    visit root_path
+    click_link 'Courses'
+    click_link course2.description
+    expect(page).to have_content "You have switched to #{course2.description}"
+  end
+end
+
+feature 'Does not change current course for non-teacher admin' do
+  let(:admin) { FactoryGirl.create(:admin) }
+  let(:course) { FactoryGirl.create(:course) }
+
+  scenario 'non-teacher admin views a course' do
     course2 = FactoryGirl.create(:internship_course)
     login_as(admin, scope: :admin)
     visit root_path
     click_link 'Courses'
     click_link course2.description
-    expect(page).to have_content "You have switched to #{course2.description}"
+    expect(page).to_not have_content "You have switched to #{course2.description}"
   end
 end
 
