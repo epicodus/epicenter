@@ -19,6 +19,7 @@ class Course < ActiveRecord::Base
   belongs_to :office
   belongs_to :language
   belongs_to :cohort
+  belongs_to :track
   has_many :enrollments
   has_many :students, through: :enrollments
   has_many :attendance_records, through: :students

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170606172131) do
+ActiveRecord::Schema.define(version: 20170608221710) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,10 +76,12 @@ ActiveRecord::Schema.define(version: 20170606172131) do
     t.integer  "language_id"
     t.string   "end_time_friday"
     t.integer  "cohort_id"
+    t.integer  "track_id"
   end
 
   add_index "courses", ["cohort_id"], name: "index_courses_on_cohort_id", using: :btree
   add_index "courses", ["start_date"], name: "index_courses_on_start_date", using: :btree
+  add_index "courses", ["track_id"], name: "index_courses_on_track_id", using: :btree
 
   create_table "enrollments", force: :cascade do |t|
     t.integer  "course_id"
@@ -144,6 +146,11 @@ ActiveRecord::Schema.define(version: 20170606172131) do
   create_table "languages", force: :cascade do |t|
     t.string  "name"
     t.integer "level"
+  end
+
+  create_table "languages_tracks", id: false, force: :cascade do |t|
+    t.integer "track_id",    null: false
+    t.integer "language_id", null: false
   end
 
   create_table "objectives", force: :cascade do |t|
@@ -316,4 +323,5 @@ ActiveRecord::Schema.define(version: 20170606172131) do
 
   add_foreign_key "cohorts", "offices"
   add_foreign_key "courses", "cohorts"
+  add_foreign_key "courses", "tracks"
 end

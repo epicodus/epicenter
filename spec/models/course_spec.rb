@@ -3,6 +3,7 @@ describe Course do
   it { should belong_to :office }
   it { should belong_to :cohort }
   it { should belong_to :language }
+  it { should belong_to :track }
   it { should have_many :students }
   it { should have_many(:attendance_records).through(:students) }
   it { should have_many :code_reviews }
