@@ -11,9 +11,11 @@ class Course < ActiveRecord::Base
 
   validates :language_id, :start_date, :end_date, :start_time, :end_time, :office_id, presence: true
   before_validation :set_start_and_end_dates
-  before_save :set_parttime
-  before_save :set_internship_course
-  before_save :set_description
+  before_create :set_parttime
+  before_create :set_internship_course
+  before_create :set_description
+  after_save :update_cohort_end_date, if: ->(course) { course.cohort.present? }
+
 
   belongs_to :admin
   belongs_to :office
@@ -184,6 +186,13 @@ private
       self.description = "#{start_date.strftime('%Y-%m')} #{language.name} #{office.name.upcase}"
     else
       self.description = "#{start_date.strftime('%Y-%m')} #{language.name}"
+    end
+  end
+
+  def update_cohort_end_date
+    if !cohort.end_date || cohort.end_date < self.end_date
+      cohort.end_date = self.end_date
+      cohort.save
     end
   end
 end

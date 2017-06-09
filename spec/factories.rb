@@ -109,6 +109,15 @@ FactoryGirl.define do
     end
   end
 
+  factory :cohort do
+    description 'a cohort'
+    start_date Time.new(2016, 1, 4).to_date
+    association :office, factory: :portland_office
+    before(:create) do |cohort|
+      cohort.courses << build(:course)
+    end
+  end
+
   factory :credit_card do
     student
     stripe_token({

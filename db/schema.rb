@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170608221710) do
+ActiveRecord::Schema.define(version: 20170609201930) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,9 +49,11 @@ ActiveRecord::Schema.define(version: 20170608221710) do
     t.date    "start_date"
     t.date    "end_date"
     t.integer "office_id"
+    t.integer "track_id"
   end
 
   add_index "cohorts", ["office_id"], name: "index_cohorts_on_office_id", using: :btree
+  add_index "cohorts", ["track_id"], name: "index_cohorts_on_track_id", using: :btree
 
   create_table "course_internships", force: :cascade do |t|
     t.integer "course_id"
@@ -322,6 +324,7 @@ ActiveRecord::Schema.define(version: 20170608221710) do
   add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
 
   add_foreign_key "cohorts", "offices"
+  add_foreign_key "cohorts", "tracks"
   add_foreign_key "courses", "cohorts"
   add_foreign_key "courses", "tracks"
 end

@@ -380,6 +380,25 @@ describe Course do
       internship_course = FactoryGirl.create(:internship_course, office: level_3_just_finished_course.office)
       expect(internship_course.description).to eq "#{internship_course.start_date.strftime('%Y-%m')} Internship (#{level_3_just_finished_course.language.name})"
     end
+  end
 
+  describe '#update_cohort_end_date' do
+    let(:cohort) { FactoryGirl.create(:cohort) }
+
+    it 'sets cohort end date when adding courses at same time as cohort creation' do
+      expect(cohort.reload.end_date).to eq cohort.courses.last.end_date
+    end
+
+    it 'updates cohort end_date when adding more recent course to cohort' do
+      future_course = FactoryGirl.create(:future_course)
+      cohort.courses << future_course
+      expect(cohort.reload.end_date).to eq future_course.end_date
+    end
+
+    it 'does not update cohort end_date when adding less recent course to cohort' do
+      past_course = FactoryGirl.create(:past_course)
+      cohort.courses << past_course
+      expect(cohort.reload.end_date).to eq cohort.courses.order(:end_date).last.end_date
+    end
   end
 end
