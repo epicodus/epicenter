@@ -380,6 +380,13 @@ describe Course do
       internship_course = FactoryGirl.create(:internship_course, office: level_3_just_finished_course.office)
       expect(internship_course.description).to eq "#{internship_course.start_date.strftime('%Y-%m')} Internship (#{level_3_just_finished_course.language.name})"
     end
+
+    it 'allows manual setting of description on creation' do
+      course = FactoryGirl.build(:course)
+      course.description = 'an awesome course'
+      course.save
+      expect(course.description).to eq 'an awesome course'
+    end
   end
 
   describe '#update_cohort_end_date' do

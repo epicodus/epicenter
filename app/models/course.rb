@@ -13,7 +13,7 @@ class Course < ActiveRecord::Base
   before_validation :set_start_and_end_dates
   before_create :set_parttime
   before_create :set_internship_course
-  before_create :set_description
+  before_create :set_description, if: ->(course) { course.description.blank? }
   after_save :update_cohort_end_date, if: ->(course) { course.cohort.present? }
 
 

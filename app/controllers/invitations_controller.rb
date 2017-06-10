@@ -39,7 +39,7 @@ private
     if resource.errors.empty?
       student = Student.find_by(email: params[:student][:email])
       course = Course.find(params[:student][:course_id])
-      flash[:notice] = "An invitation email has been sent to #{student.email} to join #{course.description}. #{view_context.link_to('Wrong course?', student_courses_path(student))}"
+      flash[:notice] = "An invitation email has been sent to #{student.email} to join #{course.description} in #{course.office.name}. #{view_context.link_to('Wrong course?', student_courses_path(student))}"
     end
   end
 end
