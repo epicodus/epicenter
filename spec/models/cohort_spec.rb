@@ -2,12 +2,13 @@ describe Cohort do
   it { should have_many :courses }
   it { should belong_to :office }
   it { should belong_to :track }
+  it { should belong_to :admin }
   it { should validate_presence_of(:description) }
   it { should validate_presence_of(:start_date) }
 
   describe '.create_from_course_ids' do
     let(:course) { FactoryGirl.create(:course) }
-    let(:future_course) { FactoryGirl.create(:course) }
+    let(:future_course) { FactoryGirl.create(:future_course) }
 
     it 'creates cohort for specific track' do
       track = FactoryGirl.create(:track)

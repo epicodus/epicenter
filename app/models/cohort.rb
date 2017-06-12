@@ -7,6 +7,7 @@ class Cohort < ActiveRecord::Base
   has_many :courses, -> { order(:end_date) }
   belongs_to :office
   belongs_to :track
+  belongs_to :admin
 
   def self.create_from_course_ids(attributes)
     description = "#{attributes[:start_month]} #{attributes[:track]} #{attributes[:office]}"
