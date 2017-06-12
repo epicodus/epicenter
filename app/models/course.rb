@@ -179,7 +179,9 @@ private
   end
 
   def set_description
-    if language.level == 4
+    if language.name == "Intro" && track.present?
+      self.description = "#{start_date.strftime('%Y-%m')} Intro #{track.languages.find_by(level: 1).name}"
+    elsif language.name == "Internship"
       level_3_graduated = Course.courses_for(office).where('end_date > ? AND end_date < ?', start_date - 3.weeks, start_date).select {|course| course.language && course.language.level == 3 }
       languages = level_3_graduated.map { |course| course.language.name }.sort.join(", ")
       self.description = "#{start_date.strftime('%Y-%m')} #{language.name} (#{languages})"
