@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170609202430) do
+ActiveRecord::Schema.define(version: 20170612221620) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 20170609202430) do
     t.date    "end_date"
     t.integer "office_id"
     t.integer "track_id"
+    t.integer "admin_id"
   end
 
   add_index "cohorts", ["office_id"], name: "index_cohorts_on_office_id", using: :btree

@@ -3,6 +3,7 @@ class Admin < User
 
   belongs_to :current_course, class_name: 'Course'
   has_many :courses
+  has_many :cohorts
 
   before_create :assign_current_course
   devise :database_authenticatable, :validatable
