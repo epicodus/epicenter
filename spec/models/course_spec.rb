@@ -408,4 +408,41 @@ describe Course do
       expect(cohort.reload.end_date).to eq cohort.courses.order(:end_date).last.end_date
     end
   end
+
+  describe 'create course class_days automatically based on start_date' do
+    it 'creates course days for non-internship course during period without any holidays' do
+      course = FactoryGirl.create(:course, class_days: [], start_date: Date.parse('2017-03-13'))
+      expect(course.start_date).to eq Date.parse('2017-03-13')
+      expect(course.end_date).to eq Date.parse('2017-04-13')
+      expect(course.class_days.count).to eq 24
+    end
+
+    it 'creates course days for non-internship course during period with holidays' do
+      course = FactoryGirl.create(:course, class_days: [], start_date: Date.parse('2017-05-22'))
+      expect(course.start_date).to eq Date.parse('2017-05-22')
+      expect(course.end_date).to eq Date.parse('2017-06-22')
+      expect(course.class_days.count).to eq 23
+    end
+
+    it 'creates course days for non-internship course during period with holiday week' do
+      course = FactoryGirl.create(:course, class_days: [], start_date: Date.parse('2017-11-13'))
+      expect(course.start_date).to eq Date.parse('2017-11-13')
+      expect(course.end_date).to eq Date.parse('2017-12-21')
+      expect(course.class_days.count).to eq 24
+    end
+
+    it 'creates course days for internship course during period without holidays' do
+      course = FactoryGirl.create(:internship_course, class_days: [], start_date: Date.parse('2017-03-13'))
+      expect(course.start_date).to eq Date.parse('2017-03-13')
+      expect(course.end_date).to eq Date.parse('2017-04-28')
+      expect(course.class_days.count).to eq 35
+    end
+
+    it 'creates course days for internship course during period with holiday weeks' do
+      course = FactoryGirl.create(:internship_course, class_days: [], start_date: Date.parse('2017-11-13'))
+      expect(course.start_date).to eq Date.parse('2017-11-13')
+      expect(course.end_date).to eq Date.parse('2017-12-29')
+      expect(course.class_days.count).to eq 35
+    end
+  end
 end
