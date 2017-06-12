@@ -10,6 +10,7 @@ class Course < ActiveRecord::Base
   scope :level, -> (level) { joins(:language).where('level = ?', level) }
 
   validates :language_id, :start_date, :end_date, :start_time, :end_time, :office_id, presence: true
+  before_validation :set_class_days, if: ->(course) { course.class_days.empty? && course.start_date }
   before_validation :set_start_and_end_dates
   before_create :set_parttime
   before_create :set_internship_course
@@ -194,5 +195,24 @@ private
       cohort.end_date = self.end_date
       cohort.save
     end
+  end
+
+  def set_class_days
+    if language.level == 4
+      number_of_days = 35
+    else
+      number_of_days = 24
+      skip_holiday_weeks = true
+    end
+    class_days = []
+    day = start_date
+    number_of_days.times do
+      while day.saturday? || day.sunday? || (skip_holiday_weeks && Rails.configuration.holiday_weeks.include?(day.strftime('%Y-%m-%d'))) do
+        day = day.next_week
+      end
+      class_days << day unless Rails.configuration.holidays.include? day.strftime('%Y-%m-%d')
+      day = day.next
+    end
+    self.class_days = class_days
   end
 end

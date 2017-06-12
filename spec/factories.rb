@@ -9,6 +9,10 @@ FactoryGirl.define do
     factory :teacher do
       teacher true
     end
+
+    factory :admin_without_course do
+      current_course nil
+    end
   end
 
   factory :attendance_record do
@@ -106,6 +110,40 @@ FactoryGirl.define do
       active true
       association :office, factory: :portland_office
       association :language, factory: :ruby_language
+    end
+
+    factory :level0_course do
+      office nil
+      association :language, factory: :intro_language
+      class_days (Date.parse('2017-03-13')..Date.parse('2017-04-13')).select { |day| day if !day.saturday? && !day.sunday? }
+    end
+
+    factory :level1_course do
+      office nil
+      association :admin, factory: :admin_without_course
+      association :language, factory: :ruby_language
+      class_days (Date.parse('2017-04-17')..Date.parse('2017-05-18')).select { |day| day if !day.saturday? && !day.sunday? }
+    end
+
+    factory :level2_course do
+      office nil
+      association :admin, factory: :admin_without_course
+      association :language, factory: :js_language
+      class_days (Date.parse('2017-05-22')..Date.parse('2017-06-22')).select { |day| day if !day.saturday? && !day.sunday? }
+    end
+
+    factory :level3_course do
+      office nil
+      association :admin, factory: :admin_without_course
+      association :language, factory: :rails_language
+      class_days (Date.parse('2017-06-26')..Date.parse('2017-07-27')).select { |day| day if !day.saturday? && !day.sunday? }
+    end
+
+    factory :level4_course do
+      office nil
+      association :admin, factory: :admin_without_course
+      association :language, factory: :internship_language
+      class_days (Date.parse('2017-07-31')..Date.parse('2017-09-15')).select { |day| day if !day.saturday? && !day.sunday? }
     end
   end
 
@@ -541,6 +579,14 @@ FactoryGirl.define do
 
   factory :track do
     description 'Ruby/Rails'
+    before(:create) do |track|
+      track.languages << build(:intro_language)
+      track.languages << build(:ruby_language)
+      track.languages << build(:js_language)
+      track.languages << build(:rails_language)
+      track.languages << build(:internship_language)
+    end
+
   end
 
   factory :interview_assignment do
