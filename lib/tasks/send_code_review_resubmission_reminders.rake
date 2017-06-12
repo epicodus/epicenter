@@ -6,7 +6,7 @@ task :send_code_review_resubmission_reminders => [:environment] do
       code_review = course.code_reviews.find_by(date: local_date - 9.days)
       if code_review
         course.students.each do |student|
-          unless code_review.expectations_met_by?(student) || code_review.submission_for(student).needs_review?
+          unless code_review.expectations_met_by?(student) || code_review.submission_for(student).try(:needs_review?)
             if Rails.env.production?
               Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message("epicodus.com",
               { :from => "#{course.teacher} <#{course.admin.email}>",
