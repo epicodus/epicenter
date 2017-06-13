@@ -158,8 +158,18 @@ FactoryGirl.define do
     description 'a cohort'
     start_date Time.new(2016, 1, 4).to_date
     association :office, factory: :portland_office
+    association :track, factory: :track
+    association :admin, factory: :admin
     before(:create) do |cohort|
       cohort.courses << build(:course)
+    end
+
+    factory :full_cohort do
+      before(:create) do |cohort|
+        4.times do
+          cohort.courses << build(:course)
+        end
+      end
     end
   end
 

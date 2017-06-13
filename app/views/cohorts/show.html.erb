@@ -1,0 +1,25 @@
+<h1>
+  <%= @cohort.description %>
+  <%= link_to 'Edit', edit_cohort_path(@cohort) %>
+</h1>
+
+<div class="row">
+  <div class="col-md-4">
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Details</h3>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <h4><%= @cohort.track.try(:description) %></h4>
+            <h4><%= @cohort.office.name %></h4>
+            <h4><%= @cohort.admin.try(:name) %></h4>
+            <h4><%= @cohort.start_date.strftime('%B %d %Y') %> to <%= @cohort.end_date.strftime('%B %d %Y') %></h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h3>Courses</h3>
+<%= render 'courses/course_list', courses: @courses %>

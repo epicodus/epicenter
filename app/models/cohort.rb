@@ -23,8 +23,6 @@ class Cohort < ActiveRecord::Base
     cohort.courses.update_all(track_id: track.id) if track
   end
 
-private
-
   def find_or_create_courses
     next_course_start_date = start_date
     5.times do |level|
@@ -36,6 +34,8 @@ private
       self.courses << course
     end
   end
+
+private
 
   def skip_holidays(day)
     while day.saturday? || day.sunday? || Rails.configuration.holidays.include?(day.strftime('%Y-%m-%d')) || Rails.configuration.holiday_weeks.include?(day.monday.strftime('%Y-%m-%d')) do
