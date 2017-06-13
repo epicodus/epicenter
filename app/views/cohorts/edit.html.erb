@@ -1,0 +1,13 @@
+<h1>Edit <%= @cohort.description %></h1>
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <%= render 'form', cohort: @cohort %>
+      </div>
+    </div>
+  </div>
+</div>
+<% if @cohort.courses.count < 5 && @cohort.track && @cohort.admin %>
+  <%= link_to 'auto-add courses', cohort_path(@cohort, add_courses: true), data: { method: :patch, confirm: 'Are you sure you want to auto-add courses to this cohort? This will create new courses to fill the cohort if the courses do not yet exist.' }, class: 'btn btn-default' %>
+<% end %>

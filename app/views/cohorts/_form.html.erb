@@ -1,0 +1,28 @@
+<%= form_for cohort do |f| %>
+  <%= render 'layouts/errors', object: cohort %>
+
+  <div class="form-group">
+    <%= f.label :office_id, 'Office' %>
+    <%= f.select :office_id, Office.all.order(:name).collect {|c| [ c.name, c.id ] }, {include_blank: true}, { class: 'form-control' } %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :track_id, 'Track' %>
+    <%= f.select :track_id, Track.all.order(:description).collect {|c| [ c.description, c.id ] }, {include_blank: true}, { class: 'form-control' } %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :admin_id, 'Teacher' %>
+    <%= f.select :admin_id, Admin.all.collect {|c| [ c.name, c.id ] }, {include_blank: true}, { class: 'form-control' } %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :start_date, 'Start Date' %>
+    <strong>(weeks in this dropdown begin on Monday)</strong>
+    <%= f.date_field :start_date, value: cohort.start_date, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit nil, class: "btn btn-info" %>
+  </div>
+<% end %>

@@ -1,0 +1,29 @@
+---
+:scope: 
+:url: https://api.stripe.com/v1/tokens
+:body: key=pk_test_k71fNBhNztxvhxRq1PQaL4u5&payment_user_agent=stripe.js%2Fd31b455&card[name]=Example+Brown+145&card[number]=4242424242424241&card[exp_month]=12&card[exp_year]=2020&card[cvc]=123&card[address_zip]=11211
+:status: 402
+:method: post
+:headers:
+  Server: nginx
+  Date: Sat, 13 Feb 2016 00:02:31 GMT
+  Content-Type: application/json
+  Content-Length: '150'
+  Connection: close
+  Access-Control-Allow-Credentials: 'true'
+  Access-Control-Allow-Methods: GET, POST, HEAD, OPTIONS, DELETE
+  Access-Control-Allow-Origin: https://js.stripe.com
+  Access-Control-Max-Age: '300'
+  Cache-Control: no-cache, no-store
+  Request-Id: req_7teAj9reonzcib
+  Stripe-Version: '2016-02-03'
+  Timing-Allow-Origin: https://js.stripe.com
+:content: |
+  {
+    "error": {
+      "message": "Your card number is incorrect.",
+      "type": "card_error",
+      "param": "number",
+      "code": "incorrect_number"
+    }
+  }
