@@ -64,16 +64,10 @@ feature 'creating a cohort' do
 
     before { login_as(admin, scope: :admin) }
 
-    # scenario 'navigation to cohort#new page' do
-    #   visit root_path
-    #   click_on 'Cohorts'
-    #   click_on 'New'
-    #   expect(page).to have_content 'New cohort'
-    # end
-
-    # swap out with above when add cohorts to navbar
     scenario 'navigation to cohort#new page' do
-      visit new_cohort_path
+      visit root_path
+      click_on 'Cohorts'
+      click_on 'New'
       expect(page).to have_content 'New cohort'
     end
 
