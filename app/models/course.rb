@@ -207,7 +207,7 @@ private
       skip_holiday_weeks = true
     end
     class_days = []
-    day = start_date
+    day = start_date.beginning_of_week
     number_of_days.times do
       while day.saturday? || day.sunday? || (skip_holiday_weeks && Rails.configuration.holiday_weeks.include?(day.strftime('%Y-%m-%d'))) do
         day = day.next_week

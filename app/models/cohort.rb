@@ -1,5 +1,5 @@
 class Cohort < ActiveRecord::Base
-  validates :start_date, presence: true
+  validates :start_date, presence: true, uniqueness: { scope: [:office_id, :track_id] }
   validates :office, presence: true
 
   default_scope { order(:start_date) }
