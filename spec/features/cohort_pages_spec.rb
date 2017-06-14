@@ -42,6 +42,15 @@ feature 'viewing cohort' do
     expect(page).to have_content 'Courses'
     expect(page).to have_content cohort.courses.first.description
   end
+
+  scenario 'as an admin linking from course cohort link' do
+    admin = FactoryGirl.create(:admin)
+    login_as(admin, scope: :admin)
+    visit course_path(cohort.courses.first)
+    click_link cohort.description
+    expect(page).to have_content 'Courses'
+    expect(page).to have_content cohort.courses.first.description
+  end
 end
 
 feature 'creating a cohort' do
