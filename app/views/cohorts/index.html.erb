@@ -4,36 +4,34 @@
 </h1>
 
 <div class="row">
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <div class="table-responsive">
-        <table class="courses-datatable table table-hover">
-          <thead>
-            <th>Description</th>
-            <th>Office</th>
-            <th>Track</th>
-            <th>Teacher</th>
-            <th>Start date</th>
-            <th>End date</th>
-            <th>Courses</th>
-            <th></th>
-          </thead>
-            <tbody>
-              <% @cohorts.each do |cohort| %>
-                <tr>
-                  <td><%= link_to cohort.description, cohort_path(cohort) %></td>
-                  <td><%= cohort.office.name %></td>
-                  <td><%= cohort.track.try(:description) %></td>
-                  <td><%= cohort.admin.try(:name) %></td>
-                  <td><%= cohort.start_date.strftime("%b %d %Y") %></td>
-                  <td><%= cohort.end_date.strftime("%b %d %Y") %></td>
-                  <td><%= cohort.courses.count %></td>
-                  <td><%= link_to 'Edit', edit_cohort_path(cohort) %></td>
-                </tr>
-              <% end %>
-            </tbody>
-        </table>
-      </div>
-    </div>
+  <div class="col-xs-2">
+    <ul class="nav nav-pills nav-stacked side-nav">
+      <%= set_nav_link_class(:all) do %>
+        <%= link_to 'All', cohorts_path(all: true) %>
+      <% end %>
+
+      <%= set_nav_link_class(:future) do %>
+        <%= link_to 'Future', cohorts_path(future: true) %>
+      <% end %>
+
+      <%= set_nav_link_class(:current) do %>
+        <%= link_to 'Current', cohorts_path(current: true) %>
+      <% end %>
+
+      <%= set_nav_link_class(:previous) do %>
+        <%= link_to 'Previous', cohorts_path(previous: true) %>
+      <% end %>
+    </ul>
   </div>
-</div>
+
+  <div class="col-xs-10">
+    <% if params[:future] %>
+      <%= render 'cohort_list', cohorts: @cohorts.future_cohorts %>
+    <% elsif params[:current] %>
+      <%= render 'cohort_list', cohorts: @cohorts.current_cohorts %>
+    <% elsif params[:previous] %>
+      <%= render 'cohort_list', cohorts: @cohorts.previous_cohorts %>
+    <% else %>
+      <%= render 'cohort_list', cohorts: @cohorts %>
+    <% end %>
+  </div>

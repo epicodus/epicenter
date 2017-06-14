@@ -6,6 +6,44 @@ describe Cohort do
   it { should validate_presence_of(:start_date) }
   it { should validate_presence_of(:office) }
 
+  it 'should validate uniqueness of cohort based on start_date, office_id, track_id' do
+    cohort = FactoryGirl.create(:cohort)
+    expect { FactoryGirl.create(:cohort, start_date: cohort.start_date, track: cohort.track, office: cohort.office) }.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Start date has already been taken')
+  end
+
+  it 'should allow cohort creation as long as start_date, office_id, or track_id are different' do
+    cohort = FactoryGirl.create(:cohort)
+    cohort2 = FactoryGirl.create(:cohort, start_date: cohort.start_date, track: cohort.track, office: FactoryGirl.create(:portland_office))
+    expect(Cohort.find(cohort2.id)).to be_present
+
+  end
+
+  describe '#cohorts_for' do
+    it 'returns all cohorts for a certain office' do
+      portland_cohort = FactoryGirl.create(:cohort, office: FactoryGirl.create(:portland_office))
+      seattle_cohort = FactoryGirl.create(:cohort, office: FactoryGirl.create(:seattle_office))
+      expect(Cohort.cohorts_for(portland_cohort.office)).to eq [portland_cohort]
+    end
+  end
+
+  describe 'past, current, future cohorts' do
+    let(:current_cohort) { FactoryGirl.create(:full_cohort, start_date: Date.today) }
+    let(:past_cohort) { FactoryGirl.create(:full_cohort, start_date: Date.today - 1.year) }
+    let(:future_cohort) { FactoryGirl.create(:full_cohort, start_date: Date.today + 1.year) }
+
+    it 'returns all current cohorts' do
+      expect(Cohort.current_cohorts).to eq [current_cohort]
+    end
+
+    it 'returns all future cohorts' do
+      expect(Cohort.future_cohorts).to eq [future_cohort]
+    end
+
+    it 'returns all previous cohorts' do
+      expect(Cohort.previous_cohorts).to eq [past_cohort]
+    end
+  end
+
   describe '.create_from_course_ids' do
     let(:course) { FactoryGirl.create(:course) }
     let(:future_course) { FactoryGirl.create(:future_course) }
