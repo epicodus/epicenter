@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table class="courses-datatable table table-hover">
+          <thead>
+            <th>Description</th>
+            <th>Office</th>
+            <th>Track</th>
+            <th>Teacher</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th></th>
+          </thead>
+            <tbody>
+              <% cohorts.each do |cohort| %>
+                <tr>
+                  <td><%= link_to cohort.description, cohort_path(cohort) %></td>
+                  <td><%= cohort.office.name %></td>
+                  <td><%= cohort.track.try(:description) %></td>
+                  <td><%= cohort.admin.try(:name) %></td>
+                  <td><%= cohort.start_date.strftime("%b %d %Y") %></td>
+                  <td><%= cohort.end_date.strftime("%b %d %Y") %></td>
+                  <td><%= link_to 'Edit', edit_cohort_path(cohort) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

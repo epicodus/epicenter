@@ -12,6 +12,23 @@ class Cohort < ActiveRecord::Base
   before_create :find_or_create_courses, if: ->(cohort) { cohort.courses.empty? }
   before_create :set_description, if: ->(cohort) { cohort.description.blank? }
 
+  def self.cohorts_for(office)
+    includes(:office).where(offices: { name: office.name })
+  end
+
+  def self.previous_cohorts
+    where('end_date < ?', Time.zone.now.to_date).order(:description)
+  end
+
+  def self.current_cohorts
+    today = Time.zone.now.to_date
+    where('start_date <= ? AND end_date >= ?', today, today)
+  end
+
+  def self.future_cohorts
+    where('start_date > ?', Time.zone.now.to_date)
+  end
+
   def self.create_from_course_ids(attributes)
     description = "#{attributes[:start_month]} #{attributes[:track]} #{attributes[:office]}"
     office = Office.find_by(name: attributes[:office])
