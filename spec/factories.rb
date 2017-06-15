@@ -162,6 +162,8 @@ FactoryGirl.define do
     association :admin, factory: :admin
     before(:create) do |cohort|
       cohort.courses << build(:course, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days])
+      cohort.courses.last.save
+      cohort.end_date = cohort.courses.last.end_date
     end
 
     factory :full_cohort do

@@ -15,14 +15,12 @@ class Course < ActiveRecord::Base
   before_create :set_parttime
   before_create :set_internship_course
   before_create :set_description, if: ->(course) { course.description.blank? }
-  after_save :update_cohort_end_date, if: ->(course) { course.cohort.present? }
-
 
   belongs_to :admin
   belongs_to :office
   belongs_to :language
-  belongs_to :cohort
   belongs_to :track
+  has_and_belongs_to_many :cohorts, after_add: :update_cohort_end_date
   has_many :enrollments
   has_many :students, through: :enrollments
   has_many :attendance_records, through: :students
@@ -192,11 +190,8 @@ private
     end
   end
 
-  def update_cohort_end_date
-    if !cohort.end_date || cohort.end_date < self.end_date
-      cohort.end_date = self.end_date
-      cohort.save
-    end
+  def update_cohort_end_date(cohort)
+    cohort.update(end_date: end_date) if cohort.end_date.nil? || self.end_date > cohort.end_date
   end
 
   def set_class_days
