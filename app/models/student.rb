@@ -377,20 +377,36 @@ private
 
   def self.pull_info_from_crm(email)
     response = { errors: [] }
-    if Student.only_deleted.find_by(email: email)
-      response[:errors].push("Student exists in Epicenter but has been archived.")
-    elsif User.find_by(email: email)
+    if User.find_by(email: email)
       response[:errors].push("Email already used in Epicenter")
     else
       close_io_client = Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false)
       lead = close_io_client.list_leads('email:' + email)
-      if lead.total_results > 0
-        name = lead.data.first.contacts.first.name
-        course = Course.find_by(description: lead.data.first.custom.Class)
-        name && name != "" ? response[:name] = name : response[:errors].push("Name not found")
-        course ? response[:course_id] = course.id : response[:errors].push("Valid course not found")
+      if lead.total_results == 0
+        response[:errors].push("Email not found in CRM")
       else
-        response[:errors].push("Email not found")
+        name = lead.data.first.contacts.first.name
+        what_class_are_you_interested_in = lead.data.first.custom['What class are you interested in?']
+        if name.blank? || what_class_are_you_interested_in.blank?
+          response[:errors].push("Name not found in CRM") if name.blank?
+          response[:errors].push("What class are you interested in not found in CRM") if what_class_are_you_interested_in.blank?
+        else
+          office = Office.find_by(name: what_class_are_you_interested_in.split[1])
+          year = what_class_are_you_interested_in.split[0].to_i
+          month = Date::MONTHNAMES.index(what_class_are_you_interested_in.split[2])
+          day = what_class_are_you_interested_in.split[3].to_i
+          start_date = Time.new(year, month, day).to_date
+          if what_class_are_you_interested_in.downcase.include?('part-time')
+            course = Course.parttime_courses.find_by(office: office, start_date: start_date)
+          else
+            track = Track.find_by(description: what_class_are_you_interested_in.split(': ').last.split(' ').first)
+            cohort = Cohort.find_by(office: office, track: track, start_date: start_date)
+            cohort ? response[:cohort_id] = cohort.id : response[:errors].push("Cohort not found in Epicenter")
+            course = cohort.courses.first if cohort
+          end
+          course ? response[:course_id] = course.id : response[:errors].push("Course not found in Epicenter")
+          response[:name] = name
+        end
       end
     end
     response
