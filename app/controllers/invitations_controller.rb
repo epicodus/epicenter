@@ -11,6 +11,7 @@ class InvitationsController < Devise::InvitationsController
         params[:student][:course_id] = response[:course_id]
         super
         set_starting_cohort
+        enroll_in_cohort(Cohort.find(response[:cohort_id])) if response[:cohort_id]
         set_flash_for_student
       else
         redirect_to new_student_invitation_path, alert: response[:errors].to_s
@@ -33,6 +34,12 @@ private
   def set_starting_cohort
     student = Student.find_by(email: params[:student][:email])
     student.update(starting_cohort_id: student.courses_with_withdrawn.fulltime_courses.first.try(:id))
+  end
+
+  def enroll_in_cohort(cohort)
+    cohort.courses.each do |course|
+      resource.courses << course unless resource.courses.include? course
+    end
   end
 
   def set_flash_for_student

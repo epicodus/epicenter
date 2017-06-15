@@ -157,21 +157,21 @@ FactoryGirl.define do
   factory :cohort do
     description 'a cohort'
     start_date Time.new(2016, 1, 4).to_date
-    association :office, factory: :portland_office
+    association :office, factory: :philadelphia_office
     association :track, factory: :track
-    association :admin, factory: :admin
+    association :admin, factory: :admin_without_course
     before(:create) do |cohort|
-      cohort.courses << build(:course, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days])
+      cohort.courses << build(:course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days])
       cohort.courses.last.save
       cohort.end_date = cohort.courses.last.end_date
     end
 
     factory :full_cohort do
       before(:create) do |cohort|
-        cohort.courses << build(:course, track: cohort.track, class_days: [cohort.start_date.beginning_of_week + 5.weeks, cohort.start_date.beginning_of_week + 9.weeks + 3.days])
-        cohort.courses << build(:course, track: cohort.track, class_days: [cohort.start_date.beginning_of_week + 10.weeks, cohort.start_date.beginning_of_week + 14.weeks + 3.days])
-        cohort.courses << build(:course, track: cohort.track, class_days: [cohort.start_date.beginning_of_week + 15.weeks, cohort.start_date.beginning_of_week + 19.weeks + 3.days])
-        cohort.courses << build(:course, track: cohort.track, class_days: [cohort.start_date.beginning_of_week + 20.weeks, cohort.start_date.beginning_of_week + 26.weeks + 4.days])
+        cohort.courses << build(:course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week + 5.weeks, cohort.start_date.beginning_of_week + 9.weeks + 3.days])
+        cohort.courses << build(:course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week + 10.weeks, cohort.start_date.beginning_of_week + 14.weeks + 3.days])
+        cohort.courses << build(:course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week + 15.weeks, cohort.start_date.beginning_of_week + 19.weeks + 3.days])
+        cohort.courses << build(:course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week + 20.weeks, cohort.start_date.beginning_of_week + 26.weeks + 4.days])
       end
     end
   end

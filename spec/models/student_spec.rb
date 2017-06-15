@@ -978,43 +978,47 @@ describe Student do
   end
 
   describe '.pull_info_from_crm', :vcr do
-    it 'returns name & Epicenter course id for close_io lead given email' do
-      course = FactoryGirl.create(:course)
-      course.update_columns(description: "* Placement Test")
-      expect(Student.pull_info_from_crm("example@example.com")).to eq({name: "TEST TEST", course_id: course.id, errors: []})
+    context 'for part-time students' do
+      it 'returns name & course id for part-time CRM lead given email' do
+        course = FactoryGirl.create(:part_time_course, class_days: [Date.parse('2000-01-03')], office: FactoryGirl.create(:philadelphia_office))
+        expect(Student.pull_info_from_crm("example-part-time@example.com")).to eq({name: "THIS LEAD IS USED FOR TESTING PURPOSES. PLEASE DO NOT DELETE.", course_id: course.id, errors: []})
+      end
+
+      it 'returns error if course not found in Epicenter' do
+        expect(Student.pull_info_from_crm("example-part-time@example.com")[:errors]).to include "Course not found in Epicenter"
+      end
     end
-    it 'returns info for correct student even if similar email exists in Close' do
-      course = FactoryGirl.create(:course)
-      course.update_columns(description: "* Placement Test")
-      expect(Student.pull_info_from_crm("example@example.com")).to eq({name: "TEST TEST", course_id: course.id, errors: []})
+
+    context 'for full-time students where cohort does not exist' do
+      it 'returns error if cohort not found in Epicenter' do
+        expect(Student.pull_info_from_crm("example@example.com")[:errors]).to include "Course not found in Epicenter"
+        expect(Student.pull_info_from_crm("example@example.com")[:errors]).to include "Cohort not found in Epicenter"
+      end
     end
-    it 'returns info even if two identical entries exist in Close' do
-      course = FactoryGirl.create(:course)
-      course.update_columns(description: "* Placement Test")
-      expect(Student.pull_info_from_crm("duplicate_email@example.com")).to eq({name: "Test Duplicate Email", course_id: course.id, errors: []})
-    end
-    it 'returns error if email not found in Close' do
-      expect(Student.pull_info_from_crm("email_not_in_close@example.com")[:errors]).to include "Email not found"
-    end
-    it 'returns error if name not listed in Close lead' do
-      course = FactoryGirl.create(:course)
-      course.update_columns(description: "* Placement Test")
-      expect(Student.pull_info_from_crm("no_name@example.com")[:errors]).to include "Name not found"
-    end
-    it 'returns error if course not listed in Close lead' do
-      expect(Student.pull_info_from_crm("no_course@example.com")[:errors]).to include "Valid course not found"
-    end
-    it 'returns error if matching course not found in Epicenter' do
-      expect(Student.pull_info_from_crm("non_matching_course@example.com")[:errors]).to include "Valid course not found"
-    end
-    it 'returns error if user already exists in Epicenter' do
-      Admin.create(email: "example@example.com", name: "Test", password: "password")
-      expect(Student.pull_info_from_crm("example@example.com")[:errors]).to include "Email already used in Epicenter"
-    end
-    it 'returns error if user already exists in Epicenter but is archived' do
-      student = FactoryGirl.create(:student)
-      student.destroy
-      expect(Student.pull_info_from_crm(student.email)[:errors]).to include "Student exists in Epicenter but has been archived."
+
+    context 'for full-time students where course does exist in Epiceter' do
+      let!(:cohort) { FactoryGirl.create(:cohort, start_date: Date.parse('2000-01-03'), office: FactoryGirl.create(:philadelphia_office), track: FactoryGirl.create(:track)) }
+
+      it 'returns name, cohort id & course id for full-time CRM lead given email' do
+        expect(Student.pull_info_from_crm("example@example.com")).to eq({name: "THIS LEAD IS USED FOR TESTING PURPOSES. PLEASE DO NOT DELETE.", cohort_id: cohort.id, course_id: cohort.courses.first.id, errors: []})
+      end
+
+      it 'returns error if user already exists in Epicenter' do
+        FactoryGirl.create(:user_with_all_documents_signed, email: "example@example.com")
+        expect(Student.pull_info_from_crm("example@example.com")[:errors]).to include "Email already used in Epicenter"
+      end
+
+      it 'returns error if email not found in Close' do
+        expect(Student.pull_info_from_crm("email_not_in_close@example.com")[:errors]).to include "Email not found in CRM"
+      end
+
+      it 'returns error if name not listed in Close lead' do
+        expect(Student.pull_info_from_crm("automated_testing_no_name@example.com")[:errors]).to include "Name not found in CRM"
+      end
+
+      it 'returns error if what class are you interested in field is blank in Close lead' do
+        expect(Student.pull_info_from_crm("automated_testing_no_name@example.com")[:errors]).to include "What class are you interested in not found in CRM"
+      end
     end
   end
 

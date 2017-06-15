@@ -84,20 +84,20 @@ feature 'Does not change current course for non-teacher admin' do
   end
 end
 
-feature 'Inviting new users', :vcr do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let!(:course) { FactoryGirl.create(:course) }
+feature 'Inviting new full-time students', :vcr do
+  let(:cohort) { FactoryGirl.create(:cohort, start_date: Date.parse('2000-01-03')) }
 
   before do
+    admin = cohort.admin
+    admin.current_course = cohort.courses.first
     login_as(admin, scope: :admin)
-    course.update_columns(description: '* Placement Test')
   end
 
-  scenario 'admin sends invitation to a student' do
+  scenario 'admin invites full-time student' do
     visit new_student_invitation_path
     fill_in 'Email', with: 'example@example.com'
     click_on 'Invite student'
-    expect(page).to have_content "An invitation email has been sent to example@example.com to join #{course.description} in #{course.office.name}. Wrong course?"
+    expect(page).to have_content "An invitation email has been sent to example@example.com to join #{cohort.courses.first.description} in #{cohort.office.name}. Wrong course?"
   end
 
   scenario 'starting cohort automatically set when admin sends invitation to a student' do
@@ -105,7 +105,31 @@ feature 'Inviting new users', :vcr do
     fill_in 'Email', with: 'example@example.com'
     click_on 'Invite student'
     student = Student.find_by(email: "example@example.com")
-    expect(student.starting_cohort_id).to eq student.course.id
+    expect(student.starting_cohort_id).to eq cohort.courses.first.id
+  end
+end
+
+feature 'Inviting new part-time students', :vcr do
+  let(:admin) { FactoryGirl.create(:admin_without_course) }
+
+  before do
+    admin.current_course = FactoryGirl.create(:part_time_course, description: '* Placement Test', class_days: [Date.parse('2000-01-03')])
+    login_as(admin, scope: :admin)
+  end
+
+  scenario 'admin invites part-time student' do
+    visit new_student_invitation_path
+    fill_in 'Email', with: 'example-part-time@example.com'
+    click_on 'Invite student'
+    expect(page).to have_content "An invitation email has been sent to example-part-time@example.com to join #{admin.current_course.description} in #{admin.current_course.office.name}. Wrong course?"
+  end
+
+  scenario 'does not set starting cohort' do
+    visit new_student_invitation_path
+    fill_in 'Email', with: 'example-part-time@example.com'
+    click_on 'Invite student'
+    student = Student.find_by(email: "example-part-time@example.com")
+    expect(student.starting_cohort_id).to eq nil
   end
 
   scenario 'admin fails to send invitation to a student' do
@@ -117,12 +141,12 @@ feature 'Inviting new users', :vcr do
 
   scenario 'admin resends invitation to a student' do
     visit new_student_invitation_path
-    fill_in 'Email', with: 'example@example.com'
+    fill_in 'Email', with: 'example-part-time@example.com'
     click_on 'Invite student'
-    student = Student.find_by(email: 'example@example.com')
+    student = Student.find_by(email: 'example-part-time@example.com')
     visit student_courses_path(student)
     click_on 'Resend invitation'
-    expect(page).to have_content "A new invitation email has been sent to example@example.com"
+    expect(page).to have_content "A new invitation email has been sent to example-part-time@example.com"
   end
 end
 

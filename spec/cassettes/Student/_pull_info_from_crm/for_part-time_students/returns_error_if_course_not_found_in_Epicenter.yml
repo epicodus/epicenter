@@ -1,0 +1,71 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://app.close.io/api/v1/lead/?query=email:example-part-time@example.com
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      User-Agent:
+      - closeio-ruby-gem/v2.6.7
+      Authorization:
+      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 15 Jun 2017 21:03:45 GMT
+      Set-Cookie:
+      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Rate-Limit-Limit:
+      - '600'
+      X-Rate-Limit-Remaining:
+      - '598'
+      X-Rate-Limit-Reset:
+      - '14'
+      Content-Length:
+      - '920'
+      Connection:
+      - keep-alive
+    body:
+      encoding: ASCII-8BIT
+      string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "addresses":
+        [], "date_updated": "2017-06-14T23:43:31.092000+00:00", "created_by_name":
+        "Michael Kaiser-Nyman", "opportunities": [], "id": "lead_UabfahudkzA3ycwBGMOb44xwmqPLW9wkeLy1c3XclLy",
+        "description": "", "display_name": "THIS LEAD IS USED FOR TESTING PURPOSES.
+        PLEASE DO NOT DELETE.", "contacts": [{"name": "THIS LEAD IS USED FOR TESTING
+        PURPOSES. PLEASE DO NOT DELETE.", "title": "", "date_updated": "2017-06-14T23:32:51.945000+00:00",
+        "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "id": "cont_cXkVtvOY9aoceVwaBCLILIbNcZHsudhfscyb6blQsOx", "organization_id":
+        "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "urls": [], "date_created":
+        "2017-06-14T23:32:45.187000+00:00", "integration_links": [], "emails": [{"type":
+        "office", "email": "example-part-time@example.com"}], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}],
+        "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "custom":
+        {"What class are you interested in?": "2000 Philadelphia January 3 - July
+        7: Part-time, evening Intro to Programming"}, "updated_by_name": "Michael
+        Kaiser-Nyman", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "custom.lcf_K2JfqWIJDcI40MfvV2IYmFdgXWUWF49kn3u1Ah0URTJ": "2000 Philadelphia
+        January 3 - July 7: Part-time, evening Intro to Programming", "status_id":
+        "stat_jHXa7MyAAAXtdOq6WuzN4IDHXXkwaq41miOxlg1Os0j", "html_url": "https://app.close.io/lead/lead_UabfahudkzA3ycwBGMOb44xwmqPLW9wkeLy1c3XclLy/",
+        "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "integration_links":
+        [{"url": "https://epicenter.epicodus.com/students?utf8=%E2%9C%93&search=THIS%20LEAD%20IS%20USED%20FOR%20TESTING%20PURPOSES.%20PLEASE%20DO%20NOT%20DELETE.&button=",
+        "name": "Epicenter Link"}], "name": "", "url": null, "status_label": "Applicant
+        - No longer interested (legacy)", "date_created": "2017-06-14T23:32:45.190000+00:00"}]}'
+    http_version: 
+  recorded_at: Thu, 15 Jun 2017 21:03:45 GMT
+recorded_with: VCR 3.0.3
