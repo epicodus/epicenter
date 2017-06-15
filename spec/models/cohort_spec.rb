@@ -1,5 +1,5 @@
 describe Cohort do
-  it { should have_many :courses }
+  it { should have_and_belong_to_many :courses }
   it { should belong_to :office }
   it { should belong_to :track }
   it { should belong_to :admin }
@@ -27,9 +27,9 @@ describe Cohort do
   end
 
   describe 'past, current, future cohorts' do
-    let(:current_cohort) { FactoryGirl.create(:full_cohort, start_date: Date.today) }
-    let(:past_cohort) { FactoryGirl.create(:full_cohort, start_date: Date.today - 1.year) }
-    let(:future_cohort) { FactoryGirl.create(:full_cohort, start_date: Date.today + 1.year) }
+    let(:current_cohort) { FactoryGirl.create(:cohort, start_date: Time.zone.now.to_date) }
+    let(:past_cohort) { FactoryGirl.create(:cohort, start_date: Time.zone.now.to_date - 1.year) }
+    let(:future_cohort) { FactoryGirl.create(:cohort, start_date: Time.zone.now.to_date + 1.year) }
 
     it 'returns all current cohorts' do
       expect(Cohort.current_cohorts).to eq [current_cohort]
@@ -136,6 +136,31 @@ describe Cohort do
       expect(cohort.courses.level(2).first.start_date).to eq Date.parse('2017-05-22')
       expect(cohort.courses.level(3).first.start_date).to eq Date.parse('2017-06-26')
       expect(cohort.courses.level(4).first.start_date).to eq Date.parse('2017-07-31')
+    end
+  end
+
+  describe '#update_end_date' do
+    let(:office) { FactoryGirl.create(:portland_office) }
+    let(:track) { FactoryGirl.create(:track) }
+    let(:admin) { FactoryGirl.create(:admin) }
+
+    it 'sets cohort end date when adding courses at same time as cohort creation' do
+      cohort = Cohort.create(start_date: Date.today, office: office, track: track, admin: admin)
+      expect(cohort.end_date).to eq cohort.courses.last.end_date
+    end
+
+    it 'updates cohort end_date when adding more recent course to cohort' do
+      cohort = Cohort.create(start_date: Date.today, office: office, track: track, admin: admin)
+      future_course = FactoryGirl.create(:future_course, class_days: [Date.today + 1.year])
+      cohort.courses << future_course
+      expect(cohort.end_date).to eq future_course.end_date
+    end
+
+    it 'does not update cohort end_date when adding less recent course to cohort' do
+      cohort = Cohort.create(start_date: Date.today, office: office, track: track, admin: admin)
+      past_course = FactoryGirl.create(:past_course, class_days: [Date.today - 1.year])
+      cohort.courses << past_course
+      expect(cohort.end_date).to eq cohort.courses.order(:end_date).last.end_date
     end
   end
 end

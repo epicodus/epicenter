@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170612221620) do
+ActiveRecord::Schema.define(version: 20170615170640) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,11 @@ ActiveRecord::Schema.define(version: 20170612221620) do
   add_index "cohorts", ["office_id"], name: "index_cohorts_on_office_id", using: :btree
   add_index "cohorts", ["track_id"], name: "index_cohorts_on_track_id", using: :btree
 
+  create_table "cohorts_courses", force: :cascade do |t|
+    t.integer "cohort_id"
+    t.integer "course_id"
+  end
+
   create_table "course_internships", force: :cascade do |t|
     t.integer "course_id"
     t.integer "internship_id"
@@ -78,11 +83,9 @@ ActiveRecord::Schema.define(version: 20170612221620) do
     t.boolean  "parttime",                      default: false
     t.integer  "language_id"
     t.string   "end_time_friday"
-    t.integer  "cohort_id"
     t.integer  "track_id"
   end
 
-  add_index "courses", ["cohort_id"], name: "index_courses_on_cohort_id", using: :btree
   add_index "courses", ["start_date"], name: "index_courses_on_start_date", using: :btree
   add_index "courses", ["track_id"], name: "index_courses_on_track_id", using: :btree
 
@@ -326,6 +329,5 @@ ActiveRecord::Schema.define(version: 20170612221620) do
 
   add_foreign_key "cohorts", "offices"
   add_foreign_key "cohorts", "tracks"
-  add_foreign_key "courses", "cohorts"
   add_foreign_key "courses", "tracks"
 end

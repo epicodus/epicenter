@@ -1,10 +1,10 @@
 describe Course do
   it { should belong_to :admin }
   it { should belong_to :office }
-  it { should belong_to :cohort }
   it { should belong_to :language }
   it { should belong_to :track }
   it { should have_many :students }
+  it { should have_and_belong_to_many(:cohorts) }
   it { should have_many(:attendance_records).through(:students) }
   it { should have_many :code_reviews }
   it { should have_many(:internships).through(:course_internships) }
@@ -391,26 +391,6 @@ describe Course do
       course.description = 'an awesome course'
       course.save
       expect(course.description).to eq 'an awesome course'
-    end
-  end
-
-  describe '#update_cohort_end_date' do
-    let(:cohort) { FactoryGirl.create(:cohort) }
-
-    it 'sets cohort end date when adding courses at same time as cohort creation' do
-      expect(cohort.reload.end_date).to eq cohort.courses.last.end_date
-    end
-
-    it 'updates cohort end_date when adding more recent course to cohort' do
-      future_course = FactoryGirl.create(:future_course)
-      cohort.courses << future_course
-      expect(cohort.reload.end_date).to eq future_course.end_date
-    end
-
-    it 'does not update cohort end_date when adding less recent course to cohort' do
-      past_course = FactoryGirl.create(:past_course)
-      cohort.courses << past_course
-      expect(cohort.reload.end_date).to eq cohort.courses.order(:end_date).last.end_date
     end
   end
 
