@@ -151,14 +151,14 @@ describe Cohort do
 
     it 'updates cohort end_date when adding more recent course to cohort' do
       cohort = Cohort.create(start_date: Date.today, office: office, track: track, admin: admin)
-      future_course = FactoryGirl.create(:future_course, class_days: [Date.today + 1.year])
+      future_course = FactoryGirl.create(:future_course, class_days: [Date.today.monday + 30.weeks])
       cohort.courses << future_course
       expect(cohort.end_date).to eq future_course.end_date
     end
 
     it 'does not update cohort end_date when adding less recent course to cohort' do
       cohort = Cohort.create(start_date: Date.today, office: office, track: track, admin: admin)
-      past_course = FactoryGirl.create(:past_course, class_days: [Date.today - 1.year])
+      past_course = FactoryGirl.create(:past_course, class_days: [Date.today.monday - 30.weeks])
       cohort.courses << past_course
       expect(cohort.end_date).to eq cohort.courses.order(:end_date).last.end_date
     end
