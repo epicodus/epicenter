@@ -1,8 +1,18 @@
 describe DemographicInfo do
   it { should validate_numericality_of(:age).is_greater_than(0).with_message("must be greater than 0") }
   it { should validate_length_of(:job).is_at_most(35) }
-  it { should validate_inclusion_of(:education).in_array(DemographicInfo::EDUCATION_OPTIONS) }
-  it { should validate_inclusion_of(:veteran).in_array(DemographicInfo::VETERAN_OPTIONS) }
+
+  # it { should validate_inclusion_of(:education).in_array(DemographicInfo::EDUCATION_OPTIONS) }
+  it 'validates that education input is included in list' do # test written out due to shoulda matcher raising deprecation warning
+    demographic_info = DemographicInfo.new(nil, {education: "not in list"})
+    expect(demographic_info).to_not be_valid
+  end
+
+  # it { should validate_inclusion_of(:veteran).in_array(DemographicInfo::VETERAN_OPTIONS) }
+  it 'validates that education input is included in list' do # test written out due to shoulda matcher raising deprecation warning
+    demographic_info = DemographicInfo.new(nil, {veteran: "not in list"})
+    expect(demographic_info).to_not be_valid
+  end
 
   # it { should validate_numericality_of(:salary).is_greater_than_or_equal_to(0).with_message("must be greater than or equal to 0") }
   it 'validates salary is greater than or equal to 0' do # test written out due to bug in greater_than_or_equal_to shoulda matcher
