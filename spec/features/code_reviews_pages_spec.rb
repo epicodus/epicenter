@@ -139,9 +139,11 @@ feature 'visiting the code review show page' do
 
       scenario 'with valid input' do
         fill_in 'submission_link', with: 'http://github.com'
+        fill_in 'submission-student-note', with: 'student note'
         check 'understand-guidelines'
         click_button 'Submit'
         is_expected.to have_content 'Thank you for submitting'
+        is_expected.to have_content 'student note'
         is_expected.to have_content code_review.title
       end
 
@@ -183,9 +185,11 @@ feature 'visiting the code review show page' do
       end
 
       scenario 'successfully' do
+        fill_in 'submission-student-note', with: 'resubmission student note'
         click_button 'Resubmit'
         expect(page).to have_content 'Submission updated'
         expect(page).to have_content 'pending review'
+        expect(page).to have_content 'resubmission student note'
       end
 
       scenario 'unsuccessfully' do

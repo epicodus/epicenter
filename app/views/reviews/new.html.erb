@@ -18,9 +18,13 @@
 
     <h4><%= link_to 'View code', @submission.link, target: '_blank' if @submission.link %></h4>
 
-    <% if @submission.blurb %>
+    <% if @submission.notes.any? %>
       <div class="well">
-        <p><%= @submission.blurb %></p>
+        <ul>
+          <% @submission.notes.each do |note| %>
+            <li><strong><%= note.created_at.strftime('%B %d') %>:</strong> <%= note.content %></li>
+          <% end %>
+        </ul>
       </div>
     <% end %>
 

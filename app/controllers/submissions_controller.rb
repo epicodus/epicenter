@@ -41,6 +41,6 @@ class SubmissionsController < ApplicationController
 private
 
   def submission_params
-    params.require(:submission).permit(:link, :needs_review, :student_id, :times_submitted, :blurb)
+    params.require(:submission).permit(:link, :needs_review, :student_id, :times_submitted, notes_attributes: [:id, :content])
   end
 end
