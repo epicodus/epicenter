@@ -2,7 +2,7 @@ ruby '2.4.1'
 
 source 'https://rubygems.org'
 
-gem 'rails', '~> 4.2.7'
+gem 'rails', '~> 5.0.0'
 gem 'pg'
 gem 'uglifier'
 gem 'jquery-rails'
@@ -37,7 +37,6 @@ group :development do
   gem 'spring'
   gem 'better_errors'
   gem 'binding_of_caller'
-  gem 'quiet_assets'
   gem "letter_opener"
   gem 'bullet'
   gem 'rack-mini-profiler'
