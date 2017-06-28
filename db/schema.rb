@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170615170640) do
+ActiveRecord::Schema.define(version: 20170626205828) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -159,6 +159,15 @@ ActiveRecord::Schema.define(version: 20170615170640) do
     t.integer "language_id", null: false
   end
 
+  create_table "notes", force: :cascade do |t|
+    t.string   "content"
+    t.integer  "submission_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "notes", ["submission_id"], name: "index_notes_on_submission_id", using: :btree
+
   create_table "objectives", force: :cascade do |t|
     t.string   "content",        limit: 255
     t.integer  "code_review_id"
@@ -265,7 +274,6 @@ ActiveRecord::Schema.define(version: 20170615170640) do
     t.datetime "updated_at"
     t.boolean  "needs_review"
     t.integer  "times_submitted"
-    t.string   "blurb"
   end
 
   add_index "submissions", ["code_review_id"], name: "index_submissions_on_code_review_id", using: :btree
@@ -330,4 +338,5 @@ ActiveRecord::Schema.define(version: 20170615170640) do
   add_foreign_key "cohorts", "offices"
   add_foreign_key "cohorts", "tracks"
   add_foreign_key "courses", "tracks"
+  add_foreign_key "notes", "submissions"
 end

@@ -108,6 +108,16 @@ feature 'Visiting the submissions index page' do
             expect(submission.reload.times_submitted).to eq 1
           end
         end
+
+        describe 'displays submission notes' do
+          it 'displays notes if there are any' do
+            submission.notes.create(content: 'first note')
+            submission.notes.create(content: 'second note')
+            click_on 'Review'
+            expect(page).to have_content('first note')
+            expect(page).to have_content('second note')
+          end
+        end
       end
     end
   end

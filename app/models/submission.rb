@@ -8,6 +8,9 @@ class Submission < ActiveRecord::Base
   belongs_to :student
   belongs_to :code_review
   has_many :reviews
+  has_many :notes
+
+  accepts_nested_attributes_for :notes
 
   before_create :mark_as_needing_review
   before_save :update_times_submitted
