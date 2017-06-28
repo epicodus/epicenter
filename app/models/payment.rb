@@ -74,7 +74,7 @@ private
       send_refund_receipt
     rescue Stripe::StripeError => exception
       errors.add(:base, exception.message)
-      false
+      throw :abort
     end
   end
 
@@ -142,14 +142,14 @@ private
       self.stripe_transaction = charge.balance_transaction
     rescue Stripe::StripeError => exception
       errors.add(:base, exception.message)
-      false
+      throw :abort
     end
   end
 
   def check_amount
     if amount >= 7000_00
       errors.add(:amount, 'cannot be greater than $7,000.')
-      false
+      throw :abort
     end
   end
 end

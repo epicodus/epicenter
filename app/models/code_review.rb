@@ -81,7 +81,7 @@ private
   def check_for_submissions
     if submissions.any?
       errors.add(:base, 'Cannot delete a code review with existing submissions.')
-      false
+      throw :abort
     end
   end
 

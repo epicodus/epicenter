@@ -32,7 +32,7 @@ private
       self.stripe_id = account.id
     rescue Stripe::StripeError => exception
       errors.add(:base, exception.message)
-      false
+      throw :abort
     end
   end
 
@@ -43,7 +43,7 @@ private
       self.last_four_string = stripe_account.last4
     rescue Stripe::StripeError => exception
       errors.add(:base, exception.message)
-      false
+      throw :abort
     end
   end
 end
