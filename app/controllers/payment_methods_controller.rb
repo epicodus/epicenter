@@ -1,5 +1,5 @@
 class PaymentMethodsController < ApplicationController
-  before_filter :authenticate_student!
+  before_action :authenticate_student!
 
   def index
     @payment_methods = current_user.payment_methods_primary_first_then_pending

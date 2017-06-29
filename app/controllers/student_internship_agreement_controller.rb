@@ -1,6 +1,6 @@
 class StudentInternshipAgreementController < SignaturesController
 
-  before_filter :authenticate_student!
+  before_action :authenticate_student!
 
   def new
     super(StudentInternshipAgreement)

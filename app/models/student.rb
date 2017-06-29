@@ -158,7 +158,7 @@ class Student < User
     if signature_model.nil?
       true
     else
-      signatures.where(type: signature_model, is_complete: true).count == 1
+      signatures.where(type: signature_model.name, is_complete: true).count == 1
     end
   end
 

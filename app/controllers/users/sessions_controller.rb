@@ -1,5 +1,5 @@
 class Users::SessionsController < Devise::SessionsController
-  before_filter :redirect_if_logged_in
+  before_action :redirect_if_logged_in
 
   def create
     params[:user][:email] = params[:user][:email].downcase
