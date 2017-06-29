@@ -178,13 +178,14 @@ FactoryGirl.define do
 
   factory :credit_card do
     student
-    stripe_token({
-      :object => 'card',
-      :number => '4242424242424242',
-      :exp_month => '12',
-      :exp_year => '2020',
-      :cvc => '123'
-    })
+    before(:create) do |credit_card|
+      card_details = { :object => 'card', :number => '4242424242424242', :exp_month => '12', :exp_year => '2020', :cvc => '123' }
+      begin
+        credit_card.stripe_token = StripeMock.generate_card_token(card_details)
+      rescue StripeMock::UnstartedStateError # for tests not using stripe_mock
+        credit_card.stripe_token = card_details
+      end
+    end
   end
 
   factory :office do
