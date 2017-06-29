@@ -48,7 +48,7 @@ private
         end
       rescue URI::InvalidURIError, URI::InvalidComponentError
         errors.add(:website, "is invalid.")
-        false
+        throw :abort
       end
     end
   end
@@ -57,7 +57,7 @@ private
     allowed_numbers = [2,4,6]
     if allowed_numbers.exclude?(number_of_students)
       errors.add(:number_of_students, 'must be 2, 4, or 6.')
-      false
+      throw :abort
     end
   end
 end

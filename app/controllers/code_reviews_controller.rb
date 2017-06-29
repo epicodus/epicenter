@@ -49,7 +49,8 @@ class CodeReviewsController < ApplicationController
 
   def update_multiple
     CodeReview.update(params[:code_reviews].keys, params[:code_reviews].values)
-    redirect_to :back, notice: 'Order has been saved.'
+    flash[:notice] = 'Order has been saved.'
+    redirect_back(fallback_location: root_path)
   end
 
 private

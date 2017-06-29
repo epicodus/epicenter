@@ -413,7 +413,7 @@ private
   end
 
   def validate_plan_id
-    valid_plans.include? plan
+    throw :abort unless valid_plans.include? plan
   end
 
   def update_starting_cohort_crm

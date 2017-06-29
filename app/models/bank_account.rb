@@ -23,7 +23,7 @@ private
       true
     rescue Stripe::CardError => exception
       errors.add(:base, exception.message)
-      false
+      throw :abort
     end
   end
 end
