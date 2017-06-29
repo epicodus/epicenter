@@ -1,4 +1,4 @@
-class Office < ActiveRecord::Base
+class Office < ApplicationRecord
   validates :name, presence: true
   validates :time_zone, presence: true
 

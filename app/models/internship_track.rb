@@ -1,4 +1,4 @@
-class InternshipTrack < ActiveRecord::Base
+class InternshipTrack < ApplicationRecord
   belongs_to :internship
   belongs_to :track
 

@@ -1,4 +1,4 @@
-class Grade < ActiveRecord::Base
+class Grade < ApplicationRecord
   default_scope { includes(:score) }
 
   belongs_to :review

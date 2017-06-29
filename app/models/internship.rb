@@ -1,4 +1,4 @@
-class Internship < ActiveRecord::Base
+class Internship < ApplicationRecord
   belongs_to :company
   has_many :ratings
   has_many :course_internships

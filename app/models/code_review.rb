@@ -1,4 +1,4 @@
-class CodeReview < ActiveRecord::Base
+class CodeReview < ApplicationRecord
   default_scope { order(:number) }
 
   validates :title, presence: true

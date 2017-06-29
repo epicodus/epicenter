@@ -1,4 +1,4 @@
-class Review < ActiveRecord::Base
+class Review < ApplicationRecord
   belongs_to :submission
   belongs_to :admin
   has_one :student, through: :submission

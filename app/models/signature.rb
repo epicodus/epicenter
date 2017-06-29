@@ -1,4 +1,4 @@
-class Signature < ActiveRecord::Base
+class Signature < ApplicationRecord
   belongs_to :student
 
 private

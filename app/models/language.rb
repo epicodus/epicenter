@@ -1,4 +1,4 @@
-class Language < ActiveRecord::Base
+class Language < ApplicationRecord
   validates :name, presence: true
   validates :level, presence: true
 

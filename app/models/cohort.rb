@@ -1,4 +1,4 @@
-class Cohort < ActiveRecord::Base
+class Cohort < ApplicationRecord
   validates :start_date, presence: true, uniqueness: { scope: [:office_id, :track_id] }
   validates :office, presence: true
 

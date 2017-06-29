@@ -1,4 +1,4 @@
-class Objective < ActiveRecord::Base
+class Objective < ApplicationRecord
   validates :content, presence: true
 
   belongs_to :code_review

@@ -1,4 +1,4 @@
-class Submission < ActiveRecord::Base
+class Submission < ApplicationRecord
   default_scope { order(:updated_at) }
   scope :needing_review, -> { where(needs_review: true) }
   scope :for_course, ->(course) { joins(:code_review).where(code_reviews: { course_id: course }) }

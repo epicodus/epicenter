@@ -1,4 +1,4 @@
-class Payment < ActiveRecord::Base
+class Payment < ApplicationRecord
   include ActionView::Helpers::NumberHelper  #for number_to_currency
 
   belongs_to :student

@@ -1,4 +1,4 @@
-class AttendanceRecord < ActiveRecord::Base
+class AttendanceRecord < ApplicationRecord
   attr_accessor :signing_out
   scope :today, -> { where(date: Time.zone.now.to_date) }
   validates :student_id, presence: true, uniqueness: { scope: :date }

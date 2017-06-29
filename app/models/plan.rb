@@ -1,4 +1,4 @@
-class Plan < ActiveRecord::Base
+class Plan < ApplicationRecord
   scope :active, -> { where(archived: nil).order(:name) }
   scope :standard, -> { where(standard: true) }
   scope :upfront, -> { where(upfront: true) }

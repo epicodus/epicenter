@@ -1,6 +1,6 @@
 require 'csv'
 
-class Course < ActiveRecord::Base
+class Course < ApplicationRecord
   scope :fulltime_courses, -> { where(parttime: false) }
   scope :parttime_courses, -> { where(parttime: true) }
   scope :internship_courses, -> { where(internship_course: true) }

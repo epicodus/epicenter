@@ -1,4 +1,4 @@
-class PaymentMethod < ActiveRecord::Base
+class PaymentMethod < ApplicationRecord
   before_create :create_stripe_account
   before_create :get_last_four_string
 
