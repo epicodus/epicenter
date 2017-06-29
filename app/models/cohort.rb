@@ -9,8 +9,8 @@ class Cohort < ApplicationRecord
   belongs_to :track
   belongs_to :admin
 
-  before_create :find_or_create_courses, if: ->(cohort) { cohort.courses.empty? }
   before_create :set_description, if: ->(cohort) { cohort.description.blank? }
+  after_create :find_or_create_courses, if: ->(cohort) { cohort.courses.empty? }
 
   def self.cohorts_for(office)
     includes(:office).where(offices: { name: office.name })
