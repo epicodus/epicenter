@@ -1,5 +1,5 @@
 class AttendanceSignOutController < ApplicationController
-  before_filter :redirect_if_not_authorized_to_sign_out, only: [:create]
+  before_action :redirect_if_not_authorized_to_sign_out, only: [:create]
 
   def create
     student = Student.find_by(email: params[:email].downcase)

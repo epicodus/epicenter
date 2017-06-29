@@ -1,7 +1,7 @@
 class DemographicsController < ApplicationController
   include SignatureUpdater
 
-  before_filter :authenticate_student!
+  before_action :authenticate_student!
 
   def new
     update_signature_request
