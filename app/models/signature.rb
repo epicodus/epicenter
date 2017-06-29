@@ -4,7 +4,7 @@ class Signature < ActiveRecord::Base
 private
 
   def create_signature_request
-    student.signatures.where(type: self.class, is_complete: nil).delete_all
+    student.signatures.where(type: self.class.name, is_complete: nil).delete_all
     if self.is_a?(EnrollmentAgreement)
       create_enrollment_agreement_signature_request_with_template
     elsif self.is_a?(ComplaintDisclosure)
