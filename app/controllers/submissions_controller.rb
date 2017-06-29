@@ -24,7 +24,7 @@ class SubmissionsController < ApplicationController
   def update
     if submission_params['times_submitted']
       @submission = Submission.find(params[:id])
-      @submission.update_columns(submission_params)
+      @submission.update_columns(times_submitted: submission_params[:times_submitted])
       render 'update_submission_times'
     else
       @code_review = CodeReview.find(params[:code_review_id])
