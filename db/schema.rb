@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -27,11 +26,10 @@ ActiveRecord::Schema.define(version: 20170626205828) do
     t.integer  "pair_id"
     t.string   "station"
     t.boolean  "ignore"
+    t.index ["created_at"], name: "index_attendance_records_on_created_at", using: :btree
+    t.index ["student_id"], name: "index_attendance_records_on_student_id", using: :btree
+    t.index ["tardy"], name: "index_attendance_records_on_tardy", using: :btree
   end
-
-  add_index "attendance_records", ["created_at"], name: "index_attendance_records_on_created_at", using: :btree
-  add_index "attendance_records", ["student_id"], name: "index_attendance_records_on_student_id", using: :btree
-  add_index "attendance_records", ["tardy"], name: "index_attendance_records_on_tardy", using: :btree
 
   create_table "code_reviews", force: :cascade do |t|
     t.string   "title",                    limit: 255
@@ -51,10 +49,9 @@ ActiveRecord::Schema.define(version: 20170626205828) do
     t.integer "office_id"
     t.integer "track_id"
     t.integer "admin_id"
+    t.index ["office_id"], name: "index_cohorts_on_office_id", using: :btree
+    t.index ["track_id"], name: "index_cohorts_on_track_id", using: :btree
   end
-
-  add_index "cohorts", ["office_id"], name: "index_cohorts_on_office_id", using: :btree
-  add_index "cohorts", ["track_id"], name: "index_cohorts_on_track_id", using: :btree
 
   create_table "cohorts_courses", force: :cascade do |t|
     t.integer "cohort_id"
@@ -84,10 +81,9 @@ ActiveRecord::Schema.define(version: 20170626205828) do
     t.integer  "language_id"
     t.string   "end_time_friday"
     t.integer  "track_id"
+    t.index ["start_date"], name: "index_courses_on_start_date", using: :btree
+    t.index ["track_id"], name: "index_courses_on_track_id", using: :btree
   end
-
-  add_index "courses", ["start_date"], name: "index_courses_on_start_date", using: :btree
-  add_index "courses", ["track_id"], name: "index_courses_on_track_id", using: :btree
 
   create_table "enrollments", force: :cascade do |t|
     t.integer  "course_id"
@@ -95,9 +91,8 @@ ActiveRecord::Schema.define(version: 20170626205828) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_enrollments_on_deleted_at", using: :btree
   end
-
-  add_index "enrollments", ["deleted_at"], name: "index_enrollments_on_deleted_at", using: :btree
 
   create_table "grades", force: :cascade do |t|
     t.integer  "objective_id"
@@ -164,9 +159,8 @@ ActiveRecord::Schema.define(version: 20170626205828) do
     t.integer  "submission_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["submission_id"], name: "index_notes_on_submission_id", using: :btree
   end
-
-  add_index "notes", ["submission_id"], name: "index_notes_on_submission_id", using: :btree
 
   create_table "objectives", force: :cascade do |t|
     t.string   "content",        limit: 255
@@ -210,9 +204,8 @@ ActiveRecord::Schema.define(version: 20170626205828) do
     t.string   "description"
     t.boolean  "refund_issued"
     t.boolean  "failure_notice_sent"
+    t.index ["student_id"], name: "index_payments_on_student_id", using: :btree
   end
-
-  add_index "payments", ["student_id"], name: "index_payments_on_student_id", using: :btree
 
   create_table "plans", force: :cascade do |t|
     t.string   "name",                 limit: 255
@@ -274,10 +267,9 @@ ActiveRecord::Schema.define(version: 20170626205828) do
     t.datetime "updated_at"
     t.boolean  "needs_review"
     t.integer  "times_submitted"
+    t.index ["code_review_id"], name: "index_submissions_on_code_review_id", using: :btree
+    t.index ["student_id"], name: "index_submissions_on_student_id", using: :btree
   end
-
-  add_index "submissions", ["code_review_id"], name: "index_submissions_on_code_review_id", using: :btree
-  add_index "submissions", ["student_id"], name: "index_submissions_on_student_id", using: :btree
 
   create_table "tracks", force: :cascade do |t|
     t.string   "description"
@@ -324,16 +316,15 @@ ActiveRecord::Schema.define(version: 20170626205828) do
     t.integer  "solo_warnings_sent"
     t.integer  "starting_cohort_id"
     t.boolean  "teacher"
+    t.index ["deleted_at"], name: "index_users_on_deleted_at", using: :btree
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
+    t.index ["invitations_count"], name: "index_users_on_invitations_count", using: :btree
+    t.index ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
+    t.index ["plan_id"], name: "index_users_on_plan_id", using: :btree
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+    t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
   end
-
-  add_index "users", ["deleted_at"], name: "index_users_on_deleted_at", using: :btree
-  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
-  add_index "users", ["invitation_token"], name: "index_users_on_invitation_token", unique: true, using: :btree
-  add_index "users", ["invitations_count"], name: "index_users_on_invitations_count", using: :btree
-  add_index "users", ["invited_by_id"], name: "index_users_on_invited_by_id", using: :btree
-  add_index "users", ["plan_id"], name: "index_users_on_plan_id", using: :btree
-  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
-  add_index "users", ["unlock_token"], name: "index_users_on_unlock_token", unique: true, using: :btree
 
   add_foreign_key "cohorts", "offices"
   add_foreign_key "cohorts", "tracks"
