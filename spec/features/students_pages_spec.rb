@@ -160,6 +160,10 @@ end
 feature "Unenrolled student signs in" do
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
+  before do
+    allow_any_instance_of(Student).to receive(:update_close_io)
+  end
+
   it "successfully and is redirected" do
     Enrollment.find_by(student_id: student.id, course_id: student.course.id).destroy
     sign_in_as(student)
@@ -223,7 +227,10 @@ end
 feature 'unenrolled student signs in' do
   let(:student) { FactoryGirl.create(:unenrolled_student) }
 
-  before { login_as(student, scope: :student) }
+  before do
+    allow_any_instance_of(Student).to receive(:update_close_io)
+    login_as(student, scope: :student)
+  end
 
   it "takes them to the correct path" do
     visit root_path
