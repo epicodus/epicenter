@@ -159,12 +159,11 @@ FactoryGirl.define do
     start_date Time.new(2016, 1, 4).to_date
     association :office, factory: :philadelphia_office
     association :track, factory: :track
-    association :admin, factory: :admin
+    association :admin, factory: :admin_without_course
     before(:create) do |cohort|
       cohort.courses << build(:course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days])
       cohort.courses.last.save
       cohort.end_date = cohort.courses.last.end_date
-      cohort.admin.current_course = cohort.courses.first
     end
 
     factory :full_cohort do

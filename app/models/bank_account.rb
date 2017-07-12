@@ -1,5 +1,5 @@
 class BankAccount < PaymentMethod
-  before_update :verify_account, unless: ->(bank_account) { bank_account.verified? }
+  before_update :verify_account, unless: 'verified'
 
   attr_accessor :first_deposit, :second_deposit
 

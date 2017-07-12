@@ -13,10 +13,7 @@ feature 'searching for a student' do
 
   context 'as an admin' do
     let(:admin) { FactoryGirl.create(:admin) }
-    before do
-      allow_any_instance_of(Student).to receive(:update_close_io)
-      login_as(admin, scope: :admin)
-    end
+    before { login_as(admin, scope: :admin) }
 
     scenario 'when no query is made' do
       visit students_path

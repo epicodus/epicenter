@@ -5,7 +5,7 @@ class Admin < User
   has_many :courses
   has_many :cohorts
 
-  before_validation :assign_current_course, on: :create
+  before_create :assign_current_course
   devise :database_authenticatable, :validatable
   include DeviseInvitable::Inviter
 

@@ -1,7 +1,7 @@
 class Objective < ApplicationRecord
   validates :content, presence: true
 
-  belongs_to :code_review, optional: true
+  belongs_to :code_review
   has_many :grades
 
   def score_for(student)

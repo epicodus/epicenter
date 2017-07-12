@@ -15,8 +15,8 @@ class DemographicInfo
   validates_length_of :job, maximum: 35, allow_nil: true
   validates_inclusion_of :education, in: EDUCATION_OPTIONS, allow_nil: true
   validates_inclusion_of :veteran, in: VETERAN_OPTIONS, allow_nil: true
-  validate :check_array_genders, if: ->(demographic_info) { demographic_info.genders.present? }
-  validate :check_array_races, if: ->(demographic_info) { demographic_info.races.present? }
+  validate :check_array_genders, if: "genders"
+  validate :check_array_races, if: "races"
 
   attr_accessor :age, :job, :salary, :education, :veteran, :genders, :races
 

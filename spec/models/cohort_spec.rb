@@ -44,10 +44,37 @@ describe Cohort do
     end
   end
 
+  describe '.create_from_course_ids' do
+    let(:course) { FactoryGirl.create(:course) }
+    let(:future_course) { FactoryGirl.create(:future_course) }
+
+    it 'creates cohort for specific track' do
+      track = FactoryGirl.create(:track)
+      cohort_data = { start_month: "2017-01", office: course.office.name, track: track.description, courses: [course.id, future_course.id] }
+      Cohort.create_from_course_ids(cohort_data)
+      cohort = Cohort.first
+      expect(cohort.description).to eq "2017-01 #{track.description} #{course.office.name}"
+      expect(cohort.office).to eq course.office
+      expect(cohort.start_date).to eq course.start_date
+      expect(cohort.end_date).to eq future_course.end_date
+      expect(cohort.track).to eq track
+    end
+
+    it 'creates cohort not for specific track' do
+      cohort_data = { start_month: "2017-01", office: course.office.name, track: "ALL", courses: [course.id, future_course.id] }
+      Cohort.create_from_course_ids(cohort_data)
+      cohort = Cohort.first
+      expect(cohort.description).to eq "2017-01 ALL #{course.office.name}"
+      expect(cohort.office).to eq course.office
+      expect(cohort.start_date).to eq course.start_date
+      expect(cohort.end_date).to eq future_course.end_date
+    end
+  end
+
   describe 'creating a cohort when classes already exist' do
     let(:office) { FactoryGirl.create(:portland_office) }
     let!(:track) { FactoryGirl.create(:track) }
-    let!(:admin) { FactoryGirl.create(:admin) }
+    let!(:admin) { FactoryGirl.create(:admin, current_course: nil) }
     let!(:intro) { FactoryGirl.create(:level0_course, office: office, track: track, admin: admin, language: track.languages.find_by(level: 0)) }
     let!(:level1) { FactoryGirl.create(:level1_course, office: office, track: track, admin: admin, language: track.languages.find_by(level: 1)) }
     let!(:js) { FactoryGirl.create(:level2_course, office: office, track: track, admin: admin, language: track.languages.find_by(level: 2)) }
@@ -72,7 +99,7 @@ describe Cohort do
   describe 'creating a cohort when classes do not yet exist' do
     let(:office) { FactoryGirl.create(:portland_office) }
     let(:track) { FactoryGirl.create(:track) }
-    let(:admin) { FactoryGirl.create(:admin) }
+    let(:admin) { FactoryGirl.create(:admin, current_course: nil) }
 
     it 'creates a cohort when classes do not yet exist' do
       cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-13'))
@@ -93,7 +120,7 @@ describe Cohort do
   describe 'creating a cohort when some but not all classes already exist' do
     let(:office) { FactoryGirl.create(:portland_office) }
     let(:track) { FactoryGirl.create(:track) }
-    let(:admin) { FactoryGirl.create(:admin) }
+    let(:admin) { FactoryGirl.create(:admin, current_course: nil) }
     let!(:intro) { FactoryGirl.create(:level0_course, office: office, track: track, admin: admin, language: track.languages.find_by(level: 0)) }
 
     it 'creates a cohort when some but not all classes already exist' do

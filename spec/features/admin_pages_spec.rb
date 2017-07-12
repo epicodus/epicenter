@@ -110,12 +110,11 @@ feature 'Inviting new full-time students', :vcr do
 end
 
 feature 'Inviting new part-time students', :vcr do
-  let(:course) { FactoryGirl.create(:part_time_course, description: '* Placement Test', class_days: [Date.parse('2000-01-03')]) }
-  let(:admin) { FactoryGirl.create(:admin, courses: [course]) }
+  let(:admin) { FactoryGirl.create(:admin_without_course) }
 
   before do
+    admin.current_course = FactoryGirl.create(:part_time_course, description: '* Placement Test', class_days: [Date.parse('2000-01-03')])
     login_as(admin, scope: :admin)
-    admin.current_course = course
   end
 
   scenario 'admin invites part-time student' do
@@ -179,10 +178,7 @@ feature 'viewing the student page' do
   let(:unenrolled_student) { FactoryGirl.create(:unenrolled_student) }
   let(:internship_student) { FactoryGirl.create(:student, courses: [FactoryGirl.create(:internship_course)]) }
 
-  before do
-    allow_any_instance_of(Student).to receive(:update_close_io)
-    login_as(admin, scope: :admin)
-  end
+  before { login_as(admin, scope: :admin) }
 
   scenario 'when a student is enrolled in a course' do
     visit course_student_path(student.course, student)

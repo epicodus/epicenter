@@ -2,7 +2,7 @@ class Payment < ApplicationRecord
   include ActionView::Helpers::NumberHelper  #for number_to_currency
 
   belongs_to :student
-  belongs_to :payment_method, optional: true
+  belongs_to :payment_method
 
   validates :amount, presence: true
   validates :student_id, presence: true

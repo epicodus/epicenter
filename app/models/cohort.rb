@@ -29,6 +29,17 @@ class Cohort < ApplicationRecord
     where('start_date > ?', Time.zone.now.to_date)
   end
 
+  def self.create_from_course_ids(attributes)
+    description = "#{attributes[:start_month]} #{attributes[:track]} #{attributes[:office]}"
+    office = Office.find_by(name: attributes[:office])
+    track = Track.find_by(description: attributes[:track]) unless attributes[:track] == "ALL"
+    course_ids = attributes[:courses]
+    courses = course_ids.map { |id| Course.find(id) }.sort_by { |course| course.start_date }
+    start_date = courses.first.start_date
+    cohort = Cohort.create(description: description, office: office, track: track, start_date: start_date, courses: courses)
+    cohort.courses.update_all(track_id: track.id) if track
+  end
+
   def find_or_create_courses
     next_course_start_date = start_date
     5.times do |level|
