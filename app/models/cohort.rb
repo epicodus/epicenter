@@ -45,6 +45,7 @@ class Cohort < ApplicationRecord
     5.times do |level|
       course = Course.find_or_create_by({ language: track.languages.find_by(level: level), start_date: skip_holidays(next_course_start_date), office: office, track: track, start_time: '8:00 AM', end_time: '5:00 PM' }) do |course|
         course.admin = admin
+        course.active = false if level == 4
         course.save
       end
       next_course_start_date = course.end_date.next_week
