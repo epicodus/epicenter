@@ -122,7 +122,7 @@ private
           attendance_status = "Part-time"
         else
           attendance_status = "Full-time"
-          start_date = student.courses[1].start_date.strftime("%Y-%m-%d")
+          start_date = student.courses.order(:start_date)[1].start_date.strftime("%Y-%m-%d")
         end
       else
         attendance_status = "Full-time"
