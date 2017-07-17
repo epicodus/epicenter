@@ -6,7 +6,7 @@ class Student < User
   before_update :validate_plan_id, if: ->(student) { student.plan_id_changed? && student.course.present? }
   after_update :update_starting_cohort_crm, if: ->(student) { student.starting_cohort_id_changed? }
 
-  belongs_to :plan
+  belongs_to :plan, optional: true
   has_many :enrollments
   has_many :courses, through: :enrollments
   has_many :bank_accounts
@@ -18,7 +18,7 @@ class Student < User
   has_many :ratings
   has_many :internships, through: :ratings
   has_many :interview_assignments
-  belongs_to :primary_payment_method, class_name: 'PaymentMethod'
+  belongs_to :primary_payment_method, class_name: 'PaymentMethod', optional: true
   has_many :signatures
   has_one :internship_assignment
 

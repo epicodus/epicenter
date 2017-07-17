@@ -16,10 +16,10 @@ class Course < ApplicationRecord
   before_create :set_internship_course
   before_create :set_description, if: ->(course) { course.description.blank? }
 
-  belongs_to :admin
+  belongs_to :admin, optional: true
   belongs_to :office
   belongs_to :language
-  belongs_to :track
+  belongs_to :track, optional: true
   has_and_belongs_to_many :cohorts, after_add: :update_cohort_end_date
   has_many :enrollments
   has_many :students, through: :enrollments

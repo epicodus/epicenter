@@ -26,8 +26,8 @@ describe Payment do
 
   describe 'offline payment status', :vcr do
     it 'sets it successfully' do
-      student = FactoryGirl.create(:student)
-      payment = FactoryGirl.create(:payment, student: student, offline: true)
+      student = FactoryGirl.create(:user_with_credit_card)
+      payment = FactoryGirl.create(:payment, student: student, offline: true, payment_method: student.payment_methods.first)
       expect(payment.status).to eq 'offline'
     end
   end
