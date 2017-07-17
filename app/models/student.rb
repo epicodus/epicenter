@@ -3,8 +3,8 @@ class Student < User
 
   validate :primary_payment_method_belongs_to_student
   validates :plan_id, presence: true, if: ->(student) { student.invitation_accepted_at? }
-  before_update :validate_plan_id, if: ->(student) { student.plan_id_changed? && student.course.present? }
-  after_update :update_starting_cohort_crm, if: ->(student) { student.starting_cohort_id_changed? }
+  before_update :validate_plan_id, if: ->(student) { student.saved_change_to_plan_id? && student.course.present? }
+  after_update :update_starting_cohort_crm, if: ->(student) { student.saved_change_to_starting_cohort_id? }
 
   belongs_to :plan, optional: true
   has_many :enrollments
