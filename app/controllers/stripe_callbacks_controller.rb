@@ -3,6 +3,6 @@ class StripeCallbacksController < ApplicationController
 
   def create
     StripeCallback.new(params)
-    render nothing: true
+    head :ok
   end
 end
