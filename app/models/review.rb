@@ -1,6 +1,6 @@
 class Review < ApplicationRecord
   belongs_to :submission
-  belongs_to :admin
+  belongs_to :admin, optional: true
   has_one :student, through: :submission
   has_many :grades
 
