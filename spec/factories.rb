@@ -353,7 +353,7 @@ FactoryGirl.define do
     submission
 
     factory :passing_review do
-      after(:create) do |review|
+      after(:build) do |review|
         review.submission.code_review.objectives.each do |objective|
           FactoryGirl.create(:passing_grade, review: review, objective: objective)
         end
@@ -361,7 +361,7 @@ FactoryGirl.define do
     end
 
     factory :failing_review do
-      after(:create) do |review|
+      after(:build) do |review|
         review.submission.code_review.objectives.each do |objective|
           FactoryGirl.create(:failing_grade, review: review, objective: objective)
         end
@@ -369,7 +369,7 @@ FactoryGirl.define do
     end
 
     factory :in_between_review do
-      after(:create) do |review|
+      after(:build) do |review|
         review.submission.code_review.objectives.each do |objective|
           FactoryGirl.create(:in_between_grade, review: review, objective: objective)
         end
