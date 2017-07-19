@@ -2,17 +2,19 @@
   <td><%= link_to student.name, course_student_path(@course, student), class: "unstyled-link" %></td>
   <% unless @course.internship_course? %>
     <td>
-      <% if student.attendance_score(@course) <= 92 %>
-          <p class="text-danger">
+      <% if params[:attendance] == "true" %>
+        <% if student.attendance_score(@course) <= 92 %>
+            <p class="text-danger">
+          <% else %>
+            <p>
+        <% end %>
+        <% if student.attendance_score(@course).nan? %>
+          No records yet
         <% else %>
-          <p>
+          <%= number_to_percentage(student.attendance_score(@course), precision: 0) %>
+        <% end %>
+        </p>
       <% end %>
-      <% if student.attendance_score(@course).nan? %>
-        No records yet
-      <% else %>
-        <%= number_to_percentage(student.attendance_score(@course), precision: 0) %>
-      <% end %>
-      </p>
     </td>
   <% end %>
   <% @course.code_reviews.each do |code_review| %>
@@ -22,17 +24,13 @@
           <%= form_for [code_review, Submission.new] do |f| %>
             <%= f.hidden_field :needs_review, value: true %>
             <%= f.hidden_field :student_id, value: student.id %>
-            <%= f.submit 'Missing', class: 'failing-submission-link btn btn-link', id: 'create-submission-link' %>
+            <%= f.submit 'missing', class: 'failing-submission-link btn btn-link', id: 'create-submission-link' %>
           <% end %>
         <% else %>
-          <p class="text-danger">Missing</p>
+          <p class="text-danger">missing</p>
         <% end %>
-      <% elsif student.submission_for(code_review).has_been_reviewed? && student.submission_for(code_review).meets_expectations? %>
-        <%= link_to 'Pass', new_submission_review_path(student.submission_for(code_review)), class: 'passing-submission-link' %>
-      <% elsif student.submission_for(code_review).has_been_reviewed? && !student.submission_for(code_review).meets_expectations? %>
-        <%= link_to 'Fail', new_submission_review_path(student.submission_for(code_review)), class: 'failing-submission-link' %>
       <% else %>
-        <%= link_to 'Pending', new_submission_review_path(student.submission_for(code_review)), class: 'pending-submission-link' %>
+        <%= link_to student.submission_for(code_review).review_status, new_submission_review_path(student.submission_for(code_review)), class: student.submission_for(code_review).review_status %>
       <% end %>
     </td>
   <% end %>

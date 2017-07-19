@@ -21,13 +21,18 @@ feature 'Visiting students index page' do
       visit course_path(student.course)
     end
 
-    scenario 'viewing paginated student list' do
+    scenario 'viewing all students' do
       expect(page).to have_content admin.current_course.description
+      expect(page).to have_content student.name
     end
 
-    scenario 'viewing all students' do
-      click_on 'View all'
-      expect(page).to have_content admin.current_course.description
+    scenario 'does not show attendance by default' do
+      expect(page).to_not have_content '%'
+    end
+
+    scenario 'shows attendance if click view attendance button' do
+      click_link('View attendance')
+      expect(page).to have_content '%'
     end
   end
 end
