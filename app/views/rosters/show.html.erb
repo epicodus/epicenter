@@ -1,5 +1,5 @@
 <div class="col-md-8">
-  <h2 class="text-center">Students currently signed in (<strong><%= @office.name %></strong>)</h2>
+  <h2 class="text-center"><%= @students.count %> students currently signed in (<strong><%= @office.name %></strong>)</h2>
   <% if @office.name == "Portland" %>
     <p class="text-center"><strong>Portland</strong> | <%= link_to 'Seattle', roster_path(office: 'Seattle') %></p>
   <% else %>

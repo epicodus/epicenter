@@ -20,7 +20,7 @@ feature "Viewing roster page" do
     scenario "can view students" do
       FactoryGirl.create(:attendance_record, student: student, date: Date.today)
       visit roster_path
-      expect(page).to have_content "Students currently signed in"
+      expect(page).to have_content "students currently signed in"
       expect(page).to have_content student.name
     end
 
@@ -29,7 +29,7 @@ feature "Viewing roster page" do
       FactoryGirl.create(:attendance_record, student: other_student, date: Date.today)
       visit roster_path
       click_link "Portland"
-      expect(page).to have_content "Students currently signed in (Portland)"
+      expect(page).to have_content "students currently signed in (Portland)"
       expect(page).to have_content other_student.name
     end
 
