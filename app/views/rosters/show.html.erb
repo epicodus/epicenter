@@ -1,0 +1,30 @@
+<div class="col-md-8">
+  <h2 class="text-center">Students currently signed in (<strong><%= @office.name %></strong>)</h2>
+  <% if @office.name == "Portland" %>
+    <p class="text-center"><strong>Portland</strong> | <%= link_to 'Seattle', roster_path(office: 'Seattle') %></p>
+  <% else %>
+    <p class="text-center"><%= link_to 'Portland', roster_path(office: 'Portland') %> | <strong>Seattle</strong></p>
+  <% end %>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table class="table table-hover searchable-datatable">
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Course</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @students.each do |student| %>
+              <tr>
+                <td><%= student.name %></td>
+                <td><%= student.course.description %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
