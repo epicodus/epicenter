@@ -27,12 +27,8 @@
         <% else %>
           <p class="text-danger">missing</p>
         <% end %>
-      <% elsif student.submission_for(code_review).has_been_reviewed? && student.submission_for(code_review).meets_expectations? %>
-        <%= link_to 'Pass', new_submission_review_path(student.submission_for(code_review)), class: 'passing-submission-link' %>
-      <% elsif student.submission_for(code_review).has_been_reviewed? && !student.submission_for(code_review).meets_expectations? %>
-        <%= link_to 'Fail', new_submission_review_path(student.submission_for(code_review)), class: 'failing-submission-link' %>
       <% else %>
-        <%= link_to 'Pending', new_submission_review_path(student.submission_for(code_review)), class: 'pending-submission-link' %>
+        <%= link_to student.submission_for(code_review).review_status, new_submission_review_path(student.submission_for(code_review)), class: student.submission_for(code_review).review_status %>
       <% end %>
     </td>
   <% end %>
