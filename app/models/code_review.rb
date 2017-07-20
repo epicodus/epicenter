@@ -42,13 +42,13 @@ class CodeReview < ApplicationRecord
   end
 
   def status(student)
-    grade_scores = submission_for(student).try(:latest_review).try(:grades).try(:map, &:score).try(:map, &:value)
-    if grade_scores.nil?
-      'Pending'
-    elsif grade_scores.include?(1)
+    review_status = submission_for(student).try(:review_status)
+    if review_status == 'fail'
       'Did not meet requirements'
-    elsif grade_scores.include?(2) || grade_scores.include?(3) && !grade_scores.include?(1)
+    elsif review_status == 'pass'
       'Met requirements'
+    else
+      'Pending'
     end
   end
 
