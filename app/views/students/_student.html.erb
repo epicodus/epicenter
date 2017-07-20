@@ -22,10 +22,10 @@
           <%= form_for [code_review, Submission.new] do |f| %>
             <%= f.hidden_field :needs_review, value: true %>
             <%= f.hidden_field :student_id, value: student.id %>
-            <%= f.submit 'Missing', class: 'failing-submission-link btn btn-link', id: 'create-submission-link' %>
+            <%= f.submit 'missing', class: 'failing-submission-link btn btn-link', id: 'create-submission-link' %>
           <% end %>
         <% else %>
-          <p class="text-danger">Missing</p>
+          <p class="text-danger">missing</p>
         <% end %>
       <% elsif student.submission_for(code_review).has_been_reviewed? && student.submission_for(code_review).meets_expectations? %>
         <%= link_to 'Pass', new_submission_review_path(student.submission_for(code_review)), class: 'passing-submission-link' %>

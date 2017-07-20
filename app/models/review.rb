@@ -11,6 +11,7 @@ class Review < ApplicationRecord
 
   after_create :mark_submission_as_reviewed
   after_create :email_student
+  after_save :update_submission_status
 
   def meets_expectations?
     grades.pluck(:value).all? { |value| value > 1 }
@@ -20,6 +21,11 @@ private
 
   def mark_submission_as_reviewed
     submission.update(needs_review: false)
+  end
+
+  def update_submission_status
+    review_status = meets_expectations? ? "pass" : "fail"
+    submission.update(review_status: review_status)
   end
 
   def email_student

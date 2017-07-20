@@ -21,13 +21,9 @@ feature 'Visiting students index page' do
       visit course_path(student.course)
     end
 
-    scenario 'viewing paginated student list' do
-      expect(page).to have_content admin.current_course.description
-    end
-
     scenario 'viewing all students' do
-      click_on 'View all'
       expect(page).to have_content admin.current_course.description
+      expect(page).to have_content student.name
     end
   end
 end

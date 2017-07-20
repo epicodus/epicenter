@@ -13,6 +13,18 @@ describe Review do
       expect(submission.needs_review).to eq false
     end
 
+    it 'updates the submission review_status to pass', :stub_mailgun do
+      submission = FactoryGirl.create(:submission)
+      review = FactoryGirl.create(:passing_review, submission: submission)
+      expect(submission.review_status).to eq 'pass'
+    end
+
+    it 'updates the submission review_status to fail', :stub_mailgun do
+      submission = FactoryGirl.create(:submission)
+      review = FactoryGirl.create(:failing_review, submission: submission)
+      expect(submission.review_status).to eq 'fail'
+    end
+
     it 'emails the student' do
       mailgun_client = spy("mailgun client")
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
