@@ -80,6 +80,13 @@ describe Submission do
     end
   end
 
+  describe '#review_status' do
+    it 'updates to pending on submission creation' do
+      submission = FactoryGirl.create(:submission)
+      expect(submission.review_status).to eq "pending"
+    end
+  end
+
   describe '#latest_review', :stub_mailgun do
     it 'returns the latest review for this submission' do
       submission = FactoryGirl.create(:submission)
