@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170719203252) do
+ActiveRecord::Schema.define(version: 20170720164446) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -267,6 +267,7 @@ ActiveRecord::Schema.define(version: 20170719203252) do
     t.datetime "updated_at"
     t.boolean "needs_review"
     t.integer "times_submitted"
+    t.string "review_status"
     t.index ["code_review_id"], name: "index_submissions_on_code_review_id"
     t.index ["student_id"], name: "index_submissions_on_student_id"
   end
