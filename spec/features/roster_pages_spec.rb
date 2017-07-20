@@ -18,7 +18,7 @@ feature "Viewing roster page" do
     before { login_as(admin, scope: :admin) }
 
     scenario "can view students" do
-      FactoryGirl.create(:attendance_record, student: student, date: Date.today)
+      FactoryGirl.create(:attendance_record, student: student, date: Time.zone.now.to_date)
       visit roster_path
       expect(page).to have_content "students currently signed in"
       expect(page).to have_content student.name
@@ -26,7 +26,7 @@ feature "Viewing roster page" do
 
     scenario "can see students in different office" do
       other_student = FactoryGirl.create(:portland_student_with_all_documents_signed)
-      FactoryGirl.create(:attendance_record, student: other_student, date: Date.today)
+      FactoryGirl.create(:attendance_record, student: other_student, date: Time.zone.now.to_date)
       visit roster_path
       click_link "Portland"
       expect(page).to have_content "students currently signed in (Portland)"
@@ -39,7 +39,7 @@ feature "Viewing roster page" do
     end
 
     scenario "does not show signed out students" do
-      attendance_record = FactoryGirl.create(:attendance_record, student: student, date: Date.today)
+      attendance_record = FactoryGirl.create(:attendance_record, student: student, date: Time.zone.now.to_date)
       attendance_record.update({ signing_out: true })
       visit roster_path
       expect(page).to_not have_content student.name
