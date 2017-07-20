@@ -2,6 +2,7 @@
 <div class="panel panel-default">
   <div class="panel-body">
     <p>
+      <%= link_to 'View attendance', course_path(@course, attendance: true), class: 'btn btn-default' unless params[:attendance] %>
       <%= link_to 'Export', course_export_path(@course), id: "export-btn", :class => "btn btn-default" %>
     </p>
     <div class="table-responsive">
