@@ -13,6 +13,7 @@ class Submission < ApplicationRecord
   accepts_nested_attributes_for :notes
 
   before_create :mark_as_needing_review
+  before_create :mark_as_pending
   before_save :update_times_submitted
 
   def has_been_reviewed?
@@ -47,5 +48,9 @@ private
 
   def mark_as_needing_review
     self.needs_review = true
+  end
+
+  def mark_as_pending
+    self.review_status = "pending"
   end
 end

@@ -228,7 +228,7 @@ class Student < User
   end
 
   def passed_all_code_reviews?
-    passed = true;
+    passed = true
     courses.each do |course|
       course.code_reviews.each do |cr|
         if cr.status(self) != 'Met requirements'
