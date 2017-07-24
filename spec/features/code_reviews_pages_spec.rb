@@ -147,6 +147,14 @@ feature 'visiting the code review show page' do
         is_expected.to have_content code_review.title
       end
 
+      scenario 'sets review status to pending on inital submission' do
+        fill_in 'submission_link', with: 'http://github.com'
+        fill_in 'submission-student-note', with: 'student note'
+        check 'understand-guidelines'
+        click_button 'Submit'
+        expect(student.submissions.last.review_status).to eq "pending"
+      end
+
       scenario 'with invalid input' do
         check 'understand-guidelines'
         click_button 'Submit'
@@ -190,6 +198,12 @@ feature 'visiting the code review show page' do
         expect(page).to have_content 'Submission updated'
         expect(page).to have_content 'pending review'
         expect(page).to have_content 'resubmission student note'
+      end
+
+      scenario 'sets review_status to pending on resubmission' do
+        fill_in 'submission-student-note', with: 'resubmission student note'
+        click_button 'Resubmit'
+        expect(student.submissions.last.review_status).to eq "pending"
       end
 
       scenario 'unsuccessfully' do
