@@ -1,35 +1,35 @@
 <div class="alert alert-info">
-  <p class="text-center">Rank students by dragging rows into the correct order</p>
+  <p class="text-center">Please give all students a ranking between 1 and 6. You may use a number as many times as you'd like.<br>Ranking 1-2 would be <strong>best fit</strong>, ranking 3-4 would be <strong>good fit</strong>, ranking 5-6 would be <strong>not a good fit</strong>.</p>
 </div>
 <div class="alert alert-danger">
-  <p class="text-center">Feedback will be anonymously displayed to students</p>
+  <p class="text-center"><strong>Feedback will be anonymously displayed to students.</strong><br>Students use this to gauge what areas they might need more practice in, <br>what they're doing well, and to help them as they begin new careers in the industry.</p>
 </div>
 <%= form_tag update_multiple_interview_assignments_path, method: :patch, class: 'update-multiple' do %>
   <div class="table-responsive">
     <table class="table table-hover">
       <thead>
         <tr>
-          <th>Ranking</th>
           <th>Interviewee</th>
           <th>Feedback <span class="text-danger">(required)</span></th>
+          <th>Ranking <span class="text-danger">(required)</span></th>
           <th></th>
         </tr>
       </thead>
-      <tbody class="sortable-list">
-        <% course.interview_assignments.for_internship(internship).each do |interview_assignment| %>
-          <tr class="sortable-list-item">
+      <tbody>
+        <% course.interview_assignments.for_internship(internship).reorder(:student_id).each do |interview_assignment| %>
+          <tr>
             <%= fields_for 'interview_assignments[]', interview_assignment do |f| %>
-              <td class="col-md-1">
-                <%= interview_assignment.ranking_from_company %>
-                <%= f.hidden_field :ranking_from_company, class: 'sortable-number' %>
+              <td class="col-md-2">
+                <%= interview_assignment.student.name %>
               </td>
-              <td><%= interview_assignment.student.name %></td>
-              <td class="col-md-6">
+              <td class="col-md-8">
                 <div class="form-group">
                   <%= f.text_area :feedback_from_company, required: true, rows: 4, class: 'form-control', id: 'company-interview-feedback' %>
                 </div>
               </td>
-              <td><span class="pull-right glyphicon glyphicon-menu-hamburger"></span></td>
+              <td class="col-md-2">
+                <%= f.number_field :ranking_from_company, required: true, class: 'form-control', id: 'company-interview-ranking' %>
+              </td>
             <% end %>
           </tr>
         <% end %>
