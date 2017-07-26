@@ -6,7 +6,7 @@
     <p>Student: <strong><%= current_student.name %></strong></p>
     <p>Dates Enrolled: <%= current_student.courses.order(:start_date).first.start_date.strftime('%B %d, %Y') %> - <%= current_student.courses.order(:start_date).last.end_date.strftime('%B %d, %Y') %></p>
 
-    <p>Courses:</p>
+    <p>Courses: <strong>(does not include courses in progress)</strong></p>
     <ul>
       <% @completed_courses.each do |course| %>
         <li>
