@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   devise_for :companies, controllers: { registrations: 'registrations' }, skip: :invitations
   devise_for :users, controllers: { sessions: 'users/sessions' }, skip: [:invitations, :registrations]
 
-  resources :students, only: [:index, :update] do
+  resources :students, only: [:index, :update, :destroy] do
     resources :courses, only: [:index]
     resources :payments, only: [:index, :create]
     resources :attendance_records, only: [:index]

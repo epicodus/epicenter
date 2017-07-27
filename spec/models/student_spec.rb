@@ -1129,6 +1129,10 @@ describe Student do
   end
 
   describe 'paranoia' do
+    before do
+      allow_any_instance_of(Student).to receive(:update_close_io)
+    end
+
     it 'archives destroyed user' do
       student = FactoryGirl.create(:student)
       student.destroy
@@ -1203,6 +1207,16 @@ describe Student do
     it 'reports status of future part-time student' do
       student.courses = [FactoryGirl.create(:part_time_course, class_days: [(Time.zone.now.to_date + 5.weeks).monday])]
       expect(student.get_status).to eq 'Part-time (future)'
+    end
+  end
+
+  describe '#archive_enrollments' do
+    before { allow_any_instance_of(Student).to receive(:update_close_io) }
+    it 'archives all enrollments when student destroyed' do
+      student = FactoryGirl.create(:student)
+      enrollment_id = student.enrollments.first.id
+      student.destroy
+      expect(Enrollment.find_by_id(enrollment_id)).to eq nil
     end
   end
 end

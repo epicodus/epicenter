@@ -33,6 +33,12 @@ class StudentsController < ApplicationController
     end
   end
 
+  def destroy
+    @student = Student.find(params[:id])
+    @student.destroy
+    redirect_to root_path, notice: "#{@student.name} has been archived!"
+  end
+
 private
   def student_params
     params.require(:student).permit(:primary_payment_method_id, :course_id, :plan_id,

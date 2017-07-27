@@ -1,4 +1,8 @@
 feature 'restoring a student' do
+  before do
+    allow_any_instance_of(Student).to receive(:update_close_io)
+  end
+
   context 'as a student' do
     let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
     let(:archived_student) { FactoryGirl.create(:user_with_all_documents_signed) }
