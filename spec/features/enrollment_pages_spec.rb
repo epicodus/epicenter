@@ -24,6 +24,24 @@ feature 'adding another course for a student' do
   end
 end
 
+feature 'deleting a student' do
+  let(:course1) { FactoryGirl.create(:course) }
+  let(:course2) { FactoryGirl.create(:internship_course) }
+  let(:student) { FactoryGirl.create(:student, courses: [course1, course2]) }
+  let(:admin) { FactoryGirl.create(:admin) }
+
+  before do
+    allow_any_instance_of(Student).to receive(:update_close_io)
+    login_as(admin, scope: :admin)
+  end
+
+  scenario 'as an admin deleting the student' do
+    visit student_courses_path(student)
+    click_on 'Drop All'
+    expect(page).to have_content "#{student.name} has been archived!"
+  end
+end
+
 feature 'deleting a course for a student' do
   let(:course1) { FactoryGirl.create(:course) }
   let(:course2) { FactoryGirl.create(:internship_course) }
