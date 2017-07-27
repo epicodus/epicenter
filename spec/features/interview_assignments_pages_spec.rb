@@ -116,6 +116,7 @@ feature 'interview rankings' do
     login_as(company, scope: :company)
     visit company_path(company)
     fill_in 'company-interview-feedback', with: 'Great interviewer!'
+    fill_in 'company-interview-ranking', with: 1
     click_on 'Save rankings'
     expect(page).to have_content "Student rankings have been saved for #{internship.courses.first.description}."
   end
