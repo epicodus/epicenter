@@ -23,17 +23,15 @@
       <% end %>
     </ul>
 
-    <% unless params[:attendance] == 'false' %>
-      <p>Attendance:</p>
+    <p>Attendance:</p>
+    <ul>
+      <li>Present <%= pluralize(current_student.attendance_records_for(:all, @completed_courses.non_internship_courses.first, @completed_courses.non_internship_courses.last), 'day') %></li>
       <ul>
-        <li>Present <%= pluralize(current_student.attendance_records_for(:all, @completed_courses.non_internship_courses.first, @completed_courses.non_internship_courses.last), 'day') %></li>
-        <ul>
-          <li>Tardy <%= pluralize(current_student.attendance_records_for(:tardy, @completed_courses.non_internship_courses.first, @completed_courses.non_internship_courses.last), 'day') %></li>
-          <li>Left early <%= pluralize(current_student.attendance_records_for(:left_early, @completed_courses.non_internship_courses.first, @completed_courses.non_internship_courses.last), 'day') %></li>
-        </ul>
-        <li>Absent <%= pluralize(current_student.attendance_records_for(:absent, @completed_courses.non_internship_courses.first, @completed_courses.non_internship_courses.last), 'day') %></li>
+        <li>Tardy <%= pluralize(current_student.attendance_records_for(:tardy, @completed_courses.non_internship_courses.first, @completed_courses.non_internship_courses.last), 'day') %></li>
+        <li>Left early <%= pluralize(current_student.attendance_records_for(:left_early, @completed_courses.non_internship_courses.first, @completed_courses.non_internship_courses.last), 'day') %></li>
       </ul>
-    <% end %>
+      <li>Absent <%= pluralize(current_student.attendance_records_for(:absent, @completed_courses.non_internship_courses.first, @completed_courses.non_internship_courses.last), 'day') %></li>
+    </ul>
 
     <p><%= image_tag "signature.png" %></p>
     <p><strong>Michael Kaiser-Nyman, President</strong></p>
