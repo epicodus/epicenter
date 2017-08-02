@@ -63,5 +63,6 @@ Rails.application.configure do
   config.after_initialize do
     Bullet.enable = true
     Bullet.rails_logger = true
+    EmailClient.enable_test_mode
   end
 end
