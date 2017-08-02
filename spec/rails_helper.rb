@@ -30,7 +30,8 @@ RSpec.configure do |config|
   config.before(:each) do |example|
     DatabaseCleaner.clean_with(:truncation)
     if example.metadata[:stub_mailgun]
-      mailgun_client = spy("mailgun client")
+      mailgun_client = Mailgun::Client.new
+      mailgun_client.enable_test_mode!
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
     end
     StripeMock.start if example.metadata[:stripe_mock]

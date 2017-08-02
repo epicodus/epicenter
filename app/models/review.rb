@@ -29,7 +29,7 @@ private
   end
 
   def email_student
-    Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message(
+    EmailClient.create.send_message(
       ENV['MAILGUN_DOMAIN'],
       { :from => ENV['FROM_EMAIL_REVIEW'],
         :to => student.email,
