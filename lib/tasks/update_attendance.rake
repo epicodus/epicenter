@@ -26,7 +26,7 @@ task :update_attendance, [:day] => [:environment] do |t, args|
     course_ids = Course.where(internship_course: false, parttime: false, office_id: office.id).where('start_date <= ? AND end_date >= ?', day, day).order(:description).map {|course| course.id}
   else
     puts "Enter course id:"
-    course_ids = [Course.find(STDIN.gets.chomp)]
+    course_ids = [STDIN.gets.chomp.to_i]
   end
   day_of_week = Date.parse(day).strftime('%A').upcase
   modifier = update_absent_students ? "INCLUDING" : "EXCLUDING"
