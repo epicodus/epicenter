@@ -24,6 +24,7 @@ feature 'Submitting demographics info' do
     scenario "can submit demographics form after filling it out", vcr: true do
       check 'demographic_info_genders_female'
       check 'demographic_info_genders_non-binary'
+      fill_in 'demographic_info_pronouns', with: 'they/them/their'
       fill_in 'demographic_info_age', with: '25'
       select 'High school diploma or equivalent', from: 'demographic_info_education'
       fill_in 'demographic_info_job', with: 'test job'

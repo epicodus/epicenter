@@ -13,12 +13,13 @@ class DemographicInfo
   validates_numericality_of :age, greater_than: 0, allow_nil: true
   validates_numericality_of :salary, greater_than_or_equal_to: 0, allow_nil: true
   validates_length_of :job, maximum: 35, allow_nil: true
+  validates_length_of :pronouns, maximum: 70, allow_nil: true
   validates_inclusion_of :education, in: EDUCATION_OPTIONS, allow_nil: true
   validates_inclusion_of :veteran, in: VETERAN_OPTIONS, allow_nil: true
   validate :check_array_genders, if: ->(demographic_info) { demographic_info.genders.present? }
   validate :check_array_races, if: ->(demographic_info) { demographic_info.races.present? }
 
-  attr_accessor :age, :job, :salary, :education, :veteran, :genders, :races
+  attr_accessor :age, :job, :salary, :education, :veteran, :genders, :races, :pronouns
 
   def initialize(student = nil, attributes = {})
     @student = student
@@ -29,12 +30,14 @@ class DemographicInfo
     @veteran = attributes[:veteran]
     @genders = attributes[:genders]
     @races = attributes[:races]
+    @pronouns = attributes[:pronouns]
   end
 
   def save
     if valid?
       fields = {}
       fields['custom.Gender'] = @genders.join(", ") if @genders
+      fields['custom.Pronouns'] = @pronouns
       fields['custom.Age'] = @age
       fields['custom.Education'] = @education
       fields['custom.Previous job'] = @job
@@ -52,6 +55,7 @@ private
     @age = @age.blank? ? nil : @age.to_i
     @salary = @salary.blank? ? nil : @salary.to_i
     @job = nil if @job.blank?
+    @pronouns = nil if @pronouns.blank?
     @education = nil if @education.blank?
   end
 
