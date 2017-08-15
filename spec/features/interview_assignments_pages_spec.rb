@@ -128,19 +128,21 @@ feature 'interview rankings' do
     expect(page).to_not have_content "Great company!"
   end
 
-  scenario 'as a student can not view company feedback until 1 week after internship start date' do
-    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 1, feedback_from_company: 'Great fit!')
+  scenario 'as a student can not view company feedback or ranking until 1 week after internship start date' do
+    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 5, feedback_from_company: 'Great fit!')
     login_as(student, scope: :student)
     visit course_student_path(internship.courses.first, student)
     expect(page).to have_content "Not yet available."
+    expect(page).to_not have_content "5"
   end
 
-  scenario 'as a student can view company feedback 1 week after internship start date' do
-    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 1, feedback_from_company: 'Great fit!')
+  scenario 'as a student can view company feedback and ranking 1 week after internship start date' do
+    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 5, feedback_from_company: 'Great fit!')
     login_as(student, scope: :student)
     travel_to student.course.start_date + 1.week do
       visit course_student_path(internship.courses.first, student)
       expect(page).to have_content "Great fit!"
+      expect(page).to have_content "5"
     end
   end
 

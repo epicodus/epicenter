@@ -1,18 +1,27 @@
 <% if current_student && @student.interview_assignments.for_course(@course).with_feedback_from_company.any? %>
   <div class="col-md-5">
-    <h3>Interview feedback</h3>
+    <h3>Interview feedback<br><small>(order is randomized)</small></h3>
     <div class="panel panel-default">
       <div class="panel-body">
         <% if @student.interview_assignments.for_course(@course).any? && Time.zone.now > @student.internship_course.start_date.in_time_zone(@course.office.time_zone) + 1.week %>
+          <div class="alert alert-info">
+            <p>Ranking 1-2 means best fit, ranking 3-4 means good fit, ranking 5-6 means not a good fit.</p>
+          </div>
           <div class="table-responsive">
             <table class="table">
               <thead>
-                <tr><th>Feedback</th></tr>
+                <tr>
+                  <th>Feedback</th>
+                  <th>Ranking</th>
+                </tr>
               </thead>
               <tbody>
                 <ol>
                   <% @student.interview_assignments.for_course(@course).with_feedback_from_company.shuffle.each do |interview_assignment| %>
-                    <tr><td><li><%= interview_assignment.feedback_from_company %></li></td></tr>
+                    <tr>
+                      <td><li><%= interview_assignment.feedback_from_company %></li></td>
+                      <td><%= interview_assignment.ranking_from_company %></td>
+                    </tr>
                   <% end %>
                 </ol>
               </tbody>
