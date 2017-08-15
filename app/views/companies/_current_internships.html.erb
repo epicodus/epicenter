@@ -2,7 +2,7 @@
   <p class="text-center">Please give all students a ranking between 1 and 6. You may use a number as many times as you'd like.<br>Ranking 1-2 would be <strong>best fit</strong>, ranking 3-4 would be <strong>good fit</strong>, ranking 5-6 would be <strong>not a good fit</strong>.</p>
 </div>
 <div class="alert alert-danger">
-  <p class="text-center"><strong>Feedback will be anonymously displayed to students.</strong><br>Students use this to gauge what areas they might need more practice in, <br>what they're doing well, and to help them as they begin new careers in the industry.</p>
+  <p class="text-center"><strong>Feedback and rankings will be anonymously displayed to students.</strong><br>Students use this to gauge what areas they might need more practice in, <br>what they're doing well, and to help them as they begin new careers in the industry.</p>
 </div>
 <%= form_tag update_multiple_interview_assignments_path, method: :patch, class: 'update-multiple' do %>
   <div class="table-responsive">
@@ -28,7 +28,7 @@
                 </div>
               </td>
               <td class="col-md-2">
-                <%= f.number_field :ranking_from_company, required: true, class: 'form-control', id: 'company-interview-ranking' %>
+                <%= f.number_field :ranking_from_company, required: true, min: 1, max: 6, class: 'form-control', id: 'company-interview-ranking' %>
               </td>
             <% end %>
           </tr>
