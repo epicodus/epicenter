@@ -179,10 +179,7 @@ feature 'viewing the student page' do
   let(:unenrolled_student) { FactoryGirl.create(:unenrolled_student) }
   let(:internship_student) { FactoryGirl.create(:student, courses: [FactoryGirl.create(:internship_course)]) }
 
-  before do
-    allow_any_instance_of(Student).to receive(:update_close_io)
-    login_as(admin, scope: :admin)
-  end
+  before { login_as(admin, scope: :admin) }
 
   scenario 'when a student is enrolled in a course' do
     visit course_student_path(student.course, student)

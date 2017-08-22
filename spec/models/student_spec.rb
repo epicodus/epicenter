@@ -34,8 +34,8 @@ describe Student do
   end
 
   describe '#internship_course' do
-    let(:internship_course) { FactoryGirl.create(:internship_course) }
-    let(:non_internship_course) { FactoryGirl.create(:course) }
+    let!(:internship_course) { FactoryGirl.create(:internship_course) }
+    let!(:non_internship_course) { FactoryGirl.create(:course) }
     let(:student) { FactoryGirl.create(:student, courses: [internship_course, non_internship_course]) }
 
     it 'returns the internship course for a student' do
@@ -220,7 +220,7 @@ describe Student do
       allow(student).to receive(:close_io_client).and_return(close_io_client)
     end
 
-    it "updates the record when there are enough signatures and a payment has been made", :vcr do
+    it "updates the record when there are enough signatures and a payment has been made", :vcr, :do_not_stub_close_io do
       FactoryGirl.create(:completed_code_of_conduct, student: student)
       FactoryGirl.create(:completed_refund_policy, student: student)
       FactoryGirl.create(:completed_enrollment_agreement, student: student)
@@ -229,7 +229,7 @@ describe Student do
       student.update_close_io({ status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 })
     end
 
-    it "fails to update the record when there are not enough signatures", :vcr do
+    it "fails to update the record when there are not enough signatures", :vcr, :do_not_stub_close_io do
       student.update(email: 'fake@fake.com')
       FactoryGirl.create(:completed_code_of_conduct, student: student)
       FactoryGirl.create(:completed_refund_policy, student: student)
@@ -237,7 +237,7 @@ describe Student do
       expect { student.update_close_io({ status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 }) }.to raise_error(RuntimeError, 'The Close.io lead for fake@fake.com was not found.')
     end
 
-    it "fails to update the record when no payment has been made", :vcr do
+    it "fails to update the record when no payment has been made", :vcr, :do_not_stub_close_io do
       student.update(email: 'fake@fake.com')
       FactoryGirl.create(:completed_code_of_conduct, student: student)
       FactoryGirl.create(:completed_refund_policy, student: student)
@@ -830,7 +830,6 @@ describe Student do
 
     context 'for a particular range of courses' do
       before do
-        allow_any_instance_of(Student).to receive(:update_close_io)
         student.courses = [past_course, course, future_course]
         student.courses.each do |c|
           create_attendance_record_in_course(c, "on_time")
@@ -960,7 +959,6 @@ describe Student do
 
     context 'for internships' do
       before do
-        allow_any_instance_of(Student).to receive(:update_close_io)
         student.enrollments.destroy_all
         student.course = FactoryGirl.create(:internship_course)
       end
@@ -1101,10 +1099,6 @@ describe Student do
     let(:student) { FactoryGirl.create(:student) }
     let(:other_course) { FactoryGirl.create(:course) }
 
-    before do
-      allow(student).to receive(:update_close_io)
-    end
-
     it 'triggers update_starting_cohort_crm on update' do
       expect(student).to receive(:update_starting_cohort_crm)
       student.update(starting_cohort_id: other_course.id)
@@ -1129,10 +1123,6 @@ describe Student do
   end
 
   describe 'paranoia' do
-    before do
-      allow_any_instance_of(Student).to receive(:update_close_io)
-    end
-
     it 'archives destroyed user' do
       student = FactoryGirl.create(:student)
       student.destroy
@@ -1150,8 +1140,6 @@ describe Student do
 
   describe 'get_status' do
     let(:student) { FactoryGirl.create(:student) }
-
-    before { allow(student).to receive(:update_close_io) }
 
     it 'reports status when student is archived' do
       student.destroy
@@ -1211,7 +1199,6 @@ describe Student do
   end
 
   describe '#archive_enrollments' do
-    before { allow_any_instance_of(Student).to receive(:update_close_io) }
     it 'archives all enrollments when student destroyed' do
       student = FactoryGirl.create(:student)
       enrollment_id = student.enrollments.first.id

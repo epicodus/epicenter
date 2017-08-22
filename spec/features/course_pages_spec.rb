@@ -1,7 +1,5 @@
 feature 'creating a course' do
 
-  before { allow_any_instance_of(Student).to receive(:update_close_io) }
-
   scenario 'not logged in' do
     visit new_course_path
     expect(page).to have_content 'need to sign in'
@@ -68,8 +66,6 @@ end
 feature 'viewing courses' do
   let(:student) { FactoryGirl.create(:student) }
 
-  before { allow_any_instance_of(Student).to receive(:update_close_io) }
-
   scenario 'as a student logged in' do
     login_as(student, scope: :student)
     visit student_courses_path(student)
@@ -94,8 +90,6 @@ end
 
 feature 'editing a course' do
   let(:course) { FactoryGirl.create(:internship_course) }
-
-  before { allow_any_instance_of(Student).to receive(:update_close_io) }
 
   scenario 'not logged in' do
     visit edit_course_path(course)
@@ -150,8 +144,6 @@ feature 'visiting the course index page' do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
-  before { allow_any_instance_of(Student).to receive(:update_close_io) }
-
   scenario 'as an admin' do
     login_as(admin, scope: :admin)
     visit root_path
@@ -184,8 +176,6 @@ feature 'exporting course students emails to a file' do
   let(:admin) { FactoryGirl.create(:admin) }
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
 
-  before { allow_any_instance_of(Student).to receive(:update_close_io) }
-
   context 'as an admin' do
     before { login_as(admin, scope: :admin) }
     scenario 'exports email addresses for students in a course' do
@@ -209,8 +199,6 @@ feature 'exporting internship ratings to a file' do
   let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
   let(:internship_course) { FactoryGirl.create(:internship_course) }
   let(:admin) { FactoryGirl.create(:admin, current_course: internship_course) }
-
-  before { allow_any_instance_of(Student).to receive(:update_close_io) }
 
   context 'as an admin' do
     before { login_as(admin, scope: :admin) }

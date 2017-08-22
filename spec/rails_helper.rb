@@ -35,6 +35,7 @@ RSpec.configure do |config|
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
     end
     StripeMock.start if example.metadata[:stripe_mock]
+    allow_any_instance_of(Student).to receive(:update_close_io) unless example.metadata[:do_not_stub_close_io]
   end
   config.after(:each) do |example|
     StripeMock.stop if example.metadata[:stripe_mock]

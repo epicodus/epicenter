@@ -8,16 +8,13 @@ describe StudentInternshipAgreement do
     let(:signature) { FactoryGirl.create(:completed_student_internship_agreement, student: student) }
     let(:score) { FactoryGirl.create(:passing_score) }
 
-    before do
-      allow_any_instance_of(Student).to receive(:update_close_io)
-    end
-
     it 'marks code review as passed', :stub_mailgun do
       StudentInternshipAgreement.create_from_signature_id(signature.signature_id)
       expect(Submission.find_by(student: student, code_review: code_review).meets_expectations?).to be true
     end
 
-    it 'updates the internship agreement field in close', :stub_mailgun do
+    it 'updates the internship agreement field in close', :stub_mailgun, :do_not_stub_close_io do
+      allow_any_instance_of(Student).to receive(:update_close_io)
       expect_any_instance_of(Student).to receive(:update_close_io).with({ 'custom.Signed internship agreement?': 'Yes' })
       StudentInternshipAgreement.create_from_signature_id(signature.signature_id)
     end

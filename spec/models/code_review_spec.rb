@@ -6,8 +6,6 @@ describe CodeReview do
   it { should belong_to :course }
   it { should accept_nested_attributes_for :objectives }
 
-  before { allow_any_instance_of(Student).to receive(:update_close_io) }
-
   it 'duplicates a code review and its objectives' do
     course = FactoryGirl.create(:course)
     code_review = FactoryGirl.create(:code_review)

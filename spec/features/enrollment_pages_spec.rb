@@ -4,10 +4,7 @@ feature 'adding another course for a student' do
   let!(:other_student) { FactoryGirl.create(:student, sign_in_count: 1) }
   let(:admin) { FactoryGirl.create(:admin) }
 
-  before do
-    allow_any_instance_of(Student).to receive(:update_close_io)
-    login_as(admin, scope: :admin)
-  end
+  before { login_as(admin, scope: :admin) }
 
   scenario 'as an admin on the individual student page' do
     visit student_courses_path(student)
@@ -30,10 +27,7 @@ feature 'deleting a student' do
   let(:student) { FactoryGirl.create(:student, courses: [course1, course2]) }
   let(:admin) { FactoryGirl.create(:admin) }
 
-  before do
-    allow_any_instance_of(Student).to receive(:update_close_io)
-    login_as(admin, scope: :admin)
-  end
+  before { login_as(admin, scope: :admin) }
 
   scenario 'as an admin deleting the student' do
     visit student_courses_path(student)
@@ -48,10 +42,7 @@ feature 'deleting a course for a student' do
   let(:student) { FactoryGirl.create(:student, courses: [course1, course2]) }
   let(:admin) { FactoryGirl.create(:admin) }
 
-  before do
-    allow_any_instance_of(Student).to receive(:update_close_io)
-    login_as(admin, scope: :admin)
-  end
+  before { login_as(admin, scope: :admin) }
 
   scenario 'as an admin deleting a course that is not the last course for that student' do
     visit student_courses_path(student)
