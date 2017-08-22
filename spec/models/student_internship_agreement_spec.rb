@@ -15,6 +15,7 @@ describe StudentInternshipAgreement do
 
     it 'updates the internship agreement field in close', :stub_mailgun, :do_not_stub_close_io do
       allow_any_instance_of(Student).to receive(:update_close_io)
+      student.reload
       expect_any_instance_of(Student).to receive(:update_close_io).with({ 'custom.Signed internship agreement?': 'Yes' })
       StudentInternshipAgreement.create_from_signature_id(signature.signature_id)
     end
