@@ -39,7 +39,7 @@ describe DemographicInfo do
       allow(student).to receive(:close_io_client).and_return(close_io_client)
     end
 
-    it 'updates the record successfully', :vcr do
+    it 'updates the record successfully', :vcr, :do_not_stub_close_io do
       demographics = {:genders=>["Female"], :age=>50, :education=>"High school diploma or equivalent", :job=>"test occupation", :salary=>15000, :races=>["Asian or Asian American"], :veteran=>"No"}
       demographic_info = DemographicInfo.new(student, demographics)
       expect(close_io_client).to receive(:update_lead).with(lead_id, {'custom.Gender' => demographics[:genders].join(", "), 'custom.Age' => demographics[:age], 'custom.Education' => demographics[:education], 'custom.Previous job' => demographics[:job], 'custom.Previous salary' => demographics[:salary], 'custom.Race' => demographics[:races].join(', '), 'custom.veteran' => demographics[:veteran]})

@@ -43,6 +43,7 @@ class DemographicInfo
       fields['custom.veteran'] = @veteran
       fields = fields.compact
       @student.update_close_io(fields)
+      true
     end
   end
 

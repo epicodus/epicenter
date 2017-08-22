@@ -1,7 +1,5 @@
 describe Enrollment do
 
-  before { allow_any_instance_of(Student).to receive(:update_close_io) }
-
   it { should validate_presence_of :course }
   it { should validate_presence_of :student }
 
