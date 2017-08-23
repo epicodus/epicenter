@@ -108,4 +108,40 @@ describe Enrollment do
       end
     end
   end
+
+  describe 'internship class in CRM' do
+    let(:student) { FactoryGirl.create(:student, courses: []) }
+    let(:course) { FactoryGirl.create(:course) }
+    let(:internship_course) { FactoryGirl.create(:internship_course) }
+
+    it 'is set when enrolled in internship course' do
+      location = internship_course.office.name
+      location = 'PDX' if location == 'Portland'
+      location = 'SEA' if location == 'Seattle'
+      description = "#{location} #{internship_course.description.split.first} #{internship_course.start_date.strftime('%b %-d')} - #{internship_course.end_date.strftime('%b %-d')}"
+      expect(student).to receive(:update_close_io).with({ 'custom.lcf_Uhma73rkvzxw7h24fhtnXPfxNYLUPkWckEflCTRykgp': description })
+      student.course = internship_course
+    end
+
+    it 'is removed when removed from internship course' do
+      student.course = internship_course
+      expect(student).to receive(:update_close_io).with({ 'custom.lcf_Uhma73rkvzxw7h24fhtnXPfxNYLUPkWckEflCTRykgp': nil })
+      student.enrollments.first.destroy
+    end
+
+    it 'is not changed when enrolled in non-internship course' do
+      location = course.office.name
+      location = 'PDX' if location == 'Portland'
+      location = 'SEA' if location == 'Seattle'
+      description = "#{location} #{course.description.split.first} #{course.start_date.strftime('%b %-d')} - #{course.end_date.strftime('%b %-d')}"
+      expect(student).to_not receive(:update_close_io).with({ 'custom.lcf_Uhma73rkvzxw7h24fhtnXPfxNYLUPkWckEflCTRykgp': description })
+      student.course = course
+    end
+
+    it 'is not changed when removed from non-internship course' do
+      student.course = course
+      expect(student).to_not receive(:update_close_io).with({ 'custom.lcf_Uhma73rkvzxw7h24fhtnXPfxNYLUPkWckEflCTRykgp': nil })
+      student.enrollments.first.destroy
+    end
+  end
 end

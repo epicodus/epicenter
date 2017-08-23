@@ -149,7 +149,8 @@ class Student < User
   def update_close_io(update_fields)
     if close_io_lead_exists?
       lead_id = close_io_client.list_leads('email:' + email).data.first.id
-      close_io_client.update_lead(lead_id, update_fields)
+      result = close_io_client.update_lead(lead_id, update_fields)
+      return { errors: result['field-errors'] } if result && result['field-errors']
     elsif !close_io_lead_exists?
      raise "The Close.io lead for #{email} was not found."
     end
