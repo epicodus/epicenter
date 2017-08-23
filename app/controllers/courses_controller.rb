@@ -5,6 +5,7 @@ class CoursesController < ApplicationController
     if params[:student_id]
       @student = Student.find(params[:student_id])
       @courses = @student.courses
+      @enrollment = Enrollment.new
       authorize! :manage, @student
     else
       @courses = Course.all.includes(:admin).includes(:office)

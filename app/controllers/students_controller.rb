@@ -50,15 +50,10 @@ private
     if @student.update(student_params)
       if student_params[:plan_id]
         redirect_to student_payments_path(@student), notice: "Payment plan for #{@student.name} has been updated."
-      else
-        redirect_to student_courses_path(@student), notice: "Courses for #{@student.name} have been updated."
       end
     else
       if student_params[:plan_id]
         redirect_to student_payments_path(@student), alert: "Payment plan update failed."
-      else
-        @course = Course.find(params[:student][:course_id])
-        render 'show'
       end
     end
   end
