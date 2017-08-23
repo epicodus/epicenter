@@ -70,14 +70,15 @@
 
   <div class="row">
     <div class="col-md-4">
-      <%= form_for @student, method: :patch do |f| %>
-      <%= render 'layouts/errors', object: @student %>
-      <div class="input-group">
-        <%= f.collection_select :course_id, @student.other_courses.order(:description).reverse, :id, :teacher_and_description, { include_blank: 'Please select a course' }, { class: 'col-md-4 form-control', required: true } %>
-        <span class="input-group-btn">
-          <%= f.submit 'Add course', class: 'btn btn-info' %>
-        </span>
-      </div>
+      <%= form_for @enrollment do |f| %>
+        <%= render 'layouts/errors', object: @enrollment %>
+        <%= f.hidden_field :student_id, value: @student.id %>
+        <div class="input-group">
+          <%= f.collection_select :course_id, @student.other_courses.order(:description).reverse, :id, :teacher_and_description, { include_blank: 'Please select a course' }, { class: 'col-md-4 form-control', required: true } %>
+          <span class="input-group-btn">
+            <%= f.submit 'Add course', class: 'btn btn-info' %>
+          </span>
+        </div>
       <% end %>
     </div>
   </div>

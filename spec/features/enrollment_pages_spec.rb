@@ -8,16 +8,16 @@ feature 'adding another course for a student' do
 
   scenario 'as an admin on the individual student page' do
     visit student_courses_path(student)
-    select other_course.description, from: 'student_course_id'
+    select other_course.description, from: 'enrollment_course_id'
     click_on 'Add course'
-    expect(page).to have_content other_course.description
+    expect(page).to have_content "#{student.name} enrolled in #{other_course.description}."
   end
 
   scenario 'as an admin on the student roster page' do
     visit course_path(student.course)
     select other_student.name, from: 'enrollment_student_id'
     click_on 'Add student'
-    expect(page).to have_content "#{other_student.name} has been added to #{student.course.description}"
+    expect(page).to have_content "#{other_student.name} enrolled in #{student.course.description}"
   end
 end
 
