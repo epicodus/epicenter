@@ -8,6 +8,8 @@ class Enrollment < ApplicationRecord
 
   acts_as_paranoid
 
+  before_create :update_internship_class_in_crm, if: ->(enrollment) { enrollment.course.internship_course? }
+  before_destroy :remove_internship_class_in_crm, if: ->(enrollment) { enrollment.course.internship_course? }
   after_destroy :really_destroy_if_withdrawn_before_attending, if: ->(enrollment) { Enrollment.with_deleted.exists?(enrollment.id) }
   after_real_destroy :update_starting_cohort_on_withdraw
   after_create :update_starting_cohort_on_enroll
@@ -34,5 +36,19 @@ private
     if (Time.zone.now.to_date < course.start_date) || (student.attendance_records_for(:all, course) == 0 && course.language.level != 4)
       really_destroy!
     end
+  end
+
+  def update_internship_class_in_crm
+    location = course.office.name
+    location = 'PDX' if location == 'Portland'
+    location = 'SEA' if location == 'Seattle'
+    description = "#{location} #{course.description.split.first} #{course.start_date.strftime('%b %-d')} - #{course.end_date.strftime('%b %-d')}"
+    crm_response = student.update_close_io({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => description })
+    crm_response.try('field-errors').try(:values).try(:map) { |value| errors.add(:base, value) }
+    throw :abort if errors.any?
+  end
+
+  def remove_internship_class_in_crm
+    student.update_close_io({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => nil })
   end
 end
