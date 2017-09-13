@@ -105,7 +105,7 @@ feature 'Inviting new full-time students', :vcr do
     fill_in 'Email', with: 'example@example.com'
     click_on 'Invite student'
     student = Student.find_by(email: "example@example.com")
-    expect(student.starting_cohort_id).to eq cohort.courses.first.id
+    expect(student.starting_cohort_id).to eq cohort.id
   end
 end
 
