@@ -1095,33 +1095,6 @@ describe Student do
     end
   end
 
-  describe 'update_starting_cohort_crm' do
-    let(:student) { FactoryGirl.create(:student) }
-    let(:other_course) { FactoryGirl.create(:course) }
-
-    it 'triggers update_starting_cohort_crm on update' do
-      expect(student).to receive(:update_starting_cohort_crm)
-      student.update(starting_cohort_id: other_course.id)
-    end
-
-    it 'updates CRM on change to starting_cohort_id' do
-      expect(student).to receive(:update_close_io).with({ 'custom.Starting Cohort': student.course.description })
-      student.update(starting_cohort_id: other_course.id)
-    end
-
-    it 'clears CRM starting cohort field if starting_cohort_id is set to nil' do
-      student.update_columns(starting_cohort_id: student.course.id)
-      expect(student).to receive(:update_close_io).with({ 'custom.Starting Cohort': nil })
-      student.update(starting_cohort_id: nil)
-    end
-
-    it 'does not trigger update_starting_cohort_crm when starting_cohort_id not changed' do
-      student.update_columns(starting_cohort_id: student.course.id)
-      expect(student).to_not receive(:update_starting_cohort_crm)
-      student.update(starting_cohort_id: student.course.id)
-    end
-  end
-
   describe 'paranoia' do
     it 'archives destroyed user' do
       student = FactoryGirl.create(:student)

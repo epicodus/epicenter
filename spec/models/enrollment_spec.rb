@@ -53,58 +53,66 @@ describe Enrollment do
     end
   end
 
-  describe 'setting starting_cohort_id' do
+  describe 'setting starting cohort' do
     let(:student) { FactoryGirl.create(:student, courses: []) }
-    let(:course) { FactoryGirl.create(:course) }
-    let(:past_course) { FactoryGirl.create(:past_course) }
-    let(:future_course) { FactoryGirl.create(:future_course) }
+    let(:past_cohort) { FactoryGirl.create(:cohort, start_date: (Date.today - 1.year).beginning_of_week) }
+    let(:current_cohort) { FactoryGirl.create(:cohort, start_date: Date.today.beginning_of_week) }
+    let(:future_cohort) { FactoryGirl.create(:cohort, start_date: (Date.today + 1.year).beginning_of_week) }
     let(:part_time_course) { FactoryGirl.create(:part_time_course) }
 
     context 'adding new enrollments' do
       it 'updates cohort when adding first course' do
-        student.course = course
-        expect(student.starting_cohort_id).to eq course.id
+        expect(student).to receive(:update_close_io).with({ 'custom.Starting Cohort': current_cohort.description })
+        student.course = current_cohort.courses.first
+        expect(student.starting_cohort_id).to eq current_cohort.id
       end
 
-      it 'updates cohort when adding second course with earlier start date' do
-        student.course = course
-        student.course = past_course
-        expect(student.starting_cohort_id).to eq past_course.id
+      it 'updates cohort when adding course from earlier cohort' do
+        student.course = current_cohort.courses.first
+        expect(student).to receive(:update_close_io).with({ 'custom.Starting Cohort': past_cohort.description })
+        student.course = past_cohort.courses.first
+        expect(student.starting_cohort_id).to eq past_cohort.id
       end
 
       it 'does not update cohort when adding second course with later start date' do
-        student.course = course
-        student.course = future_course
-        expect(student.starting_cohort_id).to eq course.id
+        student.course = current_cohort.courses.first
+        expect(student).to_not receive(:update_close_io)
+        student.course = future_cohort.courses.first
+        expect(student.starting_cohort_id).to eq current_cohort.id
       end
 
       it 'does not update cohort when adding part-time course' do
+        expect(student).to_not receive(:update_close_io)
         student.course = part_time_course
         expect(student.starting_cohort_id).to eq nil
       end
     end
 
     context 'removing enrollments' do
-
       before do
+        course = current_cohort.courses.first
         student.course = course
         FactoryGirl.create(:attendance_record, student: student, date: course.start_date)
       end
 
       it 'does not update cohort when archiving enrollment' do
+        expect(student).to_not receive(:update_close_io)
         student.enrollments.first.destroy
-        expect(student.starting_cohort_id).to eq course.id
+        expect(student.starting_cohort_id).to eq current_cohort.id
       end
 
       it 'clears cohort when permanently removing the only enrollment' do
+        expect(student).to receive(:update_close_io).with({ 'custom.Starting Cohort': nil })
         student.enrollments.first.really_destroy!
         expect(student.starting_cohort_id).to eq nil
       end
 
-      it 'updates cohort when removing course with earlier start date' do
+      it 'updates cohort when removing course from earlier cohort' do
+        past_course = past_cohort.courses.first
         student.course = past_course
+        expect(student).to receive(:update_close_io).with({ 'custom.Starting Cohort': current_cohort.description })
         student.enrollments.find_by(course: past_course).really_destroy!
-        expect(student.starting_cohort_id).to eq course.id
+        expect(student.starting_cohort_id).to eq current_cohort.id
       end
     end
   end

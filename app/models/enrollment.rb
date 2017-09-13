@@ -17,18 +17,24 @@ class Enrollment < ApplicationRecord
 private
 
   def update_starting_cohort_on_enroll
-    old_start_date = student.starting_cohort_id ? Course.find(student.starting_cohort_id).start_date : nil
-    if !course.parttime? && (!old_start_date || course.start_date < old_start_date)
-      first_course = student.courses_with_withdrawn.fulltime_courses.first
-      student.update(starting_cohort_id: first_course.try(:id))
+    old_cohort = Cohort.find_by_id(student.starting_cohort_id)
+    new_cohort = course.cohorts.first if course.cohorts.count == 1
+    if new_cohort && new_cohort != old_cohort # if it's a fulltime course being added AND course being added is in different cohort than student previously registered in
+      if old_cohort.nil? || new_cohort.start_date < old_cohort.start_date
+        student.update(starting_cohort_id: new_cohort.try(:id))
+        student.update_close_io({ 'custom.Starting Cohort': new_cohort.try(:description) })
+      end
     end
   end
 
   def update_starting_cohort_on_withdraw
     the_student = student || Student.with_deleted.find(student_id)
-    if course_id == the_student.starting_cohort_id
+    old_cohort = Cohort.find_by_id(the_student.starting_cohort_id)
+    if old_cohort && ((old_cohort.courses & the_student.courses_with_withdrawn) - [course]).empty? # last course unenrolled from cohort student registered in
       first_course = the_student.courses_with_withdrawn.fulltime_courses.first
-      the_student.update(starting_cohort_id: first_course.try(:id))
+      starting_cohort = first_course.try(:cohorts).try(:first)
+      the_student.update(starting_cohort_id: starting_cohort.try(:id))
+      the_student.update_close_io({ 'custom.Starting Cohort': starting_cohort.try(:description) })
     end
   end
 
