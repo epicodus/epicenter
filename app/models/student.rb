@@ -118,42 +118,6 @@ class Student < User
     @latest_total_grade_score ||= most_recent_submission_grades.try(:inject, 0) { |score, grade| score += grade.score.value }
   end
 
-  def close_io_lead_exists?
-    lead = close_io_client.list_leads('email:' + email)
-    lead.total_results == 1
-  end
-
-  def get_crm_status
-    begin
-      lead = close_io_client.list_leads('email:' + email)
-      lead['data'].first['status_label']
-    rescue NoMethodError
-      nil
-    end
-  end
-
-  def update_close_email(new_email)
-    if close_io_lead_exists?
-      contact = close_io_client.list_leads('email:' + email).data.first.contacts.first
-      updated_emails = contact.emails.unshift(Hashie::Mash.new({ type: "office", email: new_email }))
-      result = close_io_client.update_contact(contact.id, emails: updated_emails)
-      if result['field-errors']
-        raise CrmError, "Invalid email address."
-      end
-    elsif !close_io_lead_exists?
-      raise CrmError, "The student record for #{email} was not found."
-    end
-  end
-
-  def update_close_io(update_fields)
-    if close_io_lead_exists?
-      lead_id = close_io_client.list_leads('email:' + email).data.first.id
-      close_io_client.update_lead(lead_id, update_fields)
-    elsif !close_io_lead_exists?
-     raise "The Close.io lead for #{email} was not found."
-    end
-  end
-
   def signed?(signature_model)
     if signature_model.nil?
       true
@@ -314,6 +278,10 @@ class Student < User
     end
   end
 
+  def crm_lead
+    CrmLead.new(email)
+  end
+
 private
 
   def total_number_of_course_days(start_course=nil, end_course=nil)
@@ -365,51 +333,10 @@ private
     signatures.where(is_complete: true).count > 2 && total_paid > 0
   end
 
-  def close_io_client
-    @close_io_client ||= Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false)
-  end
-
   def primary_payment_method_belongs_to_student
     if primary_payment_method && primary_payment_method.student != self
       errors.add(:primary_payment_method, 'must belong to you.')
     end
-  end
-
-  def self.pull_info_from_crm(email)
-    response = { errors: [] }
-    if User.find_by(email: email)
-      response[:errors].push("Email already used in Epicenter")
-    else
-      close_io_client = Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false)
-      lead = close_io_client.list_leads('email:' + email)
-      if lead.total_results == 0
-        response[:errors].push("Email not found in CRM")
-      else
-        name = lead.data.first.contacts.first.name
-        what_class_are_you_interested_in = lead.data.first.custom['What class are you interested in?']
-        if name.blank? || what_class_are_you_interested_in.blank?
-          response[:errors].push("Name not found in CRM") if name.blank?
-          response[:errors].push("What class are you interested in not found in CRM") if what_class_are_you_interested_in.blank?
-        else
-          office = Office.find_by(name: what_class_are_you_interested_in.split[1])
-          year = what_class_are_you_interested_in.split[0].to_i
-          month = Date::MONTHNAMES.index(what_class_are_you_interested_in.split[2])
-          day = what_class_are_you_interested_in.split[3].to_i
-          start_date = Time.new(year, month, day).to_date
-          if what_class_are_you_interested_in.downcase.include?('part-time')
-            course = Course.parttime_courses.find_by(office: office, start_date: start_date)
-          else
-            track = Track.find_by(description: what_class_are_you_interested_in.split(': ').last.split(' ').first)
-            cohort = Cohort.find_by(office: office, track: track, start_date: start_date)
-            cohort ? response[:cohort_id] = cohort.id : response[:errors].push("Cohort not found in Epicenter")
-            course = cohort.courses.first if cohort
-          end
-          course ? response[:course_id] = course.id : response[:errors].push("Course not found in Epicenter")
-          response[:name] = name
-        end
-      end
-    end
-    response
   end
 
   def validate_plan_id

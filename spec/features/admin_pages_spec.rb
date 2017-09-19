@@ -84,7 +84,7 @@ feature 'Does not change current course for non-teacher admin' do
   end
 end
 
-feature 'Inviting new full-time students', :vcr do
+feature 'Inviting new full-time students', :vcr, :dont_stub_crm do
   let(:cohort) { FactoryGirl.create(:cohort, start_date: Date.parse('2000-01-03')) }
 
   before do
@@ -107,9 +107,19 @@ feature 'Inviting new full-time students', :vcr do
     student = Student.find_by(email: "example@example.com")
     expect(student.starting_cohort_id).to eq cohort.id
   end
+
+  scenario 'does not allow inviting if email already taken' do
+    visit new_student_invitation_path
+    fill_in 'Email', with: 'example@example.com'
+    click_on 'Invite student'
+    visit new_student_invitation_path
+    fill_in 'Email', with: 'example@example.com'
+    click_on 'Invite student'
+    expect(page).to have_content "Email already used in Epicenter"
+  end
 end
 
-feature 'Inviting new part-time students', :vcr do
+feature 'Inviting new part-time students', :vcr, :dont_stub_crm do
   let(:course) { FactoryGirl.create(:part_time_course, description: '* Placement Test', class_days: [Date.parse('2000-01-03')]) }
   let(:admin) { FactoryGirl.create(:admin, courses: [course]) }
 
@@ -137,7 +147,7 @@ feature 'Inviting new part-time students', :vcr do
     visit new_student_invitation_path
     fill_in 'Email', with: 'bad_email'
     click_on 'Invite student'
-    expect(page).to have_content "Email not found"
+    expect(page).to have_content "The Close.io lead for bad_email was not found."
   end
 
   scenario 'admin resends invitation to a student' do

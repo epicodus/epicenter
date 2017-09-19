@@ -13,10 +13,10 @@ describe StudentInternshipAgreement do
       expect(Submission.find_by(student: student, code_review: code_review).meets_expectations?).to be true
     end
 
-    it 'updates the internship agreement field in close', :stub_mailgun, :do_not_stub_close_io do
-      allow_any_instance_of(Student).to receive(:update_close_io)
+    it 'updates the internship agreement field in close', :stub_mailgun, :dont_stub_crm do
+      allow_any_instance_of(CrmLead).to receive(:update)
       student.reload
-      expect_any_instance_of(Student).to receive(:update_close_io).with({ 'custom.Signed internship agreement?': 'Yes' })
+      expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Signed internship agreement?': 'Yes' })
       StudentInternshipAgreement.create_from_signature_id(signature.signature_id)
     end
   end
