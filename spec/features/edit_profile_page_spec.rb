@@ -7,7 +7,7 @@ feature 'Student edits their profile' do
     visit edit_student_registration_path
   end
 
-  context 'with the correct password' do
+  context 'with the correct password', :dont_stub_crm do
     it "successfully updates information" do
       fill_in 'Name', with: 'New Name'
       fill_in 'Current password', with: student.password
@@ -20,7 +20,7 @@ feature 'Student edits their profile' do
       fill_in 'Current password', with: student.password
       click_on 'Update'
       expect(page).to have_content "You updated your account successfully."
-      student.update_close_email("example@example.com") # reset for use by other tests
+      student.crm_lead.update(email: "example@example.com") # reset for use by other tests
     end
 
     it "does not update email if new email address is invalid", :vcr do

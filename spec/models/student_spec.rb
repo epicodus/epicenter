@@ -199,15 +199,11 @@ describe Student do
     end
   end
 
-  describe '#close_io_lead_exists?', :vcr do
-    it 'returns true if the Close.io lead for the student exists' do
-      student = FactoryGirl.create(:student, email: 'example@example.com')
-      expect(student.close_io_lead_exists?).to eq true
-    end
+  describe "#crm_lead" do
+    let(:student) { FactoryGirl.create(:student) }
 
-    it 'returns false if the Close.io lead for the student exists' do
-      student = FactoryGirl.create(:student, email: 'wrong_email@test.com')
-      expect(student.close_io_lead_exists?).to eq false
+    it 'returns the CrmLead for the student' do
+      expect(student.crm_lead).to be_instance_of(CrmLead)
     end
   end
 
@@ -217,68 +213,33 @@ describe Student do
     let(:lead_id) { close_io_client.list_leads('email:' + student.email).data.first.id }
 
     before do
-      allow(student).to receive(:close_io_client).and_return(close_io_client)
+      allow_any_instance_of(CrmLead).to receive(:close_io_client).and_return(close_io_client)
     end
 
-    it "updates the record when there are enough signatures and a payment has been made", :vcr, :do_not_stub_close_io do
+    it "updates the record when there are enough signatures and a payment has been made", :vcr, :dont_stub_crm do
       FactoryGirl.create(:completed_code_of_conduct, student: student)
       FactoryGirl.create(:completed_refund_policy, student: student)
       FactoryGirl.create(:completed_enrollment_agreement, student: student)
       allow(student).to receive(:total_paid).and_return(340000)
       expect(close_io_client).to receive(:update_lead).with(lead_id, { status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 })
-      student.update_close_io({ status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 })
+      student.crm_lead.update({ status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 })
     end
 
-    it "fails to update the record when there are not enough signatures", :vcr, :do_not_stub_close_io do
+    it "fails to update the record when there are not enough signatures", :vcr, :dont_stub_crm do
       student.update(email: 'fake@fake.com')
       FactoryGirl.create(:completed_code_of_conduct, student: student)
       FactoryGirl.create(:completed_refund_policy, student: student)
       allow(student).to receive(:total_paid).and_return(100)
-      expect { student.update_close_io({ status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 }) }.to raise_error(RuntimeError, 'The Close.io lead for fake@fake.com was not found.')
+      expect { student.crm_lead.update({ status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 }) }.to raise_error(CrmError, 'The Close.io lead for fake@fake.com was not found.')
     end
 
-    it "fails to update the record when no payment has been made", :vcr, :do_not_stub_close_io do
+    it "fails to update the record when no payment has been made", :vcr, :dont_stub_crm do
       student.update(email: 'fake@fake.com')
       FactoryGirl.create(:completed_code_of_conduct, student: student)
       FactoryGirl.create(:completed_refund_policy, student: student)
       FactoryGirl.create(:completed_enrollment_agreement, student: student)
       allow(student).to receive(:total_paid).and_return(0)
-      expect { student.update_close_io({ status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 }) }.to raise_error(RuntimeError, 'The Close.io lead for fake@fake.com was not found.')
-    end
-  end
-
-  describe '#get_crm_status', :vcr do
-    it 'returns lead status' do
-      student = FactoryGirl.create(:student, email: 'example@example.com')
-      expect(student.get_crm_status).to eq "Applicant - No longer interested (legacy)"
-    end
-  end
-
-  describe 'updating close.io when student email is updated' do
-    let(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: 'example@example.com') }
-    let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
-    let(:contact_id) { close_io_client.list_leads('email:' + student.email).data.first.contacts.first.id }
-
-    before do
-      allow(student).to receive(:close_io_client).and_return(close_io_client)
-    end
-
-    it 'updates the record successfully', :vcr do
-      allow(close_io_client).to receive(:update_contact).and_return({})
-      old_entry = Hashie::Mash.new({ type: "office", email: student.email })
-      new_entry = Hashie::Mash.new({ type: "office", email: "second-email@example.com" })
-      expect(close_io_client).to receive(:update_contact).with(contact_id, { 'emails': [new_entry, old_entry] })
-      student.update_close_email(new_entry.email)
-    end
-
-    it 'does not update the record when the email is not found', :vcr do
-      student.update(email: "no_close_entry@example.com")
-      expect { student.update_close_email("second-email@example.com") }.to raise_error(CrmError, 'The student record for no_close_entry@example.com was not found.')
-    end
-
-    it 'raises an error when the new email is invalid', :vcr do
-      allow(close_io_client).to receive(:update_contact).and_return({"errors"=>[], "field-errors"=>{"emails"=>{"errors"=>{"0"=>{"errors"=>[], "field-errors"=>{"email"=>"Invalid email address."}}}}}})
-      expect { student.update_close_email("invalid@inavlid") }.to raise_error(CrmError, 'Invalid email address.')
+      expect { student.crm_lead.update({ status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 }) }.to raise_error(CrmError, 'The Close.io lead for fake@fake.com was not found.')
     end
   end
 
@@ -973,51 +934,6 @@ describe Student do
 
     context 'for transcripts' do
       it { is_expected.to have_abilities(:read, Transcript) }
-    end
-  end
-
-  describe '.pull_info_from_crm', :vcr do
-    context 'for part-time students' do
-      it 'returns name & course id for part-time CRM lead given email' do
-        course = FactoryGirl.create(:part_time_course, class_days: [Date.parse('2000-01-03')], office: FactoryGirl.create(:philadelphia_office))
-        expect(Student.pull_info_from_crm("example-part-time@example.com")).to eq({name: "THIS LEAD IS USED FOR TESTING PURPOSES. PLEASE DO NOT DELETE.", course_id: course.id, errors: []})
-      end
-
-      it 'returns error if course not found in Epicenter' do
-        expect(Student.pull_info_from_crm("example-part-time@example.com")[:errors]).to include "Course not found in Epicenter"
-      end
-    end
-
-    context 'for full-time students where cohort does not exist' do
-      it 'returns error if cohort not found in Epicenter' do
-        expect(Student.pull_info_from_crm("example@example.com")[:errors]).to include "Course not found in Epicenter"
-        expect(Student.pull_info_from_crm("example@example.com")[:errors]).to include "Cohort not found in Epicenter"
-      end
-    end
-
-    context 'for full-time students where course does exist in Epiceter' do
-      let!(:cohort) { FactoryGirl.create(:cohort, start_date: Date.parse('2000-01-03')) }
-
-      it 'returns name, cohort id & course id for full-time CRM lead given email' do
-        expect(Student.pull_info_from_crm("example@example.com")).to eq({name: "THIS LEAD IS USED FOR TESTING PURPOSES. PLEASE DO NOT DELETE.", cohort_id: cohort.id, course_id: cohort.courses.first.id, errors: []})
-      end
-
-      it 'returns error if user already exists in Epicenter' do
-        FactoryGirl.create(:user_with_all_documents_signed, email: "example@example.com")
-        expect(Student.pull_info_from_crm("example@example.com")[:errors]).to include "Email already used in Epicenter"
-      end
-
-      it 'returns error if email not found in Close' do
-        expect(Student.pull_info_from_crm("email_not_in_close@example.com")[:errors]).to include "Email not found in CRM"
-      end
-
-      it 'returns error if name not listed in Close lead' do
-        expect(Student.pull_info_from_crm("automated_testing_no_name@example.com")[:errors]).to include "Name not found in CRM"
-      end
-
-      it 'returns error if what class are you interested in field is blank in Close lead' do
-        expect(Student.pull_info_from_crm("automated_testing_no_name@example.com")[:errors]).to include "What class are you interested in not found in CRM"
-      end
     end
   end
 

@@ -7,9 +7,7 @@ describe Payment do
   it { should validate_presence_of :amount }
 
   before do
-    allow_any_instance_of(Student).to receive(:update_close_io)
-    allow_any_instance_of(Student).to receive(:close_io_lead_exists?).and_return(true)
-    allow_any_instance_of(Student).to receive(:get_crm_status)
+    allow_any_instance_of(CrmLead).to receive(:status)
   end
 
   describe 'validations' do
@@ -245,27 +243,27 @@ describe Payment do
     let(:lead_id) { close_io_client.list_leads('email:' + student.email).data.first.id }
 
     before do
-      allow(student).to receive(:close_io_client).and_return(close_io_client)
+      allow_any_instance_of(CrmLead).to receive(:close_io_client).and_return(close_io_client)
     end
 
     it 'updates status and amount paid on the first payment', :vcr, :stub_mailgun do
-      allow(student).to receive(:get_crm_status).and_return("Applicant - Accepted")
+      allow_any_instance_of(CrmLead).to receive(:status).and_return("Applicant - Accepted")
       payment = Payment.new(student: student, amount: 270_00, payment_method: student.primary_payment_method)
-      expect(student).to receive(:update_close_io).with({ status: "Enrolled", 'custom.Amount paid': payment.amount / 100 })
+      expect_any_instance_of(CrmLead).to receive(:update).with({ status: "Enrolled", 'custom.Amount paid': payment.amount / 100 })
       payment.save
     end
 
     it 'only updates amount paid on payments beyond the first', :vcr, :stub_mailgun do
       payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method)
       payment_2 = Payment.new(student: student, amount: 50_00, payment_method: student.primary_payment_method)
-      expect(student).to receive(:update_close_io).with({ 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
+      expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
       payment_2.save
     end
 
     it 'updates amount paid for offline payments', :vcr, :stub_mailgun do
       payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method)
       payment_2 = Payment.new(student: student, amount: 50_00, offline: true)
-      expect(student).to receive(:update_close_io).with({ 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
+      expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
       payment_2.save
     end
 
@@ -273,7 +271,7 @@ describe Payment do
       payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method)
       payment_2 = Payment.new(student: student, amount: 50_00, offline: true)
       payment_2.update(refund_amount: 5000)
-      expect(student).to receive(:update_close_io).with({ 'custom.Amount paid': (payment.amount + payment_2.amount - payment_2.refund_amount) / 100 })
+      expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Amount paid': (payment.amount + payment_2.amount - payment_2.refund_amount) / 100 })
       payment_2.save
     end
   end

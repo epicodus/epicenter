@@ -42,7 +42,7 @@ class DemographicInfo
       fields['custom.Race'] = @races.join(", ") if @races
       fields['custom.veteran'] = @veteran
       fields = fields.compact
-      @student.update_close_io(fields)
+      @student.crm_lead.update(fields)
       true
     end
   end

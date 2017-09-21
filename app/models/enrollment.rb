@@ -22,7 +22,7 @@ private
     if new_cohort && new_cohort != old_cohort # if it's a fulltime course being added AND course being added is in different cohort than student previously registered in
       if old_cohort.nil? || new_cohort.start_date < old_cohort.start_date
         student.update(starting_cohort_id: new_cohort.try(:id))
-        student.update_close_io({ 'custom.Starting Cohort': new_cohort.try(:description) })
+        student.crm_lead.update({ 'custom.Starting Cohort': new_cohort.try(:description) })
       end
     end
   end
@@ -34,7 +34,7 @@ private
       first_course = the_student.courses_with_withdrawn.fulltime_courses.first
       starting_cohort = first_course.try(:cohorts).try(:first)
       the_student.update(starting_cohort_id: starting_cohort.try(:id))
-      the_student.update_close_io({ 'custom.Starting Cohort': starting_cohort.try(:description) })
+      the_student.crm_lead.update({ 'custom.Starting Cohort': starting_cohort.try(:description) })
     end
   end
 
@@ -49,12 +49,12 @@ private
     location = 'PDX' if location == 'Portland'
     location = 'SEA' if location == 'Seattle'
     description = "#{location} #{course.description.split.first} #{course.start_date.strftime('%b %-d')} - #{course.end_date.strftime('%b %-d')}"
-    crm_response = student.update_close_io({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => description })
+    crm_response = student.crm_lead.update({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => description })
     crm_response.try('field-errors').try(:values).try(:map) { |value| errors.add(:base, value) }
     throw :abort if errors.any?
   end
 
   def remove_internship_class_in_crm
-    student.update_close_io({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => nil })
+    student.crm_lead.update({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => nil })
   end
 end

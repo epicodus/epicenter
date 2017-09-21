@@ -1,5 +1,5 @@
 feature 'Student makes an upfront payment' do
-  context 'with a valid credit card', :vcr, :stripe_mock, :stub_mailgun do
+  context 'with a valid credit card', :vcr, :stripe_mock, :stub_mailgun, :dont_stub_crm do
     it "shows successful payment message" do
       student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com')
       login_as(student, scope: :student)

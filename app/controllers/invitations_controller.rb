@@ -5,15 +5,22 @@ class InvitationsController < Devise::InvitationsController
       resend_invitation
     else
       email = params[:student][:email]
-      response = Student.pull_info_from_crm(email)
-      if response[:name] && response[:course_id]
-        params[:student][:name] = response[:name]
-        params[:student][:course_id] = response[:course_id]
-        super
-        enroll_in_cohort(Cohort.find(response[:cohort_id])) if response[:cohort_id]
-        set_flash_for_student
+      if User.find_by(email: email)
+        redirect_to new_student_invitation_path, alert: "Email already used in Epicenter"
       else
-        redirect_to new_student_invitation_path, alert: response[:errors].to_s
+        begin
+          crm_lead = CrmLead.new(email)
+          name = crm_lead.name
+          first_course = crm_lead.first_course
+          cohort = crm_lead.cohort
+        rescue CrmError => e
+          redirect_to new_student_invitation_path, alert: e.message and return
+        end
+        params[:student][:name] = name
+        params[:student][:course_id] = first_course.id
+        super
+        enroll_in_cohort(cohort) if cohort
+        set_flash_for_student
       end
     end
   end

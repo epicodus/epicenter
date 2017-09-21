@@ -62,27 +62,27 @@ describe Enrollment do
 
     context 'adding new enrollments' do
       it 'updates cohort when adding first course' do
-        expect(student).to receive(:update_close_io).with({ 'custom.Starting Cohort': current_cohort.description })
+        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Starting Cohort': current_cohort.description })
         student.course = current_cohort.courses.first
         expect(student.starting_cohort_id).to eq current_cohort.id
       end
 
       it 'updates cohort when adding course from earlier cohort' do
         student.course = current_cohort.courses.first
-        expect(student).to receive(:update_close_io).with({ 'custom.Starting Cohort': past_cohort.description })
+        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Starting Cohort': past_cohort.description })
         student.course = past_cohort.courses.first
         expect(student.starting_cohort_id).to eq past_cohort.id
       end
 
       it 'does not update cohort when adding second course with later start date' do
         student.course = current_cohort.courses.first
-        expect(student).to_not receive(:update_close_io)
+        expect_any_instance_of(CrmLead).to_not receive(:update)
         student.course = future_cohort.courses.first
         expect(student.starting_cohort_id).to eq current_cohort.id
       end
 
       it 'does not update cohort when adding part-time course' do
-        expect(student).to_not receive(:update_close_io)
+        expect_any_instance_of(CrmLead).to_not receive(:update)
         student.course = part_time_course
         expect(student.starting_cohort_id).to eq nil
       end
@@ -96,13 +96,13 @@ describe Enrollment do
       end
 
       it 'does not update cohort when archiving enrollment' do
-        expect(student).to_not receive(:update_close_io)
+        expect_any_instance_of(CrmLead).to_not receive(:update)
         student.enrollments.first.destroy
         expect(student.starting_cohort_id).to eq current_cohort.id
       end
 
       it 'clears cohort when permanently removing the only enrollment' do
-        expect(student).to receive(:update_close_io).with({ 'custom.Starting Cohort': nil })
+        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Starting Cohort': nil })
         student.enrollments.first.really_destroy!
         expect(student.starting_cohort_id).to eq nil
       end
@@ -110,7 +110,7 @@ describe Enrollment do
       it 'updates cohort when removing course from earlier cohort' do
         past_course = past_cohort.courses.first
         student.course = past_course
-        expect(student).to receive(:update_close_io).with({ 'custom.Starting Cohort': current_cohort.description })
+        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Starting Cohort': current_cohort.description })
         student.enrollments.find_by(course: past_course).really_destroy!
         expect(student.starting_cohort_id).to eq current_cohort.id
       end
@@ -127,13 +127,13 @@ describe Enrollment do
       location = 'PDX' if location == 'Portland'
       location = 'SEA' if location == 'Seattle'
       description = "#{location} #{internship_course.description.split.first} #{internship_course.start_date.strftime('%b %-d')} - #{internship_course.end_date.strftime('%b %-d')}"
-      expect(student).to receive(:update_close_io).with({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => description })
+      expect_any_instance_of(CrmLead).to receive(:update).with({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => description })
       student.course = internship_course
     end
 
     it 'is removed when removed from internship course' do
       student.course = internship_course
-      expect(student).to receive(:update_close_io).with({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => nil })
+      expect_any_instance_of(CrmLead).to receive(:update).with({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => nil })
       student.enrollments.first.destroy
     end
 
@@ -142,13 +142,13 @@ describe Enrollment do
       location = 'PDX' if location == 'Portland'
       location = 'SEA' if location == 'Seattle'
       description = "#{location} #{course.description.split.first} #{course.start_date.strftime('%b %-d')} - #{course.end_date.strftime('%b %-d')}"
-      expect(student).to_not receive(:update_close_io).with({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => description })
+      expect_any_instance_of(CrmLead).to_not receive(:update).with({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => description })
       student.course = course
     end
 
     it 'is not changed when removed from non-internship course' do
       student.course = course
-      expect(student).to_not receive(:update_close_io).with({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => nil })
+      expect_any_instance_of(CrmLead).to_not receive(:update).with({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => nil })
       student.enrollments.first.destroy
     end
   end

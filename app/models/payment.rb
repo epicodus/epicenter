@@ -13,7 +13,7 @@ class Payment < ApplicationRecord
   before_create :make_payment, :send_payment_receipt, unless: ->(payment) { payment.offline? }
   before_create :set_offline_status, if: ->(payment) { payment.offline? }
   # after_create :send_referral_email, if: ->(payment) { !payment.student.referral_email_sent? && student.payments.any? && !payment.offline? }
-  after_save :update_close_io
+  after_save :update_crm
   before_update :issue_refund, if: ->(payment) { payment.refund_amount? && !payment.offline? && !payment.refund_issued? }
   after_update :send_payment_failure_notice, if: ->(payment) { payment.status == "failed" && !payment.failure_notice_sent? }
 
@@ -26,16 +26,12 @@ class Payment < ApplicationRecord
 
 private
 
-  def update_close_io
-    amount_paid = { 'custom.Amount paid': student.total_paid / 100 }
-    if student.close_io_lead_exists?
-      if student.payments.count == 1 && student.get_crm_status == "Applicant - Accepted"
-        logger.info "Updating Close with status Enrolled and amount paid of #{student.total_paid}."
-        student.update_close_io({ status: "Enrolled" }.merge(amount_paid))
-      else
-        logger.info "Updating Close with amount paid of #{student.total_paid}."
-        student.update_close_io(amount_paid)
-      end
+  def update_crm
+    amount_paid = student.total_paid / 100
+    if student.payments.count == 1 && student.crm_lead.status == "Applicant - Accepted"
+      student.crm_lead.update({ status: "Enrolled", 'custom.Amount paid': amount_paid })
+    else
+      student.crm_lead.update('custom.Amount paid': amount_paid)
     end
   end
 
