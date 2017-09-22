@@ -50,6 +50,25 @@ describe CrmLead, :dont_stub_crm do
     end
   end
 
+  describe '#update_internship_class', :vcr do
+    let(:student) { FactoryGirl.create(:student, courses: []) }
+
+    it 'updates internship class field in CRM' do
+      internship_course = FactoryGirl.create(:internship_course)
+      location = internship_course.office.name
+      location = 'PDX' if location == 'Portland'
+      location = 'SEA' if location == 'Seattle'
+      description = "#{location} #{internship_course.description.split.first} #{internship_course.start_date.strftime('%b %-d')} - #{internship_course.end_date.strftime('%b %-d')}"
+      expect_any_instance_of(CrmLead).to receive(:update).with({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => description })
+      student.crm_lead.update_internship_class(internship_course)
+    end
+
+    it 'clears internship class field in CRM if no course passed in' do
+      expect_any_instance_of(CrmLead).to receive(:update).with({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => nil })
+      student.crm_lead.update_internship_class(nil)
+    end
+  end
+
   describe 'updating close.io when student email is updated' do
     let(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }

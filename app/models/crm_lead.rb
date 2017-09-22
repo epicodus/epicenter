@@ -29,13 +29,17 @@ class CrmLead
     course || raise_error("Course not found in Epicenter")
   end
 
-  # def update_internship_class(course)
-  #   location = course.office.name
-  #   location = 'PDX' if location == 'Portland'
-  #   location = 'SEA' if location == 'Seattle'
-  #   description = "#{location} #{course.description.split.first} #{course.start_date.strftime('%b %-d')} - #{course.end_date.strftime('%b %-d')}"
-  #   update({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => description })
-  # end
+  def update_internship_class(course)
+    if course
+      location = course.office.name
+      location = 'PDX' if location == 'Portland'
+      location = 'SEA' if location == 'Seattle'
+      description = "#{location} #{course.description.split.first} #{course.start_date.strftime('%b %-d')} - #{course.end_date.strftime('%b %-d')}"
+    else
+      description = nil
+    end
+    update({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => description })
+  end
 
 private
 

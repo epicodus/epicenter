@@ -123,32 +123,31 @@ describe Enrollment do
     let(:internship_course) { FactoryGirl.create(:internship_course) }
 
     it 'is set when enrolled in internship course' do
-      location = internship_course.office.name
-      location = 'PDX' if location == 'Portland'
-      location = 'SEA' if location == 'Seattle'
-      description = "#{location} #{internship_course.description.split.first} #{internship_course.start_date.strftime('%b %-d')} - #{internship_course.end_date.strftime('%b %-d')}"
-      expect_any_instance_of(CrmLead).to receive(:update).with({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => description })
+      expect_any_instance_of(CrmLead).to receive(:update_internship_class).with(internship_course)
       student.course = internship_course
     end
 
     it 'is removed when removed from internship course' do
       student.course = internship_course
-      expect_any_instance_of(CrmLead).to receive(:update).with({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => nil })
+      expect_any_instance_of(CrmLead).to receive(:update_internship_class).with(nil)
       student.enrollments.first.destroy
     end
 
+    it 'is set to other internship course when second internship course removed' do
+      new_internship_course = FactoryGirl.create(:internship_course, class_days: [internship_course.start_date + 5.weeks])
+      student.courses = [internship_course, new_internship_course]
+      expect_any_instance_of(CrmLead).to receive(:update_internship_class).with(internship_course)
+      new_internship_course.enrollments.first.destroy
+    end
+
     it 'is not changed when enrolled in non-internship course' do
-      location = course.office.name
-      location = 'PDX' if location == 'Portland'
-      location = 'SEA' if location == 'Seattle'
-      description = "#{location} #{course.description.split.first} #{course.start_date.strftime('%b %-d')} - #{course.end_date.strftime('%b %-d')}"
-      expect_any_instance_of(CrmLead).to_not receive(:update).with({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => description })
+      expect_any_instance_of(CrmLead).to_not receive(:update_internship_class)
       student.course = course
     end
 
     it 'is not changed when removed from non-internship course' do
       student.course = course
-      expect_any_instance_of(CrmLead).to_not receive(:update).with({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => nil })
+      expect_any_instance_of(CrmLead).to_not receive(:update_internship_class)
       student.enrollments.first.destroy
     end
   end
