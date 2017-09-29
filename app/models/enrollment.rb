@@ -11,37 +11,25 @@ class Enrollment < ApplicationRecord
   before_create :update_internship_class_in_crm, if: ->(enrollment) { enrollment.course.internship_course? }
   before_destroy :remove_internship_class_in_crm, if: ->(enrollment) { enrollment.course.internship_course? && !enrollment.deleted? }
   after_destroy :really_destroy_if_withdrawn_before_attending, if: ->(enrollment) { Enrollment.with_deleted.exists?(enrollment.id) }
-  after_real_destroy :update_starting_cohort_on_withdraw
-  after_create :update_starting_cohort_on_enroll
+  after_create :update_cohort, unless: ->(enrollment) { enrollment.course.parttime? }
+  after_destroy :update_cohort, unless: ->(enrollment) { enrollment.course.parttime? }
 
 private
 
-  def update_starting_cohort_on_enroll
-    old_cohort = Cohort.find_by_id(student.starting_cohort_id)
-    new_cohort = course.cohorts.first if course.cohorts.count == 1
-    if new_cohort && new_cohort != old_cohort # if it's a fulltime course being added AND course being added is in different cohort than student previously registered in
-      if old_cohort.nil? || new_cohort.start_date < old_cohort.start_date
-        student.update(starting_cohort_id: new_cohort.try(:id))
-        student.crm_lead.update({ 'custom.Starting Cohort': new_cohort.try(:description) })
-      end
-    end
-  end
+  def update_cohort
+    new_starting_cohort = student.courses_with_withdrawn.fulltime_courses.non_internship_courses.first.try(:cohorts).try(:first)
+    new_ending_cohort = student.courses_with_withdrawn.fulltime_courses.non_internship_courses.last.try(:cohorts).try(:first)
 
-  def update_starting_cohort_on_withdraw
-    the_student = student || Student.with_deleted.find(student_id)
-    old_cohort = Cohort.find_by_id(the_student.starting_cohort_id)
-    if old_cohort && ((old_cohort.courses & the_student.courses_with_withdrawn) - [course]).empty? # last course unenrolled from cohort student registered in
-      first_course = the_student.courses_with_withdrawn.fulltime_courses.first
-      starting_cohort = first_course.try(:cohorts).try(:first)
-      the_student.update(starting_cohort_id: starting_cohort.try(:id))
-      the_student.crm_lead.update({ 'custom.Starting Cohort': starting_cohort.try(:description) })
+    crm_update = {}
+    if student.starting_cohort != new_starting_cohort
+      student.update(starting_cohort: new_starting_cohort)
+      crm_update = crm_update.merge({ 'custom.Starting Cohort': new_starting_cohort.try(:description) })
     end
-  end
-
-  def really_destroy_if_withdrawn_before_attending
-    if (Time.zone.now.to_date < course.start_date) || (student.attendance_records_for(:all, course) == 0 && course.language.level != 4)
-      really_destroy!
+    if student.ending_cohort != new_ending_cohort
+      student.update(ending_cohort: new_ending_cohort)
+      crm_update = crm_update.merge({ 'custom.Ending Cohort': new_ending_cohort.try(:description) })
     end
+    student.crm_lead.update(crm_update) if crm_update.present?
   end
 
   def update_internship_class_in_crm
@@ -51,5 +39,11 @@ private
   def remove_internship_class_in_crm
     fallback_internship_course = (student.courses.internship_courses - [course]).last
     student.crm_lead.update_internship_class(fallback_internship_course)
+  end
+
+  def really_destroy_if_withdrawn_before_attending
+    if (Time.zone.now.to_date < course.start_date) || (student.attendance_records_for(:all, course) == 0 && course.language.level != 4)
+      really_destroy!
+    end
   end
 end
