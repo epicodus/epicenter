@@ -5,6 +5,8 @@ class Cohort < ApplicationRecord
   default_scope { order(:start_date) }
 
   has_and_belongs_to_many :courses, -> { order(:end_date) }, after_add: :update_end_date
+  has_many :starting_cohort_students, class_name: :User, foreign_key: :starting_cohort_id
+  has_many :ending_cohort_students, class_name: :User, foreign_key: :ending_cohort_id
   belongs_to :office
   belongs_to :track
   belongs_to :admin

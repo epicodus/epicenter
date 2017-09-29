@@ -7,6 +7,8 @@ class Student < User
   before_destroy :archive_enrollments
 
   belongs_to :plan, optional: true
+  belongs_to :starting_cohort, class_name: :Cohort, optional: true
+  belongs_to :ending_cohort, class_name: :Cohort, optional: true
   has_many :enrollments
   has_many :courses, through: :enrollments
   has_many :bank_accounts
