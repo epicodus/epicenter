@@ -87,6 +87,13 @@ describe Enrollment do
         student.course = part_time_course
         expect(student.starting_cohort_id).to eq nil
       end
+
+      it 'updates ending cohort correctly when enrolling in internship course belonging to multiple cohorts' do
+        full_cohort = FactoryGirl.create(:full_cohort)
+        future_cohort.courses << full_cohort.courses.internship_courses.last
+        full_cohort.courses.each { |course| student.courses << course }
+        expect(student.ending_cohort).to eq full_cohort
+      end
     end
 
     context 'removing enrollments' do
