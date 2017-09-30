@@ -17,8 +17,19 @@ class Enrollment < ApplicationRecord
 private
 
   def update_cohort
-    new_starting_cohort = student.courses_with_withdrawn.fulltime_courses.non_internship_courses.first.try(:cohorts).try(:first)
-    new_ending_cohort = student.courses_with_withdrawn.fulltime_courses.non_internship_courses.last.try(:cohorts).try(:first)
+    if student.courses_with_withdrawn.fulltime_courses.empty?
+      new_starting_cohort = nil
+      new_ending_cohort = nil
+    else
+      first_course = student.courses_with_withdrawn.fulltime_courses.first
+      last_course = student.courses_with_withdrawn.fulltime_courses.last
+      new_starting_cohort = first_course.cohorts.first
+      if last_course.cohorts.count > 1
+        new_ending_cohort = student.courses.level(3).last.try(:cohorts).try(:first)
+      else
+        new_ending_cohort = last_course.cohorts.first
+      end
+    end
 
     crm_update = {}
     if student.starting_cohort != new_starting_cohort
