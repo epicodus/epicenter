@@ -24,6 +24,20 @@
     </span>
   </p>
 
+  <% if @student.starting_cohort && @student.ending_cohort && @student.starting_cohort == @student.ending_cohort %>
+    <p>Cohort: <%= link_to @student.starting_cohort.description, cohort_path(@student.starting_cohort) %></p>
+  <% elsif @student.starting_cohort || @student.ending_cohort %>
+    <p>
+      <% if @student.starting_cohort %>
+        Starting cohort: <%= link_to @student.starting_cohort.description, cohort_path(@student.starting_cohort) %>
+      <% end %>
+      <br>
+      <% if @student.ending_cohort %>
+        Ending cohort: <%= link_to @student.ending_cohort.description, cohort_path(@student.ending_cohort) %>
+      <% end %>
+    </p>
+  <% end %>
+
   <% if @student.primary_payment_method %>
     <p>Primary payment method: <%= @student.primary_payment_method.class.name.underscore.humanize + ' ending in ' + @student.primary_payment_method.last_four_string[-4,4] if @student.primary_payment_method %></p>
   <% else %>
