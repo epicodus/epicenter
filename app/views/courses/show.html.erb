@@ -15,7 +15,7 @@
           <div class="panel-body">
             <h4><%= @course.teacher %></h4>
             <h4><%= pluralize(@course.students.count, 'student') %></h4>
-            <% unless @course.internship_course? %>
+            <% if current_admin || !@course.internship_course? %>
               <h4><%= @course.start_date.strftime('%B %d') %> to <%= @course.end_date.strftime('%B %d') %></h4>
             <% end %>
             <% if current_admin && @course.cohorts.any? %>
