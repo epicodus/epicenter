@@ -7,6 +7,7 @@ class Payment < ApplicationRecord
   validates :amount, presence: true
   validates :student_id, presence: true
   validates :payment_method, presence: true, unless: ->(payment) { payment.offline? }
+  validates :category, presence: true, unless: ->(payment) { payment.offline? }
 
   before_create :check_amount
   before_create :set_description
@@ -109,21 +110,20 @@ private
   end
 
   def set_description
-    if student.courses.any?
-      first_course = student.courses.order(:start_date).first
-      location = first_course.office.name
-      start_date = first_course.start_date.strftime("%Y-%m-%d")
-      if first_course.description.include?("Evening")
-        if student.courses.count == 1 || student.payments.count == 0
-          attendance_status = "Part-time"
-        else
-          attendance_status = "Full-time"
-          start_date = student.courses.order(:start_date)[1].start_date.strftime("%Y-%m-%d")
-        end
+    courses = student.courses.order(:start_date)
+    if courses.any?
+      if category == 'part-time'
+        attendance_status = "Part-time"
+        start_date = courses.first.start_date.strftime("%Y-%m-%d")
+      elsif courses.first.parttime? && courses.fulltime_courses.any?
+        attendance_status = "Full-time conversion"
+        start_date = courses.fulltime_courses.order(:start_date).first.start_date.strftime("%Y-%m-%d")
       else
         attendance_status = "Full-time"
+        start_date = courses.first.start_date.strftime("%Y-%m-%d")
       end
-      self.description = "#{location}; #{start_date}; #{attendance_status}"
+      location = courses.first.office.name
+      self.description = "#{location}; #{start_date}; #{attendance_status}; #{category}"
     else
       self.description = "student #{student.id} not enrolled in any courses"
     end

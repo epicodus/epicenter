@@ -266,6 +266,7 @@ FactoryGirl.define do
 
   factory :payment do
     amount 100
+    category 'upfront'
 
     factory :payment_with_bank_account do
       association :student, factory: :user_with_verified_bank_account
@@ -457,6 +458,13 @@ FactoryGirl.define do
 
     factory :part_time_student do
       association :course, factory: :part_time_course
+    end
+
+    factory :part_time_student_with_payment_method do
+      association :course, factory: :part_time_course
+      after(:create) do |student|
+        create(:credit_card, student: student)
+      end
     end
 
     factory :user_with_unverified_bank_account do

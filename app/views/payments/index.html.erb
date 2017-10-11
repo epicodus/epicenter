@@ -18,6 +18,7 @@
           <th>Amount (including fee)</th>
           <th>Payment method</th>
           <% if can?(:manage, Payment) %>
+            <th>Category</th>
             <th>Notes</th>
           <% end %>
           <% if can?(:manage, Payment) || @student.payments.pluck(:refund_amount).any? %>
@@ -37,6 +38,7 @@
             <% end %>
             <td><%= payment.payment_method.description if payment.payment_method %></td>
             <% if can? :manage, Payment %>
+              <td><%= payment.category %></td>
               <td><%= payment.notes %></td>
             <% end %>
               <% if payment.refund_amount? %>
