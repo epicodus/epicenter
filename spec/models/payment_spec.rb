@@ -108,26 +108,26 @@ describe Payment do
   describe '#set_description' do
     it 'sets stripe charge description for regular full-time', :vcr, :stripe_mock, :stub_mailgun do
       student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com')
-      payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
-      expect(payment.description).to eq "#{student.courses.first.office.name}; #{student.courses.first.start_date.strftime("%Y-%m-%d")}; Full-time"
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00, category: 'upfront')
+      expect(payment.description).to eq "#{student.courses.first.office.name}; #{student.courses.first.start_date.strftime("%Y-%m-%d")}; Full-time; #{payment.category}"
     end
 
     it 'sets stripe charge description for regular part-time', :vcr, :stripe_mock, :stub_mailgun do
       part_time_course = FactoryGirl.create(:part_time_course)
       student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com', course: part_time_course)
-      payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
-      expect(payment.description).to eq "#{part_time_course.office.name}; #{part_time_course.start_date.strftime("%Y-%m-%d")}; Part-time"
+      payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00, category: 'part-time')
+      expect(payment.description).to eq "#{part_time_course.office.name}; #{part_time_course.start_date.strftime("%Y-%m-%d")}; Part-time; #{payment.category}"
     end
 
     it 'sets stripe charge descriptions for full-time payment after part-time payment', :vcr, :stripe_mock, :stub_mailgun do
       part_time_course = FactoryGirl.create(:part_time_course)
       student = FactoryGirl.create(:user_with_credit_card, email: 'example@example.com', course: part_time_course)
-      first_payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
+      first_payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00, category: 'part-time')
       full_time_course = FactoryGirl.create(:course)
       student.courses.push(full_time_course)
       second_payment = FactoryGirl.create(:payment_with_credit_card, student: student, amount: 600_00)
-      expect(first_payment.description).to eq "#{part_time_course.office.name}; #{part_time_course.start_date.strftime("%Y-%m-%d")}; Part-time"
-      expect(second_payment.description).to eq "#{full_time_course.office.name}; #{full_time_course.start_date.strftime("%Y-%m-%d")}; Full-time"
+      expect(first_payment.description).to eq "#{part_time_course.office.name}; #{part_time_course.start_date.strftime("%Y-%m-%d")}; Part-time; #{first_payment.category}"
+      expect(second_payment.description).to eq "#{full_time_course.office.name}; #{full_time_course.start_date.strftime("%Y-%m-%d")}; Full-time conversion; #{second_payment.category}"
     end
 
     it 'description includes student id if payment made for student not enrolled in any course', :vcr, :stripe_mock, :stub_mailgun do
@@ -248,27 +248,27 @@ describe Payment do
 
     it 'updates status and amount paid on the first payment', :vcr, :stub_mailgun do
       allow_any_instance_of(CrmLead).to receive(:status).and_return("Applicant - Accepted")
-      payment = Payment.new(student: student, amount: 270_00, payment_method: student.primary_payment_method)
+      payment = Payment.new(student: student, amount: 270_00, payment_method: student.primary_payment_method, category: 'standard')
       expect_any_instance_of(CrmLead).to receive(:update).with({ status: "Enrolled", 'custom.Amount paid': payment.amount / 100 })
       payment.save
     end
 
     it 'only updates amount paid on payments beyond the first', :vcr, :stub_mailgun do
-      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method)
-      payment_2 = Payment.new(student: student, amount: 50_00, payment_method: student.primary_payment_method)
+      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
+      payment_2 = Payment.new(student: student, amount: 50_00, payment_method: student.primary_payment_method, category: 'standard')
       expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
       payment_2.save
     end
 
     it 'updates amount paid for offline payments', :vcr, :stub_mailgun do
-      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method)
+      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
       payment_2 = Payment.new(student: student, amount: 50_00, offline: true)
       expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
       payment_2.save
     end
 
     it 'updates amount paid for refunds', :vcr, :stub_mailgun do
-      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method)
+      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
       payment_2 = Payment.new(student: student, amount: 50_00, offline: true)
       payment_2.update(refund_amount: 5000)
       expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Amount paid': (payment.amount + payment_2.amount - payment_2.refund_amount) / 100 })
