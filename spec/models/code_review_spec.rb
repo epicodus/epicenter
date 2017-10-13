@@ -160,6 +160,12 @@ describe CodeReview do
     let(:student) { FactoryGirl.create(:student) }
     let(:code_review) { FactoryGirl.create(:code_review, course: student.course) }
 
+    it 'returns true if code review has no date', :stub_mailgun do
+      code_review.date = nil
+      code_review.save
+      expect(code_review.visible?(student)).to eq true
+    end
+
     it 'returns false if code review expectations met', :stub_mailgun do
       submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
       FactoryGirl.create(:passing_review, submission: submission)

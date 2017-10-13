@@ -62,7 +62,9 @@ class CodeReview < ApplicationRecord
   end
 
   def visible?(student)
-    if expectations_met_by?(student)
+    if !date
+      true
+    elsif expectations_met_by?(student)
       false
     else
       zone = ActiveSupport::TimeZone[course.office.time_zone]
