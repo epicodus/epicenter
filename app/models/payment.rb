@@ -7,7 +7,7 @@ class Payment < ApplicationRecord
   validates :amount, presence: true
   validates :student_id, presence: true
   validates :payment_method, presence: true, unless: ->(payment) { payment.offline? }
-  validates :category, presence: true, unless: ->(payment) { payment.offline? }
+  validates :category, presence: true, on: :create, unless: ->(payment) { payment.offline? }
 
   before_create :check_amount
   before_create :set_description
