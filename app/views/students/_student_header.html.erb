@@ -24,16 +24,20 @@
     </span>
   </p>
 
-  <% if @student.starting_cohort && @student.ending_cohort && @student.starting_cohort == @student.ending_cohort %>
-    <p>Cohort: <%= link_to @student.starting_cohort.description, cohort_path(@student.starting_cohort) %></p>
-  <% elsif @student.starting_cohort || @student.ending_cohort %>
+  <% if @student.starting_cohort && @student.cohort && @student.starting_cohort == @student.cohort %>
+    <p>Cohort: <%= link_to @student.cohort.description, cohort_path(@student.cohort) %></p>
+  <% else %>
     <p>
       <% if @student.starting_cohort %>
         Starting cohort: <%= link_to @student.starting_cohort.description, cohort_path(@student.starting_cohort) %>
+      <% else %>
+        Starting cohort: <strong>not found</strong>
       <% end %>
       <br>
-      <% if @student.ending_cohort %>
-        Ending cohort: <%= link_to @student.ending_cohort.description, cohort_path(@student.ending_cohort) %>
+      <% if @student.cohort %>
+        Cohort: <%= link_to @student.cohort.description, cohort_path(@student.cohort) %>
+      <% else %>
+        Cohort: <strong>not found</strong>
       <% end %>
     </p>
   <% end %>

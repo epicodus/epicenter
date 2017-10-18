@@ -62,10 +62,10 @@ describe Enrollment do
 
     context 'adding new enrollments' do
       it 'updates starting & ending cohort when adding first course' do
-        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Starting Cohort': current_cohort.description, 'custom.Ending Cohort': current_cohort.description })
+        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Starting Cohort': current_cohort.description, 'custom.Cohort': current_cohort.description })
         student.course = current_cohort.courses.first
         expect(student.starting_cohort).to eq current_cohort
-        expect(student.ending_cohort).to eq current_cohort
+        expect(student.cohort).to eq current_cohort
       end
 
       it 'updates only starting cohort when adding second course from earlier cohort' do
@@ -77,7 +77,7 @@ describe Enrollment do
 
       it 'updates only ending cohort when adding second course with later start date' do
         student.course = current_cohort.courses.first
-        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Ending Cohort': current_cohort.description })
+        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort': current_cohort.description })
         student.course = future_cohort.courses.first
         expect(student.starting_cohort_id).to eq current_cohort.id
       end
@@ -92,7 +92,7 @@ describe Enrollment do
         full_cohort = FactoryGirl.create(:full_cohort)
         future_cohort.courses << full_cohort.courses.internship_courses.last
         full_cohort.courses.each { |course| student.courses << course }
-        expect(student.ending_cohort).to eq full_cohort
+        expect(student.cohort).to eq full_cohort
       end
     end
 
@@ -103,17 +103,18 @@ describe Enrollment do
         FactoryGirl.create(:attendance_record, student: student, date: course.start_date)
       end
 
-      it 'does not update starting or ending cohort when just archiving enrollment' do
-        expect_any_instance_of(CrmLead).to_not receive(:update)
+      it 'updates ending cohort only when just archiving enrollment' do
+        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort': nil })
         student.enrollments.first.destroy
         expect(student.starting_cohort_id).to eq current_cohort.id
+        expect(student.cohort_id).to eq nil
       end
 
       it 'clears starting & ending cohort when permanently removing the only enrollment' do
-        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Starting Cohort': nil, 'custom.Ending Cohort': nil })
+        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Starting Cohort': nil, 'custom.Cohort': nil })
         student.enrollments.first.really_destroy!
         expect(student.starting_cohort_id).to eq nil
-        expect(student.ending_cohort_id).to eq nil
+        expect(student.cohort_id).to eq nil
       end
 
       it 'updates only starting cohort when removing course from earlier cohort' do
@@ -127,9 +128,9 @@ describe Enrollment do
       it 'updates only ending cohort when removing course from later cohort' do
         future_course = future_cohort.courses.first
         student.course = future_course
-        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Ending Cohort': current_cohort.description })
+        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort': current_cohort.description })
         student.enrollments.find_by(course: future_course).really_destroy!
-        expect(student.ending_cohort_id).to eq current_cohort.id
+        expect(student.cohort_id).to eq current_cohort.id
       end
     end
   end
