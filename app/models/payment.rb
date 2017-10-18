@@ -10,6 +10,7 @@ class Payment < ApplicationRecord
   validates :category, presence: true, on: :create, unless: ->(payment) { payment.offline? }
 
   before_create :check_amount
+  before_create :set_category, if: ->(payment) { payment.category == 'tuition' }
   before_create :set_description
   before_create :make_payment, :send_payment_receipt, unless: ->(payment) { payment.offline? }
   before_create :set_offline_status, if: ->(payment) { payment.offline? }
@@ -109,10 +110,18 @@ private
     update_attribute(:failure_notice_sent, true)
   end
 
+  def set_category
+    if student.plan.standard? && student.payments.count > 0
+      self.category = 'standard'
+    else
+      self.category = 'upfront'
+    end
+  end
+
   def set_description
     courses = student.courses.order(:start_date)
     if courses.any?
-      if category == 'part-time'
+      if courses.first.parttime? && courses.fulltime_courses.empty?
         attendance_status = "Part-time"
         start_date = courses.first.start_date.strftime("%Y-%m-%d")
       elsif courses.first.parttime? && courses.fulltime_courses.any?
@@ -123,7 +132,8 @@ private
         start_date = courses.first.start_date.strftime("%Y-%m-%d")
       end
       location = courses.first.office.name
-      self.description = "#{location}; #{start_date}; #{attendance_status}; #{category}"
+      self.category ||= 'offline'
+      self.description = "#{location}; #{start_date}; #{attendance_status}; #{category}; #{student.email}"
     else
       self.description = "student #{student.id} not enrolled in any courses"
     end

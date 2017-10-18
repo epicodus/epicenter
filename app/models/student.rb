@@ -173,8 +173,7 @@ class Student < User
   end
 
   def make_upfront_payment
-    category = (courses.count == 1 && courses.first.parttime?) ? 'part-time' : 'upfront'
-    payments.create(amount: plan.upfront_amount, payment_method: primary_payment_method, category: category)
+    payments.create(amount: plan.upfront_amount, payment_method: primary_payment_method, category: 'upfront')
   end
 
   def class_in_session?

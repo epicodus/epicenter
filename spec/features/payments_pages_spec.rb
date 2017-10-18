@@ -86,13 +86,13 @@ feature 'Viewing payment index page', :dont_stub_crm do
         expect(student.payments.first.category).to eq 'upfront'
       end
 
-      it 'sets category to part-time for first payment for student with 1 part-time course', :vcr, :stripe_mock, :stub_mailgun do
+      it 'sets category to upfront for first payment for student with 1 part-time course', :vcr, :stripe_mock, :stub_mailgun do
         plan = FactoryGirl.create(:upfront_payment_only_plan, upfront_amount: 200_00)
         student = FactoryGirl.create(:part_time_student_with_payment_method, plan: plan, email: 'example@example.com')
         login_as(student, scope: :student)
         visit student_payments_path(student)
         click_on 'Make upfront payment of $206.27'
-        expect(student.payments.first.category).to eq 'part-time'
+        expect(student.payments.first.category).to eq 'upfront'
       end
     end
   end
@@ -245,7 +245,7 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
     visit student_payments_path(student)
     select student.primary_payment_method.description
     fill_in 'payment_amount', with: 1765.24
-    select 'standard'
+    select 'tuition'
     click_on 'Manual payment'
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Succeeded'
@@ -257,7 +257,7 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
     visit student_payments_path(student)
     select other_payment_method.description
     fill_in 'payment_amount', with: 1765.24
-    select 'standard'
+    select 'tuition'
     click_on 'Manual payment'
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Pending'
@@ -267,24 +267,17 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
   scenario 'successfully without cents', :vcr do
     visit student_payments_path(student)
     fill_in 'payment_amount', with: 1765
-    select 'standard'
+    select 'tuition'
     click_on 'Manual payment'
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Succeeded'
     expect(page).to have_content '$1,818.01'
   end
 
-  scenario 'unsuccessfully without category', :vcr do
-    visit student_payments_path(student)
-    fill_in 'payment_amount', with: 1765
-    click_on 'Manual payment'
-    expect(page).to have_content "Category can't be blank"
-  end
-
   scenario 'unsuccessfully with an improperly formatted amount', :js do
     visit student_payments_path(student)
     fill_in 'payment_amount', with: 60.1
-    select 'standard'
+    select 'tuition'
     message = accept_prompt do
       click_on 'Manual payment'
     end
@@ -294,7 +287,7 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
   scenario 'with an invalid amount' do
     visit student_payments_path(student)
     fill_in 'payment_amount', with: 9000
-    select 'standard'
+    select 'tuition'
     click_on 'Manual payment'
     expect(page).to have_content 'Amount cannot be greater than $8,500.'
   end
@@ -302,7 +295,7 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
   scenario 'unsuccessfully with a negative amount' do
     visit student_payments_path(student)
     fill_in 'payment_amount', with: -16.46
-    select 'standard'
+    select 'tuition'
     click_on 'Manual payment'
     expect(page).to have_content 'Invalid positive integer'
   end
@@ -318,7 +311,7 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
     visit student_payments_path(student)
     select student.primary_payment_method.description
     fill_in 'payment_amount', with: 1765.24
-    select 'standard'
+    select 'tuition'
     click_on 'Manual payment'
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Succeeded'
