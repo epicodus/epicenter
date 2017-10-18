@@ -397,10 +397,10 @@ describe Student do
       expect(student.payments.first.amount).to eq student.plan.upfront_amount
     end
 
-    it "sets category to part-time for student enrolled in 1 part-time course only", :vcr, :stripe_mock, :stub_mailgun do
+    it "sets category to upfront for student enrolled in 1 part-time course only", :vcr, :stripe_mock, :stub_mailgun do
       student = FactoryGirl.create(:part_time_student_with_payment_method, email: 'example@example.com')
       student.make_upfront_payment
-      expect(student.payments.first.category).to eq 'part-time'
+      expect(student.payments.first.category).to eq 'upfront'
     end
 
     it "sets category to upfront for student enrolled in 1 full-time course only", :vcr, :stripe_mock, :stub_mailgun do

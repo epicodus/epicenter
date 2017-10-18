@@ -286,6 +286,7 @@ FactoryGirl.define do
   factory :plan do
     factory :upfront_payment_only_plan do
       name '5-class up-front discount'
+      short_name 'upfront'
       upfront true
       upfront_amount 3400_00
       start_date Time.new(2016, 4, 1).to_date
@@ -293,6 +294,7 @@ FactoryGirl.define do
 
     factory :standard_plan do
       name 'Standard tuition'
+      short_name 'standard'
       standard true
       upfront_amount 120_00
       first_day_amount 1100_00
@@ -300,12 +302,14 @@ FactoryGirl.define do
 
     factory :loan_plan do
       name 'Loan'
+      short_name 'loan'
       loan true
       upfront_amount 120_00
     end
 
     factory :parttime_plan do
       name 'Evening intro class'
+      short_name 'parttime'
       parttime true
       upfront_amount 600_00
       start_date Time.new(2017, 9, 5).to_date
@@ -313,6 +317,7 @@ FactoryGirl.define do
 
     factory :parttime_plan_2017 do
       name 'Evening intro class'
+      short_name 'parttime'
       parttime true
       upfront_amount 600_00
       start_date Time.new(2017, 5, 22).to_date
@@ -320,6 +325,7 @@ FactoryGirl.define do
 
     factory :parttime_plan_2016 do
       name 'Evening intro class'
+      short_name 'parttime'
       parttime true
       upfront_amount 400_00
       start_date Time.new(2016, 4, 1).to_date
@@ -327,18 +333,21 @@ FactoryGirl.define do
 
     factory :rate_plan_2016 do
       name '2016 Rate'
+      short_name 'standard'
       upfront_amount 120_00
       start_date Time.new(2016, 4, 1).to_date
     end
 
     factory :rate_plan_2017 do
       name '2017 Rate'
+      short_name 'standard'
       upfront_amount 120_00
       start_date Time.new(2017, 5, 22).to_date
     end
 
     factory :rate_plan_2018 do
       name '2018 Rate'
+      short_name 'standard'
       upfront_amount 120_00
       start_date Time.new(2017, 9, 5).to_date
     end
