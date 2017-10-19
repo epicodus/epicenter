@@ -17,30 +17,32 @@ class Enrollment < ApplicationRecord
 private
 
   def update_cohort
-    if student.courses_with_withdrawn.fulltime_courses.empty?
-      new_starting_cohort = nil
-      new_ending_cohort = nil
-    else
-      first_course = student.courses_with_withdrawn.fulltime_courses.first
-      last_course = student.courses_with_withdrawn.fulltime_courses.last
-      new_starting_cohort = first_course.cohorts.first
-      if last_course.cohorts.count > 1
-        new_ending_cohort = student.courses.level(3).last.try(:cohorts).try(:first)
-      else
-        new_ending_cohort = last_course.cohorts.first
-      end
-    end
-
+    new_starting_cohort = get_new_starting_cohort
+    new_ending_cohort = get_new_ending_cohort
     crm_update = {}
     if student.starting_cohort != new_starting_cohort
       student.update(starting_cohort: new_starting_cohort)
       crm_update = crm_update.merge({ 'custom.Starting Cohort': new_starting_cohort.try(:description) })
     end
-    if student.ending_cohort != new_ending_cohort
-      student.update(ending_cohort: new_ending_cohort)
-      crm_update = crm_update.merge({ 'custom.Ending Cohort': new_ending_cohort.try(:description) })
+    if student.cohort != new_ending_cohort
+      student.update(cohort: new_ending_cohort)
+      crm_update = crm_update.merge({ 'custom.Cohort': new_ending_cohort.try(:description) })
     end
     student.crm_lead.update(crm_update) if crm_update.present?
+  end
+
+  def get_new_starting_cohort
+    student.courses_with_withdrawn.fulltime_courses.first.try(:cohorts).try(:first)
+  end
+
+  def get_new_ending_cohort
+    return nil if student.courses.fulltime_courses.empty?
+    last_course = student.courses.fulltime_courses.order(:start_date).last
+    if last_course.cohorts.count > 1
+      student.courses.level(3).last.try(:cohorts).try(:first)
+    else
+      last_course.cohorts.first
+    end
   end
 
   def update_internship_class_in_crm
