@@ -1,8 +1,8 @@
 feature 'adding an interview assignment' do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:internship) { FactoryGirl.create(:internship) }
-  let!(:internship_2) { FactoryGirl.create(:internship, courses: [internship.courses.first]) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: internship.courses.first) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:internship) { FactoryBot.create(:internship) }
+  let!(:internship_2) { FactoryBot.create(:internship, courses: [internship.courses.first]) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed, course: internship.courses.first) }
 
   scenario 'as a guest' do
     visit course_student_path(internship.courses.first, student)
@@ -33,7 +33,7 @@ feature 'adding an interview assignment' do
     end
 
     scenario 'adding it unsuccessfully' do
-      FactoryGirl.create(:interview_assignment, student: student, internship: internship)
+      FactoryBot.create(:interview_assignment, student: student, internship: internship)
       select internship.name, from: 'interview_assignment_internship_id'
       click_on 'Add interviews'
       expect(page).to have_content 'Something went wrong'
@@ -42,13 +42,13 @@ feature 'adding an interview assignment' do
 end
 
 feature 'removing an interview assignment' do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:internship) { FactoryGirl.create(:internship) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: internship.courses.first) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:internship) { FactoryBot.create(:internship) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed, course: internship.courses.first) }
 
   context 'as an admin' do
     scenario 'removing it successfully' do
-      FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
+      FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
       login_as(admin, scope: :admin)
       visit course_student_path(internship.courses.first, student)
       click_on 'Remove'
@@ -58,12 +58,12 @@ feature 'removing an interview assignment' do
 end
 
 feature 'navigating to the internship page from the interview assignments list' do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:internship) { FactoryGirl.create(:internship) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: internship.courses.first) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:internship) { FactoryBot.create(:internship) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed, course: internship.courses.first) }
 
   scenario 'as an admin' do
-    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
+    FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
     login_as(admin, scope: :admin)
     visit course_student_path(internship.courses.first, student)
     within '#interview-assignments-table' do
@@ -74,11 +74,11 @@ feature 'navigating to the internship page from the interview assignments list' 
 end
 
 feature 'shows internship details modal from the interview assignments list' do
-  let(:internship) { FactoryGirl.create(:internship) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: internship.courses.first) }
+  let(:internship) { FactoryBot.create(:internship) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed, course: internship.courses.first) }
 
   scenario 'as a student' do
-    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
+    FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
     login_as(student, scope: :student)
     visit course_student_path(internship.courses.first, student)
     within '#interview-assignments-table' do
@@ -89,13 +89,13 @@ feature 'shows internship details modal from the interview assignments list' do
 end
 
 feature 'interview rankings' do
-  let(:internship) { FactoryGirl.create(:internship) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: internship.courses.first) }
-  let(:company) { FactoryGirl.create(:company, internships: [internship]) }
-  let(:admin) { FactoryGirl.create(:admin) }
+  let(:internship) { FactoryBot.create(:internship) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed, course: internship.courses.first) }
+  let(:company) { FactoryBot.create(:company, internships: [internship]) }
+  let(:admin) { FactoryBot.create(:admin) }
 
   scenario 'as a student ranking companies' do
-    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
+    FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
     login_as(student, scope: :student)
     visit course_student_path(internship.courses.first, student)
     click_on 'Save rankings'
@@ -103,7 +103,7 @@ feature 'interview rankings' do
   end
 
   scenario 'as a student ranking companies can add feedback' do
-    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
+    FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
     login_as(student, scope: :student)
     visit course_student_path(internship.courses.first, student)
     fill_in 'student-interview-feedback', with: 'Great company!'
@@ -112,7 +112,7 @@ feature 'interview rankings' do
   end
 
   scenario 'as a company ranking students' do
-    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
+    FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
     login_as(company, scope: :company)
     visit company_path(company)
     fill_in 'company-interview-feedback', with: 'Great interviewer!'
@@ -122,14 +122,14 @@ feature 'interview rankings' do
   end
 
   scenario 'as a company can not view student feedback' do
-    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 1, feedback_from_student: 'Great company!')
+    FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 1, feedback_from_student: 'Great company!')
     login_as(company, scope: :company)
     visit company_path(company)
     expect(page).to_not have_content "Great company!"
   end
 
   scenario 'as a student can not view company feedback or ranking until 1 week after internship start date' do
-    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 5, feedback_from_company: 'Great fit!')
+    FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 5, feedback_from_company: 'Great fit!')
     login_as(student, scope: :student)
     visit course_student_path(internship.courses.first, student)
     expect(page).to have_content "Not yet available."
@@ -137,7 +137,7 @@ feature 'interview rankings' do
   end
 
   scenario 'as a student can view company feedback and ranking 1 week after internship start date' do
-    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 5, feedback_from_company: 'Great fit!')
+    FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 5, feedback_from_company: 'Great fit!')
     login_as(student, scope: :student)
     travel_to student.course.start_date + 1.week do
       visit course_student_path(internship.courses.first, student)
@@ -147,14 +147,14 @@ feature 'interview rankings' do
   end
 
   scenario 'as admin can view company feedback immediately' do
-    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 1, feedback_from_company: 'Great fit!')
+    FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 1, feedback_from_company: 'Great fit!')
     login_as(admin, scope: :admin)
     visit course_student_path(internship.courses.first, student)
     expect(page).to have_content "Great fit!"
   end
 
   scenario 'as an admin can view student feedback' do
-    FactoryGirl.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 1, feedback_from_student: 'Great company!')
+    FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 1, feedback_from_student: 'Great company!')
     login_as(admin, scope: :admin)
     visit course_student_path(internship.courses.first, student)
     expect(page).to have_content "Great company!"

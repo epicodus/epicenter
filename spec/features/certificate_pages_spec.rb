@@ -1,14 +1,14 @@
 feature "print completion certificate" do
   context "before class is over" do
     it "doesn't show link to print certificate" do
-      student = FactoryGirl.create(:student)
+      student = FactoryBot.create(:student)
       login_as(student, scope: :student)
       visit edit_student_registration_path
       expect(page).to_not have_link "View certificate of completion"
       expect(page).to have_content "Certificate will be available"
     end
     it "doesn't show certificate even if student directly enters URL" do
-      student = FactoryGirl.create(:student)
+      student = FactoryBot.create(:student)
       login_as(student, scope: :student)
       visit certificate_path
       expect(page).to_not have_content "Epicodus Certificate of Completion"
@@ -16,15 +16,15 @@ feature "print completion certificate" do
   end
 
   context "after class ends" do
-    let(:course) { FactoryGirl.create(:course) }
-    let(:internship_course) { FactoryGirl.create(:internship_course) }
-    let(:student) { FactoryGirl.create(:student, courses: [course, internship_course]) }
-    let(:code_review) { FactoryGirl.create(:code_review, course: course) }
-    let(:submission) { FactoryGirl.create(:submission, code_review: code_review, student: student) }
+    let(:course) { FactoryBot.create(:course) }
+    let(:internship_course) { FactoryBot.create(:internship_course) }
+    let(:student) { FactoryBot.create(:student, courses: [course, internship_course]) }
+    let(:code_review) { FactoryBot.create(:code_review, course: course) }
+    let(:submission) { FactoryBot.create(:submission, code_review: code_review, student: student) }
 
     context "failing code review" do
       it "doesn't show link to print certificate", :stub_mailgun do
-        FactoryGirl.create(:failing_review, submission: submission)
+        FactoryBot.create(:failing_review, submission: submission)
         travel_to internship_course.end_date + 1.day do
           login_as(student, scope: :student)
           visit edit_student_registration_path
@@ -34,7 +34,7 @@ feature "print completion certificate" do
       end
 
       it "doesn't show certificate even if student directly enters URL", :stub_mailgun do
-        FactoryGirl.create(:failing_review, submission: submission)
+        FactoryBot.create(:failing_review, submission: submission)
         travel_to internship_course.end_date + 1.day do
           login_as(student, scope: :student)
           visit certificate_path
@@ -45,7 +45,7 @@ feature "print completion certificate" do
 
     context "all code reviews passing" do
       it "allows student to print certificate", :stub_mailgun do
-        FactoryGirl.create(:passing_review, submission: submission)
+        FactoryBot.create(:passing_review, submission: submission)
         travel_to internship_course.end_date + 1.day do
           login_as(student, scope: :student)
           visit edit_student_registration_path

@@ -1,8 +1,8 @@
 feature 'viewing the random pair page' do
-  let(:current_student) { FactoryGirl.create(:user_with_all_documents_signed) }
-  let(:pair_1) { FactoryGirl.create(:student) }
-  let(:pair_2) { FactoryGirl.create(:student) }
-  let(:admin) { FactoryGirl.create(:admin) }
+  let(:current_student) { FactoryBot.create(:user_with_all_documents_signed) }
+  let(:pair_1) { FactoryBot.create(:student) }
+  let(:pair_2) { FactoryBot.create(:student) }
+  let(:admin) { FactoryBot.create(:admin) }
 
   scenario 'viewing the random pair page as a guest' do
     visit random_pairs_path

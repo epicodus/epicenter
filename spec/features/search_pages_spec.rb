@@ -5,14 +5,14 @@ feature 'searching for a student' do
   end
 
   scenario 'as a student' do
-    student = FactoryGirl.create(:user_with_all_documents_signed)
+    student = FactoryBot.create(:user_with_all_documents_signed)
     login_as(student, scope: :student)
     visit students_path
     expect(page).to have_content 'Your courses'
   end
 
   context 'as an admin' do
-    let(:admin) { FactoryGirl.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin) }
     before { login_as(admin, scope: :admin) }
 
     scenario 'when no query is made' do
@@ -22,7 +22,7 @@ feature 'searching for a student' do
     end
 
     scenario 'when a query is made for an archived student' do
-      archived_student = FactoryGirl.create(:student)
+      archived_student = FactoryBot.create(:student)
       Enrollment.find_by(student: archived_student).destroy
       archived_student.destroy
       visit root_path
@@ -35,7 +35,7 @@ feature 'searching for a student' do
     end
 
     scenario 'when a query is made for an unenrolled student' do
-      unenrolled_student = FactoryGirl.create(:student)
+      unenrolled_student = FactoryBot.create(:student)
       Enrollment.find_by(student: unenrolled_student).destroy
       visit root_path
       within '#navbar-search' do
@@ -47,7 +47,7 @@ feature 'searching for a student' do
     end
 
     scenario 'when a query is made for a current student' do
-      student = FactoryGirl.create(:student)
+      student = FactoryBot.create(:student)
       visit root_path
       within '#navbar-search' do
         fill_in 'search', with: student.name
@@ -58,8 +58,8 @@ feature 'searching for a student' do
     end
 
     scenario 'when a query is made for a future student' do
-      course = FactoryGirl.create(:future_course)
-      student = FactoryGirl.create(:student, courses: [course])
+      course = FactoryBot.create(:future_course)
+      student = FactoryBot.create(:student, courses: [course])
       visit root_path
       within '#navbar-search' do
         fill_in 'search', with: student.name
@@ -70,8 +70,8 @@ feature 'searching for a student' do
     end
 
     scenario 'when a query is made for a student who has graduated' do
-      course = FactoryGirl.create(:internship_course)
-      past_student = FactoryGirl.create(:user_with_all_documents_signed, courses: [course])
+      course = FactoryBot.create(:internship_course)
+      past_student = FactoryBot.create(:user_with_all_documents_signed, courses: [course])
       visit root_path
       travel_to past_student.course.end_date + 1.days do
         within '#navbar-search' do
@@ -84,8 +84,8 @@ feature 'searching for a student' do
     end
 
     scenario 'when a query is made for an existing student with a payment made', :vcr, :stripe_mock, :stub_mailgun do
-      in_class_student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
-      FactoryGirl.create(:payment_with_credit_card, student: in_class_student)
+      in_class_student = FactoryBot.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
+      FactoryBot.create(:payment_with_credit_card, student: in_class_student)
       visit root_path
       within '#navbar-search' do
         fill_in 'search', with: in_class_student.name
@@ -96,7 +96,7 @@ feature 'searching for a student' do
     end
 
     scenario 'when a query is made for a student who withdrew' do
-      past_student = FactoryGirl.create(:user_with_all_documents_signed)
+      past_student = FactoryBot.create(:user_with_all_documents_signed)
       visit root_path
       travel_to past_student.course.end_date + 1.days do
         within '#navbar-search' do
@@ -109,8 +109,8 @@ feature 'searching for a student' do
     end
 
     scenario 'when a query is made for a student who finished before 2016' do
-      course = FactoryGirl.create(:course, class_days: [Time.new(2015, 1, 1).to_date])
-      student = FactoryGirl.create(:student, courses: [course])
+      course = FactoryBot.create(:course, class_days: [Time.new(2015, 1, 1).to_date])
+      student = FactoryBot.create(:student, courses: [course])
       visit root_path
       within '#navbar-search' do
         fill_in 'search', with: student.name
@@ -121,8 +121,8 @@ feature 'searching for a student' do
     end
 
     scenario 'when a query is made for a part-time student' do
-      course = FactoryGirl.create(:part_time_course, class_days: [Time.zone.now.to_date.monday])
-      student = FactoryGirl.create(:student, courses: [course])
+      course = FactoryBot.create(:part_time_course, class_days: [Time.zone.now.to_date.monday])
+      student = FactoryBot.create(:student, courses: [course])
       visit root_path
       within '#navbar-search' do
         fill_in 'search', with: student.name

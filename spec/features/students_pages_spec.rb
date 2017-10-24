@@ -6,8 +6,8 @@ feature 'Guest attempts to sign up' do
 end
 
 feature 'Visiting students index page' do
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
-  let(:admin) { FactoryGirl.create(:admin) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+  let(:admin) { FactoryBot.create(:admin) }
 
   scenario 'as a student' do
     login_as(student, scope: :student)
@@ -29,9 +29,9 @@ feature 'Visiting students index page' do
 end
 
 feature 'Student signs up via invitation', :vcr do
-  let(:course) { FactoryGirl.create(:course, class_days: [Time.new(2016, 12, 1).to_date]) }
-  let(:plan) { FactoryGirl.create(:rate_plan_2016) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: 'example@example.com', courses: [course]) }
+  let(:course) { FactoryBot.create(:course, class_days: [Time.new(2016, 12, 1).to_date]) }
+  let(:plan) { FactoryBot.create(:rate_plan_2016) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com', courses: [course]) }
 
   scenario 'with valid information' do
     student.invite!
@@ -55,7 +55,7 @@ feature 'Student signs up via invitation', :vcr do
 end
 
 feature 'Student cannot invite other students' do
-  let(:student) { FactoryGirl.create(:student) }
+  let(:student) { FactoryBot.create(:student) }
 
   scenario 'student visits new_student_invitation path' do
     login_as(student)
@@ -65,7 +65,7 @@ feature 'Student cannot invite other students' do
 end
 
 feature 'Student signs in with GitHub' do
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
 
   after { OmniAuth.config.mock_auth[:github] = nil }
 
@@ -77,7 +77,7 @@ feature 'Student signs in with GitHub' do
   end
 
   scenario 'with valid credentials on subsequent logins' do
-    student = FactoryGirl.create(:user_with_all_documents_signed, github_uid: '12345')
+    student = FactoryBot.create(:user_with_all_documents_signed, github_uid: '12345')
     OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: student.email }})
     visit root_path
     click_on 'Sign in with GitHub'
@@ -85,7 +85,7 @@ feature 'Student signs in with GitHub' do
   end
 
   scenario 'with a valid email but invalid uid on subsequent logins' do
-    student = FactoryGirl.create(:student, github_uid: '12345')
+    student = FactoryBot.create(:student, github_uid: '12345')
     OmniAuth.config.add_mock(:github, { uid: '98765', info: { email: student.email }})
     visit root_path
     click_on 'Sign in with GitHub'
@@ -102,12 +102,12 @@ end
 
 feature "Student signs in while class is not in session" do
 
-  let(:future_course) { FactoryGirl.create(:future_course) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: future_course) }
+  let(:future_course) { FactoryBot.create(:future_course) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed, course: future_course) }
 
   context "before adding a payment method" do
     it "takes them to the page to choose payment method" do
-      student = FactoryGirl.create(:user_with_all_documents_signed)
+      student = FactoryBot.create(:user_with_all_documents_signed)
       sign_in_as(student)
       visit new_payment_method_path
       expect(page).to have_content "How would you like to make payments"
@@ -116,7 +116,7 @@ feature "Student signs in while class is not in session" do
 
   context "after entering bank account info but before verifying" do
     it "takes them to the payment methods page", :vcr do
-      FactoryGirl.create(:bank_account, student: student)
+      FactoryBot.create(:bank_account, student: student)
       sign_in_as student
       visit payment_methods_path
       expect(page).to have_content "Your payment methods"
@@ -126,7 +126,7 @@ feature "Student signs in while class is not in session" do
 
   context "after verifying their bank account", :vcr do
     it "shows them their payment history" do
-      FactoryGirl.create(:verified_bank_account, student: student)
+      FactoryBot.create(:verified_bank_account, student: student)
       sign_in_as(student)
       visit student_payments_path(student)
       expect(page).to have_content "Your payments"
@@ -135,7 +135,7 @@ feature "Student signs in while class is not in session" do
 
   context "after adding a credit card", :vcr, :stripe_mock do
     it "shows them their payment history" do
-      FactoryGirl.create(:credit_card, student: student)
+      FactoryBot.create(:credit_card, student: student)
       sign_in_as(student)
       visit student_payments_path(student)
       expect(page).to have_content "Your payments"
@@ -144,7 +144,7 @@ feature "Student signs in while class is not in session" do
 end
 
 feature "Student visits homepage after logged in" do
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
 
   it "takes them to the correct path" do
     sign_in_as(student)
@@ -154,7 +154,7 @@ feature "Student visits homepage after logged in" do
 end
 
 feature "Unenrolled student signs in" do
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
 
   it "successfully and is redirected" do
     Enrollment.find_by(student_id: student.id, course_id: student.course.id).destroy
@@ -165,7 +165,7 @@ feature "Unenrolled student signs in" do
 end
 
 feature "Portland student signs in while class is in session" do
-  let(:student) { FactoryGirl.create(:portland_student_with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
+  let(:student) { FactoryBot.create(:portland_student_with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
 
   context "not at school" do
     it "takes them to the courses page" do
@@ -181,7 +181,7 @@ feature "Portland student signs in while class is in session" do
 end
 
 feature "Philadelphia student signs in while class is in session" do
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
 
   context "not at school" do
     it "takes them to the courses page" do
@@ -210,14 +210,14 @@ feature 'Guest not signed in' do
   end
 
   context 'visits payments path' do
-    let(:student) { FactoryGirl.create(:student) }
+    let(:student) { FactoryBot.create(:student) }
     before { visit student_payments_path(student) }
     it { should have_content 'You need to sign in' }
   end
 end
 
 feature 'unenrolled student signs in' do
-  let(:student) { FactoryGirl.create(:unenrolled_student) }
+  let(:student) { FactoryBot.create(:unenrolled_student) }
 
   before { login_as(student, scope: :student) }
 
@@ -238,7 +238,7 @@ feature 'unenrolled student signs in' do
 end
 
 feature 'viewing the student show page' do
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
 
   before { login_as(student, scope: :student) }
 
@@ -248,13 +248,13 @@ feature 'viewing the student show page' do
   end
 
   scenario 'as a student viewing another student page in different course' do
-    other_student = FactoryGirl.create(:user_with_all_documents_signed)
+    other_student = FactoryBot.create(:user_with_all_documents_signed)
     visit course_student_path(other_student.course, other_student)
     expect(page).to have_content 'You are not authorized to access this page.'
   end
 
   scenario 'as a student viewing another student page in same course' do
-    other_student = FactoryGirl.create(:user_with_all_documents_signed, course: student.course)
+    other_student = FactoryBot.create(:user_with_all_documents_signed, course: student.course)
     visit course_student_path(student.course, other_student)
     expect(page).to have_content 'You are not authorized to access this page.'
   end

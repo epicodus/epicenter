@@ -5,14 +5,14 @@ describe Admin do
 
   describe "default scope" do
     it "alphabetizes the admins by name" do
-      admin1 = FactoryGirl.create(:admin, name: "Bob Test")
-      admin2 = FactoryGirl.create(:admin, name: "Annie Test")
+      admin1 = FactoryBot.create(:admin, name: "Bob Test")
+      admin2 = FactoryBot.create(:admin, name: "Annie Test")
       expect(Admin.all).to eq [admin2, admin1]
     end
   end
 
   describe "abilities" do
-    let(:admin) { FactoryGirl.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin) }
     subject { Ability.new(admin, "::1") }
 
     context 'for code reviews' do
@@ -69,8 +69,8 @@ describe Admin do
   end
 
   it 'is assigned a default current_course before creation' do
-    FactoryGirl.create(:course)
-    admin = FactoryGirl.build(:admin, current_course: nil)
+    FactoryBot.create(:course)
+    admin = FactoryBot.build(:admin, current_course: nil)
     admin.save
     expect(admin.current_course).to be_a Course
   end

@@ -7,29 +7,29 @@ describe Cohort do
   it { should validate_presence_of(:office) }
 
   it 'should validate uniqueness of cohort based on start_date, office_id, track_id' do
-    cohort = FactoryGirl.create(:cohort)
-    expect { FactoryGirl.create(:cohort, start_date: cohort.start_date, track: cohort.track, office: cohort.office) }.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Start date has already been taken')
+    cohort = FactoryBot.create(:cohort)
+    expect { FactoryBot.create(:cohort, start_date: cohort.start_date, track: cohort.track, office: cohort.office) }.to raise_error(ActiveRecord::RecordInvalid, 'Validation failed: Start date has already been taken')
   end
 
   it 'should allow cohort creation as long as start_date, office_id, or track_id are different' do
-    cohort = FactoryGirl.create(:cohort)
-    cohort2 = FactoryGirl.create(:cohort, start_date: cohort.start_date, track: cohort.track, office: FactoryGirl.create(:portland_office))
+    cohort = FactoryBot.create(:cohort)
+    cohort2 = FactoryBot.create(:cohort, start_date: cohort.start_date, track: cohort.track, office: FactoryBot.create(:portland_office))
     expect(Cohort.find(cohort2.id)).to be_present
 
   end
 
   describe '#cohorts_for' do
     it 'returns all cohorts for a certain office' do
-      portland_cohort = FactoryGirl.create(:cohort, office: FactoryGirl.create(:portland_office))
-      seattle_cohort = FactoryGirl.create(:cohort, office: FactoryGirl.create(:seattle_office))
+      portland_cohort = FactoryBot.create(:cohort, office: FactoryBot.create(:portland_office))
+      seattle_cohort = FactoryBot.create(:cohort, office: FactoryBot.create(:seattle_office))
       expect(Cohort.cohorts_for(portland_cohort.office)).to eq [portland_cohort]
     end
   end
 
   describe 'past, current, future cohorts' do
-    let(:current_cohort) { FactoryGirl.create(:cohort, start_date: Time.zone.now.to_date) }
-    let(:past_cohort) { FactoryGirl.create(:cohort, start_date: Time.zone.now.to_date - 1.year) }
-    let(:future_cohort) { FactoryGirl.create(:cohort, start_date: Time.zone.now.to_date + 1.year) }
+    let(:current_cohort) { FactoryBot.create(:cohort, start_date: Time.zone.now.to_date) }
+    let(:past_cohort) { FactoryBot.create(:cohort, start_date: Time.zone.now.to_date - 1.year) }
+    let(:future_cohort) { FactoryBot.create(:cohort, start_date: Time.zone.now.to_date + 1.year) }
 
     it 'returns all current cohorts' do
       expect(Cohort.current_cohorts).to eq [current_cohort]
@@ -45,14 +45,14 @@ describe Cohort do
   end
 
   describe 'creating a cohort when classes already exist' do
-    let(:office) { FactoryGirl.create(:portland_office) }
-    let!(:track) { FactoryGirl.create(:track) }
-    let!(:admin) { FactoryGirl.create(:admin) }
-    let!(:intro) { FactoryGirl.create(:level0_course, office: office, track: track, admin: admin, language: track.languages.find_by(level: 0)) }
-    let!(:level1) { FactoryGirl.create(:level1_course, office: office, track: track, admin: admin, language: track.languages.find_by(level: 1)) }
-    let!(:js) { FactoryGirl.create(:level2_course, office: office, track: track, admin: admin, language: track.languages.find_by(level: 2)) }
-    let!(:level3) { FactoryGirl.create(:level3_course, office: office, track: track, admin: admin, language: track.languages.find_by(level: 3)) }
-    let!(:internship) { FactoryGirl.create(:level4_course, office: office, track: track, admin: admin, language: track.languages.find_by(level: 4)) }
+    let(:office) { FactoryBot.create(:portland_office) }
+    let!(:track) { FactoryBot.create(:track) }
+    let!(:admin) { FactoryBot.create(:admin) }
+    let!(:intro) { FactoryBot.create(:level0_course, office: office, track: track, admin: admin, language: track.languages.find_by(level: 0)) }
+    let!(:level1) { FactoryBot.create(:level1_course, office: office, track: track, admin: admin, language: track.languages.find_by(level: 1)) }
+    let!(:js) { FactoryBot.create(:level2_course, office: office, track: track, admin: admin, language: track.languages.find_by(level: 2)) }
+    let!(:level3) { FactoryBot.create(:level3_course, office: office, track: track, admin: admin, language: track.languages.find_by(level: 3)) }
+    let!(:internship) { FactoryBot.create(:level4_course, office: office, track: track, admin: admin, language: track.languages.find_by(level: 4)) }
 
     it 'creates a cohort when classes already exist' do
       cohort = Cohort.create(track: intro.track, admin: intro.admin, office: intro.office, start_date: intro.start_date)
@@ -70,9 +70,9 @@ describe Cohort do
   end
 
   describe 'creating a cohort when classes do not yet exist' do
-    let(:office) { FactoryGirl.create(:portland_office) }
-    let(:track) { FactoryGirl.create(:track) }
-    let(:admin) { FactoryGirl.create(:admin) }
+    let(:office) { FactoryBot.create(:portland_office) }
+    let(:track) { FactoryBot.create(:track) }
+    let(:admin) { FactoryBot.create(:admin) }
 
     it 'creates a cohort when classes do not yet exist' do
       cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-13'))
@@ -91,10 +91,10 @@ describe Cohort do
   end
 
   describe 'creating a cohort when some but not all classes already exist' do
-    let(:office) { FactoryGirl.create(:portland_office) }
-    let(:track) { FactoryGirl.create(:track) }
-    let(:admin) { FactoryGirl.create(:admin) }
-    let!(:intro) { FactoryGirl.create(:level0_course, office: office, track: track, admin: admin, language: track.languages.find_by(level: 0)) }
+    let(:office) { FactoryBot.create(:portland_office) }
+    let(:track) { FactoryBot.create(:track) }
+    let(:admin) { FactoryBot.create(:admin) }
+    let!(:intro) { FactoryBot.create(:level0_course, office: office, track: track, admin: admin, language: track.languages.find_by(level: 0)) }
 
     it 'creates a cohort when some but not all classes already exist' do
       cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-13'))
@@ -113,9 +113,9 @@ describe Cohort do
   end
 
   describe '#update_end_date' do
-    let(:office) { FactoryGirl.create(:portland_office) }
-    let(:track) { FactoryGirl.create(:track) }
-    let(:admin) { FactoryGirl.create(:admin) }
+    let(:office) { FactoryBot.create(:portland_office) }
+    let(:track) { FactoryBot.create(:track) }
+    let(:admin) { FactoryBot.create(:admin) }
 
     it 'sets cohort end date when adding courses at same time as cohort creation' do
       cohort = Cohort.create(start_date: Date.today, office: office, track: track, admin: admin)
@@ -124,14 +124,14 @@ describe Cohort do
 
     it 'updates cohort end_date when adding more recent course to cohort' do
       cohort = Cohort.create(start_date: Date.today, office: office, track: track, admin: admin)
-      future_course = FactoryGirl.create(:future_course, class_days: [Date.today.monday + 30.weeks])
+      future_course = FactoryBot.create(:future_course, class_days: [Date.today.monday + 30.weeks])
       cohort.courses << future_course
       expect(cohort.end_date).to eq future_course.end_date
     end
 
     it 'does not update cohort end_date when adding less recent course to cohort' do
       cohort = Cohort.create(start_date: Date.today, office: office, track: track, admin: admin)
-      past_course = FactoryGirl.create(:past_course, class_days: [Date.today.monday - 30.weeks])
+      past_course = FactoryBot.create(:past_course, class_days: [Date.today.monday - 30.weeks])
       cohort.courses << past_course
       expect(cohort.end_date).to eq cohort.courses.order(:end_date).last.end_date
     end

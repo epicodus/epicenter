@@ -1,5 +1,5 @@
 feature 'Submitting demographics info' do
-  let(:student) { FactoryGirl.create(:user_waiting_on_demographics, email: 'example@example.com') }
+  let(:student) { FactoryBot.create(:user_waiting_on_demographics, email: 'example@example.com') }
 
   scenario 'as a guest cannot view form' do
     visit new_demographic_path

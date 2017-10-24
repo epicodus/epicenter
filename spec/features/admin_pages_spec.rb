@@ -1,5 +1,5 @@
 feature 'Admin signs in' do
-  let(:admin) { FactoryGirl.create(:admin) }
+  let(:admin) { FactoryBot.create(:admin) }
 
   after { OmniAuth.config.mock_auth[:github] = nil }
 
@@ -27,7 +27,7 @@ feature 'Admin signs in' do
   end
 
   scenario 'with valid GitHub credentials on subsequent logins' do
-    admin = FactoryGirl.create(:admin, github_uid: '12345')
+    admin = FactoryBot.create(:admin, github_uid: '12345')
     OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: admin.email }})
     visit root_path
     click_on 'Sign in with GitHub'
@@ -35,7 +35,7 @@ feature 'Admin signs in' do
   end
 
   scenario 'with a valid GitHub email but invalid uid on subsequent logins' do
-    admin = FactoryGirl.create(:admin, github_uid: '12345')
+    admin = FactoryBot.create(:admin, github_uid: '12345')
     OmniAuth.config.add_mock(:github, { uid: '98765', info: { email: admin.email }})
     visit root_path
     click_on 'Sign in with GitHub'
@@ -57,11 +57,11 @@ feature 'Admin signs in' do
 end
 
 feature 'Changing current course for teacher' do
-  let(:teacher) { FactoryGirl.create(:teacher) }
-  let(:course) { FactoryGirl.create(:course) }
+  let(:teacher) { FactoryBot.create(:teacher) }
+  let(:course) { FactoryBot.create(:course) }
 
   scenario 'admin selects a new course' do
-    course2 = FactoryGirl.create(:internship_course)
+    course2 = FactoryBot.create(:internship_course)
     login_as(teacher, scope: :admin)
     visit root_path
     click_link 'Courses'
@@ -71,11 +71,11 @@ feature 'Changing current course for teacher' do
 end
 
 feature 'Does not change current course for non-teacher admin' do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:course) { FactoryGirl.create(:course) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:course) { FactoryBot.create(:course) }
 
   scenario 'non-teacher admin views a course' do
-    course2 = FactoryGirl.create(:internship_course)
+    course2 = FactoryBot.create(:internship_course)
     login_as(admin, scope: :admin)
     visit root_path
     click_link 'Courses'
@@ -85,7 +85,7 @@ feature 'Does not change current course for non-teacher admin' do
 end
 
 feature 'Inviting new full-time students', :vcr, :dont_stub_crm do
-  let(:cohort) { FactoryGirl.create(:cohort, start_date: Date.parse('2000-01-03')) }
+  let(:cohort) { FactoryBot.create(:cohort, start_date: Date.parse('2000-01-03')) }
 
   before do
     admin = cohort.admin
@@ -120,8 +120,8 @@ feature 'Inviting new full-time students', :vcr, :dont_stub_crm do
 end
 
 feature 'Inviting new part-time students', :vcr, :dont_stub_crm do
-  let(:course) { FactoryGirl.create(:part_time_course, description: '* Placement Test', class_days: [Date.parse('2000-01-03')]) }
-  let(:admin) { FactoryGirl.create(:admin, courses: [course]) }
+  let(:course) { FactoryBot.create(:part_time_course, description: '* Placement Test', class_days: [Date.parse('2000-01-03')]) }
+  let(:admin) { FactoryBot.create(:admin, courses: [course]) }
 
   before do
     admin.current_course = course
@@ -162,7 +162,7 @@ feature 'Inviting new part-time students', :vcr, :dont_stub_crm do
 end
 
 feature 'Admin signs up via invitation' do
-  let(:admin) { FactoryGirl.create(:admin) }
+  let(:admin) { FactoryBot.create(:admin) }
 
   scenario 'with valid information' do
     admin.invite!
@@ -184,10 +184,10 @@ feature 'Admin signs up via invitation' do
 end
 
 feature 'viewing the student page' do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:student) { FactoryGirl.create(:student) }
-  let(:unenrolled_student) { FactoryGirl.create(:unenrolled_student) }
-  let(:internship_student) { FactoryGirl.create(:student, courses: [FactoryGirl.create(:internship_course)]) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:student) { FactoryBot.create(:student) }
+  let(:unenrolled_student) { FactoryBot.create(:unenrolled_student) }
+  let(:internship_student) { FactoryBot.create(:student, courses: [FactoryBot.create(:internship_course)]) }
 
   before { login_as(admin, scope: :admin) }
 
@@ -201,7 +201,7 @@ feature 'viewing the student page' do
   end
 
   scenario 'when a student is enrolled in a course with internships' do
-    FactoryGirl.create(:internship, courses: [internship_student.course])
+    FactoryBot.create(:internship, courses: [internship_student.course])
     visit course_student_path(internship_student.course, internship_student)
     expect(page).to have_content 'Code reviews'
     expect(page).to have_content 'Internships'
@@ -213,27 +213,27 @@ feature 'viewing the student page' do
   end
 
   scenario 'when a student has withdrawn from a course' do
-    FactoryGirl.create(:attendance_record, student: student, date: student.course.start_date)
+    FactoryBot.create(:attendance_record, student: student, date: student.course.start_date)
     Enrollment.find_by(student: student, course: student.course).destroy
     visit course_student_path(student.course, student)
     expect(page).to have_content 'withdrawn'
   end
 
   scenario 'when a student was never enrolled in a course' do
-    other_course = FactoryGirl.create(:past_course)
+    other_course = FactoryBot.create(:past_course)
     visit course_student_path(other_course, student)
     expect(page).to have_content 'not enrolled'
   end
 end
 
 feature 'viewing the student courses list' do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:course1) { FactoryGirl.create(:course) }
-  let(:course2) { FactoryGirl.create(:internship_course) }
-  let(:student) { FactoryGirl.create(:student, courses: [course1, course2]) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:course1) { FactoryBot.create(:course) }
+  let(:course2) { FactoryBot.create(:internship_course) }
+  let(:student) { FactoryBot.create(:student, courses: [course1, course2]) }
 
   before do
-    FactoryGirl.create(:attendance_record, student: student, date: course1.start_date)
+    FactoryBot.create(:attendance_record, student: student, date: course1.start_date)
     login_as(admin, scope: :admin)
   end
 
@@ -263,8 +263,8 @@ feature 'viewing the student courses list' do
 end
 
 feature 'student roster page' do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let!(:course) { FactoryGirl.create(:course) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let!(:course) { FactoryBot.create(:course) }
 
   before { login_as(admin, scope: :admin) }
 
@@ -275,7 +275,7 @@ feature 'student roster page' do
   end
 
   scenario 'when a teacher visits the sudent roster page when there are students' do
-    student = FactoryGirl.create(:student, course: course)
+    student = FactoryBot.create(:student, course: course)
     visit course_path(course)
     expect(page).to have_content student.name
   end

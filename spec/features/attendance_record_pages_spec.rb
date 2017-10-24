@@ -1,5 +1,5 @@
 feature 'student logging out on attendance page' do
-  let!(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+  let!(:student) { FactoryBot.create(:user_with_all_documents_signed) }
 
   before do
     allow(IpLocation).to receive(:is_local?).and_return(true)
@@ -8,7 +8,7 @@ feature 'student logging out on attendance page' do
   end
 
   scenario 'student successfully signs out' do
-    FactoryGirl.create(:attendance_record, student: student, date: Time.zone.now.to_date)
+    FactoryBot.create(:attendance_record, student: student, date: Time.zone.now.to_date)
     visit sign_out_path
     fill_in "email", with: student.email
     fill_in "password", with: student.password
@@ -17,7 +17,7 @@ feature 'student logging out on attendance page' do
   end
 
   scenario 'student successfully signs out with an uppercased email' do
-    FactoryGirl.create(:attendance_record, student: student, date: Time.zone.now.to_date)
+    FactoryBot.create(:attendance_record, student: student, date: Time.zone.now.to_date)
     visit sign_out_path
     fill_in "email", with: student.email.upcase
     fill_in "password", with: student.password
@@ -51,9 +51,9 @@ feature 'student logging out on attendance page' do
 end
 
 feature "admin viewing an individual student's attendance" do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:student) { FactoryGirl.create(:student) }
-  let!(:attendance_record) { FactoryGirl.create(:attendance_record, student: student, date: student.course.start_date) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:student) { FactoryBot.create(:student) }
+  let!(:attendance_record) { FactoryBot.create(:attendance_record, student: student, date: student.course.start_date) }
   before { login_as(admin, scope: :admin) }
 
   scenario "an admin can view attendance records for an individual student" do
@@ -71,9 +71,9 @@ feature "admin viewing an individual student's attendance" do
 end
 
 feature 'viewing attendance records index page' do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
-  let(:attendance_record) { FactoryGirl.create(:attendance_record, student: student, date: student.course.start_date) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+  let(:attendance_record) { FactoryBot.create(:attendance_record, student: student, date: student.course.start_date) }
 
   scenario 'as an admin' do
     login_as(admin, scope: :admin)

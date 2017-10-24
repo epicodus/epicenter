@@ -1,6 +1,6 @@
 feature 'Visiting the submissions index page' do
-  let(:code_review) { FactoryGirl.create(:code_review) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+  let(:code_review) { FactoryBot.create(:code_review) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
 
   context 'as a student' do
     before { login_as(student, scope: :student) }
@@ -12,26 +12,26 @@ feature 'Visiting the submissions index page' do
   end
 
   context 'as an admin' do
-    let(:admin) { FactoryGirl.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin) }
     before { login_as(admin, scope: :admin) }
 
     scenario 'lists submissions' do
-      submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
+      submission = FactoryBot.create(:submission, code_review: code_review, student: student)
       visit code_review_submissions_path(code_review)
       expect(page).to have_content submission.student.name
     end
 
     scenario 'lists only submissions needing review', :stub_mailgun do
-      reviewed_submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
-      FactoryGirl.create(:passing_review, submission: reviewed_submission)
+      reviewed_submission = FactoryBot.create(:submission, code_review: code_review, student: student)
+      FactoryBot.create(:passing_review, submission: reviewed_submission)
       visit code_review_submissions_path(code_review)
       expect(page).to_not have_content reviewed_submission.student.name
     end
 
     scenario 'lists submissions in order of when they were submitted' do
-      another_student = FactoryGirl.create(:student)
-      first_submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
-      second_submission = FactoryGirl.create(:submission, code_review: code_review, student: another_student)
+      another_student = FactoryBot.create(:student)
+      first_submission = FactoryBot.create(:submission, code_review: code_review, student: student)
+      second_submission = FactoryBot.create(:submission, code_review: code_review, student: another_student)
       visit code_review_submissions_path(code_review)
       within 'tbody' do
         expect(first('tr')).to have_content first_submission.student.name
@@ -41,14 +41,14 @@ feature 'Visiting the submissions index page' do
     context 'within an individual submission' do
       scenario 'shows how long ago the submission was last updated' do
         travel_to 2.days.ago do
-          FactoryGirl.create(:submission, code_review: code_review, student: student)
+          FactoryBot.create(:submission, code_review: code_review, student: student)
         end
         visit code_review_submissions_path(code_review)
         expect(page).to have_content (Time.zone.now.in_time_zone(student.course.office.time_zone).to_date - 2.days).strftime("%a, %b %d, %Y")
       end
 
       scenario 'clicking review link to show review form' do
-        FactoryGirl.create(:submission, code_review: code_review, student: student)
+        FactoryBot.create(:submission, code_review: code_review, student: student)
         visit code_review_submissions_path(code_review)
         expect(page).to_not have_button 'Create Review'
         click_on 'Review'
@@ -57,9 +57,9 @@ feature 'Visiting the submissions index page' do
       end
 
       context 'creating a review' do
-        let(:admin) { FactoryGirl.create(:admin) }
-        let!(:submission) { FactoryGirl.create(:submission, code_review: code_review, student: student) }
-        let!(:score) { FactoryGirl.create(:passing_score) }
+        let(:admin) { FactoryBot.create(:admin) }
+        let!(:submission) { FactoryBot.create(:submission, code_review: code_review, student: student) }
+        let!(:score) { FactoryBot.create(:passing_score) }
 
         before do
           login_as(admin, scope: :admin)
@@ -82,7 +82,7 @@ feature 'Visiting the submissions index page' do
         end
 
         context 'when the submission has been reviewed before' do
-          let!(:review) { FactoryGirl.create(:passing_review, submission: submission) }
+          let!(:review) { FactoryBot.create(:passing_review, submission: submission) }
 
           before { submission.update(needs_review: true) }
 
@@ -124,13 +124,13 @@ feature 'Visiting the submissions index page' do
 end
 
 feature 'Creating a student submission for an internship course code review' do
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
-  let(:admin) { FactoryGirl.create(:admin) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+  let(:admin) { FactoryBot.create(:admin) }
 
   before { login_as(admin, scope: :admin) }
 
   scenario 'as an admin' do
-    FactoryGirl.create(:code_review, course: student.course, submissions_not_required: true)
+    FactoryBot.create(:code_review, course: student.course, submissions_not_required: true)
     visit course_path(student.course)
     expect { click_on('missing') }.to change { student.submissions.count }.by 1
   end

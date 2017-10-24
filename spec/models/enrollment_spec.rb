@@ -5,19 +5,19 @@ describe Enrollment do
 
   describe 'validations' do
     it 'validates uniqueness of student_id to course_id' do
-      student = FactoryGirl.create(:student)
-      course = FactoryGirl.create(:course)
+      student = FactoryBot.create(:student)
+      course = FactoryBot.create(:course)
       Enrollment.create(student: student, course: course)
       should validate_uniqueness_of(:student_id).scoped_to(:course_id)
     end
   end
 
   describe 'archiving enrollments when withdrawing students' do
-    let(:past_course) { FactoryGirl.create(:past_course) }
-    let(:future_course) { FactoryGirl.create(:future_course) }
+    let(:past_course) { FactoryBot.create(:past_course) }
+    let(:future_course) { FactoryBot.create(:future_course) }
 
     context 'before course start date' do
-      let(:student) { FactoryGirl.create(:student, course: future_course) }
+      let(:student) { FactoryBot.create(:student, course: future_course) }
 
       it 'permanently destroys enrollment' do
         student.enrollments.first.destroy
@@ -26,7 +26,7 @@ describe Enrollment do
     end
 
     context 'after course start date' do
-      let(:student) { FactoryGirl.create(:student, course: past_course) }
+      let(:student) { FactoryBot.create(:student, course: past_course) }
 
       it 'permanently destroys enrollment if no attendance record exists' do
         student.enrollments.first.destroy
@@ -34,7 +34,7 @@ describe Enrollment do
       end
 
       it 'archives internship course enrollment regardless of attendance' do
-        student.courses = [FactoryGirl.create(:internship_course)]
+        student.courses = [FactoryBot.create(:internship_course)]
         enrollment = student.enrollments.first
         student.enrollments.first.destroy
         student.reload
@@ -43,7 +43,7 @@ describe Enrollment do
       end
 
       it 'archives enrollment with paranoia if attendance record exists' do
-        FactoryGirl.create(:attendance_record, student: student, date: student.course.start_date)
+        FactoryBot.create(:attendance_record, student: student, date: student.course.start_date)
         enrollment = student.enrollments.first
         student.enrollments.first.destroy
         student.reload
@@ -54,11 +54,11 @@ describe Enrollment do
   end
 
   describe 'sets starting and ending cohort' do
-    let(:student) { FactoryGirl.create(:student, courses: []) }
-    let(:past_cohort) { FactoryGirl.create(:cohort, start_date: (Date.today - 1.year).beginning_of_week) }
-    let(:current_cohort) { FactoryGirl.create(:cohort, start_date: Date.today.beginning_of_week) }
-    let(:future_cohort) { FactoryGirl.create(:cohort, start_date: (Date.today + 1.year).beginning_of_week) }
-    let(:part_time_course) { FactoryGirl.create(:part_time_course) }
+    let(:student) { FactoryBot.create(:student, courses: []) }
+    let(:past_cohort) { FactoryBot.create(:cohort, start_date: (Date.today - 1.year).beginning_of_week) }
+    let(:current_cohort) { FactoryBot.create(:cohort, start_date: Date.today.beginning_of_week) }
+    let(:future_cohort) { FactoryBot.create(:cohort, start_date: (Date.today + 1.year).beginning_of_week) }
+    let(:part_time_course) { FactoryBot.create(:part_time_course) }
 
     context 'adding new enrollments' do
       it 'updates starting & ending cohort when adding first course' do
@@ -89,7 +89,7 @@ describe Enrollment do
       end
 
       it 'updates ending cohort correctly when enrolling in internship course belonging to multiple cohorts' do
-        full_cohort = FactoryGirl.create(:full_cohort)
+        full_cohort = FactoryBot.create(:full_cohort)
         future_cohort.courses << full_cohort.courses.internship_courses.last
         full_cohort.courses.each { |course| student.courses << course }
         expect(student.cohort).to eq full_cohort
@@ -100,7 +100,7 @@ describe Enrollment do
       before do
         course = current_cohort.courses.first
         student.course = course
-        FactoryGirl.create(:attendance_record, student: student, date: course.start_date)
+        FactoryBot.create(:attendance_record, student: student, date: course.start_date)
       end
 
       it 'updates ending cohort only when just archiving enrollment' do
@@ -136,9 +136,9 @@ describe Enrollment do
   end
 
   describe 'internship class in CRM' do
-    let(:student) { FactoryGirl.create(:student, courses: []) }
-    let(:course) { FactoryGirl.create(:course) }
-    let(:internship_course) { FactoryGirl.create(:internship_course) }
+    let(:student) { FactoryBot.create(:student, courses: []) }
+    let(:course) { FactoryBot.create(:course) }
+    let(:internship_course) { FactoryBot.create(:internship_course) }
 
     it 'is set when enrolled in internship course' do
       expect_any_instance_of(CrmLead).to receive(:update_internship_class).with(internship_course)
@@ -152,7 +152,7 @@ describe Enrollment do
     end
 
     it 'is set to other internship course when second internship course removed' do
-      new_internship_course = FactoryGirl.create(:internship_course, class_days: [internship_course.start_date + 5.weeks])
+      new_internship_course = FactoryBot.create(:internship_course, class_days: [internship_course.start_date + 5.weeks])
       student.courses = [internship_course, new_internship_course]
       expect_any_instance_of(CrmLead).to receive(:update_internship_class).with(internship_course)
       new_internship_course.enrollments.first.destroy

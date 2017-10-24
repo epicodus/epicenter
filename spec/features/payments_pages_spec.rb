@@ -1,13 +1,13 @@
 feature 'Viewing payment index page', :dont_stub_crm do
   scenario 'as a guest' do
-    student = FactoryGirl.create(:student)
+    student = FactoryBot.create(:student)
     visit student_payments_path(student)
     expect(page).to have_content 'need to sign in'
   end
 
   context 'as a student' do
     scenario "without a primary payment method" do
-      student = FactoryGirl.create(:user_with_all_documents_signed)
+      student = FactoryBot.create(:user_with_all_documents_signed)
       login_as(student, scope: :student)
       visit student_payments_path(student)
       expect(page).to have_content "Your payment methods"
@@ -15,8 +15,8 @@ feature 'Viewing payment index page', :dont_stub_crm do
 
     context "viewing another student's payments page", :stripe_mock do
       it "doesn't show payment history" do
-        student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card)
-        student_2 = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card)
+        student = FactoryBot.create(:user_with_all_documents_signed_and_credit_card)
+        student_2 = FactoryBot.create(:user_with_all_documents_signed_and_credit_card)
         login_as(student, scope: :student)
         visit student_payments_path(student_2)
         expect(page).to have_content "You are not authorized to access this page."
@@ -25,7 +25,7 @@ feature 'Viewing payment index page', :dont_stub_crm do
 
     context 'before any payments have been made', :stripe_mock do
       it "doesn't show payment history" do
-        student = FactoryGirl.create(:user_with_credit_card)
+        student = FactoryBot.create(:user_with_credit_card)
         login_as(student, scope: :student)
         visit student_payments_path(student)
         expect(page).to have_content "No payments have been made yet."
@@ -34,8 +34,8 @@ feature 'Viewing payment index page', :dont_stub_crm do
 
     context 'after a payment has been made with bank account', :vcr, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
-        student = FactoryGirl.create(:user_with_verified_bank_account, email: 'example@example.com')
-        FactoryGirl.create(:payment_with_bank_account, amount: 600_00, student: student)
+        student = FactoryBot.create(:user_with_verified_bank_account, email: 'example@example.com')
+        FactoryBot.create(:payment_with_bank_account, amount: 600_00, student: student)
         login_as(student, scope: :student)
         visit student_payments_path(student)
         expect(page).to have_content 600.00
@@ -46,8 +46,8 @@ feature 'Viewing payment index page', :dont_stub_crm do
 
     context 'after a payment has been made with credit card', :vcr, :stripe_mock, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
-        student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
-        FactoryGirl.create(:payment_with_credit_card, amount: 600_00, student: student)
+        student = FactoryBot.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
+        FactoryBot.create(:payment_with_credit_card, amount: 600_00, student: student)
         login_as(student, scope: :student)
         visit student_payments_path(student)
         expect(page).to have_content 618.21
@@ -58,8 +58,8 @@ feature 'Viewing payment index page', :dont_stub_crm do
 
     context 'with upfront payment due using a bank account', :vcr do
       it 'only shows a link to make an upfront payment with correct amount' do
-        plan = FactoryGirl.create(:upfront_payment_only_plan, upfront_amount: 200_00)
-        student = FactoryGirl.create(:user_with_verified_bank_account, email: 'example@example.com', plan: plan)
+        plan = FactoryBot.create(:upfront_payment_only_plan, upfront_amount: 200_00)
+        student = FactoryBot.create(:user_with_verified_bank_account, email: 'example@example.com', plan: plan)
         login_as(student, scope: :student)
         visit student_payments_path(student)
         expect(page).to have_button('Make upfront payment of $200.00')
@@ -68,8 +68,8 @@ feature 'Viewing payment index page', :dont_stub_crm do
 
     context 'with upfront payment due using a credit card', :stripe_mock do
       it 'only shows a link to make an upfront payment with correct amount' do
-        plan = FactoryGirl.create(:upfront_payment_only_plan, upfront_amount: 200_00)
-        student = FactoryGirl.create(:user_with_credit_card, plan: plan)
+        plan = FactoryBot.create(:upfront_payment_only_plan, upfront_amount: 200_00)
+        student = FactoryBot.create(:user_with_credit_card, plan: plan)
         login_as(student, scope: :student)
         visit student_payments_path(student)
         expect(page).to have_button('Make upfront payment of $206.27')
@@ -78,8 +78,8 @@ feature 'Viewing payment index page', :dont_stub_crm do
 
     describe 'sets category' do
       it 'sets category to upfront for first payment for student with 1 full-time course', :vcr, :stripe_mock, :stub_mailgun do
-        plan = FactoryGirl.create(:upfront_payment_only_plan, upfront_amount: 200_00)
-        student = FactoryGirl.create(:user_with_credit_card, plan: plan, email: 'example@example.com')
+        plan = FactoryBot.create(:upfront_payment_only_plan, upfront_amount: 200_00)
+        student = FactoryBot.create(:user_with_credit_card, plan: plan, email: 'example@example.com')
         login_as(student, scope: :student)
         visit student_payments_path(student)
         click_on 'Make upfront payment of $206.27'
@@ -87,8 +87,8 @@ feature 'Viewing payment index page', :dont_stub_crm do
       end
 
       it 'sets category to upfront for first payment for student with 1 part-time course', :vcr, :stripe_mock, :stub_mailgun do
-        plan = FactoryGirl.create(:upfront_payment_only_plan, upfront_amount: 200_00)
-        student = FactoryGirl.create(:part_time_student_with_payment_method, plan: plan, email: 'example@example.com')
+        plan = FactoryBot.create(:upfront_payment_only_plan, upfront_amount: 200_00)
+        student = FactoryBot.create(:part_time_student_with_payment_method, plan: plan, email: 'example@example.com')
         login_as(student, scope: :student)
         visit student_payments_path(student)
         click_on 'Make upfront payment of $206.27'
@@ -98,11 +98,11 @@ feature 'Viewing payment index page', :dont_stub_crm do
   end
 
   context 'as an admin' do
-    let(:admin) { FactoryGirl.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin) }
     before { login_as(admin, scope: :admin) }
 
     scenario "for a student without a primary payment method" do
-      student = FactoryGirl.create(:user_with_all_documents_signed)
+      student = FactoryBot.create(:user_with_all_documents_signed)
       visit student_payments_path(student)
       expect(page).to have_content "No payments have been made yet."
       expect(page).to have_content "No primary payment method has been selected"
@@ -110,7 +110,7 @@ feature 'Viewing payment index page', :dont_stub_crm do
 
     context 'before any payments have been made', :stripe_mock do
       it "doesn't show payment history" do
-        student = FactoryGirl.create(:user_with_credit_card)
+        student = FactoryBot.create(:user_with_credit_card)
         visit student_payments_path(student)
         expect(page).to have_content "No payments have been made yet."
       end
@@ -118,8 +118,8 @@ feature 'Viewing payment index page', :dont_stub_crm do
 
     context 'after a payment has been made with bank account', :vcr, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
-        student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
-        payment = FactoryGirl.create(:payment_with_bank_account, amount: 600_00, student: student)
+        student = FactoryBot.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
+        payment = FactoryBot.create(:payment_with_bank_account, amount: 600_00, student: student)
         visit student_payments_path(student)
         expect(page).to have_content 600.00
         expect(page).to have_content "Pending"
@@ -130,8 +130,8 @@ feature 'Viewing payment index page', :dont_stub_crm do
 
     context 'after a payment has been made with credit card', :vcr, :stripe_mock, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
-        student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
-        payment = FactoryGirl.create(:payment_with_credit_card, amount: 600_00, student: student)
+        student = FactoryBot.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
+        payment = FactoryBot.create(:payment_with_credit_card, amount: 600_00, student: student)
         visit student_payments_path(student)
         expect(page).to have_content 618.21
         expect(page).to have_content "Succeeded"
@@ -142,8 +142,8 @@ feature 'Viewing payment index page', :dont_stub_crm do
 
     context 'after a refund has been issued to a bank account payment', :vcr, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
-        student = FactoryGirl.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
-        payment = FactoryGirl.create(:payment_with_bank_account, amount: 600_00, student: student)
+        student = FactoryBot.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
+        payment = FactoryBot.create(:payment_with_bank_account, amount: 600_00, student: student)
         payment.update(refund_amount: 300_00)
         visit student_payments_path(student)
         expect(page).to have_content '$300.00'
@@ -152,8 +152,8 @@ feature 'Viewing payment index page', :dont_stub_crm do
 
     context 'after a refund has been issued to a credit card payment', :vcr, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
-        student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
-        payment = FactoryGirl.create(:payment_with_credit_card, amount: 600_00, student: student)
+        student = FactoryBot.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
+        payment = FactoryBot.create(:payment_with_credit_card, amount: 600_00, student: student)
         payment.update(refund_amount: 200_00)
         visit student_payments_path(student)
         expect(page).to have_content '$200.00'
@@ -162,8 +162,8 @@ feature 'Viewing payment index page', :dont_stub_crm do
 
     context 'after an offline refund has been issued', :vcr, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
-        student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
-        payment = FactoryGirl.create(:payment_with_credit_card, amount: -600_00, student: student, offline: true)
+        student = FactoryBot.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
+        payment = FactoryBot.create(:payment_with_credit_card, amount: -600_00, student: student, offline: true)
         visit student_payments_path(student)
         expect(page).to have_content '-$600.00'
         expect(page).to have_content 'offline refund'
@@ -173,9 +173,9 @@ feature 'Viewing payment index page', :dont_stub_crm do
 end
 
 feature 'issuing an offline refund as an admin', :stripe_mock do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed_and_credit_card) }
-  let!(:payment) { FactoryGirl.create(:payment_with_credit_card, amount: 100_00, student: student, offline: true) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed_and_credit_card) }
+  let!(:payment) { FactoryBot.create(:payment_with_credit_card, amount: 100_00, student: student, offline: true) }
 
   before { login_as(admin, scope: :admin) }
 
@@ -189,9 +189,9 @@ feature 'issuing an offline refund as an admin', :stripe_mock do
 end
 
 feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com') }
-  let!(:payment) { FactoryGirl.create(:payment_with_credit_card, amount: 100_00, student: student) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com') }
+  let!(:payment) { FactoryBot.create(:payment_with_credit_card, amount: 100_00, student: student) }
 
   before { login_as(admin, scope: :admin) }
 
@@ -236,8 +236,8 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
 end
 
 feature 'make a manual payment', :stripe_mock, :stub_mailgun do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com') }
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com') }
 
   before { login_as(admin, scope: :admin) }
 
@@ -253,7 +253,7 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
   end
 
   scenario 'successfully with multiple payment methods', :vcr do
-    other_payment_method = FactoryGirl.create(:bank_account, student: student)
+    other_payment_method = FactoryBot.create(:bank_account, student: student)
     visit student_payments_path(student)
     select other_payment_method.description
     fill_in 'payment_amount', with: 1765.24
@@ -301,13 +301,13 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
   end
 
   scenario 'with no primary payment method selected' do
-    student = FactoryGirl.create(:user_with_all_documents_signed)
+    student = FactoryBot.create(:user_with_all_documents_signed)
     visit student_payments_path(student)
     expect(page).to have_content 'No primary payment method has been selected'
   end
 
   scenario 'successfully with mismatching Epicenter and Close.io emails', :vcr do
-    student = FactoryGirl.create(:user_with_all_documents_signed_and_credit_card, email: 'wrong_email@test.com')
+    student = FactoryBot.create(:user_with_all_documents_signed_and_credit_card, email: 'wrong_email@test.com')
     visit student_payments_path(student)
     select student.primary_payment_method.description
     fill_in 'payment_amount', with: 1765.24
@@ -320,8 +320,8 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
 end
 
 feature 'make an offline payment', :stripe_mock, :js do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed_and_credit_card) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed_and_credit_card) }
 
   before { login_as(admin, scope: :admin) }
 

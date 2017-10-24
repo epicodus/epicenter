@@ -2,7 +2,7 @@ describe Company do
   it { should have_many :internships }
 
   describe "abilities" do
-    let(:company) { FactoryGirl.create(:company) }
+    let(:company) { FactoryBot.create(:company) }
     subject { Ability.new(company, '::1') }
 
     context 'for companies' do

@@ -6,14 +6,14 @@ feature 'creating a course' do
   end
 
   scenario 'as as a student' do
-    student = FactoryGirl.create(:user_with_all_documents_signed)
+    student = FactoryBot.create(:user_with_all_documents_signed)
     login_as(student, scope: :student)
     visit new_course_path
     expect(page).to have_content 'not authorized'
   end
 
   context 'as an admin' do
-    let(:admin) { FactoryGirl.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin) }
     before { login_as(admin, scope: :admin) }
 
     scenario 'navigation to course#new page', js: true do
@@ -46,8 +46,8 @@ feature 'creating a course' do
     end
 
     scenario 'cloned from another course' do
-      previous_course = FactoryGirl.create(:portland_ruby_course)
-      code_review = FactoryGirl.create(:code_review, course: previous_course)
+      previous_course = FactoryBot.create(:portland_ruby_course)
+      code_review = FactoryBot.create(:code_review, course: previous_course)
       visit new_course_path
       select admin.current_course.language.name, from: 'Language'
       select admin.current_course.office.name, from: 'Office'
@@ -64,7 +64,7 @@ feature 'creating a course' do
 end
 
 feature 'viewing courses' do
-  let(:student) { FactoryGirl.create(:student) }
+  let(:student) { FactoryBot.create(:student) }
 
   scenario 'as a student logged in' do
     login_as(student, scope: :student)
@@ -74,7 +74,7 @@ feature 'viewing courses' do
   end
 
   scenario 'as a student logged in, with a withdrawn course' do
-    future_course = FactoryGirl.create(:future_course)
+    future_course = FactoryBot.create(:future_course)
     Enrollment.create(student: student, course: future_course)
     Enrollment.find_by(student: student, course: future_course).destroy
     login_as(student, scope: :student)
@@ -89,7 +89,7 @@ feature 'viewing courses' do
 end
 
 feature 'editing a course' do
-  let(:course) { FactoryGirl.create(:internship_course) }
+  let(:course) { FactoryBot.create(:internship_course) }
 
   scenario 'not logged in' do
     visit edit_course_path(course)
@@ -97,14 +97,14 @@ feature 'editing a course' do
   end
 
   scenario 'as as a student' do
-    student = FactoryGirl.create(:user_with_all_documents_signed)
+    student = FactoryBot.create(:user_with_all_documents_signed)
     login_as(student, scope: :student)
     visit edit_course_path(course)
     expect(page).to have_content 'not authorized'
   end
 
   context 'as an admin' do
-    let(:admin) { FactoryGirl.create(:admin, current_course: course) }
+    let(:admin) { FactoryBot.create(:admin, current_course: course) }
     before { login_as(admin, scope: :admin) }
 
     scenario 'navigation to course#edit page' do
@@ -141,8 +141,8 @@ feature 'editing a course' do
 end
 
 feature 'visiting the course index page' do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
 
   scenario 'as an admin' do
     login_as(admin, scope: :admin)
@@ -159,10 +159,10 @@ feature 'visiting the course index page' do
 end
 
 feature 'selecting a new course manually' do
-  let(:admin) { FactoryGirl.create(:admin) }
+  let(:admin) { FactoryBot.create(:admin) }
 
   scenario 'as an admin' do
-    course2 = FactoryGirl.create(:internship_course)
+    course2 = FactoryBot.create(:internship_course)
     login_as(admin, scope: :admin)
     visit root_path
     click_on 'Courses'
@@ -173,8 +173,8 @@ feature 'selecting a new course manually' do
 end
 
 feature 'exporting course students emails to a file' do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
 
   context 'as an admin' do
     before { login_as(admin, scope: :admin) }
@@ -196,9 +196,9 @@ feature 'exporting course students emails to a file' do
 end
 
 feature 'exporting internship ratings to a file' do
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
-  let(:internship_course) { FactoryGirl.create(:internship_course) }
-  let(:admin) { FactoryGirl.create(:admin, current_course: internship_course) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+  let(:internship_course) { FactoryBot.create(:internship_course) }
+  let(:admin) { FactoryBot.create(:admin, current_course: internship_course) }
 
   context 'as an admin' do
     before { login_as(admin, scope: :admin) }

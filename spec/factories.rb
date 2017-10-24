@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :admin do
     sequence(:name) { |n| "Admin Brown #{n}" }
     sequence(:email) { |n| "admin#{n}@example.com" }
@@ -365,7 +365,7 @@ FactoryGirl.define do
     factory :passing_review do
       after(:build) do |review|
         review.submission.code_review.objectives.each do |objective|
-          FactoryGirl.create(:passing_grade, review: review, objective: objective)
+          FactoryBot.create(:passing_grade, review: review, objective: objective)
         end
       end
     end
@@ -373,7 +373,7 @@ FactoryGirl.define do
     factory :failing_review do
       after(:build) do |review|
         review.submission.code_review.objectives.each do |objective|
-          FactoryGirl.create(:failing_grade, review: review, objective: objective)
+          FactoryBot.create(:failing_grade, review: review, objective: objective)
         end
       end
     end
@@ -381,7 +381,7 @@ FactoryGirl.define do
     factory :in_between_review do
       after(:build) do |review|
         review.submission.code_review.objectives.each do |objective|
-          FactoryGirl.create(:in_between_grade, review: review, objective: objective)
+          FactoryBot.create(:in_between_grade, review: review, objective: objective)
         end
       end
     end

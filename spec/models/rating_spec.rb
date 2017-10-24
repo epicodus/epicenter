@@ -4,16 +4,16 @@ describe Rating do
   it { should validate_presence_of :number }
 
   describe "validations" do
-    subject { FactoryGirl.build(:rating) }
+    subject { FactoryBot.build(:rating) }
     it { should validate_uniqueness_of(:internship_id).scoped_to(:student_id) }
   end
 
   describe 'for' do
-    let(:student) { FactoryGirl.create(:student) }
-    let(:internship) { FactoryGirl.create(:internship, courses: [student.course]) }
+    let(:student) { FactoryBot.create(:student) }
+    let(:internship) { FactoryBot.create(:internship, courses: [student.course]) }
 
     it "returns the student's rating of the internship if it exists" do
-      rating = FactoryGirl.create(:rating, student: student, internship: internship)
+      rating = FactoryBot.create(:rating, student: student, internship: internship)
       expect(Rating.for(internship, student)).to eq rating
     end
 

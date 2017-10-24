@@ -8,7 +8,7 @@ describe InternshipAssignment do
   it { should validate_uniqueness_of(:student_id).scoped_to(:course_id) }
 
   describe '#for_internship' do
-    let(:internship_assignment) { FactoryGirl.create(:internship_assignment) }
+    let(:internship_assignment) { FactoryBot.create(:internship_assignment) }
 
     it 'returns the internship assignments for a particular internship' do
       expect(InternshipAssignment.for_internship(internship_assignment.internship)).to eq [internship_assignment]

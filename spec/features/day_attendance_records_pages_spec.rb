@@ -1,5 +1,5 @@
 feature 'visiting the day attendance records index page' do
-  let(:course) { FactoryGirl.create(:course) }
+  let(:course) { FactoryBot.create(:course) }
   let(:monday) { Time.zone.now.to_date.beginning_of_week }
 
   scenario 'as a guest' do
@@ -8,7 +8,7 @@ feature 'visiting the day attendance records index page' do
   end
 
   context 'as an admin' do
-    let(:admin) { FactoryGirl.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin) }
     before { login_as(admin, scope: :admin) }
 
     scenario 'can visit the page' do

@@ -1,8 +1,8 @@
 feature "creating an attendance record amendment" do
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
 
   context "as an admin" do
-    let(:admin) { FactoryGirl.create(:admin, current_course: student.course) }
+    let(:admin) { FactoryBot.create(:admin, current_course: student.course) }
 
     before do
       login_as(admin, scope: :admin)
@@ -44,7 +44,7 @@ feature "creating an attendance record amendment" do
     end
 
     scenario "changing pair to another student" do
-      pair = FactoryGirl.create(:student, courses: [student.course])
+      pair = FactoryBot.create(:student, courses: [student.course])
       visit new_attendance_record_amendment_path
       select student.name, from: "attendance_record_amendment_student_id"
       fill_in "attendance_record_amendment_date", with: student.course.start_date.strftime("%F")
@@ -57,8 +57,8 @@ feature "creating an attendance record amendment" do
     end
 
     scenario "adjusting existing attendance record pair only" do
-      pair = FactoryGirl.create(:student, courses: [student.course])
-      attendance_record = FactoryGirl.create(:attendance_record, student: student, date: student.course.start_date, tardy: true)
+      pair = FactoryBot.create(:student, courses: [student.course])
+      attendance_record = FactoryBot.create(:attendance_record, student: student, date: student.course.start_date, tardy: true)
       visit student_attendance_records_path(student)
       all('.edit-attendance').last.click_link('Edit')
       select pair.name, from: "Pair"
@@ -68,7 +68,7 @@ feature "creating an attendance record amendment" do
     end
 
     scenario "adjusting existing attendance record attendance status only" do
-      attendance_record = FactoryGirl.create(:attendance_record, student: student, date: student.course.start_date, tardy: true)
+      attendance_record = FactoryBot.create(:attendance_record, student: student, date: student.course.start_date, tardy: true)
       visit student_attendance_records_path(student)
       all('.edit-attendance').last.click_link('Edit')
       select "Tardy and Left early", from: "attendance_record_amendment_status"
@@ -77,7 +77,7 @@ feature "creating an attendance record amendment" do
     end
 
     scenario "deleting existing attendance record" do
-      attendance_record = FactoryGirl.create(:attendance_record, student: student, date: student.course.start_date, tardy: true)
+      attendance_record = FactoryBot.create(:attendance_record, student: student, date: student.course.start_date, tardy: true)
       visit student_attendance_records_path(student)
       all('.edit-attendance').last.click_link('Edit')
       select "Absent", from: "attendance_record_amendment_status"

@@ -4,7 +4,7 @@ describe AttendanceRecordAmendment do
   it { should validate_presence_of :status }
 
   describe '#save' do
-    let(:student) { FactoryGirl.create(:student) }
+    let(:student) { FactoryBot.create(:student) }
 
     it 'creates a new attendance record for the student if they did not have one for the given date' do
       attendance_record_amendment = AttendanceRecordAmendment.new(student_id: student.id, date: Time.zone.now.to_date, status: 'On time')
@@ -44,29 +44,29 @@ describe AttendanceRecordAmendment do
     end
 
     it 'updates the status if an attendance record alreads exists for the given day' do
-      FactoryGirl.create(:attendance_record, student: student, date: Time.zone.now.to_date, tardy: true)
+      FactoryBot.create(:attendance_record, student: student, date: Time.zone.now.to_date, tardy: true)
       attendance_record_amendment = AttendanceRecordAmendment.new(student_id: student.id, date: Time.zone.now.to_date, status: 'On time')
       attendance_record_amendment.save
       expect(student.attendance_records_for(:tardy)).to eq 0
     end
 
     it 'destroys an existing attendance record for the given date if the status is "Absent"' do
-      FactoryGirl.create(:attendance_record, student: student, date: Time.zone.now.to_date)
+      FactoryBot.create(:attendance_record, student: student, date: Time.zone.now.to_date)
       attendance_record_amendment = AttendanceRecordAmendment.new(student_id: student.id, date: Time.zone.now.to_date, status: 'Absent')
       attendance_record_amendment.save
       expect(student.attendance_records.count).to eq 0
     end
 
     it 'updates the pair_id to solo' do
-      FactoryGirl.create(:attendance_record, student: student, date: Time.zone.now.to_date, tardy: true)
+      FactoryBot.create(:attendance_record, student: student, date: Time.zone.now.to_date, tardy: true)
       attendance_record_amendment = AttendanceRecordAmendment.new(student_id: student.id, date: Time.zone.now.to_date, status: 'On time', pair_id: nil)
       attendance_record_amendment.save
       expect(AttendanceRecord.last.pair_id).to eq nil
     end
 
     it 'updates the pair_id to another student' do
-      pair = FactoryGirl.create(:student)
-      FactoryGirl.create(:attendance_record, student: student, date: Time.zone.now.to_date, tardy: true)
+      pair = FactoryBot.create(:student)
+      FactoryBot.create(:attendance_record, student: student, date: Time.zone.now.to_date, tardy: true)
       attendance_record_amendment = AttendanceRecordAmendment.new(student_id: student.id, date: Time.zone.now.to_date, status: 'On time', pair_id: pair.id)
       attendance_record_amendment.save
       expect(AttendanceRecord.last.pair_id).to eq pair.id

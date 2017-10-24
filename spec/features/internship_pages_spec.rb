@@ -1,7 +1,7 @@
 feature 'viewing the internships index page' do
   context 'as a student' do
-    let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
-    let!(:internship) { FactoryGirl.create(:internship, courses: [student.course]) }
+    let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+    let!(:internship) { FactoryBot.create(:internship, courses: [student.course]) }
     before { login_as(student, scope: :student) }
 
     scenario 'students cannot view the page' do
@@ -11,8 +11,8 @@ feature 'viewing the internships index page' do
   end
 
   context 'as an admin' do
-    let(:admin) { FactoryGirl.create(:admin) }
-    let!(:internship) { FactoryGirl.create(:internship) }
+    let(:admin) { FactoryBot.create(:admin) }
+    let!(:internship) { FactoryBot.create(:internship) }
     before { login_as(admin, scope: :admin) }
 
     scenario 'admins can see all the internships' do
@@ -23,10 +23,10 @@ feature 'viewing the internships index page' do
 end
 
 feature 'updating an internship' do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let!(:internship) { FactoryGirl.create(:internship) }
-  let(:company) { FactoryGirl.create(:company, internships: [internship]) }
-  let(:new_information) { FactoryGirl.build(:internship) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let!(:internship) { FactoryBot.create(:internship) }
+  let(:company) { FactoryBot.create(:company, internships: [internship]) }
+  let(:new_information) { FactoryBot.build(:internship) }
 
   context 'as an admin' do
     before { login_as(admin, scope: :admin) }
@@ -68,8 +68,8 @@ feature 'updating an internship' do
 end
 
 feature 'removing an internship from a particular session' do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let!(:internship) { FactoryGirl.create(:internship) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let!(:internship) { FactoryBot.create(:internship) }
   before { login_as(admin, scope: :admin) }
 
   scenario 'it deletes the record' do
@@ -81,9 +81,9 @@ end
 
 feature 'visiting the internships show page' do
   context 'as a student' do
-    let(:internship_course) { FactoryGirl.create(:internship_course) }
-    let(:student) { FactoryGirl.create(:user_with_all_documents_signed, courses: [internship_course]) }
-    let(:internship) { FactoryGirl.create(:internship, courses: [internship_course]) }
+    let(:internship_course) { FactoryBot.create(:internship_course) }
+    let(:student) { FactoryBot.create(:user_with_all_documents_signed, courses: [internship_course]) }
+    let(:internship) { FactoryBot.create(:internship, courses: [internship_course]) }
     before { login_as(student, scope: :student) }
 
     scenario 'students can view internship contact and details sections' do
@@ -106,40 +106,40 @@ feature 'visiting the internships show page' do
   end
 
   context 'as an admin' do
-    let(:admin) { FactoryGirl.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin) }
 
     before { login_as(admin, scope: :admin) }
 
     scenario 'you can navigate to the show page from the index' do
-      internship = FactoryGirl.create(:internship)
+      internship = FactoryBot.create(:internship)
       visit internships_path(active: true)
       click_link internship.name
       expect(page).to have_content internship.description
     end
 
     scenario 'clearance description is hidden if there is no clearance requirement' do
-      internship = FactoryGirl.create(:internship, clearance_required: false)
+      internship = FactoryBot.create(:internship, clearance_required: false)
       visit internships_path(active: true)
       click_link internship.name
       expect(page).to_not have_content 'Clearance description'
     end
 
     scenario 'clearance description is visible if there is a clearance requirement' do
-      internship = FactoryGirl.create(:internship)
+      internship = FactoryBot.create(:internship)
       visit internships_path(active: true)
       click_link internship.name
       expect(page).to have_content 'Clearance description'
     end
 
     scenario 'interview location is shown if field has been entered' do
-      internship = FactoryGirl.create(:internship, interview_location: "test location")
+      internship = FactoryBot.create(:internship, interview_location: "test location")
       visit internships_path(active: true)
       click_link internship.name
       expect(page).to have_content internship.interview_location
     end
 
     scenario 'company location is shown if interview location field has not been entered' do
-      internship = FactoryGirl.create(:internship)
+      internship = FactoryBot.create(:internship)
       visit internships_path(active: true)
       click_link internship.name
       expect(page).to have_content internship.address
@@ -148,11 +148,11 @@ feature 'visiting the internships show page' do
 end
 
 feature 'viewing internships before rankings are live' do
-  let(:internship_course) { FactoryGirl.create(:internship_course) }
-  let(:student) { FactoryGirl.create(:student, course: internship_course) }
+  let(:internship_course) { FactoryBot.create(:internship_course) }
+  let(:student) { FactoryBot.create(:student, course: internship_course) }
 
   scenario 'a student can rate an internship from the internships index page' do
-    internship = FactoryGirl.create(:internship, courses: [student.course])
+    internship = FactoryBot.create(:internship, courses: [student.course])
     login_as(student, scope: :student)
     visit course_student_path(student.course, student)
     expect(page).to have_content internship.name
@@ -161,11 +161,11 @@ feature 'viewing internships before rankings are live' do
 end
 
 feature 'rating an internship' do
-  let(:internship_course) { FactoryGirl.create(:internship_course, rankings_visible: true) }
-  let(:student) { FactoryGirl.create(:student, course: internship_course) }
+  let(:internship_course) { FactoryBot.create(:internship_course, rankings_visible: true) }
+  let(:student) { FactoryBot.create(:student, course: internship_course) }
 
   scenario 'a student can rate an internship from the internships index page', :js do
-    FactoryGirl.create(:internship, courses: [student.course])
+    FactoryBot.create(:internship, courses: [student.course])
     login_as(student, scope: :student)
     visit course_student_path(student.course, student)
     click_on "Save rankings", :match => :first
@@ -174,21 +174,21 @@ feature 'rating an internship' do
 end
 
 feature 'admin viewing students interested in an internship' do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:course) { FactoryGirl.create(:internship_course) }
-  let(:student) { FactoryGirl.create(:student, course: course) }
-  let(:internship) { FactoryGirl.create(:internship, courses: [student.course]) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:course) { FactoryBot.create(:internship_course) }
+  let(:student) { FactoryBot.create(:student, course: course) }
+  let(:internship) { FactoryBot.create(:internship, courses: [student.course]) }
   before { login_as(admin, scope: :admin) }
 
   context 'on an internship page' do
     scenario 'an admin can see students highly interested in that internship' do
-      FactoryGirl.create(:rating, number: '1', student: student, internship: internship)
+      FactoryBot.create(:rating, number: '1', student: student, internship: internship)
       visit course_internship_path(internship.courses.first, internship)
       expect(page).to have_content student.name
     end
 
     scenario "an admin can click on a student's name to view their internships page" do
-      FactoryGirl.create(:rating, interest: '3', student: student, internship: internship)
+      FactoryBot.create(:rating, interest: '3', student: student, internship: internship)
       visit course_internship_path(internship.courses.first, internship)
       click_link student.name
       expect(page).to have_content 'Internships'
@@ -197,10 +197,10 @@ feature 'admin viewing students interested in an internship' do
 end
 
 feature "admin viewing a student's internship page" do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:course) { FactoryGirl.create(:internship_course) }
-  let(:student) { FactoryGirl.create(:student, course: course) }
-  let!(:internship) { FactoryGirl.create(:internship, courses: [student.course]) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:course) { FactoryBot.create(:internship_course) }
+  let(:student) { FactoryBot.create(:student, course: course) }
+  let!(:internship) { FactoryBot.create(:internship, courses: [student.course]) }
   before { login_as(admin, scope: :admin) }
 
   scenario "an admin can see internships from that student's course" do

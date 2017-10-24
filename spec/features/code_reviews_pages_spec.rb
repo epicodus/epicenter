@@ -1,5 +1,5 @@
 feature 'viewing the code review index page' do
-  let!(:code_review) { FactoryGirl.create(:code_review) }
+  let!(:code_review) { FactoryBot.create(:code_review) }
 
   scenario 'as a guest' do
     visit course_path(code_review.course)
@@ -7,7 +7,7 @@ feature 'viewing the code review index page' do
   end
 
   context 'as a student' do
-    let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: code_review.course) }
+    let(:student) { FactoryBot.create(:user_with_all_documents_signed, course: code_review.course) }
     before { login_as(student, scope: :student) }
 
     scenario 'redirects the student to the root path' do
@@ -17,8 +17,8 @@ feature 'viewing the code review index page' do
   end
 
   context 'as an admin' do
-    let(:admin) { FactoryGirl.create(:admin) }
-    let(:code_review) { FactoryGirl.create(:code_review) }
+    let(:admin) { FactoryBot.create(:admin) }
+    let(:code_review) { FactoryBot.create(:code_review) }
 
     before { login_as(admin, scope: :admin) }
 
@@ -29,13 +29,13 @@ feature 'viewing the code review index page' do
     end
 
     scenario 'shows the number of submissions needing review for each code_review' do
-      FactoryGirl.create(:submission, code_review: code_review)
+      FactoryBot.create(:submission, code_review: code_review)
       visit course_path(code_review.course)
       expect(page).to have_content '1 new submission'
     end
 
     scenario 'admin clicks on number of submission badge and is taken to submissions index of that code_review' do
-      FactoryGirl.create(:submission, code_review: code_review)
+      FactoryBot.create(:submission, code_review: code_review)
       visit course_path(code_review.course)
       click_link '1 new submission'
       expect(page).to have_content "Submissions for #{code_review.title}"
@@ -47,7 +47,7 @@ feature 'viewing the code review index page' do
     end
 
     scenario 'changes lesson order' do
-      FactoryGirl.create(:code_review, course: code_review.course)
+      FactoryBot.create(:code_review, course: code_review.course)
       visit course_path(code_review.course)
       click_on 'Save order'
       expect(page).to have_content 'Order has been saved'
@@ -56,7 +56,7 @@ feature 'viewing the code review index page' do
 end
 
 feature 'visiting the code review show page' do
-  let(:code_review) { FactoryGirl.create(:code_review) }
+  let(:code_review) { FactoryBot.create(:code_review) }
 
   scenario 'as a guest' do
     visit course_code_review_path(code_review.course, code_review)
@@ -64,7 +64,7 @@ feature 'visiting the code review show page' do
   end
 
   context 'as an admin' do
-    let(:admin) { FactoryGirl.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin) }
     before do
       login_as(admin, scope: :admin)
       visit course_code_review_path(code_review.course, code_review)
@@ -86,7 +86,7 @@ feature 'visiting the code review show page' do
   end
 
   context 'as a student' do
-    let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: code_review.course) }
+    let(:student) { FactoryBot.create(:user_with_all_documents_signed, course: code_review.course) }
     before { login_as(student, scope: :student) }
     subject { page }
 
@@ -116,8 +116,8 @@ feature 'visiting the code review show page' do
     end
 
     it 'displays message after code review completed passing', :stub_mailgun do
-      submission = FactoryGirl.create(:submission, code_review: code_review, student: student)
-      FactoryGirl.create(:passing_review, submission: submission)
+      submission = FactoryBot.create(:submission, code_review: code_review, student: student)
+      FactoryBot.create(:passing_review, submission: submission)
       visit course_code_review_path(code_review.course, code_review)
       expect(page).to have_content "Completed successfully!"
     end
@@ -164,7 +164,7 @@ feature 'visiting the code review show page' do
 
     context 'after having submitted' do
       before do
-        FactoryGirl.create(:submission, code_review: code_review, student: student)
+        FactoryBot.create(:submission, code_review: code_review, student: student)
         visit course_code_review_path(code_review.course, code_review)
       end
 
@@ -174,8 +174,8 @@ feature 'visiting the code review show page' do
     end
 
     context 'after submission has been reviewed', :stub_mailgun do
-      let(:submission) { FactoryGirl.create(:submission, code_review: code_review, student: student) }
-      let!(:review) { FactoryGirl.create(:passing_review, submission: submission) }
+      let(:submission) { FactoryBot.create(:submission, code_review: code_review, student: student) }
+      let!(:review) { FactoryBot.create(:passing_review, submission: submission) }
 
       before { visit course_code_review_path(code_review.course, code_review) }
 
@@ -185,10 +185,10 @@ feature 'visiting the code review show page' do
     end
 
     context 'after resubmitting', :stub_mailgun do
-      let(:submission) { FactoryGirl.create(:submission, code_review: code_review, student: student) }
+      let(:submission) { FactoryBot.create(:submission, code_review: code_review, student: student) }
 
       before do
-        FactoryGirl.create(:passing_review, submission: submission)
+        FactoryBot.create(:passing_review, submission: submission)
         visit course_code_review_path(code_review.course, code_review)
       end
 
@@ -216,7 +216,7 @@ feature 'visiting the code review show page' do
 end
 
 feature 'creating a code review' do
-  let(:course) { FactoryGirl.create(:course) }
+  let(:course) { FactoryBot.create(:course) }
 
   scenario 'as a guest' do
     visit new_course_code_review_path(course)
@@ -224,8 +224,8 @@ feature 'creating a code review' do
   end
 
   context 'as an admin' do
-    let(:code_review) { FactoryGirl.build(:code_review) }
-    let(:admin) { FactoryGirl.create(:admin) }
+    let(:code_review) { FactoryBot.build(:code_review) }
+    let(:admin) { FactoryBot.create(:admin) }
 
     before do
       login_as(admin, scope: :admin)
@@ -267,7 +267,7 @@ feature 'creating a code review' do
   end
 
   context 'as a student' do
-    let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+    let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
 
     scenario 'you are not authorized' do
       login_as(student, scope: :student)
@@ -278,7 +278,7 @@ feature 'creating a code review' do
 end
 
 feature 'editing a code review' do
-  let(:code_review) { FactoryGirl.create(:code_review) }
+  let(:code_review) { FactoryBot.create(:code_review) }
 
   scenario 'as a guest' do
     visit edit_course_code_review_path(code_review.course, code_review)
@@ -286,7 +286,7 @@ feature 'editing a code review' do
   end
 
   context 'as an admin' do
-    let(:admin) { FactoryGirl.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin) }
 
     before do
       login_as(admin, scope: :admin)
@@ -326,7 +326,7 @@ feature 'editing a code review' do
   end
 
   context 'as a student' do
-    let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+    let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
 
     scenario 'you are not authorized' do
       login_as(student, scope: :student)
@@ -337,12 +337,12 @@ feature 'editing a code review' do
 end
 
 feature 'copying an existing code review' do
-  let(:admin) { FactoryGirl.create(:admin) }
+  let(:admin) { FactoryBot.create(:admin) }
 
   before { login_as(admin, scope: :admin) }
 
   scenario 'successful copy of code review' do
-    code_review = FactoryGirl.create(:code_review, course: admin.current_course)
+    code_review = FactoryBot.create(:code_review, course: admin.current_course)
     visit new_course_code_review_path(admin.current_course)
     select code_review.title, from: 'code_review_id'
     click_button 'Copy'
@@ -351,12 +351,12 @@ feature 'copying an existing code review' do
 end
 
 feature 'view the code reviews tab on the student show page' do
-  let(:course) { FactoryGirl.create(:course) }
-  let(:admin) { FactoryGirl.create(:admin, current_course: course) }
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, course: course) }
-  let!(:code_review) { FactoryGirl.create(:code_review, course: course) }
-  let!(:submission) { FactoryGirl.create(:submission, code_review: code_review, student: student) }
-  let!(:review) { FactoryGirl.create(:review, submission: submission) }
+  let(:course) { FactoryBot.create(:course) }
+  let(:admin) { FactoryBot.create(:admin, current_course: course) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed, course: course) }
+  let!(:code_review) { FactoryBot.create(:code_review, course: course) }
+  let!(:submission) { FactoryBot.create(:submission, code_review: code_review, student: student) }
+  let!(:review) { FactoryBot.create(:review, submission: submission) }
 
   before { login_as(admin, scope: :admin) }
 
@@ -373,8 +373,8 @@ feature 'view the code reviews tab on the student show page' do
 end
 
 feature 'deleting a code review' do
-  let(:admin) { FactoryGirl.create(:admin) }
-  let(:code_review) { FactoryGirl.create(:code_review) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:code_review) { FactoryBot.create(:code_review) }
 
   before { login_as(admin, scope: :admin) }
 
@@ -385,7 +385,7 @@ feature 'deleting a code review' do
   end
 
   scenario 'with existing submissions' do
-    FactoryGirl.create(:submission, code_review: code_review)
+    FactoryBot.create(:submission, code_review: code_review)
     visit course_code_review_path(code_review.course, code_review)
     click_link 'Delete'
     expect(page).to have_content "Cannot delete a code review with existing submissions."
@@ -393,14 +393,14 @@ feature 'deleting a code review' do
 end
 
 feature 'exporting code review submissions info to a file' do
-  let(:code_review) { FactoryGirl.create(:code_review) }
+  let(:code_review) { FactoryBot.create(:code_review) }
 
   context 'as an admin' do
-    let(:admin) { FactoryGirl.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin) }
     before { login_as(admin, scope: :admin) }
 
     scenario 'exports all submissions needing review from code review submissions needing review list' do
-      FactoryGirl.create(:submission, code_review: code_review)
+      FactoryBot.create(:submission, code_review: code_review)
       visit code_review_submissions_path(code_review)
       click_link 'export-btn'
       filename = Rails.root.join('tmp','students.txt')
@@ -408,7 +408,7 @@ feature 'exporting code review submissions info to a file' do
     end
 
     scenario 'exports all submissions from code review show page' do
-      FactoryGirl.create(:submission, code_review: code_review)
+      FactoryBot.create(:submission, code_review: code_review)
       visit course_code_review_path(code_review.course, code_review)
       click_link 'export-btn'
       filename = Rails.root.join('tmp','students.txt')
@@ -417,10 +417,10 @@ feature 'exporting code review submissions info to a file' do
   end
 
   context 'as a student' do
-    let(:student) { FactoryGirl.create(:user_with_all_documents_signed) }
+    let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
     before { login_as(student, scope: :student) }
     scenario 'without permission to export code review submissions' do
-      FactoryGirl.create(:submission, code_review: code_review)
+      FactoryBot.create(:submission, code_review: code_review)
       visit code_review_export_path(code_review)
       expect(page).to have_content "You are not authorized to access this page."
     end

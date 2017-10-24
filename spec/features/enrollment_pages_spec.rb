@@ -1,8 +1,8 @@
 feature 'adding another course for a student' do
-  let(:student) { FactoryGirl.create(:student) }
-  let!(:other_course) { FactoryGirl.create(:portland_ruby_course) }
-  let!(:other_student) { FactoryGirl.create(:student, sign_in_count: 1) }
-  let(:admin) { FactoryGirl.create(:admin) }
+  let(:student) { FactoryBot.create(:student) }
+  let!(:other_course) { FactoryBot.create(:portland_ruby_course) }
+  let!(:other_student) { FactoryBot.create(:student, sign_in_count: 1) }
+  let(:admin) { FactoryBot.create(:admin) }
 
   before { login_as(admin, scope: :admin) }
 
@@ -22,10 +22,10 @@ feature 'adding another course for a student' do
 end
 
 feature 'deleting a student' do
-  let(:course1) { FactoryGirl.create(:course) }
-  let(:course2) { FactoryGirl.create(:internship_course) }
-  let(:student) { FactoryGirl.create(:student, courses: [course1, course2]) }
-  let(:admin) { FactoryGirl.create(:admin) }
+  let(:course1) { FactoryBot.create(:course) }
+  let(:course2) { FactoryBot.create(:internship_course) }
+  let(:student) { FactoryBot.create(:student, courses: [course1, course2]) }
+  let(:admin) { FactoryBot.create(:admin) }
 
   before { login_as(admin, scope: :admin) }
 
@@ -37,10 +37,10 @@ feature 'deleting a student' do
 end
 
 feature 'deleting a course for a student' do
-  let(:course1) { FactoryGirl.create(:course) }
-  let(:course2) { FactoryGirl.create(:internship_course) }
-  let(:student) { FactoryGirl.create(:student, courses: [course1, course2]) }
-  let(:admin) { FactoryGirl.create(:admin) }
+  let(:course1) { FactoryBot.create(:course) }
+  let(:course2) { FactoryBot.create(:internship_course) }
+  let(:student) { FactoryBot.create(:student, courses: [course1, course2]) }
+  let(:admin) { FactoryBot.create(:admin) }
 
   before { login_as(admin, scope: :admin) }
 

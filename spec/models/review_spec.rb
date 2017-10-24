@@ -8,20 +8,20 @@ describe Review do
 
   describe 'on creation' do
     it 'updates the submission needs review to false', :stub_mailgun do
-      submission = FactoryGirl.create(:submission)
-      review = FactoryGirl.create(:passing_review, submission: submission)
+      submission = FactoryBot.create(:submission)
+      review = FactoryBot.create(:passing_review, submission: submission)
       expect(submission.needs_review).to eq false
     end
 
     it 'updates the submission review_status to pass', :stub_mailgun do
-      submission = FactoryGirl.create(:submission)
-      review = FactoryGirl.create(:passing_review, submission: submission)
+      submission = FactoryBot.create(:submission)
+      review = FactoryBot.create(:passing_review, submission: submission)
       expect(submission.review_status).to eq 'pass'
     end
 
     it 'updates the submission review_status to fail', :stub_mailgun do
-      submission = FactoryGirl.create(:submission)
-      review = FactoryGirl.create(:failing_review, submission: submission)
+      submission = FactoryBot.create(:submission)
+      review = FactoryBot.create(:failing_review, submission: submission)
       expect(submission.review_status).to eq 'fail'
     end
 
@@ -29,7 +29,7 @@ describe Review do
       mailgun_client = spy("mailgun client")
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
 
-      review = FactoryGirl.create(:review)
+      review = FactoryBot.create(:review)
       submission = review.submission
       student = submission.student
 
@@ -46,12 +46,12 @@ describe Review do
 
   describe '#meets_expectations?' do
     it "is true if the review's scores are all above 1", :stub_mailgun do
-      review = FactoryGirl.create(:passing_review)
+      review = FactoryBot.create(:passing_review)
       expect(review.meets_expectations?).to eq true
     end
 
     it "is false if any of the review's scores are 1", :stub_mailgun do
-      review = FactoryGirl.create(:failing_review)
+      review = FactoryBot.create(:failing_review)
       expect(review.meets_expectations?).to eq false
     end
   end

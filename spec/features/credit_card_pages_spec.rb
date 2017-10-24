@@ -6,7 +6,7 @@ feature 'Creating a credit card' do
 
   context 'as a student' do
     before do
-      student = FactoryGirl.create(:student)
+      student = FactoryBot.create(:student)
       login_as(student, scope: :student)
       visit new_credit_card_path
       fill_in 'name', with: student.name

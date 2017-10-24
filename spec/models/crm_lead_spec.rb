@@ -19,12 +19,12 @@ describe CrmLead, :dont_stub_crm do
 
   describe '#cohort', :vcr do
     it 'returns cohort for full-time student' do
-      cohort = FactoryGirl.create(:cohort, start_date: Date.parse('2000-01-03'))
+      cohort = FactoryBot.create(:cohort, start_date: Date.parse('2000-01-03'))
       expect(CrmLead.new('example@example.com').cohort).to eq cohort
     end
 
     it 'raises error if cohort does not exist in Epicenter' do
-      FactoryGirl.create(:track)
+      FactoryBot.create(:track)
       expect { CrmLead.new('example@example.com').cohort }.to raise_error(CrmError, "Cohort not found in Epicenter")
     end
 
@@ -35,26 +35,26 @@ describe CrmLead, :dont_stub_crm do
 
   describe '#first_course', :vcr do
     it 'for full-time student' do
-      cohort = FactoryGirl.create(:cohort, start_date: Date.parse('2000-01-03'))
+      cohort = FactoryBot.create(:cohort, start_date: Date.parse('2000-01-03'))
       expect(CrmLead.new('example@example.com').first_course).to eq cohort.courses.first
     end
 
     it 'for part-time student' do
-      course = FactoryGirl.create(:part_time_course, class_days: [Date.parse('2000-01-03')], office: FactoryGirl.create(:philadelphia_office))
+      course = FactoryBot.create(:part_time_course, class_days: [Date.parse('2000-01-03')], office: FactoryBot.create(:philadelphia_office))
       expect(CrmLead.new('example-part-time@example.com').first_course).to eq course
     end
 
     it 'raises error if course does not exist in Epicenter' do
-      FactoryGirl.create(:track)
+      FactoryBot.create(:track)
       expect { CrmLead.new('example-part-time@example.com').first_course }.to raise_error(CrmError, "Course not found in Epicenter")
     end
   end
 
   describe '#update_internship_class', :vcr do
-    let(:student) { FactoryGirl.create(:student, courses: []) }
+    let(:student) { FactoryBot.create(:student, courses: []) }
 
     it 'updates internship class field in CRM' do
-      internship_course = FactoryGirl.create(:internship_course)
+      internship_course = FactoryBot.create(:internship_course)
       location = internship_course.office.name
       location = 'PDX' if location == 'Portland'
       location = 'SEA' if location == 'Seattle'
@@ -70,7 +70,7 @@ describe CrmLead, :dont_stub_crm do
   end
 
   describe 'updating close.io when student email is updated' do
-    let(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: 'example@example.com') }
+    let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
     let(:contact_id) { close_io_client.list_leads('email:' + student.email).data.first.contacts.first.id }
 

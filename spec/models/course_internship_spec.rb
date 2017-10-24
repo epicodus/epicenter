@@ -4,8 +4,8 @@ describe CourseInternship do
 
   describe 'validations' do
     it 'validates uniqueness of internship_id to course_id' do
-      FactoryGirl.create(:internship)
-      FactoryGirl.create(:course)
+      FactoryBot.create(:internship)
+      FactoryBot.create(:course)
       should validate_uniqueness_of(:internship_id).scoped_to(:course_id)
     end
   end

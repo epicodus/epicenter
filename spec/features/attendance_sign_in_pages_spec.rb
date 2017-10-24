@@ -1,6 +1,6 @@
 feature "Portland student does attendance sign in" do
-  let(:student) { FactoryGirl.create(:portland_student_with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
-  let(:pair) { FactoryGirl.create(:portland_student_with_all_documents_signed, password: 'password2', password_confirmation: 'password2') }
+  let(:student) { FactoryBot.create(:portland_student_with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
+  let(:pair) { FactoryBot.create(:portland_student_with_all_documents_signed, password: 'password2', password_confirmation: 'password2') }
 
   def attendance_sign_in_solo
     visit sign_in_path
@@ -150,12 +150,12 @@ feature "Portland student does attendance sign in" do
       end
 
       it 'creates attendance records if one student has already signed in for the day' do
-        FactoryGirl.create(:attendance_record, student: student)
+        FactoryBot.create(:attendance_record, student: student)
         expect { attendance_sign_in_pair }.to change { AttendanceRecord.count }.by 1
       end
 
       it 'updates the pair id if one student has already signed in for the day' do
-        FactoryGirl.create(:attendance_record, student: student)
+        FactoryBot.create(:attendance_record, student: student)
         expect { attendance_sign_in_pair }.to change { AttendanceRecord.first.pair_id }.from(nil).to(pair.id)
       end
 
@@ -213,8 +213,8 @@ feature "Portland student does attendance sign in" do
 end
 
 feature "Philadelphia student does attendance sign in" do
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
-  let(:pair) { FactoryGirl.create(:user_with_all_documents_signed, password: 'password2', password_confirmation: 'password2') }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
+  let(:pair) { FactoryBot.create(:user_with_all_documents_signed, password: 'password2', password_confirmation: 'password2') }
 
   def attendance_sign_in_solo
     visit sign_in_path
@@ -376,12 +376,12 @@ feature "Philadelphia student does attendance sign in" do
       end
 
       it 'creates attendance records if one student has already signed in for the day' do
-        FactoryGirl.create(:attendance_record, student: student)
+        FactoryBot.create(:attendance_record, student: student)
         expect { attendance_sign_in_pair }.to change { AttendanceRecord.count }.by 1
       end
 
       it 'updates the pair id if one student has already signed in for the day' do
-        FactoryGirl.create(:attendance_record, student: student)
+        FactoryBot.create(:attendance_record, student: student)
         expect { attendance_sign_in_pair }.to change { AttendanceRecord.first.pair_id }.from(nil).to(pair.id)
       end
 

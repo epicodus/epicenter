@@ -1,6 +1,6 @@
 feature 'signing up as a company' do
-  let!(:course) { FactoryGirl.create(:internship_course) }
-  let!(:track) { FactoryGirl.create(:track) }
+  let!(:course) { FactoryBot.create(:internship_course) }
+  let!(:track) { FactoryBot.create(:track) }
 
   scenario 'successfully' do
     visit new_company_registration_path
@@ -83,9 +83,9 @@ feature 'signing up as a company' do
 end
 
 feature 'joining an internship course as a company' do
-  let(:company) { FactoryGirl.create(:company) }
-  let!(:internship) { FactoryGirl.create(:internship, company: company) }
-  let!(:other_internship_course) { FactoryGirl.create(:internship_course) }
+  let(:company) { FactoryBot.create(:company) }
+  let!(:internship) { FactoryBot.create(:internship, company: company) }
+  let!(:other_internship_course) { FactoryBot.create(:internship_course) }
 
   before do
     other_internship_course.update_columns(description: 'Other course')
@@ -101,8 +101,8 @@ feature 'joining an internship course as a company' do
 end
 
 feature 'signing in as a company' do
-  let(:internship) { FactoryGirl.create(:internship) }
-  let(:company) { FactoryGirl.create(:company, internships: [internship]) }
+  let(:internship) { FactoryBot.create(:internship) }
+  let(:company) { FactoryBot.create(:company, internships: [internship]) }
 
   scenario 'successfully' do
     visit root_path

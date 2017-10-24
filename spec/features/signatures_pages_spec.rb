@@ -1,5 +1,5 @@
 feature 'document signing for new students' do
-  let(:student) { FactoryGirl.create(:student) }
+  let(:student) { FactoryBot.create(:student) }
 
   before :each do
     login_as(student, scope: :student)

@@ -1,5 +1,5 @@
 feature 'Student edits their profile' do
-  let(:student) { FactoryGirl.create(:user_with_all_documents_signed, email: "example@example.com") }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: "example@example.com") }
   let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
 
   before do
