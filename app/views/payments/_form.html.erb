@@ -29,7 +29,7 @@
     <%= f.number_field :amount, { value: nil, class: 'form-control payment-refund-input', required: true, step: 0.01 } %>
     <%= f.hidden_field :student_id, value: @student.id %>
     <span class="input-group-btn">
-      <%= f.submit 'Manual payment', class: 'btn btn-warning payment-refund-button', data: { confirm: "Is the payment plan correct? #{@student.plan.short_name.try(:upcase)}" } %>
+      <%= f.submit 'Manual payment', class: 'btn btn-warning payment-refund-button', data: { confirm: "Is the payment plan correct? #{@student.plan.try(:short_name).try(:upcase)}" } %>
     </span>
   </div>
 <% end %>
