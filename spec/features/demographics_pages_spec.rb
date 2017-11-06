@@ -16,26 +16,46 @@ feature 'Submitting demographics info' do
       expect(page).to have_content "Demographics"
     end
 
-    scenario "can submit demographics form without filling it out", vcr: true do
+    scenario "can not submit demographics form without filling it out", vcr: true do
+      click_on 'Submit'
+      expect(page).to have_content "Please correct these problems"
+    end
+
+    scenario "can submit demographics form after filling out only required fields", vcr: true do
+      fill_in 'demographic_info_address', with: 'test address'
+      fill_in 'demographic_info_city', with: 'test city'
+      fill_in 'demographic_info_state', with: 'test state'
+      fill_in 'demographic_info_zip', with: 'test zip'
+      select 'United States of America', from: 'demographic_info_country'
+      fill_in 'demographic_info_birth_date', with: '01/01/2000'
+      choose 'demographic_info_disability_no'
+      choose 'demographic_info_veteran_no'
+      select 'GED', from: 'demographic_info_education'
       click_on 'Submit'
       expect(page).to have_content "Your payment methods"
     end
 
-    scenario "can submit demographics form after filling it out", vcr: true do
+    scenario "can submit demographics form after filling out required and optional fields", vcr: true do
+      fill_in 'demographic_info_address', with: 'test address'
+      fill_in 'demographic_info_city', with: 'test city'
+      fill_in 'demographic_info_state', with: 'test state'
+      fill_in 'demographic_info_zip', with: 'test zip'
+      select 'United States of America', from: 'demographic_info_country'
+      fill_in 'demographic_info_birth_date', with: '01/01/2000'
+      choose 'demographic_info_disability_no'
+      choose 'demographic_info_veteran_no'
+      select 'GED', from: 'demographic_info_education'
       check 'demographic_info_genders_female'
       check 'demographic_info_genders_non-binary'
-      fill_in 'demographic_info_age', with: '25'
-      select 'High school diploma or equivalent', from: 'demographic_info_education'
       fill_in 'demographic_info_job', with: 'test job'
       fill_in 'demographic_info_salary', with: '10000'
-      check 'Other'
-      choose 'demographic_info_veteran_no'
+      check 'Middle Eastern'
       click_on 'Submit'
       expect(page).to have_content "Your payment methods"
     end
 
     scenario "sees errors if enters invalid info" do
-      fill_in 'demographic_info_age', with: '-25'
+      fill_in 'demographic_info_birth_date', with: '01-01-99'
       click_on 'Submit'
       expect(page).to have_content "Please correct these problems"
     end

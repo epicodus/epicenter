@@ -639,4 +639,16 @@ FactoryBot.define do
     internship
     course
   end
+
+  factory :demographic_info do
+    address 'test address'
+    city 'portland'
+    state 'OR'
+    zip '90001'
+    country 'US'
+    birth_date '2000-01-01'
+    disability 'No'
+    veteran 'No'
+    education 'GED'
+  end
 end
