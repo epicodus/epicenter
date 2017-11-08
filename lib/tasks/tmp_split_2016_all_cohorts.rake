@@ -49,7 +49,7 @@ task :tmp_split_2016_all_cohorts => [:environment] do
       course = params[:course]
       cohort = student.courses.level(3).reorder(:start_date).last.cohorts.select {|cohort| !cohort.description.include?('ALL')}.first
       student.update(cohort: cohort)
-      student.crm_lead.update({ 'custom.Cohort': cohort.description })
+      # student.crm_lead.update({ 'custom.Cohort': cohort.description })
       file.puts "#{cohort.description } | #{course.description} | #{student.name}"
     end
   end
