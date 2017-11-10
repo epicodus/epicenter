@@ -3,20 +3,17 @@ desc "Set cohort for students formerly grouped together who dropped before level
   filename = File.join(Rails.root.join('tmp'), 'updated.txt')
   File.open(filename, 'w') do |file|
 
-    # update starting cohort based on courses (RUN ON HEROKU)
-    Student.where(starting_cohort_id: [22, 23, 24, 25, 26, 27]).where(cohort_id: nil).each do |student|
-      # starting_cohort set to ALL and dropped out so cohort blank
-      courses = student.courses_with_withdrawn.reorder(:start_date)
-      if courses.level(1).any?
-        track = Track.find_by('description like ?', '%' + courses.level(1).last.description.split.last + '%')
-        start_date = courses.first.start_date
-        office = courses.first.office
-        description = "#{start_date.strftime('%Y-%m')} #{track.description} #{office.name}"
-        cohort = Cohort.find_by(description: description, track: track, office: office, start_date: start_date)
-        if cohort
-          student.update(starting_cohort: cohort)
-          # student.crm_lead.update({ 'custom.Starting Cohort': cohort.description })
-          file.puts "#{student.name} | #{cohort.description}"
+    # # NOTE: Check for students with no internship course but cohort listed in Close
+    # # NOTE: (all 2016-ALL folks have already been properly adjusted now)
+    Student.all.each do |student|
+      if student.courses.fulltime_courses.any? && student.courses.level(4).empty? && student.cohort && student.courses.fulltime_courses.reorder(:start_date).first.start_date > Date.parse('2016-01-01')
+        status = student.crm_lead.status
+        if status.downcase.split.first == "dropped" || status.downcase.split.first == "expelled"
+          file.puts "#{student.name} | #{status} | #{student.starting_cohort.try(:description)} | #{student.cohort.description}"
+          student.courses.fulltime_courses.reorder(:start_date).each do |course|
+            file.puts "  #{course.description}"
+          end
+          file.puts ""
         end
       end
     end
