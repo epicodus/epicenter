@@ -55,21 +55,24 @@ describe Enrollment do
 
   describe 'sets starting and ending cohort' do
     let(:student) { FactoryBot.create(:student, courses: []) }
-    let(:past_cohort) { FactoryBot.create(:cohort, start_date: (Date.today - 1.year).beginning_of_week) }
-    let(:current_cohort) { FactoryBot.create(:cohort, start_date: Date.today.beginning_of_week) }
-    let(:future_cohort) { FactoryBot.create(:cohort, start_date: (Date.today + 1.year).beginning_of_week) }
+    let(:past_cohort) { FactoryBot.create(:cohort_internship_course, start_date: (Date.today - 1.year).beginning_of_week) }
+    let(:current_cohort) { FactoryBot.create(:cohort_internship_course, start_date: Date.today.beginning_of_week) }
+    let(:future_cohort) { FactoryBot.create(:cohort_internship_course, start_date: (Date.today + 1.year).beginning_of_week) }
     let(:part_time_course) { FactoryBot.create(:part_time_course) }
+    let(:non_internship_course) { FactoryBot.create(:course) }
 
     context 'adding new enrollments' do
       it 'updates starting & ending cohort when adding first course' do
+        allow_any_instance_of(CrmLead).to receive(:update_internship_class)
         expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Starting Cohort': current_cohort.description, 'custom.Cohort': current_cohort.description })
-        student.course = current_cohort.courses.first
+        student.course = current_cohort.courses.last
         expect(student.starting_cohort).to eq current_cohort
         expect(student.cohort).to eq current_cohort
       end
 
       it 'updates only starting cohort when adding second course from earlier cohort' do
         student.course = current_cohort.courses.first
+        allow_any_instance_of(CrmLead).to receive(:update_internship_class)
         expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Starting Cohort': past_cohort.description })
         student.course = past_cohort.courses.first
         expect(student.starting_cohort_id).to eq past_cohort.id
@@ -77,6 +80,7 @@ describe Enrollment do
 
       it 'updates only ending cohort when adding second course with later start date' do
         student.course = current_cohort.courses.first
+        allow_any_instance_of(CrmLead).to receive(:update_internship_class)
         expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort': current_cohort.description })
         student.course = future_cohort.courses.first
         expect(student.starting_cohort_id).to eq current_cohort.id
@@ -85,6 +89,12 @@ describe Enrollment do
       it 'does not update starting or ending cohort when adding part-time course' do
         expect_any_instance_of(CrmLead).to_not receive(:update)
         student.course = part_time_course
+        expect(student.starting_cohort_id).to eq nil
+      end
+
+      it 'does not update starting or ending cohort when adding non-internship course' do
+        expect_any_instance_of(CrmLead).to_not receive(:update)
+        student.course = non_internship_course
         expect(student.starting_cohort_id).to eq nil
       end
 
@@ -104,6 +114,7 @@ describe Enrollment do
       end
 
       it 'updates ending cohort only when just archiving enrollment' do
+        allow_any_instance_of(CrmLead).to receive(:update_internship_class)
         expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort': nil })
         student.enrollments.first.destroy
         expect(student.starting_cohort_id).to eq current_cohort.id
@@ -131,6 +142,15 @@ describe Enrollment do
         expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort': current_cohort.description })
         student.enrollments.find_by(course: future_course).really_destroy!
         expect(student.cohort_id).to eq current_cohort.id
+      end
+
+      it 'clears only ending cohort when removing last internship course' do
+        full_cohort_student = FactoryBot.create(:student_in_full_cohort)
+        full_cohort = full_cohort_student.cohort
+        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort': nil })
+        full_cohort_student.enrollments.find_by(course: full_cohort.courses.last).really_destroy!
+        expect(full_cohort_student.starting_cohort).to eq full_cohort
+        expect(full_cohort_student.cohort).to eq nil
       end
     end
   end

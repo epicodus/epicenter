@@ -30,7 +30,9 @@ class CrmLead
   end
 
   def update_internship_class(course)
-    if course
+    if course && course.description == "Internship Exempt"
+      description = "Internship Exempt"
+    elsif course
       location = course.office.name
       location = 'PDX' if location == 'Portland'
       location = 'SEA' if location == 'Seattle'

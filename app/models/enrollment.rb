@@ -36,12 +36,12 @@ private
   end
 
   def get_new_ending_cohort
-    return nil if student.courses.fulltime_courses.empty?
+    return nil if student.courses.internship_courses.empty?
     last_course = student.courses.fulltime_courses.order(:start_date).last
-    if last_course.cohorts.count > 1
-      student.courses.level(3).last.try(:cohorts).try(:first)
-    else
+    if last_course.cohorts.count == 1
       last_course.cohorts.first
+    else
+      student.courses.level(3).order(:start_date).last.try(:cohorts).try(:first)
     end
   end
 
@@ -50,7 +50,7 @@ private
   end
 
   def remove_internship_class_in_crm
-    fallback_internship_course = (student.courses.internship_courses - [course]).last
+    fallback_internship_course = (student.courses.internship_courses.order(:start_date) - [course]).last
     student.crm_lead.update_internship_class(fallback_internship_course)
   end
 
