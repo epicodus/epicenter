@@ -167,6 +167,14 @@ FactoryBot.define do
       cohort.admin.current_course = cohort.courses.first
     end
 
+    factory :cohort_internship_course do
+      before(:create) do |cohort|
+        course = cohort.courses.first
+        course.internship_course = true
+        course.save
+      end
+    end
+
     factory :full_cohort do
       before(:create) do |cohort|
         cohort.courses << build(:level1_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week + 5.weeks, cohort.start_date.beginning_of_week + 9.weeks + 3.days])
@@ -577,6 +585,14 @@ FactoryBot.define do
         submission = create(:submission, student: student)
         review = create(:passing_review, submission: submission)
         create(:passing_grade, review: review, objective: review.submission.code_review.objectives.first)
+      end
+    end
+
+    factory :student_in_full_cohort do
+      before(:create) do |student|
+        full_cohort = create(:full_cohort)
+        student.courses = []
+        full_cohort.courses.each { |course| student.courses << course }
       end
     end
   end
