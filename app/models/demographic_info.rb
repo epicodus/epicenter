@@ -6,6 +6,7 @@ class DemographicInfo
   GENDER_OPTIONS = ["Female", "Male", "Non-binary", "Transgender", "Other"]
   RACE_OPTIONS = ["Asian or Asian American", "American Indian or Alaska Native", "Black or African American", "Hispanic or Latino", "Middle Eastern", "Native Hawaiian or Other Pacific Islander", "White", "Other"]
   EDUCATION_OPTIONS = ["less than high school diploma", "GED", "high school diploma", "some post high school but no degree or certificate", "certificate (less than 2 years)", "associate's degree", "bachelor's degree", "master's degree", "doctoral degree or above", "other"]
+  SHIRT_OPTIONS = ["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"]
 
   before_validation :nil_if_blank
 
@@ -19,12 +20,13 @@ class DemographicInfo
   validates_inclusion_of :disability, in: ["Yes", "No"]
   validates_inclusion_of :veteran, in: ["Yes", "No"]
   validates_inclusion_of :education, in: EDUCATION_OPTIONS
+  validates_inclusion_of :shirt, in: SHIRT_OPTIONS
   validates_numericality_of :salary, greater_than_or_equal_to: 0, allow_nil: true
   validates_length_of :job, maximum: 35, allow_nil: true
   validate :check_array_genders, if: ->(demographic_info) { demographic_info.genders.present? }
   validate :check_array_races, if: ->(demographic_info) { demographic_info.races.present? }
 
-  attr_accessor :student, :birth_date, :disability, :veteran, :education, :address, :city, :state, :zip, :country, :job, :salary, :genders, :races
+  attr_accessor :student, :birth_date, :disability, :veteran, :education, :address, :city, :state, :zip, :country, :shirt, :job, :salary, :genders, :races
 
   def initialize(student = nil, attributes = {})
     @student = student
@@ -37,6 +39,7 @@ class DemographicInfo
     @state = attributes[:state]
     @zip = attributes[:zip]
     @country = attributes[:country]
+    @shirt = attributes[:shirt]
     @salary = attributes[:salary]
     @job = attributes[:job]
     @genders = attributes[:genders]
@@ -53,6 +56,7 @@ class DemographicInfo
       fields['custom.Demographics - Education'] = @education
       fields['custom.Demographics - Previous job'] = @job
       fields['custom.Demographics - Previous salary'] = @salary
+      fields['custom.Demographics - Shirt size'] = @shirt
       fields['custom.Demographics - Gender'] = @genders.join(", ") if @genders
       fields['custom.Demographics - Race'] = @races.join(", ") if @races
       fields = fields.compact
