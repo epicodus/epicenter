@@ -3,7 +3,7 @@
     <%= render 'layouts/errors', object: @demographic_info %>
 
     <div class="well">
-      <h4 class="text-center"><strong>Government-required information</strong></h4>
+      <h4 class="text-center"><strong>Required information</strong></h4>
       <hr>
       <div class="form-group">
         <%= f.label :address, "What's your address?" %>
@@ -35,6 +35,10 @@
       <div class="form-group">
         <%= f.label :education, "What is your highest level of prior education?" %>
         <%= f.select :education, options_for_select(DemographicInfo::EDUCATION_OPTIONS), include_blank: true, required: true %>
+      </div>
+      <div class="form-group">
+        <%= f.label :shirt, "What is your t-shirt size?" %>
+        <%= f.select :shirt, options_for_select(DemographicInfo::SHIRT_OPTIONS), include_blank: true, required: true %>
       </div>
     </div>
 

@@ -666,5 +666,6 @@ FactoryBot.define do
     disability 'No'
     veteran 'No'
     education 'GED'
+    shirt 'S'
   end
 end

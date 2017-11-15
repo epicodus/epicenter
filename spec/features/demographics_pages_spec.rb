@@ -31,6 +31,7 @@ feature 'Submitting demographics info' do
       choose 'demographic_info_disability_no'
       choose 'demographic_info_veteran_no'
       select 'GED', from: 'demographic_info_education'
+      select 'S', from: 'demographic_info_shirt'
       click_on 'Submit'
       expect(page).to have_content "Your payment methods"
     end
@@ -45,6 +46,7 @@ feature 'Submitting demographics info' do
       choose 'demographic_info_disability_no'
       choose 'demographic_info_veteran_no'
       select 'GED', from: 'demographic_info_education'
+      select 'S', from: 'demographic_info_shirt'
       check 'demographic_info_genders_female'
       check 'demographic_info_genders_non-binary'
       fill_in 'demographic_info_job', with: 'test job'

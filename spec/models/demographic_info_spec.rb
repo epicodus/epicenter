@@ -51,6 +51,11 @@ describe DemographicInfo do
     expect(demographic_info).to_not be_valid
   end
 
+  it 'validates that shirt size input is included in list' do
+    demographic_info = DemographicInfo.new(nil, {shirt: "not in list"})
+    expect(demographic_info).to_not be_valid
+  end
+
   describe 'updating close.io with demographics info' do
     let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
@@ -62,7 +67,7 @@ describe DemographicInfo do
 
     it 'updates the record successfully', :vcr, :dont_stub_crm do
       demographic_info = FactoryBot.build(:demographic_info, :genders=>["Female"], :job=>"test occupation", :salary=>15000, :races=>["Asian or Asian American"], student: student)
-      expect(close_io_client).to receive(:update_lead).with(lead_id, {'custom.Demographics - Gender' => demographic_info.genders.join(", "), 'custom.Demographics - Birth date' => demographic_info.birth_date, 'custom.Demographics - Education' => demographic_info.education, 'custom.Demographics - Previous job' => demographic_info.job, 'custom.Demographics - Previous salary' => demographic_info.salary, 'custom.Demographics - Race' => demographic_info.races.join(', '), 'custom.Demographics - Veteran' => demographic_info.veteran, 'custom.Demographics - Disability' => demographic_info.disability, "addresses"=> [{:label => "mailing", :address_1 => demographic_info.address, :city => demographic_info.city, :state => demographic_info.state, :zipcode => demographic_info.zip, :country => demographic_info.country}]})
+      expect(close_io_client).to receive(:update_lead).with(lead_id, {'custom.Demographics - Gender' => demographic_info.genders.join(", "), 'custom.Demographics - Birth date' => demographic_info.birth_date, 'custom.Demographics - Education' => demographic_info.education, 'custom.Demographics - Shirt size' => demographic_info.shirt, 'custom.Demographics - Previous job' => demographic_info.job, 'custom.Demographics - Previous salary' => demographic_info.salary, 'custom.Demographics - Race' => demographic_info.races.join(', '), 'custom.Demographics - Veteran' => demographic_info.veteran, 'custom.Demographics - Disability' => demographic_info.disability, "addresses"=> [{:label => "mailing", :address_1 => demographic_info.address, :city => demographic_info.city, :state => demographic_info.state, :zipcode => demographic_info.zip, :country => demographic_info.country}]})
       demographic_info.save
     end
   end
