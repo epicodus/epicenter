@@ -11,8 +11,8 @@ class Cohort < ApplicationRecord
   belongs_to :track
   belongs_to :admin
 
-  before_create :set_description, if: ->(cohort) { cohort.description.blank? }
   after_create :find_or_create_courses, if: ->(cohort) { cohort.courses.empty? }
+  after_create :set_description, if: ->(cohort) { cohort.description.blank? }
 
   def self.cohorts_for(office)
     includes(:office).where(offices: { name: office.name })
@@ -32,15 +32,21 @@ class Cohort < ApplicationRecord
   end
 
   def find_or_create_courses
-    next_course_start_date = start_date
-    5.times do |level|
-      course = Course.find_or_create_by({ language: track.languages.find_by(level: level), start_date: skip_holidays(next_course_start_date), office: office, track: track, start_time: '8:00 AM', end_time: '5:00 PM' }) do |course|
-        course.admin = admin
-        course.active = false if level == 4
-        course.save
-      end
-      next_course_start_date = course.end_date.next_week
+    if track.description == 'Part-time'
+      course = Course.find_or_create_by({ language: track.languages.first, start_date: start_date, office: office, track: track, start_time: '6:00 PM', end_time: '9:00 PM' })
+      course.admin = course.admin || admin
       self.courses << course
+    else
+      next_course_start_date = start_date
+      5.times do |level|
+        course = Course.find_or_create_by({ language: track.languages.find_by(level: level), start_date: skip_holidays(next_course_start_date), office: office, track: track, start_time: '8:00 AM', end_time: '5:00 PM' }) do |course|
+          course.admin = admin
+          course.active = false if level == 4
+          course.save
+        end
+        next_course_start_date = course.end_date.next_week
+        self.courses << course
+      end
     end
   end
 
@@ -57,6 +63,8 @@ private
   end
 
   def set_description
-    self.description = "#{start_date.strftime('%Y-%m')} #{track.description} #{office.name}"
+    description = "#{start_date.strftime('%Y-%m')} #{office.short_name} #{track.description} (#{start_date.strftime('%b %-d')} - #{end_date.strftime('%b %-d')})"
+    description = "PT: " + description if track.description == 'Part-time'
+    update(description: description)
   end
 end

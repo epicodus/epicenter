@@ -33,10 +33,7 @@ class CrmLead
     if course && course.description == "Internship Exempt"
       description = "Internship Exempt"
     elsif course
-      location = course.office.name
-      location = 'PDX' if location == 'Portland'
-      location = 'SEA' if location == 'Seattle'
-      description = "#{location} #{course.description.split.first} #{course.start_date.strftime('%b %-d')} - #{course.end_date.strftime('%b %-d')}"
+      description = "#{course.office.short_name} #{course.description.split.first} #{course.start_date.strftime('%b %-d')} - #{course.end_date.strftime('%b %-d')}"
     else
       description = nil
     end
@@ -70,27 +67,33 @@ private
     raise_error("Invalid email address.") if crm_response['field-errors']
   end
 
-  def what_class_are_you_interested_in
-    lead.try(:custom).try('What class are you interested in?') || raise_error("What class are you interested in not found in CRM")
+  def cohort_applied
+    cohort = lead.try(:custom).try('Cohort - Applied')
+    if cohort.nil? || cohort.include?('Legacy') || cohort.include?('A later class')
+      raise_error("Cohort - Applied not found in CRM")
+    else
+      cohort.split(': ').last
+    end
   end
 
   def office
-    Office.find_by(name: what_class_are_you_interested_in.split[1])
-  end
-
-  def start_date
-    year = what_class_are_you_interested_in.split[0].to_i
-    month = Date::MONTHNAMES.index(what_class_are_you_interested_in.split[2])
-    day = what_class_are_you_interested_in.split[3].to_i
-    Time.new(year, month, day).to_date
-  end
-
-  def parttime?
-    what_class_are_you_interested_in.downcase.include?('part-time')
+    Office.find_by(short_name: cohort_applied.split[1])
   end
 
   def track
-    Track.find_by(description: what_class_are_you_interested_in.split(': ').last.split(' ').first) || raise_error("Track not found in Epicenter") unless parttime?
+    Track.find_by(description: cohort_applied.split[2]) || raise_error("Track not found in Epicenter")
+  end
+
+  def parttime?
+    cohort_applied.include? 'Part-time'
+  end
+
+  def start_date
+    year = cohort_applied.split[0].to_i
+    start_section = cohort_applied.split(' - ').first.split('(').last
+    month = Date::ABBR_MONTHNAMES.index(start_section.split.first)
+    day = start_section.split.last.to_i
+    Time.new(year, month, day).to_date
   end
 
   def raise_error(message)

@@ -55,10 +55,7 @@ describe CrmLead, :dont_stub_crm do
 
     it 'updates internship class field in CRM' do
       internship_course = FactoryBot.create(:internship_course)
-      location = internship_course.office.name
-      location = 'PDX' if location == 'Portland'
-      location = 'SEA' if location == 'Seattle'
-      description = "#{location} #{internship_course.description.split.first} #{internship_course.start_date.strftime('%b %-d')} - #{internship_course.end_date.strftime('%b %-d')}"
+      description = "#{internship_course.office.short_name} #{internship_course.description.split.first} #{internship_course.start_date.strftime('%b %-d')} - #{internship_course.end_date.strftime('%b %-d')}"
       expect_any_instance_of(CrmLead).to receive(:update).with({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => description })
       student.crm_lead.update_internship_class(internship_course)
     end
