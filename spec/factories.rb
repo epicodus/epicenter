@@ -155,7 +155,7 @@ FactoryBot.define do
   end
 
   factory :cohort do
-    description 'a cohort'
+    description '2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)'
     start_date Time.new(2016, 1, 4).to_date
     association :office, factory: :philadelphia_office
     association :track, factory: :track
@@ -200,16 +200,19 @@ FactoryBot.define do
   factory :office do
     factory :portland_office do
       name 'Portland'
+      short_name 'PDX'
       time_zone 'Pacific Time (US & Canada)'
     end
 
     factory :seattle_office do
       name 'Seattle'
+      short_name 'SEA'
       time_zone 'Pacific Time (US & Canada)'
     end
 
     factory :philadelphia_office do
       name 'Philadelphia'
+      short_name 'PHL'
       time_zone 'Eastern Time (US & Canada)'
     end
   end

@@ -18,15 +18,15 @@ private
 
   def update_cohort
     new_starting_cohort = get_new_starting_cohort
-    new_ending_cohort = get_new_ending_cohort
+    new_current_cohort = get_new_current_cohort
     crm_update = {}
     if student.starting_cohort != new_starting_cohort
       student.update(starting_cohort: new_starting_cohort)
-      crm_update = crm_update.merge({ 'custom.Starting Cohort': new_starting_cohort.try(:description) })
+      crm_update = crm_update.merge({ 'custom.Cohort - Starting': new_starting_cohort.try(:description) })
     end
-    if student.cohort != new_ending_cohort
-      student.update(cohort: new_ending_cohort)
-      crm_update = crm_update.merge({ 'custom.Cohort': new_ending_cohort.try(:description) })
+    if student.cohort != new_current_cohort
+      student.update(cohort: new_current_cohort)
+      crm_update = crm_update.merge({ 'custom.Cohort - Current': new_current_cohort.try(:description) })
     end
     student.crm_lead.update(crm_update) if crm_update.present?
   end
@@ -35,7 +35,7 @@ private
     student.courses_with_withdrawn.fulltime_courses.first.try(:cohorts).try(:first)
   end
 
-  def get_new_ending_cohort
+  def get_new_current_cohort
     return nil if student.courses.internship_courses.empty?
     last_course = student.courses.fulltime_courses.order(:start_date).last
     if last_course.cohorts.count == 1

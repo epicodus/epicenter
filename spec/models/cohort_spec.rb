@@ -56,7 +56,7 @@ describe Cohort do
 
     it 'creates a cohort when classes already exist' do
       cohort = Cohort.create(track: intro.track, admin: intro.admin, office: intro.office, start_date: intro.start_date)
-      expect(cohort.description).to eq "#{intro.start_date.strftime('%Y-%m')} #{intro.track.description} #{intro.office.name}"
+      expect(cohort.description).to eq "#{intro.start_date.strftime('%Y-%m')} #{intro.office.short_name} #{intro.track.description} (#{intro.start_date.strftime('%b %-d')} - #{internship.end_date.strftime('%b %-d')})"
       expect(cohort.office).to eq intro.office
       expect(cohort.track).to eq intro.track
       expect(cohort.admin).to eq intro.admin
@@ -76,7 +76,7 @@ describe Cohort do
 
     it 'creates a cohort when classes do not yet exist' do
       cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-13'))
-      expect(cohort.description).to eq "2017-03 #{track.description} #{office.name}"
+      expect(cohort.description).to eq "2017-03 #{office.short_name} #{track.description} (Mar 13 - Sep 15)"
       expect(cohort.office).to eq office
       expect(cohort.track).to eq track
       expect(cohort.admin).to eq admin
@@ -98,7 +98,7 @@ describe Cohort do
 
     it 'creates a cohort when some but not all classes already exist' do
       cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-13'))
-      expect(cohort.description).to eq "2017-03 #{track.description} #{office.name}"
+      expect(cohort.description).to eq "2017-03 #{office.short_name} #{track.description} (Mar 13 - Sep 15)"
       expect(cohort.office).to eq office
       expect(cohort.track).to eq track
       expect(cohort.admin).to eq admin
