@@ -62,7 +62,7 @@ class Student < User
   end
 
   def courses_with_withdrawn
-    course_ids = enrollments.with_deleted.map {|enrollment| enrollment.course.id }
+    course_ids = enrollments.with_deleted.map {|enrollment| enrollment.course.try(:id) }
     Course.where(id: course_ids).order(:start_date)
   end
 
