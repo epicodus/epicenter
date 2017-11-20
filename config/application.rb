@@ -24,5 +24,8 @@ module Epicenter
     # config.i18n.default_locale = :de
 
     Rails.application.routes.default_url_options[:host] = 'https://epicenter.epicodus.com'
+
+    # config.active_job.queue_adapter     = :resque
+    # config.active_job.queue_name_prefix = "epicenter_#{Rails.env}"
   end
 end

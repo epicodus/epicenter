@@ -77,8 +77,7 @@ private
   end
 
   def send_refund_receipt
-    EmailClient.create.send_message(
-      ENV['MAILGUN_DOMAIN'],
+    EmailClient.create.send_message( ENV['MAILGUN_DOMAIN'],
       { :from => ENV['FROM_EMAIL_PAYMENT'],
         :to => student.email,
         :bcc => ENV['FROM_EMAIL_PAYMENT'],
@@ -88,8 +87,7 @@ private
   end
 
   def send_payment_receipt
-    EmailClient.create.send_message(
-      ENV['MAILGUN_DOMAIN'],
+    EmailClient.create.send_message( ENV['MAILGUN_DOMAIN'],
       { :from => ENV['FROM_EMAIL_PAYMENT'],
         :to => student.email,
         :bcc => ENV['FROM_EMAIL_PAYMENT'],
@@ -99,8 +97,7 @@ private
   end
 
   def send_payment_failure_notice
-    EmailClient.create.send_message(
-      ENV['MAILGUN_DOMAIN'],
+    EmailClient.create.send_message( ENV['MAILGUN_DOMAIN'], 
       { :from => ENV['FROM_EMAIL_PAYMENT'],
         :to => student.email,
         :bcc => ENV['FROM_EMAIL_PAYMENT'],

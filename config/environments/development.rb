@@ -65,4 +65,6 @@ Rails.application.configure do
     Bullet.rails_logger = true
     EmailClient.enable_test_mode
   end
+
+  config.active_job.queue_adapter = :resque
 end

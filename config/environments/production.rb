@@ -98,4 +98,6 @@ Rails.application.configure do
     :authentication => :plain,
   }
   config.action_mailer.delivery_method = :smtp
+
+  config.active_job.queue_adapter = :resque
 end
