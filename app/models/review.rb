@@ -29,8 +29,7 @@ private
   end
 
   def email_student
-    EmailClient.create.send_message(
-      ENV['MAILGUN_DOMAIN'],
+    EmailClient.create.send_message( ENV['MAILGUN_DOMAIN'], 
       { :from => ENV['FROM_EMAIL_REVIEW'],
         :to => student.email,
         :subject => "Code review reviewed",

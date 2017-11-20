@@ -76,21 +76,16 @@ describe CrmLead, :dont_stub_crm do
     end
 
     it 'updates the record successfully', :vcr do
-      allow(close_io_client).to receive(:update_contact).and_return({})
+      allow_any_instance_of(Closeio::Client).to receive(:update_contact).and_return({})
       old_entry = Hashie::Mash.new({ type: "office", email: student.email })
       new_entry = Hashie::Mash.new({ type: "office", email: "second-email@example.com" })
-      expect(close_io_client).to receive(:update_contact).with(contact_id, { 'emails': [new_entry, old_entry] })
+      expect_any_instance_of(Closeio::Client).to receive(:update_contact).with(contact_id, { 'emails': [new_entry, old_entry] })
       student.crm_lead.update(email: new_entry.email)
     end
 
     it 'does not update the record when the email is not found', :vcr do
       student.update(email: "no_close_entry@example.com")
       expect { student.crm_lead.update(email: "second-email@example.com") }.to raise_error(CrmError, "The Close.io lead for #{student.email} was not found.")
-    end
-
-    it 'raises an error when the new email is invalid', :vcr do
-      allow(close_io_client).to receive(:update_contact).and_return({"errors"=>[], "field-errors"=>{"emails"=>{"errors"=>{"0"=>{"errors"=>[], "field-errors"=>{"email"=>"Invalid email address."}}}}}})
-      expect { student.crm_lead.update(email: "invalid@invalid") }.to raise_error(CrmError, 'Invalid email address.')
     end
   end
 end

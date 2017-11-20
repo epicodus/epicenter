@@ -221,7 +221,7 @@ describe Student do
       FactoryBot.create(:completed_refund_policy, student: student)
       FactoryBot.create(:completed_enrollment_agreement, student: student)
       allow(student).to receive(:total_paid).and_return(340000)
-      expect(close_io_client).to receive(:update_lead).with(lead_id, { status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 })
+      expect_any_instance_of(Closeio::Client).to receive(:update_lead).with(lead_id, { status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 })
       student.crm_lead.update({ status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 })
     end
 

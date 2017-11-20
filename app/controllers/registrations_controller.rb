@@ -10,10 +10,10 @@ class RegistrationsController < Devise::RegistrationsController
 
   def update
     if current_student && params[:student][:email] != current_student.email && current_student.valid_password?(params[:student][:current_password])
-      begin
+      if params[:student][:email].match(/\A(\S+)@(.+)\.(\S+)\z/)
         current_student.crm_lead.update(email: params[:student][:email])
-      rescue CrmError => e
-        redirect_to edit_student_registration_path, alert: e.message and return
+      else
+        redirect_to edit_student_registration_path, alert: "Invalid email address." and return
       end
     end
     super

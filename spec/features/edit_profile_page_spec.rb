@@ -29,14 +29,6 @@ feature 'Student edits their profile' do
       click_on 'Update'
       expect(page).to have_content "Invalid email address."
     end
-
-    it "does not update email if existing address not found in Close", :vcr do
-      student.update(email: "no_close_entry@example.com")
-      fill_in 'Email', with: 'second-email@example.com'
-      fill_in 'Current password', with: student.password
-      click_on 'Update'
-      expect(page).to have_content "was not found"
-    end
   end
 
   context 'with the incorrect password' do

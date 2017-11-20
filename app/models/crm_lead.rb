@@ -4,8 +4,8 @@ class CrmLead
   end
 
   def update(update_fields)
-    update_lead(update_fields.except(:email))
-    update_email(update_fields[:email])
+    CrmLead.perform_update(lead.id, update_fields)
+    # CrmUpdateJob.perform_later(lead.id, update_fields)
   end
 
   def status
@@ -40,6 +40,16 @@ class CrmLead
     update({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => description })
   end
 
+  def self.perform_update(lead_id, update_fields)
+    if update_fields[:email]
+      crm_response = update_email(lead_id, update_fields[:email])
+    else
+      crm_response = update_lead(lead_id, update_fields.except(:email))
+    end
+    errors = crm_response.try('field-errors').try(:values).try(:join, '; ')
+    raise_error(errors) if errors.present?
+  end
+
 private
 
   def lead
@@ -50,21 +60,6 @@ private
     else
       raise_error("The Close.io lead for #{@email} was not found.")
     end
-  end
-
-  def update_lead(update_fields)
-    return unless update_fields.any?
-    crm_response = close_io_client.update_lead(lead.id, update_fields)
-    errors = crm_response.try('field-errors').try(:values).try(:join, '; ')
-    raise_error(errors) if errors.present?
-  end
-
-  def update_email(new_email)
-    return unless new_email.present?
-    contact = lead.contacts.first
-    updated_emails = contact.emails.unshift(Hashie::Mash.new({ type: "office", email: new_email }))
-    crm_response = close_io_client.update_contact(contact.id, emails: updated_emails)
-    raise_error("Invalid email address.") if crm_response['field-errors']
   end
 
   def cohort_applied
@@ -94,6 +89,19 @@ private
     month = Date::ABBR_MONTHNAMES.index(start_section.split.first)
     day = start_section.split.last.to_i
     Time.new(year, month, day).to_date
+  end
+
+  def self.update_email(lead_id, new_email)
+    close_io_client = Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false)
+    lead = close_io_client.find_lead(lead_id)
+    contact = lead.contacts.first
+    updated_emails = contact.emails.unshift(Hashie::Mash.new({ type: "office", email: new_email }))
+    close_io_client.update_contact(contact.id, emails: updated_emails)
+  end
+
+  def self.update_lead(lead_id, update_fields)
+    close_io_client = Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false)
+    close_io_client.update_lead(lead_id, update_fields)
   end
 
   def raise_error(message)
