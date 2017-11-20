@@ -96,6 +96,34 @@ describe Course do
     end
   end
 
+  describe "calculates class days automatically if not provided" do
+    let(:office) { FactoryBot.create(:portland_office) }
+    let(:full_time_track) { FactoryBot.create(:track) }
+    let(:part_time_track) { FactoryBot.create(:part_time_track) }
+    let(:admin) { FactoryBot.create(:admin) }
+
+    it 'calculates class days for a regular full-time class' do
+      course = Course.create({ language: full_time_track.languages.first, start_date: Date.parse('2017-03-13'), office: office, track: full_time_track, start_time: '8:00 AM', end_time: '5:00 PM' })
+      expect(course.start_date).to eq(Date.parse('2017-03-13'))
+      expect(course.end_date).to eq(Date.parse('2017-04-13'))
+      expect(course.class_days.count).to eq(24)
+    end
+
+    it 'calculates class days for an internship class' do
+      course = Course.create({ language: full_time_track.languages.last, start_date: Date.parse('2017-03-13'), office: office, track: full_time_track, start_time: '8:00 AM', end_time: '5:00 PM' })
+      expect(course.start_date).to eq(Date.parse('2017-03-13'))
+      expect(course.end_date).to eq(Date.parse('2017-04-28'))
+      expect(course.class_days.count).to eq(35)
+    end
+
+    it 'calculates class days for a part-time class' do
+      course = Course.create({ language: part_time_track.languages.first, start_date: Date.parse('2017-03-13'), office: office, track: part_time_track, start_time: '6:00 PM', end_time: '9:00 PM' })
+      expect(course.start_date).to eq(Date.parse('2017-03-13'))
+      expect(course.end_date).to eq(Date.parse('2017-06-21'))
+      expect(course.class_days.count).to eq(29) # 1 holiday
+    end
+  end
+
   describe "sets start and end dates from class_days" do
     let(:course) { FactoryBot.create(:course) }
 

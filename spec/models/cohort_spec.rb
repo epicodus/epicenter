@@ -112,6 +112,23 @@ describe Cohort do
     end
   end
 
+  describe 'creating a part-time cohort' do
+    let(:office) { FactoryBot.create(:portland_office) }
+    let(:track) { FactoryBot.create(:part_time_track) }
+    let(:admin) { FactoryBot.create(:admin) }
+
+    it 'creates a part-time cohort and course' do
+      cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-13'))
+      expect(cohort.description).to eq "PT: 2017-03 #{office.short_name} #{track.description} (Mar 13 - Jun 21)"
+      expect(cohort.office).to eq office
+      expect(cohort.track).to eq track
+      expect(cohort.admin).to eq admin
+      expect(cohort.start_date).to eq Date.parse('2017-03-13')
+      expect(cohort.courses.count).to eq 1
+      expect(cohort.courses.first.language).to eq track.languages.first
+    end
+  end
+
   describe '#update_end_date' do
     let(:office) { FactoryBot.create(:portland_office) }
     let(:track) { FactoryBot.create(:track) }
