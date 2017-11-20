@@ -645,6 +645,14 @@ FactoryBot.define do
       track.languages << build(:internship_language)
     end
 
+    factory :part_time_track do
+      description 'Part-time'
+      before(:create) do |track|
+        track.languages = []
+        track.languages << build(:evening_language)
+      end
+    end
+
   end
 
   factory :interview_assignment do

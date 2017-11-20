@@ -56,7 +56,7 @@ describe Enrollment do
   describe 'sets starting and ending cohort' do
     let(:student) { FactoryBot.create(:student, courses: []) }
     let(:past_cohort) { FactoryBot.create(:cohort_internship_course, start_date: (Date.today - 1.year).beginning_of_week) }
-    let(:current_cohort) { FactoryBot.create(:cohort_internship_course, start_date: Date.today.beginning_of_week) }
+    let(:current_cohort) { FactoryBot.create(:cohort_internship_course, start_date: Date.today.beginning_of_week - 1.week) }
     let(:future_cohort) { FactoryBot.create(:cohort_internship_course, start_date: (Date.today + 1.year).beginning_of_week) }
     let(:part_time_course) { FactoryBot.create(:part_time_course) }
     let(:non_internship_course) { FactoryBot.create(:course) }
