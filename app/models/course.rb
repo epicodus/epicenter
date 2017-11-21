@@ -167,7 +167,7 @@ private
   end
 
   def set_parttime
-    self.parttime = language.name.downcase.include? "evening"
+    self.parttime = language.name.downcase.include?('evening') || language.name == 'Online'
     return true
   end
 
@@ -183,7 +183,7 @@ private
       level_3_graduated = Course.courses_for(office).where('end_date > ? AND end_date < ?', start_date - 3.weeks, start_date).select {|course| course.language && course.language.level == 3 }
       languages = level_3_graduated.map { |course| course.language.name }.sort.join(", ")
       self.description = "#{start_date.strftime('%Y-%m')} #{language.name} (#{languages})"
-    elsif language.level == 0 && office.name != "Portland"
+    elsif language.level == 0 && office.name != "Portland" && office.name != 'Online'
       self.description = "#{start_date.strftime('%Y-%m')} #{language.name} #{office.name.upcase}"
     else
       self.description = "#{start_date.strftime('%Y-%m')} #{language.name}"
@@ -199,6 +199,10 @@ private
       number_of_days = 30
       skip_holiday_weeks = true
       is_parttime = true
+    elsif language == Language.find_by(name: 'Online')
+      number_of_days = 45
+      skip_holiday_weeks = true
+      is_online = true
     elsif language.level == 4
       number_of_days = 35
     else
@@ -212,6 +216,9 @@ private
         day = day.next_week
       end
       while is_parttime && !(day.monday? || day.wednesday?)
+        day = day.next
+      end
+      while is_online && !(day.tuesday? || day.wednesday? || day.thursday?)
         day = day.next
       end
       class_days << day unless Rails.configuration.holidays.include? day.strftime('%Y-%m-%d')
