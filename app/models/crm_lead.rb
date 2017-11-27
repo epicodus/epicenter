@@ -13,11 +13,11 @@ class CrmLead
   end
 
   def name
-    lead.try(:contacts).try(:first).try(:name) || raise_error("Name not found in CRM")
+    lead.try(:contacts).try(:first).try(:name) || CrmLead.raise_error("Name not found in CRM")
   end
 
   def cohort
-    Cohort.find_by(office: office, start_date: start_date, track: track) || raise_error("Cohort not found in Epicenter") unless parttime?
+    Cohort.find_by(office: office, start_date: start_date, track: track) || CrmLead.raise_error("Cohort not found in Epicenter") unless parttime?
   end
 
   def first_course
@@ -26,7 +26,7 @@ class CrmLead
     else
       course = cohort.courses.first
     end
-    course || raise_error("Course not found in Epicenter")
+    course || CrmLead.raise_error("Course not found in Epicenter")
   end
 
   def update_internship_class(course)
@@ -47,7 +47,7 @@ class CrmLead
       crm_response = update_lead(lead_id, update_fields.except(:email))
     end
     errors = crm_response.try('field-errors').try(:values).try(:join, '; ')
-    raise_error(errors) if errors.present?
+    CrmLead.raise_error(errors) if errors.present?
   end
 
 private
@@ -58,14 +58,14 @@ private
     if leads.total_results == 1
       return @lead = leads.data.first
     else
-      raise_error("The Close.io lead for #{@email} was not found.")
+      CrmLead.raise_error("The Close.io lead for #{@email} was not found.")
     end
   end
 
   def cohort_applied
     cohort = lead.try(:custom).try('Cohort - Applied')
     if cohort.nil? || cohort.include?('Legacy') || cohort.include?('A later class')
-      raise_error("Cohort - Applied not found in CRM")
+      CrmLead.raise_error("Cohort - Applied not found in CRM")
     else
       cohort.split(': ').last
     end
@@ -76,7 +76,7 @@ private
   end
 
   def track
-    Track.find_by(description: cohort_applied.split[2]) || raise_error("Track not found in Epicenter")
+    Track.find_by(description: cohort_applied.split[2]) || CrmLead.raise_error("Track not found in Epicenter")
   end
 
   def parttime?
@@ -104,7 +104,7 @@ private
     close_io_client.update_lead(lead_id, update_fields)
   end
 
-  def raise_error(message)
+  def self.raise_error(message)
     raise CrmError, message
   end
 
