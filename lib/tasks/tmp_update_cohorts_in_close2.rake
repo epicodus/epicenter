@@ -2,12 +2,16 @@
 # retroactively add starting and ending cohort to students in Epicenter & Close (where cohort exists)
 desc "add new cohort names to Close"
 task :tmp_update_cohorts_in_close2 => [:environment] do
+  IGNORE_LIST = ["do_not_email@example.com", "unknown_email1@epicodus.com", "unknown_email2@epicodus.com", "audrey2@epicodus.com", "rachel2@epicodus.com", "michael2@epicodus.com", "becky2@epicodus.com", "jill2@epicodus.com"]
   filename = File.join(Rails.root.join('tmp'), 'tmp_update_cohorts_in_close2.txt')
   File.open(filename, 'w') do |file|
     Student.all.each do |student|
-      if student.cohort || student.starting_cohort
-        file.puts "#{student.starting_cohort.try(:description)} | #{student.cohort.try(:description)} | #{student.email}"
-        student.crm_lead.update({ 'custom.Cohort - Starting': student.starting_cohort.try(:description), 'custom.Cohort - Current': student.cohort.try(:description) })
+      if student.courses_with_withdrawn.parttime_courses.any? && student.courses_with_withdrawn.fulltime_courses.empty? && !IGNORE_LIST.include?(student.email)
+        course = student.courses_with_withdrawn.first
+        cohort = course.cohorts.first
+        file.puts "#{student.starting_cohort.description} | #{course.description} | #{student.email}"
+        student.update(starting_cohort: cohort)
+        student.crm_lead.update({ 'custom.Cohort - Starting': student.starting_cohort.try(:description) })
       end
     end
   end
