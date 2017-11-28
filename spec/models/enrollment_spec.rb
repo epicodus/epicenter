@@ -58,7 +58,7 @@ describe Enrollment do
     let(:past_cohort) { FactoryBot.create(:cohort_internship_course, start_date: (Date.today - 1.year).beginning_of_week) }
     let(:current_cohort) { FactoryBot.create(:cohort_internship_course, start_date: Date.today.beginning_of_week - 1.week) }
     let(:future_cohort) { FactoryBot.create(:cohort_internship_course, start_date: (Date.today + 1.year).beginning_of_week) }
-    let(:part_time_course) { FactoryBot.create(:part_time_course) }
+    let(:part_time_cohort) { FactoryBot.create(:part_time_cohort, start_date: Date.today.beginning_of_week - 1.week) }
     let(:non_internship_course) { FactoryBot.create(:course) }
 
     context 'adding new enrollments' do
@@ -86,10 +86,10 @@ describe Enrollment do
         expect(student.starting_cohort_id).to eq current_cohort.id
       end
 
-      it 'does not update starting or ending cohort when adding part-time course' do
-        expect_any_instance_of(CrmLead).to_not receive(:update)
-        student.course = part_time_course
-        expect(student.starting_cohort_id).to eq nil
+      it 'updates only starting cohort when adding part-time course' do
+        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort - Starting': part_time_cohort.description })
+        student.course = part_time_cohort.courses.first
+        expect(student.starting_cohort).to eq part_time_cohort
       end
 
       it 'does not update starting or ending cohort when adding non-internship course' do
