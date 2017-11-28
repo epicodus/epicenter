@@ -181,6 +181,14 @@ FactoryBot.define do
       end
     end
 
+    factory :part_time_cohort do
+      before(:create) do |cohort|
+        course = cohort.courses.first
+        course.parttime = true
+        course.save
+      end
+    end
+
     factory :full_cohort do
       before(:create) do |cohort|
         cohort.courses << build(:level1_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week + 5.weeks, cohort.start_date.beginning_of_week + 9.weeks + 3.days])

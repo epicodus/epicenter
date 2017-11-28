@@ -11,8 +11,8 @@ class Enrollment < ApplicationRecord
   before_create :update_internship_class_in_crm, if: ->(enrollment) { enrollment.course.internship_course? }
   before_destroy :remove_internship_class_in_crm, if: ->(enrollment) { enrollment.course.internship_course? && !enrollment.deleted? }
   after_destroy :really_destroy_if_withdrawn_before_attending, if: ->(enrollment) { Enrollment.with_deleted.exists?(enrollment.id) }
-  after_create :update_cohort, unless: ->(enrollment) { enrollment.course.parttime? }
-  after_destroy :update_cohort, unless: ->(enrollment) { enrollment.course.parttime? }
+  after_create :update_cohort
+  after_destroy :update_cohort
 
 private
 
@@ -32,7 +32,11 @@ private
   end
 
   def get_new_starting_cohort
-    student.courses_with_withdrawn.fulltime_courses.first.try(:cohorts).try(:first)
+    if student.courses_with_withdrawn.fulltime_courses.any?
+      student.courses_with_withdrawn.fulltime_courses.first.try(:cohorts).try(:first)
+    else
+      student.courses_with_withdrawn.parttime_courses.first.try(:cohorts).try(:first)
+    end
   end
 
   def get_new_current_cohort

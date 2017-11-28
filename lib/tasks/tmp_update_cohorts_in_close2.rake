@@ -9,8 +9,8 @@ task :tmp_update_cohorts_in_close2 => [:environment] do
       if student.courses_with_withdrawn.parttime_courses.any? && student.courses_with_withdrawn.fulltime_courses.empty? && !IGNORE_LIST.include?(student.email)
         course = student.courses_with_withdrawn.first
         cohort = course.cohorts.first
-        file.puts "#{student.starting_cohort.description} | #{course.description} | #{student.email}"
         student.update(starting_cohort: cohort)
+        file.puts "#{student.starting_cohort.description} | #{course.description} | #{student.email}"
         student.crm_lead.update({ 'custom.Cohort - Starting': student.starting_cohort.try(:description) })
       end
     end
