@@ -66,24 +66,19 @@ describe CrmLead, :dont_stub_crm do
     end
   end
 
-  describe 'updating close.io when student email is updated' do
+  describe 'updating close.io when student email is updated', :vcr do
     let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
-    let(:contact_id) { close_io_client.list_leads('email:' + student.email).data.first.contacts.first.id }
+    let(:lead_id) { close_io_client.list_leads('email:' + student.email).data.first.id }
 
-    before do
-      allow_any_instance_of(CrmLead).to receive(:close_io_client).and_return(close_io_client)
+    before { allow(CrmUpdateJob).to receive(:perform_later).and_return({}) }
+
+    it 'updates the record successfully' do
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { email: "second-email@example.com" })
+      student.crm_lead.update(email: "second-email@example.com")
     end
 
-    it 'updates the record successfully', :vcr do
-      allow_any_instance_of(Closeio::Client).to receive(:update_contact).and_return({})
-      old_entry = Hashie::Mash.new({ type: "office", email: student.email })
-      new_entry = Hashie::Mash.new({ type: "office", email: "second-email@example.com" })
-      expect_any_instance_of(Closeio::Client).to receive(:update_contact).with(contact_id, { 'emails': [new_entry, old_entry] })
-      student.crm_lead.update(email: new_entry.email)
-    end
-
-    it 'does not update the record when the email is not found', :vcr do
+    it 'does not update the record when the email is not found' do
       student.update(email: "no_close_entry@example.com")
       expect { student.crm_lead.update(email: "second-email@example.com") }.to raise_error(CrmError, "The Close.io lead for #{student.email} was not found.")
     end

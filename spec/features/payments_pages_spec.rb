@@ -1,4 +1,4 @@
-feature 'Viewing payment index page', :dont_stub_crm do
+feature 'Viewing payment index page' do
   scenario 'as a guest' do
     student = FactoryBot.create(:student)
     visit student_payments_path(student)

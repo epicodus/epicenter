@@ -8,11 +8,11 @@ http_interactions:
       string: email=example%40example.com
     headers:
       Accept:
-      - "*/*; q=0.5, application/xml"
+      - "*/*"
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - Stripe/v1 RubyBindings/1.41.0
+      - Stripe/v1 RubyBindings/1.58.0
       Authorization:
       - Bearer <STRIPE_API_KEY>
       Content-Type:
@@ -20,11 +20,13 @@ http_interactions:
       Stripe-Version:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.41.0","lang":"ruby","lang_version":"2.3.1 p112 (2016-04-26)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        chris.local 15.6.0 Darwin Kernel Version 15.6.0: Mon Jan  9 23:07:29 PST 2017;
-        root:xnu-3248.60.11.2.1~1/RELEASE_X86_64 x86_64","hostname":"chris.local"}'
+      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
+        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Content-Length:
       - '27'
+      Host:
+      - api.stripe.com
   response:
     status:
       code: 200
@@ -33,7 +35,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 02 Mar 2017 21:44:13 GMT
+      - Wed, 29 Nov 2017 02:04:53 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -46,21 +48,23 @@ http_interactions:
       - GET, POST, HEAD, OPTIONS, DELETE
       Access-Control-Allow-Origin:
       - "*"
+      Access-Control-Expose-Headers:
+      - X-Stripe-Privileged-Session-Required,stripe-manage-version,X-Stripe-External-Auth-Required
       Access-Control-Max-Age:
       - '300'
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_ADSdqRoz90FDYx
+      - req_wnYIwbk3HCvS6V
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains
+      - max-age=31556926; includeSubDomains; preload
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_ADSdbFOASQzfTq",
+          "id": "cus_Br32RBgRxzqnSV",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
@@ -68,13 +72,12 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_ADSdbFOASQzfTq/bank_accounts"
+            "url": "/v1/customers/cus_Br32RBgRxzqnSV/bank_accounts"
           },
-          "created": 1488491053,
+          "created": 1511921093,
           "currency": null,
           "default_bank_account": null,
           "default_source": null,
-          "default_source_type": null,
           "delinquent": false,
           "description": null,
           "discount": null,
@@ -87,31 +90,32 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_ADSdbFOASQzfTq/sources"
+            "url": "/v1/customers/cus_Br32RBgRxzqnSV/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_ADSdbFOASQzfTq/subscriptions"
-          }
+            "url": "/v1/customers/cus_Br32RBgRxzqnSV/subscriptions"
+          },
+          "default_source_type": null
         }
     http_version: 
-  recorded_at: Thu, 02 Mar 2017 21:44:13 GMT
+  recorded_at: Wed, 29 Nov 2017 02:04:53 GMT
 - request:
     method: post
-    uri: https://api.stripe.com/v1/customers/cus_ADSdbFOASQzfTq/sources
+    uri: https://api.stripe.com/v1/customers/cus_Br32RBgRxzqnSV/sources
     body:
       encoding: UTF-8
-      string: source[account_number]=000123456789&source[country]=US&source[object]=bank_account&source[routing_number]=110000000
+      string: source[object]=bank_account&source[country]=US&source[account_number]=000123456789&source[routing_number]=110000000
     headers:
       Accept:
-      - "*/*; q=0.5, application/xml"
+      - "*/*"
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - Stripe/v1 RubyBindings/1.41.0
+      - Stripe/v1 RubyBindings/1.58.0
       Authorization:
       - Bearer <STRIPE_API_KEY>
       Content-Type:
@@ -119,11 +123,13 @@ http_interactions:
       Stripe-Version:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.41.0","lang":"ruby","lang_version":"2.3.1 p112 (2016-04-26)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        chris.local 15.6.0 Darwin Kernel Version 15.6.0: Mon Jan  9 23:07:29 PST 2017;
-        root:xnu-3248.60.11.2.1~1/RELEASE_X86_64 x86_64","hostname":"chris.local"}'
+      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
+        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Content-Length:
       - '115'
+      Host:
+      - api.stripe.com
   response:
     status:
       code: 200
@@ -132,7 +138,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 02 Mar 2017 21:44:13 GMT
+      - Wed, 29 Nov 2017 02:04:53 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -145,28 +151,30 @@ http_interactions:
       - GET, POST, HEAD, OPTIONS, DELETE
       Access-Control-Allow-Origin:
       - "*"
+      Access-Control-Expose-Headers:
+      - X-Stripe-Privileged-Session-Required,stripe-manage-version,X-Stripe-External-Auth-Required
       Access-Control-Max-Age:
       - '300'
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_ADSdEMqd535Mq3
+      - req_Oq5IY0erj5tseF
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains
+      - max-age=31556926; includeSubDomains; preload
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "ba_ADSdj0Zp5uSXGZ",
+          "id": "ba_Br32uiGJOLmmGO",
           "object": "bank_account",
           "account_holder_name": null,
           "account_holder_type": null,
           "bank_name": "STRIPE TEST BANK",
           "country": "US",
           "currency": "usd",
-          "customer": "cus_ADSdbFOASQzfTq",
+          "customer": "cus_Br32RBgRxzqnSV",
           "fingerprint": "qw2YdYDmIJUuNi9w",
           "last4": "6789",
           "metadata": {},
@@ -175,20 +183,20 @@ http_interactions:
           "name": null
         }
     http_version: 
-  recorded_at: Thu, 02 Mar 2017 21:44:13 GMT
+  recorded_at: Wed, 29 Nov 2017 02:04:53 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_ADSdbFOASQzfTq
+    uri: https://api.stripe.com/v1/customers/cus_Br32RBgRxzqnSV
     body:
       encoding: US-ASCII
       string: ''
     headers:
       Accept:
-      - "*/*; q=0.5, application/xml"
+      - "*/*"
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - Stripe/v1 RubyBindings/1.41.0
+      - Stripe/v1 RubyBindings/1.58.0
       Authorization:
       - Bearer <STRIPE_API_KEY>
       Content-Type:
@@ -196,9 +204,11 @@ http_interactions:
       Stripe-Version:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.41.0","lang":"ruby","lang_version":"2.3.1 p112 (2016-04-26)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        chris.local 15.6.0 Darwin Kernel Version 15.6.0: Mon Jan  9 23:07:29 PST 2017;
-        root:xnu-3248.60.11.2.1~1/RELEASE_X86_64 x86_64","hostname":"chris.local"}'
+      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
+        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
+      Host:
+      - api.stripe.com
   response:
     status:
       code: 200
@@ -207,7 +217,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 02 Mar 2017 21:44:13 GMT
+      - Wed, 29 Nov 2017 02:04:54 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -220,35 +230,37 @@ http_interactions:
       - GET, POST, HEAD, OPTIONS, DELETE
       Access-Control-Allow-Origin:
       - "*"
+      Access-Control-Expose-Headers:
+      - X-Stripe-Privileged-Session-Required,stripe-manage-version,X-Stripe-External-Auth-Required
       Access-Control-Max-Age:
       - '300'
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_ADSdxnHqZRwbqW
+      - req_wK11q2YeBcQp32
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains
+      - max-age=31556926; includeSubDomains; preload
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_ADSdbFOASQzfTq",
+          "id": "cus_Br32RBgRxzqnSV",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
             "object": "list",
             "data": [
               {
-                "id": "ba_ADSdj0Zp5uSXGZ",
+                "id": "ba_Br32uiGJOLmmGO",
                 "object": "bank_account",
                 "account_holder_name": null,
                 "account_holder_type": null,
                 "bank_name": "STRIPE TEST BANK",
                 "country": "US",
                 "currency": "usd",
-                "customer": "cus_ADSdbFOASQzfTq",
+                "customer": "cus_Br32RBgRxzqnSV",
                 "fingerprint": "qw2YdYDmIJUuNi9w",
                 "last4": "6789",
                 "metadata": {},
@@ -259,13 +271,12 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_ADSdbFOASQzfTq/bank_accounts"
+            "url": "/v1/customers/cus_Br32RBgRxzqnSV/bank_accounts"
           },
-          "created": 1488491053,
+          "created": 1511921093,
           "currency": null,
-          "default_bank_account": "ba_ADSdj0Zp5uSXGZ",
-          "default_source": "ba_ADSdj0Zp5uSXGZ",
-          "default_source_type": "bank_account",
+          "default_bank_account": "ba_Br32uiGJOLmmGO",
+          "default_source": "ba_Br32uiGJOLmmGO",
           "delinquent": false,
           "description": null,
           "discount": null,
@@ -277,14 +288,14 @@ http_interactions:
             "object": "list",
             "data": [
               {
-                "id": "ba_ADSdj0Zp5uSXGZ",
+                "id": "ba_Br32uiGJOLmmGO",
                 "object": "bank_account",
                 "account_holder_name": null,
                 "account_holder_type": null,
                 "bank_name": "STRIPE TEST BANK",
                 "country": "US",
                 "currency": "usd",
-                "customer": "cus_ADSdbFOASQzfTq",
+                "customer": "cus_Br32RBgRxzqnSV",
                 "fingerprint": "qw2YdYDmIJUuNi9w",
                 "last4": "6789",
                 "metadata": {},
@@ -295,31 +306,32 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_ADSdbFOASQzfTq/sources"
+            "url": "/v1/customers/cus_Br32RBgRxzqnSV/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_ADSdbFOASQzfTq/subscriptions"
-          }
+            "url": "/v1/customers/cus_Br32RBgRxzqnSV/subscriptions"
+          },
+          "default_source_type": "bank_account"
         }
     http_version: 
-  recorded_at: Thu, 02 Mar 2017 21:44:13 GMT
+  recorded_at: Wed, 29 Nov 2017 02:04:54 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_ADSdbFOASQzfTq/sources/ba_ADSdj0Zp5uSXGZ
+    uri: https://api.stripe.com/v1/customers/cus_Br32RBgRxzqnSV/sources/ba_Br32uiGJOLmmGO
     body:
       encoding: US-ASCII
       string: ''
     headers:
       Accept:
-      - "*/*; q=0.5, application/xml"
+      - "*/*"
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - Stripe/v1 RubyBindings/1.41.0
+      - Stripe/v1 RubyBindings/1.58.0
       Authorization:
       - Bearer <STRIPE_API_KEY>
       Content-Type:
@@ -327,9 +339,11 @@ http_interactions:
       Stripe-Version:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.41.0","lang":"ruby","lang_version":"2.3.1 p112 (2016-04-26)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        chris.local 15.6.0 Darwin Kernel Version 15.6.0: Mon Jan  9 23:07:29 PST 2017;
-        root:xnu-3248.60.11.2.1~1/RELEASE_X86_64 x86_64","hostname":"chris.local"}'
+      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
+        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
+      Host:
+      - api.stripe.com
   response:
     status:
       code: 200
@@ -338,7 +352,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 02 Mar 2017 21:44:14 GMT
+      - Wed, 29 Nov 2017 02:04:54 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -351,28 +365,30 @@ http_interactions:
       - GET, POST, HEAD, OPTIONS, DELETE
       Access-Control-Allow-Origin:
       - "*"
+      Access-Control-Expose-Headers:
+      - X-Stripe-Privileged-Session-Required,stripe-manage-version,X-Stripe-External-Auth-Required
       Access-Control-Max-Age:
       - '300'
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_ADSdmhdawrwvrB
+      - req_2xVE5C48ELZCeT
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains
+      - max-age=31556926; includeSubDomains; preload
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "ba_ADSdj0Zp5uSXGZ",
+          "id": "ba_Br32uiGJOLmmGO",
           "object": "bank_account",
           "account_holder_name": null,
           "account_holder_type": null,
           "bank_name": "STRIPE TEST BANK",
           "country": "US",
           "currency": "usd",
-          "customer": "cus_ADSdbFOASQzfTq",
+          "customer": "cus_Br32RBgRxzqnSV",
           "fingerprint": "qw2YdYDmIJUuNi9w",
           "last4": "6789",
           "metadata": {},
@@ -381,20 +397,20 @@ http_interactions:
           "name": null
         }
     http_version: 
-  recorded_at: Thu, 02 Mar 2017 21:44:14 GMT
+  recorded_at: Wed, 29 Nov 2017 02:04:54 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_ADSdbFOASQzfTq
+    uri: https://api.stripe.com/v1/customers/cus_Br32RBgRxzqnSV
     body:
       encoding: US-ASCII
       string: ''
     headers:
       Accept:
-      - "*/*; q=0.5, application/xml"
+      - "*/*"
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - Stripe/v1 RubyBindings/1.41.0
+      - Stripe/v1 RubyBindings/1.58.0
       Authorization:
       - Bearer <STRIPE_API_KEY>
       Content-Type:
@@ -402,9 +418,11 @@ http_interactions:
       Stripe-Version:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.41.0","lang":"ruby","lang_version":"2.3.1 p112 (2016-04-26)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        chris.local 15.6.0 Darwin Kernel Version 15.6.0: Mon Jan  9 23:07:29 PST 2017;
-        root:xnu-3248.60.11.2.1~1/RELEASE_X86_64 x86_64","hostname":"chris.local"}'
+      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
+        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
+      Host:
+      - api.stripe.com
   response:
     status:
       code: 200
@@ -413,7 +431,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 02 Mar 2017 21:44:14 GMT
+      - Wed, 29 Nov 2017 02:04:54 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -426,35 +444,37 @@ http_interactions:
       - GET, POST, HEAD, OPTIONS, DELETE
       Access-Control-Allow-Origin:
       - "*"
+      Access-Control-Expose-Headers:
+      - X-Stripe-Privileged-Session-Required,stripe-manage-version,X-Stripe-External-Auth-Required
       Access-Control-Max-Age:
       - '300'
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_ADSdZzC9TLHmTD
+      - req_n8UB6wvcKF863t
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains
+      - max-age=31556926; includeSubDomains; preload
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_ADSdbFOASQzfTq",
+          "id": "cus_Br32RBgRxzqnSV",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
             "object": "list",
             "data": [
               {
-                "id": "ba_ADSdj0Zp5uSXGZ",
+                "id": "ba_Br32uiGJOLmmGO",
                 "object": "bank_account",
                 "account_holder_name": null,
                 "account_holder_type": null,
                 "bank_name": "STRIPE TEST BANK",
                 "country": "US",
                 "currency": "usd",
-                "customer": "cus_ADSdbFOASQzfTq",
+                "customer": "cus_Br32RBgRxzqnSV",
                 "fingerprint": "qw2YdYDmIJUuNi9w",
                 "last4": "6789",
                 "metadata": {},
@@ -465,13 +485,12 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_ADSdbFOASQzfTq/bank_accounts"
+            "url": "/v1/customers/cus_Br32RBgRxzqnSV/bank_accounts"
           },
-          "created": 1488491053,
+          "created": 1511921093,
           "currency": null,
-          "default_bank_account": "ba_ADSdj0Zp5uSXGZ",
-          "default_source": "ba_ADSdj0Zp5uSXGZ",
-          "default_source_type": "bank_account",
+          "default_bank_account": "ba_Br32uiGJOLmmGO",
+          "default_source": "ba_Br32uiGJOLmmGO",
           "delinquent": false,
           "description": null,
           "discount": null,
@@ -483,14 +502,14 @@ http_interactions:
             "object": "list",
             "data": [
               {
-                "id": "ba_ADSdj0Zp5uSXGZ",
+                "id": "ba_Br32uiGJOLmmGO",
                 "object": "bank_account",
                 "account_holder_name": null,
                 "account_holder_type": null,
                 "bank_name": "STRIPE TEST BANK",
                 "country": "US",
                 "currency": "usd",
-                "customer": "cus_ADSdbFOASQzfTq",
+                "customer": "cus_Br32RBgRxzqnSV",
                 "fingerprint": "qw2YdYDmIJUuNi9w",
                 "last4": "6789",
                 "metadata": {},
@@ -501,31 +520,32 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_ADSdbFOASQzfTq/sources"
+            "url": "/v1/customers/cus_Br32RBgRxzqnSV/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_ADSdbFOASQzfTq/subscriptions"
-          }
+            "url": "/v1/customers/cus_Br32RBgRxzqnSV/subscriptions"
+          },
+          "default_source_type": "bank_account"
         }
     http_version: 
-  recorded_at: Thu, 02 Mar 2017 21:44:14 GMT
+  recorded_at: Wed, 29 Nov 2017 02:04:54 GMT
 - request:
     method: post
-    uri: https://api.stripe.com/v1/customers/cus_ADSdbFOASQzfTq/sources/ba_ADSdj0Zp5uSXGZ/verify
+    uri: https://api.stripe.com/v1/customers/cus_Br32RBgRxzqnSV/sources/ba_Br32uiGJOLmmGO/verify
     body:
       encoding: UTF-8
       string: amounts[]=32&amounts[]=45
     headers:
       Accept:
-      - "*/*; q=0.5, application/xml"
+      - "*/*"
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - Stripe/v1 RubyBindings/1.41.0
+      - Stripe/v1 RubyBindings/1.58.0
       Authorization:
       - Bearer <STRIPE_API_KEY>
       Content-Type:
@@ -533,11 +553,13 @@ http_interactions:
       Stripe-Version:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.41.0","lang":"ruby","lang_version":"2.3.1 p112 (2016-04-26)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        chris.local 15.6.0 Darwin Kernel Version 15.6.0: Mon Jan  9 23:07:29 PST 2017;
-        root:xnu-3248.60.11.2.1~1/RELEASE_X86_64 x86_64","hostname":"chris.local"}'
+      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
+        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Content-Length:
       - '25'
+      Host:
+      - api.stripe.com
   response:
     status:
       code: 200
@@ -546,7 +568,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 02 Mar 2017 21:44:14 GMT
+      - Wed, 29 Nov 2017 02:04:54 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -559,28 +581,30 @@ http_interactions:
       - GET, POST, HEAD, OPTIONS, DELETE
       Access-Control-Allow-Origin:
       - "*"
+      Access-Control-Expose-Headers:
+      - X-Stripe-Privileged-Session-Required,stripe-manage-version,X-Stripe-External-Auth-Required
       Access-Control-Max-Age:
       - '300'
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_ADSd3atJ9oNEQq
+      - req_csrMRMuZ2JghD4
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains
+      - max-age=31556926; includeSubDomains; preload
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "ba_ADSdj0Zp5uSXGZ",
+          "id": "ba_Br32uiGJOLmmGO",
           "object": "bank_account",
           "account_holder_name": null,
           "account_holder_type": null,
           "bank_name": "STRIPE TEST BANK",
           "country": "US",
           "currency": "usd",
-          "customer": "cus_ADSdbFOASQzfTq",
+          "customer": "cus_Br32RBgRxzqnSV",
           "fingerprint": "qw2YdYDmIJUuNi9w",
           "last4": "6789",
           "metadata": {},
@@ -589,20 +613,20 @@ http_interactions:
           "name": null
         }
     http_version: 
-  recorded_at: Thu, 02 Mar 2017 21:44:14 GMT
+  recorded_at: Wed, 29 Nov 2017 02:04:54 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_ADSdbFOASQzfTq
+    uri: https://api.stripe.com/v1/customers/cus_Br32RBgRxzqnSV
     body:
       encoding: US-ASCII
       string: ''
     headers:
       Accept:
-      - "*/*; q=0.5, application/xml"
+      - "*/*"
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - Stripe/v1 RubyBindings/1.41.0
+      - Stripe/v1 RubyBindings/1.58.0
       Authorization:
       - Bearer <STRIPE_API_KEY>
       Content-Type:
@@ -610,9 +634,11 @@ http_interactions:
       Stripe-Version:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.41.0","lang":"ruby","lang_version":"2.3.1 p112 (2016-04-26)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        chris.local 15.6.0 Darwin Kernel Version 15.6.0: Mon Jan  9 23:07:29 PST 2017;
-        root:xnu-3248.60.11.2.1~1/RELEASE_X86_64 x86_64","hostname":"chris.local"}'
+      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
+        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
+      Host:
+      - api.stripe.com
   response:
     status:
       code: 200
@@ -621,7 +647,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 02 Mar 2017 21:44:14 GMT
+      - Wed, 29 Nov 2017 02:04:54 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -634,35 +660,37 @@ http_interactions:
       - GET, POST, HEAD, OPTIONS, DELETE
       Access-Control-Allow-Origin:
       - "*"
+      Access-Control-Expose-Headers:
+      - X-Stripe-Privileged-Session-Required,stripe-manage-version,X-Stripe-External-Auth-Required
       Access-Control-Max-Age:
       - '300'
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_ADSdI6wa0xgV7N
+      - req_rQ39p3k9lGhpgl
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains
+      - max-age=31556926; includeSubDomains; preload
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_ADSdbFOASQzfTq",
+          "id": "cus_Br32RBgRxzqnSV",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
             "object": "list",
             "data": [
               {
-                "id": "ba_ADSdj0Zp5uSXGZ",
+                "id": "ba_Br32uiGJOLmmGO",
                 "object": "bank_account",
                 "account_holder_name": null,
                 "account_holder_type": null,
                 "bank_name": "STRIPE TEST BANK",
                 "country": "US",
                 "currency": "usd",
-                "customer": "cus_ADSdbFOASQzfTq",
+                "customer": "cus_Br32RBgRxzqnSV",
                 "fingerprint": "qw2YdYDmIJUuNi9w",
                 "last4": "6789",
                 "metadata": {},
@@ -673,13 +701,12 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_ADSdbFOASQzfTq/bank_accounts"
+            "url": "/v1/customers/cus_Br32RBgRxzqnSV/bank_accounts"
           },
-          "created": 1488491053,
+          "created": 1511921093,
           "currency": null,
-          "default_bank_account": "ba_ADSdj0Zp5uSXGZ",
-          "default_source": "ba_ADSdj0Zp5uSXGZ",
-          "default_source_type": "bank_account",
+          "default_bank_account": "ba_Br32uiGJOLmmGO",
+          "default_source": "ba_Br32uiGJOLmmGO",
           "delinquent": false,
           "description": null,
           "discount": null,
@@ -691,14 +718,14 @@ http_interactions:
             "object": "list",
             "data": [
               {
-                "id": "ba_ADSdj0Zp5uSXGZ",
+                "id": "ba_Br32uiGJOLmmGO",
                 "object": "bank_account",
                 "account_holder_name": null,
                 "account_holder_type": null,
                 "bank_name": "STRIPE TEST BANK",
                 "country": "US",
                 "currency": "usd",
-                "customer": "cus_ADSdbFOASQzfTq",
+                "customer": "cus_Br32RBgRxzqnSV",
                 "fingerprint": "qw2YdYDmIJUuNi9w",
                 "last4": "6789",
                 "metadata": {},
@@ -709,31 +736,32 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_ADSdbFOASQzfTq/sources"
+            "url": "/v1/customers/cus_Br32RBgRxzqnSV/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_ADSdbFOASQzfTq/subscriptions"
-          }
+            "url": "/v1/customers/cus_Br32RBgRxzqnSV/subscriptions"
+          },
+          "default_source_type": "bank_account"
         }
     http_version: 
-  recorded_at: Thu, 02 Mar 2017 21:44:14 GMT
+  recorded_at: Wed, 29 Nov 2017 02:04:54 GMT
 - request:
     method: post
     uri: https://api.stripe.com/v1/charges
     body:
       encoding: UTF-8
-      string: amount=10000&currency=usd&customer=cus_ADSdbFOASQzfTq&description=Philadelphia%3B+2017-02-27%3B+Full-time&source=ba_ADSdj0Zp5uSXGZ
+      string: amount=10000&currency=usd&customer=cus_Br32RBgRxzqnSV&source=ba_Br32uiGJOLmmGO&description=Philadelphia%3B+2017-11-27%3B+Full-time%3B+standard%3B+example%40example.com
     headers:
       Accept:
-      - "*/*; q=0.5, application/xml"
+      - "*/*"
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
-      - Stripe/v1 RubyBindings/1.41.0
+      - Stripe/v1 RubyBindings/1.58.0
       Authorization:
       - Bearer <STRIPE_API_KEY>
       Content-Type:
@@ -741,11 +769,13 @@ http_interactions:
       Stripe-Version:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.41.0","lang":"ruby","lang_version":"2.3.1 p112 (2016-04-26)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        chris.local 15.6.0 Darwin Kernel Version 15.6.0: Mon Jan  9 23:07:29 PST 2017;
-        root:xnu-3248.60.11.2.1~1/RELEASE_X86_64 x86_64","hostname":"chris.local"}'
+      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
+        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Content-Length:
-      - '130'
+      - '167'
+      Host:
+      - api.stripe.com
   response:
     status:
       code: 200
@@ -754,11 +784,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 02 Mar 2017 21:44:15 GMT
+      - Wed, 29 Nov 2017 02:04:56 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1532'
+      - '1563'
       Connection:
       - keep-alive
       Access-Control-Allow-Credentials:
@@ -767,32 +797,34 @@ http_interactions:
       - GET, POST, HEAD, OPTIONS, DELETE
       Access-Control-Allow-Origin:
       - "*"
+      Access-Control-Expose-Headers:
+      - X-Stripe-Privileged-Session-Required,stripe-manage-version,X-Stripe-External-Auth-Required
       Access-Control-Max-Age:
       - '300'
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_ADSdQGbEWnTpda
+      - req_zrT9xAImAawnPn
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains
+      - max-age=31556926; includeSubDomains; preload
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "py_ADSdjuTGtam7Ns",
+          "id": "py_Br32uNdqyjA6Fm",
           "object": "charge",
           "amount": 10000,
           "amount_refunded": 0,
           "application": null,
           "application_fee": null,
-          "balance_transaction": "txn_ADSdd0BANC3Anb",
+          "balance_transaction": "txn_Br32H4PI1KtB05",
           "captured": true,
-          "created": 1488491054,
+          "created": 1511921095,
           "currency": "usd",
-          "customer": "cus_ADSdbFOASQzfTq",
-          "description": "Philadelphia; 2017-02-27; Full-time",
+          "customer": "cus_Br32RBgRxzqnSV",
+          "description": "Philadelphia; 2017-11-27; Full-time; standard; example@example.com",
           "destination": null,
           "dispute": null,
           "failure_code": null,
@@ -818,19 +850,19 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/charges/py_ADSdjuTGtam7Ns/refunds"
+            "url": "/v1/charges/py_Br32uNdqyjA6Fm/refunds"
           },
           "review": null,
           "shipping": null,
           "source": {
-            "id": "ba_ADSdj0Zp5uSXGZ",
+            "id": "ba_Br32uiGJOLmmGO",
             "object": "bank_account",
             "account_holder_name": null,
             "account_holder_type": null,
             "bank_name": "STRIPE TEST BANK",
             "country": "US",
             "currency": "usd",
-            "customer": "cus_ADSdbFOASQzfTq",
+            "customer": "cus_Br32RBgRxzqnSV",
             "fingerprint": "qw2YdYDmIJUuNi9w",
             "last4": "6789",
             "metadata": {},
@@ -844,7 +876,7 @@ http_interactions:
           "transfer_group": null
         }
     http_version: 
-  recorded_at: Thu, 02 Mar 2017 21:44:15 GMT
+  recorded_at: Wed, 29 Nov 2017 02:04:56 GMT
 - request:
     method: get
     uri: https://app.close.io/api/v1/lead/?query=email:example@example.com
@@ -855,7 +887,9 @@ http_interactions:
       Accept:
       - application/json
       User-Agent:
-      - closeio-ruby-gem/v2.6.4
+      - closeio-ruby-gem/v2.6.10
+      X-Tz-Offset:
+      - '0'
       Authorization:
       - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
       Accept-Encoding:
@@ -868,7 +902,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 02 Mar 2017 21:44:15 GMT
+      - Wed, 29 Nov 2017 02:04:56 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -878,48 +912,43 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Rate-Limit-Limit:
-      - '600'
+      - '320'
       X-Rate-Limit-Remaining:
-      - '599'
+      - '319'
       X-Rate-Limit-Reset:
-      - '15'
+      - '7.141917'
       Content-Length:
-      - '1367'
+      - '1000'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
       string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "addresses":
-        [], "date_updated": "2017-03-02T21:40:55.124000+00:00", "created_by_name":
-        "Michael Kaiser-Nyman", "opportunities": [], "custom.lcf_sXaSO35CeYV0CSLrlxo4s1zKUCIQxAuynB7YsLlt7M8":
-        100, "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26", "description":
-        "Used in Epicenter automated tests. Do not delete.", "display_name": "TEST
-        TEST", "contacts": [{"name": "TEST TEST", "title": "", "date_updated": "2017-02-28T23:31:19.147000+00:00",
+        [], "date_updated": "2017-11-29T02:00:27.575000+00:00", "created_by_name":
+        "Michael Kaiser-Nyman", "opportunities": [], "custom.lcf_GrOe1vSEWCpdfHpOaCiEchiYTzlGzg7HpL4rICb2bJh":
+        "2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)", "id": "lead_L125JRKO4Kh8GJMh7Ah9ggVsrPAzmVEp598taaQBzVe",
+        "description": "Please check with Mike if any fields in here are causing issues
+        for your queries.", "display_name": "THIS LEAD IS USED FOR TESTING PURPOSES.
+        PLEASE DO NOT DELETE.", "contacts": [{"name": "THIS LEAD IS USED FOR TESTING
+        PURPOSES. PLEASE DO NOT DELETE.", "title": "", "date_updated": "2017-11-29T02:00:27.568000+00:00",
         "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "id": "cont_FStz8S1Oe1diS12GwlUZM3kd9An7qfrPhTkQ3nyxvoH", "organization_id":
-        "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "urls": [], "date_created":
-        "2015-08-04T20:54:51.401000+00:00", "integration_links": [], "emails": [{"type":
-        "office", "email": "example@example.com"}], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}],
-        "custom.lcf_B410rIUtklIKHiSrxnQDvocLUp9D3gpuFGxP49Vgtl8": "Standard Plan -
-        $150 then $850", "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "custom": {"Amount paid": 100, "Gender": "Female, Non-binary", "Age": 25,
-        "Previous job": "test job", "Campus": "Portland", "Race": "Other", "veteran":
-        "No", "Payment plan": "Standard Plan - $150 then $850", "Previous salary":
-        10000, "Education": "High school diploma or equivalent", "Class": "* Placement
-        Test"}, "updated_by_name": "Michael Kaiser-Nyman", "custom.lcf_Ms6HpCRZiHpNs0Q6P98bkTEpFDlOpqg7jCSq4nskMXc":
-        25, "custom.lcf_XLoOAQHg31yBv5xVBJDHnRpQVK7o3oIUy5ng50clwy6": "Other", "custom.lcf_szuq9CwVhfFYVhdqoTO8VE0nWhbWq5G2eBDRrJXTvan":
-        "Female, Non-binary", "custom.lcf_b6edXV72xgsfp5Dw5qS5fQHihwEb8F4jgmWk6iSTZAD":
-        "test job", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "status_id": "stat_IAcdBqZZTAul6vK2srakLxAyd8Kem3ALHW6MBg12ntc", "custom.lcf_cLOVwwxk5KM718I4LJ4zwYpemYH4ULYL1n8qcHrio78":
-        "Portland", "html_url": "https://app.close.io/lead/lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26/",
-        "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "custom.lcf_38CfDp4LfSEAuLykjw8kZbQH5ZJwQSbUr95i5vCuADY":
-        "High school diploma or equivalent", "integration_links": [{"url": "https://epicenter.epicodus.com/students?utf8=%E2%9C%93&search=TEST%20TEST&button=",
-        "name": "Epicenter Link"}], "custom.lcf_Gm7m9WYKo5s8r8hOllbu1FHZEcHFLYjckMecIFdeg0a":
-        "* Placement Test", "name": "TEST TEST", "url": null, "status_label": "Enrolled",
-        "date_created": "2015-08-04T20:54:51.404000+00:00", "custom.lcf_7C6poq2WtkRq6t9136FwaHjahQmWkb7qgOnlwiFc8Fd":
-        "No", "custom.lcf_TjagC1kMBfOiYbULzdgdIelJmMd3wXPyCU2VN6KOyLu": 10000}]}'
+        "id": "cont_JM7ymwgX3gK2n2Dc0w1dWAFgjlTA71hUZPjg5mp3Cu4", "organization_id":
+        "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "urls": [], "date_created": "2017-05-15T23:51:29.062000+00:00", "integration_links":
+        [], "emails": [{"type": "office", "email": "example@example.com"}], "lead_id":
+        "lead_L125JRKO4Kh8GJMh7Ah9ggVsrPAzmVEp598taaQBzVe"}], "custom.lcf_6Tk6lJghWEfqAcSk45W9k93vF6zZ47jUcrC7cLwTQhh":
+        "2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)", "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "custom": {"Cohort - Applied": "2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)", "Cohort
+        - Starting": "2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)"}, "updated_by_name":
+        "Michael Kaiser-Nyman", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "status_id": "stat_jHXa7MyAAAXtdOq6WuzN4IDHXXkwaq41miOxlg1Os0j", "html_url":
+        "https://app.close.io/lead/lead_L125JRKO4Kh8GJMh7Ah9ggVsrPAzmVEp598taaQBzVe/",
+        "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "integration_links":
+        [{"url": "https://epicenter.epicodus.com/students?utf8=%E2%9C%93&search=THIS%20LEAD%20IS%20USED%20FOR%20TESTING%20PURPOSES.%20PLEASE%20DO%20NOT%20DELETE.&button=",
+        "name": "Epicenter Link"}], "name": "", "url": null, "status_label": "Applicant
+        - No longer interested (legacy)", "date_created": "2017-05-15T23:51:29.068000+00:00"}]}'
     http_version: 
-  recorded_at: Thu, 02 Mar 2017 21:44:15 GMT
+  recorded_at: Wed, 29 Nov 2017 02:04:56 GMT
 - request:
     method: get
     uri: https://app.close.io/api/v1/lead/?query=email:example@example.com
@@ -930,7 +959,9 @@ http_interactions:
       Accept:
       - application/json
       User-Agent:
-      - closeio-ruby-gem/v2.6.4
+      - closeio-ruby-gem/v2.6.10
+      X-Tz-Offset:
+      - '0'
       Authorization:
       - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
       Accept-Encoding:
@@ -943,7 +974,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 02 Mar 2017 21:44:16 GMT
+      - Wed, 29 Nov 2017 02:04:57 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -953,48 +984,43 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Rate-Limit-Limit:
-      - '600'
+      - '320'
       X-Rate-Limit-Remaining:
-      - '598'
+      - '318'
       X-Rate-Limit-Reset:
-      - '15'
+      - '6.982262'
       Content-Length:
-      - '1367'
+      - '1000'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
       string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "addresses":
-        [], "date_updated": "2017-03-02T21:40:55.124000+00:00", "created_by_name":
-        "Michael Kaiser-Nyman", "opportunities": [], "custom.lcf_sXaSO35CeYV0CSLrlxo4s1zKUCIQxAuynB7YsLlt7M8":
-        100, "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26", "description":
-        "Used in Epicenter automated tests. Do not delete.", "display_name": "TEST
-        TEST", "contacts": [{"name": "TEST TEST", "title": "", "date_updated": "2017-02-28T23:31:19.147000+00:00",
+        [], "date_updated": "2017-11-29T02:00:27.575000+00:00", "created_by_name":
+        "Michael Kaiser-Nyman", "opportunities": [], "custom.lcf_GrOe1vSEWCpdfHpOaCiEchiYTzlGzg7HpL4rICb2bJh":
+        "2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)", "id": "lead_L125JRKO4Kh8GJMh7Ah9ggVsrPAzmVEp598taaQBzVe",
+        "description": "Please check with Mike if any fields in here are causing issues
+        for your queries.", "display_name": "THIS LEAD IS USED FOR TESTING PURPOSES.
+        PLEASE DO NOT DELETE.", "contacts": [{"name": "THIS LEAD IS USED FOR TESTING
+        PURPOSES. PLEASE DO NOT DELETE.", "title": "", "date_updated": "2017-11-29T02:00:27.568000+00:00",
         "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "id": "cont_FStz8S1Oe1diS12GwlUZM3kd9An7qfrPhTkQ3nyxvoH", "organization_id":
-        "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "urls": [], "date_created":
-        "2015-08-04T20:54:51.401000+00:00", "integration_links": [], "emails": [{"type":
-        "office", "email": "example@example.com"}], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}],
-        "custom.lcf_B410rIUtklIKHiSrxnQDvocLUp9D3gpuFGxP49Vgtl8": "Standard Plan -
-        $150 then $850", "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "custom": {"Amount paid": 100, "Gender": "Female, Non-binary", "Age": 25,
-        "Previous job": "test job", "Campus": "Portland", "Race": "Other", "veteran":
-        "No", "Payment plan": "Standard Plan - $150 then $850", "Previous salary":
-        10000, "Education": "High school diploma or equivalent", "Class": "* Placement
-        Test"}, "updated_by_name": "Michael Kaiser-Nyman", "custom.lcf_Ms6HpCRZiHpNs0Q6P98bkTEpFDlOpqg7jCSq4nskMXc":
-        25, "custom.lcf_XLoOAQHg31yBv5xVBJDHnRpQVK7o3oIUy5ng50clwy6": "Other", "custom.lcf_szuq9CwVhfFYVhdqoTO8VE0nWhbWq5G2eBDRrJXTvan":
-        "Female, Non-binary", "custom.lcf_b6edXV72xgsfp5Dw5qS5fQHihwEb8F4jgmWk6iSTZAD":
-        "test job", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "status_id": "stat_IAcdBqZZTAul6vK2srakLxAyd8Kem3ALHW6MBg12ntc", "custom.lcf_cLOVwwxk5KM718I4LJ4zwYpemYH4ULYL1n8qcHrio78":
-        "Portland", "html_url": "https://app.close.io/lead/lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26/",
-        "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "custom.lcf_38CfDp4LfSEAuLykjw8kZbQH5ZJwQSbUr95i5vCuADY":
-        "High school diploma or equivalent", "integration_links": [{"url": "https://epicenter.epicodus.com/students?utf8=%E2%9C%93&search=TEST%20TEST&button=",
-        "name": "Epicenter Link"}], "custom.lcf_Gm7m9WYKo5s8r8hOllbu1FHZEcHFLYjckMecIFdeg0a":
-        "* Placement Test", "name": "TEST TEST", "url": null, "status_label": "Enrolled",
-        "date_created": "2015-08-04T20:54:51.404000+00:00", "custom.lcf_7C6poq2WtkRq6t9136FwaHjahQmWkb7qgOnlwiFc8Fd":
-        "No", "custom.lcf_TjagC1kMBfOiYbULzdgdIelJmMd3wXPyCU2VN6KOyLu": 10000}]}'
+        "id": "cont_JM7ymwgX3gK2n2Dc0w1dWAFgjlTA71hUZPjg5mp3Cu4", "organization_id":
+        "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "urls": [], "date_created": "2017-05-15T23:51:29.062000+00:00", "integration_links":
+        [], "emails": [{"type": "office", "email": "example@example.com"}], "lead_id":
+        "lead_L125JRKO4Kh8GJMh7Ah9ggVsrPAzmVEp598taaQBzVe"}], "custom.lcf_6Tk6lJghWEfqAcSk45W9k93vF6zZ47jUcrC7cLwTQhh":
+        "2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)", "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "custom": {"Cohort - Applied": "2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)", "Cohort
+        - Starting": "2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)"}, "updated_by_name":
+        "Michael Kaiser-Nyman", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "status_id": "stat_jHXa7MyAAAXtdOq6WuzN4IDHXXkwaq41miOxlg1Os0j", "html_url":
+        "https://app.close.io/lead/lead_L125JRKO4Kh8GJMh7Ah9ggVsrPAzmVEp598taaQBzVe/",
+        "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "integration_links":
+        [{"url": "https://epicenter.epicodus.com/students?utf8=%E2%9C%93&search=THIS%20LEAD%20IS%20USED%20FOR%20TESTING%20PURPOSES.%20PLEASE%20DO%20NOT%20DELETE.&button=",
+        "name": "Epicenter Link"}], "name": "", "url": null, "status_label": "Applicant
+        - No longer interested (legacy)", "date_created": "2017-05-15T23:51:29.068000+00:00"}]}'
     http_version: 
-  recorded_at: Thu, 02 Mar 2017 21:44:16 GMT
+  recorded_at: Wed, 29 Nov 2017 02:04:57 GMT
 - request:
     method: get
     uri: https://app.close.io/api/v1/lead/?query=email:example@example.com
@@ -1005,7 +1031,9 @@ http_interactions:
       Accept:
       - application/json
       User-Agent:
-      - closeio-ruby-gem/v2.6.4
+      - closeio-ruby-gem/v2.6.10
+      X-Tz-Offset:
+      - '0'
       Authorization:
       - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
       Accept-Encoding:
@@ -1018,7 +1046,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 02 Mar 2017 21:44:16 GMT
+      - Wed, 29 Nov 2017 02:04:57 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -1028,124 +1056,43 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Rate-Limit-Limit:
-      - '600'
+      - '320'
       X-Rate-Limit-Remaining:
-      - '597'
+      - '317'
       X-Rate-Limit-Reset:
-      - '14'
+      - '6.714955'
       Content-Length:
-      - '1367'
+      - '1000'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
       string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "addresses":
-        [], "date_updated": "2017-03-02T21:40:55.124000+00:00", "created_by_name":
-        "Michael Kaiser-Nyman", "opportunities": [], "custom.lcf_sXaSO35CeYV0CSLrlxo4s1zKUCIQxAuynB7YsLlt7M8":
-        100, "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26", "description":
-        "Used in Epicenter automated tests. Do not delete.", "display_name": "TEST
-        TEST", "contacts": [{"name": "TEST TEST", "title": "", "date_updated": "2017-02-28T23:31:19.147000+00:00",
+        [], "date_updated": "2017-11-29T02:00:27.575000+00:00", "created_by_name":
+        "Michael Kaiser-Nyman", "opportunities": [], "custom.lcf_GrOe1vSEWCpdfHpOaCiEchiYTzlGzg7HpL4rICb2bJh":
+        "2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)", "id": "lead_L125JRKO4Kh8GJMh7Ah9ggVsrPAzmVEp598taaQBzVe",
+        "description": "Please check with Mike if any fields in here are causing issues
+        for your queries.", "display_name": "THIS LEAD IS USED FOR TESTING PURPOSES.
+        PLEASE DO NOT DELETE.", "contacts": [{"name": "THIS LEAD IS USED FOR TESTING
+        PURPOSES. PLEASE DO NOT DELETE.", "title": "", "date_updated": "2017-11-29T02:00:27.568000+00:00",
         "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "id": "cont_FStz8S1Oe1diS12GwlUZM3kd9An7qfrPhTkQ3nyxvoH", "organization_id":
-        "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "urls": [], "date_created":
-        "2015-08-04T20:54:51.401000+00:00", "integration_links": [], "emails": [{"type":
-        "office", "email": "example@example.com"}], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}],
-        "custom.lcf_B410rIUtklIKHiSrxnQDvocLUp9D3gpuFGxP49Vgtl8": "Standard Plan -
-        $150 then $850", "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "custom": {"Amount paid": 100, "Gender": "Female, Non-binary", "Age": 25,
-        "Previous job": "test job", "Campus": "Portland", "Race": "Other", "veteran":
-        "No", "Payment plan": "Standard Plan - $150 then $850", "Previous salary":
-        10000, "Education": "High school diploma or equivalent", "Class": "* Placement
-        Test"}, "updated_by_name": "Michael Kaiser-Nyman", "custom.lcf_Ms6HpCRZiHpNs0Q6P98bkTEpFDlOpqg7jCSq4nskMXc":
-        25, "custom.lcf_XLoOAQHg31yBv5xVBJDHnRpQVK7o3oIUy5ng50clwy6": "Other", "custom.lcf_szuq9CwVhfFYVhdqoTO8VE0nWhbWq5G2eBDRrJXTvan":
-        "Female, Non-binary", "custom.lcf_b6edXV72xgsfp5Dw5qS5fQHihwEb8F4jgmWk6iSTZAD":
-        "test job", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "status_id": "stat_IAcdBqZZTAul6vK2srakLxAyd8Kem3ALHW6MBg12ntc", "custom.lcf_cLOVwwxk5KM718I4LJ4zwYpemYH4ULYL1n8qcHrio78":
-        "Portland", "html_url": "https://app.close.io/lead/lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26/",
-        "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "custom.lcf_38CfDp4LfSEAuLykjw8kZbQH5ZJwQSbUr95i5vCuADY":
-        "High school diploma or equivalent", "integration_links": [{"url": "https://epicenter.epicodus.com/students?utf8=%E2%9C%93&search=TEST%20TEST&button=",
-        "name": "Epicenter Link"}], "custom.lcf_Gm7m9WYKo5s8r8hOllbu1FHZEcHFLYjckMecIFdeg0a":
-        "* Placement Test", "name": "TEST TEST", "url": null, "status_label": "Enrolled",
-        "date_created": "2015-08-04T20:54:51.404000+00:00", "custom.lcf_7C6poq2WtkRq6t9136FwaHjahQmWkb7qgOnlwiFc8Fd":
-        "No", "custom.lcf_TjagC1kMBfOiYbULzdgdIelJmMd3wXPyCU2VN6KOyLu": 10000}]}'
+        "id": "cont_JM7ymwgX3gK2n2Dc0w1dWAFgjlTA71hUZPjg5mp3Cu4", "organization_id":
+        "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "urls": [], "date_created": "2017-05-15T23:51:29.062000+00:00", "integration_links":
+        [], "emails": [{"type": "office", "email": "example@example.com"}], "lead_id":
+        "lead_L125JRKO4Kh8GJMh7Ah9ggVsrPAzmVEp598taaQBzVe"}], "custom.lcf_6Tk6lJghWEfqAcSk45W9k93vF6zZ47jUcrC7cLwTQhh":
+        "2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)", "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "custom": {"Cohort - Applied": "2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)", "Cohort
+        - Starting": "2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)"}, "updated_by_name":
+        "Michael Kaiser-Nyman", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "status_id": "stat_jHXa7MyAAAXtdOq6WuzN4IDHXXkwaq41miOxlg1Os0j", "html_url":
+        "https://app.close.io/lead/lead_L125JRKO4Kh8GJMh7Ah9ggVsrPAzmVEp598taaQBzVe/",
+        "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "integration_links":
+        [{"url": "https://epicenter.epicodus.com/students?utf8=%E2%9C%93&search=THIS%20LEAD%20IS%20USED%20FOR%20TESTING%20PURPOSES.%20PLEASE%20DO%20NOT%20DELETE.&button=",
+        "name": "Epicenter Link"}], "name": "", "url": null, "status_label": "Applicant
+        - No longer interested (legacy)", "date_created": "2017-05-15T23:51:29.068000+00:00"}]}'
     http_version: 
-  recorded_at: Thu, 02 Mar 2017 21:44:16 GMT
-- request:
-    method: put
-    uri: https://app.close.io/api/v1/lead/lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26/
-    body:
-      encoding: UTF-8
-      string: '{"status":"Enrolled","custom.Amount paid":100}'
-    headers:
-      Accept:
-      - application/json
-      User-Agent:
-      - closeio-ruby-gem/v2.6.4
-      Authorization:
-      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
-      Content-Type:
-      - application/json
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Thu, 02 Mar 2017 21:44:16 GMT
-      Set-Cookie:
-      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '600'
-      X-Rate-Limit-Remaining:
-      - '599'
-      X-Rate-Limit-Reset:
-      - '15'
-      Content-Length:
-      - '1334'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"tasks": [], "addresses": [], "date_updated": "2017-03-02T21:40:55.124000+00:00",
-        "created_by_name": "Michael Kaiser-Nyman", "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "custom.lcf_sXaSO35CeYV0CSLrlxo4s1zKUCIQxAuynB7YsLlt7M8": 100, "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26",
-        "custom.lcf_XLoOAQHg31yBv5xVBJDHnRpQVK7o3oIUy5ng50clwy6": "Other", "description":
-        "Used in Epicenter automated tests. Do not delete.", "display_name": "TEST
-        TEST", "contacts": [{"name": "TEST TEST", "title": "", "date_updated": "2017-02-28T23:31:19.147000+00:00",
-        "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "id": "cont_FStz8S1Oe1diS12GwlUZM3kd9An7qfrPhTkQ3nyxvoH", "organization_id":
-        "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "urls": [], "date_created":
-        "2015-08-04T20:54:51.401000+00:00", "integration_links": [], "emails": [{"type":
-        "office", "email": "example@example.com"}], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}],
-        "custom.lcf_B410rIUtklIKHiSrxnQDvocLUp9D3gpuFGxP49Vgtl8": "Standard Plan -
-        $150 then $850", "opportunities": [], "custom": {"Amount paid": 100, "Gender":
-        "Female, Non-binary", "Age": 25, "Previous job": "test job", "Campus": "Portland",
-        "Race": "Other", "veteran": "No", "Payment plan": "Standard Plan - $150 then
-        $850", "Previous salary": 10000, "Education": "High school diploma or equivalent",
-        "Class": "* Placement Test"}, "updated_by_name": "Michael Kaiser-Nyman", "custom.lcf_Ms6HpCRZiHpNs0Q6P98bkTEpFDlOpqg7jCSq4nskMXc":
-        25, "custom.lcf_szuq9CwVhfFYVhdqoTO8VE0nWhbWq5G2eBDRrJXTvan": "Female, Non-binary",
-        "custom.lcf_b6edXV72xgsfp5Dw5qS5fQHihwEb8F4jgmWk6iSTZAD": "test job", "updated_by":
-        "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "status_id": "stat_IAcdBqZZTAul6vK2srakLxAyd8Kem3ALHW6MBg12ntc",
-        "custom.lcf_cLOVwwxk5KM718I4LJ4zwYpemYH4ULYL1n8qcHrio78": "Portland", "html_url":
-        "https://app.close.io/lead/lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26/",
-        "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "custom.lcf_38CfDp4LfSEAuLykjw8kZbQH5ZJwQSbUr95i5vCuADY":
-        "High school diploma or equivalent", "integration_links": [{"url": "https://epicenter.epicodus.com/students?utf8=%E2%9C%93&search=TEST%20TEST&button=",
-        "name": "Epicenter Link"}], "custom.lcf_Gm7m9WYKo5s8r8hOllbu1FHZEcHFLYjckMecIFdeg0a":
-        "* Placement Test", "name": "TEST TEST", "url": null, "status_label": "Enrolled",
-        "date_created": "2015-08-04T20:54:51.404000+00:00", "custom.lcf_TjagC1kMBfOiYbULzdgdIelJmMd3wXPyCU2VN6KOyLu":
-        10000, "custom.lcf_7C6poq2WtkRq6t9136FwaHjahQmWkb7qgOnlwiFc8Fd": "No"}'
-    http_version: 
-  recorded_at: Thu, 02 Mar 2017 21:44:16 GMT
+  recorded_at: Wed, 29 Nov 2017 02:04:57 GMT
 - request:
     method: get
     uri: https://app.close.io/api/v1/lead/?query=email:example@example.com
@@ -1156,7 +1103,9 @@ http_interactions:
       Accept:
       - application/json
       User-Agent:
-      - closeio-ruby-gem/v2.6.4
+      - closeio-ruby-gem/v2.6.10
+      X-Tz-Offset:
+      - '0'
       Authorization:
       - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
       Accept-Encoding:
@@ -1169,7 +1118,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 02 Mar 2017 21:44:16 GMT
+      - Wed, 29 Nov 2017 02:04:57 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -1179,471 +1128,41 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Rate-Limit-Limit:
-      - '600'
+      - '320'
       X-Rate-Limit-Remaining:
-      - '596'
+      - '316'
       X-Rate-Limit-Reset:
-      - '14'
+      - '6.592668'
       Content-Length:
-      - '1367'
+      - '1000'
       Connection:
       - keep-alive
     body:
       encoding: ASCII-8BIT
       string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "addresses":
-        [], "date_updated": "2017-03-02T21:40:55.124000+00:00", "created_by_name":
-        "Michael Kaiser-Nyman", "opportunities": [], "custom.lcf_sXaSO35CeYV0CSLrlxo4s1zKUCIQxAuynB7YsLlt7M8":
-        100, "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26", "description":
-        "Used in Epicenter automated tests. Do not delete.", "display_name": "TEST
-        TEST", "contacts": [{"name": "TEST TEST", "title": "", "date_updated": "2017-02-28T23:31:19.147000+00:00",
+        [], "date_updated": "2017-11-29T02:00:27.575000+00:00", "created_by_name":
+        "Michael Kaiser-Nyman", "opportunities": [], "custom.lcf_GrOe1vSEWCpdfHpOaCiEchiYTzlGzg7HpL4rICb2bJh":
+        "2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)", "id": "lead_L125JRKO4Kh8GJMh7Ah9ggVsrPAzmVEp598taaQBzVe",
+        "description": "Please check with Mike if any fields in here are causing issues
+        for your queries.", "display_name": "THIS LEAD IS USED FOR TESTING PURPOSES.
+        PLEASE DO NOT DELETE.", "contacts": [{"name": "THIS LEAD IS USED FOR TESTING
+        PURPOSES. PLEASE DO NOT DELETE.", "title": "", "date_updated": "2017-11-29T02:00:27.568000+00:00",
         "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "id": "cont_FStz8S1Oe1diS12GwlUZM3kd9An7qfrPhTkQ3nyxvoH", "organization_id":
-        "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "urls": [], "date_created":
-        "2015-08-04T20:54:51.401000+00:00", "integration_links": [], "emails": [{"type":
-        "office", "email": "example@example.com"}], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}],
-        "custom.lcf_B410rIUtklIKHiSrxnQDvocLUp9D3gpuFGxP49Vgtl8": "Standard Plan -
-        $150 then $850", "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "custom": {"Amount paid": 100, "Gender": "Female, Non-binary", "Age": 25,
-        "Previous job": "test job", "Campus": "Portland", "Race": "Other", "veteran":
-        "No", "Payment plan": "Standard Plan - $150 then $850", "Previous salary":
-        10000, "Education": "High school diploma or equivalent", "Class": "* Placement
-        Test"}, "updated_by_name": "Michael Kaiser-Nyman", "custom.lcf_Ms6HpCRZiHpNs0Q6P98bkTEpFDlOpqg7jCSq4nskMXc":
-        25, "custom.lcf_XLoOAQHg31yBv5xVBJDHnRpQVK7o3oIUy5ng50clwy6": "Other", "custom.lcf_szuq9CwVhfFYVhdqoTO8VE0nWhbWq5G2eBDRrJXTvan":
-        "Female, Non-binary", "custom.lcf_b6edXV72xgsfp5Dw5qS5fQHihwEb8F4jgmWk6iSTZAD":
-        "test job", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "status_id": "stat_IAcdBqZZTAul6vK2srakLxAyd8Kem3ALHW6MBg12ntc", "custom.lcf_cLOVwwxk5KM718I4LJ4zwYpemYH4ULYL1n8qcHrio78":
-        "Portland", "html_url": "https://app.close.io/lead/lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26/",
-        "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "custom.lcf_38CfDp4LfSEAuLykjw8kZbQH5ZJwQSbUr95i5vCuADY":
-        "High school diploma or equivalent", "integration_links": [{"url": "https://epicenter.epicodus.com/students?utf8=%E2%9C%93&search=TEST%20TEST&button=",
-        "name": "Epicenter Link"}], "custom.lcf_Gm7m9WYKo5s8r8hOllbu1FHZEcHFLYjckMecIFdeg0a":
-        "* Placement Test", "name": "TEST TEST", "url": null, "status_label": "Enrolled",
-        "date_created": "2015-08-04T20:54:51.404000+00:00", "custom.lcf_7C6poq2WtkRq6t9136FwaHjahQmWkb7qgOnlwiFc8Fd":
-        "No", "custom.lcf_TjagC1kMBfOiYbULzdgdIelJmMd3wXPyCU2VN6KOyLu": 10000}]}'
+        "id": "cont_JM7ymwgX3gK2n2Dc0w1dWAFgjlTA71hUZPjg5mp3Cu4", "organization_id":
+        "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "urls": [], "date_created": "2017-05-15T23:51:29.062000+00:00", "integration_links":
+        [], "emails": [{"type": "office", "email": "example@example.com"}], "lead_id":
+        "lead_L125JRKO4Kh8GJMh7Ah9ggVsrPAzmVEp598taaQBzVe"}], "custom.lcf_6Tk6lJghWEfqAcSk45W9k93vF6zZ47jUcrC7cLwTQhh":
+        "2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)", "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "custom": {"Cohort - Applied": "2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)", "Cohort
+        - Starting": "2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)"}, "updated_by_name":
+        "Michael Kaiser-Nyman", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
+        "status_id": "stat_jHXa7MyAAAXtdOq6WuzN4IDHXXkwaq41miOxlg1Os0j", "html_url":
+        "https://app.close.io/lead/lead_L125JRKO4Kh8GJMh7Ah9ggVsrPAzmVEp598taaQBzVe/",
+        "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "integration_links":
+        [{"url": "https://epicenter.epicodus.com/students?utf8=%E2%9C%93&search=THIS%20LEAD%20IS%20USED%20FOR%20TESTING%20PURPOSES.%20PLEASE%20DO%20NOT%20DELETE.&button=",
+        "name": "Epicenter Link"}], "name": "", "url": null, "status_label": "Applicant
+        - No longer interested (legacy)", "date_created": "2017-05-15T23:51:29.068000+00:00"}]}'
     http_version: 
-  recorded_at: Thu, 02 Mar 2017 21:44:16 GMT
-- request:
-    method: get
-    uri: https://app.close.io/api/v1/lead/?query=email:example@example.com
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      User-Agent:
-      - closeio-ruby-gem/v2.6.4
-      Authorization:
-      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Thu, 02 Mar 2017 21:44:16 GMT
-      Set-Cookie:
-      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '600'
-      X-Rate-Limit-Remaining:
-      - '595'
-      X-Rate-Limit-Reset:
-      - '14'
-      Content-Length:
-      - '1367'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "addresses":
-        [], "date_updated": "2017-03-02T21:40:55.124000+00:00", "created_by_name":
-        "Michael Kaiser-Nyman", "opportunities": [], "custom.lcf_sXaSO35CeYV0CSLrlxo4s1zKUCIQxAuynB7YsLlt7M8":
-        100, "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26", "description":
-        "Used in Epicenter automated tests. Do not delete.", "display_name": "TEST
-        TEST", "contacts": [{"name": "TEST TEST", "title": "", "date_updated": "2017-02-28T23:31:19.147000+00:00",
-        "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "id": "cont_FStz8S1Oe1diS12GwlUZM3kd9An7qfrPhTkQ3nyxvoH", "organization_id":
-        "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "urls": [], "date_created":
-        "2015-08-04T20:54:51.401000+00:00", "integration_links": [], "emails": [{"type":
-        "office", "email": "example@example.com"}], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}],
-        "custom.lcf_B410rIUtklIKHiSrxnQDvocLUp9D3gpuFGxP49Vgtl8": "Standard Plan -
-        $150 then $850", "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "custom": {"Amount paid": 100, "Gender": "Female, Non-binary", "Age": 25,
-        "Previous job": "test job", "Campus": "Portland", "Race": "Other", "veteran":
-        "No", "Payment plan": "Standard Plan - $150 then $850", "Previous salary":
-        10000, "Education": "High school diploma or equivalent", "Class": "* Placement
-        Test"}, "updated_by_name": "Michael Kaiser-Nyman", "custom.lcf_Ms6HpCRZiHpNs0Q6P98bkTEpFDlOpqg7jCSq4nskMXc":
-        25, "custom.lcf_XLoOAQHg31yBv5xVBJDHnRpQVK7o3oIUy5ng50clwy6": "Other", "custom.lcf_szuq9CwVhfFYVhdqoTO8VE0nWhbWq5G2eBDRrJXTvan":
-        "Female, Non-binary", "custom.lcf_b6edXV72xgsfp5Dw5qS5fQHihwEb8F4jgmWk6iSTZAD":
-        "test job", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "status_id": "stat_IAcdBqZZTAul6vK2srakLxAyd8Kem3ALHW6MBg12ntc", "custom.lcf_cLOVwwxk5KM718I4LJ4zwYpemYH4ULYL1n8qcHrio78":
-        "Portland", "html_url": "https://app.close.io/lead/lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26/",
-        "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "custom.lcf_38CfDp4LfSEAuLykjw8kZbQH5ZJwQSbUr95i5vCuADY":
-        "High school diploma or equivalent", "integration_links": [{"url": "https://epicenter.epicodus.com/students?utf8=%E2%9C%93&search=TEST%20TEST&button=",
-        "name": "Epicenter Link"}], "custom.lcf_Gm7m9WYKo5s8r8hOllbu1FHZEcHFLYjckMecIFdeg0a":
-        "* Placement Test", "name": "TEST TEST", "url": null, "status_label": "Enrolled",
-        "date_created": "2015-08-04T20:54:51.404000+00:00", "custom.lcf_7C6poq2WtkRq6t9136FwaHjahQmWkb7qgOnlwiFc8Fd":
-        "No", "custom.lcf_TjagC1kMBfOiYbULzdgdIelJmMd3wXPyCU2VN6KOyLu": 10000}]}'
-    http_version: 
-  recorded_at: Thu, 02 Mar 2017 21:44:16 GMT
-- request:
-    method: get
-    uri: https://app.close.io/api/v1/lead/?query=email:example@example.com
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      User-Agent:
-      - closeio-ruby-gem/v2.6.4
-      Authorization:
-      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Thu, 02 Mar 2017 21:44:16 GMT
-      Set-Cookie:
-      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '600'
-      X-Rate-Limit-Remaining:
-      - '594'
-      X-Rate-Limit-Reset:
-      - '14'
-      Content-Length:
-      - '1367'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "addresses":
-        [], "date_updated": "2017-03-02T21:40:55.124000+00:00", "created_by_name":
-        "Michael Kaiser-Nyman", "opportunities": [], "custom.lcf_sXaSO35CeYV0CSLrlxo4s1zKUCIQxAuynB7YsLlt7M8":
-        100, "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26", "description":
-        "Used in Epicenter automated tests. Do not delete.", "display_name": "TEST
-        TEST", "contacts": [{"name": "TEST TEST", "title": "", "date_updated": "2017-02-28T23:31:19.147000+00:00",
-        "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "id": "cont_FStz8S1Oe1diS12GwlUZM3kd9An7qfrPhTkQ3nyxvoH", "organization_id":
-        "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "urls": [], "date_created":
-        "2015-08-04T20:54:51.401000+00:00", "integration_links": [], "emails": [{"type":
-        "office", "email": "example@example.com"}], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}],
-        "custom.lcf_B410rIUtklIKHiSrxnQDvocLUp9D3gpuFGxP49Vgtl8": "Standard Plan -
-        $150 then $850", "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "custom": {"Amount paid": 100, "Gender": "Female, Non-binary", "Age": 25,
-        "Previous job": "test job", "Campus": "Portland", "Race": "Other", "veteran":
-        "No", "Payment plan": "Standard Plan - $150 then $850", "Previous salary":
-        10000, "Education": "High school diploma or equivalent", "Class": "* Placement
-        Test"}, "updated_by_name": "Michael Kaiser-Nyman", "custom.lcf_Ms6HpCRZiHpNs0Q6P98bkTEpFDlOpqg7jCSq4nskMXc":
-        25, "custom.lcf_XLoOAQHg31yBv5xVBJDHnRpQVK7o3oIUy5ng50clwy6": "Other", "custom.lcf_szuq9CwVhfFYVhdqoTO8VE0nWhbWq5G2eBDRrJXTvan":
-        "Female, Non-binary", "custom.lcf_b6edXV72xgsfp5Dw5qS5fQHihwEb8F4jgmWk6iSTZAD":
-        "test job", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "status_id": "stat_IAcdBqZZTAul6vK2srakLxAyd8Kem3ALHW6MBg12ntc", "custom.lcf_cLOVwwxk5KM718I4LJ4zwYpemYH4ULYL1n8qcHrio78":
-        "Portland", "html_url": "https://app.close.io/lead/lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26/",
-        "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "custom.lcf_38CfDp4LfSEAuLykjw8kZbQH5ZJwQSbUr95i5vCuADY":
-        "High school diploma or equivalent", "integration_links": [{"url": "https://epicenter.epicodus.com/students?utf8=%E2%9C%93&search=TEST%20TEST&button=",
-        "name": "Epicenter Link"}], "custom.lcf_Gm7m9WYKo5s8r8hOllbu1FHZEcHFLYjckMecIFdeg0a":
-        "* Placement Test", "name": "TEST TEST", "url": null, "status_label": "Enrolled",
-        "date_created": "2015-08-04T20:54:51.404000+00:00", "custom.lcf_7C6poq2WtkRq6t9136FwaHjahQmWkb7qgOnlwiFc8Fd":
-        "No", "custom.lcf_TjagC1kMBfOiYbULzdgdIelJmMd3wXPyCU2VN6KOyLu": 10000}]}'
-    http_version: 
-  recorded_at: Thu, 02 Mar 2017 21:44:16 GMT
-- request:
-    method: put
-    uri: https://app.close.io/api/v1/lead/lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26/
-    body:
-      encoding: UTF-8
-      string: '{"custom.Amount paid":100}'
-    headers:
-      Accept:
-      - application/json
-      User-Agent:
-      - closeio-ruby-gem/v2.6.4
-      Authorization:
-      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
-      Content-Type:
-      - application/json
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Thu, 02 Mar 2017 21:44:17 GMT
-      Set-Cookie:
-      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '600'
-      X-Rate-Limit-Remaining:
-      - '598'
-      X-Rate-Limit-Reset:
-      - '14'
-      Content-Length:
-      - '1334'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"tasks": [], "addresses": [], "date_updated": "2017-03-02T21:40:55.124000+00:00",
-        "created_by_name": "Michael Kaiser-Nyman", "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "custom.lcf_sXaSO35CeYV0CSLrlxo4s1zKUCIQxAuynB7YsLlt7M8": 100, "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26",
-        "custom.lcf_XLoOAQHg31yBv5xVBJDHnRpQVK7o3oIUy5ng50clwy6": "Other", "description":
-        "Used in Epicenter automated tests. Do not delete.", "display_name": "TEST
-        TEST", "contacts": [{"name": "TEST TEST", "title": "", "date_updated": "2017-02-28T23:31:19.147000+00:00",
-        "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "id": "cont_FStz8S1Oe1diS12GwlUZM3kd9An7qfrPhTkQ3nyxvoH", "organization_id":
-        "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "urls": [], "date_created":
-        "2015-08-04T20:54:51.401000+00:00", "integration_links": [], "emails": [{"type":
-        "office", "email": "example@example.com"}], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}],
-        "custom.lcf_B410rIUtklIKHiSrxnQDvocLUp9D3gpuFGxP49Vgtl8": "Standard Plan -
-        $150 then $850", "opportunities": [], "custom": {"Amount paid": 100, "Gender":
-        "Female, Non-binary", "Age": 25, "Previous job": "test job", "Campus": "Portland",
-        "Race": "Other", "veteran": "No", "Payment plan": "Standard Plan - $150 then
-        $850", "Previous salary": 10000, "Education": "High school diploma or equivalent",
-        "Class": "* Placement Test"}, "updated_by_name": "Michael Kaiser-Nyman", "custom.lcf_Ms6HpCRZiHpNs0Q6P98bkTEpFDlOpqg7jCSq4nskMXc":
-        25, "custom.lcf_szuq9CwVhfFYVhdqoTO8VE0nWhbWq5G2eBDRrJXTvan": "Female, Non-binary",
-        "custom.lcf_b6edXV72xgsfp5Dw5qS5fQHihwEb8F4jgmWk6iSTZAD": "test job", "updated_by":
-        "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "status_id": "stat_IAcdBqZZTAul6vK2srakLxAyd8Kem3ALHW6MBg12ntc",
-        "custom.lcf_cLOVwwxk5KM718I4LJ4zwYpemYH4ULYL1n8qcHrio78": "Portland", "html_url":
-        "https://app.close.io/lead/lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26/",
-        "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "custom.lcf_38CfDp4LfSEAuLykjw8kZbQH5ZJwQSbUr95i5vCuADY":
-        "High school diploma or equivalent", "integration_links": [{"url": "https://epicenter.epicodus.com/students?utf8=%E2%9C%93&search=TEST%20TEST&button=",
-        "name": "Epicenter Link"}], "custom.lcf_Gm7m9WYKo5s8r8hOllbu1FHZEcHFLYjckMecIFdeg0a":
-        "* Placement Test", "name": "TEST TEST", "url": null, "status_label": "Enrolled",
-        "date_created": "2015-08-04T20:54:51.404000+00:00", "custom.lcf_TjagC1kMBfOiYbULzdgdIelJmMd3wXPyCU2VN6KOyLu":
-        10000, "custom.lcf_7C6poq2WtkRq6t9136FwaHjahQmWkb7qgOnlwiFc8Fd": "No"}'
-    http_version: 
-  recorded_at: Thu, 02 Mar 2017 21:44:17 GMT
-- request:
-    method: get
-    uri: https://app.close.io/api/v1/lead/?query=email:example@example.com
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      User-Agent:
-      - closeio-ruby-gem/v2.6.4
-      Authorization:
-      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Thu, 02 Mar 2017 21:44:17 GMT
-      Set-Cookie:
-      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '600'
-      X-Rate-Limit-Remaining:
-      - '593'
-      X-Rate-Limit-Reset:
-      - '14'
-      Content-Length:
-      - '1367'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "addresses":
-        [], "date_updated": "2017-03-02T21:40:55.124000+00:00", "created_by_name":
-        "Michael Kaiser-Nyman", "opportunities": [], "custom.lcf_sXaSO35CeYV0CSLrlxo4s1zKUCIQxAuynB7YsLlt7M8":
-        100, "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26", "description":
-        "Used in Epicenter automated tests. Do not delete.", "display_name": "TEST
-        TEST", "contacts": [{"name": "TEST TEST", "title": "", "date_updated": "2017-02-28T23:31:19.147000+00:00",
-        "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "id": "cont_FStz8S1Oe1diS12GwlUZM3kd9An7qfrPhTkQ3nyxvoH", "organization_id":
-        "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "urls": [], "date_created":
-        "2015-08-04T20:54:51.401000+00:00", "integration_links": [], "emails": [{"type":
-        "office", "email": "example@example.com"}], "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}],
-        "custom.lcf_B410rIUtklIKHiSrxnQDvocLUp9D3gpuFGxP49Vgtl8": "Standard Plan -
-        $150 then $850", "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "custom": {"Amount paid": 100, "Gender": "Female, Non-binary", "Age": 25,
-        "Previous job": "test job", "Campus": "Portland", "Race": "Other", "veteran":
-        "No", "Payment plan": "Standard Plan - $150 then $850", "Previous salary":
-        10000, "Education": "High school diploma or equivalent", "Class": "* Placement
-        Test"}, "updated_by_name": "Michael Kaiser-Nyman", "custom.lcf_Ms6HpCRZiHpNs0Q6P98bkTEpFDlOpqg7jCSq4nskMXc":
-        25, "custom.lcf_XLoOAQHg31yBv5xVBJDHnRpQVK7o3oIUy5ng50clwy6": "Other", "custom.lcf_szuq9CwVhfFYVhdqoTO8VE0nWhbWq5G2eBDRrJXTvan":
-        "Female, Non-binary", "custom.lcf_b6edXV72xgsfp5Dw5qS5fQHihwEb8F4jgmWk6iSTZAD":
-        "test job", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "status_id": "stat_IAcdBqZZTAul6vK2srakLxAyd8Kem3ALHW6MBg12ntc", "custom.lcf_cLOVwwxk5KM718I4LJ4zwYpemYH4ULYL1n8qcHrio78":
-        "Portland", "html_url": "https://app.close.io/lead/lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26/",
-        "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "custom.lcf_38CfDp4LfSEAuLykjw8kZbQH5ZJwQSbUr95i5vCuADY":
-        "High school diploma or equivalent", "integration_links": [{"url": "https://epicenter.epicodus.com/students?utf8=%E2%9C%93&search=TEST%20TEST&button=",
-        "name": "Epicenter Link"}], "custom.lcf_Gm7m9WYKo5s8r8hOllbu1FHZEcHFLYjckMecIFdeg0a":
-        "* Placement Test", "name": "TEST TEST", "url": null, "status_label": "Enrolled",
-        "date_created": "2015-08-04T20:54:51.404000+00:00", "custom.lcf_7C6poq2WtkRq6t9136FwaHjahQmWkb7qgOnlwiFc8Fd":
-        "No", "custom.lcf_TjagC1kMBfOiYbULzdgdIelJmMd3wXPyCU2VN6KOyLu": 10000}]}'
-    http_version: 
-  recorded_at: Thu, 02 Mar 2017 21:44:17 GMT
-- request:
-    method: get
-    uri: https://app.close.io/api/v1/lead/?query=email:example@example.com
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      User-Agent:
-      - closeio-ruby-gem/v2.6.4
-      Authorization:
-      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 29 Mar 2017 22:01:25 GMT
-      Set-Cookie:
-      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '600'
-      X-Rate-Limit-Remaining:
-      - '563'
-      X-Rate-Limit-Reset:
-      - '3'
-      Content-Length:
-      - '1388'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"has_more": false, "total_results": 1, "data": [{"tasks": [], "addresses":
-        [], "date_updated": "2017-03-29T22:01:24.139000+00:00", "created_by_name":
-        "Michael Kaiser-Nyman", "opportunities": [], "custom.lcf_sXaSO35CeYV0CSLrlxo4s1zKUCIQxAuynB7YsLlt7M8":
-        0, "id": "lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26", "description":
-        "Used in Epicenter automated tests. Do not delete.", "display_name": "TEST
-        TEST", "contacts": [{"name": "TEST TEST", "title": "", "date_updated": "2017-03-17T22:22:18.314000+00:00",
-        "phones": [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "id": "cont_FStz8S1Oe1diS12GwlUZM3kd9An7qfrPhTkQ3nyxvoH", "organization_id":
-        "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "urls": [], "date_created":
-        "2015-08-04T20:54:51.401000+00:00", "integration_links": [], "emails": [{"type":
-        "office", "email": "example@example.com"}, {"type": "office", "email": "second-email@example.com"}],
-        "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9"}], "custom.lcf_B410rIUtklIKHiSrxnQDvocLUp9D3gpuFGxP49Vgtl8":
-        "Standard Plan - $150 then $850", "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "custom": {"Amount paid": 0, "Gender": "Female, Non-binary", "Age": 25, "Previous
-        job": "test job", "Campus": "Portland", "Race": "Other", "veteran": "No",
-        "Payment plan": "Standard Plan - $150 then $850", "Previous salary": 10000,
-        "Education": "High school diploma or equivalent", "Class": "* Placement Test"},
-        "updated_by_name": "Michael Kaiser-Nyman", "custom.lcf_Ms6HpCRZiHpNs0Q6P98bkTEpFDlOpqg7jCSq4nskMXc":
-        25, "custom.lcf_XLoOAQHg31yBv5xVBJDHnRpQVK7o3oIUy5ng50clwy6": "Other", "custom.lcf_szuq9CwVhfFYVhdqoTO8VE0nWhbWq5G2eBDRrJXTvan":
-        "Female, Non-binary", "custom.lcf_b6edXV72xgsfp5Dw5qS5fQHihwEb8F4jgmWk6iSTZAD":
-        "test job", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "status_id": "stat_YyLMZ87A0CRjpfrjQphQMu1Eotz0u9oXl6AWZboR13G", "custom.lcf_cLOVwwxk5KM718I4LJ4zwYpemYH4ULYL1n8qcHrio78":
-        "Portland", "html_url": "https://app.close.io/lead/lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26/",
-        "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "custom.lcf_38CfDp4LfSEAuLykjw8kZbQH5ZJwQSbUr95i5vCuADY":
-        "High school diploma or equivalent", "integration_links": [{"url": "https://epicenter.epicodus.com/students?utf8=%E2%9C%93&search=TEST%20TEST&button=",
-        "name": "Epicenter Link"}], "custom.lcf_Gm7m9WYKo5s8r8hOllbu1FHZEcHFLYjckMecIFdeg0a":
-        "* Placement Test", "name": "TEST TEST", "url": null, "status_label": "Outreach
-        Respondent", "date_created": "2015-08-04T20:54:51.404000+00:00", "custom.lcf_7C6poq2WtkRq6t9136FwaHjahQmWkb7qgOnlwiFc8Fd":
-        "No", "custom.lcf_TjagC1kMBfOiYbULzdgdIelJmMd3wXPyCU2VN6KOyLu": 10000}]}'
-    http_version: 
-  recorded_at: Wed, 29 Mar 2017 22:01:25 GMT
-- request:
-    method: put
-    uri: https://app.close.io/api/v1/lead/lead_4LhIfianLPowbWVnZgOBHQ8Flgm26Wu6YsssnTkKg26/
-    body:
-      encoding: UTF-8
-      string: '{"custom.Amount paid":100}'
-    headers:
-      Accept:
-      - application/json
-      User-Agent:
-      - closeio-ruby-gem/v2.6.8
-      Authorization:
-      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
-      Content-Type:
-      - application/json
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 404
-      message: Not Found
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Mon, 18 Sep 2017 23:27:03 GMT
-      Set-Cookie:
-      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '600'
-      X-Rate-Limit-Remaining:
-      - '596'
-      X-Rate-Limit-Reset:
-      - '13'
-      Content-Length:
-      - '61'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: '{"error": "Empty query: Lead matching query does not exist."}'
-    http_version: 
-  recorded_at: Mon, 18 Sep 2017 23:27:03 GMT
+  recorded_at: Wed, 29 Nov 2017 02:04:57 GMT
 recorded_with: VCR 3.0.3

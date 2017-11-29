@@ -14,7 +14,6 @@ class Payment < ApplicationRecord
   before_create :set_description
   before_create :make_payment, :send_payment_receipt, unless: ->(payment) { payment.offline? }
   before_create :set_offline_status, if: ->(payment) { payment.offline? }
-  # after_create :send_referral_email, if: ->(payment) { !payment.student.referral_email_sent? && student.payments.any? && !payment.offline? }
   after_save :update_crm
   before_update :issue_refund, if: ->(payment) { payment.refund_amount? && !payment.offline? && !payment.refund_issued? }
   after_update :send_payment_failure_notice, if: ->(payment) { payment.status == "failed" && !payment.failure_notice_sent? }
@@ -36,18 +35,6 @@ private
       student.crm_lead.update('custom.Amount paid': amount_paid)
     end
   end
-
-  # def send_referral_email
-  #   EmailClient.create.send_message(
-  #     ENV['MAILGUN_DOMAIN'],
-  #     { :from => ENV['FROM_EMAIL_PAYMENT'],
-  #       :to => student.email,
-  #       :bcc => ENV['FROM_EMAIL_PAYMENT'],
-  #       :subject => "Epicodus tuition discount",
-  #       :text => "Hi #{student.name}! We hope you're as excited to start your time at Epicodus as we are to have you. Many of our students learn about Epicodus from their friends, and we always like to thank people for spreading the word. If you mention Epicodus to someone you know and they enroll, we'll take $100 off both of your tuition. Just tell your friend to mention this promotion and your name during their interview." }
-  #   )
-  #   student.update(referral_email_sent: true)
-  # end
 
   def determine_payment_receipt_email_body
     email_body = "Hi #{student.name}. This is to confirm your payment of #{number_to_currency(total_amount / 100.00)} for Epicodus tuition. "
@@ -77,7 +64,7 @@ private
   end
 
   def send_refund_receipt
-    EmailClient.create.send_message( ENV['MAILGUN_DOMAIN'],
+    EmailJob.perform_later(
       { :from => ENV['FROM_EMAIL_PAYMENT'],
         :to => student.email,
         :bcc => ENV['FROM_EMAIL_PAYMENT'],
@@ -87,7 +74,7 @@ private
   end
 
   def send_payment_receipt
-    EmailClient.create.send_message( ENV['MAILGUN_DOMAIN'],
+    EmailJob.perform_later(
       { :from => ENV['FROM_EMAIL_PAYMENT'],
         :to => student.email,
         :bcc => ENV['FROM_EMAIL_PAYMENT'],
@@ -97,7 +84,7 @@ private
   end
 
   def send_payment_failure_notice
-    EmailClient.create.send_message( ENV['MAILGUN_DOMAIN'], 
+    EmailJob.perform_later(
       { :from => ENV['FROM_EMAIL_PAYMENT'],
         :to => student.email,
         :bcc => ENV['FROM_EMAIL_PAYMENT'],

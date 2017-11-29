@@ -21,11 +21,12 @@ feature 'Submitting demographics info' do
       expect(page).to have_content "Please correct these problems"
     end
 
-    scenario "can submit demographics form after filling out only required fields", vcr: true do
-      fill_in 'demographic_info_address', with: 'test address'
-      fill_in 'demographic_info_city', with: 'test city'
-      fill_in 'demographic_info_state', with: 'test state'
-      fill_in 'demographic_info_zip', with: 'test zip'
+    # one integration test should actually test CRM full process for real, so using VCR & disabling CRM stubbing here
+    scenario "can submit demographics form after filling out only required fields", :dont_stub_crm, vcr: true do
+      fill_in 'demographic_info_address', with: '400 SW 6th Ave'
+      fill_in 'demographic_info_city', with: 'Portland'
+      fill_in 'demographic_info_state', with: 'OR'
+      fill_in 'demographic_info_zip', with: '97204'
       select 'United States of America', from: 'demographic_info_country'
       fill_in 'demographic_info_birth_date', with: '01/01/2000'
       choose 'demographic_info_disability_no'
@@ -37,10 +38,10 @@ feature 'Submitting demographics info' do
     end
 
     scenario "can submit demographics form after filling out required and optional fields", vcr: true do
-      fill_in 'demographic_info_address', with: 'test address'
-      fill_in 'demographic_info_city', with: 'test city'
-      fill_in 'demographic_info_state', with: 'test state'
-      fill_in 'demographic_info_zip', with: 'test zip'
+      fill_in 'demographic_info_address', with: '400 SW 6th Ave'
+      fill_in 'demographic_info_city', with: 'Portland'
+      fill_in 'demographic_info_state', with: 'OR'
+      fill_in 'demographic_info_zip', with: '97204'
       select 'United States of America', from: 'demographic_info_country'
       fill_in 'demographic_info_birth_date', with: '01/01/2000'
       choose 'demographic_info_disability_no'

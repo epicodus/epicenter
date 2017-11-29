@@ -143,13 +143,11 @@ describe Payment do
       standard_plan = FactoryBot.create(:standard_plan)
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com', plan: standard_plan, referral_email_sent: true)
 
-      mailgun_client = spy("mailgun client")
-      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+      allow(EmailJob).to receive(:perform_later).and_return({})
 
       FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
 
-      expect(mailgun_client).to have_received(:send_message).with(
-        ENV['MAILGUN_DOMAIN'],
+      expect(EmailJob).to have_received(:perform_later).with(
         { from: ENV['FROM_EMAIL_PAYMENT'],
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
@@ -162,13 +160,11 @@ describe Payment do
       loan_plan = FactoryBot.create(:loan_plan)
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com', plan: loan_plan)
 
-      mailgun_client = spy("mailgun client")
-      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+      allow(EmailJob).to receive(:perform_later).and_return({})
 
       FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
 
-      expect(mailgun_client).to have_received(:send_message).with(
-        ENV['MAILGUN_DOMAIN'],
+      expect(EmailJob).to have_received(:perform_later).with(
         { from: ENV['FROM_EMAIL_PAYMENT'],
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
@@ -180,14 +176,12 @@ describe Payment do
     it "emails the student a receipt after successful payment when the student is on the upfront plan", :vcr, :stripe_mock do
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
 
-      mailgun_client = spy("mailgun client")
-      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+      allow(EmailJob).to receive(:perform_later).and_return({})
 
       FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
       FactoryBot.create(:payment_with_credit_card, student: student)
 
-      expect(mailgun_client).to have_received(:send_message).with(
-        ENV['MAILGUN_DOMAIN'],
+      expect(EmailJob).to have_received(:perform_later).with(
         { from: ENV['FROM_EMAIL_PAYMENT'],
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
@@ -201,14 +195,12 @@ describe Payment do
     it "emails the student a failure notice if payment status is updated to 'failed'", :vcr, :stripe_mock do
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
 
-      mailgun_client = spy("mailgun client")
-      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+      allow(EmailJob).to receive(:perform_later).and_return({})
 
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
       payment.update(status: 'failed')
 
-      expect(mailgun_client).to have_received(:send_message).with(
-        ENV['MAILGUN_DOMAIN'],
+      expect(EmailJob).to have_received(:perform_later).with(
         { :from => ENV['FROM_EMAIL_PAYMENT'],
           :to => student.email,
           :bcc => ENV['FROM_EMAIL_PAYMENT'],
@@ -220,58 +212,50 @@ describe Payment do
     it "does not email the student a failure notice twice for the same payment", :vcr, :stripe_mock do
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
 
-      mailgun_client = spy("mailgun client")
-      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+      allow(EmailJob).to receive(:perform_later).and_return({})
 
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00, failure_notice_sent: true)
-      payment.update(status: 'failed')
 
-      expect(mailgun_client).to_not have_received(:send_message).with(
-        ENV['MAILGUN_DOMAIN'],
-        { :from => ENV['FROM_EMAIL_PAYMENT'],
-          :to => student.email,
-          :bcc => ENV['FROM_EMAIL_PAYMENT'],
-          :subject => "Epicodus payment failure notice",
-          :text => "Hi #{student.name}. This is to notify you that a recent payment you made for Epicodus tuition has failed. Please reply to this email so we can sort it out together. Thanks!" }
-      )
+      expect(EmailJob).to_not receive(:perform_later)
+      payment.update(status: 'failed')
     end
   end
 
-  describe 'updating Close.io when a payment is made' do
+  describe 'updating Close.io when a payment is made', :stub_mailgun, :dont_stub_crm, :vcr do
     let(:student) { FactoryBot.create :user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com' }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
     let(:lead_id) { close_io_client.list_leads('email:' + student.email).data.first.id }
 
     before do
-      allow_any_instance_of(CrmLead).to receive(:close_io_client).and_return(close_io_client)
+      allow(CrmUpdateJob).to receive(:perform_later).and_return({})
     end
 
-    it 'updates status and amount paid on the first payment', :vcr, :stub_mailgun do
+    it 'updates status and amount paid on the first payment' do
       allow_any_instance_of(CrmLead).to receive(:status).and_return("Applicant - Accepted")
       payment = Payment.new(student: student, amount: 270_00, payment_method: student.primary_payment_method, category: 'standard')
-      expect_any_instance_of(CrmLead).to receive(:update).with({ status: "Enrolled", 'custom.Amount paid': payment.amount / 100 })
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { status: "Enrolled", 'custom.Amount paid': payment.amount / 100 })
       payment.save
     end
 
-    it 'only updates amount paid on payments beyond the first', :vcr, :stub_mailgun do
+    it 'only updates amount paid on payments beyond the first' do
       payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
       payment_2 = Payment.new(student: student, amount: 50_00, payment_method: student.primary_payment_method, category: 'standard')
-      expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
       payment_2.save
     end
 
-    it 'updates amount paid for offline payments', :vcr, :stub_mailgun do
+    it 'updates amount paid for offline payments' do
       payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
       payment_2 = Payment.new(student: student, amount: 50_00, offline: true)
-      expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
       payment_2.save
     end
 
-    it 'updates amount paid for refunds', :vcr, :stub_mailgun do
+    it 'updates amount paid for refunds' do
       payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
       payment_2 = Payment.new(student: student, amount: 50_00, offline: true)
       payment_2.update(refund_amount: 5000)
-      expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Amount paid': (payment.amount + payment_2.amount - payment_2.refund_amount) / 100 })
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Amount paid': (payment.amount + payment_2.amount - payment_2.refund_amount) / 100 })
       payment_2.save
     end
   end
@@ -344,14 +328,12 @@ describe Payment do
     it "emails the student a receipt after successful refund", :vcr do
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
 
-      mailgun_client = spy("mailgun client")
-      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+      allow(EmailJob).to receive(:perform_later).and_return({})
 
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
       payment.update(refund_amount: 50_00)
 
-      expect(mailgun_client).to have_received(:send_message).with(
-        ENV['MAILGUN_DOMAIN'],
+      expect(EmailJob).to have_received(:perform_later).with(
         { :from => ENV['FROM_EMAIL_PAYMENT'],
           :to => student.email,
           :bcc => ENV['FROM_EMAIL_PAYMENT'],
@@ -363,75 +345,12 @@ describe Payment do
     it "does not send second copy of refund receipt for payment", :vcr do
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
 
-      mailgun_client = spy("mailgun client")
-      allow(Mailgun::Client).to receive(:new) { mailgun_client }
+      allow(EmailJob).to receive(:perform_later).and_return({})
 
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00, refund_issued: true)
-      payment.update(refund_amount: 50_00)
 
-      expect(mailgun_client).to_not have_received(:send_message).with(
-        ENV['MAILGUN_DOMAIN'],
-        { :from => ENV['FROM_EMAIL_PAYMENT'],
-          :to => student.email,
-          :bcc => ENV['FROM_EMAIL_PAYMENT'],
-          :subject => "Epicodus tuition refund receipt",
-          :text => "Hi #{student.name}. This is to confirm your refund of $50.00 from your Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
-      )
+      expect(EmailJob).to_not receive(:perform_later)
+      payment.update(refund_amount: 50_00)
     end
   end
-
-  # describe '#send_referral_email', :stripe_mock, :vcr do
-  #   let(:student) { FactoryBot.create(:user_with_credit_card, email: 'example@example.com') }
-  #
-  #   it 'does not email the student a referral email for an offline payment' do
-  #     mailgun_client = spy("mailgun client")
-  #     allow(Mailgun::Client).to receive(:new) { mailgun_client }
-  #
-  #     FactoryBot.create(:payment_with_credit_card, student: student, offline: true)
-  #
-  #     expect(mailgun_client).to_not have_received(:send_message).with(
-  #       ENV['MAILGUN_DOMAIN'],
-  #       { from: ENV['FROM_EMAIL_PAYMENT'],
-  #         to: student.email,
-  #         bcc: ENV['FROM_EMAIL_PAYMENT'],
-  #         subject: "Epicodus tuition discount",
-  #         text: "Hi #{student.name}! We hope you're as excited to start your time at Epicodus as we are to have you. Many of our students learn about Epicodus from their friends, and we always like to thank people for spreading the word. If you mention Epicodus to someone you know and they enroll, we'll take $100 off both of your tuition. Just tell your friend to mention this promotion and your name during their interview." }
-  #     )
-  #     expect(student.referral_email_sent).to eq nil
-  #   end
-  #
-  #   it 'emails the student a referral email when the first tuition payment is made' do
-  #     mailgun_client = spy("mailgun client")
-  #     allow(Mailgun::Client).to receive(:new) { mailgun_client }
-  #
-  #     FactoryBot.create(:payment_with_credit_card, student: student)
-  #
-  #     expect(mailgun_client).to have_received(:send_message).with(
-  #       ENV['MAILGUN_DOMAIN'],
-  #       { from: ENV['FROM_EMAIL_PAYMENT'],
-  #         to: student.email,
-  #         bcc: ENV['FROM_EMAIL_PAYMENT'],
-  #         subject: "Epicodus tuition discount",
-  #         text: "Hi #{student.name}! We hope you're as excited to start your time at Epicodus as we are to have you. Many of our students learn about Epicodus from their friends, and we always like to thank people for spreading the word. If you mention Epicodus to someone you know and they enroll, we'll take $100 off both of your tuition. Just tell your friend to mention this promotion and your name during their interview." }
-  #     )
-  #     expect(student.referral_email_sent).to eq true
-  #   end
-  #
-  #   it 'does not email the student a referral email if one has already been sent' do
-  #     student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com', referral_email_sent: true)
-  #     mailgun_client = spy("mailgun client")
-  #     allow(Mailgun::Client).to receive(:new) { mailgun_client }
-  #
-  #     FactoryBot.create(:payment_with_credit_card, student: student)
-  #
-  #     expect(mailgun_client).to_not have_received(:send_message).with(
-  #       ENV['MAILGUN_DOMAIN'],
-  #       { from: ENV['FROM_EMAIL_PAYMENT'],
-  #         to: student.email,
-  #         bcc: ENV['FROM_EMAIL_PAYMENT'],
-  #         subject: "Epicodus tuition discount",
-  #         text: "Hi #{student.name}! We hope you're as excited to start your time at Epicodus as we are to have you. Many of our students learn about Epicodus from their friends, and we always like to thank people for spreading the word. If you mention Epicodus to someone you know and they enroll, we'll take $100 off both of your tuition. Just tell your friend to mention this promotion and your name during their interview." }
-  #     )
-  #   end
-  # end
 end

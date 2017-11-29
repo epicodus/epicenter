@@ -1,387 +1,11 @@
 ---
 http_interactions:
 - request:
-    method: get
-    uri: https://app.close.io/api/v1/lead/?query=email:student1@example.com
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      User-Agent:
-      - closeio-ruby-gem/v2.6.4
-      Authorization:
-      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 17 Mar 2017 22:43:19 GMT
-      Set-Cookie:
-      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '600'
-      X-Rate-Limit-Remaining:
-      - '599'
-      X-Rate-Limit-Reset:
-      - '15'
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: '{"has_more": false, "total_results": 0, "data": []}'
-    http_version: 
-  recorded_at: Fri, 17 Mar 2017 22:43:27 GMT
-- request:
-    method: get
-    uri: https://app.close.io/api/v1/lead/?query=email:student343@example.com
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      User-Agent:
-      - closeio-ruby-gem/v2.6.4
-      Authorization:
-      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Fri, 17 Mar 2017 23:11:32 GMT
-      Set-Cookie:
-      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '600'
-      X-Rate-Limit-Remaining:
-      - '599'
-      X-Rate-Limit-Reset:
-      - '15'
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: '{"has_more": false, "total_results": 0, "data": []}'
-    http_version: 
-  recorded_at: Fri, 17 Mar 2017 23:11:32 GMT
-- request:
-    method: get
-    uri: https://app.close.io/api/v1/lead/?query=email:student349@example.com
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      User-Agent:
-      - closeio-ruby-gem/v2.6.4
-      Authorization:
-      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Thu, 23 Mar 2017 20:00:04 GMT
-      Set-Cookie:
-      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '600'
-      X-Rate-Limit-Remaining:
-      - '599'
-      X-Rate-Limit-Reset:
-      - '15'
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: '{"has_more": false, "total_results": 0, "data": []}'
-    http_version: 
-  recorded_at: Thu, 23 Mar 2017 20:00:04 GMT
-- request:
-    method: get
-    uri: https://app.close.io/api/v1/lead/?query=email:student363@example.com
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      User-Agent:
-      - closeio-ruby-gem/v2.6.4
-      Authorization:
-      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Sat, 25 Mar 2017 20:10:28 GMT
-      Set-Cookie:
-      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '600'
-      X-Rate-Limit-Remaining:
-      - '599'
-      X-Rate-Limit-Reset:
-      - '14'
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: '{"has_more": false, "total_results": 0, "data": []}'
-    http_version: 
-  recorded_at: Sat, 25 Mar 2017 20:10:28 GMT
-- request:
-    method: get
-    uri: https://app.close.io/api/v1/lead/?query=email:student366@example.com
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      User-Agent:
-      - closeio-ruby-gem/v2.6.4
-      Authorization:
-      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Thu, 06 Apr 2017 18:15:19 GMT
-      Set-Cookie:
-      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '600'
-      X-Rate-Limit-Remaining:
-      - '599'
-      X-Rate-Limit-Reset:
-      - '14'
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: '{"has_more": false, "total_results": 0, "data": []}'
-    http_version: 
-  recorded_at: Thu, 06 Apr 2017 18:15:35 GMT
-- request:
-    method: get
-    uri: https://app.close.io/api/v1/lead/?query=email:student369@example.com
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      User-Agent:
-      - closeio-ruby-gem/v2.6.5
-      Authorization:
-      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 26 Apr 2017 04:46:40 GMT
-      Set-Cookie:
-      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '600'
-      X-Rate-Limit-Remaining:
-      - '599'
-      X-Rate-Limit-Reset:
-      - '14'
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: '{"has_more": false, "total_results": 0, "data": []}'
-    http_version: 
-  recorded_at: Wed, 26 Apr 2017 04:46:41 GMT
-- request:
-    method: get
-    uri: https://app.close.io/api/v1/lead/?query=email:student372@example.com
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      User-Agent:
-      - closeio-ruby-gem/v2.6.5
-      Authorization:
-      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 26 Apr 2017 23:27:08 GMT
-      Set-Cookie:
-      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '600'
-      X-Rate-Limit-Remaining:
-      - '599'
-      X-Rate-Limit-Reset:
-      - '14'
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: '{"has_more": false, "total_results": 0, "data": []}'
-    http_version: 
-  recorded_at: Wed, 26 Apr 2017 23:27:09 GMT
-- request:
-    method: get
-    uri: https://app.close.io/api/v1/lead/?query=email:student373@example.com
-    body:
-      encoding: US-ASCII
-      string: ''
-    headers:
-      Accept:
-      - application/json
-      User-Agent:
-      - closeio-ruby-gem/v2.6.5
-      Authorization:
-      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Thu, 04 May 2017 21:35:38 GMT
-      Set-Cookie:
-      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '600'
-      X-Rate-Limit-Remaining:
-      - '599'
-      X-Rate-Limit-Reset:
-      - '14'
-      Content-Length:
-      - '51'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: '{"has_more": false, "total_results": 0, "data": []}'
-    http_version: 
-  recorded_at: Thu, 04 May 2017 21:35:38 GMT
-- request:
     method: post
     uri: https://api.stripe.com/v1/customers
     body:
       encoding: UTF-8
-      string: email=student393%40example.com
+      string: email=student414%40example.com
     headers:
       Accept:
       - "*/*"
@@ -397,8 +21,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Tue Apr 11 16:00:51 PDT 2017;
-        root:xnu-3248.60.11.5.3~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
+        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Content-Length:
       - '30'
       Host:
@@ -411,7 +35,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 17 Jul 2017 20:55:50 GMT
+      - Wed, 29 Nov 2017 02:04:20 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -424,21 +48,23 @@ http_interactions:
       - GET, POST, HEAD, OPTIONS, DELETE
       Access-Control-Allow-Origin:
       - "*"
+      Access-Control-Expose-Headers:
+      - X-Stripe-Privileged-Session-Required,stripe-manage-version,X-Stripe-External-Auth-Required
       Access-Control-Max-Age:
       - '300'
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_B2ln0YuMYPERjU
+      - req_Jtv6rp189kMnWk
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains
+      - max-age=31556926; includeSubDomains; preload
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_B2lng0lHHQPVbi",
+          "id": "cus_Br31xJQtLT6w0n",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
@@ -446,16 +72,16 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_B2lng0lHHQPVbi/bank_accounts"
+            "url": "/v1/customers/cus_Br31xJQtLT6w0n/bank_accounts"
           },
-          "created": 1500324950,
+          "created": 1511921059,
           "currency": null,
           "default_bank_account": null,
           "default_source": null,
           "delinquent": false,
           "description": null,
           "discount": null,
-          "email": "student393@example.com",
+          "email": "student414@example.com",
           "livemode": false,
           "metadata": {},
           "shipping": null,
@@ -464,22 +90,22 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_B2lng0lHHQPVbi/sources"
+            "url": "/v1/customers/cus_Br31xJQtLT6w0n/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_B2lng0lHHQPVbi/subscriptions"
+            "url": "/v1/customers/cus_Br31xJQtLT6w0n/subscriptions"
           },
           "default_source_type": null
         }
     http_version: 
-  recorded_at: Mon, 17 Jul 2017 20:55:50 GMT
+  recorded_at: Wed, 29 Nov 2017 02:04:20 GMT
 - request:
     method: post
-    uri: https://api.stripe.com/v1/customers/cus_B2lng0lHHQPVbi/sources
+    uri: https://api.stripe.com/v1/customers/cus_Br31xJQtLT6w0n/sources
     body:
       encoding: UTF-8
       string: source[object]=card&source[number]=4242424242424242&source[exp_month]=12&source[exp_year]=2020&source[cvc]=123
@@ -498,8 +124,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Tue Apr 11 16:00:51 PDT 2017;
-        root:xnu-3248.60.11.5.3~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
+        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Content-Length:
       - '110'
       Host:
@@ -512,7 +138,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 17 Jul 2017 20:55:51 GMT
+      - Wed, 29 Nov 2017 02:04:20 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -525,21 +151,23 @@ http_interactions:
       - GET, POST, HEAD, OPTIONS, DELETE
       Access-Control-Allow-Origin:
       - "*"
+      Access-Control-Expose-Headers:
+      - X-Stripe-Privileged-Session-Required,stripe-manage-version,X-Stripe-External-Auth-Required
       Access-Control-Max-Age:
       - '300'
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_B2lnAi0KF0Ffbr
+      - req_gEfY7xMGLnsCrz
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains
+      - max-age=31556926; includeSubDomains; preload
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "card_B2lnmJuqdVwh2D",
+          "id": "card_Br32Ja1hn1r1u8",
           "object": "card",
           "address_city": null,
           "address_country": null,
@@ -551,7 +179,7 @@ http_interactions:
           "address_zip_check": null,
           "brand": "Visa",
           "country": "US",
-          "customer": "cus_B2lng0lHHQPVbi",
+          "customer": "cus_Br31xJQtLT6w0n",
           "cvc_check": "pass",
           "dynamic_last4": null,
           "exp_month": 12,
@@ -564,10 +192,10 @@ http_interactions:
           "tokenization_method": null
         }
     http_version: 
-  recorded_at: Mon, 17 Jul 2017 20:55:51 GMT
+  recorded_at: Wed, 29 Nov 2017 02:04:20 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_B2lng0lHHQPVbi
+    uri: https://api.stripe.com/v1/customers/cus_Br31xJQtLT6w0n
     body:
       encoding: US-ASCII
       string: ''
@@ -586,8 +214,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Tue Apr 11 16:00:51 PDT 2017;
-        root:xnu-3248.60.11.5.3~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
+        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Host:
       - api.stripe.com
   response:
@@ -598,7 +226,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 17 Jul 2017 20:55:51 GMT
+      - Wed, 29 Nov 2017 02:04:20 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -611,21 +239,23 @@ http_interactions:
       - GET, POST, HEAD, OPTIONS, DELETE
       Access-Control-Allow-Origin:
       - "*"
+      Access-Control-Expose-Headers:
+      - X-Stripe-Privileged-Session-Required,stripe-manage-version,X-Stripe-External-Auth-Required
       Access-Control-Max-Age:
       - '300'
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_B2lnbAJ22RmfEI
+      - req_eK4g59sF3EFJ1X
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains
+      - max-age=31556926; includeSubDomains; preload
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_B2lng0lHHQPVbi",
+          "id": "cus_Br31xJQtLT6w0n",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
@@ -633,16 +263,16 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_B2lng0lHHQPVbi/bank_accounts"
+            "url": "/v1/customers/cus_Br31xJQtLT6w0n/bank_accounts"
           },
-          "created": 1500324950,
+          "created": 1511921059,
           "currency": null,
           "default_bank_account": null,
-          "default_source": "card_B2lnmJuqdVwh2D",
+          "default_source": "card_Br32Ja1hn1r1u8",
           "delinquent": false,
           "description": null,
           "discount": null,
-          "email": "student393@example.com",
+          "email": "student414@example.com",
           "livemode": false,
           "metadata": {},
           "shipping": null,
@@ -650,7 +280,7 @@ http_interactions:
             "object": "list",
             "data": [
               {
-                "id": "card_B2lnmJuqdVwh2D",
+                "id": "card_Br32Ja1hn1r1u8",
                 "object": "card",
                 "address_city": null,
                 "address_country": null,
@@ -662,7 +292,7 @@ http_interactions:
                 "address_zip_check": null,
                 "brand": "Visa",
                 "country": "US",
-                "customer": "cus_B2lng0lHHQPVbi",
+                "customer": "cus_Br31xJQtLT6w0n",
                 "cvc_check": "pass",
                 "dynamic_last4": null,
                 "exp_month": 12,
@@ -677,22 +307,22 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_B2lng0lHHQPVbi/sources"
+            "url": "/v1/customers/cus_Br31xJQtLT6w0n/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_B2lng0lHHQPVbi/subscriptions"
+            "url": "/v1/customers/cus_Br31xJQtLT6w0n/subscriptions"
           },
           "default_source_type": "card"
         }
     http_version: 
-  recorded_at: Mon, 17 Jul 2017 20:55:51 GMT
+  recorded_at: Wed, 29 Nov 2017 02:04:21 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_B2lng0lHHQPVbi/sources/card_B2lnmJuqdVwh2D
+    uri: https://api.stripe.com/v1/customers/cus_Br31xJQtLT6w0n/sources/card_Br32Ja1hn1r1u8
     body:
       encoding: US-ASCII
       string: ''
@@ -711,8 +341,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Tue Apr 11 16:00:51 PDT 2017;
-        root:xnu-3248.60.11.5.3~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
+        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Host:
       - api.stripe.com
   response:
@@ -723,7 +353,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Mon, 17 Jul 2017 20:55:51 GMT
+      - Wed, 29 Nov 2017 02:04:21 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -736,21 +366,23 @@ http_interactions:
       - GET, POST, HEAD, OPTIONS, DELETE
       Access-Control-Allow-Origin:
       - "*"
+      Access-Control-Expose-Headers:
+      - X-Stripe-Privileged-Session-Required,stripe-manage-version,X-Stripe-External-Auth-Required
       Access-Control-Max-Age:
       - '300'
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_B2lneFrIfDGH9l
+      - req_ZPBcPhtgMJVOSI
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains
+      - max-age=31556926; includeSubDomains; preload
     body:
       encoding: UTF-8
       string: |
         {
-          "id": "card_B2lnmJuqdVwh2D",
+          "id": "card_Br32Ja1hn1r1u8",
           "object": "card",
           "address_city": null,
           "address_country": null,
@@ -762,7 +394,7 @@ http_interactions:
           "address_zip_check": null,
           "brand": "Visa",
           "country": "US",
-          "customer": "cus_B2lng0lHHQPVbi",
+          "customer": "cus_Br31xJQtLT6w0n",
           "cvc_check": "pass",
           "dynamic_last4": null,
           "exp_month": 12,
@@ -775,5 +407,5 @@ http_interactions:
           "tokenization_method": null
         }
     http_version: 
-  recorded_at: Mon, 17 Jul 2017 20:55:51 GMT
+  recorded_at: Wed, 29 Nov 2017 02:04:21 GMT
 recorded_with: VCR 3.0.3
