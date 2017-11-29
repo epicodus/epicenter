@@ -13,7 +13,7 @@ feature 'Creating a bank account' do
       select 'Individual'
     end
 
-    scenario 'with valid information', :vcr, :js, :stripe_mock do
+    scenario 'with valid information', :js, :stripe_mock do
       fill_in 'Routing number', with: '110000000'
       fill_in 'Bank account number', with: '000123456789'
       click_on 'Verify bank account'
