@@ -4,8 +4,7 @@ class CrmLead
   end
 
   def update(update_fields)
-    CrmLead.perform_update(lead.id, update_fields)
-    # CrmUpdateJob.perform_later(lead.id, update_fields)
+    CrmUpdateJob.perform_later(lead.id, update_fields)
   end
 
   def status
@@ -93,8 +92,7 @@ private
 
   def self.update_email(lead_id, new_email)
     close_io_client = Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false)
-    lead = close_io_client.find_lead(lead_id)
-    contact = lead.contacts.first
+    contact = close_io_client.find_lead(lead_id).contacts.first
     updated_emails = contact.emails.unshift(Hashie::Mash.new({ type: "office", email: new_email }))
     close_io_client.update_contact(contact.id, emails: updated_emails)
   end

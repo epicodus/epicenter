@@ -26,21 +26,11 @@ describe Review do
     end
 
     it 'emails the student' do
-      mailgun_client = spy("mailgun client")
-      allow(Mailgun::Client).to receive(:new) { mailgun_client }
-
+      allow(EmailJob).to receive(:perform_later).and_return({})
       review = FactoryBot.create(:review)
       submission = review.submission
       student = submission.student
-
-      expect(mailgun_client).to have_received(:send_message).with(
-        ENV['MAILGUN_DOMAIN'],
-        { :from => ENV['FROM_EMAIL_REVIEW'],
-          :to => student.email,
-          :subject => "Code review reviewed",
-          :text => "Hi #{student.name}. Your #{submission.code_review.title} code has been reviewed. You can view it at #{Rails.application.routes.url_helpers.course_code_review_url(submission.code_review.course, submission.code_review)}."
-        }
-      )
+      expect(EmailJob).to have_received(:perform_later).with({ :from => ENV['FROM_EMAIL_REVIEW'], :to => student.email, :subject => "Code review reviewed", :text => "Hi #{student.name}. Your #{submission.code_review.title} code has been reviewed. You can view it at #{Rails.application.routes.url_helpers.course_code_review_url(submission.code_review.course, submission.code_review)}." })
     end
   end
 

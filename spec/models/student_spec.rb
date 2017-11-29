@@ -207,25 +207,25 @@ describe Student do
     end
   end
 
-  describe "updating close.io when documents have been signed" do
+  describe "updating close.io when documents have been signed", :dont_stub_crm, :vcr do
     let(:student) { FactoryBot.create(:student, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
     let(:lead_id) { close_io_client.list_leads('email:' + student.email).data.first.id }
 
     before do
-      allow_any_instance_of(CrmLead).to receive(:close_io_client).and_return(close_io_client)
+      allow(CrmUpdateJob).to receive(:perform_later).and_return({})
     end
 
-    it "updates the record when there are enough signatures and a payment has been made", :vcr, :dont_stub_crm do
+    it "updates the record when there are enough signatures and a payment has been made" do
       FactoryBot.create(:completed_code_of_conduct, student: student)
       FactoryBot.create(:completed_refund_policy, student: student)
       FactoryBot.create(:completed_enrollment_agreement, student: student)
       allow(student).to receive(:total_paid).and_return(340000)
-      expect_any_instance_of(Closeio::Client).to receive(:update_lead).with(lead_id, { status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 })
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 })
       student.crm_lead.update({ status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 })
     end
 
-    it "fails to update the record when there are not enough signatures", :vcr, :dont_stub_crm do
+    it "fails to update the record when there are not enough signatures" do
       student.update(email: 'fake@fake.com')
       FactoryBot.create(:completed_code_of_conduct, student: student)
       FactoryBot.create(:completed_refund_policy, student: student)
@@ -233,7 +233,7 @@ describe Student do
       expect { student.crm_lead.update({ status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 }) }.to raise_error(CrmError, 'The Close.io lead for fake@fake.com was not found.')
     end
 
-    it "fails to update the record when no payment has been made", :vcr, :dont_stub_crm do
+    it "fails to update the record when no payment has been made" do
       student.update(email: 'fake@fake.com')
       FactoryBot.create(:completed_code_of_conduct, student: student)
       FactoryBot.create(:completed_refund_policy, student: student)
