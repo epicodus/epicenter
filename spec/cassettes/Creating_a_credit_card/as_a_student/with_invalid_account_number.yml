@@ -2,15 +2,139 @@
 http_interactions:
 - request:
     method: post
+    uri: https://m.stripe.com/4
+    body:
+      encoding: UTF-8
+      string: JTdCJTIydjIlMjIlM0ExJTJDJTIyaWQlMjIlM0ElMjJjM2YzOTM1ZWQwYTI0YTQyMmMzNTNiNTAxNzg2MmIzZCUyMiUyQyUyMnQlMjIlM0E1NS4wOTYlMkMlMjJ0YWclMjIlM0ElMjI0LjUuMTclMjIlMkMlMjJzcmMlMjIlM0ElMjJqcyUyMiUyQyUyMmElMjIlM0ElN0IlMjJhJTIyJTNBJTdCJTIydiUyMiUzQSUyMnRydWUlMjIlMkMlMjJ0JTIyJTNBMC4xMDI3NSU3RCUyQyUyMmIlMjIlM0ElN0IlMjJ2JTIyJTNBJTIyZmFsc2UlMjIlMkMlMjJ0JTIyJTNBMC4wMjYxMzIlN0QlMkMlMjJjJTIyJTNBJTdCJTIydiUyMiUzQSUyMmVuLVVTJTIyJTJDJTIydCUyMiUzQTAuMDM2MTEzJTdEJTJDJTIyZCUyMiUzQSU3QiUyMnYlMjIlM0ElMjJNYWNJbnRlbCUyMiUyQyUyMnQlMjIlM0EwLjAxMTE2OCU3RCUyQyUyMmUlMjIlM0ElN0IlMjJ2JTIyJTNBJTIyJTIyJTJDJTIydCUyMiUzQTAuMDI0NzElN0QlMkMlMjJmJTIyJTNBJTdCJTIydiUyMiUzQSUyMjEwMjR3Xzc2OGhfMzJkXzFyJTIyJTJDJTIydCUyMiUzQTAuMDIwODM2JTdEJTJDJTIyZyUyMiUzQSU3QiUyMnYlMjIlM0ElMjItOCUyMiUyQyUyMnQlMjIlM0EwLjAyMjI4MiU3RCUyQyUyMmglMjIlM0ElN0IlMjJ2JTIyJTNBJTIydHJ1ZSUyMiUyQyUyMnQlMjIlM0EwLjAyMDA1JTdEJTJDJTIyaSUyMiUzQSU3QiUyMnYlMjIlM0ElMjJzZXNzaW9uU3RvcmFnZS1lbmFibGVkJTJDJTIwbG9jYWxTdG9yYWdlLWVuYWJsZWQlMjIlMkMlMjJ0JTIyJTNBMC4wNTExMDIlN0QlMkMlMjJqJTIyJTNBJTdCJTIydiUyMiUzQSUyMjAxMTAxMTExMDAwMDAwMDAxMDAwMDAxMTExMDAwMDAwMDAwMDAwMTAwMDEwMDAwMTAxMTExMTElMjIlMkMlMjJ0JTIyJTNBNTMuNzczJTJDJTIyYXQlMjIlM0EwLjM4ODQyJTdEJTJDJTIyayUyMiUzQSU3QiUyMnYlMjIlM0ElMjIlMjIlMkMlMjJ0JTIyJTNBMC4wMDkyMTQlN0QlMkMlMjJsJTIyJTNBJTdCJTIydiUyMiUzQSUyMk1vemlsbGElMkY1LjAlMjAoTWFjaW50b3NoJTNCJTIwSW50ZWwlMjBNYWMlMjBPUyUyMFgpJTIwQXBwbGVXZWJLaXQlMkY1MzguMSUyMChLSFRNTCUyQyUyMGxpa2UlMjBHZWNrbyklMjBQaGFudG9tSlMlMkYyLjEuMSUyMFNhZmFyaSUyRjUzOC4xJTIyJTJDJTIydCUyMiUzQTAuMDI0MjExJTdEJTJDJTIybSUyMiUzQSU3QiUyMnYlMjIlM0ElMjIlMjIlMkMlMjJ0JTIyJTNBMC4wMzk2ODElN0QlMkMlMjJuJTIyJTNBJTdCJTIydiUyMiUzQSUyMmZhbHNlJTIyJTJDJTIydCUyMiUzQTUwLjk4NSUyQyUyMmF0JTIyJTNBMC4wOTkxMDQlN0QlMkMlMjJvJTIyJTNBJTdCJTIydiUyMiUzQSUyMjE5NjM4YTQ3NDI4YWUwOTgyZTFlOTVjOGQ3ZTAyOGE5JTIyJTJDJTIydCUyMiUzQTQ4LjY2MiU3RCU3RCUyQyUyMmIlMjIlM0ElN0IlMjJhJTIyJTNBJTIyJTIyJTJDJTIyYiUyMiUzQSUyMmh0dHAlM0ElMkYlMkYxMjcuMC4wLjElM0E1Mzg5MiUyRmNyZWRpdF9jYXJkJTJGbmV3JTIyJTJDJTIyYyUyMiUzQSUyMkVwaWNlbnRlciUyMiUyQyUyMmQlMjIlM0ElMjI3YWUwNzlmMC02NjQxLTQwYjAtODYzYi01NGQ3MzA4ZjcwMTQlMjIlMkMlMjJlJTIyJTNBJTIyNDRlNDM3OWItNTk4NS00ZjQwLTg2NmUtN2IwMGU0NWM3MWNjJTIyJTJDJTIyZiUyMiUzQWZhbHNlJTJDJTIyZyUyMiUzQXRydWUlMkMlMjJoJTIyJTNBZmFsc2UlMkMlMjJpJTIyJTNBJTVCJTIyYmdDb2xvciUyMiUyQyUyMmFsaW5rQ29sb3IlMjIlMkMlMjJ3aWR0aCUyMiUyQyUyMnBsdWdpbnMlMjIlMkMlMjJoZWlnaHQlMjIlMkMlMjJmZ0NvbG9yJTIyJTJDJTIydmxpbmtDb2xvciUyMiUyQyUyMmFsbCUyMiUyQyUyMmVtYmVkcyUyMiUyQyUyMnNjcmlwdHMlMjIlMkMlMjJjb21wYXRNb2RlJTIyJTJDJTIyYWN0aXZlRWxlbWVudCUyMiUyQyUyMmRpciUyMiUyQyUyMmRlc2lnbk1vZGUlMjIlMkMlMjJsaW5rQ29sb3IlMjIlMkMlMjJkb2N1bWVudEVsZW1lbnQlMjIlMkMlMjJwcmVmZXJyZWRTdHlsZXNoZWV0U2V0JTIyJTJDJTIyeG1sVmVyc2lvbiUyMiUyQyUyMmhpZGRlbiUyMiUyQyUyMndlYmtpdEZ1bGxzY3JlZW5FbGVtZW50JTIyJTJDJTIybG9jYXRpb24lMjIlMkMlMjJ4bWxFbmNvZGluZyUyMiUyQyUyMmltcGxlbWVudGF0aW9uJTIyJTJDJTIyd2Via2l0RnVsbHNjcmVlbkVuYWJsZWQlMjIlMkMlMjJyZWZlcnJlciUyMiUyQyUyMndlYmtpdEZ1bGxTY3JlZW5LZXlib2FyZElucHV0QWxsb3dlZCUyMiUyQyUyMmhlYWQlMjIlMkMlMjJkZWZhdWx0VmlldyUyMiUyQyUyMmRvbWFpbiUyMiUyQyUyMmxhc3RNb2RpZmllZCUyMiUyQyUyMmFuY2hvcnMlMjIlMkMlMjJhcHBsZXRzJTIyJTJDJTIyd2Via2l0Q3VycmVudEZ1bGxTY3JlZW5FbGVtZW50JTIyJTJDJTIyZG9jdHlwZSUyMiUyQyUyMmltYWdlcyUyMiUyQyUyMnZpc2liaWxpdHlTdGF0ZSUyMiUyQyUyMmZvcm1zJTIyJTJDJTIyY2hhcnNldCUyMiUyQyUyMnN0eWxlU2hlZXRzJTIyJTJDJTIyVVJMJTIyJTJDJTIycmVhZHlTdGF0ZSUyMiUyQyUyMnNlbGVjdGVkU3R5bGVzaGVldFNldCUyMiUyQyUyMmNoYXJhY3RlclNldCUyMiUyQyUyMnRpdGxlJTIyJTJDJTIyY29va2llJTIyJTJDJTIyd2Via2l0SXNGdWxsU2NyZWVuJTIyJTJDJTIyYm9keSUyMiUyQyUyMmlucHV0RW5jb2RpbmclMjIlMkMlMjJ4bWxTdGFuZGFsb25lJTIyJTJDJTIyZG9jdW1lbnRVUkklMjIlMkMlMjJkZWZhdWx0Q2hhcnNldCUyMiUyQyUyMmxpbmtzJTIyJTJDJTIyY3VycmVudFNjcmlwdCUyMiUyQyUyMnByZXZpb3VzU2libGluZyUyMiUyQyUyMnBhcmVudE5vZGUlMjIlMkMlMjJsYXN0Q2hpbGQlMjIlMkMlMjJiYXNlVVJJJTIyJTJDJTIyZmlyc3RDaGlsZCUyMiUyQyUyMm5vZGVWYWx1ZSUyMiUyQyUyMnRleHRDb250ZW50JTIyJTJDJTIybm9kZVR5cGUlMjIlMkMlMjJub2RlTmFtZSUyMiUyQyUyMnByZWZpeCUyMiUyQyUyMmNoaWxkTm9kZXMlMjIlMkMlMjJuZXh0U2libGluZyUyMiUyQyUyMm93bmVyRG9jdW1lbnQlMjIlMkMlMjJuYW1lc3BhY2VVUkklMjIlMkMlMjJsb2NhbE5hbWUlMjIlMkMlMjJwYXJlbnRFbGVtZW50JTIyJTVEJTJDJTIyaiUyMiUzQSU1QiUyMmNvb2tpZUVuYWJsZWQlMjIlMkMlMjJsYW5ndWFnZSUyMiUyQyUyMnByb2R1Y3RTdWIlMjIlMkMlMjJtaW1lVHlwZXMlMjIlMkMlMjJwcm9kdWN0JTIyJTJDJTIyYXBwQ29kZU5hbWUlMjIlMkMlMjJ2ZW5kb3JTdWIlMjIlMkMlMjJ2ZW5kb3IlMjIlMkMlMjJwbGF0Zm9ybSUyMiUyQyUyMmFwcE5hbWUlMjIlMkMlMjJhcHBWZXJzaW9uJTIyJTJDJTIydXNlckFnZW50JTIyJTJDJTIycGx1Z2lucyUyMiUyQyUyMm9uTGluZSUyMiU1RCUyQyUyMm4lMjIlM0ExLjkyMjg2NzAwMDAwNDY1NzclN0QlN0Q=
+    headers:
+      Referer:
+      - https://m.stripe.network/inner.html
+      Origin:
+      - https://m.stripe.network
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/538.1 (KHTML, like Gecko)
+        PhantomJS/2.1.1 Safari/538.1
+      Content-Type:
+      - application/xml
+      Accept:
+      - "*/*"
+      Content-Length:
+      - '4408'
+      Connection:
+      - Keep-Alive
+      Accept-Language:
+      - en-US,*
+      Host:
+      - m.stripe.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Wed, 29 Nov 2017 01:58:19 GMT
+      Content-Type:
+      - text/plain
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - close
+      Vary:
+      - Accept-Encoding
+      Set-Cookie:
+      - m=dff3d7ca-1bbb-46fa-90c3-8f5395a9df7a; Expires=Sat, 27 Nov 2027 01:58:19
+        GMT; Domain=m.stripe.com; Secure; HTTPOnly
+      Access-Control-Allow-Origin:
+      - https://m.stripe.network
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains; preload
+      Content-Encoding:
+      - gzip
+    body:
+      encoding: UTF-8
+      string: dff3d7ca-1bbb-46fa-90c3-8f5395a9df7a
+    http_version: 
+  recorded_at: Wed, 29 Nov 2017 01:58:19 GMT
+- request:
+    method: post
+    uri: https://m.stripe.com/4
+    body:
+      encoding: UTF-8
+      string: JTdCJTIyc291cmNlJTIyJTNBJTIybnNyJTIyJTJDJTIyZGF0YSUyMiUzQSU3QiUyMmElMjIlM0ExNDElMkMlMjJiJTIyJTNBNjMlMkMlMjJjJTIyJTNBJTIyQTIuMnNuRVdRRGRPdTBHWG1JODlNUVQyNkM4TGlBU3p5SXJWem1FUkM0TnZzTSUzRC5QMjlCUFRVd0xqSXdNeTR4TmpVdU9ERW1iMEk5TVRBbWIwTTlOVE0ySm05RVBURXpPRFFtYjBVOU5UYzRPU1p2UmoweE9ERTFKbTlIUFRBbWIwZzlNamMyT0RBbWIwazlNQ1p2U2owd0xqQXdNQ1p2U3oxVlV5MVhaWE4wSm05TVBWTkZRU1p2VFQwd0ptOU9QVEFtYjA4OVZFeFRkakV1TWladlVEMUZRMFJJUlMxU1UwRXRRVVZUTVRJNExVZERUUzFUU0VFeU5UWW1iMUU5ZW5aeFRHMDRUMFpVVXpoWE0ybHNRbWRHVG5acmIxZFNkMlJGSlRORUptOVNQVUZhWkNVeVFqSWxNa0oxT0RaTWIyeGtObU5RVjFrd1RUQkpUR0p1VHpBbE0wUSUzRCUyMiU3RCU3RA==
+    headers:
+      Referer:
+      - https://m.stripe.network/inner.html
+      Origin:
+      - https://m.stripe.network
+      User-Agent:
+      - Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/538.1 (KHTML, like Gecko)
+        PhantomJS/2.1.1 Safari/538.1
+      Content-Type:
+      - application/xml
+      Accept:
+      - "*/*"
+      Content-Length:
+      - '604'
+      Cookie:
+      - m=dff3d7ca-1bbb-46fa-90c3-8f5395a9df7a
+      Connection:
+      - Keep-Alive
+      Accept-Language:
+      - en-US,*
+      Host:
+      - m.stripe.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Wed, 29 Nov 2017 01:58:20 GMT
+      Content-Type:
+      - text/plain
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - close
+      Vary:
+      - Accept-Encoding
+      Set-Cookie:
+      - m=dff3d7ca-1bbb-46fa-90c3-8f5395a9df7a; Expires=Sat, 27 Nov 2027 01:58:20
+        GMT; Domain=m.stripe.com; Secure; HTTPOnly
+      Access-Control-Allow-Origin:
+      - https://m.stripe.network
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Content-Type
+      Strict-Transport-Security:
+      - max-age=31556926; includeSubDomains; preload
+      Content-Encoding:
+      - gzip
+    body:
+      encoding: UTF-8
+      string: dff3d7ca-1bbb-46fa-90c3-8f5395a9df7a
+    http_version: 
+  recorded_at: Wed, 29 Nov 2017 01:58:20 GMT
+- request:
+    method: post
     uri: https://api.stripe.com/v1/tokens
     body:
       encoding: UTF-8
-      string: key=<STRIPE_PUBLIC_KEY>&payment_user_agent=stripe.js%2Fd31b455&card[name]=Example+Brown+66&card[number]=4242424242424241&card[exp_month]=12&card[exp_year]=2016&card[cvc]=123&card[address_zip]=11211
+      string: time_on_page=148&guid=dff3d7ca-1bbb-46fa-90c3-8f5395a9df7a&muid=7ae079f0-6641-40b0-863b-54d7308f7014&sid=44e4379b-5985-4f40-866e-7b00e45c71cc&key=<STRIPE_PUBLIC_KEY>&payment_user_agent=stripe.js%2F604c5e8&card[name]=Example+Brown+147&card[number]=4242424242424241&card[exp_month]=12&card[exp_year]=2020&card[cvc]=123&card[address_zip]=11211
     headers:
       Accept:
       - application/json
       Referer:
-      - https://js.stripe.com/v2/channel.html?stripe_xdm_e=http%3A%2F%2F127.0.0.1%3A65412&stripe_xdm_c=default646948&stripe_xdm_p=1
+      - https://js.stripe.com/v2/channel.html?stripe_xdm_e=http%3A%2F%2F127.0.0.1%3A53892&stripe_xdm_c=default295290&stripe_xdm_p=1
       Origin:
       - https://js.stripe.com
       Accept-Language:
@@ -21,7 +145,7 @@ http_interactions:
       Content-Type:
       - application/x-www-form-urlencoded
       Content-Length:
-      - '210'
+      - '353'
       Connection:
       - Keep-Alive
       Host:
@@ -34,7 +158,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Sat, 13 Feb 2016 00:02:31 GMT
+      - Wed, 29 Nov 2017 01:58:20 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -47,14 +171,16 @@ http_interactions:
       - GET, POST, HEAD, OPTIONS, DELETE
       Access-Control-Allow-Origin:
       - https://js.stripe.com
+      Access-Control-Expose-Headers:
+      - X-Stripe-Privileged-Session-Required,stripe-manage-version,X-Stripe-External-Auth-Required
       Access-Control-Max-Age:
       - '300'
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_7teAj9reonzcib
+      - req_JaPM4lO0dutjvl
       Stripe-Version:
-      - '2016-02-03'
+      - '2016-03-07'
       Timing-Allow-Origin:
       - https://js.stripe.com
     body:
@@ -69,5 +195,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Sat, 13 Feb 2016 00:02:31 GMT
-recorded_with: VCR 3.0.1
+  recorded_at: Wed, 29 Nov 2017 01:58:20 GMT
+recorded_with: VCR 3.0.3
