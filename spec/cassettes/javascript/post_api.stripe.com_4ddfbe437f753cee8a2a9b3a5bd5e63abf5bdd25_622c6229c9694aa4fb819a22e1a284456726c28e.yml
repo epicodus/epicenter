@@ -1,0 +1,44 @@
+---
+:scope: 
+:url: https://api.stripe.com/v1/tokens
+:body: bank_account[routing_number]=110000000&bank_account[account_number]=000123456789&bank_account[account_holder_name]=Example+Brown+1&bank_account[account_holder_type]=individual&bank_account[country]=US&bank_account[currency]=USD&key=pk_test_k71fNBhNztxvhxRq1PQaL4u5&payment_user_agent=stripe.js%2F604c5e8
+:status: 200
+:method: post
+:headers:
+  Server: nginx
+  Date: Thu, 30 Nov 2017 01:48:36 GMT
+  Content-Type: application/json
+  Content-Length: '547'
+  Connection: close
+  Access-Control-Allow-Credentials: 'true'
+  Access-Control-Allow-Methods: GET, POST, HEAD, OPTIONS, DELETE
+  Access-Control-Allow-Origin: http://127.0.0.1:51254
+  Access-Control-Expose-Headers: X-Stripe-Privileged-Session-Required,stripe-manage-version,X-Stripe-External-Auth-Required
+  Access-Control-Max-Age: '300'
+  Cache-Control: no-cache, no-store
+  Request-Id: req_ihfiUoszzKsR4k
+  Stripe-Version: '2016-03-07'
+  Strict-Transport-Security: max-age=31556926; includeSubDomains; preload
+:content: |
+  {
+    "id": "btok_0BThAGYv63jBfUrZ2oANemvv",
+    "object": "token",
+    "bank_account": {
+      "id": "ba_BrQ0jD0sHUa0a2",
+      "object": "bank_account",
+      "account_holder_name": "Example Brown 1",
+      "account_holder_type": "individual",
+      "bank_name": "STRIPE TEST BANK",
+      "country": "US",
+      "currency": "usd",
+      "last4": "6789",
+      "routing_number": "110000000",
+      "status": "new",
+      "name": "Example Brown 1"
+    },
+    "client_ip": "75.175.55.244",
+    "created": 1512006516,
+    "livemode": false,
+    "type": "bank_account",
+    "used": false
+  }
