@@ -45,7 +45,7 @@ private
     if last_course.cohorts.count == 1
       last_course.cohorts.first
     else
-      student.courses.level(3).order(:start_date).last.try(:cohorts).try(:first)
+      student.courses.level(3).order(:start_date).last.try(:cohorts).try(:first) || student.courses.level(1).order(:start_date).last.try(:cohorts).try(:first)
     end
   end
 
