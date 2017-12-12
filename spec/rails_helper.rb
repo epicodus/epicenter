@@ -61,6 +61,7 @@ VCR.configure do |config|
   config.filter_sensitive_data('<COMPLAINT_DISCLOSURE_WA_TEMPLATE_ID>') { ENV['COMPLAINT_DISCLOSURE_WA_TEMPLATE_ID'] }
   config.filter_sensitive_data('<ENROLLMENT_AGREEMENT_TEMPLATE_ID>') { ENV['ENROLLMENT_AGREEMENT_TEMPLATE_ID'] }
   config.filter_sensitive_data('<CLOSE_IO_API_KEY>') { ENV['CLOSE_IO_API_KEY'] }
+  config.filter_sensitive_data('<ZAPIER_WEBHOOK_URL>') { ENV['ZAPIER_WEBHOOK_URL'] }
 end
 
 Billy.configure do |c|

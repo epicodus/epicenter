@@ -17,6 +17,7 @@ class Payment < ApplicationRecord
   after_save :update_crm
   before_update :issue_refund, if: ->(payment) { payment.refund_amount? && !payment.offline? && !payment.refund_issued? }
   after_update :send_payment_failure_notice, if: ->(payment) { payment.status == "failed" && !payment.failure_notice_sent? }
+  after_create :send_webhook, if: ->(payment) { payment.status == 'succeeded' || payment.status == 'offline' }
 
   scope :order_by_latest, -> { order('created_at DESC') }
   scope :without_failed, -> { where.not(status: 'failed') }
@@ -56,6 +57,7 @@ private
       charge_id = Stripe::BalanceTransaction.retrieve(stripe_transaction).source
       refund = Stripe::Refund.create(charge: charge_id, amount: refund_amount)
       self.refund_issued = true
+      WebhookPayment.new({ event_name: 'payment_refund', payment: self })
       send_refund_receipt
     rescue Stripe::StripeError => exception
       errors.add(:base, exception.message)
@@ -141,5 +143,9 @@ private
       errors.add(:amount, 'cannot be greater than $8,500.')
       throw :abort
     end
+  end
+
+  def send_webhook
+    WebhookPayment.new({ event_name: "payment_#{status}", payment: self })
   end
 end

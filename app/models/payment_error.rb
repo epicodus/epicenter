@@ -1,0 +1,2 @@
+class PaymentError < StandardError
+end
