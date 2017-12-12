@@ -353,4 +353,27 @@ describe Payment do
       payment.update(refund_amount: 50_00)
     end
   end
+
+  describe "sends webhook after successful payment creation" do
+    before { allow(WebhookJob).to receive(:perform_later).and_return({}) }
+
+    it 'posts webhook for a successful stripe payment', :stripe_mock, :stub_mailgun do
+      student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
+      payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
+      expect(WebhookJob).to have_received(:perform_later).with(ENV['ZAPIER_WEBHOOK_URL'], PaymentSerializer.new(payment).as_json.merge({ event_name: 'payment_succeeded' }))
+    end
+
+    it 'posts webhook after refund issued', :vcr, :stub_mailgun do
+      student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
+      payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
+      expect(WebhookJob).to receive(:perform_later).with(ENV['ZAPIER_WEBHOOK_URL'], PaymentSerializer.new(payment).as_json.merge({ event_name: 'payment_refund', refund_amount: 500 }))
+      payment.update(refund_amount: 500)
+    end
+
+    it 'posts webhook for an offline payment' do
+      student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
+      payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00, offline: true)
+      expect(WebhookJob).to have_received(:perform_later).with(ENV['ZAPIER_WEBHOOK_URL'], PaymentSerializer.new(payment).as_json.merge({ event_name: 'payment_offline' }))
+    end
+  end
 end

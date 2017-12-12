@@ -1,0 +1,30 @@
+---
+:scope: 
+:url: https://api.stripe.com/v1/tokens
+:body: time_on_page=98&guid=NA&muid=6d59f203-7460-4dbc-b09b-1f096df26f5f&sid=2fe73c50-c3e2-4674-9f86-24605c6a2a35&key=pk_test_k71fNBhNztxvhxRq1PQaL4u5&payment_user_agent=stripe.js%2F604c5e8&card[name]=Example+Brown+146&card[number]=4012888888881881&card[exp_month]=+&card[exp_year]=2020&card[cvc]=123&card[address_zip]=11211
+:status: 402
+:method: post
+:headers:
+  Server: nginx
+  Date: Wed, 29 Nov 2017 01:58:19 GMT
+  Content-Type: application/json
+  Content-Length: '184'
+  Connection: close
+  Access-Control-Allow-Credentials: 'true'
+  Access-Control-Allow-Methods: GET, POST, HEAD, OPTIONS, DELETE
+  Access-Control-Allow-Origin: https://js.stripe.com
+  Access-Control-Expose-Headers: X-Stripe-Privileged-Session-Required,stripe-manage-version,X-Stripe-External-Auth-Required
+  Access-Control-Max-Age: '300'
+  Cache-Control: no-cache, no-store
+  Request-Id: req_jeMeFLoiiJw6Bg
+  Stripe-Version: '2016-03-07'
+  Timing-Allow-Origin: https://js.stripe.com
+:content: |
+  {
+    "error": {
+      "message": "The 'exp_month' parameter should be an integer (instead, is  ).",
+      "type": "card_error",
+      "param": "exp_month",
+      "code": "invalid_number"
+    }
+  }

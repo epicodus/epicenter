@@ -1,0 +1,70 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: "<ZAPIER_WEBHOOK_URL>"
+    body:
+      encoding: UTF-8
+      string: '{"id":1,"description":"Philadelphia; 2017-12-04; Full-time; upfront;
+        example@example.com","amount":176524,"fee":5302,"status":"succeeded","refund_amount":null,"offline":false,"stripe_transaction":"test_txn_1","category":"upfront","notes":"","email":"example@example.com","event_name":"payment_succeeded"}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - rest-client/2.0.2 (darwin15.6.0 x86_64) ruby/2.4.1p111
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '304'
+      Host:
+      - hooks.zapier.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 08 Dec 2017 00:40:34 GMT
+      P3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+      Response-Id:
+      - 5a29df82-33b0-4505-975d-ca0fa00d8bd0
+      Server:
+      - nginx
+      Vary:
+      - X-Session-Key
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Rate-Limit-Limit:
+      - '10000'
+      X-Rate-Limit-Remaining:
+      - '9984'
+      X-Rate-Limit-Reset:
+      - '1512694200'
+      X-Session-Key:
+      - anonymous
+      X-Zapier-Fast-Return:
+      - 'true'
+      X-Zapier-Jobs:
+      - Woooo, a hacker like yourself should consider working at Zapier!
+      X-Zapier-Jobs-Link:
+      - https://zapier.com/blog/help-automate-business-zapier-jobs-and-careers/
+      Zrv:
+      - 1En2U2
+      Content-Length:
+      - '172'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"status": "success", "attempt": "5a29df82-33b0-4505-975d-ca0fa00d8bd0",
+        "id": "fa092ba6-b6a3-4408-9250-7d6dcbcfd328", "request_id": "5a29df82-33b0-4505-975d-ca0fa00d8bd0"}'
+    http_version: 
+  recorded_at: Fri, 08 Dec 2017 00:40:35 GMT
+recorded_with: VCR 3.0.3

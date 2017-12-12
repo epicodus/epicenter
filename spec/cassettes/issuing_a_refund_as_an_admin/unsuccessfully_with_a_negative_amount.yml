@@ -835,4 +835,138 @@ http_interactions:
         }
     http_version: 
   recorded_at: Wed, 29 Nov 2017 01:59:42 GMT
-recorded_with: VCR 3.0.3
+- request:
+    method: post
+    uri: "<ZAPIER_WEBHOOK_URL>"
+    body:
+      encoding: UTF-8
+      string: '{"id":1,"description":"Philadelphia; 2017-12-04; Full-time; upfront;
+        example@example.com","amount":10000,"fee":328,"status":"succeeded","refund_amount":null,"offline":null,"stripe_transaction":"txn_Br2xwS9cUrpW1Z","category":"upfront","notes":null,"email":"example@example.com","event_name":"payment_succeeded"}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - rest-client/2.0.2 (darwin15.6.0 x86_64) ruby/2.4.1p111
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '311'
+      Host:
+      - hooks.zapier.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 08 Dec 2017 00:40:34 GMT
+      P3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+      Response-Id:
+      - 5a29df82-afb9-4491-8e6b-e8faf711e9b0
+      Server:
+      - nginx
+      Vary:
+      - X-Session-Key
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Rate-Limit-Limit:
+      - '10000'
+      X-Rate-Limit-Remaining:
+      - '9986'
+      X-Rate-Limit-Reset:
+      - '1512694200'
+      X-Session-Key:
+      - anonymous
+      X-Zapier-Fast-Return:
+      - 'true'
+      X-Zapier-Jobs:
+      - Woooo, a hacker like yourself should consider working at Zapier!
+      X-Zapier-Jobs-Link:
+      - https://zapier.com/blog/help-automate-business-zapier-jobs-and-careers/
+      Zrv:
+      - 1En2U2
+      Content-Length:
+      - '172'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"status": "success", "attempt": "5a29df82-afb9-4491-8e6b-e8faf711e9b0",
+        "id": "9bce012d-a29d-46d1-a6e1-69ac45f9629e", "request_id": "5a29df82-afb9-4491-8e6b-e8faf711e9b0"}'
+    http_version: 
+  recorded_at: Fri, 08 Dec 2017 00:40:34 GMT
+- request:
+    method: post
+    uri: "<ZAPIER_WEBHOOK_URL>"
+    body:
+      encoding: UTF-8
+      string: '{"id":1,"description":"Philadelphia; 2017-12-11; Full-time; upfront;
+        example@example.com","amount":10000,"fee":328,"status":"succeeded","refund_amount":null,"offline":null,"stripe_transaction":"txn_Br2xwS9cUrpW1Z","category":"upfront","notes":null,"email":"example@example.com","event_name":"payment_succeeded"}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - rest-client/2.0.2 (darwin16.6.0 x86_64) ruby/2.4.1p111
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '311'
+      Host:
+      - hooks.zapier.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 12 Dec 2017 19:02:38 GMT
+      P3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+      Response-Id:
+      - 5a3027ce-748c-4406-9078-b70cc8f71e90
+      Server:
+      - nginx
+      Vary:
+      - X-Session-Key
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Rate-Limit-Limit:
+      - '10000'
+      X-Rate-Limit-Remaining:
+      - '9989'
+      X-Rate-Limit-Reset:
+      - '1513105800'
+      X-Session-Key:
+      - anonymous
+      X-Zapier-Fast-Return:
+      - 'true'
+      X-Zapier-Jobs:
+      - Woooo, a hacker like yourself should consider working at Zapier!
+      X-Zapier-Jobs-Link:
+      - https://zapier.com/blog/help-automate-business-zapier-jobs-and-careers/
+      Zrv:
+      - 1EouUa
+      Content-Length:
+      - '172'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"status": "success", "attempt": "5a3027ce-748c-4406-9078-b70cc8f71e90",
+        "id": "c94ecffa-040d-4e7b-b7fb-aaed79bf970f", "request_id": "5a3027ce-748c-4406-9078-b70cc8f71e90"}'
+    http_version: 
+  recorded_at: Tue, 12 Dec 2017 19:02:38 GMT
+recorded_with: VCR 4.0.0

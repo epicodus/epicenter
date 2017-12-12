@@ -20,7 +20,11 @@ private
     payment = Payment.find_by(stripe_transaction: stripe_transaction(event))
     if payment && payment.status == "pending"
       Rails.logger.info "Stripe Callback: updating #{stripe_transaction(event)} to #{status}"
-      payment.try(:update, status: status)
+      if payment.try(:update, status: status)
+        WebhookPayment.new({ event_name: 'payment_callback', payment: payment }) if payment.status == 'succeeded'
+      else
+        raise PaymentError, "Unable to update payment #{payment.id} status in response to Stripe callback."
+      end
     elsif payment
       Rails.logger.info "Ignoring callback: #{stripe_transaction(event)} status was not pending"
     else

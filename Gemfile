@@ -33,6 +33,8 @@ gem 'bootstrap-multiselect-rails'
 gem 'kaminari'
 gem 'paranoia'
 gem 'resque'
+gem 'active_model_serializers'
+gem 'rest-client'
 
 group :development do
   gem 'spring'
