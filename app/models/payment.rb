@@ -57,7 +57,7 @@ private
       charge_id = Stripe::BalanceTransaction.retrieve(stripe_transaction).source
       refund = Stripe::Refund.create(charge: charge_id, amount: refund_amount)
       self.refund_issued = true
-      WebhookPayment.new({ event_name: 'payment_refund', payment: self })
+      WebhookPayment.new({ event_name: 'refund', payment: self })
       send_refund_receipt
     rescue Stripe::StripeError => exception
       errors.add(:base, exception.message)
@@ -106,7 +106,9 @@ private
 
   def set_description
     courses = student.courses.order(:start_date)
-    if courses.any?
+    if category == 'keycard'
+      self.description = 'keycard'
+    elsif courses.any?
       if courses.first.parttime? && courses.fulltime_courses.empty?
         attendance_status = "Part-time"
         start_date = courses.first.start_date.strftime("%Y-%m-%d")
@@ -121,7 +123,7 @@ private
       self.category ||= 'offline'
       self.description = "#{location}; #{start_date}; #{attendance_status}; #{category}; #{student.email}"
     else
-      self.description = "student #{student.id} not enrolled in any courses"
+      self.description = "special: student #{student.id} not enrolled in any courses"
     end
   end
 
@@ -146,6 +148,12 @@ private
   end
 
   def send_webhook
-    WebhookPayment.new({ event_name: "payment_#{status}", payment: self })
+    if amount < 0
+      WebhookPayment.new({ event_name: "refund_offline", payment: self })
+    elsif status == 'offline'
+      WebhookPayment.new({ event_name: "payment_offline", payment: self })
+    else
+      WebhookPayment.new({ event_name: "payment", payment: self })
+    end
   end
 end

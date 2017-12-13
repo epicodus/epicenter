@@ -910,4 +910,71 @@ http_interactions:
         "id": "91c0ae7e-6b3d-4a71-9c82-509a26b3132a", "request_id": "5a29df80-44a7-4860-89ff-8080a80f01b0"}'
     http_version: 
   recorded_at: Fri, 08 Dec 2017 00:40:32 GMT
-recorded_with: VCR 3.0.3
+- request:
+    method: post
+    uri: "<ZAPIER_WEBHOOK_URL>"
+    body:
+      encoding: UTF-8
+      string: '{"id":1,"description":"Philadelphia; 2017-12-11; Full-time; upfront;
+        example@example.com","amount":10000,"fee":328,"status":"succeeded","refund_amount":6000,"offline":null,"stripe_transaction":"txn_Br2xvih6kXOIiQ","category":"upfront","notes":null,"email":"example@example.com","event_name":"refund"}'
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - rest-client/2.0.2 (darwin16.6.0 x86_64) ruby/2.4.1p111
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '300'
+      Host:
+      - hooks.zapier.com
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 13 Dec 2017 14:40:35 GMT
+      P3p:
+      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
+      Response-Id:
+      - 5a313be3-bd5e-4bab-9c13-6b41b28543f0
+      Server:
+      - nginx
+      Vary:
+      - X-Session-Key
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Rate-Limit-Limit:
+      - '10000'
+      X-Rate-Limit-Remaining:
+      - '9995'
+      X-Rate-Limit-Reset:
+      - '1513176600'
+      X-Session-Key:
+      - anonymous
+      X-Zapier-Fast-Return:
+      - 'true'
+      X-Zapier-Jobs:
+      - Woooo, a hacker like yourself should consider working at Zapier!
+      X-Zapier-Jobs-Link:
+      - https://zapier.com/blog/help-automate-business-zapier-jobs-and-careers/
+      Zrv:
+      - 1EoQxh
+      Content-Length:
+      - '172'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"status": "success", "attempt": "5a313be3-bd5e-4bab-9c13-6b41b28543f0",
+        "id": "9621efeb-51f5-4e2a-97a9-9b7a632b0232", "request_id": "5a313be3-bd5e-4bab-9c13-6b41b28543f0"}'
+    http_version: 
+  recorded_at: Wed, 13 Dec 2017 14:40:35 GMT
+recorded_with: VCR 4.0.0
