@@ -10,7 +10,7 @@
 
   <div class="panel panel-default">
     <div class="panel-body">
-      <%= f.label :notes, "Please let your teacher know anything else that you feel they should know about your work this week, how pairing went, or how you feel about the curriculum or your assignment. This will be shared directly with your teacher when they receive your assignment." %>
+      <%= f.label :notes, "Please summarize your experience with this project in a few short sentences. Feel free to highlight challenges you faced, or questions you have. This is required, but will not be graded or contribute to your grade." %>
       <%= f.nested_fields_for :notes, @submission.notes.build do |ff| %>
         <%= ff.text_area :content, rows: 5, maxlength: 2000, class: 'form-control', id: 'submission-student-note', required: true %>
       <% end %>
