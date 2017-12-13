@@ -19,6 +19,7 @@ class DemographicInfo
   validate :validate_date_format, unless: ->(demographic_info) { demographic_info.birth_date.nil? }
   validates_inclusion_of :disability, in: ["Yes", "No"]
   validates_inclusion_of :veteran, in: ["Yes", "No"]
+  validates_inclusion_of :cs_degree, in: ["Yes", "No"]
   validates_inclusion_of :education, in: EDUCATION_OPTIONS
   validates_inclusion_of :shirt, in: SHIRT_OPTIONS
   validates_numericality_of :salary, greater_than_or_equal_to: 0, allow_nil: true
@@ -26,7 +27,7 @@ class DemographicInfo
   validate :check_array_genders, if: ->(demographic_info) { demographic_info.genders.present? }
   validate :check_array_races, if: ->(demographic_info) { demographic_info.races.present? }
 
-  attr_accessor :student, :birth_date, :disability, :veteran, :education, :address, :city, :state, :zip, :country, :shirt, :job, :salary, :genders, :races
+  attr_accessor :student, :birth_date, :disability, :veteran, :education, :cs_degree, :address, :city, :state, :zip, :country, :shirt, :job, :salary, :genders, :races
 
   def initialize(student = nil, attributes = {})
     @student = student
@@ -34,6 +35,7 @@ class DemographicInfo
     @disability = attributes[:veteran]
     @veteran = attributes[:veteran]
     @education = attributes[:education]
+    @cs_degree = attributes[:cs_degree]
     @address = attributes[:address]
     @city = attributes[:city]
     @state = attributes[:state]
@@ -54,6 +56,7 @@ class DemographicInfo
       fields['custom.Demographics - Disability'] = @disability
       fields['custom.Demographics - Veteran'] = @veteran
       fields['custom.Demographics - Education'] = @education
+      fields['custom.Demographics - CS Degree'] = @cs_degree
       fields['custom.Demographics - Previous job'] = @job
       fields['custom.Demographics - Previous salary'] = @salary
       fields['custom.Demographics - Shirt size'] = @shirt
