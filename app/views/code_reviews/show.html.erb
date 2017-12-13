@@ -69,7 +69,6 @@
     <% if @code_review.date && !@code_review.expectations_met_by?(current_student) %>
       <div class="well">
         <p>Submit your code for review by 5pm on <%= @code_review.date.strftime("%A %B %d") %>.</p>
-        <p><em>Please be sure to submit below both the embedded Friday Survey <strong>and</strong> your code review!</em></p>
         <p>Visit <a href="https://www.learnhowtoprogram.com/lessons/independent-projects-and-code-reviews" target="_blank">Independent Projects and Code Reviews</a> for details on how to submit, how feedback works and course completion requirements.</p>
       </div>
     <% end %>
@@ -90,14 +89,6 @@
     <% if current_student && !@code_review.submissions_not_required? %>
       <div class="row">
         <div class="col-md-12">
-
-          <% if @code_review.date && !@code_review.expectations_met_by?(current_student) %>
-            <div class="well">
-              <script>(function(t,e,s,n){var o,a,c;t.SMCX=t.SMCX||[],e.getElementById(n)||(o=e.getElementsByTagName(s),a=o[o.length-1],c=e.createElement(s),c.type="text/javascript",c.async=!0,c.id=n,c.src=["https:"===location.protocol?"https://":"http://","widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgd4JtpE_2BzvN0y_2F5yj2I6l3GecJTVxOlGlsNUZGz_2F9oNyq.js"].join(""),a.parentNode.insertBefore(c,a))})(window,document,"script","smcx-sdk");</script>
-            </div>
-            <p><strong>Please submit the embedded survey above, then submit your code review here:</strong></p>
-          <% end %>
-
           <%= render 'submissions/form' %>
         </div>
       </div>
