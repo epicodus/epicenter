@@ -360,7 +360,7 @@ describe Payment do
     end
   end
 
-  describe "sends webhook after successful payment creation" do
+  describe "sends webhook after successful payment creation", :dont_stub_webhook do
     before { allow(WebhookJob).to receive(:perform_later).and_return({}) }
 
     it 'posts webhook for a successful stripe payment', :stripe_mock, :stub_mailgun do

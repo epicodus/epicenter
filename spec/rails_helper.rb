@@ -37,6 +37,7 @@ RSpec.configure do |config|
     StripeMock.start if example.metadata[:stripe_mock]
     allow_any_instance_of(CrmLead).to receive(:lead) unless example.metadata[:dont_stub_crm]
     allow_any_instance_of(CrmLead).to receive(:update) unless example.metadata[:dont_stub_crm]
+    allow(Webhook).to receive(:send) unless example.metadata[:dont_stub_webhook]
   end
   config.after(:each) do |example|
     StripeMock.stop if example.metadata[:stripe_mock]
