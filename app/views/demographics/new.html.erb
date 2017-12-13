@@ -37,6 +37,13 @@
         <%= f.select :education, options_for_select(DemographicInfo::EDUCATION_OPTIONS), include_blank: true, required: true %>
       </div>
       <div class="form-group">
+        <%= f.label :cs_degree, "Do you have a computer science degree?" %>
+        <ul class="list-unstyled">
+          <li><%= f.radio_button :cs_degree, "Yes" %> Yes</li>
+          <li><%= f.radio_button :cs_degree, "No" %> No</li>
+        </ul>
+      </div>
+      <div class="form-group">
         <%= f.label :shirt, "What is your t-shirt size?" %>
         <%= f.select :shirt, options_for_select(DemographicInfo::SHIRT_OPTIONS), include_blank: true, required: true %>
       </div>
