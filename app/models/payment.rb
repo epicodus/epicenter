@@ -7,7 +7,7 @@ class Payment < ApplicationRecord
   validates :amount, presence: true
   validates :student_id, presence: true
   validates :payment_method, presence: true, unless: ->(payment) { payment.offline? }
-  validates :category, presence: true, on: :create, unless: ->(payment) { payment.offline? }
+  validates :category, presence: true, on: :create
 
   before_create :check_amount
   before_create :set_category, if: ->(payment) { payment.category == 'tuition' }
@@ -124,7 +124,6 @@ private
         start_date = courses.first.start_date.strftime("%Y-%m-%d")
       end
       location = courses.first.office.name
-      self.category ||= 'offline'
       self.description = "#{location}; #{start_date}; #{attendance_status}; #{category}; #{student.email}"
     else
       self.description = "special: student #{student.id} not enrolled in any courses"

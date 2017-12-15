@@ -5,6 +5,7 @@ describe Payment do
   it { should belong_to :payment_method }
   it { should validate_presence_of :student_id }
   it { should validate_presence_of :amount }
+  it { should validate_presence_of :category }
 
   before do
     allow_any_instance_of(CrmLead).to receive(:status)
@@ -261,14 +262,14 @@ describe Payment do
 
     it 'updates amount paid for offline payments' do
       payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
-      payment_2 = Payment.new(student: student, amount: 50_00, offline: true)
+      payment_2 = Payment.new(student: student, amount: 50_00, category: 'standard', offline: true)
       expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
       payment_2.save
     end
 
     it 'updates amount paid for refunds' do
       payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
-      payment_2 = Payment.new(student: student, amount: 50_00, offline: true)
+      payment_2 = Payment.new(student: student, amount: 50_00, category: 'standard', offline: true)
       payment_2.update(refund_amount: 5000)
       expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Amount paid': (payment.amount + payment_2.amount - payment_2.refund_amount) / 100 })
       payment_2.save
