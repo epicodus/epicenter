@@ -243,6 +243,15 @@ describe Payment do
       payment.save
     end
 
+    it 'updates status for part-time students and amount paid on the first payment' do
+      part_time_student = FactoryBot.create(:part_time_student_with_payment_method, email: 'example-part-time@example.com')
+      part_time_lead_id = close_io_client.list_leads('email:' + part_time_student.email).data.first.id
+      allow_any_instance_of(CrmLead).to receive(:status).and_return("Applicant - Accepted")
+      payment = Payment.new(student: part_time_student, amount: 270_00, payment_method: part_time_student.primary_payment_method, category: 'upfront')
+      expect(CrmUpdateJob).to receive(:perform_later).with(part_time_lead_id, { status: "Enrolled - Part-Time", 'custom.Amount paid': payment.amount / 100 })
+      payment.save
+    end
+
     it 'only updates amount paid on payments beyond the first' do
       payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
       payment_2 = Payment.new(student: student, amount: 50_00, payment_method: student.primary_payment_method, category: 'standard')
