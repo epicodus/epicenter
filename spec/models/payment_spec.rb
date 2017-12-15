@@ -126,7 +126,7 @@ describe Payment do
       first_payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00, category: 'part-time')
       full_time_course = FactoryBot.create(:course)
       student.courses.push(full_time_course)
-      second_payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
+      second_payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00, category: 'upfront')
       expect(first_payment.description).to eq "#{part_time_course.office.name}; #{part_time_course.start_date.strftime("%Y-%m-%d")}; Part-time; #{first_payment.category}; #{student.email}"
       expect(second_payment.description).to eq "#{full_time_course.office.name}; #{full_time_course.start_date.strftime("%Y-%m-%d")}; Full-time conversion; #{second_payment.category}; #{student.email}"
     end
