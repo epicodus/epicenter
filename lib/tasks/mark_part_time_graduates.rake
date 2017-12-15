@@ -7,7 +7,7 @@ task :mark_part_time_graduates => [:environment] do
       local_date = Time.now.in_time_zone(course.office.time_zone).to_date
       if course.end_date == local_date
         course.students.each do |student|
-          student.crm_lead.update({ status: "Part-Time Graduate" }) if student.crm_lead.status == "Enrolled"
+          student.crm_lead.update({ status: "Part-Time Graduate" }) if student.crm_lead.status == "Enrolled - Part-Time"
           file.puts "Updated lead status for #{course.description} (#{course.office.name}): #{student.email}"
           counter += 1
         end
