@@ -325,11 +325,12 @@ feature 'make an offline payment', :stripe_mock, :js do
 
   before { login_as(admin, scope: :admin) }
 
-  scenario 'successfully with cents and without category', :vcr do
+  scenario 'successfully with cents', :vcr do
     visit student_payments_path(student)
     check 'offline-payment-checkbox'
     fill_in 'Notes', with: 'Test offline payment'
     fill_in 'payment_amount', with: 60.18
+    select 'tuition'
     click_on 'Manual payment'
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Offline'
