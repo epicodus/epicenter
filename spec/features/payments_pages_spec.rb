@@ -172,19 +172,20 @@ feature 'Viewing payment index page' do
   end
 end
 
-feature 'issuing an offline refund as an admin', :stripe_mock do
+feature 'issuing an offline refund as an admin', :vcr do
   let(:admin) { FactoryBot.create(:admin) }
   let(:student) { FactoryBot.create(:user_with_all_documents_signed_and_credit_card) }
-  let!(:payment) { FactoryBot.create(:payment_with_credit_card, amount: 100_00, student: student, offline: true) }
 
   before { login_as(admin, scope: :admin) }
 
-  scenario 'successfully without cents', :vcr do
+  it 'sets category to refund for offline refunds' do
     visit student_payments_path(student)
-    fill_in "refund-#{payment.id}-input", with: 60
-    click_on 'Refund'
-    expect(page).to have_content "Refund successfully issued for #{payment.student.name}."
-    expect(page).to have_content '$60.00'
+    check 'offline-payment-checkbox'
+    fill_in 'Notes', with: 'Test offline payment'
+    fill_in 'payment_amount', with: '-600'
+    select 'tuition'
+    click_on 'Manual payment'
+    expect(student.payments.first.category).to eq 'refund'
   end
 end
 
@@ -319,13 +320,13 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
   end
 end
 
-feature 'make an offline payment', :stripe_mock, :js do
+feature 'make an offline payment', :js, :vcr do
   let(:admin) { FactoryBot.create(:admin) }
   let(:student) { FactoryBot.create(:user_with_all_documents_signed_and_credit_card) }
 
   before { login_as(admin, scope: :admin) }
 
-  scenario 'successfully with cents', :vcr do
+  scenario 'successfully with cents' do
     visit student_payments_path(student)
     check 'offline-payment-checkbox'
     fill_in 'Notes', with: 'Test offline payment'
@@ -335,5 +336,15 @@ feature 'make an offline payment', :stripe_mock, :js do
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Offline'
     expect(page).to have_content '$60.18'
+  end
+
+  it 'sets category to upfront for offline payments' do
+    visit student_payments_path(student)
+    check 'offline-payment-checkbox'
+    fill_in 'Notes', with: 'Test offline payment'
+    fill_in 'payment_amount', with: 60.18
+    select 'tuition'
+    click_on 'Manual payment'
+    expect(student.payments.first.category).to eq 'upfront'
   end
 end

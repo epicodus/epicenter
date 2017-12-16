@@ -101,7 +101,9 @@ private
   end
 
   def set_category
-    if student.plan.standard? && student.payments.count > 0
+    if amount < 0
+      self.category = 'refund'
+    elsif student.plan.standard? && student.payments.count > 0
       self.category = 'standard'
     else
       self.category = 'upfront'
