@@ -135,7 +135,7 @@ describe Payment do
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
       student.courses.delete_all
       FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
-      expect(student.payments.first.description).to eq "special: student #{student.id} not enrolled in any courses"
+      expect(student.payments.first.description).to eq "special: #{student.email} not enrolled in any courses"
     end
 
     it 'sets payment description to keycard when category set that way', :vcr, :stripe_mock, :stub_mailgun do

@@ -128,7 +128,7 @@ private
       location = courses.first.office.name
       self.description = "#{location}; #{start_date}; #{attendance_status}; #{category}; #{student.email}"
     else
-      self.description = "special: student #{student.id} not enrolled in any courses"
+      self.description = "special: #{student.email} not enrolled in any courses"
     end
   end
 
