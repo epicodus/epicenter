@@ -13,6 +13,13 @@
     <%= f.check_box :submissions_not_required %>
   </div>
 
+  <div class='form-group'>
+    <%= f.label :show_survey do %>
+      Include survey
+    <% end %>
+    <%= f.check_box :show_survey %>
+  </div>
+
   <%= f.label :objectives, 'Objectives (Markdown compatible)' %>
   <ul id="objective-fields" class="list-unstyled">
     <%= f.nested_fields_for :objectives, wrapper_tag: :li do |ff| %>

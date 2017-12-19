@@ -24,7 +24,7 @@ private
   def set_admin_permissions
     can :manage, [AttendanceRecord, CodeReview, Company, Course, Enrollment,
                   Internship, InternshipAssignment, InterviewAssignment,
-                  Payment, Student, Submission, Cohort]
+                  Payment, Student, Submission, Cohort, Survey]
     can :create, [AttendanceRecordAmendment, Review]
   end
 
@@ -43,6 +43,7 @@ private
     can :read, Payment, student_id: user.id
     can :manage, Student, id: user.id
     can :read, Transcript, student: user
+    can :create, Survey
   end
 
   def set_unenrolled_student_permissions(user)

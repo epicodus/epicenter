@@ -8,6 +8,7 @@ class CodeReview < ApplicationRecord
   has_many :objectives
   has_many :submissions
   belongs_to :course
+  belongs_to :survey, optional: true
 
   accepts_nested_attributes_for :objectives, reject_if: :attributes_blank?, allow_destroy: true
 

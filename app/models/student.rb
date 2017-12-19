@@ -23,6 +23,7 @@ class Student < User
   belongs_to :primary_payment_method, class_name: 'PaymentMethod', optional: true
   has_many :signatures
   has_one :internship_assignment
+  has_many :survey_responses
 
   acts_as_paranoid
 

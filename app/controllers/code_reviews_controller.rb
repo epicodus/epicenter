@@ -20,6 +20,7 @@ class CodeReviewsController < ApplicationController
   def show
     @code_review = CodeReview.find(params[:id])
     @submission = @code_review.submission_for(current_student) || Submission.new(code_review: @code_review)
+    @survey = @code_review.survey
   end
 
   def edit
@@ -57,6 +58,6 @@ private
 
   def code_review_params
     params.require(:code_review).permit(:course_id, :title, :section, :url, :submissions_not_required,
-                                        :content, :date, objectives_attributes: [:id, :content, :_destroy])
+                                        :content, :date, :show_survey, objectives_attributes: [:id, :content, :_destroy])
   end
 end

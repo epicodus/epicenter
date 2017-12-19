@@ -8,6 +8,8 @@ class SubmissionsController < ApplicationController
 
   def create
     @code_review = CodeReview.find(params[:code_review_id])
+    binding.pry
+    @code_review.surveys.create(survey_params.merge(student: current_student)) if params[:survey]
     @submission = @code_review.submissions.new(submission_params)
     if @submission.save
       if @code_review.submissions_not_required? && current_admin
@@ -42,5 +44,9 @@ private
 
   def submission_params
     params.require(:submission).permit(:link, :needs_review, :student_id, :times_submitted, notes_attributes: [:id, :content]).merge(review_status: 'pending')
+  end
+
+  def survey_params
+    params.require(:survey).permit(:teacher_help, :teacher_help_note, :teacher_availability, :teacher_availability_note, :curriculum_clarity, :curriculum_clarity_note, :project_prep, :project_prep_note, :project_prompt, :project_prompt_note)
   end
 end

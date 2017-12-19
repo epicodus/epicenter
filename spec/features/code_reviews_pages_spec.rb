@@ -134,6 +134,18 @@ feature 'visiting the code review show page' do
       expect(page).to_not have_content "<h4><strong>Project</strong></h4>"
     end
 
+    it 'does not display survey when code_review.show_survey not set' do
+      visit course_code_review_path(code_review.course, code_review)
+      expect(page).to_not have_content "survey"
+    end
+
+    it 'displays survey when code_review.show_survey set' do
+      code_review.show_survey = true
+      code_review.save
+      visit course_code_review_path(code_review.course, code_review)
+      expect(page).to have_content "survey"
+    end
+
     context 'when submitting' do
       before { visit course_code_review_path(code_review.course, code_review) }
 

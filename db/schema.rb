@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171121000359) do
+ActiveRecord::Schema.define(version: 20171221230345) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20171121000359) do
     t.boolean "submissions_not_required"
     t.text "content"
     t.date "date"
+    t.integer "survey_id"
   end
 
   create_table "cohorts", id: :serial, force: :cascade do |t|
@@ -275,6 +276,38 @@ ActiveRecord::Schema.define(version: 20171121000359) do
     t.index ["student_id"], name: "index_submissions_on_student_id"
   end
 
+  create_table "survey_options", force: :cascade do |t|
+    t.bigint "survey_question_id"
+    t.integer "number"
+    t.string "content"
+    t.index ["survey_question_id"], name: "index_survey_options_on_survey_question_id"
+  end
+
+  create_table "survey_questions", force: :cascade do |t|
+    t.bigint "survey_id"
+    t.integer "number"
+    t.string "content"
+    t.index ["survey_id"], name: "index_survey_questions_on_survey_id"
+  end
+
+  create_table "survey_responses", force: :cascade do |t|
+    t.integer "student_id"
+    t.integer "survey_question_id"
+    t.integer "survey_option_id"
+    t.string "explanation"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["student_id"], name: "index_survey_responses_on_student_id"
+    t.index ["survey_option_id"], name: "index_survey_responses_on_survey_option_id"
+    t.index ["survey_question_id"], name: "index_survey_responses_on_survey_question_id"
+  end
+
+  create_table "surveys", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "tracks", id: :serial, force: :cascade do |t|
     t.string "description"
     t.datetime "created_at"
@@ -321,6 +354,7 @@ ActiveRecord::Schema.define(version: 20171121000359) do
     t.integer "starting_cohort_id"
     t.boolean "teacher"
     t.integer "cohort_id"
+    t.boolean "can_view_survey_results"
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
@@ -335,4 +369,6 @@ ActiveRecord::Schema.define(version: 20171121000359) do
   add_foreign_key "cohorts", "tracks"
   add_foreign_key "courses", "tracks"
   add_foreign_key "notes", "submissions"
+  add_foreign_key "survey_options", "survey_questions"
+  add_foreign_key "survey_questions", "surveys"
 end

@@ -12,6 +12,7 @@ describe Student do
   it { should have_many :signatures }
   it { should have_many :interview_assignments }
   it { should have_one :internship_assignment }
+  it { should have_many :surveys }
 
   describe 'validations' do
     context 'validates plan_id when a student has accepted the epicenter invitation and created an account' do

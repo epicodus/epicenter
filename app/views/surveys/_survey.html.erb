@@ -1,0 +1,20 @@
+<div class="well">
+  <p>Let us know how you are doing by filling out the survey below. Your teacher will receive a summary of survey responses.</p>
+  <%= fields_for :survey do |f| %>
+    <% survey.questions.each do |question| %>
+      <hr>
+      <div class="form-group">
+        <%= f.label :survey_question_id, "#{question.number}. #{question.content}" %>
+
+        <ul class="list-unstyled">
+          <%= f.fields_for :survey_options do |ff| %>
+            <%= ff.collection_radio_buttons :survey_option_id, question.options, :id, :content do |b| %>
+              <li><%= b.radio_button %> <%= b.label %></li>
+            <% end %>
+          <% end %>
+        </ul>
+
+      </div>
+    <% end %>
+  <% end %>
+</div>

@@ -3,6 +3,10 @@
   <%= f.hidden_field :needs_review, value: true %>
   <%= f.hidden_field :student_id, value: current_student.id if current_student %>
 
+  <% if @code_review.survey && !SurveyResponse.find_by(survey_question: @code_review.survey.questions.first, student: @submission.student)  %>
+    <%= render @code_review.survey %>
+  <% end %>
+
   <div class="form-group">
     <%= f.label :link, 'Submission link' %>
     <%= f.text_field :link, class: 'form-control', placeholder: 'http://github.com/your-username/your-repository' %>

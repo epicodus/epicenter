@@ -3,6 +3,7 @@ describe CodeReview do
   it { should validate_presence_of :course }
   it { should have_many :objectives }
   it { should have_many :submissions }
+  it { should have_many :surveys }
   it { should belong_to :course }
   it { should accept_nested_attributes_for :objectives }
 
