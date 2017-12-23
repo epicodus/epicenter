@@ -8,11 +8,11 @@ task :find_duplicate_leads => [:environment] do
     Student.all.each do |student|
       unless IGNORE_LIST.include? student.email
         lead = close_io_client.list_leads('email:' + student.email)
-        if lead.total_results == 0
+        if lead['total_results'] == 0
           file.puts("NOT FOUND: #{student.email}")
           counter += 1
-        elsif lead.total_results > 1
-          file.puts("DUPLICATES FOUND: #{student.email}") if lead.total_results > 1
+        elsif lead['total_results'] > 1
+          file.puts("DUPLICATES FOUND: #{student.email}") if lead['total_results'] > 1
           counter += 1
         end
       end

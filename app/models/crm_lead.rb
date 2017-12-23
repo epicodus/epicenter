@@ -4,15 +4,15 @@ class CrmLead
   end
 
   def update(update_fields)
-    CrmUpdateJob.perform_later(lead.id, update_fields)
+    CrmUpdateJob.perform_later(lead['id'], update_fields)
   end
 
   def status
-    lead.try(:status_label)
+    lead.try('dig', 'status_label')
   end
 
   def name
-    lead.try(:contacts).try(:first).try(:name) || CrmLead.raise_error("Name not found in CRM")
+    lead.try('dig', 'contacts').try('first').try('dig', 'name') || CrmLead.raise_error("Name not found in CRM")
   end
 
   def cohort
@@ -54,15 +54,15 @@ private
   def lead
     return @lead if @lead
     leads = close_io_client.list_leads('email:' + @email)
-    if leads.total_results == 1
-      return @lead = leads.data.first
+    if leads['total_results'] == 1
+      return @lead = leads['data'].first
     else
       CrmLead.raise_error("The Close.io lead for #{@email} was not found.")
     end
   end
 
   def cohort_applied
-    cohort = lead.try(:custom).try('Cohort - Applied')
+    cohort = lead.try('dig', 'custom').try('dig', 'Cohort - Applied')
     if cohort.nil? || cohort.include?('Legacy') || cohort.include?('A later class')
       CrmLead.raise_error("Cohort - Applied not found in CRM")
     else
@@ -92,9 +92,9 @@ private
 
   def self.update_email(lead_id, new_email)
     close_io_client = Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false)
-    contact = close_io_client.find_lead(lead_id).contacts.first
-    updated_emails = contact.emails.unshift(Hashie::Mash.new({ type: "office", email: new_email }))
-    close_io_client.update_contact(contact.id, emails: updated_emails)
+    contact = close_io_client.find_lead(lead_id)['contacts'].first
+    updated_emails = contact['emails'].unshift(Hashie::Mash.new({ type: "office", email: new_email }))
+    close_io_client.update_contact(contact['id'], emails: updated_emails)
   end
 
   def self.update_lead(lead_id, update_fields)

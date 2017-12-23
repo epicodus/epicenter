@@ -9,7 +9,7 @@ task :move_addresses_in_close => [:environment] do
       if lead.custom['Mailing Address'] != lead['addresses'].first['address_1']
         file.puts "#{lead.contacts.first.name} | #{address}"
       end
-      # close_io_client.update_lead(lead.id, addresses: [{ "address_1": address }])
+      # close_io_client.update_lead(lead['id'], addresses: [{ "address_1": address }])
     end
   end
   if counter > 0

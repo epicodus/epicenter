@@ -12,7 +12,7 @@ task :tmp_migrate_old_address_field => [:environment] do
         updated_addresses = existing_addresses.push(Hashie::Mash.new({ label: "other", address_1: new_address }))
         new_count = updated_addresses.count
         file.puts "#{old_count}->#{new_count} | #{email} | #{new_address}"
-        close_io_client.update_lead(lead.id, { addresses: updated_addresses })
+        close_io_client.update_lead(lead['id'], { addresses: updated_addresses })
       rescue
         file.puts "ERROR: #{email} | lead.try(:id)"
       end

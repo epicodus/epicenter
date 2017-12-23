@@ -13,8 +13,8 @@ task :update_campus_and_track => [:environment] do
       unless new_campus == old_campus && new_track == old_track
         counter += 1
         file.puts "#{lead.contacts.first.name} | #{old_campus} -> #{new_campus} | #{old_track} -> #{new_track}"
-        close_io_client.update_lead(lead.id, { 'custom.Campus': new_campus }) if new_campus != old_campus
-        close_io_client.update_lead(lead.id, { 'custom.Track': new_track }) if new_track != old_track
+        close_io_client.update_lead(lead['id'], { 'custom.Campus': new_campus }) if new_campus != old_campus
+        close_io_client.update_lead(lead['id'], { 'custom.Track': new_track }) if new_track != old_track
       end
     end
   end

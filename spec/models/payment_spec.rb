@@ -231,7 +231,7 @@ describe Payment do
   describe 'updating Close.io when a payment is made', :stub_mailgun, :dont_stub_crm, :vcr do
     let(:student) { FactoryBot.create :user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com' }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
-    let(:lead_id) { close_io_client.list_leads('email:' + student.email).data.first.id }
+    let(:lead_id) { close_io_client.list_leads('email:' + student.email)['data'].first['id'] }
 
     before do
       allow(CrmUpdateJob).to receive(:perform_later).and_return({})
@@ -246,7 +246,7 @@ describe Payment do
 
     it 'updates status for part-time students and amount paid on the first payment' do
       part_time_student = FactoryBot.create(:part_time_student_with_payment_method, email: 'example-part-time@example.com')
-      part_time_lead_id = close_io_client.list_leads('email:' + part_time_student.email).data.first.id
+      part_time_lead_id = close_io_client.list_leads('email:' + part_time_student.email)['data'].first['id']
       allow_any_instance_of(CrmLead).to receive(:status).and_return("Applicant - Accepted")
       payment = Payment.new(student: part_time_student, amount: 270_00, payment_method: part_time_student.primary_payment_method, category: 'upfront')
       expect(CrmUpdateJob).to receive(:perform_later).with(part_time_lead_id, { status: "Enrolled - Part-Time", 'custom.Amount paid': payment.amount / 100 })

@@ -210,7 +210,7 @@ describe Student do
   describe "updating close.io when documents have been signed", :dont_stub_crm, :vcr do
     let(:student) { FactoryBot.create(:student, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
-    let(:lead_id) { close_io_client.list_leads('email:' + student.email).data.first.id }
+    let(:lead_id) { close_io_client.list_leads('email:' + student.email)['data'].first['id'] }
 
     before do
       allow(CrmUpdateJob).to receive(:perform_later).and_return({})
