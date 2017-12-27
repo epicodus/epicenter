@@ -83,6 +83,17 @@ feature 'visiting the code review show page' do
     scenario 'shows code review content' do
       expect(page).to have_content "test content"
     end
+
+    scenario 'does not show survey if not present' do
+      expect(page).to have_content "No survey"
+    end
+
+    scenario 'shows survey if present' do
+      code_review.survey = 'widget_test.js'
+      code_review.save
+      visit course_code_review_path(code_review.course, code_review)
+      expect(page).to_not have_content "No survey"
+    end
   end
 
   context 'as a student' do
@@ -132,6 +143,25 @@ feature 'visiting the code review show page' do
       code_review.update(date: nil)
       visit course_code_review_path(code_review.course, code_review)
       expect(page).to_not have_content "<h4><strong>Project</strong></h4>"
+    end
+
+    scenario 'does not show survey if not present' do
+      visit course_code_review_path(code_review.course, code_review)
+      expect(page).to_not have_content "survey"
+    end
+
+    scenario 'shows survey if present and student has not yet passed expectations' do
+      code_review.survey = 'foo'
+      code_review.save
+      visit course_code_review_path(code_review.course, code_review)
+      expect(page).to have_content "survey"
+    end
+
+    scenario 'does not show survey if student already passed expectations' do
+      submission = FactoryBot.create(:submission, code_review: code_review, student: student)
+      FactoryBot.create(:passing_review, submission: submission)
+      visit course_code_review_path(code_review.course, code_review)
+      expect(page).to_not have_content "survey"
     end
 
     context 'when submitting' do

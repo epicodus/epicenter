@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171121000359) do
+ActiveRecord::Schema.define(version: 20171226224638) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 20171121000359) do
     t.boolean "submissions_not_required"
     t.text "content"
     t.date "date"
+    t.string "survey"
   end
 
   create_table "cohorts", id: :serial, force: :cascade do |t|

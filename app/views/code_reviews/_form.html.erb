@@ -7,6 +7,13 @@
   </div>
 
   <div class='form-group'>
+    <%= f.label :survey do %>
+      Survey URL if applicable (<em>starts with widget / ends with .js</em>)
+    <% end %>
+    <%= f.text_field :survey, class: "form-control" %>
+  </div>
+
+  <div class='form-group'>
     <%= f.label :submissions_not_required do %>
       Submissions not required
     <% end %>
