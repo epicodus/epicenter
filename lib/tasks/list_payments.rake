@@ -1,14 +1,14 @@
 desc "List payments created or updated since given date"
 task :list_payments, [:day] => [:environment] do |t, args|
-  day = args.day || ""
-  while day.length != 10
-    puts "Enter start day in format yyyy-mm-dd:"
-    day = STDIN.gets.chomp
-  end
-  puts "stripe / offline / both ?"
-  input = STDIN.gets.chomp.downcase[0]
-  stripe = input != 'o'
-  offline = input != 's'
+  puts ''
+  puts '**************************************************'
+  puts 'usage: heroku run "rake list_payments[yyyy-mm-dd]"'
+  puts '(Date defaults to yesterday if no date entered.)'
+  puts '**************************************************'
+  puts ''
+  day = args.day || (Date.today - 1.day).to_s
+  stripe = true
+  offline = true
 
   ids = []
   ids += Payment.where(offline: [nil, false]).pluck(:id) if stripe
