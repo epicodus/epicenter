@@ -151,7 +151,7 @@ feature 'visiting the code review show page' do
     end
 
     scenario 'shows survey if present and student has not yet passed expectations' do
-      code_review.survey = 'foo'
+      code_review.survey = 'foo.js'
       code_review.save
       visit course_code_review_path(code_review.course, code_review)
       expect(page).to have_content "survey"
