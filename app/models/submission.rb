@@ -8,7 +8,7 @@ class Submission < ApplicationRecord
   belongs_to :student
   belongs_to :code_review
   has_many :reviews
-  has_many :notes
+  has_many :notes, dependent: :destroy
 
   accepts_nested_attributes_for :notes
 

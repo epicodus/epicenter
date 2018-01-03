@@ -104,13 +104,6 @@
     <% if current_student && !@code_review.submissions_not_required? %>
       <div class="row">
         <div class="col-md-12">
-
-          <% if @code_review.survey? && !@code_review.expectations_met_by?(current_student) %>
-            <p><em>Please be sure to submit below both the end-of-week survey <strong>and</strong> your code review! (You will need to scroll down in the survey to see all of it.)</em></p>
-            <%= render 'survey', survey: @code_review.survey %>
-            <p><strong>Please submit the survey above, then submit your code review here:</strong></p>
-          <% end %>
-
           <%= render 'submissions/form' %>
         </div>
       </div>

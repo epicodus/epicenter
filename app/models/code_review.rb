@@ -11,6 +11,7 @@ class CodeReview < ApplicationRecord
 
   accepts_nested_attributes_for :objectives, reject_if: :attributes_blank?, allow_destroy: true
 
+  before_save :regex_survey_input, if: ->(cr) { cr.survey.present? }
   before_create :set_number
   before_destroy :check_for_submissions
 
@@ -99,5 +100,15 @@ private
 
   def attributes_blank?(attributes)
     attributes['content'].blank?
+  end
+
+  def regex_survey_input
+    if survey.include?('/')
+      regex = /(?<=widget\.surveymonkey\.com\/collect\/website\/js\/)(.*\.js)/
+      results = survey.match(regex)
+      self.survey = results.present? ? results[0] : nil
+    elsif ! survey.include?('.js')
+      self.survey = nil
+    end
   end
 end
