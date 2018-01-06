@@ -17,8 +17,8 @@ class Enrollment < ApplicationRecord
 private
 
   def update_cohort
-    new_starting_cohort = get_new_starting_cohort
-    new_current_cohort = get_new_current_cohort
+    new_starting_cohort = student.calculate_starting_cohort
+    new_current_cohort = student.calculate_current_cohort
     crm_update = {}
     if student.starting_cohort != new_starting_cohort
       student.update(starting_cohort: new_starting_cohort)
@@ -29,24 +29,6 @@ private
       crm_update = crm_update.merge({ 'custom.Cohort - Current': new_current_cohort.try(:description) })
     end
     student.crm_lead.update(crm_update) if crm_update.present?
-  end
-
-  def get_new_starting_cohort
-    if student.courses_with_withdrawn.fulltime_courses.any?
-      student.courses_with_withdrawn.fulltime_courses.first.try(:cohorts).try(:first)
-    else
-      student.courses_with_withdrawn.parttime_courses.first.try(:cohorts).try(:first)
-    end
-  end
-
-  def get_new_current_cohort
-    return nil if student.courses.internship_courses.empty?
-    last_course = student.courses.fulltime_courses.order(:start_date).last
-    if last_course.cohorts.count == 1
-      last_course.cohorts.first
-    else
-      student.courses.level(3).order(:start_date).last.try(:cohorts).try(:first) || student.courses.level(1).order(:start_date).last.try(:cohorts).try(:first)
-    end
   end
 
   def update_internship_class_in_crm

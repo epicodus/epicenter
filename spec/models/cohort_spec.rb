@@ -170,4 +170,16 @@ describe Cohort do
       expect(cohort.end_date).to eq cohort.courses.order(:end_date).last.end_date
     end
   end
+
+  describe '.calculate_cohort_start_date' do
+    it 'calculates cohort start date correctly for course with 2016-01-04 start date' do
+      course = FactoryBot.create(:portland_course, class_days: [Date.parse('2016-01-04')])
+      expect(Cohort.calculate_cohort_start_date(course)).to eq '2016-01-04'
+    end
+
+    it 'calculates cohort start date correctly for course with start_date later than 2016-01-04' do
+      cohort = FactoryBot.create(:portland_cohort, start_date: Time.now.to_date)
+      expect(Cohort.calculate_cohort_start_date(cohort.courses.first)).to eq cohort.courses.reorder(:start_date).first.start_date.to_s
+    end
+  end
 end

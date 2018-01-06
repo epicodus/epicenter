@@ -17,12 +17,12 @@ task :list_payments, [:day] => [:environment] do |t, args|
 
   filename = File.join(Rails.root.join('tmp'), 'list_payments.txt')
   File.open(filename, 'w') do |file|
-    file.puts "description, email, status, created, updated, amount, refund, stripe_txn"
+    file.puts "id, description, email, status, created, updated, amount, refund, stripe_txn"
     payments.where('updated_at >= ?', Date.parse(day)).order(:created_at).each do |payment|
       student = Student.with_deleted.find(payment.student_id)
       refund_amount = payment.refund_amount / 100 if payment.refund_amount
       stripe_txn = payment.stripe_transaction || 'offline'
-      file.puts "#{payment.description}, #{student.try(:email)}, #{payment.status}, #{payment.created_at.to_date}, #{payment.updated_at.to_date unless payment.created_at == payment.updated_at}, #{payment.amount / 100}, #{refund_amount}, #{stripe_txn}"
+      file.puts "#{payment.id}, #{payment.description}, #{student.try(:email)}, #{payment.status}, #{payment.created_at.to_date}, #{payment.updated_at.to_date unless payment.created_at == payment.updated_at}, #{payment.amount / 100}, #{refund_amount}, #{stripe_txn}"
     end
   end
 
