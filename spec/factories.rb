@@ -173,6 +173,10 @@ FactoryBot.define do
       cohort.admin.current_course = cohort.courses.first
     end
 
+    factory :portland_cohort do
+      association :office, factory: :portland_office
+    end
+
     factory :cohort_internship_course do
       before(:create) do |cohort|
         course = cohort.courses.first
@@ -185,6 +189,7 @@ FactoryBot.define do
       before(:create) do |cohort|
         course = cohort.courses.first
         course.parttime = true
+        course.description = 'part-time course'
         course.save
       end
     end

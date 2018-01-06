@@ -284,6 +284,44 @@ class Student < User
     CrmLead.new(email)
   end
 
+  def calculate_starting_cohort
+    if courses_with_withdrawn.fulltime_courses.any?
+      courses = courses_with_withdrawn.fulltime_courses - [Course.find_by(description: 'Legacy Internship Course')] - [Course.find_by(description: 'Internship Exempt')]
+      if courses.first.try(:cohorts).try(:count) == 1
+        calculated_starting_cohort = courses.first.cohorts.first
+      elsif courses.select {|c| c.track.present?}.compact.empty? # no courses with associated track, so use an 'all' cohort
+        calculated_starting_cohort = courses.first.try(:cohorts).try(:find_by, 'description LIKE ?', '%ALL%')
+      else
+        cohort_start_date = Cohort.calculate_cohort_start_date(courses.first)
+        courses_with_tracks = courses.select { |c| c.track.present? }
+        calculated_starting_cohort = courses.first.cohorts.find_by(track: courses_with_tracks.first.track, start_date: cohort_start_date)
+        calculated_starting_cohort = courses_with_tracks.first.cohorts.find_by(track: courses_with_tracks.first.track, start_date: cohort_start_date) if calculated_starting_cohort.nil?
+        calculated_starting_cohort = courses.first.cohorts.find_by('description LIKE ?', '%ALL%') if calculated_starting_cohort.nil?
+        calculated_starting_cohort
+      end
+    else
+      courses_with_withdrawn.parttime_courses.first.try(:cohorts).try(:first)
+    end
+  end
+
+  def calculate_current_cohort
+    if self.courses.internship_courses.any?
+      courses = self.courses.fulltime_courses.reorder(:start_date) - [Course.find_by(description: 'Legacy Internship Course')] - [Course.find_by(description: 'Internship Exempt')]
+      if courses.last.cohorts.count == 1
+        calculated_current_cohort = courses.last.cohorts.first
+      elsif courses.select {|c| c.track.present? }.compact.empty? # no courses with associated track, so use an 'all' cohort
+        calculated_current_cohort = courses.last.cohorts.find_by('description LIKE ?', '%ALL%')
+      else
+        cohort_start_date = Cohort.calculate_cohort_start_date(courses.last)
+        courses_with_tracks = courses.select { |c| c.track.present? }
+        calculated_current_cohort = courses.last.cohorts.find_by(track: courses_with_tracks.last.track, start_date: cohort_start_date)
+        calculated_current_cohort = courses_with_tracks.last.cohorts.find_by(track: courses_with_tracks.last.track, start_date: cohort_start_date) if calculated_current_cohort.nil?
+        calculated_current_cohort = courses.last.cohorts.find_by('description LIKE ?', '%ALL%') if calculated_current_cohort.nil?
+        calculated_current_cohort
+      end
+    end
+  end
+
 private
 
   def total_number_of_course_days(start_course=nil, end_course=nil)
