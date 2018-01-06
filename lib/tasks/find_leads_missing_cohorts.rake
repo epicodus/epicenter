@@ -29,15 +29,15 @@ task :find_leads_missing_cohorts => [:environment] do
         end
 
         # check starting_cohort in Close matches starting_cohort in Epicenter
-        lead = close_io_client.list_leads('email:' + student.email)['data'].first
-        close_starting_cohort = lead['custom']['Cohort - Starting']
-        if close_starting_cohort.nil?
-          counter += 1
-          file.puts "ERROR: #{student.email}: Missing starting_cohort in Close"
-        elsif student.starting_cohort.description != close_starting_cohort
-          counter += 1
-          file.puts "ERROR: #{student.email}: Close starting_cohort does not match Epicenter starting_cohort"
-        end
+        # lead = close_io_client.list_leads('email:' + student.email)['data'].first
+        # close_starting_cohort = lead['custom']['Cohort - Starting']
+        # if close_starting_cohort.nil?
+        #   counter += 1
+        #   file.puts "ERROR: #{student.email}: Missing starting_cohort in Close"
+        # elsif student.starting_cohort.description != close_starting_cohort
+        #   counter += 1
+        #   file.puts "ERROR: #{student.email}: Close starting_cohort does not match Epicenter starting_cohort"
+        # end
       end
     end
 
@@ -60,19 +60,19 @@ task :find_leads_missing_cohorts => [:environment] do
           counter += 1
           file.puts "#{student.email}: Current Cohort should be updated: #{student.cohort.description} ==> #{calculated_current_cohort.description}"
           student.update(cohort: calculated_current_cohort)
-          student.crm_lead.update({ 'custom.Cohort': calculated_current_cohort.description })
+          student.crm_lead.update({ 'custom.Cohort - Current': calculated_current_cohort.description })
         end
 
         # # check current cohort in Close matches cohort in Epicenter
-        lead = close_io_client.list_leads('email:' + student.email)['data'].first
-        close_current_cohort = lead['custom']['Cohort - Current']
-        if close_current_cohort.nil?
-          counter += 1
-          file.puts "ERROR: #{student.email}: Missing current cohort in Close"
-        elsif student.cohort.description != close_current_cohort
-          counter += 1
-          file.puts "ERROR: #{student.email}: Close current cohort does not match Epicenter cohort"
-        end
+        # lead = close_io_client.list_leads('email:' + student.email)['data'].first
+        # close_current_cohort = lead['custom']['Cohort - Current']
+        # if close_current_cohort.nil?
+        #   counter += 1
+        #   file.puts "ERROR: #{student.email}: Missing current cohort in Close"
+        # elsif student.cohort.description != close_current_cohort
+        #   counter += 1
+        #   file.puts "ERROR: #{student.email}: Close current cohort does not match Epicenter cohort"
+        # end
       end
     end
   end
