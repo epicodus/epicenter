@@ -77,7 +77,7 @@ task :find_leads_missing_cohorts => [:environment] do
     end
   end
 
-  if Rails.env.production?
+  if Rails.env.production? && counter > 0
     mg_client = Mailgun::Client.new(ENV['MAILGUN_API_KEY'])
     mb_obj = Mailgun::MessageBuilder.new()
     mb_obj.set_from_address("it@epicodus.com");
