@@ -69,6 +69,9 @@
   <% if @student.upfront_payment_due? %>
     <%= render 'payments/upfront_payment_button' %>
     <br>
+    <% if @student.plan.upfront_amount == 690000 && Date.today >= Date.parse('2018-01-08') && Date.today <= Date.parse('2018-01-29') %>
+      <p class="alert alert-info"><strong>This includes the January 2018 discount of $100.</strong></p>
+    <% end %>
   <% end %>
 
   <p>All payments will be made using your primary payment method.</p>

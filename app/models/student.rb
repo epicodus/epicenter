@@ -155,7 +155,11 @@ class Student < User
   end
 
   def upfront_amount_with_fees
-    plan.upfront_amount + primary_payment_method.calculate_fee(plan.upfront_amount)
+    if plan.upfront_amount == 690000 && Date.today >= Date.parse('2018-01-08') && Date.today <= Date.parse('2018-01-29')
+      680000 + primary_payment_method.calculate_fee(680000)
+    else
+      plan.upfront_amount + primary_payment_method.calculate_fee(plan.upfront_amount)
+    end
   end
 
   def total_paid
