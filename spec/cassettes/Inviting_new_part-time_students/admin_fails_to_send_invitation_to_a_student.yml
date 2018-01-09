@@ -10,7 +10,7 @@ http_interactions:
       Accept:
       - application/json
       User-Agent:
-      - closeio-ruby-gem/v2.6.10
+      - closeio-ruby-gem/v3.0.0
       X-Tz-Offset:
       - '0'
       Authorization:
@@ -25,7 +25,7 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 29 Nov 2017 01:56:58 GMT
+      - Tue, 09 Jan 2018 01:54:45 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -39,7 +39,7 @@ http_interactions:
       X-Rate-Limit-Remaining:
       - '311'
       X-Rate-Limit-Reset:
-      - '4.078229'
+      - '4.768264'
       Content-Length:
       - '51'
       Connection:
@@ -48,86 +48,5 @@ http_interactions:
       encoding: UTF-8
       string: '{"has_more": false, "total_results": 0, "data": []}'
     http_version: 
-  recorded_at: Wed, 29 Nov 2017 01:56:58 GMT
-- request:
-    method: put
-    uri: https://app.close.io/api/v1/lead/lead_L125JRKO4Kh8GJMh7Ah9ggVsrPAzmVEp598taaQBzVe/
-    body:
-      encoding: UTF-8
-      string: '{"custom.Cohort - Starting":"2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)"}'
-    headers:
-      Accept:
-      - application/json
-      User-Agent:
-      - closeio-ruby-gem/v3.0.0
-      X-Tz-Offset:
-      - '0'
-      Authorization:
-      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
-      Content-Type:
-      - application/json
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Content-Type:
-      - application/json
-      Date:
-      - Sat, 23 Dec 2017 19:39:14 GMT
-      Set-Cookie:
-      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
-      Strict-Transport-Security:
-      - max-age=31536000; includeSubDomains
-      Vary:
-      - Accept
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '320'
-      X-Rate-Limit-Remaining:
-      - '319'
-      X-Rate-Limit-Reset:
-      - '7.963076'
-      Content-Length:
-      - '1308'
-      Connection:
-      - keep-alive
-    body:
-      encoding: ASCII-8BIT
-      string: '{"tasks": [], "addresses": [{"city": "Portland", "country": "US", "zipcode":
-        "97204", "label": "mailing", "state": "OR", "address_1": "400 SW 6th Ave",
-        "address_2": ""}], "date_updated": "2017-11-29T22:18:32.522000+00:00", "created_by_name":
-        "Michael Kaiser-Nyman", "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9",
-        "custom.lcf_GrOe1vSEWCpdfHpOaCiEchiYTzlGzg7HpL4rICb2bJh": "2000-01 PHL Ruby/Rails
-        (Jan 3 - Jul 7)", "id": "lead_L125JRKO4Kh8GJMh7Ah9ggVsrPAzmVEp598taaQBzVe",
-        "custom.lcf_pVGPL0vT6maOxhK3U4GRc4mjzjGWmREWg0nPQzylvCE": "2000-01-01", "display_name":
-        "THIS LEAD IS USED FOR TESTING PURPOSES. PLEASE DO NOT DELETE.", "contacts":
-        [{"name": "THIS LEAD IS USED FOR TESTING PURPOSES. PLEASE DO NOT DELETE.",
-        "title": "", "date_updated": "2017-11-29T22:18:32.513000+00:00", "phones":
-        [], "created_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "id":
-        "cont_JM7ymwgX3gK2n2Dc0w1dWAFgjlTA71hUZPjg5mp3Cu4", "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE",
-        "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "urls":
-        [], "date_created": "2017-05-15T23:51:29.062000+00:00", "integration_links":
-        [], "emails": [{"type": "office", "email": "example@example.com"}], "lead_id":
-        "lead_L125JRKO4Kh8GJMh7Ah9ggVsrPAzmVEp598taaQBzVe"}], "custom.lcf_6Tk6lJghWEfqAcSk45W9k93vF6zZ47jUcrC7cLwTQhh":
-        "2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)", "opportunities": [], "custom": {"Demographics
-        - Veteran": "No", "Cohort - Applied": "2000-01 PHL Ruby/Rails (Jan 3 - Jul
-        7)", "Demographics - Birth Date": "2000-01-01", "Demographics - Disability":
-        "No", "Cohort - Starting": "2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)", "Demographics
-        - Education": "GED", "Demographics - Shirt size": "S"}, "updated_by_name":
-        "Michael Kaiser-Nyman", "custom.lcf_lizZuswvOd4k08l8kb3KNVmM38kJMdZuxIwjbdhbS6T":
-        "S", "updated_by": "user_ABOHi4Y53EYGaL6y4ioR2VXABSEPGSQh2xoJHnaiEP9", "status_id":
-        "stat_jHXa7MyAAAXtdOq6WuzN4IDHXXkwaq41miOxlg1Os0j", "html_url": "https://app.close.io/lead/lead_L125JRKO4Kh8GJMh7Ah9ggVsrPAzmVEp598taaQBzVe/",
-        "organization_id": "orga_IRlZ0dse4odbsGRQCuEZFhRQyFgzcNzvbpIXaeg74pE", "custom.lcf_38CfDp4LfSEAuLykjw8kZbQH5ZJwQSbUr95i5vCuADY":
-        "GED", "integration_links": [{"url": "https://epicenter.epicodus.com/students?utf8=%E2%9C%93&search=THIS%20LEAD%20IS%20USED%20FOR%20TESTING%20PURPOSES.%20PLEASE%20DO%20NOT%20DELETE.&button=",
-        "name": "Epicenter Link"}], "name": "", "url": null, "status_label": "Applicant
-        - No longer interested (legacy)", "description": "Please check with Mike if
-        any fields in here are causing issues for your queries.", "custom.lcf_xl5OstFwOKZrYWhVtCJNEjrhcFfj0J2hb43MdHOCmiW":
-        "No", "date_created": "2017-05-15T23:51:29.068000+00:00", "custom.lcf_7C6poq2WtkRq6t9136FwaHjahQmWkb7qgOnlwiFc8Fd":
-        "No"}'
-    http_version: 
-  recorded_at: Sat, 23 Dec 2017 19:39:14 GMT
+  recorded_at: Tue, 09 Jan 2018 01:54:45 GMT
 recorded_with: VCR 4.0.0

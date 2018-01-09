@@ -5,10 +5,10 @@ http_interactions:
     uri: https://api.hellosign.com/v3/signature_request/create_embedded
     body:
       encoding: UTF-8
-      string: client_id=<HELLO_SIGN_CLIENT_ID>&file_url%5B%5D=https%3A%2F%2Fwww.dropbox.com%2Fs%2Fr6l8nd7b0b492n9%2FInternshipagreement-students.pdf%3Fdl%3D1&signers%5B0%5D%5Bemail_address%5D=student429%40example.com&signers%5B0%5D%5Bname%5D=Example+Brown+503&subject=Sign+to+accept+the+Student+Internship+Agreement&test_mode=1
+      string: client_id=<HELLO_SIGN_CLIENT_ID>&file_url%5B%5D=https%3A%2F%2Fwww.dropbox.com%2Fs%2Fr6l8nd7b0b492n9%2FInternshipagreement-students.pdf%3Fdl%3D1&signers%5B0%5D%5Bemail_address%5D=student433%40example.com&signers%5B0%5D%5Bname%5D=Example+Brown+513&subject=Sign+to+accept+the+Student+Internship+Agreement&test_mode=1
     headers:
       User-Agent:
-      - hellosign-ruby-sdk/3.5.1
+      - hellosign-ruby-sdk/3.5.3
       Authorization:
       - Basic MmZjMzFjYWM3YTY0MGQzZGUxNTIxZDk5YmNjMTRmMmJlNGNjMDVkNzg5ZGVhMDI4Y2Q3MjE2ODZlMWJmNmQ2OTo=
       Content-Type:
@@ -23,16 +23,16 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 29 Nov 2017 02:06:08 GMT
+      - Tue, 09 Jan 2018 02:03:42 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '499'
+      - '497'
       Connection:
       - keep-alive
       Set-Cookie:
-      - AWSALB=tRdpsUmbI92DpJeQHlmuF3828WcdH7fSN8ci7MWBfEAniE4NaY8ADEpuSxtD/kKN3m70KgsIMLaSlLMr7JpANzshDYpE8HPy0bQSrfj/HiH9kIy9wLuv98S1Ejk6;
-        Expires=Wed, 06 Dec 2017 02:06:06 GMT; Path=/
+      - AWSALB=z6gfP1tVZBmB76XuDaoUyF8cJtp1eRc6tbv7GAf4l5zoV5q2vy62fIwjTusBiLIJJHSWKnB9//GvakdszVwE3f+ihQedc6lfumpT+aLrb9enWGg/MG2Pdht5zwm3;
+        Expires=Tue, 16 Jan 2018 02:03:41 GMT; Path=/
       Server:
       - Apache
       Strict-Transport-Security:
@@ -42,7 +42,7 @@ http_interactions:
       X-Ratelimit-Limit-Remaining:
       - '43'
       X-Ratelimit-Reset:
-      - '1511921167'
+      - '1515463421'
       Access-Control-Allow-Origin:
       - "*"
       Access-Control-Allow-Headers:
@@ -57,22 +57,22 @@ http_interactions:
       - CP="NOP3PPOLICY"
     body:
       encoding: ASCII-8BIT
-      string: '{"signature_request":{"signature_request_id":"fa6c883dabcf5ab4741f4aa14f009773a5df4690","test_mode":true,"title":"Sign
+      string: '{"signature_request":{"signature_request_id":"6132f15bddd664807215db1e0435106e4edbd8c8","test_mode":true,"title":"Sign
         to accept the Student Internship Agreement","original_title":"Sign to accept
         the Student Internship Agreement","subject":"Sign to accept the Student Internship
-        Agreement","message":null,"metadata":{},"is_complete":false,"is_declined":false,"has_error":false,"custom_fields":[],"response_data":[],"signing_url":null,"signing_redirect_url":null,"final_copy_uri":"\/v3\/signature_request\/final_copy\/fa6c883dabcf5ab4741f4aa14f009773a5df4690","files_url":"https:\/\/api.hellosign.com\/v3\/signature_request\/files\/fa6c883dabcf5ab4741f4aa14f009773a5df4690","details_url":"https:\/\/app.hellosign.com\/home\/manage?guid=fa6c883dabcf5ab4741f4aa14f009773a5df4690","requester_email_address":"it@epicodus.com","signatures":[{"signature_id":"43baf696d33e2367c3313d52a402473f","has_pin":false,"signer_email_address":"student429@example.com","signer_name":"Example
-        Brown 503","order":null,"status_code":"awaiting_signature","signed_at":null,"last_viewed_at":null,"last_reminded_at":null,"error":null}],"cc_email_addresses":[]}}'
+        Agreement","message":null,"metadata":{},"is_complete":false,"is_declined":false,"has_error":false,"custom_fields":[],"response_data":[],"signing_url":null,"signing_redirect_url":null,"final_copy_uri":"\/v3\/signature_request\/final_copy\/6132f15bddd664807215db1e0435106e4edbd8c8","files_url":"https:\/\/api.hellosign.com\/v3\/signature_request\/files\/6132f15bddd664807215db1e0435106e4edbd8c8","details_url":"https:\/\/app.hellosign.com\/home\/manage?guid=6132f15bddd664807215db1e0435106e4edbd8c8","requester_email_address":"it@epicodus.com","signatures":[{"signature_id":"c81d7e21e14e5fef104c73e0f53fb04f","has_pin":false,"signer_email_address":"student433@example.com","signer_name":"Example
+        Brown 513","order":null,"status_code":"awaiting_signature","signed_at":null,"last_viewed_at":null,"last_reminded_at":null,"error":null}],"cc_email_addresses":[]}}'
     http_version: 
-  recorded_at: Wed, 29 Nov 2017 02:06:08 GMT
+  recorded_at: Tue, 09 Jan 2018 02:03:42 GMT
 - request:
     method: get
-    uri: https://api.hellosign.com/v3/embedded/sign_url/43baf696d33e2367c3313d52a402473f
+    uri: https://api.hellosign.com/v3/embedded/sign_url/c81d7e21e14e5fef104c73e0f53fb04f
     body:
       encoding: US-ASCII
       string: ''
     headers:
       User-Agent:
-      - hellosign-ruby-sdk/3.5.1
+      - hellosign-ruby-sdk/3.5.3
       Authorization:
       - Basic MmZjMzFjYWM3YTY0MGQzZGUxNTIxZDk5YmNjMTRmMmJlNGNjMDVkNzg5ZGVhMDI4Y2Q3MjE2ODZlMWJmNmQ2OTo=
       Accept-Encoding:
@@ -85,7 +85,7 @@ http_interactions:
       message: OK
     headers:
       Date:
-      - Wed, 29 Nov 2017 02:06:09 GMT
+      - Tue, 09 Jan 2018 02:03:42 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -93,8 +93,8 @@ http_interactions:
       Connection:
       - keep-alive
       Set-Cookie:
-      - AWSALB=33Is9HTA4P2VOuC18Dt8P2dyJE7IcMnX9uiFTrDxv6k10woWpeDSDTLNEqj2bC50FSK94/6oPyY5RhIyzFal0Td6+6A47vVdRqI4QgahsBVOF8R+4Xfjqw/bV/bP;
-        Expires=Wed, 06 Dec 2017 02:06:08 GMT; Path=/
+      - AWSALB=jATjpjpwn2A5TTFLHY4xu4empKAon7lTxecabzcJpuEnH4vE5Aqcl+fFAUt4FDasCs2Juje8V03SJZ4Zg1qadGkeerWDSE6mzDjXzuYyFhpzNeUj2q6owHUWQXye;
+        Expires=Tue, 16 Jan 2018 02:03:42 GMT; Path=/
       Server:
       - Apache
       Strict-Transport-Security:
@@ -104,7 +104,7 @@ http_interactions:
       X-Ratelimit-Limit-Remaining:
       - '1998'
       X-Ratelimit-Reset:
-      - '1511921169'
+      - '1515463422'
       Access-Control-Allow-Origin:
       - "*"
       Access-Control-Allow-Headers:
@@ -119,7 +119,7 @@ http_interactions:
       - CP="NOP3PPOLICY"
     body:
       encoding: ASCII-8BIT
-      string: '{"embedded":{"sign_url":"https:\/\/app.hellosign.com\/editor\/embeddedSign?signature_id=43baf696d33e2367c3313d52a402473f&token=f336355e6dac731b8aef8266c0076df3","expires_at":1511924769}}'
+      string: '{"embedded":{"sign_url":"https:\/\/app.hellosign.com\/editor\/embeddedSign?signature_id=c81d7e21e14e5fef104c73e0f53fb04f&token=a7d03e6c3ceef03cb57b838457a0f9b7","expires_at":1515467022}}'
     http_version: 
-  recorded_at: Wed, 29 Nov 2017 02:06:09 GMT
-recorded_with: VCR 3.0.3
+  recorded_at: Tue, 09 Jan 2018 02:03:42 GMT
+recorded_with: VCR 4.0.0

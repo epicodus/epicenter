@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.stripe.com/v1/customers
     body:
       encoding: UTF-8
-      string: email=student414%40example.com
+      string: email=student418%40example.com
     headers:
       Accept:
       - "*/*"
@@ -21,8 +21,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
-        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017;
+        root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Content-Length:
       - '30'
       Host:
@@ -35,7 +35,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 29 Nov 2017 02:04:20 GMT
+      - Tue, 09 Jan 2018 02:01:44 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -55,7 +55,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_Jtv6rp189kMnWk
+      - req_9tLMRSUKVMBjLI
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -64,7 +64,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_Br31xJQtLT6w0n",
+          "id": "cus_C6PFOJei9O7YJQ",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
@@ -72,16 +72,16 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_Br31xJQtLT6w0n/bank_accounts"
+            "url": "/v1/customers/cus_C6PFOJei9O7YJQ/bank_accounts"
           },
-          "created": 1511921059,
+          "created": 1515463304,
           "currency": null,
           "default_bank_account": null,
           "default_source": null,
           "delinquent": false,
           "description": null,
           "discount": null,
-          "email": "student414@example.com",
+          "email": "student418@example.com",
           "livemode": false,
           "metadata": {},
           "shipping": null,
@@ -90,22 +90,22 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_Br31xJQtLT6w0n/sources"
+            "url": "/v1/customers/cus_C6PFOJei9O7YJQ/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_Br31xJQtLT6w0n/subscriptions"
+            "url": "/v1/customers/cus_C6PFOJei9O7YJQ/subscriptions"
           },
           "default_source_type": null
         }
     http_version: 
-  recorded_at: Wed, 29 Nov 2017 02:04:20 GMT
+  recorded_at: Tue, 09 Jan 2018 02:01:44 GMT
 - request:
     method: post
-    uri: https://api.stripe.com/v1/customers/cus_Br31xJQtLT6w0n/sources
+    uri: https://api.stripe.com/v1/customers/cus_C6PFOJei9O7YJQ/sources
     body:
       encoding: UTF-8
       string: source[object]=card&source[number]=4242424242424242&source[exp_month]=12&source[exp_year]=2020&source[cvc]=123
@@ -124,8 +124,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
-        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017;
+        root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Content-Length:
       - '110'
       Host:
@@ -138,7 +138,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 29 Nov 2017 02:04:20 GMT
+      - Tue, 09 Jan 2018 02:01:45 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -158,7 +158,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_gEfY7xMGLnsCrz
+      - req_Q35wPlId9TFIl0
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -167,7 +167,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "card_Br32Ja1hn1r1u8",
+          "id": "card_C6PFjkj7xoooxr",
           "object": "card",
           "address_city": null,
           "address_country": null,
@@ -179,7 +179,7 @@ http_interactions:
           "address_zip_check": null,
           "brand": "Visa",
           "country": "US",
-          "customer": "cus_Br31xJQtLT6w0n",
+          "customer": "cus_C6PFOJei9O7YJQ",
           "cvc_check": "pass",
           "dynamic_last4": null,
           "exp_month": 12,
@@ -192,10 +192,10 @@ http_interactions:
           "tokenization_method": null
         }
     http_version: 
-  recorded_at: Wed, 29 Nov 2017 02:04:20 GMT
+  recorded_at: Tue, 09 Jan 2018 02:01:45 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_Br31xJQtLT6w0n
+    uri: https://api.stripe.com/v1/customers/cus_C6PFOJei9O7YJQ
     body:
       encoding: US-ASCII
       string: ''
@@ -214,8 +214,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
-        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017;
+        root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Host:
       - api.stripe.com
   response:
@@ -226,7 +226,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 29 Nov 2017 02:04:20 GMT
+      - Tue, 09 Jan 2018 02:01:45 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -246,7 +246,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_eK4g59sF3EFJ1X
+      - req_SkG2BaYDOwUeeZ
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -255,7 +255,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_Br31xJQtLT6w0n",
+          "id": "cus_C6PFOJei9O7YJQ",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
@@ -263,16 +263,16 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_Br31xJQtLT6w0n/bank_accounts"
+            "url": "/v1/customers/cus_C6PFOJei9O7YJQ/bank_accounts"
           },
-          "created": 1511921059,
+          "created": 1515463304,
           "currency": null,
           "default_bank_account": null,
-          "default_source": "card_Br32Ja1hn1r1u8",
+          "default_source": "card_C6PFjkj7xoooxr",
           "delinquent": false,
           "description": null,
           "discount": null,
-          "email": "student414@example.com",
+          "email": "student418@example.com",
           "livemode": false,
           "metadata": {},
           "shipping": null,
@@ -280,7 +280,7 @@ http_interactions:
             "object": "list",
             "data": [
               {
-                "id": "card_Br32Ja1hn1r1u8",
+                "id": "card_C6PFjkj7xoooxr",
                 "object": "card",
                 "address_city": null,
                 "address_country": null,
@@ -292,7 +292,7 @@ http_interactions:
                 "address_zip_check": null,
                 "brand": "Visa",
                 "country": "US",
-                "customer": "cus_Br31xJQtLT6w0n",
+                "customer": "cus_C6PFOJei9O7YJQ",
                 "cvc_check": "pass",
                 "dynamic_last4": null,
                 "exp_month": 12,
@@ -307,22 +307,22 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_Br31xJQtLT6w0n/sources"
+            "url": "/v1/customers/cus_C6PFOJei9O7YJQ/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_Br31xJQtLT6w0n/subscriptions"
+            "url": "/v1/customers/cus_C6PFOJei9O7YJQ/subscriptions"
           },
           "default_source_type": "card"
         }
     http_version: 
-  recorded_at: Wed, 29 Nov 2017 02:04:21 GMT
+  recorded_at: Tue, 09 Jan 2018 02:01:45 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_Br31xJQtLT6w0n/sources/card_Br32Ja1hn1r1u8
+    uri: https://api.stripe.com/v1/customers/cus_C6PFOJei9O7YJQ/sources/card_C6PFjkj7xoooxr
     body:
       encoding: US-ASCII
       string: ''
@@ -341,8 +341,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
-        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017;
+        root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Host:
       - api.stripe.com
   response:
@@ -353,7 +353,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 29 Nov 2017 02:04:21 GMT
+      - Tue, 09 Jan 2018 02:01:45 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -373,7 +373,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_ZPBcPhtgMJVOSI
+      - req_vLVrfcuHaDziAJ
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -382,7 +382,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "card_Br32Ja1hn1r1u8",
+          "id": "card_C6PFjkj7xoooxr",
           "object": "card",
           "address_city": null,
           "address_country": null,
@@ -394,7 +394,7 @@ http_interactions:
           "address_zip_check": null,
           "brand": "Visa",
           "country": "US",
-          "customer": "cus_Br31xJQtLT6w0n",
+          "customer": "cus_C6PFOJei9O7YJQ",
           "cvc_check": "pass",
           "dynamic_last4": null,
           "exp_month": 12,
@@ -407,5 +407,5 @@ http_interactions:
           "tokenization_method": null
         }
     http_version: 
-  recorded_at: Wed, 29 Nov 2017 02:04:21 GMT
-recorded_with: VCR 3.0.3
+  recorded_at: Tue, 09 Jan 2018 02:01:45 GMT
+recorded_with: VCR 4.0.0
