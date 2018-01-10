@@ -11,6 +11,12 @@ before_script:
 before_install:
   - gem update --system
   - gem --version
+  - wget http://chromedriver.storage.googleapis.com/2.32/chromedriver_linux64.zip
+  - unzip chromedriver_linux64.zip
+  - rm chromedriver_linux64.zip
+  - sudo mv -f chromedriver /usr/local/bin/
+  - sudo chmod +x /usr/local/bin/chromedriver
+  - google-chrome-stable --headless --no-sandbox
 deploy:
   provider: heroku
   strategy: api
@@ -20,3 +26,5 @@ deploy:
   on:
     repo: epicodus/epicenter
   run: "rake db:migrate"
+addons:
+  chrome: stable

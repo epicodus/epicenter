@@ -5,8 +5,8 @@ http_interactions:
     uri: "<ZAPIER_WEBHOOK_URL>"
     body:
       encoding: UTF-8
-      string: '{"id":1,"description":"Philadelphia; 2017-12-04; Full-time; upfront;
-        student1@example.com","amount":60000,"fee":1821,"status":"succeeded","refund_amount":null,"offline":null,"stripe_transaction":"test_txn_1","category":"upfront","notes":null,"event_name":"Payment","email":"student1@example.com"}'
+      string: '{"id":1,"description":"Philadelphia; 2018-01-08; Full-time; upfront;
+        student659@example.com","amount":60000,"fee":1821,"status":"succeeded","refund_amount":null,"offline":null,"stripe_transaction":"test_txn_1","category":"upfront","notes":null,"email":"student659@example.com"}'
     headers:
       Accept:
       - application/json
@@ -17,7 +17,7 @@ http_interactions:
       Content-Type:
       - application/json
       Content-Length:
-      - '296'
+      - '277'
       Host:
       - hooks.zapier.com
   response:
@@ -30,11 +30,11 @@ http_interactions:
       Content-Type:
       - application/json
       Date:
-      - Thu, 07 Dec 2017 00:32:35 GMT
+      - Tue, 09 Jan 2018 02:06:08 GMT
       P3p:
       - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
       Response-Id:
-      - 5a288c23-6bff-4a78-8922-1c6238c1c700
+      - 5a542390-52c8-47cd-a816-cf7a9722faa0
       Server:
       - nginx
       Vary:
@@ -46,7 +46,7 @@ http_interactions:
       X-Rate-Limit-Remaining:
       - '9999'
       X-Rate-Limit-Reset:
-      - '1512607200'
+      - '1515464100'
       X-Session-Key:
       - anonymous
       X-Zapier-Fast-Return:
@@ -56,149 +56,15 @@ http_interactions:
       X-Zapier-Jobs-Link:
       - https://zapier.com/blog/help-automate-business-zapier-jobs-and-careers/
       Zrv:
-      - 1EmE9J
+      - 1EyGyu
       Content-Length:
       - '172'
       Connection:
       - keep-alive
     body:
       encoding: UTF-8
-      string: '{"status": "success", "attempt": "5a288c23-6bff-4a78-8922-1c6238c1c700",
-        "id": "6af053af-60f4-41ca-80d4-dc7cf9ddde8a", "request_id": "5a288c23-6bff-4a78-8922-1c6238c1c700"}'
+      string: '{"status": "success", "attempt": "5a542390-52c8-47cd-a816-cf7a9722faa0",
+        "id": "4ba3cf4d-3559-4a17-a888-94a14130f7cf", "request_id": "5a542390-52c8-47cd-a816-cf7a9722faa0"}'
     http_version: 
-  recorded_at: Thu, 07 Dec 2017 00:32:35 GMT
-- request:
-    method: post
-    uri: "<ZAPIER_WEBHOOK_URL>"
-    body:
-      encoding: UTF-8
-      string: '{"id":1,"description":"Philadelphia; 2017-12-11; Full-time; upfront;
-        student1@example.com","amount":60000,"fee":1821,"status":"succeeded","refund_amount":null,"offline":null,"stripe_transaction":"test_txn_1","category":"upfront","notes":null,"email":"student1@example.com"}'
-    headers:
-      Accept:
-      - application/json
-      Accept-Encoding:
-      - gzip, deflate
-      User-Agent:
-      - rest-client/2.0.2 (darwin16.6.0 x86_64) ruby/2.4.1p111
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '273'
-      Host:
-      - hooks.zapier.com
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Access-Control-Allow-Origin:
-      - "*"
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 13 Dec 2017 16:10:55 GMT
-      P3p:
-      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
-      Response-Id:
-      - 5a31510f-8e08-4cff-ba9d-75d1311d7010
-      Server:
-      - nginx
-      Vary:
-      - X-Session-Key
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '10000'
-      X-Rate-Limit-Remaining:
-      - '9998'
-      X-Rate-Limit-Reset:
-      - '1513182000'
-      X-Session-Key:
-      - anonymous
-      X-Zapier-Fast-Return:
-      - 'true'
-      X-Zapier-Jobs:
-      - Woooo, a hacker like yourself should consider working at Zapier!
-      X-Zapier-Jobs-Link:
-      - https://zapier.com/blog/help-automate-business-zapier-jobs-and-careers/
-      Zrv:
-      - 1EoQxh
-      Content-Length:
-      - '172'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: '{"status": "success", "attempt": "5a31510f-8e08-4cff-ba9d-75d1311d7010",
-        "id": "1f59b2dd-c2b4-480c-a85f-9befc87a5054", "request_id": "5a31510f-8e08-4cff-ba9d-75d1311d7010"}'
-    http_version: 
-  recorded_at: Wed, 13 Dec 2017 16:10:55 GMT
-- request:
-    method: post
-    uri: "<ZAPIER_WEBHOOK_URL>"
-    body:
-      encoding: UTF-8
-      string: '{"id":1,"description":"Philadelphia; 2017-12-11; Full-time; upfront;
-        student1@example.com","amount":60000,"fee":1821,"status":"succeeded","refund_amount":null,"offline":null,"stripe_transaction":"test_txn_1","category":"upfront","notes":null,"email":"student1@example.com"}'
-    headers:
-      Accept:
-      - application/json
-      Accept-Encoding:
-      - gzip, deflate
-      User-Agent:
-      - rest-client/2.0.2 (darwin16.6.0 x86_64) ruby/2.4.1p111
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '273'
-      Host:
-      - hooks.zapier.com
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Access-Control-Allow-Origin:
-      - "*"
-      Content-Type:
-      - application/json
-      Date:
-      - Wed, 13 Dec 2017 16:10:55 GMT
-      P3p:
-      - CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"
-      Response-Id:
-      - 5a31510f-ebd5-436e-a250-18c2f4d50860
-      Server:
-      - nginx
-      Vary:
-      - X-Session-Key
-      X-Frame-Options:
-      - SAMEORIGIN
-      X-Rate-Limit-Limit:
-      - '10000'
-      X-Rate-Limit-Remaining:
-      - '9999'
-      X-Rate-Limit-Reset:
-      - '1513182000'
-      X-Session-Key:
-      - anonymous
-      X-Zapier-Fast-Return:
-      - 'true'
-      X-Zapier-Jobs:
-      - Woooo, a hacker like yourself should consider working at Zapier!
-      X-Zapier-Jobs-Link:
-      - https://zapier.com/blog/help-automate-business-zapier-jobs-and-careers/
-      Zrv:
-      - 1EoQxh
-      Content-Length:
-      - '172'
-      Connection:
-      - keep-alive
-    body:
-      encoding: UTF-8
-      string: '{"status": "success", "attempt": "5a31510f-ebd5-436e-a250-18c2f4d50860",
-        "id": "2929b6b4-6709-40af-9772-5ef0e628ba12", "request_id": "5a31510f-ebd5-436e-a250-18c2f4d50860"}'
-    http_version: 
-  recorded_at: Wed, 13 Dec 2017 16:10:55 GMT
+  recorded_at: Tue, 09 Jan 2018 02:06:08 GMT
 recorded_with: VCR 4.0.0

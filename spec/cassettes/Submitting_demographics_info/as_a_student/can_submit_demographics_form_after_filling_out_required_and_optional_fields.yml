@@ -1,11 +1,14 @@
 ---
 http_interactions:
 - request:
-    method: get
-    uri: https://app.close.io/api/v1/lead/?query=email:bad_email
+    method: put
+    uri: https://app.close.io/api/v1/lead/lead_L125JRKO4Kh8GJMh7Ah9ggVsrPAzmVEp598taaQBzVe/
     body:
-      encoding: US-ASCII
-      string: ''
+      encoding: UTF-8
+      string: '{"addresses":[{"label":"mailing","address_1":"400 SW 6th Ave","city":"Portland","state":"OR","zipcode":"97204","country":"US"}],"custom.Demographics
+        - Birth date":"2000-01-01","custom.Demographics - Disability":"No","custom.Demographics
+        - Veteran":"No","custom.Demographics - Education":"GED","custom.Demographics
+        - CS Degree":"No","custom.Demographics - Shirt size":"S"}'
     headers:
       Accept:
       - application/json
@@ -15,17 +18,19 @@ http_interactions:
       - '0'
       Authorization:
       - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
+      Content-Type:
+      - application/json
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
     status:
-      code: 200
-      message: OK
+      code: 400
+      message: Bad Request
     headers:
       Content-Type:
       - application/json
       Date:
-      - Tue, 09 Jan 2018 01:54:45 GMT
+      - Tue, 09 Jan 2018 20:58:18 GMT
       Set-Cookie:
       - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
       Strict-Transport-Security:
@@ -37,16 +42,17 @@ http_interactions:
       X-Rate-Limit-Limit:
       - '320'
       X-Rate-Limit-Remaining:
-      - '311'
+      - '319'
       X-Rate-Limit-Reset:
-      - '4.768264'
+      - '7.710528'
       Content-Length:
-      - '51'
+      - '122'
       Connection:
       - keep-alive
     body:
       encoding: UTF-8
-      string: '{"has_more": false, "total_results": 0, "data": []}'
+      string: '{"errors": [], "field-errors": {"custom": "Duplicate keys: \"Demographics
+        - Birth Date\", \"Demographics - Birth date\""}}'
     http_version: 
-  recorded_at: Tue, 09 Jan 2018 01:54:45 GMT
+  recorded_at: Tue, 09 Jan 2018 20:58:18 GMT
 recorded_with: VCR 4.0.0

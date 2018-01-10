@@ -20,9 +20,9 @@ http_interactions:
       Stripe-Version:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin16","engine":"ruby","publisher":"stripe","uname":"Darwin
-        Oliphaunt.PK5001Z 16.7.0 Darwin Kernel Version 16.7.0: Wed Oct  4 00:17:00
-        PDT 2017; root:xnu-3789.71.6~1/RELEASE_X86_64 x86_64","hostname":"Oliphaunt.PK5001Z"}'
+      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017;
+        root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Content-Length:
       - '27'
       Host:
@@ -35,7 +35,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 08 Dec 2017 09:04:23 GMT
+      - Tue, 09 Jan 2018 02:03:09 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -55,7 +55,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_Ceq7dyl2SLvtks
+      - req_8XbP8IGBi3oAFG
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -64,7 +64,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_BuWqyOboLBw2pt",
+          "id": "cus_C6PG8FesNMPK5j",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
@@ -72,9 +72,9 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_BuWqyOboLBw2pt/bank_accounts"
+            "url": "/v1/customers/cus_C6PG8FesNMPK5j/bank_accounts"
           },
-          "created": 1512723862,
+          "created": 1515463389,
           "currency": null,
           "default_bank_account": null,
           "default_source": null,
@@ -90,22 +90,22 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_BuWqyOboLBw2pt/sources"
+            "url": "/v1/customers/cus_C6PG8FesNMPK5j/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_BuWqyOboLBw2pt/subscriptions"
+            "url": "/v1/customers/cus_C6PG8FesNMPK5j/subscriptions"
           },
           "default_source_type": null
         }
     http_version: 
-  recorded_at: Fri, 08 Dec 2017 09:04:23 GMT
+  recorded_at: Tue, 09 Jan 2018 02:03:09 GMT
 - request:
     method: post
-    uri: https://api.stripe.com/v1/customers/cus_BuWqyOboLBw2pt/sources
+    uri: https://api.stripe.com/v1/customers/cus_C6PG8FesNMPK5j/sources
     body:
       encoding: UTF-8
       string: source[object]=card&source[number]=4242424242424242&source[exp_month]=12&source[exp_year]=2020&source[cvc]=123
@@ -123,9 +123,9 @@ http_interactions:
       Stripe-Version:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin16","engine":"ruby","publisher":"stripe","uname":"Darwin
-        Oliphaunt.PK5001Z 16.7.0 Darwin Kernel Version 16.7.0: Wed Oct  4 00:17:00
-        PDT 2017; root:xnu-3789.71.6~1/RELEASE_X86_64 x86_64","hostname":"Oliphaunt.PK5001Z"}'
+      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017;
+        root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Content-Length:
       - '110'
       Host:
@@ -138,7 +138,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 08 Dec 2017 09:04:23 GMT
+      - Tue, 09 Jan 2018 02:03:10 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -158,7 +158,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_1IwStvylNHwGkc
+      - req_QbTG5HuGDwqKfO
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -167,7 +167,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "card_BuWqQyPXiQ3YdF",
+          "id": "card_C6PGt1rG7LylYc",
           "object": "card",
           "address_city": null,
           "address_country": null,
@@ -179,7 +179,7 @@ http_interactions:
           "address_zip_check": null,
           "brand": "Visa",
           "country": "US",
-          "customer": "cus_BuWqyOboLBw2pt",
+          "customer": "cus_C6PG8FesNMPK5j",
           "cvc_check": "pass",
           "dynamic_last4": null,
           "exp_month": 12,
@@ -192,10 +192,10 @@ http_interactions:
           "tokenization_method": null
         }
     http_version: 
-  recorded_at: Fri, 08 Dec 2017 09:04:23 GMT
+  recorded_at: Tue, 09 Jan 2018 02:03:10 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_BuWqyOboLBw2pt
+    uri: https://api.stripe.com/v1/customers/cus_C6PG8FesNMPK5j
     body:
       encoding: US-ASCII
       string: ''
@@ -213,9 +213,9 @@ http_interactions:
       Stripe-Version:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin16","engine":"ruby","publisher":"stripe","uname":"Darwin
-        Oliphaunt.PK5001Z 16.7.0 Darwin Kernel Version 16.7.0: Wed Oct  4 00:17:00
-        PDT 2017; root:xnu-3789.71.6~1/RELEASE_X86_64 x86_64","hostname":"Oliphaunt.PK5001Z"}'
+      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017;
+        root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Host:
       - api.stripe.com
   response:
@@ -226,7 +226,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 08 Dec 2017 09:04:24 GMT
+      - Tue, 09 Jan 2018 02:03:10 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -246,7 +246,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_P31YRQpKfeEcEG
+      - req_1Dt8Xu1AJucGgY
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -255,7 +255,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_BuWqyOboLBw2pt",
+          "id": "cus_C6PG8FesNMPK5j",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
@@ -263,12 +263,12 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_BuWqyOboLBw2pt/bank_accounts"
+            "url": "/v1/customers/cus_C6PG8FesNMPK5j/bank_accounts"
           },
-          "created": 1512723862,
+          "created": 1515463389,
           "currency": null,
           "default_bank_account": null,
-          "default_source": "card_BuWqQyPXiQ3YdF",
+          "default_source": "card_C6PGt1rG7LylYc",
           "delinquent": false,
           "description": null,
           "discount": null,
@@ -280,7 +280,7 @@ http_interactions:
             "object": "list",
             "data": [
               {
-                "id": "card_BuWqQyPXiQ3YdF",
+                "id": "card_C6PGt1rG7LylYc",
                 "object": "card",
                 "address_city": null,
                 "address_country": null,
@@ -292,7 +292,7 @@ http_interactions:
                 "address_zip_check": null,
                 "brand": "Visa",
                 "country": "US",
-                "customer": "cus_BuWqyOboLBw2pt",
+                "customer": "cus_C6PG8FesNMPK5j",
                 "cvc_check": "pass",
                 "dynamic_last4": null,
                 "exp_month": 12,
@@ -307,22 +307,22 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_BuWqyOboLBw2pt/sources"
+            "url": "/v1/customers/cus_C6PG8FesNMPK5j/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_BuWqyOboLBw2pt/subscriptions"
+            "url": "/v1/customers/cus_C6PG8FesNMPK5j/subscriptions"
           },
           "default_source_type": "card"
         }
     http_version: 
-  recorded_at: Fri, 08 Dec 2017 09:04:24 GMT
+  recorded_at: Tue, 09 Jan 2018 02:03:10 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_BuWqyOboLBw2pt/sources/card_BuWqQyPXiQ3YdF
+    uri: https://api.stripe.com/v1/customers/cus_C6PG8FesNMPK5j/sources/card_C6PGt1rG7LylYc
     body:
       encoding: US-ASCII
       string: ''
@@ -340,9 +340,9 @@ http_interactions:
       Stripe-Version:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin16","engine":"ruby","publisher":"stripe","uname":"Darwin
-        Oliphaunt.PK5001Z 16.7.0 Darwin Kernel Version 16.7.0: Wed Oct  4 00:17:00
-        PDT 2017; root:xnu-3789.71.6~1/RELEASE_X86_64 x86_64","hostname":"Oliphaunt.PK5001Z"}'
+      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017;
+        root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Host:
       - api.stripe.com
   response:
@@ -353,7 +353,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 08 Dec 2017 09:04:24 GMT
+      - Tue, 09 Jan 2018 02:03:10 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -373,7 +373,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_V8WXCko8RxyJ0q
+      - req_tD2wvWqYMc7kM2
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -382,7 +382,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "card_BuWqQyPXiQ3YdF",
+          "id": "card_C6PGt1rG7LylYc",
           "object": "card",
           "address_city": null,
           "address_country": null,
@@ -394,7 +394,7 @@ http_interactions:
           "address_zip_check": null,
           "brand": "Visa",
           "country": "US",
-          "customer": "cus_BuWqyOboLBw2pt",
+          "customer": "cus_C6PG8FesNMPK5j",
           "cvc_check": "pass",
           "dynamic_last4": null,
           "exp_month": 12,
@@ -407,10 +407,10 @@ http_interactions:
           "tokenization_method": null
         }
     http_version: 
-  recorded_at: Fri, 08 Dec 2017 09:04:24 GMT
+  recorded_at: Tue, 09 Jan 2018 02:03:10 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_BuWqyOboLBw2pt
+    uri: https://api.stripe.com/v1/customers/cus_C6PG8FesNMPK5j
     body:
       encoding: US-ASCII
       string: ''
@@ -428,9 +428,9 @@ http_interactions:
       Stripe-Version:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin16","engine":"ruby","publisher":"stripe","uname":"Darwin
-        Oliphaunt.PK5001Z 16.7.0 Darwin Kernel Version 16.7.0: Wed Oct  4 00:17:00
-        PDT 2017; root:xnu-3789.71.6~1/RELEASE_X86_64 x86_64","hostname":"Oliphaunt.PK5001Z"}'
+      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017;
+        root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Host:
       - api.stripe.com
   response:
@@ -441,7 +441,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 08 Dec 2017 09:04:24 GMT
+      - Tue, 09 Jan 2018 02:03:10 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -461,7 +461,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_O5uAjEpgWCEgNN
+      - req_OhQKxPG94389Co
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -470,7 +470,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_BuWqyOboLBw2pt",
+          "id": "cus_C6PG8FesNMPK5j",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
@@ -478,12 +478,12 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_BuWqyOboLBw2pt/bank_accounts"
+            "url": "/v1/customers/cus_C6PG8FesNMPK5j/bank_accounts"
           },
-          "created": 1512723862,
+          "created": 1515463389,
           "currency": null,
           "default_bank_account": null,
-          "default_source": "card_BuWqQyPXiQ3YdF",
+          "default_source": "card_C6PGt1rG7LylYc",
           "delinquent": false,
           "description": null,
           "discount": null,
@@ -495,7 +495,7 @@ http_interactions:
             "object": "list",
             "data": [
               {
-                "id": "card_BuWqQyPXiQ3YdF",
+                "id": "card_C6PGt1rG7LylYc",
                 "object": "card",
                 "address_city": null,
                 "address_country": null,
@@ -507,7 +507,7 @@ http_interactions:
                 "address_zip_check": null,
                 "brand": "Visa",
                 "country": "US",
-                "customer": "cus_BuWqyOboLBw2pt",
+                "customer": "cus_C6PG8FesNMPK5j",
                 "cvc_check": "pass",
                 "dynamic_last4": null,
                 "exp_month": 12,
@@ -522,25 +522,25 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_BuWqyOboLBw2pt/sources"
+            "url": "/v1/customers/cus_C6PG8FesNMPK5j/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_BuWqyOboLBw2pt/subscriptions"
+            "url": "/v1/customers/cus_C6PG8FesNMPK5j/subscriptions"
           },
           "default_source_type": "card"
         }
     http_version: 
-  recorded_at: Fri, 08 Dec 2017 09:04:24 GMT
+  recorded_at: Tue, 09 Jan 2018 02:03:10 GMT
 - request:
     method: post
     uri: https://api.stripe.com/v1/charges
     body:
       encoding: UTF-8
-      string: amount=61821&currency=usd&customer=cus_BuWqyOboLBw2pt&source=card_BuWqQyPXiQ3YdF&description=Philadelphia%3B+2017-12-04%3B+Full-time%3B+upfront%3B+example%40example.com
+      string: amount=61821&currency=usd&customer=cus_C6PG8FesNMPK5j&source=card_C6PGt1rG7LylYc&description=Philadelphia%3B+2018-01-08%3B+Full-time%3B+upfront%3B+example%40example.com
     headers:
       Accept:
       - "*/*"
@@ -555,9 +555,9 @@ http_interactions:
       Stripe-Version:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin16","engine":"ruby","publisher":"stripe","uname":"Darwin
-        Oliphaunt.PK5001Z 16.7.0 Darwin Kernel Version 16.7.0: Wed Oct  4 00:17:00
-        PDT 2017; root:xnu-3789.71.6~1/RELEASE_X86_64 x86_64","hostname":"Oliphaunt.PK5001Z"}'
+      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017;
+        root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Content-Length:
       - '168'
       Host:
@@ -570,7 +570,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 08 Dec 2017 09:04:25 GMT
+      - Tue, 09 Jan 2018 02:03:11 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -590,7 +590,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_D85bb2jPzXxEVU
+      - req_zBUEYhSsG3qaGe
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -599,18 +599,18 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "ch_BuWqKpbjTRG2p9",
+          "id": "ch_C6PGUgcMVpWYte",
           "object": "charge",
           "amount": 61821,
           "amount_refunded": 0,
           "application": null,
           "application_fee": null,
-          "balance_transaction": "txn_BuWqu5X9YnVcrq",
+          "balance_transaction": "txn_C6PGCdDwrgh8uS",
           "captured": true,
-          "created": 1512723865,
+          "created": 1515463390,
           "currency": "usd",
-          "customer": "cus_BuWqyOboLBw2pt",
-          "description": "Philadelphia; 2017-12-04; Full-time; upfront; example@example.com",
+          "customer": "cus_C6PG8FesNMPK5j",
+          "description": "Philadelphia; 2018-01-08; Full-time; upfront; example@example.com",
           "destination": null,
           "dispute": null,
           "failure_code": null,
@@ -636,12 +636,12 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/charges/ch_BuWqKpbjTRG2p9/refunds"
+            "url": "/v1/charges/ch_C6PGUgcMVpWYte/refunds"
           },
           "review": null,
           "shipping": null,
           "source": {
-            "id": "card_BuWqQyPXiQ3YdF",
+            "id": "card_C6PGt1rG7LylYc",
             "object": "card",
             "address_city": null,
             "address_country": null,
@@ -653,7 +653,7 @@ http_interactions:
             "address_zip_check": null,
             "brand": "Visa",
             "country": "US",
-            "customer": "cus_BuWqyOboLBw2pt",
+            "customer": "cus_C6PG8FesNMPK5j",
             "cvc_check": "pass",
             "dynamic_last4": null,
             "exp_month": 12,
@@ -671,10 +671,10 @@ http_interactions:
           "transfer_group": null
         }
     http_version: 
-  recorded_at: Fri, 08 Dec 2017 09:04:25 GMT
+  recorded_at: Tue, 09 Jan 2018 02:03:11 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/balance/history/txn_BuWqu5X9YnVcrq
+    uri: https://api.stripe.com/v1/balance/history/txn_C6PGCdDwrgh8uS
     body:
       encoding: US-ASCII
       string: ''
@@ -692,9 +692,9 @@ http_interactions:
       Stripe-Version:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin16","engine":"ruby","publisher":"stripe","uname":"Darwin
-        Oliphaunt.PK5001Z 16.7.0 Darwin Kernel Version 16.7.0: Wed Oct  4 00:17:00
-        PDT 2017; root:xnu-3789.71.6~1/RELEASE_X86_64 x86_64","hostname":"Oliphaunt.PK5001Z"}'
+      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017;
+        root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Host:
       - api.stripe.com
   response:
@@ -705,11 +705,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 08 Dec 2017 09:04:26 GMT
+      - Tue, 09 Jan 2018 02:03:11 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '717'
+      - '742'
       Connection:
       - keep-alive
       Access-Control-Allow-Credentials:
@@ -725,7 +725,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_lwoxCJhflfbZY4
+      - req_zWoQaQRVbugRyO
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -734,13 +734,14 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "txn_BuWqu5X9YnVcrq",
+          "id": "txn_C6PGCdDwrgh8uS",
           "object": "balance_transaction",
           "amount": 61821,
-          "available_on": 1513036800,
-          "created": 1512723865,
+          "available_on": 1515628800,
+          "created": 1515463390,
           "currency": "usd",
-          "description": "Philadelphia; 2017-12-04; Full-time; upfront; example@example.com",
+          "description": "Philadelphia; 2018-01-08; Full-time; upfront; example@example.com",
+          "exchange_rate": null,
           "fee": 1823,
           "fee_details": [
             {
@@ -752,25 +753,25 @@ http_interactions:
             }
           ],
           "net": 59998,
-          "source": "ch_BuWqKpbjTRG2p9",
+          "source": "ch_C6PGUgcMVpWYte",
           "sourced_transfers": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/transfers?source_transaction=ch_BuWqKpbjTRG2p9"
+            "url": "/v1/transfers?source_transaction=ch_C6PGUgcMVpWYte"
           },
           "status": "pending",
           "type": "charge"
         }
     http_version: 
-  recorded_at: Fri, 08 Dec 2017 09:04:26 GMT
+  recorded_at: Tue, 09 Jan 2018 02:03:11 GMT
 - request:
     method: post
     uri: https://api.stripe.com/v1/refunds
     body:
       encoding: UTF-8
-      string: charge=ch_BuWqKpbjTRG2p9&amount=500
+      string: charge=ch_C6PGUgcMVpWYte&amount=500
     headers:
       Accept:
       - "*/*"
@@ -785,9 +786,9 @@ http_interactions:
       Stripe-Version:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
-      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin16","engine":"ruby","publisher":"stripe","uname":"Darwin
-        Oliphaunt.PK5001Z 16.7.0 Darwin Kernel Version 16.7.0: Wed Oct  4 00:17:00
-        PDT 2017; root:xnu-3789.71.6~1/RELEASE_X86_64 x86_64","hostname":"Oliphaunt.PK5001Z"}'
+      - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017;
+        root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Content-Length:
       - '35'
       Host:
@@ -800,7 +801,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 08 Dec 2017 09:04:27 GMT
+      - Tue, 09 Jan 2018 02:03:12 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -820,7 +821,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_2oB2rbqTE4MAGP
+      - req_sV4kikDT8BZP40
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -829,12 +830,12 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "re_BuWqNa0DtqJRYc",
+          "id": "re_C6PGLpLTXxxV0E",
           "object": "refund",
           "amount": 500,
-          "balance_transaction": "txn_BuWqTBpoUSGMat",
-          "charge": "ch_BuWqKpbjTRG2p9",
-          "created": 1512723866,
+          "balance_transaction": "txn_C6PGKsr716rmi6",
+          "charge": "ch_C6PGUgcMVpWYte",
+          "created": 1515463391,
           "currency": "usd",
           "metadata": {},
           "reason": null,
@@ -842,5 +843,5 @@ http_interactions:
           "status": "succeeded"
         }
     http_version: 
-  recorded_at: Fri, 08 Dec 2017 09:04:27 GMT
-recorded_with: VCR 3.0.3
+  recorded_at: Tue, 09 Jan 2018 02:03:12 GMT
+recorded_with: VCR 4.0.0

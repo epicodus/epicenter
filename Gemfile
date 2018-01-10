@@ -55,13 +55,13 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'capybara-selenium'
   gem 'shoulda-matchers'
   gem 'launchy'
   gem 'poltergeist'
   gem 'database_cleaner'
   gem 'webmock'
   gem 'vcr'
-  gem 'puffing-billy'
   gem 'simplecov', require: false
   gem 'coveralls', require: false
   gem 'stripe-ruby-mock', '~> 2.4.1', :require => 'stripe_mock'

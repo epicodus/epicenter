@@ -5,8 +5,7 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'shoulda/matchers'
 require 'capybara/rails'
-require 'capybara/poltergeist'
-require 'billy/capybara/rspec'
+require 'selenium/webdriver'
 require 'cancan/matchers'
 require 'simplecov'
 require 'coveralls'
@@ -19,7 +18,21 @@ WebMock.enable!
 
 include ActiveSupport::Testing::TimeHelpers
 
-Capybara.javascript_driver = :poltergeist_billy
+Capybara.register_driver :chrome do |app|
+  Capybara::Selenium::Driver.new(app, browser: :chrome)
+end
+
+Capybara.register_driver :headless_chrome do |app|
+  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
+    chromeOptions: { args: %w(headless disable-gpu) }
+  )
+
+  Capybara::Selenium::Driver.new app,
+    browser: :chrome,
+    desired_capabilities: capabilities
+end
+
+Capybara.javascript_driver = :headless_chrome
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
@@ -63,16 +76,6 @@ VCR.configure do |config|
   config.filter_sensitive_data('<ENROLLMENT_AGREEMENT_TEMPLATE_ID>') { ENV['ENROLLMENT_AGREEMENT_TEMPLATE_ID'] }
   config.filter_sensitive_data('<CLOSE_IO_API_KEY>') { ENV['CLOSE_IO_API_KEY'] }
   config.filter_sensitive_data('<ZAPIER_WEBHOOK_URL>') { ENV['ZAPIER_WEBHOOK_URL'] }
-end
-
-Billy.configure do |c|
-  c.cache = true
-  c.persist_cache = true
-  # c.non_whitelisted_requests_disabled = true
-  c.dynamic_jsonp = true
-  c.dynamic_jsonp_keys = ["callback", "stripe_xdm_c", "stripe_xdm_e", "timestamp"]
-  c.cache_path = 'spec/cassettes/javascript/'
-  c.non_successful_error_level = :warn
 end
 
 Shoulda::Matchers.configure do |config|

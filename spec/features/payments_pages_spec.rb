@@ -333,18 +333,11 @@ feature 'make an offline payment', :js, :vcr do
     fill_in 'payment_amount', with: 60.18
     select 'tuition'
     click_on 'Manual payment'
+    wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoAlertPresentError
+    alert = wait.until { page.driver.browser.switch_to.alert }
+    alert.accept
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Offline'
     expect(page).to have_content '$60.18'
-  end
-
-  it 'sets category to upfront for offline payments' do
-    visit student_payments_path(student)
-    check 'offline-payment-checkbox'
-    fill_in 'Notes', with: 'Test offline payment'
-    fill_in 'payment_amount', with: 60.18
-    select 'tuition'
-    click_on 'Manual payment'
-    expect(student.payments.first.category).to eq 'upfront'
   end
 end

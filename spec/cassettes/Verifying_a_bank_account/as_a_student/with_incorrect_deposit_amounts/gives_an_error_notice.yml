@@ -21,8 +21,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
-        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017;
+        root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Content-Length:
       - '29'
       Host:
@@ -35,7 +35,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 29 Nov 2017 01:57:29 GMT
+      - Tue, 09 Jan 2018 01:55:14 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -55,7 +55,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_tjqHQRowWZsZHO
+      - req_PE4GbnZofpO6Ke
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -64,7 +64,7 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_Br2vOI3WY0Lgua",
+          "id": "cus_C6P8w6hNbzIYEw",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
@@ -72,9 +72,9 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_Br2vOI3WY0Lgua/bank_accounts"
+            "url": "/v1/customers/cus_C6P8w6hNbzIYEw/bank_accounts"
           },
-          "created": 1511920649,
+          "created": 1515462913,
           "currency": null,
           "default_bank_account": null,
           "default_source": null,
@@ -90,22 +90,22 @@ http_interactions:
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_Br2vOI3WY0Lgua/sources"
+            "url": "/v1/customers/cus_C6P8w6hNbzIYEw/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_Br2vOI3WY0Lgua/subscriptions"
+            "url": "/v1/customers/cus_C6P8w6hNbzIYEw/subscriptions"
           },
           "default_source_type": null
         }
     http_version: 
-  recorded_at: Wed, 29 Nov 2017 01:57:29 GMT
+  recorded_at: Tue, 09 Jan 2018 01:55:14 GMT
 - request:
     method: post
-    uri: https://api.stripe.com/v1/customers/cus_Br2vOI3WY0Lgua/sources
+    uri: https://api.stripe.com/v1/customers/cus_C6P8w6hNbzIYEw/sources
     body:
       encoding: UTF-8
       string: source[object]=bank_account&source[country]=US&source[account_number]=000123456789&source[routing_number]=110000000
@@ -124,8 +124,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
-        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017;
+        root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Content-Length:
       - '115'
       Host:
@@ -138,7 +138,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 29 Nov 2017 01:57:30 GMT
+      - Tue, 09 Jan 2018 01:55:14 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -158,7 +158,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_RzLSvYLHTqHgyL
+      - req_oQELk1GPvqpmcU
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -167,14 +167,14 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "ba_Br2vITmUVQlVj1",
+          "id": "ba_C6P8tf18mUIWgD",
           "object": "bank_account",
           "account_holder_name": null,
           "account_holder_type": null,
           "bank_name": "STRIPE TEST BANK",
           "country": "US",
           "currency": "usd",
-          "customer": "cus_Br2vOI3WY0Lgua",
+          "customer": "cus_C6P8w6hNbzIYEw",
           "fingerprint": "qw2YdYDmIJUuNi9w",
           "last4": "6789",
           "metadata": {},
@@ -183,10 +183,10 @@ http_interactions:
           "name": null
         }
     http_version: 
-  recorded_at: Wed, 29 Nov 2017 01:57:30 GMT
+  recorded_at: Tue, 09 Jan 2018 01:55:14 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_Br2vOI3WY0Lgua
+    uri: https://api.stripe.com/v1/customers/cus_C6P8w6hNbzIYEw
     body:
       encoding: US-ASCII
       string: ''
@@ -205,8 +205,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
-        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017;
+        root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Host:
       - api.stripe.com
   response:
@@ -217,7 +217,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 29 Nov 2017 01:57:30 GMT
+      - Tue, 09 Jan 2018 01:55:14 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -237,7 +237,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_R3dfnee183H4By
+      - req_y3HwznPfrfUbqw
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -246,21 +246,21 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_Br2vOI3WY0Lgua",
+          "id": "cus_C6P8w6hNbzIYEw",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
             "object": "list",
             "data": [
               {
-                "id": "ba_Br2vITmUVQlVj1",
+                "id": "ba_C6P8tf18mUIWgD",
                 "object": "bank_account",
                 "account_holder_name": null,
                 "account_holder_type": null,
                 "bank_name": "STRIPE TEST BANK",
                 "country": "US",
                 "currency": "usd",
-                "customer": "cus_Br2vOI3WY0Lgua",
+                "customer": "cus_C6P8w6hNbzIYEw",
                 "fingerprint": "qw2YdYDmIJUuNi9w",
                 "last4": "6789",
                 "metadata": {},
@@ -271,12 +271,12 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_Br2vOI3WY0Lgua/bank_accounts"
+            "url": "/v1/customers/cus_C6P8w6hNbzIYEw/bank_accounts"
           },
-          "created": 1511920649,
+          "created": 1515462913,
           "currency": null,
-          "default_bank_account": "ba_Br2vITmUVQlVj1",
-          "default_source": "ba_Br2vITmUVQlVj1",
+          "default_bank_account": "ba_C6P8tf18mUIWgD",
+          "default_source": "ba_C6P8tf18mUIWgD",
           "delinquent": false,
           "description": null,
           "discount": null,
@@ -288,14 +288,14 @@ http_interactions:
             "object": "list",
             "data": [
               {
-                "id": "ba_Br2vITmUVQlVj1",
+                "id": "ba_C6P8tf18mUIWgD",
                 "object": "bank_account",
                 "account_holder_name": null,
                 "account_holder_type": null,
                 "bank_name": "STRIPE TEST BANK",
                 "country": "US",
                 "currency": "usd",
-                "customer": "cus_Br2vOI3WY0Lgua",
+                "customer": "cus_C6P8w6hNbzIYEw",
                 "fingerprint": "qw2YdYDmIJUuNi9w",
                 "last4": "6789",
                 "metadata": {},
@@ -306,22 +306,22 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_Br2vOI3WY0Lgua/sources"
+            "url": "/v1/customers/cus_C6P8w6hNbzIYEw/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_Br2vOI3WY0Lgua/subscriptions"
+            "url": "/v1/customers/cus_C6P8w6hNbzIYEw/subscriptions"
           },
           "default_source_type": "bank_account"
         }
     http_version: 
-  recorded_at: Wed, 29 Nov 2017 01:57:30 GMT
+  recorded_at: Tue, 09 Jan 2018 01:55:14 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_Br2vOI3WY0Lgua/sources/ba_Br2vITmUVQlVj1
+    uri: https://api.stripe.com/v1/customers/cus_C6P8w6hNbzIYEw/sources/ba_C6P8tf18mUIWgD
     body:
       encoding: US-ASCII
       string: ''
@@ -340,8 +340,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
-        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017;
+        root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Host:
       - api.stripe.com
   response:
@@ -352,7 +352,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 29 Nov 2017 01:57:30 GMT
+      - Tue, 09 Jan 2018 01:55:14 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -372,7 +372,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_z1PLQnH5az4uXY
+      - req_0rzFzFy1fA81eM
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -381,14 +381,14 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "ba_Br2vITmUVQlVj1",
+          "id": "ba_C6P8tf18mUIWgD",
           "object": "bank_account",
           "account_holder_name": null,
           "account_holder_type": null,
           "bank_name": "STRIPE TEST BANK",
           "country": "US",
           "currency": "usd",
-          "customer": "cus_Br2vOI3WY0Lgua",
+          "customer": "cus_C6P8w6hNbzIYEw",
           "fingerprint": "qw2YdYDmIJUuNi9w",
           "last4": "6789",
           "metadata": {},
@@ -397,134 +397,10 @@ http_interactions:
           "name": null
         }
     http_version: 
-  recorded_at: Wed, 29 Nov 2017 01:57:30 GMT
-- request:
-    method: post
-    uri: https://m.stripe.com/4
-    body:
-      encoding: UTF-8
-      string: JTdCJTIydjIlMjIlM0ExJTJDJTIyaWQlMjIlM0ElMjJjM2YzOTM1ZWQwYTI0YTQyMmMzNTNiNTAxNzg2MmIzZCUyMiUyQyUyMnQlMjIlM0EyNC45NTElMkMlMjJ0YWclMjIlM0ElMjI0LjUuMTclMjIlMkMlMjJzcmMlMjIlM0ElMjJqcyUyMiUyQyUyMmElMjIlM0ElN0IlMjJhJTIyJTNBJTdCJTIydiUyMiUzQSUyMnRydWUlMjIlMkMlMjJ0JTIyJTNBMC4xMjM5MiU3RCUyQyUyMmIlMjIlM0ElN0IlMjJ2JTIyJTNBJTIyZmFsc2UlMjIlMkMlMjJ0JTIyJTNBMC4wMjI3NzQlN0QlMkMlMjJjJTIyJTNBJTdCJTIydiUyMiUzQSUyMmVuLVVTJTIyJTJDJTIydCUyMiUzQTAuMDQwNDM3JTdEJTJDJTIyZCUyMiUzQSU3QiUyMnYlMjIlM0ElMjJNYWNJbnRlbCUyMiUyQyUyMnQlMjIlM0EwLjAxMTA3NyU3RCUyQyUyMmUlMjIlM0ElN0IlMjJ2JTIyJTNBJTIyJTIyJTJDJTIydCUyMiUzQTAuMDI0OTc2JTdEJTJDJTIyZiUyMiUzQSU3QiUyMnYlMjIlM0ElMjIxMDI0d183NjhoXzMyZF8xciUyMiUyQyUyMnQlMjIlM0EwLjAyNzc1NyU3RCUyQyUyMmclMjIlM0ElN0IlMjJ2JTIyJTNBJTIyLTglMjIlMkMlMjJ0JTIyJTNBMC4wMjQ2ODklN0QlMkMlMjJoJTIyJTNBJTdCJTIydiUyMiUzQSUyMnRydWUlMjIlMkMlMjJ0JTIyJTNBMC4wMTk2NDMlN0QlMkMlMjJpJTIyJTNBJTdCJTIydiUyMiUzQSUyMnNlc3Npb25TdG9yYWdlLWVuYWJsZWQlMkMlMjBsb2NhbFN0b3JhZ2UtZW5hYmxlZCUyMiUyQyUyMnQlMjIlM0EwLjA1MDEwMSU3RCUyQyUyMmolMjIlM0ElN0IlMjJ2JTIyJTNBJTIyMDExMDExMTEwMDAwMDAwMDEwMDAwMDExMTEwMDAwMDAwMDAwMDAxMDAwMTAwMDAxMDExMTExMSUyMiUyQyUyMnQlMjIlM0ExNi45ODQlMkMlMjJhdCUyMiUzQTAuNDg1MzQlN0QlMkMlMjJrJTIyJTNBJTdCJTIydiUyMiUzQSUyMiUyMiUyQyUyMnQlMjIlM0EwLjAxMzI0NiU3RCUyQyUyMmwlMjIlM0ElN0IlMjJ2JTIyJTNBJTIyTW96aWxsYSUyRjUuMCUyMChNYWNpbnRvc2glM0IlMjBJbnRlbCUyME1hYyUyME9TJTIwWCklMjBBcHBsZVdlYktpdCUyRjUzOC4xJTIwKEtIVE1MJTJDJTIwbGlrZSUyMEdlY2tvKSUyMFBoYW50b21KUyUyRjIuMS4xJTIwU2FmYXJpJTJGNTM4LjElMjIlMkMlMjJ0JTIyJTNBMC4wMzIzOTklN0QlMkMlMjJtJTIyJTNBJTdCJTIydiUyMiUzQSUyMiUyMiUyQyUyMnQlMjIlM0EwLjA0NTA4OSU3RCUyQyUyMm4lMjIlM0ElN0IlMjJ2JTIyJTNBJTIyZmFsc2UlMjIlMkMlMjJ0JTIyJTNBMjAuNDI0JTJDJTIyYXQlMjIlM0EwLjExMjExJTdEJTJDJTIybyUyMiUzQSU3QiUyMnYlMjIlM0ElMjIxOTYzOGE0NzQyOGFlMDk4MmUxZTk1YzhkN2UwMjhhOSUyMiUyQyUyMnQlMjIlM0ExMi4wMjUlN0QlN0QlMkMlMjJiJTIyJTNBJTdCJTIyYSUyMiUzQSUyMiUyMiUyQyUyMmIlMjIlM0ElMjJodHRwJTNBJTJGJTJGMTI3LjAuMC4xJTNBNTM4OTIlMkZwYXltZW50X21ldGhvZHMlMjIlMkMlMjJjJTIyJTNBJTIyRXBpY2VudGVyJTIyJTJDJTIyZCUyMiUzQSUyMjM1YTRiZmM0LTg5ZTItNDQ1NC05MmI1LThlMWYxM2Q2ZjE2ZCUyMiUyQyUyMmUlMjIlM0ElMjJlOTZhM2EwNi03NjQ3LTRhZTItODY0MC01MTk5YWNiYmM0MWMlMjIlMkMlMjJmJTIyJTNBZmFsc2UlMkMlMjJnJTIyJTNBdHJ1ZSUyQyUyMmglMjIlM0FmYWxzZSUyQyUyMmklMjIlM0ElNUIlMjJiZ0NvbG9yJTIyJTJDJTIyYWxpbmtDb2xvciUyMiUyQyUyMndpZHRoJTIyJTJDJTIycGx1Z2lucyUyMiUyQyUyMmhlaWdodCUyMiUyQyUyMmZnQ29sb3IlMjIlMkMlMjJ2bGlua0NvbG9yJTIyJTJDJTIyYWxsJTIyJTJDJTIyZW1iZWRzJTIyJTJDJTIyc2NyaXB0cyUyMiUyQyUyMmNvbXBhdE1vZGUlMjIlMkMlMjJhY3RpdmVFbGVtZW50JTIyJTJDJTIyZGlyJTIyJTJDJTIyZGVzaWduTW9kZSUyMiUyQyUyMmxpbmtDb2xvciUyMiUyQyUyMmRvY3VtZW50RWxlbWVudCUyMiUyQyUyMnByZWZlcnJlZFN0eWxlc2hlZXRTZXQlMjIlMkMlMjJ4bWxWZXJzaW9uJTIyJTJDJTIyaGlkZGVuJTIyJTJDJTIyd2Via2l0RnVsbHNjcmVlbkVsZW1lbnQlMjIlMkMlMjJsb2NhdGlvbiUyMiUyQyUyMnhtbEVuY29kaW5nJTIyJTJDJTIyaW1wbGVtZW50YXRpb24lMjIlMkMlMjJ3ZWJraXRGdWxsc2NyZWVuRW5hYmxlZCUyMiUyQyUyMnJlZmVycmVyJTIyJTJDJTIyd2Via2l0RnVsbFNjcmVlbktleWJvYXJkSW5wdXRBbGxvd2VkJTIyJTJDJTIyaGVhZCUyMiUyQyUyMmRlZmF1bHRWaWV3JTIyJTJDJTIyZG9tYWluJTIyJTJDJTIybGFzdE1vZGlmaWVkJTIyJTJDJTIyYW5jaG9ycyUyMiUyQyUyMmFwcGxldHMlMjIlMkMlMjJ3ZWJraXRDdXJyZW50RnVsbFNjcmVlbkVsZW1lbnQlMjIlMkMlMjJkb2N0eXBlJTIyJTJDJTIyaW1hZ2VzJTIyJTJDJTIydmlzaWJpbGl0eVN0YXRlJTIyJTJDJTIyZm9ybXMlMjIlMkMlMjJjaGFyc2V0JTIyJTJDJTIyc3R5bGVTaGVldHMlMjIlMkMlMjJVUkwlMjIlMkMlMjJyZWFkeVN0YXRlJTIyJTJDJTIyc2VsZWN0ZWRTdHlsZXNoZWV0U2V0JTIyJTJDJTIyY2hhcmFjdGVyU2V0JTIyJTJDJTIydGl0bGUlMjIlMkMlMjJjb29raWUlMjIlMkMlMjJ3ZWJraXRJc0Z1bGxTY3JlZW4lMjIlMkMlMjJib2R5JTIyJTJDJTIyaW5wdXRFbmNvZGluZyUyMiUyQyUyMnhtbFN0YW5kYWxvbmUlMjIlMkMlMjJkb2N1bWVudFVSSSUyMiUyQyUyMmRlZmF1bHRDaGFyc2V0JTIyJTJDJTIybGlua3MlMjIlMkMlMjJjdXJyZW50U2NyaXB0JTIyJTJDJTIycHJldmlvdXNTaWJsaW5nJTIyJTJDJTIycGFyZW50Tm9kZSUyMiUyQyUyMmxhc3RDaGlsZCUyMiUyQyUyMmJhc2VVUkklMjIlMkMlMjJmaXJzdENoaWxkJTIyJTJDJTIybm9kZVZhbHVlJTIyJTJDJTIydGV4dENvbnRlbnQlMjIlMkMlMjJub2RlVHlwZSUyMiUyQyUyMm5vZGVOYW1lJTIyJTJDJTIycHJlZml4JTIyJTJDJTIyY2hpbGROb2RlcyUyMiUyQyUyMm5leHRTaWJsaW5nJTIyJTJDJTIyb3duZXJEb2N1bWVudCUyMiUyQyUyMm5hbWVzcGFjZVVSSSUyMiUyQyUyMmxvY2FsTmFtZSUyMiUyQyUyMnBhcmVudEVsZW1lbnQlMjIlNUQlMkMlMjJqJTIyJTNBJTVCJTIyY29va2llRW5hYmxlZCUyMiUyQyUyMmxhbmd1YWdlJTIyJTJDJTIycHJvZHVjdFN1YiUyMiUyQyUyMm1pbWVUeXBlcyUyMiUyQyUyMnByb2R1Y3QlMjIlMkMlMjJhcHBDb2RlTmFtZSUyMiUyQyUyMnZlbmRvclN1YiUyMiUyQyUyMnZlbmRvciUyMiUyQyUyMnBsYXRmb3JtJTIyJTJDJTIyYXBwTmFtZSUyMiUyQyUyMmFwcFZlcnNpb24lMjIlMkMlMjJ1c2VyQWdlbnQlMjIlMkMlMjJwbHVnaW5zJTIyJTJDJTIyb25MaW5lJTIyJTVEJTJDJTIybiUyMiUzQTIuNTQ2NzA0MDAwMDAwMjMzJTdEJTdE
-    headers:
-      Referer:
-      - https://m.stripe.network/inner.html
-      Origin:
-      - https://m.stripe.network
-      User-Agent:
-      - Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/538.1 (KHTML, like Gecko)
-        PhantomJS/2.1.1 Safari/538.1
-      Content-Type:
-      - application/xml
-      Accept:
-      - "*/*"
-      Content-Length:
-      - '4404'
-      Connection:
-      - Keep-Alive
-      Accept-Language:
-      - en-US,*
-      Host:
-      - m.stripe.com
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Wed, 29 Nov 2017 01:57:31 GMT
-      Content-Type:
-      - text/plain
-      Transfer-Encoding:
-      - chunked
-      Connection:
-      - close
-      Vary:
-      - Accept-Encoding
-      Set-Cookie:
-      - m=392c7235-1b69-4b72-a6fd-7bf1a86f99ec; Expires=Sat, 27 Nov 2027 01:57:31
-        GMT; Domain=m.stripe.com; Secure; HTTPOnly
-      Access-Control-Allow-Origin:
-      - https://m.stripe.network
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Access-Control-Allow-Headers:
-      - Content-Type
-      Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains; preload
-      Content-Encoding:
-      - gzip
-    body:
-      encoding: UTF-8
-      string: 392c7235-1b69-4b72-a6fd-7bf1a86f99ec
-    http_version: 
-  recorded_at: Wed, 29 Nov 2017 01:57:31 GMT
-- request:
-    method: post
-    uri: https://m.stripe.com/4
-    body:
-      encoding: UTF-8
-      string: JTdCJTIydjIlMjIlM0ExJTJDJTIyaWQlMjIlM0ElMjJjM2YzOTM1ZWQwYTI0YTQyMmMzNTNiNTAxNzg2MmIzZCUyMiUyQyUyMnQlMjIlM0ExMy41NDQlMkMlMjJ0YWclMjIlM0ElMjI0LjUuMTclMjIlMkMlMjJzcmMlMjIlM0ElMjJqcyUyMiUyQyUyMmElMjIlM0FudWxsJTJDJTIyYiUyMiUzQSU3QiUyMmElMjIlM0ElMjJodHRwJTNBJTJGJTJGMTI3LjAuMC4xJTNBNTM4OTIlMkZwYXltZW50X21ldGhvZHMlMjIlMkMlMjJiJTIyJTNBJTIyaHR0cCUzQSUyRiUyRjEyNy4wLjAuMSUzQTUzODkyJTJGYmFua19hY2NvdW50cyUyRjElMkZlZGl0JTIyJTJDJTIyYyUyMiUzQSUyMkVwaWNlbnRlciUyMiUyQyUyMmQlMjIlM0ElMjIzNWE0YmZjNC04OWUyLTQ0NTQtOTJiNS04ZTFmMTNkNmYxNmQlMjIlMkMlMjJlJTIyJTNBJTIyZTk2YTNhMDYtNzY0Ny00YWUyLTg2NDAtNTE5OWFjYmJjNDFjJTIyJTJDJTIyZiUyMiUzQWZhbHNlJTJDJTIyZyUyMiUzQXRydWUlMkMlMjJoJTIyJTNBZmFsc2UlMkMlMjJpJTIyJTNBJTVCJTIyYmdDb2xvciUyMiUyQyUyMmFsaW5rQ29sb3IlMjIlMkMlMjJ3aWR0aCUyMiUyQyUyMnBsdWdpbnMlMjIlMkMlMjJoZWlnaHQlMjIlMkMlMjJmZ0NvbG9yJTIyJTJDJTIydmxpbmtDb2xvciUyMiUyQyUyMmFsbCUyMiUyQyUyMmVtYmVkcyUyMiUyQyUyMnNjcmlwdHMlMjIlMkMlMjJjb21wYXRNb2RlJTIyJTJDJTIyYWN0aXZlRWxlbWVudCUyMiUyQyUyMmRpciUyMiUyQyUyMmRlc2lnbk1vZGUlMjIlMkMlMjJsaW5rQ29sb3IlMjIlMkMlMjJkb2N1bWVudEVsZW1lbnQlMjIlMkMlMjJwcmVmZXJyZWRTdHlsZXNoZWV0U2V0JTIyJTJDJTIyeG1sVmVyc2lvbiUyMiUyQyUyMmhpZGRlbiUyMiUyQyUyMndlYmtpdEZ1bGxzY3JlZW5FbGVtZW50JTIyJTJDJTIybG9jYXRpb24lMjIlMkMlMjJ4bWxFbmNvZGluZyUyMiUyQyUyMmltcGxlbWVudGF0aW9uJTIyJTJDJTIyd2Via2l0RnVsbHNjcmVlbkVuYWJsZWQlMjIlMkMlMjJyZWZlcnJlciUyMiUyQyUyMndlYmtpdEZ1bGxTY3JlZW5LZXlib2FyZElucHV0QWxsb3dlZCUyMiUyQyUyMmhlYWQlMjIlMkMlMjJkZWZhdWx0VmlldyUyMiUyQyUyMmRvbWFpbiUyMiUyQyUyMmxhc3RNb2RpZmllZCUyMiUyQyUyMmFuY2hvcnMlMjIlMkMlMjJhcHBsZXRzJTIyJTJDJTIyd2Via2l0Q3VycmVudEZ1bGxTY3JlZW5FbGVtZW50JTIyJTJDJTIyZG9jdHlwZSUyMiUyQyUyMmltYWdlcyUyMiUyQyUyMnZpc2liaWxpdHlTdGF0ZSUyMiUyQyUyMmZvcm1zJTIyJTJDJTIyY2hhcnNldCUyMiUyQyUyMnN0eWxlU2hlZXRzJTIyJTJDJTIyVVJMJTIyJTJDJTIycmVhZHlTdGF0ZSUyMiUyQyUyMnNlbGVjdGVkU3R5bGVzaGVldFNldCUyMiUyQyUyMmNoYXJhY3RlclNldCUyMiUyQyUyMnRpdGxlJTIyJTJDJTIyY29va2llJTIyJTJDJTIyd2Via2l0SXNGdWxsU2NyZWVuJTIyJTJDJTIyYm9keSUyMiUyQyUyMmlucHV0RW5jb2RpbmclMjIlMkMlMjJ4bWxTdGFuZGFsb25lJTIyJTJDJTIyZG9jdW1lbnRVUkklMjIlMkMlMjJkZWZhdWx0Q2hhcnNldCUyMiUyQyUyMmxpbmtzJTIyJTJDJTIyY3VycmVudFNjcmlwdCUyMiUyQyUyMnByZXZpb3VzU2libGluZyUyMiUyQyUyMnBhcmVudE5vZGUlMjIlMkMlMjJsYXN0Q2hpbGQlMjIlMkMlMjJiYXNlVVJJJTIyJTJDJTIyZmlyc3RDaGlsZCUyMiUyQyUyMm5vZGVWYWx1ZSUyMiUyQyUyMnRleHRDb250ZW50JTIyJTJDJTIybm9kZVR5cGUlMjIlMkMlMjJub2RlTmFtZSUyMiUyQyUyMnByZWZpeCUyMiUyQyUyMmNoaWxkTm9kZXMlMjIlMkMlMjJuZXh0U2libGluZyUyMiUyQyUyMm93bmVyRG9jdW1lbnQlMjIlMkMlMjJuYW1lc3BhY2VVUkklMjIlMkMlMjJsb2NhbE5hbWUlMjIlMkMlMjJwYXJlbnRFbGVtZW50JTIyJTVEJTJDJTIyaiUyMiUzQSU1QiUyMmNvb2tpZUVuYWJsZWQlMjIlMkMlMjJsYW5ndWFnZSUyMiUyQyUyMnByb2R1Y3RTdWIlMjIlMkMlMjJtaW1lVHlwZXMlMjIlMkMlMjJwcm9kdWN0JTIyJTJDJTIyYXBwQ29kZU5hbWUlMjIlMkMlMjJ2ZW5kb3JTdWIlMjIlMkMlMjJ2ZW5kb3IlMjIlMkMlMjJwbGF0Zm9ybSUyMiUyQyUyMmFwcE5hbWUlMjIlMkMlMjJhcHBWZXJzaW9uJTIyJTJDJTIydXNlckFnZW50JTIyJTJDJTIycGx1Z2lucyUyMiUyQyUyMm9uTGluZSUyMiU1RCUyQyUyMm4lMjIlM0EyLjEyMDczOTAwMDAwMDQyNjclN0QlN0Q=
-    headers:
-      Referer:
-      - https://m.stripe.network/inner.html
-      Origin:
-      - https://m.stripe.network
-      User-Agent:
-      - Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/538.1 (KHTML, like Gecko)
-        PhantomJS/2.1.1 Safari/538.1
-      Content-Type:
-      - application/xml
-      Accept:
-      - "*/*"
-      Content-Length:
-      - '2884'
-      Cookie:
-      - m=392c7235-1b69-4b72-a6fd-7bf1a86f99ec
-      Connection:
-      - Keep-Alive
-      Accept-Language:
-      - en-US,*
-      Host:
-      - m.stripe.com
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Wed, 29 Nov 2017 01:57:31 GMT
-      Content-Type:
-      - text/plain
-      Transfer-Encoding:
-      - chunked
-      Connection:
-      - close
-      Vary:
-      - Accept-Encoding
-      Set-Cookie:
-      - m=392c7235-1b69-4b72-a6fd-7bf1a86f99ec; Expires=Sat, 27 Nov 2027 01:57:31
-        GMT; Domain=m.stripe.com; Secure; HTTPOnly
-      Access-Control-Allow-Origin:
-      - https://m.stripe.network
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Access-Control-Allow-Headers:
-      - Content-Type
-      Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains; preload
-      Content-Encoding:
-      - gzip
-    body:
-      encoding: UTF-8
-      string: 392c7235-1b69-4b72-a6fd-7bf1a86f99ec
-    http_version: 
-  recorded_at: Wed, 29 Nov 2017 01:57:31 GMT
+  recorded_at: Tue, 09 Jan 2018 01:55:14 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_Br2vOI3WY0Lgua
+    uri: https://api.stripe.com/v1/customers/cus_C6P8w6hNbzIYEw
     body:
       encoding: US-ASCII
       string: ''
@@ -543,8 +419,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
-        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017;
+        root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Host:
       - api.stripe.com
   response:
@@ -555,7 +431,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 29 Nov 2017 01:57:31 GMT
+      - Tue, 09 Jan 2018 01:55:15 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -575,7 +451,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_EOqmvHexYsoI5p
+      - req_H85q2IN4d7xZNM
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -584,21 +460,21 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "cus_Br2vOI3WY0Lgua",
+          "id": "cus_C6P8w6hNbzIYEw",
           "object": "customer",
           "account_balance": 0,
           "bank_accounts": {
             "object": "list",
             "data": [
               {
-                "id": "ba_Br2vITmUVQlVj1",
+                "id": "ba_C6P8tf18mUIWgD",
                 "object": "bank_account",
                 "account_holder_name": null,
                 "account_holder_type": null,
                 "bank_name": "STRIPE TEST BANK",
                 "country": "US",
                 "currency": "usd",
-                "customer": "cus_Br2vOI3WY0Lgua",
+                "customer": "cus_C6P8w6hNbzIYEw",
                 "fingerprint": "qw2YdYDmIJUuNi9w",
                 "last4": "6789",
                 "metadata": {},
@@ -609,12 +485,12 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_Br2vOI3WY0Lgua/bank_accounts"
+            "url": "/v1/customers/cus_C6P8w6hNbzIYEw/bank_accounts"
           },
-          "created": 1511920649,
+          "created": 1515462913,
           "currency": null,
-          "default_bank_account": "ba_Br2vITmUVQlVj1",
-          "default_source": "ba_Br2vITmUVQlVj1",
+          "default_bank_account": "ba_C6P8tf18mUIWgD",
+          "default_source": "ba_C6P8tf18mUIWgD",
           "delinquent": false,
           "description": null,
           "discount": null,
@@ -626,14 +502,14 @@ http_interactions:
             "object": "list",
             "data": [
               {
-                "id": "ba_Br2vITmUVQlVj1",
+                "id": "ba_C6P8tf18mUIWgD",
                 "object": "bank_account",
                 "account_holder_name": null,
                 "account_holder_type": null,
                 "bank_name": "STRIPE TEST BANK",
                 "country": "US",
                 "currency": "usd",
-                "customer": "cus_Br2vOI3WY0Lgua",
+                "customer": "cus_C6P8w6hNbzIYEw",
                 "fingerprint": "qw2YdYDmIJUuNi9w",
                 "last4": "6789",
                 "metadata": {},
@@ -644,22 +520,22 @@ http_interactions:
             ],
             "has_more": false,
             "total_count": 1,
-            "url": "/v1/customers/cus_Br2vOI3WY0Lgua/sources"
+            "url": "/v1/customers/cus_C6P8w6hNbzIYEw/sources"
           },
           "subscriptions": {
             "object": "list",
             "data": [],
             "has_more": false,
             "total_count": 0,
-            "url": "/v1/customers/cus_Br2vOI3WY0Lgua/subscriptions"
+            "url": "/v1/customers/cus_C6P8w6hNbzIYEw/subscriptions"
           },
           "default_source_type": "bank_account"
         }
     http_version: 
-  recorded_at: Wed, 29 Nov 2017 01:57:31 GMT
+  recorded_at: Tue, 09 Jan 2018 01:55:15 GMT
 - request:
     method: get
-    uri: https://api.stripe.com/v1/customers/cus_Br2vOI3WY0Lgua/bank_accounts/ba_Br2vITmUVQlVj1
+    uri: https://api.stripe.com/v1/customers/cus_C6P8w6hNbzIYEw/bank_accounts/ba_C6P8tf18mUIWgD
     body:
       encoding: US-ASCII
       string: ''
@@ -678,8 +554,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
-        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017;
+        root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Host:
       - api.stripe.com
   response:
@@ -690,7 +566,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 29 Nov 2017 01:57:31 GMT
+      - Tue, 09 Jan 2018 01:55:15 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -710,7 +586,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_8aIJDfUGD9RK4w
+      - req_zGufVYIs25J3Ml
       Stripe-Version:
       - '2016-02-03'
       Strict-Transport-Security:
@@ -719,14 +595,14 @@ http_interactions:
       encoding: UTF-8
       string: |
         {
-          "id": "ba_Br2vITmUVQlVj1",
+          "id": "ba_C6P8tf18mUIWgD",
           "object": "bank_account",
           "account_holder_name": null,
           "account_holder_type": null,
           "bank_name": "STRIPE TEST BANK",
           "country": "US",
           "currency": "usd",
-          "customer": "cus_Br2vOI3WY0Lgua",
+          "customer": "cus_C6P8w6hNbzIYEw",
           "fingerprint": "qw2YdYDmIJUuNi9w",
           "last4": "6789",
           "metadata": {},
@@ -735,10 +611,10 @@ http_interactions:
           "name": null
         }
     http_version: 
-  recorded_at: Wed, 29 Nov 2017 01:57:31 GMT
+  recorded_at: Tue, 09 Jan 2018 01:55:15 GMT
 - request:
     method: post
-    uri: https://api.stripe.com/v1/customers/cus_Br2vOI3WY0Lgua/sources/ba_Br2vITmUVQlVj1/verify
+    uri: https://api.stripe.com/v1/customers/cus_C6P8w6hNbzIYEw/sources/ba_C6P8tf18mUIWgD/verify
     body:
       encoding: UTF-8
       string: amounts[]=16&amounts[]=78
@@ -757,8 +633,8 @@ http_interactions:
       - '2016-02-03'
       X-Stripe-Client-User-Agent:
       - '{"bindings_version":"1.58.0","lang":"ruby","lang_version":"2.4.1 p111 (2017-03-22)","platform":"x86_64-darwin15","engine":"ruby","publisher":"stripe","uname":"Darwin
-        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Oct  2 22:20:08 PDT 2017;
-        root:xnu-3248.71.4~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
+        server-pdx 15.6.0 Darwin Kernel Version 15.6.0: Mon Nov 13 21:58:35 PST 2017;
+        root:xnu-3248.72.11~1/RELEASE_X86_64 x86_64","hostname":"server-pdx"}'
       Content-Length:
       - '25'
       Host:
@@ -771,7 +647,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Wed, 29 Nov 2017 01:57:31 GMT
+      - Tue, 09 Jan 2018 01:55:15 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -791,7 +667,7 @@ http_interactions:
       Cache-Control:
       - no-cache, no-store
       Request-Id:
-      - req_OmTbdVnGtITbvy
+      - req_qVWXqi4Xa6bAK0
       Stripe-Version:
       - '2016-02-03'
     body:
@@ -804,68 +680,5 @@ http_interactions:
           }
         }
     http_version: 
-  recorded_at: Wed, 29 Nov 2017 01:57:31 GMT
-- request:
-    method: post
-    uri: https://m.stripe.com/4
-    body:
-      encoding: UTF-8
-      string: JTdCJTIydjIlMjIlM0ExJTJDJTIyaWQlMjIlM0ElMjJjM2YzOTM1ZWQwYTI0YTQyMmMzNTNiNTAxNzg2MmIzZCUyMiUyQyUyMnQlMjIlM0ExMi43ODUlMkMlMjJ0YWclMjIlM0ElMjI0LjUuMTclMjIlMkMlMjJzcmMlMjIlM0ElMjJqcyUyMiUyQyUyMmElMjIlM0FudWxsJTJDJTIyYiUyMiUzQSU3QiUyMmElMjIlM0ElMjJodHRwJTNBJTJGJTJGMTI3LjAuMC4xJTNBNTM4OTIlMkZiYW5rX2FjY291bnRzJTJGMSUyRmVkaXQlMjIlMkMlMjJiJTIyJTNBJTIyaHR0cCUzQSUyRiUyRjEyNy4wLjAuMSUzQTUzODkyJTJGYmFua19hY2NvdW50cyUyRjElMjIlMkMlMjJjJTIyJTNBJTIyRXBpY2VudGVyJTIyJTJDJTIyZCUyMiUzQSUyMjM1YTRiZmM0LTg5ZTItNDQ1NC05MmI1LThlMWYxM2Q2ZjE2ZCUyMiUyQyUyMmUlMjIlM0ElMjJlOTZhM2EwNi03NjQ3LTRhZTItODY0MC01MTk5YWNiYmM0MWMlMjIlMkMlMjJmJTIyJTNBZmFsc2UlMkMlMjJnJTIyJTNBdHJ1ZSUyQyUyMmglMjIlM0FmYWxzZSUyQyUyMmklMjIlM0ElNUIlMjJiZ0NvbG9yJTIyJTJDJTIyYWxpbmtDb2xvciUyMiUyQyUyMndpZHRoJTIyJTJDJTIycGx1Z2lucyUyMiUyQyUyMmhlaWdodCUyMiUyQyUyMmZnQ29sb3IlMjIlMkMlMjJ2bGlua0NvbG9yJTIyJTJDJTIyYWxsJTIyJTJDJTIyZW1iZWRzJTIyJTJDJTIyc2NyaXB0cyUyMiUyQyUyMmNvbXBhdE1vZGUlMjIlMkMlMjJhY3RpdmVFbGVtZW50JTIyJTJDJTIyZGlyJTIyJTJDJTIyZGVzaWduTW9kZSUyMiUyQyUyMmxpbmtDb2xvciUyMiUyQyUyMmRvY3VtZW50RWxlbWVudCUyMiUyQyUyMnByZWZlcnJlZFN0eWxlc2hlZXRTZXQlMjIlMkMlMjJ4bWxWZXJzaW9uJTIyJTJDJTIyaGlkZGVuJTIyJTJDJTIyd2Via2l0RnVsbHNjcmVlbkVsZW1lbnQlMjIlMkMlMjJsb2NhdGlvbiUyMiUyQyUyMnhtbEVuY29kaW5nJTIyJTJDJTIyaW1wbGVtZW50YXRpb24lMjIlMkMlMjJ3ZWJraXRGdWxsc2NyZWVuRW5hYmxlZCUyMiUyQyUyMnJlZmVycmVyJTIyJTJDJTIyd2Via2l0RnVsbFNjcmVlbktleWJvYXJkSW5wdXRBbGxvd2VkJTIyJTJDJTIyaGVhZCUyMiUyQyUyMmRlZmF1bHRWaWV3JTIyJTJDJTIyZG9tYWluJTIyJTJDJTIybGFzdE1vZGlmaWVkJTIyJTJDJTIyYW5jaG9ycyUyMiUyQyUyMmFwcGxldHMlMjIlMkMlMjJ3ZWJraXRDdXJyZW50RnVsbFNjcmVlbkVsZW1lbnQlMjIlMkMlMjJkb2N0eXBlJTIyJTJDJTIyaW1hZ2VzJTIyJTJDJTIydmlzaWJpbGl0eVN0YXRlJTIyJTJDJTIyZm9ybXMlMjIlMkMlMjJjaGFyc2V0JTIyJTJDJTIyc3R5bGVTaGVldHMlMjIlMkMlMjJVUkwlMjIlMkMlMjJyZWFkeVN0YXRlJTIyJTJDJTIyc2VsZWN0ZWRTdHlsZXNoZWV0U2V0JTIyJTJDJTIyY2hhcmFjdGVyU2V0JTIyJTJDJTIydGl0bGUlMjIlMkMlMjJjb29raWUlMjIlMkMlMjJ3ZWJraXRJc0Z1bGxTY3JlZW4lMjIlMkMlMjJib2R5JTIyJTJDJTIyaW5wdXRFbmNvZGluZyUyMiUyQyUyMnhtbFN0YW5kYWxvbmUlMjIlMkMlMjJkb2N1bWVudFVSSSUyMiUyQyUyMmRlZmF1bHRDaGFyc2V0JTIyJTJDJTIybGlua3MlMjIlMkMlMjJjdXJyZW50U2NyaXB0JTIyJTJDJTIycHJldmlvdXNTaWJsaW5nJTIyJTJDJTIycGFyZW50Tm9kZSUyMiUyQyUyMmxhc3RDaGlsZCUyMiUyQyUyMmJhc2VVUkklMjIlMkMlMjJmaXJzdENoaWxkJTIyJTJDJTIybm9kZVZhbHVlJTIyJTJDJTIydGV4dENvbnRlbnQlMjIlMkMlMjJub2RlVHlwZSUyMiUyQyUyMm5vZGVOYW1lJTIyJTJDJTIycHJlZml4JTIyJTJDJTIyY2hpbGROb2RlcyUyMiUyQyUyMm5leHRTaWJsaW5nJTIyJTJDJTIyb3duZXJEb2N1bWVudCUyMiUyQyUyMm5hbWVzcGFjZVVSSSUyMiUyQyUyMmxvY2FsTmFtZSUyMiUyQyUyMnBhcmVudEVsZW1lbnQlMjIlNUQlMkMlMjJqJTIyJTNBJTVCJTIyY29va2llRW5hYmxlZCUyMiUyQyUyMmxhbmd1YWdlJTIyJTJDJTIycHJvZHVjdFN1YiUyMiUyQyUyMm1pbWVUeXBlcyUyMiUyQyUyMnByb2R1Y3QlMjIlMkMlMjJhcHBDb2RlTmFtZSUyMiUyQyUyMnZlbmRvclN1YiUyMiUyQyUyMnZlbmRvciUyMiUyQyUyMnBsYXRmb3JtJTIyJTJDJTIyYXBwTmFtZSUyMiUyQyUyMmFwcFZlcnNpb24lMjIlMkMlMjJ1c2VyQWdlbnQlMjIlMkMlMjJwbHVnaW5zJTIyJTJDJTIyb25MaW5lJTIyJTVEJTJDJTIybiUyMiUzQTIuMjY4NjY5MDAwMDAxMTExJTdEJTdE
-    headers:
-      Referer:
-      - https://m.stripe.network/inner.html
-      Origin:
-      - https://m.stripe.network
-      User-Agent:
-      - Mozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/538.1 (KHTML, like Gecko)
-        PhantomJS/2.1.1 Safari/538.1
-      Content-Type:
-      - application/xml
-      Accept:
-      - "*/*"
-      Content-Length:
-      - '2884'
-      Cookie:
-      - m=392c7235-1b69-4b72-a6fd-7bf1a86f99ec
-      Connection:
-      - Keep-Alive
-      Accept-Language:
-      - en-US,*
-      Host:
-      - m.stripe.com
-  response:
-    status:
-      code: 200
-      message: OK
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Wed, 29 Nov 2017 01:57:32 GMT
-      Content-Type:
-      - text/plain
-      Transfer-Encoding:
-      - chunked
-      Connection:
-      - close
-      Vary:
-      - Accept-Encoding
-      Set-Cookie:
-      - m=392c7235-1b69-4b72-a6fd-7bf1a86f99ec; Expires=Sat, 27 Nov 2027 01:57:32
-        GMT; Domain=m.stripe.com; Secure; HTTPOnly
-      Access-Control-Allow-Origin:
-      - https://m.stripe.network
-      Access-Control-Allow-Credentials:
-      - 'true'
-      Access-Control-Allow-Headers:
-      - Content-Type
-      Strict-Transport-Security:
-      - max-age=31556926; includeSubDomains; preload
-      Content-Encoding:
-      - gzip
-    body:
-      encoding: UTF-8
-      string: 392c7235-1b69-4b72-a6fd-7bf1a86f99ec
-    http_version: 
-  recorded_at: Wed, 29 Nov 2017 01:57:32 GMT
-recorded_with: VCR 3.0.3
+  recorded_at: Tue, 09 Jan 2018 01:55:15 GMT
+recorded_with: VCR 4.0.0
