@@ -367,12 +367,12 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    stripe (1.58.0)
-      rest-client (>= 1.4, < 4.0)
-    stripe-ruby-mock (2.4.1)
+    stripe (3.9.1)
+      faraday (~> 0.10)
+    stripe-ruby-mock (2.5.0)
       dante (>= 0.2.0)
       multi_json (~> 1.0)
-      stripe (>= 1.31.0, <= 1.58.0)
+      stripe (>= 2.0.3)
     term-ansicolor (1.6.0)
       tins (~> 1.0)
     textacular (5.0.1)
@@ -466,7 +466,7 @@ DEPENDENCIES
   simplecov
   spring
   stripe
-  stripe-ruby-mock (~> 2.4.1)
+  stripe-ruby-mock
   textacular
   uglifier
   validate_url
