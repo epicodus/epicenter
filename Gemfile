@@ -3,7 +3,7 @@ ruby '2.4.1'
 source 'https://rubygems.org'
 
 gem 'rails', '~> 5.1.0'
-gem 'pg'
+gem 'pg', '~> 0.21.0'
 gem 'uglifier'
 gem 'jquery-rails'
 gem 'coffee-script'
