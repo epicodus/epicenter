@@ -177,7 +177,11 @@ class Student < User
   end
 
   def make_upfront_payment
-    payments.create(amount: plan.upfront_amount, payment_method: primary_payment_method, category: 'upfront')
+    if plan.upfront_amount == 690000 && Date.today >= Date.parse('2018-01-08') && Date.today <= Date.parse('2018-01-29')
+      payments.create(amount: 680000, payment_method: primary_payment_method, category: 'upfront')
+    else
+      payments.create(amount: plan.upfront_amount, payment_method: primary_payment_method, category: 'upfront')
+    end
   end
 
   def class_in_session?
