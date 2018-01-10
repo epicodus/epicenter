@@ -1,0 +1,58 @@
+---
+http_interactions:
+- request:
+    method: put
+    uri: https://app.close.io/api/v1/lead/lead_L125JRKO4Kh8GJMh7Ah9ggVsrPAzmVEp598taaQBzVe/
+    body:
+      encoding: UTF-8
+      string: '{"addresses":[{"label":"mailing","address_1":"400 SW 6th Ave","city":"Portland","state":"OR","zipcode":"97204","country":"US"}],"custom.Demographics
+        - Birth date":"2000-01-01","custom.Demographics - Disability":"No","custom.Demographics
+        - Veteran":"No","custom.Demographics - Education":"GED","custom.Demographics
+        - CS Degree":"No","custom.Demographics - Shirt size":"S"}'
+    headers:
+      Accept:
+      - application/json
+      User-Agent:
+      - closeio-ruby-gem/v3.0.0
+      X-Tz-Offset:
+      - '0'
+      Authorization:
+      - Basic ZDRjOTYwOTdjODY4YjU2NzIwMzU0NmU3MjIwZWNkMjM0MWYwMDhmMjk0M2FjZWRkYzUyMjMyMmQ6
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 400
+      message: Bad Request
+    headers:
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 09 Jan 2018 20:58:18 GMT
+      Set-Cookie:
+      - session=; Expires=Thu, 01-Jan-1970 00:00:00 GMT; Max-Age=0; Path=/
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Vary:
+      - Accept
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Rate-Limit-Limit:
+      - '320'
+      X-Rate-Limit-Remaining:
+      - '319'
+      X-Rate-Limit-Reset:
+      - '7.710528'
+      Content-Length:
+      - '122'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"errors": [], "field-errors": {"custom": "Duplicate keys: \"Demographics
+        - Birth Date\", \"Demographics - Birth date\""}}'
+    http_version: 
+  recorded_at: Tue, 09 Jan 2018 20:58:18 GMT
+recorded_with: VCR 4.0.0
