@@ -19,6 +19,7 @@ feature 'Creating a credit card' do
       fill_in 'cvc_code', with: '123'
       fill_in 'zip_code', with: '11211'
       click_on 'Add credit card'
+      sleep 2 # waiting for js
       expect(page).to have_content 'Your credit card has been added.'
     end
 
