@@ -76,6 +76,13 @@ VCR.configure do |config|
   config.filter_sensitive_data('<ENROLLMENT_AGREEMENT_TEMPLATE_ID>') { ENV['ENROLLMENT_AGREEMENT_TEMPLATE_ID'] }
   config.filter_sensitive_data('<CLOSE_IO_API_KEY>') { ENV['CLOSE_IO_API_KEY'] }
   config.filter_sensitive_data('<ZAPIER_WEBHOOK_URL>') { ENV['ZAPIER_WEBHOOK_URL'] }
+  config.filter_sensitive_data('<PLAID_PUBLIC_KEY>') { ENV['PLAID_PUBLIC_KEY'] }
+  config.filter_sensitive_data('<PLAID_SECRET_KEY>') { ENV['PLAID_SECRET_KEY'] }
+  config.filter_sensitive_data('<PLAID_CLIENT_ID>') { ENV['PLAID_CLIENT_ID'] }
+  config.filter_sensitive_data('<PLAID_TEST_PUBLIC_TOKEN>') { ENV['PLAID_TEST_PUBLIC_TOKEN'] }
+  config.filter_sensitive_data('<PLAID_TEST_ACCOUNT_ID>') { ENV['PLAID_TEST_ACCOUNT_ID'] }
+  config.filter_sensitive_data('<PLAID_TEST_BANK_ACCOUNT_TOKEN>') { ENV['PLAID_TEST_BANK_ACCOUNT_TOKEN'] }
+  config.filter_sensitive_data('<PLAID_TEST_ACCESS_TOKEN>') { ENV['PLAID_TEST_ACCESS_TOKEN'] }
 end
 
 Shoulda::Matchers.configure do |config|

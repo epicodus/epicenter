@@ -1,15 +1,32 @@
+<script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
 <h1>Bank account information</h1>
+<div id="bank-account-options">
+  <p><strong>You have two options for adding and authenticating your bank account:</strong></p>
 
-<div class="row">
-  <div class="col-md-8">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <p>After entering your bank account information, two small test deposits will be made in your account to confirm that it is yours. When you receive those deposits, you can return to this site to start your payments.</p>
-        <p>Currently only US bank accounts are supported. For payments from foreign accounts, please contact us. Thanks!</p>
-        <p><%= image_tag "check.png" %></p>
+  <hr>
+  <p><strong>Option 1 - Authenticate by logging in (instant)</strong></p>
+  <p>Add and authenticate your bank account immediately by logging in with your online banking username and password. This works with most major banks. Epicodus does not receive or store your credentials. The relevant privacy policy is available <a href="https://plaid.com/legal/#privacy-policy" target="_blank">here</a>.</p>
+  <button id='add-bank-account-plaid-button'>Link bank account instantly</button>
 
-        <%= render 'form' %>
+  <hr>
+  <p><strong>Option 2 - Authenticate with test deposits (takes several days)</strong></p>
+  <p id="manual-bank-intro-text">The other option is to manually add your account info. After doing so, two small test deposits will be made in your account to confirm that it is yours. When you receive those deposits, you will need to return to this site to verify your account and start your payments.</p>
+  <button id='add-bank-account-manual-button'>Enter bank account info manually</button>
+  <div class="row hidden" id="manual-bank-account-form">
+    <div class="col-md-8">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <p>After entering your bank account information, two small test deposits will be made in your account to confirm that it is yours. When you receive those deposits, you can return to this site to start your payments.</p>
+          <p>Currently only US bank accounts are supported. For payments from foreign accounts, please contact us. Thanks!</p>
+          <p><%= image_tag "check.png" %></p>
+
+          <%= render 'form' %>
+        </div>
       </div>
     </div>
   </div>
+  <hr>
+</div>
+<div id="bank-account-please-wait" style="display:none;">
+  <p>Please wait...</p>
 </div>
