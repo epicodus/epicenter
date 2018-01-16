@@ -1,0 +1,45 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://sandbox.plaid.com/item/public_token/exchange
+    body:
+      encoding: UTF-8
+      string: '{"public_token":"<PLAID_TEST_PUBLIC_TOKEN>","client_id":"<PLAID_CLIENT_ID>","secret":"<PLAID_SECRET_KEY>"}'
+    headers:
+      User-Agent:
+      - Plaid Ruby v4.1.0
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 400
+      message: Bad Request
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Wed, 10 Jan 2018 20:49:58 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '277'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: |-
+        {
+          "display_message": null,
+          "error_code": "INVALID_PUBLIC_TOKEN",
+          "error_message": "provided public token is expired. Public tokens expire 30 minutes after creation at which point they can no longer be exchanged",
+          "error_type": "INVALID_INPUT",
+          "request_id": "uxSPo"
+        }
+    http_version: 
+  recorded_at: Wed, 10 Jan 2018 20:49:58 GMT
+recorded_with: VCR 4.0.0

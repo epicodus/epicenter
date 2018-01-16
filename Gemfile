@@ -35,6 +35,7 @@ gem 'paranoia'
 gem 'resque'
 gem 'active_model_serializers'
 gem 'rest-client'
+gem 'plaid'
 
 group :development do
   gem 'spring'

@@ -1,4 +1,4 @@
-feature 'Creating a bank account' do
+feature 'Creating a bank account manually' do
   scenario 'as a guest' do
     visit new_bank_account_path
     expect(page).to have_content 'need to sign in'
@@ -9,6 +9,7 @@ feature 'Creating a bank account' do
       student = FactoryBot.create(:student)
       login_as(student, scope: :student)
       visit new_bank_account_path
+      click_on 'Enter bank account info manually'
       fill_in 'Name on account', with: student.name
       select 'Individual'
     end
@@ -17,7 +18,6 @@ feature 'Creating a bank account' do
       fill_in 'Routing number', with: '110000000'
       fill_in 'Bank account number', with: '000123456789'
       click_on 'Verify bank account'
-      sleep 2 # NOTE: This should not be necessary!
       expect(page).to have_content '2-3 business days'
     end
 
@@ -72,6 +72,44 @@ feature 'Verifying a bank account' do
         fill_in 'Second deposit amount', with: 78
         click_on 'Confirm account'
         expect(page).to have_content 'The amounts provided do not match the amounts that were sent to the bank account.'
+      end
+    end
+  end
+end
+
+feature 'Creating a bank account via plaid' do
+  context 'as a student' do
+    let(:student) { FactoryBot.create(:student) }
+    before do
+      login_as(student, scope: :student)
+      visit new_bank_account_path
+      click_on 'Link bank account instantly'
+    end
+
+    scenario 'with valid information', :vcr, :js do
+      within_frame 'plaid-link-iframe-1' do
+        find('[data-institution="chase"]').click
+        fill_in 'username', with: 'user_good'
+        fill_in 'password', with: 'pass_good'
+        click_on 'Submit'
+        sleep 10 # wait for ajax iframe
+        all('[class="AccountItem"]').sample.click
+        click_on 'Continue'
+        expect(page).to have_content 'account has been confirmed'
+      end
+    end
+
+    scenario 'when the account already exists', :vcr, :js do
+      FactoryBot.create(:bank_account, student: student)
+      within_frame 'plaid-link-iframe-1' do
+        find('[data-institution="chase"]').click
+        fill_in 'username', with: 'user_good'
+        fill_in 'password', with: 'pass_good'
+        click_on 'Submit'
+        sleep 10 # wait for ajax iframe
+        all('[class="AccountItem"]').sample.click
+        click_on 'Continue'
+        expect(page).to have_content 'problem linking your bank account'
       end
     end
   end
