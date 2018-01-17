@@ -4,7 +4,7 @@
     <%= link_to 'Edit', edit_internship_path(internship) %>
   </h1>
 
-  <% if internship.other_internship_courses.any? %>
+  <% if internship.other_internship_courses.available_internship_courses.any? %>
     <div class="row">
       <div class="col-md-4">
         <div class="form-group">
@@ -13,7 +13,7 @@
             <%= f.hidden_field :company_id, value: @company.id %>
             <%= f.hidden_field :internship_id, value: internship.id %>
             <div class="input-group">
-              <%= f.collection_select :course_id, internship.other_internship_courses, :id, :description_and_office, { include_blank: 'Join an internship period' }, { class: 'form-control', required: true } %>
+              <%= f.collection_select :course_id, internship.other_internship_courses.available_internship_courses, :id, :description_and_office, { include_blank: 'Join an internship period' }, { class: 'form-control', required: true } %>
               <span class="input-group-btn">
                 <%= f.submit 'Join', class: 'btn btn-info' %>
               </span>

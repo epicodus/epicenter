@@ -7,3 +7,13 @@
     <%= f.submit 'Mark as active', class: 'btn btn-default' %>
   <% end %>
 <% end %>
+
+<%= form_for course, method: :put do |f| %>
+  <% if course.full? %>
+    <%= f.hidden_field :full, value: false %>
+    <%= f.submit 'Mark as available', class: 'btn btn-default btn-xs' %>
+  <% else %>
+    <%= f.hidden_field :full, value: true %>
+    <%= f.submit 'Mark as full', class: 'btn btn-default btn-xs' %>
+  <% end %>
+<% end %>

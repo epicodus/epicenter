@@ -314,6 +314,22 @@ describe Course do
     end
   end
 
+  describe '#full_internship_courses' do
+    it 'returns all courses that are full' do
+      full_course = FactoryBot.create(:course, full: true)
+      FactoryBot.create(:course, full: false)
+      expect(Course.full_internship_courses).to eq [full_course]
+    end
+  end
+
+  describe '#available_internship_courses' do
+    it 'returns all courses that are not full' do
+      available_course = FactoryBot.create(:course, full: false)
+      FactoryBot.create(:course, full: true)
+      expect(Course.available_internship_courses).to eq [available_course]
+    end
+  end
+
   describe '#courses_for' do
     it 'returns all courses for a certain office' do
       portland_course = FactoryBot.create(:portland_course)
