@@ -246,6 +246,9 @@ GEM
     paranoia (2.4.0)
       activerecord (>= 4.0, < 5.2)
     pg (0.21.0)
+    plaid (4.1.0)
+      faraday
+      faraday_middleware
     poltergeist (1.17.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -451,6 +454,7 @@ DEPENDENCIES
   omniauth-github
   paranoia
   pg (~> 0.21.0)
+  plaid
   poltergeist
   pry
   puma

@@ -1,6 +1,7 @@
 class PaymentMethod < ApplicationRecord
   before_create :create_stripe_account
   before_create :get_last_four_string
+  after_create :ensure_primary_method_exists, if: ->(payment_method) { payment_method.verified? }
 
   scope :not_verified_first, -> { order(verified: :desc) }
 
@@ -27,6 +28,7 @@ class PaymentMethod < ApplicationRecord
 private
 
   def create_stripe_account
+    exchange_plaid_token if stripe_token.nil?
     begin
       account = student.stripe_customer.sources.create({ source: stripe_token }, { api_key: Stripe.api_key })
       self.stripe_id = account.id

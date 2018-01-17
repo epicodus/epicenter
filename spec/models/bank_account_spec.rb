@@ -39,4 +39,13 @@ describe BankAccount do
       expect(bank_account.calculate_fee(600_00)).to eq 0
     end
   end
+
+  # TEST WON'T PASS: "Public tokens expire 30 minutes after creation at which point they can no longer be exchanged"
+  # describe ".exchange_plaid_token", :vcr do
+  #   it "successfully obtains bank account token" do
+  #     test_public_token = ENV['PLAID_TEST_PUBLIC_TOKEN']
+  #     test_account_id = ENV['PLAID_TEST_ACCOUNT_ID']
+  #     expect(BankAccount.exchange_plaid_token(test_public_token, test_account_id)).to eq ENV['PLAID_TEST_BANK_ACCOUNT_TOKEN']
+  #   end
+  # end
 end
