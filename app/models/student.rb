@@ -9,6 +9,7 @@ class Student < User
   belongs_to :plan, optional: true
   belongs_to :starting_cohort, class_name: :Cohort, optional: true
   belongs_to :cohort, optional: true
+  belongs_to :office, optional: true
   has_many :enrollments
   has_many :courses, through: :enrollments
   has_many :bank_accounts
@@ -340,6 +341,8 @@ class Student < User
       else
         'Full-time'
       end
+    else
+      'no enrollments'
     end
   end
 

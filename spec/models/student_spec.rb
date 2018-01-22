@@ -1175,5 +1175,10 @@ describe Student do
       student.courses << FactoryBot.create(:course)
       expect(student.attendance_status).to eq 'Full-time conversion'
     end
+
+    it 'reports no enrollment if no courses' do
+      student = FactoryBot.create(:student, courses: [])
+      expect(student.attendance_status).to eq 'no enrollments'
+    end
   end
 end

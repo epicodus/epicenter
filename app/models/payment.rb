@@ -119,16 +119,17 @@ private
     courses = student.courses.reorder(:start_date)
     if category == 'keycard'
       self.description = 'keycard'
-    elsif courses.empty?
-      self.description = "special: #{student.email} not enrolled in any courses"
+    elsif student.office.nil?
+      self.description = "special: #{student.email} not enrolled in any courses and unknown office"
     else
       if courses.fulltime_courses.any?
         start_date = courses.fulltime_courses.first.start_date.strftime("%Y-%m-%d")
-      else
+      elsif courses.any?
         start_date = courses.first.start_date.strftime("%Y-%m-%d")
+      else
+        start_date = 'no enrollments'
       end
-      location = courses.first.office.name
-      self.description = "#{location}; #{start_date}; #{attendance_status}; #{category}"
+      self.description = "#{student.office.name}; #{start_date}; #{attendance_status}; #{category}"
     end
   end
 

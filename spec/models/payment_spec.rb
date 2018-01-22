@@ -168,11 +168,18 @@ describe Payment do
       expect(second_payment.description).to eq "#{full_time_course.office.name}; #{full_time_course.start_date.strftime("%Y-%m-%d")}; Full-time conversion; #{second_payment.category}"
     end
 
-    it 'sets payment description to include student id if payment made for student not enrolled in any course', :vcr, :stripe_mock, :stub_mailgun do
+    it 'sets payment description when student not enrolled in any course but known office', :vcr, :stripe_mock, :stub_mailgun do
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
       student.courses.delete_all
+      payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
+      expect(student.payments.first.description).to eq "#{student.office.name}; no enrollments; no enrollments; #{payment.category}"
+    end
+
+    it 'sets payment description to include student email if payment made for student not enrolled in any course and no office', :vcr, :stripe_mock, :stub_mailgun do
+      student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com', office: nil)
+      student.courses.delete_all
       FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
-      expect(student.payments.first.description).to eq "special: #{student.email} not enrolled in any courses"
+      expect(student.payments.first.description).to eq "special: #{student.email} not enrolled in any courses and unknown office"
     end
 
     it 'sets payment description to keycard when category set that way', :vcr, :stripe_mock, :stub_mailgun do
