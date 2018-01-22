@@ -1158,4 +1158,22 @@ describe Student do
       end
     end
   end
+
+  describe '#attendance_status' do
+    it 'calculates attendance status for student with only full-time courses' do
+      student = FactoryBot.create(:student)
+      expect(student.attendance_status).to eq 'Full-time'
+    end
+
+    it 'calculates attendance status for student with only part-time courses' do
+      student = FactoryBot.create(:part_time_student)
+      expect(student.attendance_status).to eq 'Part-time'
+    end
+
+    it 'calculates attendance status for student with part-time course followed by full-time course' do
+      student = FactoryBot.create(:part_time_student)
+      student.courses << FactoryBot.create(:course)
+      expect(student.attendance_status).to eq 'Full-time conversion'
+    end
+  end
 end

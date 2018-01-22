@@ -106,18 +106,55 @@ describe Payment do
     end
   end
 
+  describe '#calculate_category' do
+    let(:student_upfront_plan) { FactoryBot.create :student, email: 'example@example.com' }
+    let(:student_standard_plan) { FactoryBot.create :student, email: 'example@example.com', plan: FactoryBot.create(:standard_plan) }
+
+    it 'calculates category when refund, regardless of plan' do
+      payment = Payment.new(student: student_upfront_plan, category: 'tuition', offline: true, amount: -50_00)
+      expect(payment.calculate_category).to eq 'refund'
+    end
+
+    it 'calculates category when refund, regardless of plan' do
+      payment = Payment.new(student: student_standard_plan, category: 'tuition', offline: true, amount: -50_00)
+      expect(payment.calculate_category).to eq 'refund'
+    end
+
+    it 'calculates category when upfront payment' do
+      payment = Payment.new(student: student_upfront_plan, category: 'tuition', offline: true, amount: 50_00)
+      expect(payment.calculate_category).to eq 'upfront'
+    end
+
+    it 'calculates category when second payment on plan other than standard' do
+      payment = Payment.create(student: student_upfront_plan, category: 'tuition', offline: true, amount: 100_00)
+      payment2 = Payment.new(student: student_upfront_plan, category: 'tuition', offline: true, amount: 4700_00)
+      expect(payment2.calculate_category).to eq 'upfront'
+    end
+
+    it 'calculates category when first payment on standard plan' do
+      payment = Payment.new(student: student_upfront_plan, category: 'tuition', offline: true, amount: 4700_00)
+      expect(payment.calculate_category).to eq 'upfront'
+    end
+
+    it 'calculates category when second payment on standard plan' do
+      payment = Payment.create(student: student_standard_plan, category: 'tuition', offline: true, amount: 100_00)
+      payment2 = Payment.new(student: student_standard_plan, category: 'tuition', offline: true, amount: 4700_00)
+      expect(payment2.calculate_category).to eq 'standard'
+    end
+  end
+
   describe '#set_description' do
     it 'sets stripe charge description for regular full-time', :vcr, :stripe_mock, :stub_mailgun do
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00, category: 'upfront')
-      expect(payment.description).to eq "#{student.courses.first.office.name}; #{student.courses.first.start_date.strftime("%Y-%m-%d")}; Full-time; #{payment.category}; #{student.email}"
+      expect(payment.description).to eq "#{student.courses.first.office.name}; #{student.courses.first.start_date.strftime("%Y-%m-%d")}; Full-time; #{payment.category}"
     end
 
     it 'sets stripe charge description for regular part-time', :vcr, :stripe_mock, :stub_mailgun do
       part_time_course = FactoryBot.create(:part_time_course)
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com', course: part_time_course)
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00, category: 'part-time')
-      expect(payment.description).to eq "#{part_time_course.office.name}; #{part_time_course.start_date.strftime("%Y-%m-%d")}; Part-time; #{payment.category}; #{student.email}"
+      expect(payment.description).to eq "#{part_time_course.office.name}; #{part_time_course.start_date.strftime("%Y-%m-%d")}; Part-time; #{payment.category}"
     end
 
     it 'sets stripe charge descriptions for full-time payment after part-time payment', :vcr, :stripe_mock, :stub_mailgun do
@@ -127,8 +164,8 @@ describe Payment do
       full_time_course = FactoryBot.create(:course)
       student.courses.push(full_time_course)
       second_payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00, category: 'upfront')
-      expect(first_payment.description).to eq "#{part_time_course.office.name}; #{part_time_course.start_date.strftime("%Y-%m-%d")}; Part-time; #{first_payment.category}; #{student.email}"
-      expect(second_payment.description).to eq "#{full_time_course.office.name}; #{full_time_course.start_date.strftime("%Y-%m-%d")}; Full-time conversion; #{second_payment.category}; #{student.email}"
+      expect(first_payment.description).to eq "#{part_time_course.office.name}; #{part_time_course.start_date.strftime("%Y-%m-%d")}; Part-time; #{first_payment.category}"
+      expect(second_payment.description).to eq "#{full_time_course.office.name}; #{full_time_course.start_date.strftime("%Y-%m-%d")}; Full-time conversion; #{second_payment.category}"
     end
 
     it 'sets payment description to include student id if payment made for student not enrolled in any course', :vcr, :stripe_mock, :stub_mailgun do
