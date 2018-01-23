@@ -34,6 +34,7 @@ class Payment < ApplicationRecord
     elsif student.plan
       'upfront'
     else
+      errors.add(:base, "No payment plan found.")
       throw :abort
     end
   end

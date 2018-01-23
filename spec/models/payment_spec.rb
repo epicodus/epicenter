@@ -141,6 +141,12 @@ describe Payment do
       payment2 = Payment.new(student: student_standard_plan, category: 'tuition', offline: true, amount: 4700_00)
       expect(payment2.calculate_category).to eq 'standard'
     end
+
+    it 'raises error when no payment plan' do
+      student = FactoryBot.create(:student, plan: nil)
+      payment = Payment.new(student: student, category: 'tuition', offline: true, amount: 100_00)
+      expect(payment.save).to eq false
+    end
   end
 
   describe '#set_description' do
