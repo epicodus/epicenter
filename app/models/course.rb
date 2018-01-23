@@ -129,7 +129,7 @@ class Course < ApplicationRecord
   def export_students_emails(filename)
     File.open(filename, 'w') do |file|
       students.each do |student|
-        file.puts "#{student.name.split.first}, #{student.email}"
+        file.puts student.email
       end
     end
   end
