@@ -7,4 +7,20 @@ $(function() {
       $('#payment-method-options').show();
     }
   });
+
+  $('#payment_category').change(function() {
+    show_or_hide_payment_warning();
+  });
+
+  $('#payment_amount').keyup(function() {
+    show_or_hide_payment_warning();
+  });
 });
+
+var show_or_hide_payment_warning = function() {
+  if ( $('#payment_category').val() === 'tuition' && parseInt($('#payment_amount').val()) > 0 ) {
+    $('#payment-warning').show();
+  } else {
+    $('#payment-warning').hide();
+  }
+};

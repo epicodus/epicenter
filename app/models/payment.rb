@@ -26,6 +26,16 @@ class Payment < ApplicationRecord
     amount + fee
   end
 
+  def calculate_category
+    if amount < 0
+      'refund'
+    elsif student.plan.standard? && student.payments.any?
+      'standard'
+    else
+      'upfront'
+    end
+  end
+
 private
 
   def update_crm
@@ -101,34 +111,25 @@ private
   end
 
   def set_category
-    if amount < 0
-      self.category = 'refund'
-    elsif student.plan.standard? && student.payments.count > 0
-      self.category = 'standard'
-    else
-      self.category = 'upfront'
-    end
+    self.category = calculate_category
   end
 
   def set_description
-    courses = student.courses.order(:start_date)
+    attendance_status = student.attendance_status
+    courses = student.courses.reorder(:start_date)
     if category == 'keycard'
       self.description = 'keycard'
-    elsif courses.any?
-      if courses.first.parttime? && courses.fulltime_courses.empty?
-        attendance_status = "Part-time"
-        start_date = courses.first.start_date.strftime("%Y-%m-%d")
-      elsif courses.first.parttime? && courses.fulltime_courses.any?
-        attendance_status = "Full-time conversion"
-        start_date = courses.fulltime_courses.order(:start_date).first.start_date.strftime("%Y-%m-%d")
-      else
-        attendance_status = "Full-time"
-        start_date = courses.first.start_date.strftime("%Y-%m-%d")
-      end
-      location = courses.first.office.name
-      self.description = "#{location}; #{start_date}; #{attendance_status}; #{category}; #{student.email}"
+    elsif student.office.nil?
+      self.description = "special: #{student.email} not enrolled in any courses and unknown office"
     else
-      self.description = "special: #{student.email} not enrolled in any courses"
+      if courses.fulltime_courses.any?
+        start_date = courses.fulltime_courses.first.start_date.strftime("%Y-%m-%d")
+      elsif courses.any?
+        start_date = courses.first.start_date.strftime("%Y-%m-%d")
+      else
+        start_date = 'no enrollments'
+      end
+      self.description = "#{student.office.name}; #{start_date}; #{attendance_status}; #{category}"
     end
   end
 

@@ -108,6 +108,14 @@ feature 'Inviting new full-time students', :vcr, :dont_stub_crm do
     expect(student.starting_cohort_id).to eq cohort.id
   end
 
+  scenario 'office set automatically set when admin sends invitation to a student' do
+    visit new_student_invitation_path
+    fill_in 'Email', with: 'example@example.com'
+    click_on 'Invite student'
+    student = Student.find_by(email: "example@example.com")
+    expect(student.office).to eq student.courses.first.office
+  end
+
   scenario 'does not allow inviting if email already taken' do
     visit new_student_invitation_path
     fill_in 'Email', with: 'example@example.com'

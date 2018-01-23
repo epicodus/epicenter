@@ -9,6 +9,7 @@ class Student < User
   belongs_to :plan, optional: true
   belongs_to :starting_cohort, class_name: :Cohort, optional: true
   belongs_to :cohort, optional: true
+  belongs_to :office, optional: true
   has_many :enrollments
   has_many :courses, through: :enrollments
   has_many :bank_accounts
@@ -327,6 +328,21 @@ class Student < User
         calculated_current_cohort = courses.last.cohorts.find_by('description LIKE ?', '%ALL%') if calculated_current_cohort.nil?
         calculated_current_cohort
       end
+    end
+  end
+
+  def attendance_status
+    if courses.any?
+      first_course = courses.reorder(:start_date).first
+      if first_course.parttime? && courses.fulltime_courses.empty?
+        'Part-time'
+      elsif first_course.parttime? && courses.fulltime_courses.any?
+        'Full-time conversion'
+      else
+        'Full-time'
+      end
+    else
+      'no enrollments'
     end
   end
 

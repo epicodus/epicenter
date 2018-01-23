@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180117214139) do
+ActiveRecord::Schema.define(version: 20180122232433) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -323,11 +323,13 @@ ActiveRecord::Schema.define(version: 20180117214139) do
     t.integer "starting_cohort_id"
     t.boolean "teacher"
     t.integer "cohort_id"
+    t.bigint "office_id"
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
     t.index ["invitations_count"], name: "index_users_on_invitations_count"
     t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
+    t.index ["office_id"], name: "index_users_on_office_id"
     t.index ["plan_id"], name: "index_users_on_plan_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
@@ -337,4 +339,5 @@ ActiveRecord::Schema.define(version: 20180117214139) do
   add_foreign_key "cohorts", "tracks"
   add_foreign_key "courses", "tracks"
   add_foreign_key "notes", "submissions"
+  add_foreign_key "users", "offices"
 end

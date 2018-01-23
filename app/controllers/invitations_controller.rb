@@ -19,6 +19,7 @@ class InvitationsController < Devise::InvitationsController
         params[:student][:name] = name
         params[:student][:course_id] = first_course.id
         super
+        resource.update(office: first_course.office)
         enroll_in_cohort(cohort) if cohort
         set_flash_for_student
       end

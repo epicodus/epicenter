@@ -33,4 +33,12 @@
       <%= f.submit 'Manual payment', class: 'btn btn-warning payment-refund-button', data: { confirm: "Is the payment plan correct? #{@student.plan.try(:short_name).try(:upcase)}" } %>
     </span>
   </div>
+
+  <div id="payment-warning">
+    <% if @student.plan.try(:standard?) && @student.payments.any? %>
+      <p class="alert alert-warning"><strong>Standard payment for <%= @student.attendance_status %></strong></p>
+    <% else %>
+      <p class="alert alert-warning"><strong>Upfront payment for <%= @student.attendance_status %></strong></p>
+    <% end %>
+  </div>
 <% end %>

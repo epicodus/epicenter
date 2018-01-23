@@ -477,6 +477,7 @@ FactoryBot.define do
   factory :student do
     course
     association :plan, factory: :upfront_payment_only_plan
+    association :office, factory: :philadelphia_office
     sequence(:name) { |n| "Example Brown #{n}" }
     sequence(:email) { |n| "student#{n}@example.com" }
     password "password"
