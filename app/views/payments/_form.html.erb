@@ -37,8 +37,10 @@
   <div id="payment-warning">
     <% if @student.plan.try(:standard?) && @student.payments.any? %>
       <p class="alert alert-warning"><strong>Standard payment for <%= @student.attendance_status %></strong></p>
-    <% else %>
+    <% elsif @student.plan %>
       <p class="alert alert-warning"><strong>Upfront payment for <%= @student.attendance_status %></strong></p>
+    <% else %>
+      <p class="alert alert-danger"><strong>Set payment plan before making payment!</strong><br></p>
     <% end %>
   </div>
 <% end %>

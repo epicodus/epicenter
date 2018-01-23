@@ -29,10 +29,12 @@ class Payment < ApplicationRecord
   def calculate_category
     if amount < 0
       'refund'
-    elsif student.plan.standard? && student.payments.any?
+    elsif student.plan.try(:standard?) && student.payments.any?
       'standard'
-    else
+    elsif student.plan
       'upfront'
+    else
+      throw :abort
     end
   end
 
