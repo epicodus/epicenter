@@ -24,7 +24,8 @@
   <ul id="objective-fields" class="list-unstyled">
     <%= f.nested_fields_for :objectives, wrapper_tag: :li do |ff| %>
       <div class="input-group">
-        <%= ff.text_field :content, class: 'form-control' %>
+        <%= ff.number_field :number, class: 'form-control objective-number' %>
+        <%= ff.text_field :content, class: 'form-control objective-content' %>
         <%= ff.remove_nested_fields_link nil, class: 'input-group-addon', id: 'remove-objective-link' %>
       </div>
       <br>

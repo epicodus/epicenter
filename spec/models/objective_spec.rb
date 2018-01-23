@@ -3,6 +3,15 @@ describe Objective do
   it { should belong_to :code_review }
   it { should have_many :grades }
 
+  describe '.default_scope' do
+    let(:second_objective) { FactoryBot.create(:objective, number: 2) }
+    let(:first_objective) { FactoryBot.create(:objective, number: 1) }
+
+    it 'orders objectives by their number, ascending' do
+      expect(Objective.all).to eq [first_objective, second_objective]
+    end
+  end
+
   describe "#score_for" do
     it "returns the latest score of the student given for this objective", :stub_mailgun do
       student = FactoryBot.create(:student)
