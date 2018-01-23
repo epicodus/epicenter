@@ -24,6 +24,10 @@
     </span>
   </p>
 
+  <% if current_admin && @student.courses.empty? %>
+    <%= link_to 'Archive student', student_path(id: @student.id), data: { method: :delete, confirm: 'Are you sure you want to archive this student and all enrollments?' }, class: 'btn btn-primary btn-sm' %>
+  <% end %>
+
   <% if @student.starting_cohort && @student.cohort && @student.starting_cohort == @student.cohort %>
     <p>Cohort: <%= link_to @student.cohort.description, cohort_path(@student.cohort) %></p>
   <% else %>

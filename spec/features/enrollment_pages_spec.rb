@@ -29,9 +29,16 @@ feature 'deleting a student' do
 
   before { login_as(admin, scope: :admin) }
 
-  scenario 'as an admin deleting the student' do
+  scenario 'as an admin deleting a student with enrollments' do
     visit student_courses_path(student)
     click_on 'Drop All'
+    expect(page).to have_content "#{student.name} has been archived!"
+  end
+
+  scenario 'as an admin deleting a student without enrollments' do
+    student.courses = []
+    visit student_courses_path(student)
+    click_on 'Archive student'
     expect(page).to have_content "#{student.name} has been archived!"
   end
 end
