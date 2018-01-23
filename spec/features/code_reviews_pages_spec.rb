@@ -353,6 +353,19 @@ feature 'editing a code review' do
       click_button 'Update Code review'
       expect(code_review.objectives.count).to eq objective_count + 1
     end
+
+    scenario 'reordering objectives', js: true do
+      click_link 'Add objective'
+      within('ul#objective-fields') do
+        all('.objective-number').first.set '2'
+        all('.objective-content').first.set 'The last objective'
+        all('.objective-number').last.set '1'
+        all('.objective-content').last.set 'The first objective'
+      end
+      click_button 'Update Code review'
+      code_review.reload
+      expect(code_review.objectives.last.content).to eq 'The last objective'
+    end
   end
 
   context 'as a student' do
