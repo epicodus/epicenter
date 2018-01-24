@@ -6,11 +6,26 @@ feature 'adding another course for a student' do
 
   before { login_as(admin, scope: :admin) }
 
-  scenario 'as an admin on the individual student page', js: true do
+  scenario 'as an admin on the individual student page' do
     visit student_courses_path(student)
-    select other_course.description, from: 'enrollment_course_id'
+    select other_course.description, from: 'enrollment_course_id_' + other_course.office.short_name
     click_on 'Add course'
     expect(page).to have_content "#{student.name} enrolled in #{other_course.description}."
+  end
+
+  scenario 'as an admin on the individual student page', js: true do
+    another_office = FactoryBot.create(:seattle_course).office
+    visit student_courses_path(student)
+    click_on another_office.short_name
+    find('select#enrollment_course_id_' + another_office.short_name)
+    expect(page.all('select#enrollment_course_id_' + another_office.short_name).first.text.include? other_course.office.name).to eq false
+  end
+
+  scenario 'as an admin on the individual student page', js: true do
+    visit student_courses_path(student)
+    click_on 'PREVIOUS'
+    find('select#enrollment_course_id_previous')
+    expect(page.all('select#enrollment_course_id_previous').first.text.include? other_course.office.name).to eq false
   end
 
   scenario 'as an admin on the student roster page' do

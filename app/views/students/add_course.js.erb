@@ -1,0 +1,3 @@
+'<%= form_for(Enrollment.new) do |ff| %>'
+   $('.assign-courses-to-student').html('<%= j render "students/courses_list", f: ff, courses: @courses, descriptor: @descriptor %>');
+'<% end %>'
