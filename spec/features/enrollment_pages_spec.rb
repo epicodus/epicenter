@@ -6,7 +6,7 @@ feature 'adding another course for a student' do
 
   before { login_as(admin, scope: :admin) }
 
-  scenario 'as an admin on the individual student page' do
+  scenario 'as an admin on the individual student page', js: true do
     visit student_courses_path(student)
     select other_course.description, from: 'enrollment_course_id'
     click_on 'Add course'

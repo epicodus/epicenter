@@ -1,0 +1,6 @@
+<div class="input-group">
+  <%= f.collection_select :course_id, courses, :id, :teacher_and_description, { include_blank: 'Please select a course' }, { class: 'col-md-4 form-control', required: true } %>
+  <span class="input-group-btn">
+    <%= f.submit 'Add course', class: 'btn btn-info' %>
+  </span>
+</div>
