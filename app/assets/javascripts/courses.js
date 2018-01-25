@@ -6,4 +6,10 @@ $(function() {
       $('#course_active').val(null);
     }
   });
+
+  $('.show-assign-courses').first().addClass('active');
+  $('.show-assign-courses').click(function() {
+    $(this).siblings().removeClass('active');
+    $(this).addClass('active');
+  });
 });

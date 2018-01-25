@@ -51,8 +51,8 @@
 <% end %>
 
 <% if can? :manage, Enrollment %>
-  <div class="well">
-    <% if @student.courses_withdrawn.any? %>
+  <% if @student.courses_withdrawn.any? %>
+    <div class="well" id="withdrawn-courses">
       <strong>Withdrawn:</strong>
       <ul>
         <% @student.courses_withdrawn.each do |course| %>
@@ -65,21 +65,38 @@
           </li>
         <% end %>
       </ul>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 
-  <div class="row">
-    <div class="col-md-4">
-      <%= form_for @enrollment do |f| %>
-        <%= render 'layouts/errors', object: @enrollment %>
-        <%= f.hidden_field :student_id, value: @student.id %>
-        <div class="input-group">
-          <%= f.collection_select :course_id, @student.other_courses.order(:description).reverse, :id, :teacher_and_description, { include_blank: 'Please select a course' }, { class: 'col-md-4 form-control', required: true } %>
-          <span class="input-group-btn">
-            <%= f.submit 'Add course', class: 'btn btn-info' %>
-          </span>
-        </div>
-      <% end %>
+  <hr>
+  <div class="well">
+    <div class="row">
+      <div class="col-md-4">
+        <%= form_for @enrollment do |f| %>
+          <%= render 'layouts/errors', object: @enrollment %>
+
+          <nav class="navbar navbar-default">
+            <div class="container-fluid">
+              <ul class="nav navbar-nav">
+                <% Office.select {|office| office.courses.current_and_future_courses.any?}.each do |office| %>
+                  <li class="show-assign-courses"><%= link_to office.short_name, student_add_course_path(@student, option: office.short_name), method: :patch, remote: true %></li>
+                <% end %>
+                <li class="show-assign-courses"><%= link_to 'PREVIOUS', student_add_course_path(@student, option: 'previous'), method: :patch, remote: true %></li>
+              </ul>
+            </div>
+          </nav>
+
+          <%= f.hidden_field :student_id, value: @student.id %>
+          <div class="input-group">
+            <span class="assign-courses-to-student">
+              <%= render 'students/courses_list', f: f, courses: @student.other_courses.current_and_future_courses.courses_for(Office.first).order(:description).reverse, descriptor: Office.first.short_name %>
+            </span>
+            <span class="input-group-btn">
+              <%= f.submit 'Add course', class: 'btn btn-info' %>
+            </span>
+          </div>
+        <% end %>
+      </div>
     </div>
   </div>
 <% end %>

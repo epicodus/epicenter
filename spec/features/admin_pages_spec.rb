@@ -262,7 +262,7 @@ feature 'viewing the student courses list' do
   it 'allows admin to click through to view code reviews for withdrawn course' do
     Enrollment.find_by(student: student, course: course1).destroy
     visit student_courses_path(student)
-    within '.well' do
+    within '#withdrawn-courses' do
       click_link course1.description
     end
     expect(page).to have_content "#{course1.description} (withdrawn)"
