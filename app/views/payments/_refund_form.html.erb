@@ -1,11 +1,15 @@
-<%= form_for payment, method: :patch do |f| %>
-  <div class="form-group">
-    <div class="input-group">
-      <span class="input-group-addon">$</span>
-      <%= f.number_field :refund_amount, { class: 'form-control payment-refund-input', id: "refund-#{payment.id}-input", required: true, step: 0.01 } %>
-      <span class="input-group-btn">
-        <%= f.submit 'Refund', class: 'btn btn-info payment-refund-button', id: "refund-#{payment.id}-button", data: { confirm: 'Are you sure?' } %>
-      </span>
+<% if payment.offline? %>
+  <p>n/a</p>
+<% else %>
+  <%= form_for payment, method: :patch do |f| %>
+    <div class="form-group">
+      <div class="input-group">
+        <span class="input-group-addon">$</span>
+        <%= f.number_field :refund_amount, { class: 'form-control payment-refund-input', id: "refund-#{payment.id}-input", required: true, step: 0.01 } %>
+        <span class="input-group-btn">
+          <%= f.submit 'Refund', class: 'btn btn-info payment-refund-button', id: "refund-#{payment.id}-button", data: { confirm: 'Are you sure?' } %>
+        </span>
+      </div>
     </div>
-  </div>
+  <% end %>
 <% end %>

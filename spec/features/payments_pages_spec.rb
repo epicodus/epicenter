@@ -128,6 +128,17 @@ feature 'Viewing payment index page' do
       end
     end
 
+    context 'after an offline payment has been made', :vcr, :stripe_mock, :stub_mailgun do
+      it 'shows payment history with correct charge and status but no refund form' do
+        student = FactoryBot.create(:student, email: 'example@example.com')
+        payment = FactoryBot.create(:payment, amount: 600_00, student: student, offline: true)
+        visit student_payments_path(student)
+        expect(page).to have_content 600.00
+        expect(page).to have_content "Offline"
+        expect(page).to_not have_css "#refund-#{payment.id}-button"
+      end
+    end
+
     context 'after a payment has been made with credit card', :vcr, :stripe_mock, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
         student = FactoryBot.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
