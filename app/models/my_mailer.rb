@@ -4,7 +4,6 @@ class MyMailer < Devise::Mailer
   default template_path: 'devise/mailer' # to make sure that your mailer uses the devise views
 
   def invitation_instructions(record, token, opts={})
-    opts[:bcc] = 'epicodus.admissions@climbcredit.com'
     super
   end
 end
