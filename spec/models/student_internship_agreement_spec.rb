@@ -13,6 +13,12 @@ describe StudentInternshipAgreement do
       expect(Submission.find_by(student: student, code_review: code_review).meets_expectations?).to be true
     end
 
+    it 'marks code review as passed even if submission already exists', :stub_mailgun do
+      Submission.create(student: student, code_review: code_review)
+      StudentInternshipAgreement.create_from_signature_id(signature.signature_id)
+      expect(Submission.find_by(student: student, code_review: code_review).meets_expectations?).to be true
+    end
+
     it 'updates the internship agreement field in close', :stub_mailgun, :dont_stub_crm do
       allow_any_instance_of(CrmLead).to receive(:update)
       student.reload
