@@ -122,7 +122,7 @@ private
     courses = student.courses.reorder(:start_date)
     if category == 'keycard'
       self.description = 'keycard'
-    elsif student.office.nil?
+    elsif student.office.nil? && courses.empty?
       self.description = "special: #{student.email} not enrolled in any courses and unknown office"
     else
       if courses.fulltime_courses.any?
