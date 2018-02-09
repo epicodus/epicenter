@@ -27,19 +27,19 @@ feature "Portland student does attendance sign in" do
     end
   end
 
-  context "not a weekday" do
+  context "not a class day" do
     it "does not show attendance sign in page" do
-      allow_any_instance_of(ApplicationController).to receive(:is_weekday?).and_return(false)
+      allow_any_instance_of(ApplicationController).to receive(:is_class_day?).and_return(false)
       visit sign_in_path
       expect(page).to have_content "Attendance sign in unavailable."
     end
   end
 
-  context "a weekday at school" do
+  context "a class day at school when course is in session" do
     before do
       allow(IpLocation).to receive(:is_local?).and_return(true)
       allow(IpLocation).to receive(:is_local_computer?).and_return(true)
-      allow_any_instance_of(ApplicationController).to receive(:is_weekday?).and_return(true)
+      allow_any_instance_of(ApplicationController).to receive(:is_class_day?).and_return(true)
     end
 
     it "shows attendance sign in page" do
@@ -241,19 +241,19 @@ feature "Philadelphia student does attendance sign in" do
     end
   end
 
-  context "not a weekday" do
+  context "not a class day" do
     it "does not show attendance sign in page" do
-      allow_any_instance_of(ApplicationController).to receive(:is_weekday?).and_return(false)
+      allow_any_instance_of(ApplicationController).to receive(:is_class_day?).and_return(false)
       visit sign_in_path
       expect(page).to have_content "Attendance sign in unavailable."
     end
   end
 
-  context "a weekday at school" do
+  context "a class day at school" do
     before do
       allow(IpLocation).to receive(:is_local?).and_return(true)
       allow(IpLocation).to receive(:is_local_computer?).and_return(true)
-      allow_any_instance_of(ApplicationController).to receive(:is_weekday?).and_return(true)
+      allow_any_instance_of(ApplicationController).to receive(:is_class_day?).and_return(true)
     end
 
     it "shows attendance sign in page" do
