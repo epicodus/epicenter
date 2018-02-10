@@ -97,6 +97,10 @@ class Course < ApplicationRecord
     start_date <= Time.zone.now.to_date && end_date >= Time.zone.now.to_date
   end
 
+  def is_class_day?
+    class_days.include?(Time.zone.now.in_time_zone(office.time_zone).to_date)
+  end
+
   def other_course_students(student)
     students.where.not(id: student.id)
   end

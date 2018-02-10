@@ -2,7 +2,7 @@ class AttendanceSignInController < ApplicationController
 
   def create
     params[:email1] = params[:email1].downcase
-    if is_weekday? && IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip)
+    if is_class_day? && IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip)
       if params[:email2] == ""
         sign_in_solo_student
       else

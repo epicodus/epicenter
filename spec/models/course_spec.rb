@@ -86,6 +86,21 @@ describe Course do
     end
   end
 
+  describe '#is_class_day?' do
+    let(:course) { FactoryBot.create(:course) }
+
+    it 'returns true if today is class day for this course' do
+      travel_to course.start_date + 3.days do
+        expect(course.is_class_day?).to eq true
+      end
+    end
+    it 'returns false if today is not class day for this course' do
+      travel_to course.start_date + 6.days do
+        expect(course.is_class_day?).to eq false
+      end
+    end
+  end
+
   describe "#other_students" do
     let(:course) { FactoryBot.create(:course) }
     let(:student) { FactoryBot.create(:student, course: course) }
