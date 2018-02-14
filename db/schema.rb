@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180123191820) do
+ActiveRecord::Schema.define(version: 20180214191934) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -149,6 +149,10 @@ ActiveRecord::Schema.define(version: 20180123191820) do
   create_table "languages", id: :serial, force: :cascade do |t|
     t.string "name"
     t.integer "level"
+    t.integer "number_of_days"
+    t.boolean "skip_holiday_weeks"
+    t.boolean "parttime"
+    t.boolean "online"
   end
 
   create_table "languages_tracks", id: false, force: :cascade do |t|

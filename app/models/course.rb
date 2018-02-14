@@ -201,30 +201,16 @@ private
   end
 
   def set_class_days
-    if language == Language.find_by(name: 'Evening')
-      number_of_days = 30
-      skip_holiday_weeks = true
-      is_parttime = true
-    elsif language == Language.find_by(name: 'Online')
-      number_of_days = 45
-      skip_holiday_weeks = true
-      is_online = true
-    elsif language.level == 4
-      number_of_days = 35
-    else
-      number_of_days = 24
-      skip_holiday_weeks = true
-    end
     class_days = []
     day = start_date.beginning_of_week
-    number_of_days.times do
-      while day.saturday? || day.sunday? || (skip_holiday_weeks && Rails.configuration.holiday_weeks.include?(day.strftime('%Y-%m-%d'))) do
+    language.number_of_days.times do
+      while day.saturday? || day.sunday? || (language.skip_holiday_weeks? && Rails.configuration.holiday_weeks.include?(day.strftime('%Y-%m-%d'))) do
         day = day.next_week
       end
-      while is_parttime && !(day.monday? || day.wednesday?)
+      while language.parttime? && !(day.monday? || day.wednesday?)
         day = day.next
       end
-      while is_online && !(day.tuesday? || day.wednesday? || day.thursday?)
+      while language.online? && !(day.tuesday? || day.wednesday? || day.thursday?)
         day = day.next
       end
       class_days << day unless Rails.configuration.holidays.include? day.strftime('%Y-%m-%d')

@@ -246,38 +246,53 @@ FactoryBot.define do
     factory :intro_language do
       name 'Intro'
       level 0
+      number_of_days 24
+      skip_holiday_weeks true
     end
 
     factory :evening_language do
       name 'Evening'
       level 0
+      number_of_days 30
+      skip_holiday_weeks true
+      parttime true
     end
 
     factory :online_language do
       name 'Online'
       level 0
+      number_of_days 45
+      skip_holiday_weeks true
+      online true
     end
 
     factory :ruby_language do
       name 'Ruby'
       level 1
+      number_of_days 24
+      skip_holiday_weeks true
     end
 
     factory :js_language do
       name 'JavaScript'
       level 2
+      number_of_days 24
+      skip_holiday_weeks true
     end
 
     factory :rails_language do
       name 'Rails'
       level 3
+      number_of_days 24
+      skip_holiday_weeks true
     end
 
     factory :internship_language do
       name 'Internship'
       level 4
+      number_of_days 35
+      skip_holiday_weeks false
     end
-
   end
 
   factory :grade do
