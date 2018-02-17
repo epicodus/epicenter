@@ -1,5 +1,5 @@
 <% if current_admin %>
-  <h1><%= @student.name %></h1>
+  <h1><%= @student.name %> <small><small><%= @student.email %></small></small></h1>
 
   <% if !@student.signed_main_documents? %>
     <p><strong><%= @student.name %> has not signed all documents.</strong></p>
