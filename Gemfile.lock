@@ -245,7 +245,7 @@ GEM
     orm_adapter (0.5.0)
     paranoia (2.4.0)
       activerecord (>= 4.0, < 5.2)
-    pg (0.21.0)
+    pg (1.0.0)
     plaid (4.1.0)
       faraday
       faraday_middleware
@@ -453,7 +453,7 @@ DEPENDENCIES
   oink
   omniauth-github
   paranoia
-  pg (~> 0.21.0)
+  pg
   plaid
   poltergeist
   pry
@@ -478,7 +478,7 @@ DEPENDENCIES
   webmock
 
 RUBY VERSION
-   ruby 2.4.1p111
+   ruby 2.5.0p0
 
 BUNDLED WITH
-   1.16.0
+   1.16.1

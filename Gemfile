@@ -1,9 +1,9 @@
-ruby '2.4.1'
+ruby '2.5.0'
 
 source 'https://rubygems.org'
 
 gem 'rails', '~> 5.1.0'
-gem 'pg', '~> 0.21.0'
+gem 'pg'
 gem 'uglifier'
 gem 'jquery-rails'
 gem 'coffee-script'
