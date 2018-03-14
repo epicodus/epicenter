@@ -124,6 +124,8 @@ private
       self.description = 'keycard'
     elsif student.office.nil? && courses.empty?
       self.description = "special: #{student.email} not enrolled in any courses and unknown office"
+    elsif student.office.nil?
+      student.update(office: courses.first.office)
     else
       if courses.fulltime_courses.any?
         start_date = courses.fulltime_courses.first.start_date.strftime("%Y-%m-%d")

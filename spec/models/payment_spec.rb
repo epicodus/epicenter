@@ -193,6 +193,12 @@ describe Payment do
       FactoryBot.create(:payment_with_credit_card, student: student, amount: 25_00, category: 'keycard')
       expect(student.payments.first.description).to eq "keycard"
     end
+
+    it 'updates student office when nil but enrolled in courses', :vcr, :stripe_mock, :stub_mailgun do
+      student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com', office: nil)
+      FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
+      expect(student.office).to eq student.course.office
+    end
   end
 
   describe "#send_payment_receipt" do
