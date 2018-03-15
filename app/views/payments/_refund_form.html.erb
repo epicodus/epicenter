@@ -1,15 +1,21 @@
-<% if payment.offline? %>
-  <p>n/a</p>
-<% else %>
-  <%= form_for payment, method: :patch do |f| %>
-    <div class="form-group">
-      <div class="input-group">
-        <span class="input-group-addon">$</span>
-        <%= f.number_field :refund_amount, { class: 'form-control payment-refund-input', id: "refund-#{payment.id}-input", required: true, step: 0.01 } %>
-        <span class="input-group-btn">
-          <%= f.submit 'Refund', class: 'btn btn-info payment-refund-button', id: "refund-#{payment.id}-button", data: { confirm: 'Are you sure?' } %>
-        </span>
-      </div>
+<%= form_for payment, method: :patch do |f| %>
+  <div class="form-group well">
+    <div class="input-group refund-input-group">
+      <%= f.label :refund_basis, 'Basis of refund:' %>
+      <%= f.number_field :refund_basis, { class: 'form-control payment-refund-basis-input', id: "refund-basis-#{payment.id}-input", placeholder: 'basis of refund', required: true, step: 0.01 } %>
     </div>
-  <% end %>
+    <div class="input-group refund-input-group">
+      <%= f.label :refund_amount, 'Refund amount:' %>
+      <%= f.number_field :refund_amount, { class: 'form-control payment-refund-input', id: "refund-#{payment.id}-input", placeholder: 'refund amount', required: true, step: 0.01 } %>
+    </div>
+    <div class="input-group refund-input-group">
+      <%= f.label :refund_date, 'Effective refund date:' %>
+      <%= f.date_field :refund_date, { class: 'form-control payment-refund-date-input', id: "refund-date-#{payment.id}-input", required: true } %>
+    </div>
+    <div class="input-group">
+      <span class="input-group-btn">
+        <%= f.submit 'Refund', class: 'btn btn-info payment-refund-button', id: "refund-#{payment.id}-button", data: { confirm: 'Are you sure?' } %>
+      </span>
+    </div>
+  </div>
 <% end %>

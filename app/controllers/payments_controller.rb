@@ -34,19 +34,28 @@ class PaymentsController < ApplicationController
 
 private
   def payment_params
-    modify_amounts(params[:payment][:refund_amount], params[:payment][:amount])
-    params.require(:payment).permit(:refund_amount, :amount, :student_id, :payment_method_id, :offline, :notes, :category)
+    modify_amounts(params[:payment][:refund_amount], params[:payment][:refund_basis], params[:payment][:amount])
+    params.require(:payment).permit(:amount, :student_id, :payment_method_id, :offline, :notes, :category, :refund_amount, :refund_basis, :refund_date)
   end
 
-  def modify_amounts(refund_amount, payment_amount)
-    if refund_amount.try(:include?, '.')
-      refund_amount.slice!('.')
-    elsif refund_amount
-      params[:payment][:refund_amount] = refund_amount.to_i * 100
-    elsif payment_amount.try(:include?, '.')
-      payment_amount.slice!('.')
+  def modify_amounts(refund_amount, refund_basis, payment_amount)
+    if refund_amount && refund_basis
+      if refund_amount.try(:include?, '.')
+        refund_amount.slice!('.')
+      else
+        params[:payment][:refund_amount] = refund_amount.to_i * 100
+      end
+      if refund_basis.try(:include?, '.')
+        refund_basis.slice!('.')
+      else
+        params[:payment][:refund_basis] = refund_basis.to_i * 100
+      end
     elsif payment_amount
-      params[:payment][:amount] = payment_amount.to_i * 100
+      if payment_amount.try(:include?, '.')
+        payment_amount.slice!('.')
+      else
+        params[:payment][:amount] = payment_amount.to_i * 100
+      end
     end
   end
 
