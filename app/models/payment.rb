@@ -70,16 +70,25 @@ private
   end
 
   def issue_refund
-    begin
-      charge_id = Stripe::BalanceTransaction.retrieve(stripe_transaction).source
-      refund = Stripe::Refund.create(charge: charge_id, amount: refund_amount)
-      self.refund_issued = true
-      WebhookPayment.new({ event_name: 'refund', payment: self })
-      send_refund_receipt
-    rescue Stripe::StripeError => exception
-      errors.add(:base, exception.message)
+    if valid_refund?
+      begin
+        charge_id = Stripe::BalanceTransaction.retrieve(stripe_transaction).source
+        refund = Stripe::Refund.create(charge: charge_id, amount: refund_amount)
+        self.refund_issued = true
+        WebhookPayment.new({ event_name: 'refund', payment: self })
+        send_refund_receipt
+      rescue Stripe::StripeError => exception
+        errors.add(:base, exception.message)
+        throw :abort
+      end
+    else
+      errors.add(:base, 'Refund amount is not valid')
       throw :abort
     end
+  end
+
+  def valid_refund?
+    refund_amount <= refund_basis
   end
 
   def send_refund_receipt

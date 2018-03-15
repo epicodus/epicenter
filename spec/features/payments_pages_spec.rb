@@ -155,7 +155,7 @@ feature 'Viewing payment index page' do
       it 'shows payment history with correct charge and status' do
         student = FactoryBot.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
         payment = FactoryBot.create(:payment_with_bank_account, amount: 600_00, student: student)
-        payment.update(refund_amount: 300_00)
+        payment.update(refund_amount: 300_00, refund_basis: 30000, refund_date: Date.today)
         visit student_payments_path(student)
         expect(page).to have_content '$300.00'
       end
@@ -165,7 +165,7 @@ feature 'Viewing payment index page' do
       it 'shows payment history with correct charge and status' do
         student = FactoryBot.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
         payment = FactoryBot.create(:payment_with_credit_card, amount: 600_00, student: student)
-        payment.update(refund_amount: 200_00)
+        payment.update(refund_amount: 200_00, refund_basis: 30000, refund_date: Date.today)
         visit student_payments_path(student)
         expect(page).to have_content '$200.00'
       end
@@ -210,6 +210,8 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
   scenario 'successfully without cents' do
     visit student_payments_path(student)
     fill_in "refund-#{payment.id}-input", with: 60
+    fill_in "refund-basis-#{payment.id}-input", with: 60
+    fill_in "refund-date-#{payment.id}-input", with: Date.today
     click_on 'Refund'
     expect(page).to have_content "Refund successfully issued for #{payment.student.name}."
     expect(page).to have_content '$60.00'
@@ -218,6 +220,8 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
   scenario 'successfully with cents' do
     visit student_payments_path(student)
     fill_in "refund-#{payment.id}-input", with: 60.18
+    fill_in "refund-basis-#{payment.id}-input", with: 60.18
+    fill_in "refund-date-#{payment.id}-input", with: Date.today
     click_on 'Refund'
     expect(page).to have_content "Refund successfully issued for #{payment.student.name}."
     expect(page).to have_content '$60.18'
@@ -225,16 +229,21 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
 
   scenario 'unsuccessfully with an improperly formatted amount', :js do
     visit student_payments_path(student)
+    page.find('btn', text: 'Refund...').click
     fill_in "refund-#{payment.id}-input", with: 60.1
+    fill_in "refund-basis-#{payment.id}-input", with: 60.18
+    fill_in "refund-date-#{payment.id}-input", with: Date.today
     message = accept_prompt do
       click_on 'Refund'
     end
-    expect(message).to eq 'Please enter an amount that includes 2 decimal places.'
+    expect(message).to eq 'Please enter valid amounts.'
   end
 
   scenario 'unsuccessfully with an amount that is too large' do
     visit student_payments_path(student)
     fill_in "refund-#{payment.id}-input", with: 200
+    fill_in "refund-basis-#{payment.id}-input", with: 200
+    fill_in "refund-date-#{payment.id}-input", with: Date.today
     click_on 'Refund'
     expect(page).to have_content 'Refund amount ($200.00) is greater than charge amount ($103.28)'
   end
@@ -242,6 +251,8 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
   scenario 'unsuccessfully with a negative amount' do
     visit student_payments_path(student)
     fill_in "refund-#{payment.id}-input", with: -16.46
+    fill_in "refund-basis-#{payment.id}-input", with: 60.18
+    fill_in "refund-date-#{payment.id}-input", with: Date.today
     click_on 'Refund'
     expect(page).to have_content 'Invalid positive integer'
   end
@@ -293,7 +304,7 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
     message = accept_prompt do
       click_on 'Manual payment'
     end
-    expect(message).to eq 'Please enter an amount that includes 2 decimal places.'
+    expect(message).to eq 'Please enter a valid amount.'
   end
 
   scenario 'with an invalid amount' do

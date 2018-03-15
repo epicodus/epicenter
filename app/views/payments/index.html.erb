@@ -51,8 +51,17 @@
               </td>
               <% else %>
                 <% if can? :manage, Payment %>
-                  <td class="col-md-3">
-                    <%= render 'payments/refund_form', payment: payment %>
+                  <td class="col-md-3" id="refund-<%= payment.id %>">
+                    <% if payment.offline? %>
+                      <p>n/a</p>
+                    <% else %>
+                      <div class="refund-section" id="refund-section-<%= payment.id %>">
+                        <btn class='show-refund-form-button btn btn-warning'>Refund...</btn>
+                        <div class="refund-form hidden">
+                          <%= render 'payments/refund_form', payment: payment %>
+                        </div>
+                      </div>
+                    <% end %>
                   </td>
                 <% end %>
               <% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180214191934) do
+ActiveRecord::Schema.define(version: 20180222003140) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -213,6 +213,8 @@ ActiveRecord::Schema.define(version: 20180214191934) do
     t.boolean "refund_issued"
     t.boolean "failure_notice_sent"
     t.string "category"
+    t.date "refund_date"
+    t.integer "refund_basis"
     t.index ["student_id"], name: "index_payments_on_student_id"
   end
 
