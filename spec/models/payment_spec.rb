@@ -111,12 +111,12 @@ describe Payment do
     let(:student_standard_plan) { FactoryBot.create :student, email: 'example@example.com', plan: FactoryBot.create(:standard_plan) }
 
     it 'calculates category when refund, regardless of plan' do
-      payment = Payment.new(student: student_upfront_plan, category: 'tuition', offline: true, amount: -50_00)
+      payment = Payment.new(student: student_upfront_plan, category: 'tuition', offline: true, amount: 0, refund_amount: 50_00)
       expect(payment.calculate_category).to eq 'refund'
     end
 
     it 'calculates category when refund, regardless of plan' do
-      payment = Payment.new(student: student_standard_plan, category: 'tuition', offline: true, amount: -50_00)
+      payment = Payment.new(student: student_standard_plan, category: 'tuition', offline: true, amount: 0, refund_amount: 50_00)
       expect(payment.calculate_category).to eq 'refund'
     end
 
@@ -326,7 +326,7 @@ describe Payment do
     it 'updates amount paid for refunds' do
       payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
       payment_2 = Payment.new(student: student, amount: 50_00, category: 'standard', offline: true)
-      payment_2.update(refund_amount: 5000, refund_basis: 5000, refund_date: Date.today)
+      payment_2.update(refund_amount: 5000, refund_date: Date.today)
       expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Amount paid': (payment.amount + payment_2.amount - payment_2.refund_amount) / 100 })
       payment_2.save
     end
@@ -345,58 +345,52 @@ describe Payment do
     it 'refunds a credit card payment' do
       student = FactoryBot.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student)
-      payment.update(refund_amount: 51, refund_basis: 500, refund_date: Date.today)
+      payment.update(refund_amount: 51, refund_date: Date.today)
       expect(payment.refund_amount).to eq 51
     end
 
     it 'fails to refund a credit card payment when the refund amount is more than the payment amount' do
       student = FactoryBot.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student)
-      expect(payment.update(refund_amount: 200, refund_basis: 500, refund_date: Date.today)).to eq false
-    end
-
-    it 'fails to refund a credit card payment when the refund amount is more than the basis amount' do
-      student = FactoryBot.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
-      payment = FactoryBot.create(:payment_with_credit_card, student: student)
-      expect(payment.update(refund_amount: 50, refund_basis: 10, refund_date: Date.today)).to eq false
+      expect(payment.update(refund_amount: 200, refund_date: Date.today)).to eq false
     end
 
     it 'fails to refund a credit card payment when the refund amount is negative' do
       student = FactoryBot.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student)
-      expect(payment.update(refund_amount: -37, refund_basis: 500, refund_date: Date.today)).to eq false
+      expect(payment.update(refund_amount: -37, refund_date: Date.today)).to eq false
     end
 
     it 'refunds a bank account payment' do
       student = FactoryBot.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_bank_account, student: student)
-      payment.update(refund_amount: 75, refund_basis: 500, refund_date: Date.today)
+      payment.update(refund_amount: 75, refund_date: Date.today)
       expect(payment.refund_amount).to eq 75
     end
 
     it 'fails to refund a bank account payment when the refund amount is more than the payment amount' do
       student = FactoryBot.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_bank_account, student: student)
-      expect(payment.update(refund_amount: 200, refund_basis: 500, refund_date: Date.today)).to eq false
+      expect(payment.update(refund_amount: 200, refund_date: Date.today)).to eq false
     end
 
     it 'fails to refund a bank account payment when the refund amount is negative' do
       student = FactoryBot.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_bank_account, student: student)
-      expect(payment.update(refund_amount: -40, refund_basis: 500, refund_date: Date.today)).to eq false
+      expect(payment.update(refund_amount: -40, refund_date: Date.today)).to eq false
     end
 
     it 'issues refund' do
       student = FactoryBot.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_bank_account, student: student)
       expect(payment).to receive(:issue_refund)
-      payment.update(refund_amount: 50, refund_basis: 500, refund_date: Date.today)
+      payment.update(refund_amount: 50, refund_date: Date.today)
     end
 
     it 'does not issue refund if already issued' do
       student = FactoryBot.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_bank_account, student: student)
-      payment.update(refund_amount: 50, refund_basis: 500, refund_date: Date.today)
+      payment.update(refund_amount: 50, refund_date: Date.today)
       expect(payment).to_not receive(:issue_refund)
       payment.update(status: "successful")
     end
@@ -409,7 +403,7 @@ describe Payment do
       allow(EmailJob).to receive(:perform_later).and_return({})
 
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
-      payment.update(refund_amount: 5000, refund_basis: 5000, refund_date: Date.today)
+      payment.update(refund_amount: 5000, refund_date: Date.today)
 
       expect(EmailJob).to have_received(:perform_later).with(
         { :from => ENV['FROM_EMAIL_PAYMENT'],
@@ -428,7 +422,7 @@ describe Payment do
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00, refund_issued: true)
 
       expect(EmailJob).to_not receive(:perform_later)
-      payment.update(refund_amount: 50_00, refund_basis: 500, refund_date: Date.today)
+      payment.update(refund_amount: 50_00, refund_date: Date.today)
     end
   end
 
@@ -444,8 +438,8 @@ describe Payment do
     it 'posts webhook after refund issued', :vcr, :stub_mailgun do
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
-      expect(WebhookJob).to receive(:perform_later).with(ENV['ZAPIER_WEBHOOK_URL'], PaymentSerializer.new(payment).as_json.merge({ event_name: 'refund', refund_amount: 500, refund_basis: 500, refund_date: Date.today.to_s }))
-      payment.update(refund_amount: 500, refund_basis: 500, refund_date: Date.today)
+      expect(WebhookJob).to receive(:perform_later).with(ENV['ZAPIER_WEBHOOK_URL'], PaymentSerializer.new(payment).as_json.merge({ event_name: 'refund', refund_amount: 500, refund_date: Date.today.to_s }))
+      payment.update(refund_amount: 500, refund_date: Date.today)
     end
 
     it 'posts webhook for an offline payment' do
@@ -456,7 +450,7 @@ describe Payment do
 
     it 'posts webhook for an offline refund' do
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
-      payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: -600_00, offline: true)
+      payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 0, refund_amount: 600_00, offline: true)
       expect(WebhookJob).to have_received(:perform_later).with(ENV['ZAPIER_WEBHOOK_URL'], PaymentSerializer.new(payment).as_json.merge({ event_name: 'refund_offline' }))
     end
   end

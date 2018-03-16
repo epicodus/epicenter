@@ -26,6 +26,7 @@ private
     end
     if student.cohort != new_current_cohort
       student.update(cohort: new_current_cohort)
+      student.update(ending_cohort: new_current_cohort) unless new_current_cohort.nil?
       crm_update = crm_update.merge({ 'custom.Cohort - Current': new_current_cohort.try(:description) })
     end
     student.crm_lead.update(crm_update) if crm_update.present?

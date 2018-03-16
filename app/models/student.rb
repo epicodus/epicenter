@@ -8,6 +8,7 @@ class Student < User
 
   belongs_to :plan, optional: true
   belongs_to :starting_cohort, class_name: :Cohort, optional: true
+  belongs_to :ending_cohort, class_name: :Cohort, optional: true
   belongs_to :cohort, optional: true
   belongs_to :office, optional: true
   has_many :enrollments

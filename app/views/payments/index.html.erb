@@ -30,7 +30,7 @@
         <% @student.payments.order_by_latest.each do |payment| %>
           <tr>
             <td><%= payment.try(:status).try(:capitalize) %></td>
-            <td><%= payment.try(:created_at).try(:strftime, "%A, %B %d, %Y") %></td>
+            <td><%= payment.try(:refund_date).try(:strftime, "%A, %B %d, %Y") || payment.try(:created_at).try(:strftime, "%A, %B %d, %Y") %></td>
             <% if payment.amount < 0 %>
               <td>offline refund</td>
             <% else %>
@@ -56,7 +56,7 @@
                       <p>n/a</p>
                     <% else %>
                       <div class="refund-section" id="refund-section-<%= payment.id %>">
-                        <btn class='show-refund-form-button btn btn-warning'>Refund...</btn>
+                        <btn class='show-refund-form-button btn btn-warning' id='show-refund-form-button'>Refund...</btn>
                         <div class="refund-form hidden">
                           <%= render 'payments/refund_form', payment: payment %>
                         </div>
@@ -88,6 +88,18 @@
     <div class="row">
       <div class="col-md-5">
         <%= render 'form' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="well">
+    <btn class='show-refund-form-button btn btn-warning'>Offline Refund...</btn>
+    <div class="refund-form hidden">
+      <h3>Offline refund</h3>
+      <div class="row">
+        <div class="col-md-5">
+          <%= render 'offline_refund_form' %>
+        </div>
       </div>
     </div>
   </div>
