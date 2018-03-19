@@ -155,7 +155,7 @@ feature 'Viewing payment index page' do
       it 'shows payment history with correct charge and status' do
         student = FactoryBot.create(:user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
         payment = FactoryBot.create(:payment_with_bank_account, amount: 600_00, student: student)
-        payment.update(refund_amount: 300_00, refund_basis: 30000, refund_date: Date.today)
+        payment.update(refund_amount: 300_00, refund_date: Date.today)
         visit student_payments_path(student)
         expect(page).to have_content '$300.00'
       end
@@ -165,7 +165,7 @@ feature 'Viewing payment index page' do
       it 'shows payment history with correct charge and status' do
         student = FactoryBot.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
         payment = FactoryBot.create(:payment_with_credit_card, amount: 600_00, student: student)
-        payment.update(refund_amount: 200_00, refund_basis: 30000, refund_date: Date.today)
+        payment.update(refund_amount: 200_00, refund_date: Date.today)
         visit student_payments_path(student)
         expect(page).to have_content '$200.00'
       end
@@ -174,10 +174,10 @@ feature 'Viewing payment index page' do
     context 'after an offline refund has been issued', :vcr, :stub_mailgun do
       it 'shows payment history with correct charge and status' do
         student = FactoryBot.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
-        payment = FactoryBot.create(:payment_with_credit_card, amount: -600_00, student: student, offline: true)
+        payment = FactoryBot.create(:payment_with_credit_card, amount: 0, refund_amount: -600_00, student: student, offline: true)
         visit student_payments_path(student)
-        expect(page).to have_content '-$600.00'
-        expect(page).to have_content 'offline refund'
+        expect(page).to have_content '$0.00'
+        expect(page).to have_content '$600.00'
       end
     end
   end
@@ -191,11 +191,9 @@ feature 'issuing an offline refund as an admin', :vcr do
 
   it 'sets category to refund for offline refunds' do
     visit student_payments_path(student)
-    check 'offline-payment-checkbox'
-    fill_in 'Notes', with: 'Test offline payment'
-    fill_in 'payment_amount', with: '-600'
-    select 'tuition'
-    click_on 'Manual payment'
+    fill_in 'refund-offline-input', with: '600'
+    fill_in 'refund-date-offline-input', with: Date.today
+    click_on 'Offline refund'
     expect(student.payments.first.category).to eq 'refund'
   end
 end
@@ -210,7 +208,6 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
   scenario 'successfully without cents' do
     visit student_payments_path(student)
     fill_in "refund-#{payment.id}-input", with: 60
-    fill_in "refund-basis-#{payment.id}-input", with: 60
     fill_in "refund-date-#{payment.id}-input", with: Date.today
     click_on 'Refund'
     expect(page).to have_content "Refund successfully issued for #{payment.student.name}."
@@ -220,7 +217,6 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
   scenario 'successfully with cents' do
     visit student_payments_path(student)
     fill_in "refund-#{payment.id}-input", with: 60.18
-    fill_in "refund-basis-#{payment.id}-input", with: 60.18
     fill_in "refund-date-#{payment.id}-input", with: Date.today
     click_on 'Refund'
     expect(page).to have_content "Refund successfully issued for #{payment.student.name}."
@@ -229,20 +225,18 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
 
   scenario 'unsuccessfully with an improperly formatted amount', :js do
     visit student_payments_path(student)
-    page.find('btn', text: 'Refund...').click
+    page.find_by_id('show-refund-form-button').click
     fill_in "refund-#{payment.id}-input", with: 60.1
-    fill_in "refund-basis-#{payment.id}-input", with: 60.18
     fill_in "refund-date-#{payment.id}-input", with: Date.today
     message = accept_prompt do
       click_on 'Refund'
     end
-    expect(message).to eq 'Please enter valid amounts.'
+    expect(message).to eq 'Please enter a valid amount.'
   end
 
   scenario 'unsuccessfully with an amount that is too large' do
     visit student_payments_path(student)
     fill_in "refund-#{payment.id}-input", with: 200
-    fill_in "refund-basis-#{payment.id}-input", with: 200
     fill_in "refund-date-#{payment.id}-input", with: Date.today
     click_on 'Refund'
     expect(page).to have_content 'Refund amount ($200.00) is greater than charge amount ($103.28)'
@@ -251,7 +245,6 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
   scenario 'unsuccessfully with a negative amount' do
     visit student_payments_path(student)
     fill_in "refund-#{payment.id}-input", with: -16.46
-    fill_in "refund-basis-#{payment.id}-input", with: 60.18
     fill_in "refund-date-#{payment.id}-input", with: Date.today
     click_on 'Refund'
     expect(page).to have_content 'Invalid positive integer'
@@ -268,7 +261,6 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
     visit student_payments_path(student)
     select student.primary_payment_method.description
     fill_in 'payment_amount', with: 1765.24
-    select 'tuition'
     click_on 'Manual payment'
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Succeeded'
@@ -280,7 +272,6 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
     visit student_payments_path(student)
     select other_payment_method.description
     fill_in 'payment_amount', with: 1765.24
-    select 'tuition'
     click_on 'Manual payment'
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Pending'
@@ -290,7 +281,6 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
   scenario 'successfully without cents', :vcr do
     visit student_payments_path(student)
     fill_in 'payment_amount', with: 1765
-    select 'tuition'
     click_on 'Manual payment'
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Succeeded'
@@ -300,27 +290,24 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
   scenario 'unsuccessfully with an improperly formatted amount', :js do
     visit student_payments_path(student)
     fill_in 'payment_amount', with: 60.1
-    select 'tuition'
     message = accept_prompt do
       click_on 'Manual payment'
     end
     expect(message).to eq 'Please enter a valid amount.'
   end
 
-  scenario 'with an invalid amount' do
+  scenario 'with an invalid amount (too high)' do
     visit student_payments_path(student)
     fill_in 'payment_amount', with: 9000
-    select 'tuition'
     click_on 'Manual payment'
-    expect(page).to have_content 'Amount cannot be greater than $8,500.'
+    expect(page).to have_content 'Amount cannot be negative or greater than $8,500.'
   end
 
-  scenario 'unsuccessfully with a negative amount' do
+  scenario 'with an invalid amount (negative)' do
     visit student_payments_path(student)
-    fill_in 'payment_amount', with: -16.46
-    select 'tuition'
+    fill_in 'payment_amount', with: -100
     click_on 'Manual payment'
-    expect(page).to have_content 'Invalid positive integer'
+    expect(page).to have_content 'Amount cannot be negative or greater than $8,500.'
   end
 
   scenario 'with no primary payment method selected' do
@@ -334,7 +321,6 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
     visit student_payments_path(student)
     select student.primary_payment_method.description
     fill_in 'payment_amount', with: 1765.24
-    select 'tuition'
     click_on 'Manual payment'
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Succeeded'
@@ -353,7 +339,6 @@ feature 'make an offline payment', :js, :vcr do
     check 'offline-payment-checkbox'
     fill_in 'Notes', with: 'Test offline payment'
     fill_in 'payment_amount', with: 60.18
-    select 'tuition'
     click_on 'Manual payment'
     wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoAlertPresentError
     alert = wait.until { page.driver.browser.switch_to.alert }

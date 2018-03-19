@@ -1,10 +1,6 @@
 <%= form_for payment, method: :patch do |f| %>
   <div class="form-group well">
     <div class="input-group refund-input-group">
-      <%= f.label :refund_basis, 'Basis of refund:' %>
-      <%= f.number_field :refund_basis, { class: 'form-control payment-refund-basis-input', id: "refund-basis-#{payment.id}-input", placeholder: 'basis of refund', required: true, step: 0.01 } %>
-    </div>
-    <div class="input-group refund-input-group">
       <%= f.label :refund_amount, 'Refund amount:' %>
       <%= f.number_field :refund_amount, { class: 'form-control payment-refund-input', id: "refund-#{payment.id}-input", placeholder: 'refund amount', required: true, step: 0.01 } %>
     </div>

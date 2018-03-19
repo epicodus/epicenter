@@ -27,7 +27,7 @@ class Payment < ApplicationRecord
   end
 
   def calculate_category
-    if amount < 0
+    if refund_amount.present?
       'refund'
     elsif student.plan.try(:standard?) && student.payments.any?
       'standard'
@@ -70,25 +70,16 @@ private
   end
 
   def issue_refund
-    if valid_refund?
-      begin
-        charge_id = Stripe::BalanceTransaction.retrieve(stripe_transaction).source
-        refund = Stripe::Refund.create(charge: charge_id, amount: refund_amount)
-        self.refund_issued = true
-        WebhookPayment.new({ event_name: 'refund', payment: self })
-        send_refund_receipt
-      rescue Stripe::StripeError => exception
-        errors.add(:base, exception.message)
-        throw :abort
-      end
-    else
-      errors.add(:base, 'Refund amount is not valid')
+    begin
+      charge_id = Stripe::BalanceTransaction.retrieve(stripe_transaction).source
+      refund = Stripe::Refund.create(charge: charge_id, amount: refund_amount)
+      self.refund_issued = true
+      WebhookPayment.new({ event_name: 'refund', payment: self })
+      send_refund_receipt
+    rescue Stripe::StripeError => exception
+      errors.add(:base, exception.message)
       throw :abort
     end
-  end
-
-  def valid_refund?
-    refund_amount <= refund_basis
   end
 
   def send_refund_receipt
@@ -161,14 +152,14 @@ private
   end
 
   def check_amount
-    if amount >= 8500_00
-      errors.add(:amount, 'cannot be greater than $8,500.')
+    if amount < 0 || amount >= 8500_00
+      errors.add(:amount, 'cannot be negative or greater than $8,500.')
       throw :abort
     end
   end
 
   def send_webhook
-    if amount < 0
+    if refund_amount.present?
       WebhookPayment.new({ event_name: "refund_offline", payment: self })
     elsif status == 'offline'
       WebhookPayment.new({ event_name: "payment_offline", payment: self })

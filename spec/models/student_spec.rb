@@ -862,7 +862,7 @@ describe Student do
 
     it 'includes negative offline transactions' do
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
-      payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: -200_00, offline: true)
+      payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 0, refund_amount: 200_00, offline: true)
       expect(student.total_paid).to eq -200_00
     end
   end

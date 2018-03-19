@@ -4,9 +4,8 @@ $(function() {
   $('.payment-refund-button').click(function() {
     var id = $(this).attr('id').split('-')[1];
     var inputRefundAmount = $('#refund-' + id + '-input').val();
-    var inputBasisAmount = $('#refund-basis-' + id + '-input').val();
-    if (!currencyRegex.test(inputRefundAmount) || !currencyRegex.test(inputBasisAmount)) {
-      alert('Please enter valid amounts.');
+    if (!currencyRegex.test(inputRefundAmount)) {
+      alert('Please enter a valid amount.');
       return false;
     }
   });
