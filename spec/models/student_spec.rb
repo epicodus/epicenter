@@ -1130,9 +1130,9 @@ describe Student do
         expect(student.calculate_starting_cohort).to eq nil
       end
 
-      it 'returns part-time cohort when part-time courses only' do
+      it 'returns nil when part-time courses only' do
         student = FactoryBot.create(:student, courses: [part_time_cohort.courses.first])
-        expect(student.calculate_starting_cohort).to eq part_time_cohort
+        expect(student.calculate_starting_cohort).to eq nil
       end
 
       it 'returns full-time cohort when part-time and full-time courses' do
@@ -1155,6 +1155,23 @@ describe Student do
       it 'returns last full-time cohort under normal conditions' do
         student = FactoryBot.create(:student, courses: future_cohort.courses + current_cohort.courses)
         expect(student.calculate_current_cohort).to eq future_cohort
+      end
+    end
+
+    describe '#calculate_parttime_cohort' do
+      it 'returns part-time cohort when part-time courses only' do
+        student = FactoryBot.create(:student, courses: [part_time_cohort.courses.first])
+        expect(student.calculate_parttime_cohort).to eq part_time_cohort
+      end
+
+      it 'returns part-time cohort when part-time and full-time courses' do
+        student = FactoryBot.create(:student, courses: [part_time_cohort.courses.first, current_cohort.courses.first])
+        expect(student.calculate_parttime_cohort).to eq part_time_cohort
+      end
+
+      it 'nil when full-time courses only' do
+        student = FactoryBot.create(:student, courses: [current_cohort.courses.first])
+        expect(student.calculate_parttime_cohort).to eq nil
       end
     end
   end

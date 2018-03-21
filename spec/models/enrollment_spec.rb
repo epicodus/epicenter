@@ -82,8 +82,8 @@ describe Enrollment do
         student.course = future_cohort.courses.last
       end
 
-      it 'updates only starting cohort when adding part-time course' do
-        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort - Starting': part_time_cohort.description })
+      it 'updates only part-time cohort when adding part-time course' do
+        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort - Part-time': part_time_cohort.description })
         student.course = part_time_cohort.courses.first
       end
 
