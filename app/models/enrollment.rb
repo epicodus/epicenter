@@ -19,6 +19,7 @@ private
   def update_cohort
     new_starting_cohort = student.calculate_starting_cohort
     new_current_cohort = student.calculate_current_cohort
+    new_parttime_cohort = student.calculate_parttime_cohort
     crm_update = {}
     if student.starting_cohort != new_starting_cohort
       student.update(starting_cohort: new_starting_cohort)
@@ -28,6 +29,10 @@ private
       student.update(cohort: new_current_cohort)
       student.update(ending_cohort: new_current_cohort) unless new_current_cohort.nil?
       crm_update = crm_update.merge({ 'custom.Cohort - Current': new_current_cohort.try(:description) })
+    end
+    if student.parttime_cohort != new_parttime_cohort
+      student.update(parttime_cohort: new_parttime_cohort)
+      crm_update = crm_update.merge({ 'custom.Cohort - Part-time': new_parttime_cohort.try(:description) })
     end
     student.crm_lead.update(crm_update) if crm_update.present?
   end

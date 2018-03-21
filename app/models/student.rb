@@ -9,6 +9,7 @@ class Student < User
   belongs_to :plan, optional: true
   belongs_to :starting_cohort, class_name: :Cohort, optional: true
   belongs_to :ending_cohort, class_name: :Cohort, optional: true
+  belongs_to :parttime_cohort, class_name: :Cohort, optional: true
   belongs_to :cohort, optional: true
   belongs_to :office, optional: true
   has_many :enrollments
@@ -301,8 +302,6 @@ class Student < User
         calculated_starting_cohort = courses.first.cohorts.find_by('description LIKE ?', '%ALL%') if calculated_starting_cohort.nil?
         calculated_starting_cohort
       end
-    else
-      courses_with_withdrawn.parttime_courses.first.try(:cohorts).try(:first)
     end
   end
 
@@ -322,6 +321,10 @@ class Student < User
         calculated_current_cohort
       end
     end
+  end
+
+  def calculate_parttime_cohort
+    courses_with_withdrawn.parttime_courses.last.try(:cohorts).try(:first)
   end
 
   def attendance_status
