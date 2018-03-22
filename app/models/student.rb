@@ -3,7 +3,6 @@ class Student < User
 
   validate :primary_payment_method_belongs_to_student
   validates :plan_id, presence: true, if: ->(student) { student.invitation_accepted_at? }
-  before_update :validate_plan_id, if: ->(student) { student.will_save_change_to_plan_id? && student.course.present? }
   before_destroy :archive_enrollments
 
   belongs_to :plan, optional: true
@@ -397,10 +396,6 @@ private
     if primary_payment_method && primary_payment_method.student != self
       errors.add(:primary_payment_method, 'must belong to you.')
     end
-  end
-
-  def validate_plan_id
-    throw :abort unless valid_plans.include? plan
   end
 
   def archive_enrollments
