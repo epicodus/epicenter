@@ -32,6 +32,7 @@ private
     end
     if student.parttime_cohort != new_parttime_cohort
       student.update(parttime_cohort: new_parttime_cohort)
+      student.update(ending_cohort: new_parttime_cohort) unless new_parttime_cohort.nil?
       crm_update = crm_update.merge({ 'custom.Cohort - Part-time': new_parttime_cohort.try(:description) })
     end
     student.crm_lead.update(crm_update) if crm_update.present?
