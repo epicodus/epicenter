@@ -1,3 +1,9 @@
+<div class="text-right">
+  <button type='button' class='btn btn-success' name='all_green' id='all_green'>All Objectives Passing</button>
+  <button type='button' class='btn btn-danger' name='all_yellow' id='all_yellow'>All Objectives Weak</button>
+  <button type='button' class='btn btn-primary' name='all_red' id='all_red'>All Objectives Failing</button>
+</div>
+
 <%= form_for [@submission, @review] do |f| %>
   <div class="table-responsive">
     <table class="table">
@@ -11,7 +17,7 @@
         <%= f.nested_fields_for :grades do |ff| %>
           <tr>
             <td class="col-md-8"><%= markdown(ff.object.objective.content) if ff.object.objective %></td>
-            <td><%= ff.collection_select :score_id, Score.all, :id, :description, { include_blank: true }, { class: "form-control" } %></td>
+            <td><%= ff.collection_select :score_id, Score.all, :id, :description, { include_blank: true }, { class: "form-control objectives-scores" } %></td>
           </tr>
           <%= ff.hidden_field :objective_id %>
         <% end %>
