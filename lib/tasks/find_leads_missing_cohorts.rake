@@ -28,15 +28,22 @@ task :find_leads_missing_cohorts => [:environment] do
           # student.crm_lead.update({ 'custom.Cohort - Starting': calculated_starting_cohort.description })
         end
 
-        # check starting_cohort in Close matches starting_cohort in Epicenter
+        # check starting_cohort & start date in Close matches starting_cohort in Epicenter
         lead = close_io_client.list_leads('email:' + student.email)['data'].first
         close_starting_cohort = lead['custom']['Cohort - Starting']
+        close_start_date = lead['custom']['Start Date']
         if close_starting_cohort.nil?
           counter += 1
           file.puts "ERROR: #{student.email}: Missing starting_cohort in Close"
+        elsif close_start_date.nil?
+          counter += 1
+          file.puts "ERROR: #{student.email}: Missing start date in Close"
         elsif student.starting_cohort.description != close_starting_cohort
           counter += 1
           file.puts "ERROR: #{student.email}: Close starting_cohort does not match Epicenter starting_cohort"
+        elsif student.starting_cohort.start_date.to_s != close_start_date
+          counter += 1
+          file.puts "ERROR: #{student.email}: Close start date does not match Epicenter starting_cohort start date"
         end
       end
     end
@@ -63,15 +70,22 @@ task :find_leads_missing_cohorts => [:environment] do
           # student.crm_lead.update({ 'custom.Cohort - Current': calculated_current_cohort.description })
         end
 
-        # check current cohort in Close matches cohort in Epicenter
+        # check current cohort & end date in Close matches cohort in Epicenter
         lead = close_io_client.list_leads('email:' + student.email)['data'].first
         close_current_cohort = lead['custom']['Cohort - Current']
+        close_end_date = lead['custom']['End Date']
         if close_current_cohort.nil?
           counter += 1
           file.puts "ERROR: #{student.email}: Missing current cohort in Close"
+        elsif close_end_date.nil?
+          counter += 1
+          file.puts "ERROR: #{student.email}: Missing end date in Close"
         elsif student.cohort.description != close_current_cohort
           counter += 1
           file.puts "ERROR: #{student.email}: Close current cohort does not match Epicenter cohort"
+        elsif student.cohort.end_date.to_s != close_end_date
+          counter += 1
+          file.puts "ERROR: #{student.email}: Close end date does not match Epicenter cohort end date"
         end
       end
     end
