@@ -23,12 +23,12 @@ private
     crm_update = {}
     if student.starting_cohort != new_starting_cohort
       student.update(starting_cohort: new_starting_cohort)
-      crm_update = crm_update.merge({ 'custom.Cohort - Starting': new_starting_cohort.try(:description) })
+      crm_update = crm_update.merge({ 'custom.Cohort - Starting': new_starting_cohort.try(:description), 'custom.Start Date': new_starting_cohort.try(:start_date).try(:to_s) })
     end
     if student.cohort != new_current_cohort
       student.update(cohort: new_current_cohort)
       student.update(ending_cohort: new_current_cohort) unless new_current_cohort.nil?
-      crm_update = crm_update.merge({ 'custom.Cohort - Current': new_current_cohort.try(:description) })
+      crm_update = crm_update.merge({ 'custom.Cohort - Current': new_current_cohort.try(:description), 'custom.End Date': new_current_cohort.try(:end_date).try(:to_s) })
     end
     if student.parttime_cohort != new_parttime_cohort
       student.update(parttime_cohort: new_parttime_cohort)
