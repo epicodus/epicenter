@@ -53,8 +53,7 @@ describe Payment do
     it "makes a successful payment" do
       student = FactoryBot.create :user_with_verified_bank_account, email: 'example@example.com'
       FactoryBot.create(:payment_with_bank_account, student: student)
-      student.reload
-      expect(student.payments).to_not eq []
+      expect(student.reload.payments).to_not eq []
     end
 
     it "sets the fee for the payment type" do
@@ -74,8 +73,7 @@ describe Payment do
     it "makes a successful payment" do
       student = FactoryBot.create :user_with_credit_card, email: 'example@example.com'
       FactoryBot.create(:payment_with_credit_card, student: student)
-      student.reload
-      expect(student.payments).to_not eq []
+      expect(student.reload.payments).to_not eq []
     end
 
     it "sets the fee for the payment type" do
@@ -86,7 +84,7 @@ describe Payment do
 
     it 'unsuccessfully with an amount that is too high' do
       student = FactoryBot.create :user_with_credit_card, email: 'example@example.com'
-      payment = FactoryBot.build(:payment_with_credit_card, student: student, amount: 5250_00)
+      payment = FactoryBot.build(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first, amount: 9250_00)
       expect(payment.save).to be false
     end
 
