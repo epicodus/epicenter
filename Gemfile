@@ -36,6 +36,7 @@ gem 'resque'
 gem 'active_model_serializers'
 gem 'rest-client'
 gem 'plaid'
+gem 'google-api-client'
 
 group :development do
   gem 'spring'
