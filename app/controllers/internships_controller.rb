@@ -2,7 +2,11 @@ class InternshipsController < ApplicationController
   authorize_resource
 
   def index
+    office = Office.find_by(short_name: params[:office])
     @courses = Course.internship_courses
+    @courses = @courses.active_internship_courses if params[:active]
+    @courses = @courses.inactive_internship_courses if params[:inactive]
+    @courses = @courses.courses_for(office) if office
     authorize! :manage, Course
   end
 
