@@ -2,17 +2,8 @@
 
 <div class="panel panel-default">
   <div class="panel-body">
-    <p>
-      <%= link_to 'View all', course_ratings_path(@course, all: true),class: 'btn btn-default' unless params[:all] %>
-      <%= link_to 'Export', course_export_path(@course, ratings: "true"), id: "export-btn", class: "btn btn-default" %>
-    </p>
-
     <div class="table-responsive">
-      <% if params[:all] %>
-        <table class="table table-hover datatable">
-      <% else %>
-        <table class="table table-hover">
-      <% end %>
+      <table class="table table-hover datatable">
         <thead>
           <th></th>
           <% @course.internships.order(:name).each do |internship| %>
@@ -23,10 +14,6 @@
           <%= render 'ratings_students' %>
         </tbody>
       </table>
-    </div>
-
-    <div class="paginator">
-      <%= paginate @students, remote: true %>
     </div>
   </div>
 </div>
