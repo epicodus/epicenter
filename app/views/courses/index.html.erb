@@ -15,47 +15,38 @@
 
         <% if current_admin.courses.any? %>
           <%= set_nav_link_class(:admin_courses) do %>
-            <%= link_to 'Yours', courses_path(admin_courses: true) %>
+            <%= link_to 'Yours', courses_path(admin_courses: true, internships: params[:internships], office: params[:office]) %>
           <% end %>
         <% end %>
 
         <%= set_nav_link_class(:future) do %>
-          <%= link_to 'Future', courses_path(future: true) %>
+          <%= link_to 'Future', courses_path(future: true, internships: params[:internships], office: params[:office]) %>
         <% end %>
 
         <%= set_nav_link_class(:current) do %>
-          <%= link_to 'Current', courses_path(current: true) %>
+          <%= link_to 'Current', courses_path(current: true, internships: params[:internships], office: params[:office]) %>
         <% end %>
 
         <%= set_nav_link_class(:previous) do %>
-          <%= link_to 'Previous', courses_path(previous: true) %>
+          <%= link_to 'Previous', courses_path(previous: true, internships: params[:internships], office: params[:office]) %>
         <% end %>
 
         <%= set_nav_link_class(:internships) do %>
-          <%= link_to 'Internships', courses_path(internships: true), class: 'bottom-side-nav-link' %>
+          <%= link_to 'Internships', courses_path(admin_courses: params[:admin_courses], future: params[:future], current: params[:current], previous: params[:previous], internships: true, office: params[:office]), class: 'bottom-side-nav-link' %>
         <% end %>
 
         <li class="locations-nav"><h4>Locations</h4></li>
 
         <% Office.all.order(:name).each do |office| %>
           <%= set_nav_link_class(office.name.downcase.to_sym) do %>
-            <%= link_to office.name, courses_path(office.name.downcase.to_sym => true) %>
+            <%= link_to office.name, courses_path(admin_courses: params[:admin_courses], future: params[:future], current: params[:current], previous: params[:previous], internships: params[:internships], office: office.short_name) %>
           <% end %>
         <% end %>
       </ul>
     </div>
 
     <div class="col-xs-10">
-      <%= render 'courses/course_list', courses: @courses if params[:all] %>
-      <%= render 'courses/course_list', courses: @courses.future_courses if params[:future] %>
-      <%= render 'courses/course_list', courses: @courses.current_courses if params[:current] %>
-      <%= render 'courses/course_list', courses: @courses.previous_courses if params[:previous] %>
-      <%= render 'courses/course_list', courses: @courses.internship_courses if params[:internships] %>
-      <%= render 'courses/course_list', courses: current_admin.courses.includes(:office) if params[:admin_courses] %>
-
-      <% Office.all.each do |office| %>
-        <%= render 'courses/course_list', courses: @courses.courses_for(office) if params[office.name.downcase.to_sym] %>
-      <% end %>
+      <%= render 'courses/course_list', courses: @courses %>
     </div>
   </div>
 <% end %>
