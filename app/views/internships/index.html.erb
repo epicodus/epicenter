@@ -7,29 +7,24 @@
   <div class="col-xs-2">
     <ul class="nav nav-pills nav-stacked side-nav">
       <%= set_nav_link_class(:active) do %>
-        <%= link_to 'Active', internships_path(active: true) %>
+        <%= link_to 'Active', internships_path(active: true, office: params[:office]) %>
       <% end %>
 
       <%= set_nav_link_class(:inactive) do %>
-        <%= link_to 'Inactive', internships_path(inactive: true), class: 'bottom-side-nav-link' %>
+        <%= link_to 'Inactive', internships_path(inactive: true, office: params[:office]), class: 'bottom-side-nav-link' %>
       <% end %>
 
       <li class="locations-nav"><h4>Locations</h4></li>
 
       <% Office.all.order(:name).each do |office| %>
         <%= set_nav_link_class(office.name.downcase.to_sym) do %>
-          <%= link_to office.name, internships_path(office.name.downcase.to_sym => true) %>
+          <%= link_to office.name, internships_path(active: params[:active], inactive: params[:inactive], office: office.short_name) %>
         <% end %>
       <% end %>
     </ul>
   </div>
 
   <div class="col-xs-10">
-    <% Office.all.each do |office| %>
-      <%= render 'internships', courses: @courses.courses_for(office) if params[office.name.downcase.to_sym] %>
-    <% end %>
-
-    <%= render 'internships', courses: @courses.active_internship_courses if params[:active] %>
-    <%= render 'internships', courses: @courses.inactive_internship_courses if params[:inactive] %>
+    <%= render 'internships', courses: @courses %>
   </div>
 </div>
