@@ -8,7 +8,14 @@ class CoursesController < ApplicationController
       @enrollment = Enrollment.new
       authorize! :manage, @student
     else
+      office = Office.find_by(short_name: params[:office])
       @courses = Course.all.includes(:admin).includes(:office)
+      @courses = @courses.future_courses if params[:future]
+      @courses = @courses.current_courses if params[:current]
+      @courses = @courses.previous_courses if params[:previous]
+      @courses = current_admin.courses.includes(:office) if params[:admin_courses]
+      @courses = @courses.internship_courses if params[:internships]
+      @courses = @courses.courses_for(office) if office
       authorize! :manage, Course
     end
   end
