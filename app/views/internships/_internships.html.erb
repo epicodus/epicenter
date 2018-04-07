@@ -11,6 +11,7 @@
           <p><%= pluralize(course.internships.count, 'internship') %></p>
           <p><%= pluralize(course.total_internship_students_requested, 'student') %> requested</p>
           <p><%= link_to 'Interview rankings', course_ratings_path(course) %></p>
+          <p><%= link_to 'Placement rankings', course_ratings_path(course, placement_rankings: true) %></p>
         </div>
 
         <div class="col-lg-2">

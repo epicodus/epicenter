@@ -394,19 +394,6 @@ describe Course do
     end
   end
 
-  describe '#export_internship_ratings' do
-    it 'exports to ratings.txt file how students rated internships' do
-      filename = Rails.root.join('tmp','ratings.txt')
-      student = FactoryBot.create(:student)
-      internship = FactoryBot.create(:internship, courses: [student.course])
-      rating = FactoryBot.create(:rating, student: student, internship: internship)
-      student.course.export_internship_ratings(filename)
-      expect(File.read(filename)).to include student.name
-      expect(File.read(filename)).to include internship.name
-      expect(File.read(filename)).to include rating.number.to_s
-    end
-  end
-
   describe '#set_parttime' do
     it 'sets parttime flag for evening course' do
       course = FactoryBot.create(:part_time_course)
