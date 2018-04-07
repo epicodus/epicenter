@@ -1,26 +1,29 @@
 feature 'viewing the ratings index page' do
-  let(:internship_course) { FactoryBot.create(:internship_course) }
-  let(:admin) { FactoryBot.create(:admin, current_course: internship_course) }
-
   context 'as an admin' do
+    let(:internship) { FactoryBot.create(:internship) }
+    let(:student) { FactoryBot.create(:student, courses: [internship.courses.first]) }
+    let(:admin) { FactoryBot.create(:admin) }
     before { login_as(admin, scope: :admin) }
 
-    scenario 'with a paginated list of ratings' do
+    scenario 'shows student ratings of companies pre-interviews' do
+      rating = FactoryBot.create(:rating, student: student, internship: internship, number: 99)
       visit internships_path(active: true)
       click_on 'Interview rankings'
-      expect(page).to have_content internship_course.description
+      expect(page).to have_content student.course.description
+      expect(page).to have_content rating.number
     end
 
-    scenario 'with all ratings' do
-      FactoryBot.create(:student, course: internship_course)
+    scenario 'shows student ratings of companies post-interviews' do
+      interview_assignment = FactoryBot.create(:interview_assignment, student_id: student.id, internship_id: internship.id, ranking_from_student: 55)
       visit internships_path(active: true)
-      click_on 'Interview rankings'
-      click_on 'View all'
-      expect(page).to have_content internship_course.description
+      click_on 'Placement rankings'
+      expect(page).to have_content student.course.description
+      expect(page).to have_content '55'
     end
   end
 
   context 'as a student' do
+    let(:internship_course) { FactoryBot.create(:internship_course) }
     let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
     before { login_as(student, scope: :student) }
 
@@ -29,5 +32,4 @@ feature 'viewing the ratings index page' do
       expect(page).to have_content "You are not authorized to access this page."
     end
   end
-
 end
