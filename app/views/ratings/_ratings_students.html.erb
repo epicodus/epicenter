@@ -1,8 +1,19 @@
-<% @students.each do |student| %>
-  <tr>
-    <td><%= link_to student.name, course_student_path(@course, student) %></td>
-    <% @course.internships.order(:name).each do |internship| %>
-        <td><%= internship.ratings.find_by(student_id: student.id).try(:number) %></td>
-    <% end %>
-  </tr>
+<% if params[:placement_rankings] %>
+  <% @students.each do |student| %>
+    <tr>
+      <td><%= link_to student.name, course_student_path(@course, student) %></td>
+      <% @course.internships.order(:name).each do |internship| %>
+          <td><%= internship.interview_assignments.find_by(student_id: student.id).try(:ranking_from_student) %></td>
+      <% end %>
+    </tr>
+  <% end %>
+<% else %>
+  <% @students.each do |student| %>
+    <tr>
+      <td><%= link_to student.name, course_student_path(@course, student) %></td>
+      <% @course.internships.order(:name).each do |internship| %>
+          <td><%= internship.ratings.find_by(student_id: student.id).try(:number) %></td>
+      <% end %>
+    </tr>
+  <% end %>
 <% end %>

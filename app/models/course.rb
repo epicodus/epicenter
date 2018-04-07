@@ -138,23 +138,6 @@ class Course < ApplicationRecord
     end
   end
 
-  def export_internship_ratings(filename)
-    CSV.open(filename, 'w') do |file|
-      header = ["student name"]
-      internships.order(:name).each do |internship|
-        header << internship.name
-      end
-      file.puts header
-      students.order(:name).each do |student|
-        line = [student.name]
-        internships.order(:name).each do |internship|
-          line << internship.ratings.find_by(student_id: student.id).try(:number)
-        end
-        file.puts line
-      end
-    end
-  end
-
 private
 
   def set_start_and_end_dates
