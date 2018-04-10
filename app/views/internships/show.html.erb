@@ -75,7 +75,7 @@
 <% if can?(:manage, @internship) %>
   <div class="row">
     <div class="col-md-6">
-      <h3>Rankings from students</h3>
+      <h3>Rankings from students (pre-interview)</h3>
       <div class="panel panel-default">
         <div class="panel-body">
           <div class="table-responsive">
@@ -100,7 +100,35 @@
       </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md-12">
+      <h3>Rankings from students (post-interview)</h3>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class='table student-internship-rankings-datatable'>
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Ranking</th>
+                  <th>Feedback</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @course.interview_assignments.for_internship(@internship).each do |interview_assignment| %>
+                  <tr>
+                    <td class="col-md-2"><%= link_to interview_assignment.student.name, course_student_path(@course, interview_assignment.student) %></td>
+                    <td class="col-md-1"><%= interview_assignment.ranking_from_student %></td>
+                    <td class="col-md-8"><%= interview_assignment.feedback_from_student %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12">
       <h3>Rankings from company</h3>
       <div class="panel panel-default">
         <div class="panel-body">
@@ -116,9 +144,9 @@
               <tbody>
                 <% @course.interview_assignments.for_internship(@internship).each do |interview_assignment| %>
                   <tr>
-                    <td><%= link_to interview_assignment.student.name, course_student_path(@course, interview_assignment.student) %></td>
-                    <td><%= interview_assignment.ranking_from_company %></td>
-                    <td><%= interview_assignment.feedback_from_company %></td>
+                    <td class="col-md-2"><%= link_to interview_assignment.student.name, course_student_path(@course, interview_assignment.student) %></td>
+                    <td class="col-md-1"><%= interview_assignment.ranking_from_company %></td>
+                    <td class="col-md-8"><%= interview_assignment.feedback_from_company %></td>
                   </tr>
                 <% end %>
               </tbody>
