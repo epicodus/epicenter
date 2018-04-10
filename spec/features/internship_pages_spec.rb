@@ -193,6 +193,20 @@ feature 'admin viewing students interested in an internship' do
       click_link student.name
       expect(page).to have_content 'Internships'
     end
+
+    scenario "an admin can view student feedback post-interview" do
+      FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_student: 1, feedback_from_student: 'Great interview!')
+      login_as(admin, scope: :admin)
+      visit course_internship_path(internship.courses.first, internship)
+      expect(page).to have_content "Great interview!"
+    end
+
+    scenario "an admin can view company feedback post-interview" do
+      FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 1, feedback_from_company: 'Great student!')
+      login_as(admin, scope: :admin)
+      visit course_internship_path(internship.courses.first, internship)
+      expect(page).to have_content "Great student!"
+    end
   end
 end
 
