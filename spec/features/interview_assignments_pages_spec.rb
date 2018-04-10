@@ -129,11 +129,11 @@ feature 'interview rankings' do
   end
 
   scenario 'as a student can not view company feedback or ranking until 1 week after internship start date' do
-    FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 5, feedback_from_company: 'Great fit!')
+    FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 55, feedback_from_company: 'Great fit!')
     login_as(student, scope: :student)
     visit course_student_path(internship.courses.first, student)
     expect(page).to have_content "Not yet available."
-    expect(page).to_not have_content "5"
+    expect(page).to_not have_content "55"
   end
 
   scenario 'as a student can view company feedback and ranking 1 week after internship start date' do
