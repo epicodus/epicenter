@@ -11,10 +11,15 @@ class InternshipsController < ApplicationController
   end
 
   def show
-    @internship = Internship.find(params[:id])
-    @course = Course.find(params[:course_id])
-    authorize! :read, @course
-    authorize! :read, @internship
+    if params[:course_id]
+      @internship = Internship.find(params[:id])
+      @course = Course.find(params[:course_id])
+      authorize! :read, @course
+      authorize! :read, @internship
+    else
+      @internship = Internship.find(params[:id])
+      authorize! :manage, @internship
+    end
   end
 
   def edit
