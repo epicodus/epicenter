@@ -32,4 +32,9 @@ RSpec.describe CrmUpdateJob, :vcr, type: :job do
     expect_any_instance_of(Closeio::Client).to receive(:update_contact).with(contact_id, {:emails=>[{"type"=>"office", "email"=>"second-email@example.com"}, {"type"=>"office", "email"=>"example@example.com"}]})
     perform_enqueued_jobs { CrmUpdateJob.perform_later(lead_id, email: "second-email@example.com") }
   end
+
+  it "executes perform for creating note" do
+    expect_any_instance_of(Closeio::Client).to receive(:create_note).with({:lead_id=>lead_id, :note=>"test note"})
+    perform_enqueued_jobs { CrmUpdateJob.perform_later(lead_id, note: "test note") }
+  end
 end

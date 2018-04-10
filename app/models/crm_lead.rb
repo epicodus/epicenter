@@ -42,6 +42,8 @@ class CrmLead
   def self.perform_update(lead_id, update_fields)
     if update_fields[:email]
       crm_response = update_email(lead_id, update_fields[:email])
+    elsif update_fields[:note]
+      crm_response = create_note(lead_id, update_fields[:note])
     else
       crm_response = update_lead(lead_id, update_fields.except(:email))
     end
@@ -95,6 +97,11 @@ private
     contact = close_io_client.find_lead(lead_id)['contacts'].first
     updated_emails = contact['emails'].unshift(Hashie::Mash.new({ type: "office", email: new_email }))
     close_io_client.update_contact(contact['id'], emails: updated_emails)
+  end
+
+  def self.create_note(lead_id, note)
+    close_io_client = Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false)
+    close_io_client.create_note({ lead_id: lead_id, note: note})
   end
 
   def self.update_lead(lead_id, update_fields)

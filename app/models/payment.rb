@@ -52,6 +52,7 @@ private
     else
       student.crm_lead.update('custom.Amount paid': amount_paid)
     end
+    student.crm_lead.update(note: notes) unless notes.blank?
   end
 
   def determine_payment_receipt_email_body

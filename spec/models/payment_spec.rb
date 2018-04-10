@@ -328,6 +328,18 @@ describe Payment do
       expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Amount paid': (payment.amount + payment_2.amount - payment_2.refund_amount) / 100 })
       payment_2.save
     end
+
+    it 'adds note to CRM when payment notes present' do
+      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard', notes: 'test payment note from api')
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { note: payment.notes })
+      payment.save
+    end
+
+    it 'does not add note to CRM when no payment notes present' do
+      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
+      expect(CrmUpdateJob).to_not receive(:perform_later).with(lead_id, { note: payment.notes })
+      payment.save
+    end
   end
 
   describe 'issuing a refund', :vcr, :stub_mailgun do
