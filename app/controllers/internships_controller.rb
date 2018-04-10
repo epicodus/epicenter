@@ -11,15 +11,10 @@ class InternshipsController < ApplicationController
   end
 
   def show
-    if params[:course_id]
-      @internship = Internship.find(params[:id])
-      @course = Course.find(params[:course_id])
-      authorize! :read, @course
-      authorize! :read, @internship
-    else
-      @internship = Internship.find(params[:id])
-      authorize! :manage, @internship
-    end
+    @internship = Internship.find(params[:id])
+    @course = Course.find(params[:course_id])
+    authorize! :read, @course
+    authorize! :read, @internship
   end
 
   def edit
@@ -45,7 +40,7 @@ private
   def internship_params
     params.require(:internship).permit(:name, :website, :address, :interview_location, :description,
                                        :ideal_intern, :clearance_required,
-                                       :clearance_description, :number_of_students, :remote, 
+                                       :clearance_description, :number_of_students, :remote,
                                        track_ids: [], course_ids: [])
   end
 end

@@ -105,8 +105,8 @@ feature 'visiting the internships show page' do
     end
 
     scenario 'students can not see list of internship periods' do
-      visit internship_path(internship)
-      expect(page).to have_content 'You are not authorized to access this page'
+      visit course_internship_path(student.course, internship)
+      expect(page).to_not have_content 'Internship periods'
     end
   end
 
@@ -152,17 +152,8 @@ feature 'visiting the internships show page' do
 
     scenario 'admin can see list of internship periods' do
       internship = FactoryBot.create(:internship)
-      visit internship_path(internship)
-      expect(page).to have_content internship.courses.first.description
-    end
-  end
-
-  context 'as a company' do
-    scenario 'company can see list of internship periods' do
-      internship = FactoryBot.create(:internship)
-      company = FactoryBot.create(:company, internships: [internship])
-      login_as(company, scope: :company)
-      visit internship_path(internship)
+      visit course_internship_path(internship.courses.first, internship)
+      expect(page).to have_content 'Internship periods'
       expect(page).to have_content internship.courses.first.description
     end
   end
