@@ -1,5 +1,5 @@
 class PaymentSerializer < ActiveModel::Serializer
-  attributes :id, :description, :amount, :fee, :status, :offline, :stripe_transaction, :category, :notes, :refund_amount
+  attributes :id, :description, :amount, :fee, :status, :offline, :stripe_transaction, :category, :notes, :refund_amount, :refund_notes
 
   def as_json
     student = Student.with_deleted.find_by_id(object.student_id)

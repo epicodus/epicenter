@@ -52,7 +52,11 @@ private
     else
       student.crm_lead.update('custom.Amount paid': amount_paid)
     end
-    student.crm_lead.update(note: "PAYMENT $#{number_with_precision(amount/100.00, precision: 2,  strip_insignificant_zeros: true)}: #{notes}")
+    if refund_amount?
+      student.crm_lead.update(note: "PAYMENT REFUND #{number_to_currency(refund_amount / 100.00)}: #{refund_notes}")
+    else
+      student.crm_lead.update(note: "PAYMENT #{number_to_currency(amount / 100.00)}: #{notes}")
+    end
   end
 
   def determine_payment_receipt_email_body
