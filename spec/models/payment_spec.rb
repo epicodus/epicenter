@@ -329,15 +329,23 @@ describe Payment do
       payment_2.save
     end
 
-    it 'adds note to CRM when payment notes present' do
-      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard', notes: 'test payment note from api')
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { note: "PAYMENT $#{number_with_precision(payment.amount/100.00, precision: 2,  strip_insignificant_zeros: true)}: #{payment.notes}" })
+    it 'adds note to CRM' do
+      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
+      expect(CrmUpdateJob).to_not receive(:perform_later).with(lead_id, { note: "PAYMENT #{number_to_currency(payment.amount / 100.00)}:" })
       payment.save
     end
 
-    it 'still creates note with payment info in CRM even when no payment notes present' do
-      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
-      expect(CrmUpdateJob).to_not receive(:perform_later).with(lead_id, { note: "PAYMENT $#{number_with_precision(payment.amount/100.00, precision: 2,  strip_insignificant_zeros: true)}:" })
+    it 'adds note to CRM including notes when present' do
+      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard', notes: 'test payment note from api')
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { note: "PAYMENT #{number_to_currency(payment.amount / 100.00)}: #{payment.notes}" })
+      payment.save
+    end
+
+    it 'adds note to CRM on refund including refund notes' do
+      payment = FactoryBot.create(:payment_with_bank_account, student: student)
+      payment.refund_amount = 50
+      payment.refund_notes = 'foo'
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { note: "PAYMENT REFUND #{number_to_currency(payment.refund_amount / 100.00)}: #{payment.refund_notes}" })
       payment.save
     end
   end

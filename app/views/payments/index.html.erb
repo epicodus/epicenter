@@ -43,7 +43,8 @@
             <% end %>
               <% if payment.refund_amount? %>
                 <td class="col-md-3">
-                  <%= number_to_currency(payment.refund_amount / 100.00) %>
+                  <%= number_to_currency(payment.refund_amount / 100.00) %><br>
+                  <%= payment.refund_notes %>
                 </td>
               <% elsif payment.amount < 0 %>
               <td class="col-md-3">

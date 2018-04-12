@@ -1,5 +1,9 @@
 <%= form_for payment, method: :patch do |f| %>
   <div class="form-group well">
+    <div class="form-group">
+      <%= f.label :refund_notes %>
+      <%= f.text_area :refund_notes, class: 'form-control' %>
+    </div>
     <div class="input-group refund-input-group">
       <%= f.label :refund_amount, 'Refund amount:' %>
       <%= f.number_field :refund_amount, { class: 'form-control payment-refund-input', id: "refund-#{payment.id}-input", placeholder: 'refund amount', required: true, step: 0.01 } %>
