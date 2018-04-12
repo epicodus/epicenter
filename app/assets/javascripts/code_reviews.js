@@ -9,22 +9,11 @@ $(function() {
     });
   });
 
-  $("#all_green").click(function() {
+  $(".mark-all-objectives").click(function() {
     var list = document.getElementsByClassName('objectives-scores');
     for (var i = 0; i < list.length; i++) {
-      list[i].value=3;
-    }
-  });
-  $("#all_yellow").click(function() {
-    var list = document.getElementsByClassName('objectives-scores');
-    for (var i = 0; i < list.length; i++) {
-      list[i].value=2;
-    }
-  });
-  $("#all_red").click(function() {
-    var list = document.getElementsByClassName('objectives-scores');
-    for (var i = 0; i < list.length; i++) {
-      list[i].value=1;
+      valueToSet = parseInt($(this).attr('id').split('_').pop())
+      list[i].value=valueToSet;
     }
   });
 });
