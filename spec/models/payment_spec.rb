@@ -331,13 +331,13 @@ describe Payment do
 
     it 'adds note to CRM when payment notes present' do
       payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard', notes: 'test payment note from api')
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { note: payment.notes })
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { note: "PAYMENT $#{number_with_precision(payment.amount/100.00, precision: 2,  strip_insignificant_zeros: true)}: #{payment.notes}" })
       payment.save
     end
 
-    it 'does not add note to CRM when no payment notes present' do
+    it 'still creates note with payment info in CRM even when no payment notes present' do
       payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
-      expect(CrmUpdateJob).to_not receive(:perform_later).with(lead_id, { note: payment.notes })
+      expect(CrmUpdateJob).to_not receive(:perform_later).with(lead_id, { note: "PAYMENT $#{number_with_precision(payment.amount/100.00, precision: 2,  strip_insignificant_zeros: true)}:" })
       payment.save
     end
   end
