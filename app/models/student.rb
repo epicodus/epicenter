@@ -131,9 +131,13 @@ class Student < User
   end
 
   def signed_main_documents?
+    documents_required.all? { |doc| signed?(doc) } && demographics?
+  end
+
+  def documents_required
     documents = [CodeOfConduct, RefundPolicy, EnrollmentAgreement]
-    documents << ComplaintDisclosure if course.try(:office).try(:name) == 'Seattle'
-    documents.all? { |doc| signed?(doc) } && demographics?
+    documents << ComplaintDisclosure if office.try(:name) == 'Seattle'
+    documents
   end
 
   def stripe_customer

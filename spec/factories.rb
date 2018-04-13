@@ -500,6 +500,7 @@ FactoryBot.define do
 
     factory :seattle_student do
       association :course, factory: :seattle_course
+      association :office, factory: :seattle_office
     end
 
     factory :portland_student_with_all_documents_signed do
