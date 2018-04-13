@@ -30,36 +30,27 @@ protected
   def after_sign_in_path_for(user)
     if user.is_a? Admin
       course_path(user.current_course)
+    elsif user.is_a? Company
+      company_path(user)
     elsif user.is_a? Student
-      if user.class_in_session? && user.signed_main_documents?
+      if user.signed_main_documents? && user.class_in_session?
         student_courses_path(current_student)
       elsif user.signed_main_documents? && user.payment_methods.any? && user.courses.any?
         student_courses_path(current_student)
+      elsif user.signed_main_documents?
+        proper_payments_path(user)
       else
         signatures_check_path(user)
       end
-    elsif user.is_a? Company
-      company_path(user)
     end
   end
 
   def signatures_check_path(user)
-    if user.signed_main_documents?
-      proper_payments_path(user)
-    elsif user.signed?(EnrollmentAgreement)
-      new_demographic_path
-    elsif user.signed?(RefundPolicy)
-      if user.course.office.name == "Seattle" && !user.signed?(ComplaintDisclosure)
-        new_complaint_disclosure_path
-      else
-        new_enrollment_agreement_path
-      end
-    elsif user.signed?(CodeOfConduct)
-      new_refund_policy_path
-    elsif !user.signed?(CodeOfConduct)
-      new_code_of_conduct_path
+    missing_document = user.documents_required.select { |doc| !user.signed?(doc) }.first
+    if missing_document
+      public_send('new_' + missing_document.name.underscore + '_path')
     else
-      proper_payments_path(user)
+      new_demographic_path
     end
   end
 
