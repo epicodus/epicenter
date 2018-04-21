@@ -348,3 +348,14 @@ feature 'make an offline payment', :js, :vcr do
     expect(page).to have_content '$60.18'
   end
 end
+
+feature "Responds to callback from Zapier with qbo doc_numbers", :js do
+  scenario "and instantiates PaymentCallback model" do
+    payment = FactoryBot.create(:payment_with_credit_card)
+    host = Capybara.current_session.server.host
+    port = Capybara.current_session.server.port
+    payload = { 'paymentId': payment.id.to_s, 'docNumber': '1A'}
+    RestClient.post("#{host}:#{port}/payment_callbacks", payload.to_json, {content_type: :json, accept: :json})
+    expect(payment.reload.qbo_doc_numbers).to eq ['1A']
+  end
+end

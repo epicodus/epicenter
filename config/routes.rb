@@ -63,6 +63,7 @@ Rails.application.routes.draw do
   end
 
   resources :stripe_callbacks, only: [:create]
+  resources :payment_callbacks, only: [:create]
 
   resources :signatures, only: [:create] do
     collection do
