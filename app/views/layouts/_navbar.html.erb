@@ -49,7 +49,7 @@
             <li><%= link_to "Home", course_path(current_admin.current_course), class: 'first-navbar-link' %></li>
           <% end %>
           <li>
-            <% if current_admin.courses.any? %>
+            <% if current_admin.courses.any? && current_admin.teacher? %>
               <%= link_to 'Courses', courses_path(admin_courses: true) %>
             <% else %>
               <%= link_to 'Courses', courses_path(current: true) %>
