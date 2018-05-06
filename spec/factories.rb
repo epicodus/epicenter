@@ -337,6 +337,18 @@ FactoryBot.define do
         payment.payment_method = payment.student.payment_methods.first
       end
     end
+
+    factory :offline_payment do
+      offline true
+      association :student, factory: :student
+    end
+  end
+
+  factory :refund do
+    category 'refund'
+    refund_date Date.today
+    refund_amount 50
+    status 'succeeded'
   end
 
   factory :plan do

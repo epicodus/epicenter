@@ -1,6 +1,6 @@
 class PaymentsController < ApplicationController
   authorize_resource
-  before_action :ensure_student_has_primary_payment_method, except: [:update]
+  before_action :ensure_student_has_primary_payment_method
 
   def index
     @student = Student.find(params[:student_id])
@@ -22,30 +22,14 @@ class PaymentsController < ApplicationController
     end
   end
 
-  def update
-    @payment = Payment.find(params[:id])
-    if @payment.update(payment_params)
-      redirect_to student_payments_path(@payment.student), notice: "Refund successfully issued for #{@payment.student.name}."
-    else
-      @student = @payment.student
-      render 'index'
-    end
-  end
-
 private
   def payment_params
-    modify_amounts(params[:payment][:refund_amount], params[:payment][:amount])
-    params.require(:payment).permit(:amount, :student_id, :payment_method_id, :offline, :notes, :category, :refund_amount, :refund_date, :refund_notes)
+    modify_amounts(params[:payment][:amount])
+    params.require(:payment).permit(:amount, :student_id, :payment_method_id, :offline, :notes, :category)
   end
 
-  def modify_amounts(refund_amount, payment_amount)
-    if refund_amount
-      if refund_amount.try(:include?, '.')
-        refund_amount.slice!('.')
-      else
-        params[:payment][:refund_amount] = refund_amount.to_i * 100
-      end
-    elsif payment_amount
+  def modify_amounts(payment_amount)
+    if payment_amount
       if payment_amount.try(:include?, '.')
         payment_amount.slice!('.')
       else

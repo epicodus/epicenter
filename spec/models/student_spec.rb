@@ -3,6 +3,7 @@ describe Student do
   it { should have_many :payment_methods }
   it { should have_many :credit_cards }
   it { should have_many :payments }
+  it { should have_many :refunds }
   it { should have_many :ratings }
   it { should have_many(:internships).through(:ratings) }
   it { should belong_to :plan }
@@ -856,13 +857,20 @@ describe Student do
     it 'subtracts refunds' do
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00, offline: true)
+      FactoryBot.create(:refund, student: student, original_payment: payment, refund_amount: 50_00, offline: true)
+      expect(student.total_paid).to eq 150_00
+    end
+
+    it 'subtracts refunds (legacy)' do
+      student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
+      payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00, offline: true)
       payment.update(refund_amount: 5000)
       expect(student.total_paid).to eq 150_00
     end
 
-    it 'includes negative offline transactions' do
+    it 'includes negative offline transactions (legacy)' do
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
-      payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 0, refund_amount: 200_00, offline: true)
+      payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 100_00, refund_amount: 300_00, offline: true)
       expect(student.total_paid).to eq -200_00
     end
   end

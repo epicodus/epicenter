@@ -16,6 +16,7 @@ class Student < User
   has_many :bank_accounts
   has_many :credit_cards
   has_many :payments
+  has_many :refunds
   has_many :attendance_records
   has_many :submissions
   has_many :payment_methods
@@ -163,7 +164,7 @@ class Student < User
   end
 
   def total_paid
-    payments.without_failed.sum(:amount) - payments.without_failed.sum(:refund_amount)
+    payments.without_failed.sum(:amount) - payments.without_failed.sum(:refund_amount) - refunds.sum(:refund_amount)
   end
 
   def signed_in_today?

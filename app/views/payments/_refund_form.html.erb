@@ -1,21 +1,25 @@
-<%= form_for payment, method: :patch do |f| %>
-  <div class="form-group well">
-    <div class="form-group">
-      <%= f.label :refund_notes %>
-      <%= f.text_area :refund_notes, class: 'form-control' %>
-    </div>
-    <div class="input-group refund-input-group">
-      <%= f.label :refund_amount, 'Refund amount:' %>
-      <%= f.number_field :refund_amount, { class: 'form-control payment-refund-input', id: "refund-#{payment.id}-input", placeholder: 'refund amount', required: true, step: 0.01 } %>
-    </div>
-    <div class="input-group refund-input-group">
-      <%= f.label :refund_date, 'Effective refund date:' %>
-      <%= f.date_field :refund_date, { class: 'form-control payment-refund-date-input', id: "refund-date-#{payment.id}-input", required: true } %>
-    </div>
-    <div class="input-group">
-      <span class="input-group-btn">
-        <%= f.submit 'Refund', class: 'btn btn-info payment-refund-button', id: "refund-#{payment.id}-button", data: { confirm: 'Are you sure?' } %>
-      </span>
-    </div>
+<%= form_for [@student, payment.refunds.new] do |f| %>
+  <%= f.hidden_field :offline, value: payment.offline %>
+  <%= f.hidden_field :original_payment_id, value: payment.id %>
+
+  <div class="form-group">
+    <%= f.label :refund_notes %>
+    <%= f.text_area :refund_notes, class: 'form-control' %>
+  </div>
+
+  <div class="input-group refund-input-group">
+    <%= f.label :refund_amount, 'Refund amount:' %>
+    <%= f.number_field :refund_amount, { class: 'form-control payment-refund-input', id: "refund-#{payment.id}-input", placeholder: 'refund amount', required: true, step: 0.01 } %>
+  </div>
+
+  <div class="input-group refund-input-group">
+    <%= f.label :refund_date, 'Effective refund date:' %>
+    <%= f.date_field :refund_date, { class: 'form-control payment-refund-date-input', id: "refund-date-#{payment.id}-input", required: true } %>
+  </div>
+
+  <div class="input-group">
+    <span class="input-group-btn">
+      <%= f.submit payment.offline? ? 'Submit Offline Refund' : 'Submit Refund', class: 'btn btn-info payment-refund-button', id: "refund-#{payment.id}-button", data: { confirm: 'Are you sure?' } %>
+    </span>
   </div>
 <% end %>

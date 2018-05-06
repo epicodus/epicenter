@@ -24,7 +24,7 @@ private
   def set_admin_permissions
     can :manage, [AttendanceRecord, CodeReview, Company, Course, Enrollment,
                   Internship, InternshipAssignment, InterviewAssignment,
-                  Payment, Student, Submission, Cohort]
+                  Payment, Refund, Student, Submission, Cohort]
     can :create, [AttendanceRecordAmendment, Review]
   end
 
@@ -41,6 +41,7 @@ private
     end
     can :create, Payment, student_id: user.id, payment_method: { student_id: user.id }
     can :read, Payment, student_id: user.id
+    can :read, Refund, student_id: user.id
     can :manage, Student, id: user.id
     can :read, Transcript, student: user
   end
@@ -50,6 +51,7 @@ private
     can :create, CreditCard
     can :create, Payment, student_id: user.id, payment_method: { student_id: user.id }
     can :read, Payment, student_id: user.id
+    can :read, Refund, student_id: user.id
     can :manage, Student, id: user.id
   end
 
