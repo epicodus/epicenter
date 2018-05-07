@@ -23,13 +23,13 @@
             <th>Category</th>
             <th>Notes</th>
           <% end %>
-          <% if can?(:manage, Payment) || @student.payments.pluck(:refund_amount).any? || @student.refunds.any? %>
+          <% if can?(:manage, Payment) || @student.refunds.any? %>
             <th>Refund</th>
           <% end %>
         </tr>
       </thead>
       <tbody>
-        <% @student.payments.order_by_latest.each do |payment| %>
+        <% @student.payments.includes(:refunds).order_by_latest.each do |payment| %>
           <tr>
             <td class="col-md-1"><%= payment.try(:status).try(:capitalize) %></td>
             <td class="col-md-2"><%= payment.created_at.strftime("%a %b %d %Y") %></td>
@@ -40,13 +40,7 @@
               <td class="col-md-3"><%= payment.notes %></td>
             <% end %>
             <td class="col-md-2" id="refund-<%= payment.id %>">
-              <% if payment.refund_amount? || payment.amount < 0 %>
-                <%= payment.refund_amount? ? number_to_currency(payment.refund_amount / 100.00) : number_to_currency(payment.amount / -100.00) %><br>
-                <% if can? :manage, Payment %>
-                  <%= payment.refund_date %><br>
-                  <%= payment.refund_notes %>
-                <% end %>
-              <% elsif payment.refunds.any? %>
+              <% if payment.refunds.any? %>
                 <% payment.refunds.each_with_index do |refund, index| %>
                   <%= number_to_currency(refund.refund_amount / 100.00) %><br>
                   <% if can? :manage, Payment %>
@@ -56,7 +50,7 @@
                   <p>&nbsp;</p>
                 <% end %>
               <% end %>
-              <% if payment.amount > 0 && !payment.refund_amount? && current_admin %>
+              <% if current_admin %>
                 <div class="refund-section" id="refund-section-<%= payment.id %>">
                   <btn class='show-refund-form-button btn btn-warning' id='show-refund-form-button'><%= payment.offline? ? 'Offline Refund...' : 'Refund...' %></btn>
                   <div class="refund-form hidden">

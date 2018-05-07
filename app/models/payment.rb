@@ -14,7 +14,7 @@ class Payment < PaymentBase
   end
 
   def total_refunded
-    refund_amount.to_i + refunds.sum(:refund_amount)
+    refunds.sum(:refund_amount)
   end
 
 private
@@ -64,6 +64,7 @@ private
   # ------------------ ACTION --------------------
 
   def make_payment
+    binding.pry
     customer = student.stripe_customer
     self.fee = payment_method.calculate_fee(amount)
     begin
@@ -77,6 +78,7 @@ private
   end
 
   def send_payment_receipt
+    binding.pry
     EmailJob.perform_later(
       { :from => ENV['FROM_EMAIL_PAYMENT'],
         :to => student.email,
@@ -87,6 +89,7 @@ private
   end
 
   def determine_payment_receipt_email_body
+    binding.pry
     email_body = "Hi #{student.name}. This is to confirm your payment of #{number_to_currency(total_amount / 100.00)} for Epicodus tuition. "
     if student.plan.standard? && student.payments.count == 0
       email_body += "I am going over the payments for your class and just wanted to confirm that you have chosen the #{student.plan.name} plan and that we will be charging you the remaining #{number_to_currency(student.plan.first_day_amount / 100, precision: 0)} on the first day of class. I want to be sure we know your intentions and don't mistakenly charge you. Thanks so much!"
@@ -101,6 +104,7 @@ private
   # ------------------ AFTER --------------------
 
   def update_crm
+    binding.pry
     amount_paid = student.total_paid / 100
     if student.payments.count == 1 && student.crm_lead.status == "Applicant - Accepted"
       if student.course.try(:parttime?)
@@ -118,6 +122,7 @@ private
   # ------------------ ON STRIPE CALLBACK --------------------
 
   def send_payment_failure_notice
+    binding.pry
     EmailJob.perform_later(
       { :from => ENV['FROM_EMAIL_PAYMENT'],
         :to => student.email,

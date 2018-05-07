@@ -19,10 +19,12 @@ class PaymentBase < ApplicationRecord
 
 private
   def set_offline_status
+    binding.pry
     self.status = 'offline'
   end
 
   def send_webhook
+    binding.pry
     WebhookPayment.new({ event_name: type.downcase + '_' + status, payment: self })
   end
 end

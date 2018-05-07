@@ -164,7 +164,7 @@ class Student < User
   end
 
   def total_paid
-    payments.without_failed.sum(:amount) - payments.without_failed.sum(:refund_amount) - refunds.sum(:refund_amount)
+    payments.without_failed.sum(:amount) - refunds.sum(:refund_amount)
   end
 
   def signed_in_today?
