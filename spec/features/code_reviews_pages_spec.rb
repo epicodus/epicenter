@@ -239,7 +239,7 @@ feature 'visiting the code review show page' do
       scenario 'unsuccessfully' do
         fill_in 'submission_link', with: ''
         click_button 'Resubmit'
-        expect(page).to have_content "Please correct these problems: Link can't be blank"
+        expect(page).to have_content "There was a problem submitting."
       end
     end
   end
