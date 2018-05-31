@@ -51,7 +51,7 @@ class CrmLead
     CrmLead.raise_error(errors) if errors.present?
   end
 
-private
+# private
 
   def lead
     return @lead if @lead
@@ -77,7 +77,11 @@ private
   end
 
   def track
-    Track.find_by(description: cohort_applied.split[2]) || CrmLead.raise_error("Track not found in Epicenter")
+    if cohort_applied.include? 'Front End Development'
+      Track.find_by(description: 'Front End Development')
+    else
+      Track.find_by(description: cohort_applied.split[2]) || CrmLead.raise_error("Track not found in Epicenter")
+    end
   end
 
   def parttime?
