@@ -107,6 +107,13 @@ FactoryBot.define do
       association :office, factory: :seattle_office
     end
 
+    factory :portland_part_time_course do
+      start_time '6:00 PM'
+      end_time '9:00 PM'
+      association :language, factory: :evening_language
+      association :office, factory: :portland_office
+    end
+
     factory :internship_course do
       active true
       association :language, factory: :internship_language

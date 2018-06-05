@@ -1010,7 +1010,7 @@ describe Student do
       end
     end
 
-    it 'lists free intro plan for portland student starting july 30 2018' do
+    it 'lists free intro plan for portland full-time student starting july 30 2018' do
       course = FactoryBot.create(:portland_course, class_days: [Time.new(2018, 7, 30).to_date])
       student = FactoryBot.create(:student, plan_id: nil, courses: [course])
       expect(student.valid_plans).to eq [free_intro_plan]
@@ -1020,6 +1020,12 @@ describe Student do
       course = FactoryBot.create(:seattle_course, class_days: [Time.new(2018, 7, 30).to_date])
       student = FactoryBot.create(:student, plan_id: nil, courses: [course])
       expect(student.valid_plans).to eq [rate_plan_2018]
+    end
+
+    it 'does not list free intro plan for portland part-time student starting july 30 2018' do
+      course = FactoryBot.create(:portland_part_time_course, class_days: [Time.new(2018, 7, 30).to_date])
+      student = FactoryBot.create(:student, plan_id: nil, courses: [course])
+      expect(student.valid_plans).to eq [pt_plan_2018]
     end
   end
 
