@@ -407,6 +407,14 @@ FactoryBot.define do
       upfront_amount 120_00
       start_date Time.new(2017, 9, 5).to_date
     end
+
+    factory :free_intro_plan do
+      name 'Free Intro ($100 enrollment fee)'
+      description 'Free Intro'
+      upfront true
+      upfront_amount 10000
+      start_date Time.new(2018, 6, 1).to_date
+    end
   end
 
   factory :objective do
