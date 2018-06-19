@@ -321,6 +321,7 @@ class Student < User
         calculated_current_cohort = courses.last.cohorts.find_by(track: courses_with_tracks.last.track, start_date: cohort_start_date)
         calculated_current_cohort = courses_with_tracks.last.cohorts.find_by(track: courses_with_tracks.last.track, start_date: cohort_start_date) if calculated_current_cohort.nil?
         calculated_current_cohort = courses.last.cohorts.find_by('description LIKE ?', '%ALL%') if calculated_current_cohort.nil?
+        calculated_current_cohort = courses.last.cohorts.order(:description).first if calculated_current_cohort.nil? # just pick one if student switched to internship course that doesn't go with student's track
         calculated_current_cohort
       end
     end
