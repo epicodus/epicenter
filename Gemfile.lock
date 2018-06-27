@@ -76,7 +76,7 @@ GEM
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11.0)
     cancancan (2.2.0)
-    capybara (3.3.0)
+    capybara (3.3.1)
       addressable
       mini_mime (>= 0.1.3)
       nokogiri (~> 1.8)
@@ -355,7 +355,7 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
-    selenium-webdriver (3.13.0)
+    selenium-webdriver (3.12.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.2)
     shoulda-matchers (3.1.2)
@@ -475,6 +475,7 @@ DEPENDENCIES
   rest-client
   rspec-rails
   sass-rails
+  selenium-webdriver (~> 3.12.0)
   shoulda-matchers
   simplecov
   spring
