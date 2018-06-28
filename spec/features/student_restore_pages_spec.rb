@@ -22,7 +22,7 @@ feature 'restoring a student' do
     end
 
     scenario 'you are authorized' do
-      page.driver.submit :patch, "/students/#{archived_student.id}/restore", {}
+      page.driver.submit :patch, "/students/#{archived_student.id}/restore?restore=true", {}
       expect(page).to have_content 'Total paid'
     end
 
@@ -34,6 +34,17 @@ feature 'restoring a student' do
       end
       click_on 'Restore'
       expect(page).to have_content 'Total paid'
+      expect(page).to have_content 'restored'
+    end
+
+    scenario 'you can permandently delete an archived student' do
+      visit root_path
+      within '#navbar-search' do
+        fill_in 'search', with: archived_student.name
+        click_on 'student-search'
+      end
+      click_on "student-expunge-#{archived_student.id}"
+      expect(page).to have_content 'expunged'
     end
   end
 end

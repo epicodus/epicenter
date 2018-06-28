@@ -27,7 +27,12 @@
               </p>
 
               <% if student.deleted? %>
-                <p><%= button_to 'Restore', student_restore_path(student), method: :patch, class: "btn btn-default" %></p>
+                <p><%= button_to 'Restore', student_restore_path(student, restore: true), method: :patch, class: "btn btn-default" %></p>
+                <p>
+                  <%= button_to student_restore_path(student, expunge: true), class: "btn btn-primary", id: "student-expunge-#{student.id}", method: :patch, data: { confirm: 'Permanently delete student record?' } do %>
+                    <span class="glyphicon glyphicon-trash"></span>
+                  <% end %>
+                </p>
               <% else %>
                 <p><%= link_to 'Courses', student_courses_path(student) %></p>
                 <p><%= link_to 'Payments', student_payments_path(student) %></p>
