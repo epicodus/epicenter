@@ -223,14 +223,14 @@ class Student < User
     end
     if start_course && end_course && status == :absent
       filtered_results = results.where("date between ? and ?", start_course.try(:start_date), end_course.try(:end_date))
-      total_number_of_course_days(start_course, end_course) - filtered_results.count
+      [0, total_number_of_course_days(start_course, end_course) - filtered_results.count].max
     elsif start_course && status == :absent
       filtered_results = results.where("date between ? and ?", start_course.try(:start_date), start_course.try(:end_date))
-      start_course.number_of_days_since_start - filtered_results.count
+      [0, start_course.number_of_days_since_start - filtered_results.count].max
     elsif start_course
       filtered_results.count
     elsif status == :absent
-      total_number_of_course_days - attendance_records.count
+      [0, total_number_of_course_days - attendance_records.count].max
     else
       results.count
     end
