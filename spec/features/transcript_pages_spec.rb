@@ -1,6 +1,16 @@
 feature "viewing transcript & certificate" do
   context "before first class is over" do
-    it "doesn't show transcript" do
+    it "doesn't show transcript to admin" do
+      admin = FactoryBot.create(:admin)
+      student = FactoryBot.create(:student)
+      login_as(admin, scope: :admin)
+      visit student_courses_path(student)
+      expect(page).to have_content "Transcript not yet available."
+      visit student_transcript_path(student)
+      expect(page).to have_content "Transcript not yet available."
+    end
+
+    it "doesn't show transcript to student" do
       student = FactoryBot.create(:student)
       login_as(student, scope: :student)
       visit edit_student_registration_path
@@ -20,6 +30,17 @@ feature "viewing transcript & certificate" do
   end
 
   context "after completed 1 class" do
+    it "allows admin to view student transcript" do
+      admin = FactoryBot.create(:admin)
+      course = FactoryBot.create(:past_course)
+      student = FactoryBot.create(:student, course: course)
+      login_as(admin, scope: :admin)
+      visit student_courses_path(student)
+      click_link "View transcript"
+      expect(page).to have_content "Transcript"
+      expect(page).to have_content student.name
+    end
+
     it "allows student to view their transcript" do
       course = FactoryBot.create(:past_course)
       student = FactoryBot.create(:student, course: course)

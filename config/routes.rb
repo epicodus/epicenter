@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     resources :attendance_records, only: [:index]
     resource :restore, only: [:update], to: 'student_restore#update'
     resource :add_course, only: [:update], to: 'add_course#update'
+    resource :transcript, only: [:show]
   end
   resources :admins, only: [:update]
   resources :payment_methods, only: [:index, :new]
