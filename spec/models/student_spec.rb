@@ -736,7 +736,7 @@ describe Student do
       expect(student.attendance_records_for(:left_early)).to eq 1
     end
 
-    it 'counts the number of days the student has been absent' do
+    it 'returns 0 if absences is negative' do
       travel_to course.start_date do
         FactoryBot.create(:attendance_record, student: student)
       end
@@ -744,6 +744,18 @@ describe Student do
         FactoryBot.create(:attendance_record, student: student)
       end
       expect(student.attendance_records_for(:absent)).to eq 23
+    end
+
+    it 'counts the number of days the student has been absent' do
+      course.class_days=[course.start_date]
+      course.save
+      travel_to course.start_date do
+        FactoryBot.create(:attendance_record, student: student)
+      end
+      travel_to course.start_date + 2.days do
+        FactoryBot.create(:attendance_record, student: student)
+      end
+      expect(student.attendance_records_for(:absent)).to eq 0
     end
 
     context 'for a particular course' do
