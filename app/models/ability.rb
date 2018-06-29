@@ -26,6 +26,7 @@ private
                   Internship, InternshipAssignment, InterviewAssignment,
                   Payment, Student, Submission, Cohort]
     can :create, [AttendanceRecordAmendment, Review]
+    can :read, [Transcript]
   end
 
   def set_enrolled_student_permissions(user, ip)
