@@ -88,6 +88,7 @@ feature 'Creating a bank account via plaid' do
 
     scenario 'with valid information', :vcr, :js do
       within_frame 'plaid-link-iframe-1' do
+        click_on 'Continue'
         find('[data-institution="chase"]').click
         fill_in 'username', with: 'user_good'
         fill_in 'password', with: 'pass_good'
@@ -102,6 +103,7 @@ feature 'Creating a bank account via plaid' do
     scenario 'when the account already exists', :vcr, :js do
       FactoryBot.create(:bank_account, student: student)
       within_frame 'plaid-link-iframe-1' do
+        click_on 'Continue'
         find('[data-institution="chase"]').click
         fill_in 'username', with: 'user_good'
         fill_in 'password', with: 'pass_good'
