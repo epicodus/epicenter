@@ -52,19 +52,8 @@ describe Plan do
   end
 
   describe 'rates scopes' do
-    let!(:rate_plan_2016) { FactoryBot.create(:rate_plan_2016) }
-    let!(:rate_plan_2017) { FactoryBot.create(:rate_plan_2017) }
-    let!(:rate_plan_2018) { FactoryBot.create(:rate_plan_2018) }
-
-    it 'returns all 2016 plans' do
-      expect(Plan.rates_2016).to eq [rate_plan_2016]
-    end
-
-    it 'returns all 2017 plans' do
-      expect(Plan.rates_2017).to eq [rate_plan_2017]
-    end
-
     it 'returns all 2018 plans' do
+      rate_plan_2018 = FactoryBot.create(:rate_plan_2018)
       expect(Plan.rates_2018).to eq [rate_plan_2018]
     end
   end

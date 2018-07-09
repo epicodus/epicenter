@@ -29,9 +29,9 @@ feature 'Visiting students index page' do
 end
 
 feature 'Student signs up via invitation', :vcr do
-  let(:course) { FactoryBot.create(:course, class_days: [Time.new(2016, 12, 1).to_date]) }
-  let(:plan) { FactoryBot.create(:rate_plan_2016) }
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com', courses: [course]) }
+  let(:course) { FactoryBot.create(:course, class_days: [Time.new(2018, 1, 1).to_date]) }
+  let(:plan) { FactoryBot.create(:rate_plan_2018, short_name: 'Upfront', upfront: true) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com', courses: [course], plan: plan) }
 
   scenario 'with valid information' do
     student.invite!
