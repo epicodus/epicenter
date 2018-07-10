@@ -241,20 +241,12 @@ class Student < User
   end
 
   def valid_plans
+    filtered_plans = course.parttime? ? Plan.active.parttime : Plan.active.fulltime
     first_course = courses.order(:start_date).first
-    if first_course
-      filtered_plans = course.parttime? ? Plan.active.parttime : Plan.active.fulltime
-      if first_course.start_date == Time.new(2018, 07, 30).to_date && first_course.office == Office.find_by(name: "Portland") && !first_course.parttime?
-        return filtered_plans.where(description: "Free Intro")
-      elsif first_course.start_date < Time.new(2017, 5, 22).to_date
-        return filtered_plans.rates_2016
-      elsif first_course.start_date < Time.new(2017, 9, 5).to_date
-        return filtered_plans.rates_2017
-      else
-        return filtered_plans.rates_2018
-      end
+    if first_course.start_date == Time.new(2018, 07, 30).to_date && first_course.office == Office.find_by(name: "Portland") && !first_course.parttime?
+      return filtered_plans.where(description: "Free Intro")
     else
-      return Plan.active
+      return filtered_plans.rates_2018
     end
   end
 

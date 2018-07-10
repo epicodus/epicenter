@@ -969,42 +969,16 @@ describe Student do
   end
 
   describe 'valid_plans' do
-    let!(:rate_plan_2016) { FactoryBot.create(:rate_plan_2016) }
     let!(:rate_plan_2017) { FactoryBot.create(:rate_plan_2017) }
     let!(:rate_plan_2018) { FactoryBot.create(:rate_plan_2018) }
-    let!(:pt_plan_2016) { FactoryBot.create(:parttime_plan_2016) }
     let!(:pt_plan_2017) { FactoryBot.create(:parttime_plan_2017) }
     let!(:pt_plan_2018) { FactoryBot.create(:parttime_plan) }
     let!(:free_intro_plan) { FactoryBot.create(:free_intro_plan) }
-
-    it 'lists valid plans for full-time student with 2016 rates' do
-      course = FactoryBot.create(:course, class_days: [Time.new(2016, 12, 1).to_date])
-      student = FactoryBot.create(:student, plan_id: nil, courses: [course])
-      expect(student.valid_plans).to eq [rate_plan_2016]
-    end
-
-    it 'lists valid plans for full-time student with 2017 rates' do
-      course = FactoryBot.create(:course, class_days: [Time.new(2017, 6, 1).to_date])
-      student = FactoryBot.create(:student, plan_id: nil, courses: [course])
-      expect(student.valid_plans).to eq [rate_plan_2017]
-    end
 
     it 'lists valid plans for full-time student with 2018 rates' do
       course = FactoryBot.create(:course, class_days: [Time.new(2017, 10, 2).to_date])
       student = FactoryBot.create(:student, plan_id: nil, courses: [course])
       expect(student.valid_plans).to eq [rate_plan_2018]
-    end
-
-    it 'lists valid plans for part-time student with 2016 rates' do
-      course = FactoryBot.create(:part_time_course, class_days: [Time.new(2016, 12, 1).to_date])
-      student = FactoryBot.create(:student, plan_id: nil, courses: [course])
-      expect(student.valid_plans).to eq [pt_plan_2016]
-    end
-
-    it 'lists valid plans for part-time student with 2017 rates' do
-      course = FactoryBot.create(:part_time_course, class_days: [Time.new(2017, 6, 1).to_date])
-      student = FactoryBot.create(:student, plan_id: nil, courses: [course])
-      expect(student.valid_plans).to eq [pt_plan_2017]
     end
 
     it 'lists valid plans for part-time student with 2018 rates' do
@@ -1013,12 +987,12 @@ describe Student do
       expect(student.valid_plans).to eq [pt_plan_2018]
     end
 
-    it 'lists valid plans for full-time student who started in 2016 rates but currently in later class' do
+    it 'lists valid plans for full-time student who started in 2017 rates but currently in later class' do
       first_course = FactoryBot.create(:course, class_days: [Time.new(2017, 5, 15).to_date])
-      current_course = FactoryBot.create(:course, class_days: [Time.new(2017, 6, 19).to_date])
+      current_course = FactoryBot.create(:course, class_days: [Time.new(2018, 2, 19).to_date])
       student = FactoryBot.create(:student, plan_id: nil, courses: [first_course, current_course])
       travel_to current_course.start_date do
-        expect(student.valid_plans).to eq [rate_plan_2016]
+        expect(student.valid_plans).to eq [rate_plan_2018]
       end
     end
 

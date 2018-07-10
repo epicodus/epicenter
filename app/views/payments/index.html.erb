@@ -115,9 +115,9 @@
     <%= form_for @student do |f| %>
       <%= f.label :plan_id, "Other options:" %>
       <% if @student.plan %>
-        <%= f.select :plan_id, Plan.rates_2018.where.not(id: @student.plan.id).collect {|p| [ "#{p.close_io_description} [#{p.description}]", p.id ] }, {include_blank: true} %>
+        <%= f.select :plan_id, Plan.active.where.not(id: @student.plan.id).collect {|p| [ "#{p.close_io_description} [#{p.description}]", p.id ] }, {include_blank: true} %>
       <% else %>
-        <%= f.select :plan_id, Plan.rates_2018.collect {|p| [ "#{p.close_io_description} [#{p.description}]", p.id ] }, {include_blank: true} %>
+        <%= f.select :plan_id, Plan.active.collect {|p| [ "#{p.close_io_description} [#{p.description}]", p.id ] }, {include_blank: true} %>
       <% end %>
       <%= f.submit 'Change Plan', class: 'btn-sm btn-primary', data: { confirm: "Change payment plan?" } %>
     <% end %>
