@@ -54,7 +54,7 @@ private
     end
     if refund_amount?
       student.crm_lead.update(note: "PAYMENT REFUND #{number_to_currency(refund_amount / 100.00)}: #{refund_notes}")
-    else
+    elsif created_at == updated_at # don't duplicate note when updating payment status
       student.crm_lead.update(note: "PAYMENT #{number_to_currency(amount / 100.00)}: #{notes}")
     end
   end
