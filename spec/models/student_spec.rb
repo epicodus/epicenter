@@ -384,34 +384,33 @@ describe Student do
       expect(student.upfront_payment_due?).to be false
     end
 
-    it "is false if student has made any payments", :vcr, :stub_mailgun do
-      FactoryBot.create(:payment_with_credit_card, student: student)
+    it "is true if student has paid only part of upfront payment", :vcr, :stub_mailgun do
+      FactoryBot.create(:payment_with_credit_card, student: student, amount: student.plan.upfront_amount - 1)
+      expect(student.upfront_payment_due?).to be true
+    end
+
+    it "is false if student has paid full upfront amount", :vcr, :stub_mailgun do
+      FactoryBot.create(:payment_with_credit_card, student: student, amount: student.plan.upfront_amount)
       expect(student.upfront_payment_due?).to be false
     end
   end
 
   describe "#make_upfront_payment" do
-    it "makes a payment for the upfront amount of the student's plan", :vcr, :stripe_mock, :stub_mailgun do
-      student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
+    let(:student) { FactoryBot.create :user_with_credit_card, email: 'example@example.com' }
+
+    it "makes a payment for the upfront amount of the student's plan if first payment", :vcr, :stripe_mock, :stub_mailgun do
       student.make_upfront_payment
       expect(student.payments.first.amount).to eq student.plan.upfront_amount
     end
 
-    it "sets category to upfront for student enrolled in 1 part-time course only", :vcr, :stripe_mock, :stub_mailgun do
-      student = FactoryBot.create(:part_time_student_with_payment_method, email: 'example@example.com')
+    it "makes a payment for the remaining upfront amount of the student's plan if second payment", :vcr, :stripe_mock, :stub_mailgun do
+      FactoryBot.create(:payment_with_credit_card, student: student, amount: student.plan.upfront_amount - 100)
       student.make_upfront_payment
-      expect(student.payments.first.category).to eq 'upfront'
+      expect(student.payments.order(:created_at).first.amount).to eq student.plan.upfront_amount - 100
+      expect(student.payments.order(:created_at).last.amount).to eq 100
     end
 
-    it "sets category to upfront for student enrolled in 1 full-time course only", :vcr, :stripe_mock, :stub_mailgun do
-      student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
-      student.make_upfront_payment
-      expect(student.payments.first.category).to eq 'upfront'
-    end
-
-    it "sets category to upfront for student enrolled in part-time and full-time course", :vcr, :stripe_mock, :stub_mailgun do
-      student = FactoryBot.create(:part_time_student_with_payment_method, email: 'example@example.com')
-      student.course = FactoryBot.create(:course)
+    it "sets category to upfront", :vcr, :stripe_mock, :stub_mailgun do
       student.make_upfront_payment
       expect(student.payments.first.category).to eq 'upfront'
     end
@@ -422,6 +421,13 @@ describe Student do
       plan = FactoryBot.create(:upfront_payment_only_plan, upfront_amount: 200_00)
       student = FactoryBot.create(:user_with_credit_card, plan: plan)
       expect(student.upfront_amount_with_fees).to eq 206_27
+    end
+
+    it "calculates the total upfront amount on second payment", :stripe_mock do
+      plan = FactoryBot.create(:upfront_payment_only_plan, upfront_amount: 200_00)
+      student = FactoryBot.create(:user_with_credit_card, plan: plan)
+      FactoryBot.create(:payment_with_credit_card, student: student, amount: student.plan.upfront_amount - 100_00)
+      expect(student.upfront_amount_with_fees).to eq 103_28
     end
   end
 
