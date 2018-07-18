@@ -330,13 +330,13 @@ describe Payment do
     end
 
     it 'adds note to CRM' do
-      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
-      expect(CrmUpdateJob).to_not receive(:perform_later).with(lead_id, { note: "PAYMENT #{number_to_currency(payment.amount / 100.00)}:" })
+      payment = Payment.new(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { note: "PAYMENT #{number_to_currency(payment.amount / 100.00)}: " })
       payment.save
     end
 
     it 'adds note to CRM including notes when present' do
-      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard', notes: 'test payment note from api')
+      payment = Payment.new(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard', notes: 'test payment note from api')
       expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { note: "PAYMENT #{number_to_currency(payment.amount / 100.00)}: #{payment.notes}" })
       payment.save
     end
@@ -346,6 +346,13 @@ describe Payment do
       payment.refund_amount = 50
       payment.refund_notes = 'foo'
       expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { note: "PAYMENT REFUND #{number_to_currency(payment.refund_amount / 100.00)}: #{payment.refund_notes}" })
+      payment.save
+    end
+
+    it 'does not add note to CRM on payment update unless refund' do
+      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
+      payment.status = "changed"
+      expect(CrmUpdateJob).to_not receive(:perform_later).with(lead_id, { note: "PAYMENT #{number_to_currency(payment.amount / 100.00)}: " })
       payment.save
     end
   end
