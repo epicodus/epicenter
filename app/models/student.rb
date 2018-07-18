@@ -155,11 +155,16 @@ class Student < User
   end
 
   def upfront_payment_due?
-    plan.upfront_amount > 0 && payments.without_failed.count == 0
+    total_paid < plan.upfront_amount
   end
 
   def upfront_amount_with_fees
-    plan.upfront_amount + primary_payment_method.calculate_fee(plan.upfront_amount)
+    amount = plan.upfront_amount - total_paid
+    amount + primary_payment_method.calculate_fee(amount)
+  end
+
+  def make_upfront_payment
+    payments.create(amount: plan.upfront_amount - total_paid, payment_method: primary_payment_method, category: 'upfront')
   end
 
   def total_paid
@@ -174,10 +179,6 @@ class Student < User
     if signed_in_today?
       attendance_records.today.first.signed_out_time != nil
     end
-  end
-
-  def make_upfront_payment
-    payments.create(amount: plan.upfront_amount, payment_method: primary_payment_method, category: 'upfront')
   end
 
   def class_in_session?
