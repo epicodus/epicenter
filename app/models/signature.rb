@@ -13,7 +13,7 @@ private
       create_signature_request_without_template
     end
     self.signature_request_id = @signature_request.data['signature_request_id']
-    self.signature_id = @signature_request.data['signatures'].first['signature_id']
+    self.signature_id = @signature_request.data['signatures'].first.data['signature_id']
     self.sign_url = HelloSign.get_embedded_sign_url(signature_id: @signature_request.signatures.first.data['signature_id']).sign_url
   end
 
