@@ -38,7 +38,7 @@ def create_attendance_record_in_course(course, status)
 end
 
 def get_lead_id(email)
-  close_io_client.list_leads('email:' + email)['data'].each do |lead|
+  close_io_client.list_leads('email: "' + email + '"')['data'].each do |lead|
     return lead['id'] if lead['contacts'][0]['emails'][0]['email'] == email
   end
 end

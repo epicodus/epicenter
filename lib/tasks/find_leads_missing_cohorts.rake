@@ -29,7 +29,7 @@ task :find_leads_missing_cohorts => [:environment] do
         end
 
         # check starting_cohort & start date in Close matches starting_cohort in Epicenter
-        lead = close_io_client.list_leads('email:' + student.email)['data'].first
+        lead = close_io_client.list_leads('email: "' + student.email + '"')['data'].first
         close_starting_cohort = lead['custom']['Cohort - Starting']
         close_start_date = lead['custom']['Start Date']
         if close_starting_cohort.nil?
@@ -71,7 +71,7 @@ task :find_leads_missing_cohorts => [:environment] do
         end
 
         # check current cohort & end date in Close matches cohort in Epicenter
-        lead = close_io_client.list_leads('email:' + student.email)['data'].first
+        lead = close_io_client.list_leads('email: "' + student.email + '"')['data'].first
         close_current_cohort = lead['custom']['Cohort - Current']
         close_end_date = lead['custom']['End Date']
         if close_current_cohort.nil?
