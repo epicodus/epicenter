@@ -285,7 +285,7 @@ describe Payment do
   describe 'updating Close.io when a payment is made', :stub_mailgun, :dont_stub_crm, :vcr do
     let(:student) { FactoryBot.create :user_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com' }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
-    let(:lead_id) { close_io_client.list_leads('email:' + student.email)['data'].first['id'] }
+    let(:lead_id) { get_lead_id(student.email) }
 
     before do
       allow(CrmUpdateJob).to receive(:perform_later).and_return({})
