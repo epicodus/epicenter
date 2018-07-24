@@ -69,7 +69,7 @@ describe CrmLead, :dont_stub_crm do
   describe 'updating close.io when student email is updated', :vcr do
     let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
-    let(:lead_id) { close_io_client.list_leads('email:' + student.email)['data'].first['id'] }
+    let(:lead_id) { get_lead_id(student.email) }
 
     before { allow(CrmUpdateJob).to receive(:perform_later).and_return({}) }
 
@@ -87,7 +87,7 @@ describe CrmLead, :dont_stub_crm do
   describe 'adding note to close.io', :vcr do
     let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
-    let(:lead_id) { close_io_client.list_leads('email:' + student.email)['data'].first['id'] }
+    let(:lead_id) { get_lead_id(student.email) }
 
     before { allow(CrmUpdateJob).to receive(:perform_later).and_return({}) }
 

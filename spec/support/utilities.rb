@@ -36,3 +36,9 @@ def create_attendance_record_in_course(course, status)
     course_attendance_record.update(left_early: false) if status != "left_early"
   end
 end
+
+def get_lead_id(email)
+  close_io_client.list_leads('email:' + email)['data'].each do |lead|
+    return lead['id'] if lead['contacts'][0]['emails'][0]['email'] == email
+  end
+end
