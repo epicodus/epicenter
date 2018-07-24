@@ -96,6 +96,7 @@ feature 'Creating a bank account via plaid' do
         sleep 10 # wait for ajax iframe
         all('[class="AccountItem"]').sample.click
         click_on 'Continue'
+        sleep 10
         expect(page).to have_content 'account has been confirmed'
       end
     end
@@ -111,6 +112,7 @@ feature 'Creating a bank account via plaid' do
         sleep 10 # wait for ajax iframe
         all('[class="AccountItem"]').sample.click
         click_on 'Continue'
+        sleep 10
         expect(page).to have_content 'problem linking your bank account'
       end
     end

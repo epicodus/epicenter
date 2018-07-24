@@ -55,11 +55,9 @@ private
 
   def lead
     return @lead if @lead
-    leads = close_io_client.list_leads('email:' + @email)
+    leads = close_io_client.list_leads('email: "' + @email + '"')
     if leads['total_results'] >= 1
-      leads['data'].each do |lead|
-        return @lead = lead if lead['contacts'][0]['emails'][0]['email'] == @email
-      end
+      return @lead = leads['data'].first
     else
       CrmLead.raise_error("The Close.io lead for #{@email} was not found.")
     end
