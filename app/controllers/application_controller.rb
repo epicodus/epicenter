@@ -19,7 +19,7 @@ protected
       u.permit(:name, :email, :course_id)
     end
     devise_parameter_sanitizer.permit(:accept_invitation) do |u|
-      u.permit(:name, :email, :current_course_id, :plan_id, :password, :password_confirmation,
+      u.permit(:email, :current_course_id, :password, :password_confirmation,
              :invitation_token)
     end
     devise_parameter_sanitizer.permit(:account_update) do |u|

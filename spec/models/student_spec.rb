@@ -14,14 +14,18 @@ describe Student do
   it { should have_one :internship_assignment }
 
   describe 'validations' do
-    context 'validates plan_id when a student has accepted the epicenter invitation and created an account' do
-      before { allow(subject).to receive(:invitation_accepted_at?).and_return(true) }
-      it { should validate_presence_of :plan_id }
-    end
-
     context 'does not validate plan_id when a student has not accepted the epicenter invitation' do
       before { allow(subject).to receive(:invitation_accepted_at?).and_return(false) }
       it { should_not validate_presence_of :plan_id }
+    end
+  end
+
+  describe 'sets payment plan before_create' do
+    it 'sets payment plan to intro plan on student create' do
+      student = FactoryBot.build(:student, plan_id: nil)
+      FactoryBot.create(:free_intro_plan)
+      student.save
+      expect(student.plan).to eq Plan.active.find_by(short_name: 'intro')
     end
   end
 
