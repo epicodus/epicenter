@@ -2,7 +2,8 @@ class Student < User
   scope :with_activated_accounts, -> { where('sign_in_count > ?', 0 ) }
 
   validate :primary_payment_method_belongs_to_student
-  validates :plan_id, presence: true, if: ->(student) { student.invitation_accepted_at? }
+
+  before_create :assign_intro_plan
   before_destroy :archive_enrollments
 
   belongs_to :plan, optional: true
@@ -398,5 +399,9 @@ private
 
   def archive_enrollments
     enrollments.each { |enrollment| enrollment.destroy }
+  end
+
+  def assign_intro_plan
+    self.plan ||= Plan.active.find_by(short_name: 'intro')
   end
 end

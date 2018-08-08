@@ -1,26 +1,10 @@
-<h2><%= t 'devise.invitations.edit.header' %></h2>
+<h2>Welcome to Epicodus!</h2>
+<h3>Please set your password:</h3>
 <div class='row'>
   <div class='col-md-6'>
     <%= form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put } do |f| %>
       <%= devise_error_messages! %>
       <%= f.hidden_field :invitation_token %>
-
-      <div class="form-group">
-        <%= f.label :name %>
-        <%= f.text_field :name, class: 'form-control' %>
-      </div>
-
-      <% if resource.is_a?(Student) %>
-        <div class="form-group">
-          <%= f.label :plan_id, "Payment Plan" %>
-          <% if resource.course.parttime? %>
-            <%= f.select(:plan_id, resource.valid_plans.collect {|p| [ p.name, p.id ] }, {}, { class: 'form-control' }) %>
-          <% else %>
-            <%= f.select(:plan_id, resource.valid_plans.collect {|p| [ p.name, p.id ] }, { selected: resource.valid_plans.upfront.first.id }, { class: 'form-control' }) %>
-          <% end %>
-          <p>For more information on tuition, <a href="https://www.epicodus.com/tuition/" target="_blank">click here</a>.</p>
-        </div>
-      <% end %>
 
       <div class="form-group">
         <%= f.label :password %>
@@ -32,7 +16,7 @@
         <%= f.password_field :password_confirmation, class: 'form-control' %>
       </div>
 
-      <%= f.submit 'Submit', class: 'btn btn-info' %>
+      <%= f.submit 'Submit', class: 'btn btn-epicodus' %>
     <% end %>
   </div>
 </div>

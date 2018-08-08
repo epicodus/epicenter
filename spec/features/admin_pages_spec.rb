@@ -116,6 +116,14 @@ feature 'Inviting new full-time students', :vcr, :dont_stub_crm do
     expect(student.office).to eq student.courses.first.office
   end
 
+  scenario 'payment plan set automatically set when admin sends invitation to a student' do
+    visit new_student_invitation_path
+    fill_in 'Email', with: 'example@example.com'
+    click_on 'Invite student'
+    student = Student.find_by(email: "example@example.com")
+    expect(student.plan).to eq Plan.active.find_by(short_name: "intro")
+  end
+
   scenario 'does not allow inviting if email already taken' do
     visit new_student_invitation_path
     fill_in 'Email', with: 'example@example.com'
@@ -175,7 +183,6 @@ feature 'Admin signs up via invitation' do
   scenario 'with valid information' do
     admin.invite!
     visit accept_admin_invitation_path(admin, invitation_token: admin.raw_invitation_token)
-    fill_in 'Name', with: 'Roberta Larson'
     fill_in 'Password', with: 'password'
     fill_in 'Password confirmation', with: 'password'
     click_on 'Submit'
@@ -185,7 +192,7 @@ feature 'Admin signs up via invitation' do
   scenario 'with missing information' do
     admin.invite!
     visit accept_admin_invitation_path(admin, invitation_token: admin.raw_invitation_token)
-    fill_in 'Name', with: ''
+    fill_in 'Password', with: ''
     click_on 'Submit'
     expect(page).to have_content 'error'
   end

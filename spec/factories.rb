@@ -417,6 +417,7 @@ FactoryBot.define do
 
     factory :free_intro_plan do
       name 'Free Intro ($100 enrollment fee)'
+      short_name 'intro'
       description 'Free Intro'
       upfront true
       upfront_amount 10000
@@ -506,7 +507,7 @@ FactoryBot.define do
 
   factory :student do
     course
-    association :plan, factory: :upfront_payment_only_plan
+    association :plan, factory: :free_intro_plan
     association :office, factory: :philadelphia_office
     sequence(:name) { |n| "Example Brown #{n}" }
     sequence(:email) { |n| "student#{n}@example.com" }
