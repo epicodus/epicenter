@@ -368,6 +368,7 @@ FactoryBot.define do
       short_name 'loan'
       loan true
       upfront_amount 120_00
+      close_io_description 'loan plan'
     end
 
     factory :parttime_plan do

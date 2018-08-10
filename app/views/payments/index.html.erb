@@ -108,17 +108,13 @@
   <div class="well">
     <h3>Change payment plan</h3>
     <% if @student.plan %>
-      <p><strong>Current plan:</strong> <%= @student.plan.close_io_description %> [<%= @student.plan.description %>]</p>
+      <p><strong>Current plan:</strong> <%= @student.plan.close_io_description %></p>
     <% else %>
       <p><strong>Current plan:</strong> No payment plan selected!</p>
     <% end %>
     <%= form_for @student do |f| %>
       <%= f.label :plan_id, "Other options:" %>
-      <% if @student.plan %>
-        <%= f.select :plan_id, Plan.active.where.not(id: @student.plan.id).collect {|p| [ "#{p.close_io_description} [#{p.description}]", p.id ] }, {include_blank: true} %>
-      <% else %>
-        <%= f.select :plan_id, Plan.active.collect {|p| [ "#{p.close_io_description} [#{p.description}]", p.id ] }, {include_blank: true} %>
-      <% end %>
+      <%= f.select :plan_id, Plan.active.where.not(id: @student.plan.try(:id)).collect {|p| [ p.close_io_description, p.id ] }, {include_blank: true} %>
       <%= f.submit 'Change Plan', class: 'btn-sm btn-primary', data: { confirm: "Change payment plan?" } %>
     <% end %>
   </div>
