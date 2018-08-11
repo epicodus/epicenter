@@ -5,6 +5,7 @@ class Student < User
 
   before_create :assign_intro_plan
   before_destroy :archive_enrollments
+  after_update :update_plan_in_crm, if: :saved_change_to_plan_id
 
   belongs_to :plan, optional: true
   belongs_to :starting_cohort, class_name: :Cohort, optional: true
@@ -242,16 +243,6 @@ class Student < User
     ratings.where(internship_id: internship.id).first
   end
 
-  def valid_plans
-    filtered_plans = course.parttime? ? Plan.active.parttime : Plan.active.fulltime
-    first_course = courses.order(:start_date).first
-    if first_course.start_date == Time.new(2018, 07, 30).to_date && first_course.office == Office.find_by(name: "Portland") && !first_course.parttime?
-      return filtered_plans.where(description: "Free Intro")
-    else
-      return filtered_plans.rates_2018
-    end
-  end
-
   def get_status
     if deleted?
       "Archived"
@@ -281,7 +272,7 @@ class Student < User
   end
 
   def crm_lead
-    CrmLead.new(email)
+    @crm_lead ||= CrmLead.new(email)
   end
 
   def calculate_starting_cohort
@@ -403,5 +394,9 @@ private
 
   def assign_intro_plan
     self.plan ||= Plan.active.find_by(short_name: 'intro')
+  end
+
+  def update_plan_in_crm
+    crm_lead.update({ 'custom.Payment plan': plan.try(:close_io_description) })
   end
 end

@@ -978,53 +978,6 @@ describe Student do
     end
   end
 
-  describe 'valid_plans' do
-    let!(:rate_plan_2017) { FactoryBot.create(:rate_plan_2017) }
-    let!(:rate_plan_2018) { FactoryBot.create(:rate_plan_2018) }
-    let!(:pt_plan_2017) { FactoryBot.create(:parttime_plan_2017) }
-    let!(:pt_plan_2018) { FactoryBot.create(:parttime_plan) }
-    let!(:free_intro_plan) { FactoryBot.create(:free_intro_plan) }
-
-    it 'lists valid plans for full-time student with 2018 rates' do
-      course = FactoryBot.create(:course, class_days: [Time.new(2017, 10, 2).to_date])
-      student = FactoryBot.create(:student, plan_id: nil, courses: [course])
-      expect(student.valid_plans).to eq [rate_plan_2018]
-    end
-
-    it 'lists valid plans for part-time student with 2018 rates' do
-      course = FactoryBot.create(:part_time_course, class_days: [Time.new(2017, 10, 2).to_date])
-      student = FactoryBot.create(:student, plan_id: nil, courses: [course])
-      expect(student.valid_plans).to eq [pt_plan_2018]
-    end
-
-    it 'lists valid plans for full-time student who started in 2017 rates but currently in later class' do
-      first_course = FactoryBot.create(:course, class_days: [Time.new(2017, 5, 15).to_date])
-      current_course = FactoryBot.create(:course, class_days: [Time.new(2018, 2, 19).to_date])
-      student = FactoryBot.create(:student, plan_id: nil, courses: [first_course, current_course])
-      travel_to current_course.start_date do
-        expect(student.valid_plans).to eq [rate_plan_2018]
-      end
-    end
-
-    it 'lists free intro plan for portland full-time student starting july 30 2018' do
-      course = FactoryBot.create(:portland_course, class_days: [Time.new(2018, 7, 30).to_date])
-      student = FactoryBot.create(:student, plan_id: nil, courses: [course])
-      expect(student.valid_plans).to eq [free_intro_plan]
-    end
-
-    it 'does not list free intro plan for seattle student starting july 30 2018' do
-      course = FactoryBot.create(:seattle_course, class_days: [Time.new(2018, 7, 30).to_date])
-      student = FactoryBot.create(:student, plan_id: nil, courses: [course])
-      expect(student.valid_plans).to eq [rate_plan_2018]
-    end
-
-    it 'does not list free intro plan for portland part-time student starting july 30 2018' do
-      course = FactoryBot.create(:portland_part_time_course, class_days: [Time.new(2018, 7, 30).to_date])
-      student = FactoryBot.create(:student, plan_id: nil, courses: [course])
-      expect(student.valid_plans).to eq [pt_plan_2018]
-    end
-  end
-
   describe 'paranoia' do
     it 'archives destroyed user' do
       student = FactoryBot.create(:student)
@@ -1191,6 +1144,25 @@ describe Student do
     it 'reports no enrollment if no courses' do
       student = FactoryBot.create(:student, courses: [])
       expect(student.attendance_status).to eq 'no enrollments'
+    end
+  end
+
+  describe 'updates payment plan in Close if plan_id changed', :dont_stub_crm, :vcr do
+    let(:student) { FactoryBot.create(:student, email: 'example@example.com') }
+    let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
+    let(:lead_id) { get_lead_id(student.email) }
+
+    before { allow(CrmUpdateJob).to receive(:perform_later).and_return({}) }
+
+    it 'updates in Close when plan_id changed' do
+      new_plan = FactoryBot.create(:loan_plan)
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Payment plan': new_plan.close_io_description })
+      student.update(plan: new_plan)
+    end
+
+    it 'does not update in Close when plan_id not changed' do
+      expect(CrmUpdateJob).to_not receive(:perform_later)
+      student.update(name: 'foo')
     end
   end
 end
