@@ -50,11 +50,4 @@ describe Plan do
       expect(Plan.fulltime).to eq [standard_plan]
     end
   end
-
-  describe 'rates scopes' do
-    it 'returns all 2018 plans' do
-      rate_plan_2018 = FactoryBot.create(:rate_plan_2018)
-      expect(Plan.rates_2018).to eq [rate_plan_2018]
-    end
-  end
 end
