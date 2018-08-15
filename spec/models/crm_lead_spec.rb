@@ -51,7 +51,7 @@ describe CrmLead, :dont_stub_crm do
   end
 
   describe '#update_internship_class', :vcr do
-    let(:student) { FactoryBot.create(:student, courses: []) }
+    let!(:student) { FactoryBot.create(:student, email: "example@example.com", courses: []) }
 
     it 'updates internship class field in CRM' do
       internship_course = FactoryBot.create(:internship_course)
@@ -69,16 +69,16 @@ describe CrmLead, :dont_stub_crm do
   describe 'updating close.io when student email is updated', :vcr do
     let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
-    let(:lead_id) { get_lead_id(student.email) }
 
     before { allow(CrmUpdateJob).to receive(:perform_later).and_return({}) }
 
     it 'updates the record successfully' do
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { email: "second-email@example.com" })
+      expect(CrmUpdateJob).to receive(:perform_later).with(ENV['EXAMPLE_CRM_LEAD_ID'], { email: "second-email@example.com" })
       student.crm_lead.update(email: "second-email@example.com")
     end
 
     it 'does not update the record when the email is not found' do
+      student = FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com')
       student.update(email: "no_close_entry@example.com")
       expect { student.crm_lead.update(email: "second-email@example.com") }.to raise_error(CrmError, "The Close.io lead for #{student.email} was not found.")
     end

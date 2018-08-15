@@ -347,82 +347,45 @@ FactoryBot.define do
   end
 
   factory :plan do
-    factory :upfront_payment_only_plan do
-      name '5-class up-front discount'
-      short_name 'upfront'
+    factory :free_intro_plan do
+      short_name 'intro'
+      name 'Free Intro ($100 enrollment fee)'
+      close_io_description '2018 - Free Intro ($100 enrollment fee)'
       upfront true
-      upfront_amount 3400_00
-      start_date Time.new(2016, 4, 1).to_date
+      upfront_amount 100_00
+    end
+
+    factory :upfront_payment_only_plan do
+      short_name 'fulltime-upfront'
+      name 'Up-front Discount ($6,900 up-front)'
+      close_io_description '2018 - Up-front Discount ($6,900 up-front)'
+      upfront true
+      upfront_amount 6900_00
     end
 
     factory :standard_plan do
-      name 'Standard tuition'
-      short_name 'standard'
+      short_name 'fulltime-standard'
+      name 'Pay As You Go (4 payments of $2,125)'
+      close_io_description '2018 - Pay As You Go (4 payments of $2,125)'
       standard true
-      upfront_amount 120_00
-      first_day_amount 1100_00
+      upfront_amount 100_00
+      first_day_amount 2100_00
     end
 
     factory :loan_plan do
-      name 'Loan'
-      short_name 'loan'
+      short_name 'fulltime-loan'
+      name 'Loan ($100 enrollment fee)'
+      close_io_description '2018 - Loan ($100 enrollment fee)'
       loan true
-      upfront_amount 120_00
-      close_io_description 'loan plan'
+      upfront_amount 100_00
     end
 
     factory :parttime_plan do
-      name 'Evening intro class'
       short_name 'parttime'
+      name 'Legacy - Evening intro class ($600)'
+      close_io_description '2018 - Evening intro class ($600)'
       parttime true
       upfront_amount 600_00
-      start_date Time.new(2017, 9, 5).to_date
-    end
-
-    factory :parttime_plan_2017 do
-      name 'Evening intro class'
-      short_name 'parttime'
-      parttime true
-      upfront_amount 600_00
-      start_date Time.new(2017, 5, 22).to_date
-    end
-
-    factory :parttime_plan_2016 do
-      name 'Evening intro class'
-      short_name 'parttime'
-      parttime true
-      upfront_amount 400_00
-      start_date Time.new(2016, 4, 1).to_date
-    end
-
-    factory :rate_plan_2016 do
-      name '2016 Rate'
-      short_name 'standard'
-      upfront_amount 120_00
-      start_date Time.new(2016, 4, 1).to_date
-    end
-
-    factory :rate_plan_2017 do
-      name '2017 Rate'
-      short_name 'standard'
-      upfront_amount 120_00
-      start_date Time.new(2017, 5, 22).to_date
-    end
-
-    factory :rate_plan_2018 do
-      name '2018 Rate'
-      short_name 'standard'
-      upfront_amount 120_00
-      start_date Time.new(2017, 9, 5).to_date
-    end
-
-    factory :free_intro_plan do
-      name 'Free Intro ($100 enrollment fee)'
-      short_name 'intro'
-      description 'Free Intro'
-      upfront true
-      upfront_amount 10000
-      start_date Time.new(2018, 6, 1).to_date
     end
   end
 

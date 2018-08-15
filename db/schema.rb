@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_13_194200) do
+ActiveRecord::Schema.define(version: 2018_08_15_191235) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -229,10 +229,8 @@ ActiveRecord::Schema.define(version: 2018_08_13_194200) do
     t.boolean "loan"
     t.boolean "standard"
     t.integer "first_day_amount"
-    t.date "start_date"
     t.boolean "parttime"
     t.boolean "upfront"
-    t.string "description"
     t.string "short_name"
     t.integer "order"
   end

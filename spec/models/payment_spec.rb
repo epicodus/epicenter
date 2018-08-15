@@ -213,7 +213,7 @@ describe Payment do
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
           subject: "Epicodus tuition payment receipt",
-          text: "Hi #{student.name}. This is to confirm your payment of $618.21 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the Standard tuition plan and that we will be charging you the remaining #{number_to_currency(standard_plan.first_day_amount / 100, precision: 0)} on the first day of class. I want to be sure we know your intentions and don't mistakenly charge you. Thanks so much!" }
+          text: "Hi #{student.name}. This is to confirm your payment of $618.21 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the #{standard_plan.name} plan and that we will be charging you the remaining #{number_to_currency(standard_plan.first_day_amount / 100, precision: 0)} on the first day of class. I want to be sure we know your intentions and don't mistakenly charge you. Thanks so much!" }
       )
     end
 
@@ -230,7 +230,7 @@ describe Payment do
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
           subject: "Epicodus tuition payment receipt",
-          text: "Hi #{student.name}. This is to confirm your payment of $618.21 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the Loan plan. Since you are in the process of obtaining a loan for program tuition, would you please let me know (which loan company, date you applied, etc.)? I want to be sure we know your intentions and don't mistakenly charge you. Thanks so much!" }
+          text: "Hi #{student.name}. This is to confirm your payment of $618.21 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the #{loan_plan.name} plan. Since you are in the process of obtaining a loan for program tuition, would you please let me know (which loan company, date you applied, etc.)? I want to be sure we know your intentions and don't mistakenly charge you. Thanks so much!" }
       )
     end
 

@@ -211,42 +211,6 @@ describe Student do
     end
   end
 
-  describe "updating close.io when documents have been signed", :dont_stub_crm, :vcr do
-    let(:student) { FactoryBot.create(:student, email: 'example@example.com') }
-    let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
-    let(:lead_id) { get_lead_id(student.email) }
-
-    before do
-      allow(CrmUpdateJob).to receive(:perform_later).and_return({})
-    end
-
-    it "updates the record when there are enough signatures and a payment has been made" do
-      FactoryBot.create(:completed_code_of_conduct, student: student)
-      FactoryBot.create(:completed_refund_policy, student: student)
-      FactoryBot.create(:completed_enrollment_agreement, student: student)
-      allow(student).to receive(:total_paid).and_return(340000)
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 })
-      student.crm_lead.update({ status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 })
-    end
-
-    it "fails to update the record when there are not enough signatures" do
-      student.update(email: 'fake@fake.com')
-      FactoryBot.create(:completed_code_of_conduct, student: student)
-      FactoryBot.create(:completed_refund_policy, student: student)
-      allow(student).to receive(:total_paid).and_return(100)
-      expect { student.crm_lead.update({ status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 }) }.to raise_error(CrmError, 'The Close.io lead for fake@fake.com was not found.')
-    end
-
-    it "fails to update the record when no payment has been made" do
-      student.update(email: 'fake@fake.com')
-      FactoryBot.create(:completed_code_of_conduct, student: student)
-      FactoryBot.create(:completed_refund_policy, student: student)
-      FactoryBot.create(:completed_enrollment_agreement, student: student)
-      allow(student).to receive(:total_paid).and_return(0)
-      expect { student.crm_lead.update({ status: "Enrolled", 'custom.Amount paid': student.total_paid / 100 }) }.to raise_error(CrmError, 'The Close.io lead for fake@fake.com was not found.')
-    end
-  end
-
   describe "#signed?" do
     let(:student) { FactoryBot.create(:student) }
 
@@ -1147,20 +1111,29 @@ describe Student do
     end
   end
 
-  describe 'updates payment plan in Close if plan_id changed', :dont_stub_crm, :vcr do
-    let(:student) { FactoryBot.create(:student, email: 'example@example.com') }
+  describe 'updates payment plan in Close', :dont_stub_crm, :vcr do
+
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
-    let(:lead_id) { get_lead_id(student.email) }
+    let(:lead_id) { ENV['EXAMPLE_CRM_LEAD_ID'] }
 
     before { allow(CrmUpdateJob).to receive(:perform_later).and_return({}) }
 
+    it 'updates in Close when student registers' do
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Payment plan': '2018 - Free Intro ($100 enrollment fee)' })
+      student = FactoryBot.create(:student, email: 'example@example.com')
+    end
+
     it 'updates in Close when plan_id changed' do
+      allow(CrmUpdateJob).to receive(:perform_later).and_return({})
+      student = FactoryBot.create(:student, email: 'example@example.com')
       new_plan = FactoryBot.create(:loan_plan)
       expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Payment plan': new_plan.close_io_description })
       student.update(plan: new_plan)
     end
 
     it 'does not update in Close when plan_id not changed' do
+      allow(CrmUpdateJob).to receive(:perform_later).and_return({})
+      student = FactoryBot.create(:student, email: 'example@example.com')
       expect(CrmUpdateJob).to_not receive(:perform_later)
       student.update(name: 'foo')
     end
