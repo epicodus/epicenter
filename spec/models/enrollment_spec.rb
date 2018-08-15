@@ -63,6 +63,7 @@ describe Enrollment do
 
     context 'adding new enrollments' do
       it 'updates starting & current cohort & start & end dates when adding first course' do
+        student.save
         allow_any_instance_of(CrmLead).to receive(:update_internship_class)
         expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort - Starting': current_cohort.description, 'custom.Start Date': current_cohort.start_date.to_s, 'custom.Cohort - Current': current_cohort.description, 'custom.End Date': current_cohort.end_date.to_s })
         student.course = current_cohort.courses.last
@@ -83,11 +84,13 @@ describe Enrollment do
       end
 
       it 'updates only part-time cohort when adding part-time course' do
+        student.save
         expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort - Part-time': part_time_cohort.description })
         student.course = part_time_cohort.courses.first
       end
 
       it 'does not update starting or current cohort when adding non-internship course' do
+        student.save
         expect_any_instance_of(CrmLead).to_not receive(:update)
         student.course = non_internship_course
       end

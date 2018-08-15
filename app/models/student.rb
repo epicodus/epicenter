@@ -5,6 +5,7 @@ class Student < User
 
   before_create :assign_intro_plan
   before_destroy :archive_enrollments
+  after_create :update_plan_in_crm
   after_update :update_plan_in_crm, if: :saved_change_to_plan_id
 
   belongs_to :plan, optional: true
@@ -272,7 +273,7 @@ class Student < User
   end
 
   def crm_lead
-    @crm_lead ||= CrmLead.new(email)
+    CrmLead.new(email)
   end
 
   def calculate_starting_cohort
