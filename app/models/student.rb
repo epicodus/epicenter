@@ -5,7 +5,7 @@ class Student < User
 
   before_create :assign_intro_plan
   before_destroy :archive_enrollments
-  after_create :update_plan_in_crm, unless: ->(student) { student.email.match?(/student\d{1,2}@example.com/) }
+  after_create :update_plan_in_crm
   after_update :update_plan_in_crm, if: :saved_change_to_plan_id
 
   belongs_to :plan, optional: true

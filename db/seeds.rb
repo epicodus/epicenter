@@ -9,11 +9,13 @@ FactoryBot.create(:in_between_score)
 FactoryBot.create(:failing_score)
 
 # Students
+Student.skip_callback(:create, :after, :update_plan_in_crm)
 15.times do
   FactoryBot.create(:user_with_all_documents_signed, course: course)
   FactoryBot.create(:user_with_all_documents_signed, course: past_course)
   FactoryBot.create(:user_with_all_documents_signed, course: part_time_course)
 end
+Student.set_callback(:create, :after, :update_plan_in_crm)
 
 # Code reviews
 5.times do
