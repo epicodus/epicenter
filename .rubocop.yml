@@ -94,11 +94,11 @@ Lint/HandleExceptions:
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#dont-hide-exceptions'
   Enabled: true
 
-Lint/InvalidCharacterLiteral:
-  Description: >-
-                 Checks for invalid character literals with a non-escaped
-                 whitespace character.
-  Enabled: true
+# Lint/InvalidCharacterLiteral:
+#   Description: >-
+#                  Checks for invalid character literals with a non-escaped
+#                  whitespace character.
+#   Enabled: true
 
 Lint/LiteralInCondition:
   Description: 'Checks of literals used in conditions.'
@@ -528,7 +528,7 @@ Style/DefWithParentheses:
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#method-parens'
   Enabled: false
 
-Style/DeprecatedHashMethods:
+Style/PreferredHashMethods:
   Description: 'Checks for use of deprecated Hash methods.'
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#hash-key'
   Enabled: false
@@ -716,7 +716,7 @@ Style/LineEndConcatenation:
                  line end.
   Enabled: false
 
-Style/MethodCallParentheses:
+Style/MethodCallWithoutArgsParentheses:
   Description: 'Do not use parentheses for method calls with no arguments.'
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#no-args-no-parens'
   Enabled: false
@@ -816,7 +816,7 @@ Style/OneLineConditional:
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#ternary-operator'
   Enabled: false
 
-Style/OpMethod:
+Naming/BinaryOperatorParameterName:
   Description: 'When defining binary operators, name the argument other.'
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#other-arg'
   Enabled: false
@@ -1084,10 +1084,10 @@ Style/TrailingCommaInArguments:
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#no-trailing-params-comma'
   Enabled: false
 
-Style/TrailingCommaInLiteral:
-  Description: 'Checks for trailing comma in literals.'
-  StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#no-trailing-array-commas'
-  Enabled: false
+# Style/TrailingCommaInLiteral:
+#   Description: 'Checks for trailing comma in literals.'
+#   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#no-trailing-array-commas'
+#   Enabled: false
 
 Style/TrailingWhitespace:
   Description: 'Avoid trailing whitespace.'

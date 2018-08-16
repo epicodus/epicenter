@@ -85,9 +85,9 @@ describe Student do
   end
 
   describe "#course" do
-    let(:first_course) { FactoryBot.create(:past_course) }
-    let(:second_course) { FactoryBot.create(:course) }
-    let(:third_course) { FactoryBot.create(:future_course) }
+    let!(:first_course) { FactoryBot.create(:past_course) }
+    let!(:second_course) { FactoryBot.create(:course) }
+    let!(:third_course) { FactoryBot.create(:future_course) }
     let(:student) { FactoryBot.create(:student, courses: [first_course, second_course, third_course]) }
 
     it 'returns the upcoming course when a student has enrolled, but class has not started' do
