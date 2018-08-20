@@ -5,11 +5,11 @@
 <% else %>
   <p>Hi <%= @resource.name %>. I'm really happy to welcome you to the <strong><%= @resource.course.description %> (<%= @resource.course.office.name %>)</strong> track at Epicodus!</p>
 
-  <p>The next step is to read and sign our code of conduct, refund policy, and enrollment agreement, and then make your payment.</p>
+  <p>The next step is to read and sign our code of conduct, refund policy, and enrollment agreement, and then pay your deposit.</p>
 
   <p>Click <%= link_to "here", accept_invitation_url(@resource, :invitation_token => @token) %> to enroll and complete these steps.</p>
 
-  <p>To reserve your spot in the class, you need to sign these agreements and make your payment within the next seven days. Verifying your bank account can take up to four days, so please start that process as soon as possible.</p>
+  <p>To reserve your spot in the class, you need to sign these agreements and pay your deposit within the next seven days. Verifying your bank account can take up to four days, so please start that process as soon as possible.</p>
 
   <% if @resource.course.office.name != "Portland" %>
     <p>If you're seeking a loan from one of our financing partners, you need to make your enrollment fee payment via Epicenter and then apply for the loan within the next seven days as well (we will be notified about your application).</p>
