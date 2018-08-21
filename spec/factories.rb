@@ -353,6 +353,7 @@ FactoryBot.define do
       close_io_description { '2018 - Free Intro ($100 enrollment fee)' }
       upfront { true }
       upfront_amount { 100_00 }
+      student_portion { 100_00 }
     end
 
     factory :upfront_payment_only_plan do
@@ -361,6 +362,7 @@ FactoryBot.define do
       close_io_description { '2018 - Up-front Discount ($6,900 up-front)' }
       upfront { true }
       upfront_amount { 6900_00 }
+      student_portion { 6900_00 }
     end
 
     factory :standard_plan do
@@ -370,6 +372,7 @@ FactoryBot.define do
       standard { true }
       upfront_amount { 100_00 }
       first_day_amount { 2100_00 }
+      student_portion { 8500_00 }
     end
 
     factory :loan_plan do
@@ -378,6 +381,7 @@ FactoryBot.define do
       close_io_description { '2018 - Loan ($100 enrollment fee)' }
       loan { true }
       upfront_amount { 100_00 }
+      student_portion { 100_00 }
     end
 
     factory :parttime_plan do
@@ -386,6 +390,7 @@ FactoryBot.define do
       close_io_description { '2018 - Evening intro class ($600)' }
       parttime { true }
       upfront_amount { 600_00 }
+      student_portion { 600_00 }
     end
   end
 
@@ -713,5 +718,10 @@ FactoryBot.define do
     education { 'GED' }
     cs_degree { 'No' }
     shirt { 'S' }
+  end
+
+  factory :cost_adjustment do
+    amount { 100_00 }
+    reason { 'test adjustment' }
   end
 end

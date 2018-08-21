@@ -355,3 +355,96 @@ feature "Responds to callback from Zapier with qbo doc_numbers", :js do
     expect(payment.reload.qbo_doc_numbers).to eq ['1A']
   end
 end
+
+feature 'make a cost adjustment' do
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed_and_credit_card) }
+
+  context 'as a student' do
+    before { login_as(student, scope: :student) }
+
+    it 'does not allow student to view or make tuition adjustments' do
+      visit student_payments_path(student)
+      expect(page).to_not have_content 'Tuition adjustments'
+      expect(page).to_not have_content 'Adjust student tuition'
+      expect(page).to_not have_content 'Adjust student cost'
+    end
+  end
+
+  context 'as an admin' do
+    before { login_as(admin, scope: :admin) }
+
+    it 'allows admin to make tuition adjustment without cents', :js do
+      visit student_payments_path(student)
+      find('#show-student-tuition-adjustment').click
+      fill_in 'cost_adjustment_amount', with: 100
+      fill_in 'cost_adjustment_reason', with: 'test adjustment'
+      click_button 'Adjust student cost'
+      expect(page).to have_content 'Student tuition increased by $100.00.'
+      expect(student.cost_adjustments.first.amount).to eq 100_00
+      expect(student.cost_adjustments.first.reason).to eq 'test adjustment'
+    end
+
+    it 'allows admin to make tuition adjustment with cents', :js do
+      visit student_payments_path(student)
+      find('#show-student-tuition-adjustment').click
+      fill_in 'cost_adjustment_amount', with: '100.50'
+      fill_in 'cost_adjustment_reason', with: 'test adjustment'
+      click_button 'Adjust student cost'
+      expect(page).to have_content 'Student tuition increased by $100.50.'
+      expect(student.cost_adjustments.first.amount).to eq 100_50
+      expect(student.cost_adjustments.first.reason).to eq 'test adjustment'
+    end
+
+    it 'allows admin to make tuition adjustment with negative amount without cents', :js do
+      visit student_payments_path(student)
+      find('#show-student-tuition-adjustment').click
+      fill_in 'cost_adjustment_amount', with: '-100'
+      fill_in 'cost_adjustment_reason', with: 'test adjustment'
+      click_button 'Adjust student cost'
+      expect(page).to have_content 'Student tuition decreased by $100.00.'
+      expect(student.cost_adjustments.first.amount).to eq -100_00
+      expect(student.cost_adjustments.first.reason).to eq 'test adjustment'
+    end
+
+    it 'allows admin to make tuition adjustment with negative amount with cents', :js do
+      visit student_payments_path(student)
+      find('#show-student-tuition-adjustment').click
+      fill_in 'cost_adjustment_amount', with: '-100.50'
+      fill_in 'cost_adjustment_reason', with: 'test adjustment'
+      click_button 'Adjust student cost'
+      expect(page).to have_content 'Student tuition decreased by $100.50.'
+      expect(student.cost_adjustments.first.amount).to eq -100_50
+      expect(student.cost_adjustments.first.reason).to eq 'test adjustment'
+    end
+
+    it 'does not allow tuition adjustment with invalid amount', :js do
+      visit student_payments_path(student)
+      find('#show-student-tuition-adjustment').click
+      fill_in 'cost_adjustment_amount', with: '100.5'
+      fill_in 'cost_adjustment_reason', with: 'test adjustment'
+      click_button 'Adjust student cost'
+      expect(student.cost_adjustments.any?).to eq false
+    end
+
+    it 'allows admin to view tuition adjustments' do
+      cost_adjustment = FactoryBot.create(:cost_adjustment, student: student)
+      visit student_payments_path(student)
+      expect(page).to have_content 'Tuition adjustments'
+      expect(page).to have_content '$100'
+      expect(page).to have_content 'test adjustment'
+    end
+
+    it 'allows admin to delete tuition adjustment', :js do
+      cost_adjustment = FactoryBot.create(:cost_adjustment, student: student)
+      visit student_payments_path(student)
+      find("#remove-cost-adjustment-#{cost_adjustment.id}").click
+      wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoAlertPresentError
+      alert = wait.until { page.driver.browser.switch_to.alert }
+      alert.accept
+      expect(page).to have_content 'Deleted cost adjustment'
+      expect(page).to_not have_content 'Tuition adjustments'
+      expect(page).to_not have_content 'test adjustment'
+    end
+  end
+end
