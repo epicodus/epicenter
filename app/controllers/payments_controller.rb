@@ -9,6 +9,7 @@ class PaymentsController < ApplicationController
       @payment = Payment.new(amount: @student.upfront_amount_with_fees)
     elsif current_admin
       @payment = Payment.new
+      @cost_adjustment = CostAdjustment.new
     end
   end
 
@@ -18,6 +19,7 @@ class PaymentsController < ApplicationController
     if @payment.save
       redirect_to student_payments_path(@student), notice: "Manual payment successfully made for #{@student.name}."
     else
+      @cost_adjustment = CostAdjustment.new
       render 'index'
     end
   end
@@ -28,6 +30,7 @@ class PaymentsController < ApplicationController
       redirect_to student_payments_path(@payment.student), notice: "Refund successfully issued for #{@payment.student.name}."
     else
       @student = @payment.student
+      @cost_adjustment = CostAdjustment.new
       render 'index'
     end
   end

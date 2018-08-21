@@ -28,6 +28,7 @@ class Student < User
   belongs_to :primary_payment_method, class_name: 'PaymentMethod', optional: true
   has_many :signatures
   has_one :internship_assignment
+  has_many :cost_adjustments
 
   acts_as_paranoid
 
@@ -157,17 +158,24 @@ class Student < User
     (payment_methods.not_verified_first - [primary_payment_method]).unshift(primary_payment_method).compact
   end
 
-  def upfront_payment_due?
-    total_paid < plan.upfront_amount
+  def total_owed
+    plan.student_portion + cost_adjustments.sum(:amount)
+  end
+
+  def upfront_amount_owed
+    plan.standard? ? plan.upfront_amount - total_paid : total_owed - total_paid
   end
 
   def upfront_amount_with_fees
-    amount = plan.upfront_amount - total_paid
-    amount + primary_payment_method.calculate_fee(amount)
+    upfront_amount_owed + primary_payment_method.calculate_fee(upfront_amount_owed)
+  end
+
+  def upfront_payment_due?
+    upfront_amount_owed > 0
   end
 
   def make_upfront_payment
-    payments.create(amount: plan.upfront_amount - total_paid, payment_method: primary_payment_method, category: 'upfront')
+    payments.create(amount: upfront_amount_owed, payment_method: primary_payment_method, category: 'upfront')
   end
 
   def total_paid

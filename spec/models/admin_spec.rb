@@ -66,6 +66,10 @@ describe Admin do
     context 'for students' do
       it { is_expected.to have_abilities(:manage, Student.new) }
     end
+
+    context 'for cost adjustments' do
+      it { is_expected.to have_abilities([:create, :read, :update, :destroy], CostAdjustment.new)}
+    end
   end
 
   it 'is assigned a default current_course before creation' do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_15_191235) do
+ActiveRecord::Schema.define(version: 2018_08_20_203210) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,6 +57,15 @@ ActiveRecord::Schema.define(version: 2018_08_15_191235) do
   create_table "cohorts_courses", id: :serial, force: :cascade do |t|
     t.integer "cohort_id"
     t.integer "course_id"
+  end
+
+  create_table "cost_adjustments", force: :cascade do |t|
+    t.bigint "student_id"
+    t.integer "amount"
+    t.string "reason"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["student_id"], name: "index_cost_adjustments_on_student_id"
   end
 
   create_table "course_internships", id: :serial, force: :cascade do |t|
@@ -233,6 +242,7 @@ ActiveRecord::Schema.define(version: 2018_08_15_191235) do
     t.boolean "upfront"
     t.string "short_name"
     t.integer "order"
+    t.integer "student_portion"
   end
 
   create_table "ratings", id: :serial, force: :cascade do |t|
@@ -347,6 +357,7 @@ ActiveRecord::Schema.define(version: 2018_08_15_191235) do
 
   add_foreign_key "cohorts", "offices"
   add_foreign_key "cohorts", "tracks"
+  add_foreign_key "cost_adjustments", "users", column: "student_id"
   add_foreign_key "courses", "tracks"
   add_foreign_key "notes", "submissions"
   add_foreign_key "users", "offices"

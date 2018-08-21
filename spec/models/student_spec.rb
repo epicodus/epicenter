@@ -12,6 +12,7 @@ describe Student do
   it { should have_many :signatures }
   it { should have_many :interview_assignments }
   it { should have_one :internship_assignment }
+  it { should have_many :cost_adjustments }
 
   describe 'validations' do
     context 'does not validate plan_id when a student has not accepted the epicenter invitation' do
@@ -340,62 +341,110 @@ describe Student do
     end
   end
 
+  describe '#total_owed', :stripe_mock do
+    let(:student) { FactoryBot.create :user_with_credit_card }
+
+    before { allow(student).to receive(:total_paid).and_return(50_00) }
+
+    it "calculates the total amount owed when no cost adjustments" do
+      expect(student.total_owed).to eq student.plan.student_portion
+    end
+
+    it "calculates the total amount owed when positive cost adjustments" do
+      student.cost_adjustments.create(amount: 50_00, reason: "test")
+      expect(student.total_owed).to eq student.plan.student_portion + 50_00
+    end
+
+    it "calculates the total amount owed when positive and negative cost adjustments" do
+      student.cost_adjustments.create(amount: 50_00, reason: "test")
+      student.cost_adjustments.create(amount: -25_00, reason: "test")
+      expect(student.total_owed).to eq student.plan.student_portion + 25_00
+    end
+
+    it "calculates the total amount owed on standard payment plan" do
+      student.plan = FactoryBot.create(:standard_plan)
+      expect(student.total_owed).to eq student.plan.student_portion
+    end
+  end
+
+  describe '#upfront_amount_owed', :stripe_mock do
+    it "calculates the upfront amount owed with upfront payment plan" do
+      student = FactoryBot.create(:user_with_credit_card)
+      allow(student).to receive(:total_paid).and_return(50_00)
+      expect(student.upfront_amount_owed).to eq student.plan.student_portion - 50_00
+      expect(student.upfront_amount_owed).to eq student.plan.upfront_amount - 50_00
+    end
+
+    it "calculates the upfront amount owed with standard payment plan" do
+      student = FactoryBot.create(:user_with_credit_card, plan: FactoryBot.create(:standard_plan))
+      allow(student).to receive(:total_paid).and_return(50_00)
+      expect(student.upfront_amount_owed).to eq student.plan.upfront_amount - 50_00
+      expect(student.upfront_amount_owed).to_not eq student.plan.student_portion - 50_00
+    end
+  end
+
+  describe "#upfront_amount_with_fees", :stripe_mock do
+    it "calculates the total upfront amount including fees" do
+      plan = FactoryBot.create(:upfront_payment_only_plan, upfront_amount: 200_00, student_portion: 200_00)
+      student = FactoryBot.create(:user_with_credit_card, plan: plan)
+      expect(student.upfront_amount_with_fees).to eq 206_27
+    end
+
+    it "calculates the total upfront amount on second payment including fees" do
+      plan = FactoryBot.create(:upfront_payment_only_plan, upfront_amount: 200_00, student_portion: 200_00)
+      student = FactoryBot.create(:user_with_credit_card, plan: plan)
+      FactoryBot.create(:payment_with_credit_card, student: student, amount: student.plan.upfront_amount - 100_00)
+      expect(student.upfront_amount_with_fees).to eq 103_28
+    end
+  end
+
   describe "#upfront_payment_due?", :stripe_mock do
-    let(:student) { FactoryBot.create :user_with_credit_card, email: 'example@example.com' }
+    let(:student) { FactoryBot.create :user_with_credit_card }
 
-    it "is true if student has upfront payment and no payments have been made" do
-      expect(student.upfront_payment_due?).to be true
+    it "is true if upfront_amount_owed is greater than 0" do
+      expect(student.upfront_payment_due?).to eq true
     end
 
-    it "is false if student has no upfront payment" do
-      student.plan.upfront_amount = 0
-      expect(student.upfront_payment_due?).to be false
+    it "is false if upfront_amount_owed is 0" do
+      allow(student).to receive(:upfront_amount_owed).and_return(0)
+      expect(student.upfront_payment_due?).to eq false
     end
 
-    it "is true if student has paid only part of upfront payment", :vcr, :stub_mailgun do
+    it "is true if student has paid only part of upfront payment", :stub_mailgun do
       FactoryBot.create(:payment_with_credit_card, student: student, amount: student.plan.upfront_amount - 1)
       expect(student.upfront_payment_due?).to be true
     end
 
-    it "is false if student has paid full upfront amount", :vcr, :stub_mailgun do
+    it "is false if student has paid full upfront amount", :stub_mailgun do
       FactoryBot.create(:payment_with_credit_card, student: student, amount: student.plan.upfront_amount)
       expect(student.upfront_payment_due?).to be false
     end
   end
 
-  describe "#make_upfront_payment" do
-    let(:student) { FactoryBot.create :user_with_credit_card, email: 'example@example.com' }
+  describe "#make_upfront_payment", :vcr, :stripe_mock, :stub_mailgun do
+    let(:student) { FactoryBot.create :user_with_credit_card }
 
-    it "makes a payment for the upfront amount of the student's plan if first payment", :vcr, :stripe_mock, :stub_mailgun do
+    it "makes a payment for the upfront amount of the student's plan if first payment" do
       student.make_upfront_payment
       expect(student.payments.first.amount).to eq student.plan.upfront_amount
     end
 
-    it "makes a payment for the remaining upfront amount of the student's plan if second payment", :vcr, :stripe_mock, :stub_mailgun do
+    it "makes a payment for the remaining upfront amount of the student's plan if second payment" do
       FactoryBot.create(:payment_with_credit_card, student: student, amount: student.plan.upfront_amount - 100)
       student.make_upfront_payment
       expect(student.payments.order(:created_at).first.amount).to eq student.plan.upfront_amount - 100
       expect(student.payments.order(:created_at).last.amount).to eq 100
     end
 
-    it "sets category to upfront", :vcr, :stripe_mock, :stub_mailgun do
+    it "makes a payment using upfront_amount_owed when different from plan upfront_amount" do
+      allow(student).to receive(:upfront_amount_owed).and_return(500_00)
+      student.make_upfront_payment
+      expect(student.payments.first.amount).to eq 500_00
+    end
+
+    it "sets category to upfront" do
       student.make_upfront_payment
       expect(student.payments.first.category).to eq 'upfront'
-    end
-  end
-
-  describe "#upfront_amount_with_fees" do
-    it "calculates the total upfront amount", :stripe_mock do
-      plan = FactoryBot.create(:upfront_payment_only_plan, upfront_amount: 200_00)
-      student = FactoryBot.create(:user_with_credit_card, plan: plan)
-      expect(student.upfront_amount_with_fees).to eq 206_27
-    end
-
-    it "calculates the total upfront amount on second payment", :stripe_mock do
-      plan = FactoryBot.create(:upfront_payment_only_plan, upfront_amount: 200_00)
-      student = FactoryBot.create(:user_with_credit_card, plan: plan)
-      FactoryBot.create(:payment_with_credit_card, student: student, amount: student.plan.upfront_amount - 100_00)
-      expect(student.upfront_amount_with_fees).to eq 103_28
     end
   end
 
@@ -939,6 +988,10 @@ describe Student do
 
     context 'for transcripts' do
       it { is_expected.to have_abilities(:read, Transcript) }
+    end
+
+    context 'for cost adjustments' do
+      it { is_expected.to not_have_abilities([:create, :read, :update, :destroy], CostAdjustment.new)}
     end
   end
 

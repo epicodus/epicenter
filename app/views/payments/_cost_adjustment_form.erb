@@ -1,0 +1,17 @@
+<%= form_for [@student, @cost_adjustment] do |f| %>
+  <div class="input-group refund-input-group">
+    <%= f.label :amount %>
+    <%= f.number_field :amount, { class: 'form-control', required: true, step: 0.01 } %>
+  </div>
+
+  <div class="input-group refund-input-group">
+    <%= f.label :reason %>
+    <%= f.text_field :reason, { class: 'form-control', required: true } %>
+  </div>
+
+  <div class="input-group">
+    <span class="input-group-btn">
+      <%= f.submit 'Adjust student cost', class: 'btn btn-primary', id: 'adjust-student-cost-button' %>
+    </span>
+  </div>
+<% end %>
