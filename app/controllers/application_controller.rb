@@ -34,7 +34,12 @@ protected
       company_path(user)
     elsif user.is_a? Student
       if user.signed_main_documents? && user.class_in_session?
-        student_courses_path(current_student)
+        if user.course == Course.find_by(description: '2018-07 Intro User Interfaces') && user.upfront_payment_due?
+          flash[:alert] = '<strong>You have not yet enrolled.</strong><br> Please make your payment as soon as possible.'
+          proper_payments_path(user)
+        else
+          student_courses_path(current_student)
+        end
       elsif user.signed_main_documents? && user.payment_methods.any? && user.courses.any?
         student_courses_path(current_student)
       elsif user.signed_main_documents?
