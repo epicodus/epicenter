@@ -115,6 +115,7 @@ FactoryBot.define do
     end
 
     factory :internship_course do
+      description { 'internship course' }
       active { true }
       association :language, factory: :internship_language
     end
@@ -186,9 +187,8 @@ FactoryBot.define do
 
     factory :cohort_internship_course do
       before(:create) do |cohort|
-        course = cohort.courses.first
-        course.internship_course = true
-        course.save
+        cohort.courses = [FactoryBot.create(:internship_course)]
+        cohort.save
       end
     end
 

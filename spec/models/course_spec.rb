@@ -444,10 +444,11 @@ describe Course do
       expect(course.description).to eq "#{course.start_date.strftime('%Y-%m')} #{course.language.name} #{course.office.name.upcase}"
     end
 
-    it 'sets description for internship course to include languages just graduated' do
-      level_3_just_finished_course = FactoryBot.create(:level_3_just_finished_course)
-      internship_course = FactoryBot.create(:internship_course, office: level_3_just_finished_course.office)
-      expect(internship_course.description).to eq "#{internship_course.start_date.strftime('%Y-%m')} Internship (#{level_3_just_finished_course.language.name})"
+    it 'sets description for internship course to include tracks' do
+      cohort = FactoryBot.create(:cohort_internship_course)
+      course = cohort.courses.first
+      course.set_description
+      expect(course.description).to eq "#{course.start_date.strftime('%Y-%m')} Internship (#{cohort.track.description})"
     end
 
     it 'allows manual setting of description on creation' do
