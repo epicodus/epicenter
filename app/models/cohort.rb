@@ -51,6 +51,9 @@ class Cohort < ApplicationRecord
         next_course_start_date = course.end_date.next_week
         self.courses << course
       end
+      internship_course = courses.internship_courses.first
+      internship_course.set_description
+      internship_course.save
     end
   end
 
