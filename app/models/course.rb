@@ -138,6 +138,19 @@ class Course < ApplicationRecord
     end
   end
 
+  def set_description
+    if language.name == "Intro" && track.present?
+      self.description = "#{start_date.strftime('%Y-%m')} Intro #{track.languages.find_by(level: 1).name}"
+    elsif language.name == "Internship"
+      tracks = cohorts.map { |cohort| cohort.track.description }.sort.join(", ")
+      self.description = "#{start_date.strftime('%Y-%m')} Internship (#{tracks})"
+    elsif language.level == 0 && office.name != "Portland" && office.name != 'Online'
+      self.description = "#{start_date.strftime('%Y-%m')} #{language.name} #{office.name.upcase}"
+    else
+      self.description = "#{start_date.strftime('%Y-%m')} #{language.name}"
+    end
+  end
+
 private
 
   def set_start_and_end_dates
@@ -163,20 +176,6 @@ private
   def set_internship_course
     self.internship_course = language.name.downcase.include? "internship"
     return true
-  end
-
-  def set_description
-    if language.name == "Intro" && track.present?
-      self.description = "#{start_date.strftime('%Y-%m')} Intro #{track.languages.find_by(level: 1).name}"
-    elsif language.name == "Internship"
-      level_3_graduated = Course.courses_for(office).where('end_date > ? AND end_date < ?', start_date - 3.weeks, start_date).select {|course| course.language && course.language.level == 3 }
-      languages = level_3_graduated.map { |course| course.language.name }.sort.join(", ")
-      self.description = "#{start_date.strftime('%Y-%m')} #{language.name} (#{languages})"
-    elsif language.level == 0 && office.name != "Portland" && office.name != 'Online'
-      self.description = "#{start_date.strftime('%Y-%m')} #{language.name} #{office.name.upcase}"
-    else
-      self.description = "#{start_date.strftime('%Y-%m')} #{language.name}"
-    end
   end
 
   def update_cohort_end_date(cohort)
