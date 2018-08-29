@@ -394,6 +394,31 @@ describe Course do
     end
   end
 
+  describe '#change_intro_payment_plans_to_upfront' do
+    let(:course) { FactoryBot.create(:course) }
+    let(:intro_plan) { FactoryBot.create(:free_intro_plan) }
+    let(:standard_plan) { FactoryBot.create(:standard_plan) }
+    let!(:upfront_plan) { FactoryBot.create(:upfront_payment_only_plan) }
+    let!(:intro_plan_student) { FactoryBot.create(:student, courses: [course], plan: intro_plan) }
+    let!(:standard_plan_student) { FactoryBot.create(:student, courses: [course], plan: standard_plan) }
+
+    it 'updates all students in course on intro plan to upfront plan', :stub_mailgun do
+      course.change_intro_payment_plans_to_upfront
+      expect(intro_plan_student.reload.plan).to eq upfront_plan
+    end
+
+    it 'emails list of students whose payment plans were updated' do
+      allow(EmailJob).to receive(:perform_later).and_return({})
+      course.change_intro_payment_plans_to_upfront
+      expect(EmailJob).to have_received(:perform_later).with(
+      { from: ENV['FROM_EMAIL_PAYMENT'],
+        to: ENV['FROM_EMAIL_PAYMENT'],
+        subject: "Payment plans updated to upfront",
+        text: intro_plan_student.name
+      })
+    end
+  end
+
   describe '#set_parttime' do
     it 'sets parttime flag for evening course' do
       course = FactoryBot.create(:part_time_course)

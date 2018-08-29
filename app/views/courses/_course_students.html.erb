@@ -4,6 +4,9 @@
     <p>
       <%= link_to 'View attendance', course_path(@course, attendance: true), class: 'btn btn-default' unless params[:attendance] %>
       <%= link_to 'Export', course_export_path(@course), id: "export-btn", :class => "btn btn-default" %>
+      <% if current_admin.try(:super_admin) && @course.students.where(plan: Plan.active.intro.first).any? %>
+        <%= link_to 'Update payment plan for all students', course_plans_path(@course), :class => "btn btn-primary", data: { method: :patch, confirm: "Update #{@course.students.where(plan: Plan.active.intro.first).count} students in this course to upfront payment plan?       **THIS ACTION CAN NOT BE UNDONE.**" } %>
+      <% end %>
     </p>
     <div class="table-responsive">
       <table class="searchable-datatable table table-hover">

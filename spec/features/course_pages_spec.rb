@@ -200,3 +200,40 @@ feature 'exporting course students emails to a file' do
     end
   end
 end
+
+feature 'mass updating intro payment plans to upfront payment plans', :stub_mailgun do
+  let(:super_admin) { FactoryBot.create(:admin, super_admin: true) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+
+  context 'as a super admin' do
+    before { login_as(super_admin, scope: :admin) }
+    scenario 'on a course with at least 1 intro plan student' do
+      visit course_path(student.course)
+      click_link 'Update payment plan for all students'
+      expect(page).to have_content "All students still on the intro payment plan in this course have been switched to the upfront payment plan."
+    end
+
+    scenario 'on a course with no intro plan students' do
+      student.update(plan: FactoryBot.create(:standard_plan))
+      visit course_path(student.course)
+      expect(page).to_not have_content "Update payment plan for all students"
+    end
+  end
+
+  context 'as a regular admin' do
+    before { login_as(student, scope: :student) }
+    scenario 'without permission' do
+      visit course_path(student.course)
+      expect(page).to_not have_content "Update payment plan for all students"
+    end
+  end
+
+  context 'as a student' do
+    before { login_as(student, scope: :student) }
+    scenario 'without permission' do
+      visit course_path(student.course)
+      expect(page).to_not have_content "Update payment plan for all students"
+    end
+  end
+end
