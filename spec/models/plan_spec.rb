@@ -50,4 +50,20 @@ describe Plan do
       expect(Plan.fulltime).to eq [standard_plan]
     end
   end
+
+  describe 'intro scope' do
+    it 'returns all free intro plans' do
+      intro_plan = FactoryBot.create(:free_intro_plan)
+      upfront_plan = FactoryBot.create(:upfront_payment_only_plan)
+      expect(Plan.intro).to eq [intro_plan]
+    end
+  end
+
+  describe 'fulltime_upfront scope' do
+    it 'returns all fulltime upfront plans' do
+      intro_plan = FactoryBot.create(:free_intro_plan)
+      upfront_plan = FactoryBot.create(:upfront_payment_only_plan)
+      expect(Plan.fulltime_upfront).to eq [upfront_plan]
+    end
+  end
 end

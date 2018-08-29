@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_20_203210) do
+ActiveRecord::Schema.define(version: 2018_08_28_204953) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -344,6 +344,7 @@ ActiveRecord::Schema.define(version: 2018_08_20_203210) do
     t.bigint "office_id"
     t.integer "ending_cohort_id"
     t.integer "parttime_cohort_id"
+    t.boolean "super_admin"
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true

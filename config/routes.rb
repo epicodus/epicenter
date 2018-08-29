@@ -48,6 +48,7 @@ Rails.application.routes.draw do
     resources :students, only: [:show]
     resources :day_attendance_records, only: [:index, :create]
     resources :ratings, only: [:index]
+    resource :plans, only: [:update]
   end
   resources :ratings, only: [:create]
   resources :companies, only: [:show]
