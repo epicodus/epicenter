@@ -104,10 +104,14 @@ feature "Student signs in while class is not in session" do
 
   context "before adding a payment method" do
     it "takes them to the page to choose payment method" do
-      student = FactoryBot.create(:user_with_all_documents_signed)
       sign_in_as(student)
-      visit new_payment_method_path
       expect(page).to have_content "How would you like to make payments"
+    end
+
+    it "takes them to courses page if no payment due" do
+      special_plan_student = FactoryBot.create(:user_with_all_documents_signed, plan: FactoryBot.create(:special_plan), course: future_course)
+      sign_in_as(special_plan_student)
+      expect(page).to have_content "Your courses"
     end
   end
 
@@ -147,6 +151,7 @@ feature "Student visits homepage after logged in" do
     sign_in_as(student)
     visit root_path
     expect(current_path).to_not eq root_path
+    expect(page).to have_content "Your courses"
   end
 end
 

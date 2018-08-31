@@ -110,5 +110,6 @@ feature 'signing in as a company' do
     fill_in 'Password', with: company.password
     click_on 'Sign in'
     expect(page).to have_content 'Signed in successfully.'
+    expect(page).to have_content 'Internships'
   end
 end

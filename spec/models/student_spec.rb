@@ -28,6 +28,21 @@ describe Student do
       student.save
       expect(student.plan).to eq Plan.active.find_by(short_name: 'intro')
     end
+
+    it 'sets Fidgetech students to special $0 payment plan' do
+      course = FactoryBot.create(:course, description: 'Fidgetech')
+      student = FactoryBot.build(:student, plan_id: nil, courses: [course])
+      special_plan = FactoryBot.create(:special_plan)
+      student.save
+      expect(student.plan).to eq special_plan
+    end
+
+    it 'does not change payment plan if one already assigned' do
+      upfront_plan = FactoryBot.create(:upfront_payment_only_plan)
+      student = FactoryBot.build(:student, plan: upfront_plan)
+      student.save
+      expect(student.plan).to eq upfront_plan
+    end
   end
 
   describe '#with_activated_accounts' do
@@ -278,6 +293,14 @@ describe Student do
       FactoryBot.create(:completed_enrollment_agreement, student: seattle_student)
       seattle_student.update(demographics: true)
       expect(seattle_student.signed_main_documents?).to eq false
+    end
+
+    it "does not require refund policy for Fidgetech students" do
+      student.courses = [FactoryBot.create(:course, description: 'Fidgetech')]
+      FactoryBot.create(:completed_code_of_conduct, student: student)
+      FactoryBot.create(:completed_enrollment_agreement, student: student)
+      student.update(demographics: true)
+      expect(student.signed_main_documents?).to eq true
     end
   end
 

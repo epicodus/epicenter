@@ -2,6 +2,10 @@
   <p>Hi <%= @resource.name %>,</p>
   <p>You have been invited to create an admin account at <%= root_url %>. Lucky you!</p>
   <p><%= link_to "Accept Invitation", accept_invitation_url(@resource, :invitation_token => @token) %></p>
+<% elsif @resource.course == Course.find_by(description: 'Fidgetech') %>
+  <p>Hi <%= @resource.name %>,</p>
+  <p>You have been invited to create an account at <%= root_url %>.</p>
+  <p>Click <%= link_to "here", accept_invitation_url(@resource, :invitation_token => @token) %> to create your account on Epicenter.</p>
 <% else %>
   <p>Hi <%= @resource.name %>. I'm really happy to welcome you to the <strong><%= @resource.course.description %> (<%= @resource.course.office.name %>)</strong> track at Epicodus!</p>
 

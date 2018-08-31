@@ -23,6 +23,11 @@ describe CrmLead, :dont_stub_crm do
       expect(CrmLead.new('example@example.com').cohort).to eq cohort
     end
 
+    it 'returns Fidgetech cohort' do
+      cohort = FactoryBot.create(:cohort, description: 'Fidgetech')
+      expect(CrmLead.new('example-fidgetech@example.com').cohort).to eq cohort
+    end
+
     it 'raises error if cohort does not exist in Epicenter' do
       FactoryBot.create(:track)
       expect { CrmLead.new('example@example.com').cohort }.to raise_error(CrmError, "Cohort not found in Epicenter")
@@ -42,6 +47,13 @@ describe CrmLead, :dont_stub_crm do
     it 'for part-time student' do
       course = FactoryBot.create(:part_time_course, class_days: [Date.parse('2000-01-03')], office: FactoryBot.create(:philadelphia_office))
       expect(CrmLead.new('example-part-time@example.com').first_course).to eq course
+    end
+
+    it 'for fidgetech student' do
+      course = FactoryBot.create(:course, description: 'Fidgetech')
+      cohort = FactoryBot.create(:cohort, description: 'Fidgetech')
+      cohort.courses = [course]
+      expect(CrmLead.new('example-fidgetech@example.com').first_course).to eq course
     end
 
     it 'raises error if course does not exist in Epicenter' do

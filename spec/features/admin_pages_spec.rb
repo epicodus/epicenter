@@ -177,6 +177,34 @@ feature 'Inviting new part-time students', :vcr, :dont_stub_crm do
   end
 end
 
+feature 'Inviting new Fidgetech students', :vcr, :dont_stub_crm do
+  let(:course) { FactoryBot.create(:course, description: 'Fidgetech') }
+  let(:cohort) { FactoryBot.create(:cohort, description: 'Fidgetech') }
+  let(:admin) { FactoryBot.create(:admin, courses: [course]) }
+
+  before do
+    cohort.courses = [course]
+    admin.current_course = course
+    allow_any_instance_of(CrmLead).to receive(:update)
+    login_as(admin, scope: :admin)
+  end
+
+  scenario 'admin invites Fidgetech student' do
+    visit new_student_invitation_path
+    fill_in 'Email', with: 'example-fidgetech@example.com'
+    click_on 'Invite student'
+    expect(page).to have_content "An invitation email has been sent to example-fidgetech@example.com to join #{course.description} in #{course.office.name}. Wrong course?"
+  end
+
+  scenario 'Sets starting cohort, current cohort, start date, end date' do
+    visit new_student_invitation_path
+    fill_in 'Email', with: 'example-fidgetech@example.com'
+    click_on 'Invite student'
+    student = Student.find_by(email: "example-fidgetech@example.com")
+    expect(student.starting_cohort).to eq cohort
+  end
+end
+
 feature 'Admin signs up via invitation' do
   let(:admin) { FactoryBot.create(:admin) }
 

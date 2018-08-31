@@ -38,12 +38,14 @@ protected
           flash[:alert] = '<strong>You have not yet enrolled.</strong><br> Please make your payment as soon as possible.'
           proper_payments_path(user)
         else
-          student_courses_path(current_student)
+          student_courses_path(user)
         end
       elsif user.signed_main_documents? && user.payment_methods.any? && user.courses.any?
-        student_courses_path(current_student)
-      elsif user.signed_main_documents?
+        student_courses_path(user)
+      elsif user.signed_main_documents? && user.upfront_payment_due?
         proper_payments_path(user)
+      elsif user.signed_main_documents?
+        student_courses_path(user)
       else
         signatures_check_path(user)
       end

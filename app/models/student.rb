@@ -3,7 +3,7 @@ class Student < User
 
   validate :primary_payment_method_belongs_to_student
 
-  before_create :assign_intro_plan
+  before_create :assign_payment_plan
   before_destroy :archive_enrollments
   after_create :update_plan_in_crm
   after_update :update_plan_in_crm, if: :saved_change_to_plan_id
@@ -139,7 +139,11 @@ class Student < User
   end
 
   def documents_required
-    documents = [CodeOfConduct, RefundPolicy, EnrollmentAgreement]
+    if course == Course.find_by(description: 'Fidgetech')
+      documents = [CodeOfConduct, EnrollmentAgreement]
+    else
+      documents = [CodeOfConduct, RefundPolicy, EnrollmentAgreement]
+    end
     documents << ComplaintDisclosure if office.try(:name) == 'Seattle'
     documents
   end
@@ -401,8 +405,14 @@ private
     enrollments.each { |enrollment| enrollment.destroy }
   end
 
-  def assign_intro_plan
-    self.plan ||= Plan.active.find_by(short_name: 'intro')
+  def assign_payment_plan
+    if plan.nil?
+      if course == Course.find_by(description: 'Fidgetech')
+        self.plan = Plan.active.find_by(short_name: 'special-other')
+      else
+        self.plan = Plan.active.find_by(short_name: 'intro')
+      end
+    end
   end
 
   def update_plan_in_crm

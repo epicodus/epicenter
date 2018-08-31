@@ -12,7 +12,11 @@ class DemographicsController < ApplicationController
     @demographic_info = DemographicInfo.new(current_student, demographic_info_params)
     if @demographic_info.save
       current_student.update(demographics: true)
-      redirect_to payment_methods_path
+      if current_student.upfront_payment_due?
+        redirect_to payment_methods_path
+      else
+        redirect_to student_courses_path(current_student)
+      end
     else
       render :new
     end
