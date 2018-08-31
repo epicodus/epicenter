@@ -19,8 +19,7 @@ feature 'Creating a credit card' do
       fill_in 'cvc_code', with: '123'
       fill_in 'zip_code', with: '11211'
       click_on 'Add credit card'
-      wait_for_ajax
-      expect(page).to have_content 'Your credit card has been added.'
+      expect(page).to have_content('Your credit card has been added.', wait: 5)
     end
 
     scenario 'with missing account information', :vcr, js: true do
@@ -50,8 +49,7 @@ feature 'Creating a credit card' do
       fill_in 'cvc_code', with: '123'
       fill_in 'zip_code', with: '11211'
       click_on 'Add credit card'
-      wait_for_ajax
-      expect(page).to have_content 'Your card was declined.'
+      expect(page).to have_content('Your card was declined.', wait: 5)
     end
   end
 end
