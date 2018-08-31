@@ -16,7 +16,13 @@ class CrmLead
   end
 
   def cohort
-    Cohort.find_by(office: office, start_date: start_date, track: track) || CrmLead.raise_error("Cohort not found in Epicenter") unless parttime?
+    if fidgetech?
+      Cohort.find_by(description: 'Fidgetech')
+    elsif parttime?
+      nil
+    else
+      Cohort.find_by(office: office, start_date: start_date, track: track) || CrmLead.raise_error("Cohort not found in Epicenter")
+    end
   end
 
   def first_course
@@ -86,6 +92,10 @@ private
 
   def parttime?
     cohort_applied.include? 'Part-time'
+  end
+
+  def fidgetech?
+    cohort_applied.include? 'Fidgetech'
   end
 
   def start_date

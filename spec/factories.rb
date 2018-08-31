@@ -392,6 +392,15 @@ FactoryBot.define do
       upfront_amount { 600_00 }
       student_portion { 600_00 }
     end
+
+    factory :special_plan do
+      short_name { 'special-other' }
+      name { 'Special (other special arrangement)' }
+      close_io_description { 'Other - Special arrangement' }
+      upfront { true }
+      upfront_amount { 0 }
+      student_portion { 0 }
+    end
   end
 
   factory :objective do

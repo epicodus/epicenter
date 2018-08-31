@@ -65,4 +65,25 @@ feature 'Submitting demographics info' do
       expect(page).to have_content "Please correct these problems"
     end
   end
+
+  context 'as a student with no payment due' do
+    scenario "redirects to courses page if no payment due", vcr: true do
+      special_plan_student = FactoryBot.create(:user_waiting_on_demographics, plan: FactoryBot.create(:special_plan))
+      login_as(special_plan_student, scope: :student)
+      visit root_path
+      fill_in 'demographic_info_address', with: '400 SW 6th Ave'
+      fill_in 'demographic_info_city', with: 'Portland'
+      fill_in 'demographic_info_state', with: 'OR'
+      fill_in 'demographic_info_zip', with: '97204'
+      select 'United States of America', from: 'demographic_info_country'
+      fill_in 'demographic_info_birth_date', with: '01/01/2000'
+      choose 'demographic_info_disability_no'
+      choose 'demographic_info_veteran_no'
+      select 'GED', from: 'demographic_info_education'
+      choose 'demographic_info_cs_degree_no'
+      select 'S', from: 'demographic_info_shirt'
+      click_on 'Submit'
+      expect(page).to have_content "Your courses"
+    end
+  end
 end
