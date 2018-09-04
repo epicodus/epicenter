@@ -409,8 +409,10 @@ private
     if plan.nil?
       if course == Course.find_by(description: 'Fidgetech')
         self.plan = Plan.active.find_by(short_name: 'special-other')
+      elsif course.parttime?
+        self.plan = Plan.active.find_by(short_name: 'parttime')
       else
-        self.plan = Plan.active.find_by(short_name: 'intro')
+        self.plan = Plan.active.find_by(short_name: 'fulltime-upfront')
       end
     end
   end
