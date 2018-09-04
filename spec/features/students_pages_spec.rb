@@ -30,7 +30,7 @@ end
 
 feature 'Student signs up via invitation', :vcr do
   let(:course) { FactoryBot.create(:course, class_days: [Time.new(2018, 1, 1).to_date]) }
-  let(:plan) { FactoryBot.create(:upfront_payment_only_plan) }
+  let(:plan) { FactoryBot.create(:upfront_plan) }
   let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com', courses: [course], plan: plan) }
 
   scenario 'with valid information' do

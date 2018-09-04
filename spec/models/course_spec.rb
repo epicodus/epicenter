@@ -419,7 +419,7 @@ describe Course do
     let(:course) { FactoryBot.create(:course) }
     let(:intro_plan) { FactoryBot.create(:free_intro_plan) }
     let(:standard_plan) { FactoryBot.create(:standard_plan) }
-    let!(:upfront_plan) { FactoryBot.create(:upfront_payment_only_plan) }
+    let!(:upfront_plan) { FactoryBot.create(:upfront_plan) }
     let!(:intro_plan_student) { FactoryBot.create(:student, courses: [course], plan: intro_plan) }
     let!(:standard_plan_student) { FactoryBot.create(:student, courses: [course], plan: standard_plan) }
 

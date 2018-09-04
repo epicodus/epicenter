@@ -45,7 +45,7 @@ feature 'Verifying a bank account' do
   context 'as a student' do
     context 'with correct deposit amounts' do
       let(:student) { FactoryBot.create :user_with_unverified_bank_account, plan: plan }
-      let(:plan) { FactoryBot.create :upfront_payment_only_plan }
+      let(:plan) { FactoryBot.create :upfront_plan }
 
       before do
         login_as(student, scope: :student)

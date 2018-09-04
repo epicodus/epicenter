@@ -5,8 +5,8 @@ describe Plan do
 
   describe 'active scope' do
     it 'returns all plans that are not archived' do
-      plan = FactoryBot.create(:upfront_payment_only_plan)
-      archived_plan = FactoryBot.create(:upfront_payment_only_plan, archived: true)
+      plan = FactoryBot.create(:upfront_plan)
+      archived_plan = FactoryBot.create(:upfront_plan, archived: true)
       expect(Plan.active).to eq [plan]
     end
   end
@@ -14,14 +14,14 @@ describe Plan do
   describe 'standard scope' do
     it 'returns all standard plans' do
       standard_plan = FactoryBot.create(:standard_plan)
-      upfront_plan = FactoryBot.create(:upfront_payment_only_plan)
+      upfront_plan = FactoryBot.create(:upfront_plan)
       expect(Plan.standard).to eq [standard_plan]
     end
   end
 
   describe 'upfront scope' do
     it 'returns all upfront plans' do
-      upfront_plan = FactoryBot.create(:upfront_payment_only_plan)
+      upfront_plan = FactoryBot.create(:upfront_plan)
       standard_plan = FactoryBot.create(:standard_plan)
       expect(Plan.upfront).to eq [upfront_plan]
     end
@@ -54,7 +54,7 @@ describe Plan do
   describe 'intro scope' do
     it 'returns all free intro plans' do
       intro_plan = FactoryBot.create(:free_intro_plan)
-      upfront_plan = FactoryBot.create(:upfront_payment_only_plan)
+      upfront_plan = FactoryBot.create(:upfront_plan)
       expect(Plan.intro).to eq [intro_plan]
     end
   end
@@ -62,7 +62,7 @@ describe Plan do
   describe 'fulltime_upfront scope' do
     it 'returns all fulltime upfront plans' do
       intro_plan = FactoryBot.create(:free_intro_plan)
-      upfront_plan = FactoryBot.create(:upfront_payment_only_plan)
+      upfront_plan = FactoryBot.create(:upfront_plan)
       expect(Plan.fulltime_upfront).to eq [upfront_plan]
     end
   end

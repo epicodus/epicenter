@@ -356,7 +356,7 @@ FactoryBot.define do
       student_portion { 100_00 }
     end
 
-    factory :upfront_payment_only_plan do
+    factory :upfront_plan do
       short_name { 'fulltime-upfront' }
       name { 'Up-front Discount ($6,900 up-front)' }
       close_io_description { '2018 - Up-front Discount ($6,900 up-front)' }
@@ -386,11 +386,11 @@ FactoryBot.define do
 
     factory :parttime_plan do
       short_name { 'parttime' }
-      name { 'Legacy - Evening intro class ($600)' }
-      close_io_description { '2018 - Evening intro class ($600)' }
+      name { 'Evening intro class ($100)' }
+      close_io_description { 'Evening intro class ($100)' }
       parttime { true }
-      upfront_amount { 600_00 }
-      student_portion { 600_00 }
+      upfront_amount { 100_00 }
+      student_portion { 100_00 }
     end
 
     factory :special_plan do

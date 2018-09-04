@@ -23,25 +23,33 @@ describe Student do
 
   describe 'sets payment plan before_create' do
     it 'sets payment plan to intro plan on student create' do
+      upfront_plan = FactoryBot.create(:upfront_plan)
       student = FactoryBot.build(:student, plan_id: nil)
-      FactoryBot.create(:free_intro_plan)
       student.save
-      expect(student.plan).to eq Plan.active.find_by(short_name: 'intro')
+      expect(student.plan).to eq upfront_plan
     end
 
     it 'sets Fidgetech students to special $0 payment plan' do
+      special_plan = FactoryBot.create(:special_plan)
       course = FactoryBot.create(:course, description: 'Fidgetech')
       student = FactoryBot.build(:student, plan_id: nil, courses: [course])
-      special_plan = FactoryBot.create(:special_plan)
       student.save
       expect(student.plan).to eq special_plan
     end
 
-    it 'does not change payment plan if one already assigned' do
-      upfront_plan = FactoryBot.create(:upfront_payment_only_plan)
-      student = FactoryBot.build(:student, plan: upfront_plan)
+    it 'sets parttime students to parttime plan' do
+      parttime_plan = FactoryBot.create(:parttime_plan)
+      course = FactoryBot.create(:part_time_course)
+      student = FactoryBot.build(:student, plan_id: nil, courses: [course])
       student.save
-      expect(student.plan).to eq upfront_plan
+      expect(student.plan).to eq parttime_plan
+    end
+
+    it 'does not change payment plan if one already assigned' do
+      standard_plan = FactoryBot.create(:standard_plan)
+      student = FactoryBot.build(:student, plan: standard_plan)
+      student.save
+      expect(student.plan).to eq standard_plan
     end
   end
 
@@ -408,13 +416,13 @@ describe Student do
 
   describe "#upfront_amount_with_fees", :stripe_mock do
     it "calculates the total upfront amount including fees" do
-      plan = FactoryBot.create(:upfront_payment_only_plan, upfront_amount: 200_00, student_portion: 200_00)
+      plan = FactoryBot.create(:upfront_plan, upfront_amount: 200_00, student_portion: 200_00)
       student = FactoryBot.create(:user_with_credit_card, plan: plan)
       expect(student.upfront_amount_with_fees).to eq 206_27
     end
 
     it "calculates the total upfront amount on second payment including fees" do
-      plan = FactoryBot.create(:upfront_payment_only_plan, upfront_amount: 200_00, student_portion: 200_00)
+      plan = FactoryBot.create(:upfront_plan, upfront_amount: 200_00, student_portion: 200_00)
       student = FactoryBot.create(:user_with_credit_card, plan: plan)
       FactoryBot.create(:payment_with_credit_card, student: student, amount: student.plan.upfront_amount - 100_00)
       expect(student.upfront_amount_with_fees).to eq 103_28
