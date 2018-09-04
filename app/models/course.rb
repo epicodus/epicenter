@@ -86,7 +86,8 @@ class Course < ApplicationRecord
   end
 
   def teacher_and_description
-    "#{office.name} - #{description} (#{teacher})"
+    track_name = " [#{track.description} track]" if track.present? && !internship_course? && !parttime?
+    "#{office.name} - #{description} (#{teacher})#{track_name}"
   end
 
   def description_and_office

@@ -48,9 +48,30 @@ describe Course do
   end
 
   describe '#teacher_and_description' do
-    it 'returns the teacher name and course description' do
+    it 'returns the teacher name and course description and track if exists' do
+      admin = FactoryBot.create(:admin)
+      track = FactoryBot.create(:track)
+      course = FactoryBot.create(:course, admin: admin, track: track)
+      expect(course.teacher_and_description).to eq "#{course.office.name} - #{course.description} (#{course.teacher}) [#{track.description} track]"
+    end
+
+    it 'does not include track if does not exist' do
       admin = FactoryBot.create(:admin)
       course = FactoryBot.create(:course, admin: admin)
+      expect(course.teacher_and_description).to eq "#{course.office.name} - #{course.description} (#{course.teacher})"
+    end
+
+    it 'does not include track if internship course' do
+      admin = FactoryBot.create(:admin)
+      track = FactoryBot.create(:track)
+      course = FactoryBot.create(:internship_course, admin: admin, track: track)
+      expect(course.teacher_and_description).to eq "#{course.office.name} - #{course.description} (#{course.teacher})"
+    end
+
+    it 'does not include track if part-time course' do
+      admin = FactoryBot.create(:admin)
+      track = FactoryBot.create(:track)
+      course = FactoryBot.create(:part_time_course, admin: admin, track: track)
       expect(course.teacher_and_description).to eq "#{course.office.name} - #{course.description} (#{course.teacher})"
     end
   end
