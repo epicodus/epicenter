@@ -152,19 +152,6 @@ class Course < ApplicationRecord
     end
   end
 
-  def change_intro_payment_plans_to_upfront
-    students_to_update = students.where(plan: Plan.active.intro.first)
-    students_to_update.each do |student|
-      student.update(plan: Plan.active.fulltime_upfront.first)
-    end
-    EmailJob.perform_later(
-      { :from => ENV['FROM_EMAIL_PAYMENT'],
-        :to => ENV['FROM_EMAIL_PAYMENT'],
-        :subject => "Payment plans updated to upfront",
-        :text => students_to_update.map { |student| student.name }.join("\n")
-      })
-  end
-
 private
 
   def set_start_and_end_dates
