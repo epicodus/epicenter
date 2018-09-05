@@ -485,7 +485,7 @@ FactoryBot.define do
 
   factory :student do
     course
-    association :plan, factory: :free_intro_plan
+    association :plan, factory: :upfront_plan
     association :office, factory: :philadelphia_office
     sequence(:name) { |n| "Example Brown #{n}" }
     sequence(:email) { |n| "student#{n}@example.com" }

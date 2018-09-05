@@ -58,7 +58,7 @@ feature 'Viewing payment index page' do
 
     context 'with upfront payment due using a bank account', :stripe_mock do
       it 'only shows a link to make an upfront payment with correct amount' do
-        student = FactoryBot.create(:user_with_verified_bank_account, email: 'example@example.com')
+        student = FactoryBot.create(:user_with_verified_bank_account, email: 'example@example.com', plan: FactoryBot.create(:free_intro_plan))
         login_as(student, scope: :student)
         visit student_payments_path(student)
         expect(page).to have_button('Make upfront payment of $100.00')
@@ -67,7 +67,7 @@ feature 'Viewing payment index page' do
 
     context 'with upfront payment due using a credit card', :stripe_mock do
       it 'only shows a link to make an upfront payment with correct amount' do
-        student = FactoryBot.create(:user_with_credit_card)
+        student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com', plan: FactoryBot.create(:free_intro_plan))
         login_as(student, scope: :student)
         visit student_payments_path(student)
         expect(page).to have_button('Make upfront payment of $103.28')
@@ -76,7 +76,7 @@ feature 'Viewing payment index page' do
 
     describe 'sets category' do
       it 'sets category to upfront for first payment for student with 1 full-time course', :vcr, :stripe_mock, :stub_mailgun do
-        student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
+        student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com', plan: FactoryBot.create(:free_intro_plan))
         login_as(student, scope: :student)
         visit student_payments_path(student)
         click_on 'Make upfront payment of $103.28'
@@ -84,7 +84,7 @@ feature 'Viewing payment index page' do
       end
 
       it 'sets category to upfront for first payment for student with 1 part-time course', :vcr, :stripe_mock, :stub_mailgun do
-        student = FactoryBot.create(:part_time_student_with_payment_method, email: 'example@example.com')
+        student = FactoryBot.create(:part_time_student_with_payment_method, email: 'example@example.com', plan: FactoryBot.create(:free_intro_plan))
         login_as(student, scope: :student)
         visit student_payments_path(student)
         click_on 'Make upfront payment of $103.28'

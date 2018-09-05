@@ -1204,7 +1204,7 @@ describe Student do
 
     it 'updates in Close when student registers' do
       expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Payment plan': '2018 - Free Intro ($100 enrollment fee)' })
-      student = FactoryBot.create(:student, email: 'example@example.com')
+      student = FactoryBot.create(:student, email: 'example@example.com', plan: FactoryBot.create(:free_intro_plan))
     end
 
     it 'updates in Close when plan_id changed' do
