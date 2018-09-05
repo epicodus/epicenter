@@ -13,11 +13,7 @@
 
   <p>Click <%= link_to "here", accept_invitation_url(@resource, :invitation_token => @token) %> to enroll and complete these steps.</p>
 
-  <p>To reserve your spot in the class, you need to sign these agreements and pay your deposit within the next seven days. Verifying your bank account can take up to four days, so please start that process as soon as possible.</p>
-
-  <% if @resource.course.office.name != "Portland" %>
-    <p>If you're seeking a loan from one of our financing partners, you need to make your enrollment fee payment via Epicenter and then apply for the loan within the next seven days as well (we will be notified about your application).</p>
-  <% end %>
+  <p>To reserve your spot in the class, you need to sign these agreements and make your payment within the next seven days. Verifying your bank account can take up to four days, so please start that process as soon as possible.</p>
 
   <p>If I haven't heard from you within a week, we’ll open your spot up. If you decide you don’t want to enroll in Epicodus, I’d very much appreciate you telling me as soon as you make up your mind so we can offer your place to someone else.</p>
 
