@@ -27,6 +27,7 @@ private
                   Payment, Student, Submission, Cohort, CostAdjustment]
     can :create, [AttendanceRecordAmendment, Review]
     can :read, [Transcript]
+    can :read, :certificate
   end
 
   def set_enrolled_student_permissions(user, ip)
