@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     resource :restore, only: [:update], to: 'student_restore#update'
     resource :add_course, only: [:update], to: 'add_course#update'
     resource :transcript, only: [:show]
+    resource :certificate, only: [:show]
   end
   resources :admins, only: [:update]
   resources :payment_methods, only: [:index, :new]
