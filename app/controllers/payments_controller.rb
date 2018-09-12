@@ -5,7 +5,7 @@ class PaymentsController < ApplicationController
   def index
     @student = Student.find(params[:student_id])
     authorize! :manage, @student
-    if current_student && @student.upfront_payment_due?
+    if current_student && @student.plan.present? && @student.upfront_payment_due?
       @payment = Payment.new(amount: @student.upfront_amount_with_fees)
     elsif current_admin
       @payment = Payment.new

@@ -59,7 +59,9 @@ private
   end
 
   def redirect_appropriately
-    if request.referer.include?('payment_methods')
+    if student_params[:plan_id]
+      redirect_to student_payments_path(current_student), notice: 'Payment plan selected. Please make payment below.'
+    elsif request.referer.include?('payment_methods')
       redirect_to payment_methods_path, notice: 'Primary payment method has been updated.'
     else
       @course = Course.find(Rails.application.routes.recognize_path(request.referrer)[:course_id])

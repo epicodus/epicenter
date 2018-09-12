@@ -22,11 +22,10 @@ describe Student do
   end
 
   describe 'sets payment plan before_create' do
-    it 'sets payment plan to intro plan on student create' do
-      upfront_plan = FactoryBot.create(:upfront_plan)
+    it 'does not set payment plan for fulltime students' do
       student = FactoryBot.build(:student, plan_id: nil)
       student.save
-      expect(student.plan).to eq upfront_plan
+      expect(student.plan).to eq nil
     end
 
     it 'sets Fidgetech students to special $0 payment plan' do
@@ -50,6 +49,48 @@ describe Student do
       student = FactoryBot.build(:student, plan: standard_plan)
       student.save
       expect(student.plan).to eq standard_plan
+    end
+  end
+
+  describe 'updates payment plan in Close', :dont_stub_crm, :vcr do
+
+    let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
+    let(:lead_id) { ENV['EXAMPLE_CRM_LEAD_ID'] }
+
+    before { allow(CrmUpdateJob).to receive(:perform_later).and_return({}) }
+
+    it 'does not update in Close when fulltime student created' do
+      expect(CrmUpdateJob).to_not receive(:perform_later)
+      student = FactoryBot.create(:student, email: 'example@example.com')
+    end
+
+    it 'updates in Close when parttime student created' do
+      plan = FactoryBot.create(:parttime_plan)
+      course = FactoryBot.create(:part_time_course)
+      student = FactoryBot.build(:student, email: 'example@example.com', plan_id: nil, courses: [course])
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Payment plan': plan.close_io_description })
+      student.save
+    end
+
+    it 'updates in Close when Fidgetech student created' do
+      plan = FactoryBot.create(:special_plan)
+      course = FactoryBot.create(:course, description: 'Fidgetech')
+      student = FactoryBot.build(:student, email: 'example@example.com', plan_id: nil, courses: [course])
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Payment plan': plan.close_io_description })
+      student.save
+    end
+
+    it 'updates in Close when plan_id changed' do
+      student = FactoryBot.create(:student, email: 'example@example.com')
+      new_plan = FactoryBot.create(:loan_plan)
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Payment plan': new_plan.close_io_description })
+      student.update(plan: new_plan)
+    end
+
+    it 'does not update in Close when plan_id not changed' do
+      student = FactoryBot.create(:student, email: 'example@example.com')
+      expect(CrmUpdateJob).to_not receive(:perform_later)
+      student.update(name: 'foo')
     end
   end
 
@@ -1192,34 +1233,6 @@ describe Student do
     it 'reports no enrollment if no courses' do
       student = FactoryBot.create(:student, courses: [])
       expect(student.attendance_status).to eq 'no enrollments'
-    end
-  end
-
-  describe 'updates payment plan in Close', :dont_stub_crm, :vcr do
-
-    let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
-    let(:lead_id) { ENV['EXAMPLE_CRM_LEAD_ID'] }
-
-    before { allow(CrmUpdateJob).to receive(:perform_later).and_return({}) }
-
-    it 'updates in Close when student registers' do
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Payment plan': '2018 - Free Intro ($100 enrollment fee)' })
-      student = FactoryBot.create(:student, email: 'example@example.com', plan: FactoryBot.create(:free_intro_plan))
-    end
-
-    it 'updates in Close when plan_id changed' do
-      allow(CrmUpdateJob).to receive(:perform_later).and_return({})
-      student = FactoryBot.create(:student, email: 'example@example.com')
-      new_plan = FactoryBot.create(:loan_plan)
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Payment plan': new_plan.close_io_description })
-      student.update(plan: new_plan)
-    end
-
-    it 'does not update in Close when plan_id not changed' do
-      allow(CrmUpdateJob).to receive(:perform_later).and_return({})
-      student = FactoryBot.create(:student, email: 'example@example.com')
-      expect(CrmUpdateJob).to_not receive(:perform_later)
-      student.update(name: 'foo')
     end
   end
 end
