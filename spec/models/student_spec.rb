@@ -491,6 +491,11 @@ describe Student do
       FactoryBot.create(:payment_with_credit_card, student: student, amount: student.plan.upfront_amount)
       expect(student.upfront_payment_due?).to be false
     end
+
+    it "is true if student has no payment plan selected" do
+      student_without_plan = FactoryBot.create(:student, plan: nil)
+      expect(student.upfront_payment_due?).to be true
+    end
   end
 
   describe "#make_upfront_payment", :vcr, :stripe_mock, :stub_mailgun do

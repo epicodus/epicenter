@@ -174,7 +174,7 @@ class Student < User
   end
 
   def upfront_payment_due?
-    upfront_amount_owed > 0
+    plan.nil? || upfront_amount_owed > 0
   end
 
   def make_upfront_payment
