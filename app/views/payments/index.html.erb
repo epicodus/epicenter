@@ -5,7 +5,7 @@
   <%= render 'students/student_nav' %>
 <% end %>
 
-<p class="text-primary">* Payments made with a credit or debit card will be charged a nonrefundable 2.9% processing fee + 30¢ per transaction.</p>
+<p class="text-primary">* Payments made with a credit or debit card will be charged a nonrefundable 3% processing fee.</p>
 
 <%= render 'layouts/errors', object: @payment %>
 <% if @student.payments.present? %>
@@ -76,7 +76,39 @@
 <% end %>
 
 <% if current_student %>
-  <% if @student.upfront_payment_due? %>
+  <% if @student.plan.nil? %>
+    <br>
+    <div class="well" id="choose-payment-plan">
+      <h1>Choose your payment plan:</h1>
+      <br>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <%= form_for @student do |f| %>
+                <%= f.hidden_field :plan_id, value: Plan.active.upfront.first.id %>
+                <%= f.submit 'Up-front discount', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the up-front discount?" } %>
+                <p><br>Pay a $6,900 deposit to reserve your seat in class. Pay $0 (zero dollars) after you are invited to continue in your fourth week of classes.</p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <%= form_for @student do |f| %>
+                <%= f.hidden_field :plan_id, value: Plan.active.standard.first.id %>
+                <%= f.submit 'Standard plan', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the standard plan? This cannot be changed later, and you will not be able to receive the up-front discount." } %>
+                <p><br>Pay a $100 deposit to reserve your seat in class. Pay $8,400 after you are invited to continue in your fourth week of classes, and before the end of your fifth week of classes.</p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p id="loan-message">If you'd like to take out a loan or pay with a third-party grant, be sure to read our <a href="https://www.epicodus.com/financial-aid/" target=_blank>information on financial aid</a>, and then choose the "Standard plan" and email <a href="mailto:applications@epicodus.com">applications@epicodus.com</a>.</p>
+    </div>
+    <br>
+  <% elsif @student.upfront_payment_due? %>
     <%= render 'payments/upfront_payment_button' %>
     <br>
   <% end %>
@@ -87,18 +119,22 @@
 
   <div class="well">
     <h3>Payment status</h3>
-    <p>Payment plan: <%= @student.plan.name %></p>
-    <p>
-      <% if @student.cost_adjustments.sum(:amount) > 0 %>
-        Student tuition <em>increased</em> by <%= number_to_currency(@student.cost_adjustments.sum(:amount) / 100.00) %>.
-      <% elsif @student.cost_adjustments.sum(:amount) < 0 %>
-        Student tuition <em>decreased</em> by <%= number_to_currency(@student.cost_adjustments.sum(:amount) / -100.00) %>.
-      <% end %>
-    </p>
-    <p>Total amount student owes: <%= number_to_currency(@student.total_owed / 100.00) %></p>
-    <p>Total paid: <%= number_to_currency(@student.total_paid / 100.00) %></p>
-    <p>Amount student still owes: <%= number_to_currency((@student.total_owed - @student.total_paid) / 100.00) %></p>
-    <p>Upfront payment due? <%= @student.upfront_payment_due? ? number_to_currency(@student.upfront_amount_owed / 100.00) : 'None' %></p>
+    <% if @student.plan.present? %>
+      <p>Payment plan: <%= @student.plan.name %></p>
+      <p>
+        <% if @student.cost_adjustments.sum(:amount) > 0 %>
+          Student tuition <em>increased</em> by <%= number_to_currency(@student.cost_adjustments.sum(:amount) / 100.00) %>.
+        <% elsif @student.cost_adjustments.sum(:amount) < 0 %>
+          Student tuition <em>decreased</em> by <%= number_to_currency(@student.cost_adjustments.sum(:amount) / -100.00) %>.
+        <% end %>
+      </p>
+      <p>Total amount student owes: <%= number_to_currency(@student.total_owed / 100.00) %></p>
+      <p>Total paid: <%= number_to_currency(@student.total_paid / 100.00) %></p>
+      <p>Amount student still owes: <%= number_to_currency((@student.total_owed - @student.total_paid) / 100.00) %></p>
+      <p>Upfront payment due? <%= @student.upfront_payment_due? ? number_to_currency(@student.upfront_amount_owed / 100.00) : 'None' %></p>
+    <% else %>
+      <p><strong>No payment plan selected!</strong></p>
+    <% end %>
   </div>
 
   <div class="well">

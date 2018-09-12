@@ -365,13 +365,21 @@ FactoryBot.define do
       student_portion { 6900_00 }
     end
 
-    factory :standard_plan do
+    factory :standard_plan_legacy do
       short_name { 'fulltime-standard' }
       name { 'Pay As You Go (4 payments of $2,125)' }
       close_io_description { '2018 - Pay As You Go (4 payments of $2,125)' }
       standard { true }
       upfront_amount { 100_00 }
-      first_day_amount { 2100_00 }
+      student_portion { 8500_00 }
+    end
+
+    factory :standard_plan do
+      short_name { 'standard' }
+      name { 'Standard Plan ($100 then $8400)' }
+      close_io_description { '2018 - Standard Plan ($100 then $8400)' }
+      standard { true }
+      upfront_amount { 100_00 }
       student_portion { 8500_00 }
     end
 

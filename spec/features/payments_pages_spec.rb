@@ -56,7 +56,7 @@ feature 'Viewing payment index page' do
       end
     end
 
-    context 'with upfront payment due using a bank account', :stripe_mock do
+    context 'with payment plan and upfront payment due using a bank account', :stripe_mock do
       it 'only shows a link to make an upfront payment with correct amount' do
         student = FactoryBot.create(:user_with_verified_bank_account, email: 'example@example.com', plan: FactoryBot.create(:free_intro_plan))
         login_as(student, scope: :student)
@@ -65,7 +65,7 @@ feature 'Viewing payment index page' do
       end
     end
 
-    context 'with upfront payment due using a credit card', :stripe_mock do
+    context 'with payment plan and upfront payment due using a credit card', :stripe_mock do
       it 'only shows a link to make an upfront payment with correct amount' do
         student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com', plan: FactoryBot.create(:free_intro_plan))
         login_as(student, scope: :student)
@@ -74,8 +74,36 @@ feature 'Viewing payment index page' do
       end
     end
 
-    describe 'sets category' do
-      it 'sets category to upfront for first payment for student with 1 full-time course', :vcr, :stripe_mock, :stub_mailgun do
+    context 'with no payment plan set' do
+      let!(:upfront_plan) { FactoryBot.create(:upfront_plan) }
+      let!(:standard_plan) { FactoryBot.create(:standard_plan) }
+      let(:student) { FactoryBot.create(:user_with_verified_bank_account, plan: nil) }
+
+      before do
+        login_as(student, scope: :student)
+        visit student_payments_path(student)
+      end
+
+      it 'shows payment plan selection options' do
+        expect(page).to have_button 'Up-front discount'
+        expect(page).to have_button 'Standard plan'
+      end
+
+      it 'shows correct payment button when upfront payment plan selected', :stripe_mock, :stub_mailgun do
+        click_on 'Up-front discount'
+        expect(page).to have_content 'Payment plan selected. Please make payment below.'
+        expect(page).to have_button 'Make upfront payment of $6,900.00'
+      end
+
+      it 'shows correct payment button when standard payment plan selected', :stripe_mock, :stub_mailgun do
+        click_on 'Standard plan'
+        expect(page).to have_content 'Payment plan selected. Please make payment below.'
+        expect(page).to have_button 'Make upfront payment of $100.00'
+      end
+    end
+
+    describe 'sets category', :stripe_mock, :stub_mailgun do
+      it 'sets category to upfront for first payment for student with 1 full-time course' do
         student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com', plan: FactoryBot.create(:free_intro_plan))
         login_as(student, scope: :student)
         visit student_payments_path(student)
@@ -83,8 +111,8 @@ feature 'Viewing payment index page' do
         expect(student.payments.first.category).to eq 'upfront'
       end
 
-      it 'sets category to upfront for first payment for student with 1 part-time course', :vcr, :stripe_mock, :stub_mailgun do
-        student = FactoryBot.create(:part_time_student_with_payment_method, email: 'example@example.com', plan: FactoryBot.create(:free_intro_plan))
+      it 'sets category to upfront for first payment for student with 1 part-time course' do
+        student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com', plan: FactoryBot.create(:parttime_plan))
         login_as(student, scope: :student)
         visit student_payments_path(student)
         click_on 'Make upfront payment of $103.28'

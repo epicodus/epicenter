@@ -134,10 +134,17 @@ describe Payment do
       expect(payment.calculate_category).to eq 'upfront'
     end
 
-    it 'calculates category when second payment on standard plan' do
+    it 'calculates category when second payment on legacy standard plan' do
+      legacy_student = FactoryBot.create(:student, plan: FactoryBot.create(:standard_plan_legacy))
+      payment = Payment.create(student: legacy_student, category: 'tuition', offline: true, amount: 100_00)
+      payment2 = Payment.new(student: legacy_student, category: 'tuition', offline: true, amount: 4700_00)
+      expect(payment2.calculate_category).to eq 'standard'
+    end
+
+    it 'calculates category when second payment on new standard plan' do
       payment = Payment.create(student: student_standard_plan, category: 'tuition', offline: true, amount: 100_00)
       payment2 = Payment.new(student: student_standard_plan, category: 'tuition', offline: true, amount: 4700_00)
-      expect(payment2.calculate_category).to eq 'standard'
+      expect(payment2.calculate_category).to eq 'upfront'
     end
 
     it 'raises error when no payment plan' do
@@ -147,21 +154,23 @@ describe Payment do
     end
   end
 
-  describe '#set_description' do
-    it 'sets stripe charge description for regular full-time', :vcr, :stripe_mock, :stub_mailgun do
+  describe '#set_description', :stripe_mock, :stub_mailgun do
+    it 'sets stripe charge description for regular full-time' do
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00, category: 'upfront')
       expect(payment.description).to eq "#{student.courses.first.office.name}; #{student.courses.first.start_date.strftime("%Y-%m-%d")}; Full-time; #{payment.category}"
     end
 
-    it 'sets stripe charge description for regular part-time', :vcr, :stripe_mock, :stub_mailgun do
+    it 'sets stripe charge description for regular part-time' do
+      FactoryBot.create(:parttime_plan)
       part_time_course = FactoryBot.create(:part_time_course)
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com', course: part_time_course)
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00, category: 'part-time')
       expect(payment.description).to eq "#{part_time_course.office.name}; #{part_time_course.start_date.strftime("%Y-%m-%d")}; Part-time; #{payment.category}"
     end
 
-    it 'sets stripe charge descriptions for full-time payment after part-time payment', :vcr, :stripe_mock, :stub_mailgun do
+    it 'sets stripe charge descriptions for full-time payment after part-time payment' do
+      FactoryBot.create(:parttime_plan)
       part_time_course = FactoryBot.create(:part_time_course)
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com', course: part_time_course)
       first_payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00, category: 'part-time')
@@ -206,14 +215,14 @@ describe Payment do
 
       allow(EmailJob).to receive(:perform_later).and_return({})
 
-      FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
+      FactoryBot.create(:payment_with_credit_card, student: student, amount: standard_plan.upfront_amount)
 
       expect(EmailJob).to have_received(:perform_later).with(
         { from: ENV['FROM_EMAIL_PAYMENT'],
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
           subject: "Epicodus tuition payment receipt",
-          text: "Hi #{student.name}. This is to confirm your payment of $618.21 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the #{standard_plan.name} plan and that we will be charging you the remaining #{number_to_currency(standard_plan.first_day_amount / 100, precision: 0)} on the first day of class. I want to be sure we know your intentions and don't mistakenly charge you. Thanks so much!" }
+          text: "Hi #{student.name}. This is to confirm your payment of $103.28 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the #{standard_plan.name} plan and that you will be required to pay the remaining #{number_to_currency(standard_plan.student_portion / 100, precision: 0)} before the end of the fifth week of class. Please let us know immediately if this is not correct. Thanks so much!" }
       )
     end
 
@@ -223,14 +232,14 @@ describe Payment do
 
       allow(EmailJob).to receive(:perform_later).and_return({})
 
-      FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
+      FactoryBot.create(:payment_with_credit_card, student: student, amount: loan_plan.upfront_amount)
 
       expect(EmailJob).to have_received(:perform_later).with(
         { from: ENV['FROM_EMAIL_PAYMENT'],
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
           subject: "Epicodus tuition payment receipt",
-          text: "Hi #{student.name}. This is to confirm your payment of $618.21 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the #{loan_plan.name} plan. Since you are in the process of obtaining a loan for program tuition, would you please let me know (which loan company, date you applied, etc.)? I want to be sure we know your intentions and don't mistakenly charge you. Thanks so much!" }
+          text: "Hi #{student.name}. This is to confirm your payment of $103.28 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the #{loan_plan.name} plan. Since you are in the process of obtaining a loan for program tuition, would you please let me know (which loan company, date you applied, etc.)? Thanks so much!" }
       )
     end
 
@@ -239,7 +248,7 @@ describe Payment do
 
       allow(EmailJob).to receive(:perform_later).and_return({})
 
-      FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
+      FactoryBot.create(:payment_with_credit_card, student: student, amount: student.plan.upfront_amount)
       FactoryBot.create(:payment_with_credit_card, student: student)
 
       expect(EmailJob).to have_received(:perform_later).with(
@@ -247,7 +256,7 @@ describe Payment do
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
           subject: "Epicodus tuition payment receipt",
-          text: "Hi #{student.name}. This is to confirm your payment of $1.32 for Epicodus tuition. Thanks so much!" }
+          text: "Hi #{student.name}. This is to confirm your payment of $7,106.37 for Epicodus tuition. Thanks so much!" }
       )
     end
   end
@@ -299,6 +308,7 @@ describe Payment do
     end
 
     it 'updates status for part-time students and amount paid on the first payment' do
+      FactoryBot.create(:parttime_plan)
       part_time_student = FactoryBot.create(:part_time_student_with_payment_method, email: 'example-part-time@example.com')
       part_time_lead_id = close_io_client.list_leads('email: "' + part_time_student.email + '"')['data'].first['id']
       allow_any_instance_of(CrmLead).to receive(:status).and_return("Applicant - Accepted")

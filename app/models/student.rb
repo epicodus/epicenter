@@ -4,9 +4,8 @@ class Student < User
   validate :primary_payment_method_belongs_to_student
 
   before_create :assign_payment_plan
-  before_destroy :archive_enrollments
-  after_create :update_plan_in_crm
   after_update :update_plan_in_crm, if: :saved_change_to_plan_id
+  before_destroy :archive_enrollments
 
   belongs_to :plan, optional: true
   belongs_to :starting_cohort, class_name: :Cohort, optional: true
@@ -406,14 +405,12 @@ private
   end
 
   def assign_payment_plan
-    if plan.nil?
-      if course == Course.find_by(description: 'Fidgetech')
-        self.plan = Plan.active.find_by(short_name: 'special-other')
-      elsif course.parttime?
-        self.plan = Plan.active.find_by(short_name: 'parttime')
-      else
-        self.plan = Plan.active.find_by(short_name: 'fulltime-upfront')
-      end
+    if course.try(:description) == 'Fidgetech'
+      self.plan = Plan.active.find_by(short_name: 'special-other')
+      update_plan_in_crm
+    elsif course.try(:parttime?)
+      self.plan = Plan.active.find_by(short_name: 'parttime')
+      update_plan_in_crm
     end
   end
 

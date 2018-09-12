@@ -29,7 +29,7 @@ class Payment < ApplicationRecord
   def calculate_category
     if refund_amount.present?
       'refund'
-    elsif student.plan.try(:standard?) && student.payments.any?
+    elsif student.plan.try(:name) == "Pay As You Go (4 payments of $2,125)" && student.payments.any? #legacy (remove soon)
       'standard'
     elsif student.plan
       'upfront'
@@ -62,9 +62,9 @@ private
   def determine_payment_receipt_email_body
     email_body = "Hi #{student.name}. This is to confirm your payment of #{number_to_currency(total_amount / 100.00)} for Epicodus tuition. "
     if student.plan.standard? && student.payments.count == 0
-      email_body += "I am going over the payments for your class and just wanted to confirm that you have chosen the #{student.plan.name} plan and that we will be charging you the remaining #{number_to_currency(student.plan.first_day_amount / 100, precision: 0)} on the first day of class. I want to be sure we know your intentions and don't mistakenly charge you. Thanks so much!"
+      email_body += "I am going over the payments for your class and just wanted to confirm that you have chosen the #{student.plan.name} plan and that you will be required to pay the remaining #{number_to_currency(student.plan.student_portion / 100, precision: 0)} before the end of the fifth week of class. Please let us know immediately if this is not correct. Thanks so much!"
     elsif student.plan.loan? && student.payments.count == 0
-      email_body += "I am going over the payments for your class and just wanted to confirm that you have chosen the #{student.plan.name} plan. Since you are in the process of obtaining a loan for program tuition, would you please let me know (which loan company, date you applied, etc.)? I want to be sure we know your intentions and don't mistakenly charge you. Thanks so much!"
+      email_body += "I am going over the payments for your class and just wanted to confirm that you have chosen the #{student.plan.name} plan. Since you are in the process of obtaining a loan for program tuition, would you please let me know (which loan company, date you applied, etc.)? Thanks so much!"
     else
       email_body += "Thanks so much!"
     end
