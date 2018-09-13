@@ -60,14 +60,17 @@ describe Student do
     before { allow(CrmUpdateJob).to receive(:perform_later).and_return({}) }
 
     it 'does not update in Close when fulltime student created' do
+      plan = FactoryBot.create(:upfront_plan)
+      course = FactoryBot.create(:course)
+      student = FactoryBot.build(:student, email: 'example@example.com', plan: nil, courses: [course])
       expect(CrmUpdateJob).to_not receive(:perform_later)
-      student = FactoryBot.create(:student, email: 'example@example.com')
+      student.save
     end
 
     it 'updates in Close when parttime student created' do
       plan = FactoryBot.create(:parttime_plan)
       course = FactoryBot.create(:part_time_course)
-      student = FactoryBot.build(:student, email: 'example@example.com', plan_id: nil, courses: [course])
+      student = FactoryBot.build(:student, email: 'example@example.com', plan: nil, courses: [course])
       expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Payment plan': plan.close_io_description })
       student.save
     end
@@ -75,7 +78,7 @@ describe Student do
     it 'updates in Close when Fidgetech student created' do
       plan = FactoryBot.create(:special_plan)
       course = FactoryBot.create(:course, description: 'Fidgetech')
-      student = FactoryBot.build(:student, email: 'example@example.com', plan_id: nil, courses: [course])
+      student = FactoryBot.build(:student, email: 'example@example.com', plan: nil, courses: [course])
       expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Payment plan': plan.close_io_description })
       student.save
     end
