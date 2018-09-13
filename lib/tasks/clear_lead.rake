@@ -14,7 +14,7 @@ task :clear_lead, [:email] => [:environment] do |t, args|
   close_io_client.update_lead(lead_id, { 'custom.Payment plan': nil })
   close_io_client.update_lead(lead_id, { 'custom.Amount paid': nil })
   close_io_client.update_lead(lead_id, { 'custom.Signed internship agreement?': nil })
-  close_io_client.update_lead(lead_id, { 'custom.Demographics - Birth date': nil })
+  close_io_client.update_lead(lead_id, { 'custom.Demographics - Birth Date': nil })
   close_io_client.update_lead(lead_id, { 'custom.* Internship class': nil })
   close_io_client.update_lead(lead_id, { 'custom.Demographics - Disability': nil })
   close_io_client.update_lead(lead_id, { 'custom.Demographics - Veteran': nil })
