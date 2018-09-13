@@ -4,6 +4,7 @@ class Student < User
   validate :primary_payment_method_belongs_to_student
 
   before_create :assign_payment_plan
+  after_create :update_plan_in_crm, if: ->(student) { student.plan.present? }
   after_update :update_plan_in_crm, if: :saved_change_to_plan_id
   before_destroy :archive_enrollments
 
@@ -407,10 +408,8 @@ private
   def assign_payment_plan
     if course.try(:description) == 'Fidgetech'
       self.plan = Plan.active.find_by(short_name: 'special-other')
-      update_plan_in_crm
     elsif course.try(:parttime?)
       self.plan = Plan.active.find_by(short_name: 'parttime')
-      update_plan_in_crm
     end
   end
 
