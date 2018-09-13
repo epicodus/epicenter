@@ -50,7 +50,7 @@ feature 'Viewing payment index page' do
         FactoryBot.create(:payment_with_credit_card, amount: 600_00, student: student)
         login_as(student, scope: :student)
         visit student_payments_path(student)
-        expect(page).to have_content 618.21
+        expect(page).to have_content 618.00
         expect(page).to have_content "Succeeded"
         expect(page).to have_content "Credit card ending in 4242"
       end
@@ -70,7 +70,7 @@ feature 'Viewing payment index page' do
         student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com', plan: FactoryBot.create(:free_intro_plan))
         login_as(student, scope: :student)
         visit student_payments_path(student)
-        expect(page).to have_button('Make upfront payment of $103.28')
+        expect(page).to have_button('Make upfront payment of $103.00')
       end
     end
 
@@ -107,7 +107,7 @@ feature 'Viewing payment index page' do
         student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com', plan: FactoryBot.create(:free_intro_plan))
         login_as(student, scope: :student)
         visit student_payments_path(student)
-        click_on 'Make upfront payment of $103.28'
+        click_on 'Make upfront payment of $103.00'
         expect(student.payments.first.category).to eq 'upfront'
       end
 
@@ -115,7 +115,7 @@ feature 'Viewing payment index page' do
         student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com', plan: FactoryBot.create(:parttime_plan))
         login_as(student, scope: :student)
         visit student_payments_path(student)
-        click_on 'Make upfront payment of $103.28'
+        click_on 'Make upfront payment of $103.00'
         expect(student.payments.first.category).to eq 'upfront'
       end
     end
@@ -168,7 +168,7 @@ feature 'Viewing payment index page' do
         student = FactoryBot.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
         payment = FactoryBot.create(:payment_with_credit_card, amount: 600_00, student: student)
         visit student_payments_path(student)
-        expect(page).to have_content 618.21
+        expect(page).to have_content 618.00
         expect(page).to have_content "Succeeded"
         expect(page).to have_content "Credit card ending in 4242"
         expect(page).to have_css "#refund-#{payment.id}-button"
@@ -263,7 +263,7 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
     fill_in "refund-#{payment.id}-input", with: 200
     fill_in "refund-date-#{payment.id}-input", with: Date.today
     click_on 'Refund'
-    expect(page).to have_content 'Refund amount ($200.00) is greater than charge amount ($103.28)'
+    expect(page).to have_content 'Refund amount ($200.00) is greater than charge amount ($103.00)'
   end
 
   scenario 'unsuccessfully with a negative amount' do
@@ -288,7 +288,7 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
     click_on 'Manual payment'
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Succeeded'
-    expect(page).to have_content '$1,818.26'
+    expect(page).to have_content '$1,818.19'
   end
 
   scenario 'successfully with multiple payment methods', :vcr do
@@ -308,7 +308,7 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
     click_on 'Manual payment'
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Succeeded'
-    expect(page).to have_content '$1,818.01'
+    expect(page).to have_content '$1,817.95'
   end
 
   scenario 'unsuccessfully with an improperly formatted amount', :js do
@@ -348,7 +348,7 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
     click_on 'Manual payment'
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Succeeded'
-    expect(page).to have_content '$1,818.26'
+    expect(page).to have_content '$1,818.19'
   end
 end
 

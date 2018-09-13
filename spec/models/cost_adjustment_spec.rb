@@ -3,7 +3,7 @@ describe CostAdjustment do
   it { should validate_presence_of(:amount) }
   it { should validate_presence_of(:reason) }
 
-  describe 'default scope' do
+  describe 'default scope', :stripe_mock do
     it 'orders by created_at ascending' do
       student = FactoryBot.create(:user_with_credit_card)
       first_adjustment = FactoryBot.create(:cost_adjustment, student: student)

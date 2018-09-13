@@ -1,6 +1,6 @@
 describe WebhookPayment do
-  let(:student) { FactoryBot.create(:user_with_credit_card) }
-  let(:payment) { FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00) }
+  let(:student) { FactoryBot.create(:student) }
+  let(:payment) { FactoryBot.create(:payment, student: student, offline: true, amount: 600_00) }
 
   it 'creates webhook with endpoint' do
     webhook = WebhookPayment.new({ payment: payment })

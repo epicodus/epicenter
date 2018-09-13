@@ -13,7 +13,9 @@ describe CreditCard do
   describe "#calculate_fee" do
     it "returns the credit card fees for the amount given", :stripe_mock do
       credit_card = FactoryBot.create :credit_card
-      expect(credit_card.calculate_fee(600_00)).to eq 18_21
+      expect(credit_card.calculate_fee(100_00)).to eq 3_00
+      expect(credit_card.calculate_fee(6900_00)).to eq 207_00
+      expect(credit_card.calculate_fee(8400_00)).to eq 252_00
     end
   end
 

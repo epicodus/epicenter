@@ -79,7 +79,7 @@ describe Payment do
     it "sets the fee for the payment type" do
       student = FactoryBot.create :user_with_credit_card, email: 'example@example.com'
       payment = FactoryBot.create(:payment_with_credit_card, student: student)
-      expect(payment.fee).to eq 32
+      expect(payment.fee).to eq 3
     end
 
     it 'unsuccessfully with an amount that is too high' do
@@ -100,7 +100,7 @@ describe Payment do
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
       FactoryBot.create(:payment_with_credit_card, student: student)
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
-      expect(payment.total_amount).to be 618_21
+      expect(payment.total_amount).to be 618_00
     end
   end
 
@@ -222,7 +222,7 @@ describe Payment do
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
           subject: "Epicodus tuition payment receipt",
-          text: "Hi #{student.name}. This is to confirm your payment of $103.28 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the #{standard_plan.name} plan and that you will be required to pay the remaining #{number_to_currency(standard_plan.student_portion / 100, precision: 0)} before the end of the fifth week of class. Please let us know immediately if this is not correct. Thanks so much!" }
+          text: "Hi #{student.name}. This is to confirm your payment of $103.00 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the #{standard_plan.name} plan and that you will be required to pay the remaining #{number_to_currency(standard_plan.student_portion / 100, precision: 0)} before the end of the fifth week of class. Please let us know immediately if this is not correct. Thanks so much!" }
       )
     end
 
@@ -239,7 +239,7 @@ describe Payment do
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
           subject: "Epicodus tuition payment receipt",
-          text: "Hi #{student.name}. This is to confirm your payment of $103.28 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the #{loan_plan.name} plan. Since you are in the process of obtaining a loan for program tuition, would you please let me know (which loan company, date you applied, etc.)? Thanks so much!" }
+          text: "Hi #{student.name}. This is to confirm your payment of $103.00 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the #{loan_plan.name} plan. Since you are in the process of obtaining a loan for program tuition, would you please let me know (which loan company, date you applied, etc.)? Thanks so much!" }
       )
     end
 
@@ -256,7 +256,7 @@ describe Payment do
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
           subject: "Epicodus tuition payment receipt",
-          text: "Hi #{student.name}. This is to confirm your payment of $7,106.37 for Epicodus tuition. Thanks so much!" }
+          text: "Hi #{student.name}. This is to confirm your payment of $7,107.00 for Epicodus tuition. Thanks so much!" }
       )
     end
   end
@@ -477,15 +477,15 @@ describe Payment do
       payment.update(refund_amount: 500, refund_date: Date.today)
     end
 
-    it 'posts webhook for an offline payment' do
-      student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
-      payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00, offline: true)
+    it 'posts webhook for an offline payment', :vcr do
+      student = FactoryBot.create(:student, email: 'example@example.com')
+      payment = FactoryBot.create(:payment, student: student, amount: 600_00, offline: true)
       expect(WebhookJob).to have_received(:perform_later).with(ENV['ZAPIER_WEBHOOK_URL'], PaymentSerializer.new(payment).as_json.merge({ event_name: 'payment_offline' }))
     end
 
-    it 'posts webhook for an offline refund' do
-      student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
-      payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 0, refund_amount: 600_00, offline: true)
+    it 'posts webhook for an offline refund', :vcr do
+      student = FactoryBot.create(:student, email: 'example@example.com')
+      payment = FactoryBot.create(:payment, student: student, amount: 0, refund_amount: 600_00, offline: true)
       expect(WebhookJob).to have_received(:perform_later).with(ENV['ZAPIER_WEBHOOK_URL'], PaymentSerializer.new(payment).as_json.merge({ event_name: 'refund_offline' }))
     end
   end
