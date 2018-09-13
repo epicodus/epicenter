@@ -2,7 +2,7 @@ class CreditCard < PaymentMethod
   before_create :set_verified_true
 
   def calculate_fee(amount)
-    ((amount / BigDecimal.new("0.971")) + 30).to_i - amount
+    amount * 3 / 100
   end
 
   def starting_status
