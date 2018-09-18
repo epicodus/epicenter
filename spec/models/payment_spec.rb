@@ -3,7 +3,6 @@ describe Payment do
 
   it { should belong_to :student }
   it { should belong_to :payment_method }
-  it { should validate_presence_of :student_id }
   it { should validate_presence_of :amount }
   it { should validate_presence_of :category }
 
@@ -21,41 +20,48 @@ describe Payment do
       before { allow(subject).to receive(:offline?).and_return(true) }
       it { should_not validate_presence_of :payment_method }
     end
+  end
 
-    context 'if refund' do
-      let(:student) { FactoryBot.create(:user_with_verified_bank_account) }
+  describe 'checks refund date' do
+    let(:student) { FactoryBot.create(:user_with_verified_bank_account) }
 
-      it 'should not validate refund date on stripe payment', :stripe_mock do
-        payment = FactoryBot.build(:payment, student: student, payment_method: student.payment_methods.first)
-        expect(student).to_not receive(:validate_refund_date)
-        payment.save
-      end
+    it 'should not check refund date on stripe payment', :stripe_mock do
+      payment = FactoryBot.build(:payment, student: student, payment_method: student.payment_methods.first)
+      expect(payment.save).to eq true
+    end
 
-      it 'should not validate refund date on offline payment' do
-        payment = FactoryBot.build(:payment, student: student, offline: true)
-        expect(student).to_not receive(:validate_refund_date)
-        payment.save
-      end
+    it 'should not check refund date on offline payment' do
+      payment = FactoryBot.build(:payment, student: student, offline: true)
+      expect(payment.save).to eq true
+    end
 
-      it 'should not update with refund date before course start date', :stripe_mock do
-        payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first)
-        expect(payment.update(refund_amount: 50, refund_date: student.course.start_date - 1.day)).to eq false
-      end
+    it 'should not check refund date if no course', :stripe_mock do
+      student.courses = []
+      payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first)
+      expect(payment.update(refund_amount: 50, refund_date: Date.today)).to eq true
+    end
 
-      it 'should not update with refund date before course start date for offline refund' do
-        payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first, offline: true)
-        expect(payment.update(refund_amount: 50, refund_date: student.course.start_date - 1.day)).to eq false
-      end
+    it 'should modify refund date if it predates course start', :stripe_mock do
+      payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first)
+      payment.update(refund_amount: 50, refund_date: student.course.start_date - 1.day)
+      expect(payment.refund_date).to eq student.course.start_date
+    end
 
-      it 'should update with refund date on course start date', :stripe_mock do
-        payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first)
-        expect(payment.update(refund_amount: 50, refund_date: student.course.start_date)).to eq true
-      end
+    it 'should modify refund date if it predates course start for offline payment' do
+      payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first, offline: true)
+      payment.update(refund_amount: 50, refund_date: student.course.start_date - 1.day)
+      expect(payment.refund_date).to eq student.course.start_date
+    end
 
-      it 'should update with refund date after course start date', :stripe_mock do
-        payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first)
-        expect(payment.update(refund_amount: 50, refund_date: student.course.start_date + 1.day)).to eq true
-      end
+    it 'should modify refund date for offline refund' do
+      payment = FactoryBot.create(:payment, student: student, offline: true, refund_amount: 100, refund_date: student.course.start_date - 1.day )
+      expect(payment.refund_date).to eq student.course.start_date
+    end
+
+    it 'should not modify refund date after course start date', :stripe_mock do
+      payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first)
+      payment.update(refund_amount: 50, refund_date: student.course.start_date + 1.day)
+      expect(payment.refund_date).to_not eq student.course.start_date
     end
   end
 
