@@ -5,19 +5,19 @@ class Payment < ApplicationRecord
   belongs_to :payment_method, optional: true
 
   validates :amount, presence: true
-  validates :student_id, presence: true
   validates :payment_method, presence: true, unless: ->(payment) { payment.offline? }
   validates :category, presence: true, on: :create
-  validate :validate_refund_date, if: ->(payment) { payment.refund_date.present? }
 
   before_create :check_amount
   before_create :set_category, if: ->(payment) { payment.category == 'tuition' }
   before_create :set_description
   before_create :make_payment, :send_payment_receipt, unless: ->(payment) { payment.offline? }
   before_create :set_offline_status, if: ->(payment) { payment.offline? }
-  after_save :update_crm
+  before_save :check_refund_date, if: ->(payment) { payment.refund_date.present? && payment.student.courses_with_withdrawn.any? }
   before_update :issue_refund, if: ->(payment) { payment.refund_amount? && !payment.offline? && !payment.refund_issued? }
+
   after_update :send_payment_failure_notice, if: ->(payment) { payment.status == "failed" && !payment.failure_notice_sent? }
+  after_save :update_crm
   after_create :send_webhook, if: ->(payment) { payment.status == 'succeeded' || payment.status == 'offline' }
 
   scope :order_by_latest, -> { order('created_at DESC') }
@@ -164,8 +164,10 @@ private
     end
   end
 
-  def validate_refund_date
-    errors.add(:refund_date, "is before first course start_date") if student.courses_with_withdrawn.first && refund_date < student.courses_with_withdrawn.first.start_date
+  def check_refund_date
+    if refund_date < student.courses_with_withdrawn.first.start_date
+      self.refund_date = student.courses_with_withdrawn.first.start_date
+    end
   end
 
   def send_webhook
