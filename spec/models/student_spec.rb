@@ -442,6 +442,16 @@ describe Student do
     end
   end
 
+  describe '#total_remaining_owed', :stripe_mock do
+    let(:student) { FactoryBot.create :user_with_verified_bank_account }
+
+    before { allow(student).to receive(:total_paid).and_return(50_00) }
+
+    it "calculated the total remaining amount owed" do
+      expect(student.total_remaining_owed).to eq student.total_owed - student.total_paid
+    end
+  end
+
   describe '#upfront_amount_owed', :stripe_mock do
     it "calculates the upfront amount owed with upfront payment plan" do
       student = FactoryBot.create(:user_with_credit_card)
