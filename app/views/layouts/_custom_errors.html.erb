@@ -1,0 +1,16 @@
+<% if object.try(:errors).try(:any?) %>
+  <div class="alert alert-danger">
+    <h3>Please correct these problems:</h3>
+    <ul>
+      <% object.errors.messages.each do |attr, messages| %>
+        <% messages.each do |message| %>
+          <% if attr == :custom %>
+            <li><%= message %></li>
+          <% else %>
+            <li><%= attr.to_s.humanize %> <%= message %></li>
+          <% end %>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
