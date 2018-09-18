@@ -25,5 +25,7 @@ task :clear_lead, [:email] => [:environment] do |t, args|
   close_io_client.update_lead(lead_id, { 'custom.Demographics - Shirt size': nil })
   close_io_client.update_lead(lead_id, { 'custom.Demographics - Gender': nil })
   close_io_client.update_lead(lead_id, { 'custom.Demographics - Race': nil })
+  close_io_client.update_lead(lead_id, { 'custom.Demographics - After graduation plan': nil })
+  close_io_client.update_lead(lead_id, { 'custom.Demographics - Time off planned': nil })
   close_io_client.update_lead(lead_id, { 'addresses': nil })
 end

@@ -735,6 +735,7 @@ FactoryBot.define do
     education { 'GED' }
     cs_degree { 'No' }
     shirt { 'S' }
+    after_graduation { 'Return to my previous employer' }
   end
 
   factory :cost_adjustment do

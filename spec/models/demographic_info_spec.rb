@@ -12,7 +12,8 @@ describe DemographicInfo do
   it { should validate_inclusion_of(:disability).in_array(["Yes", "No"]) }
   it { should validate_inclusion_of(:veteran).in_array(["Yes", "No"]) }
   it { should validate_inclusion_of(:cs_degree).in_array(["Yes", "No"]) }
-  it { should validate_inclusion_of(:education).in_array(DemographicInfo::EDUCATION_OPTIONS) }
+  it { should validate_length_of(:job).is_at_most(35) }
+  it { should validate_length_of(:after_graduation_explanation).is_at_most(255) }
 
   it 'validates birth date is valid format' do
     demographic_info = FactoryBot.build(:demographic_info, birth_date: 'invalid')
@@ -34,27 +35,57 @@ describe DemographicInfo do
     expect(demographic_info).to be_valid
   end
 
-  it { should validate_length_of(:job).is_at_most(35) }
-
   # it { should validate_numericality_of(:salary).is_greater_than_or_equal_to(0).with_message("must be greater than or equal to 0") }
   it 'validates salary is greater than or equal to 0' do # test written out due to bug in greater_than_or_equal_to shoulda matcher
-    demographic_info = DemographicInfo.new(nil, {salary: -1})
+    demographic_info = FactoryBot.build(:demographic_info, salary: -1)
     expect(demographic_info).to_not be_valid
   end
 
   it 'validates that gender form input is included in list' do
-    demographic_info = DemographicInfo.new(nil, {genders: ["not in list"]})
+    demographic_info = FactoryBot.build(:demographic_info, genders: ['not in list'])
     expect(demographic_info).to_not be_valid
   end
 
   it 'validates that race form input is included in list' do
-    demographic_info = DemographicInfo.new(nil, {races: ["not in list"]})
+    demographic_info = FactoryBot.build(:demographic_info, races: ['not in list'])
+    expect(demographic_info).to_not be_valid
+  end
+
+  it 'validates that education input is included in list' do
+    demographic_info = FactoryBot.build(:demographic_info, education: 'not in list')
     expect(demographic_info).to_not be_valid
   end
 
   it 'validates that shirt size input is included in list' do
-    demographic_info = DemographicInfo.new(nil, {shirt: "not in list"})
+    demographic_info = FactoryBot.build(:demographic_info, shirt: 'not in list')
     expect(demographic_info).to_not be_valid
+  end
+
+  context 'validates after graduation input' do
+    it 'is included in list' do
+      demographic_info = FactoryBot.build(:demographic_info, after_graduation: 'not in list')
+      expect(demographic_info).to_not be_valid
+    end
+
+    it 'with invalid time off input' do
+      demographic_info = FactoryBot.build(:demographic_info, after_graduation: DemographicInfo::AFTER_OPTIONS[0], time_off: nil)
+      expect(demographic_info).to_not be_valid
+    end
+
+    it 'with valid time off input' do
+      demographic_info = FactoryBot.build(:demographic_info, after_graduation: DemographicInfo::AFTER_OPTIONS[0], time_off: 'No')
+      expect(demographic_info).to be_valid
+    end
+
+    it 'with no after graduation explanation input when required' do
+      demographic_info = FactoryBot.build(:demographic_info, after_graduation: DemographicInfo::AFTER_OPTIONS[-1], after_graduation_explanation: '')
+      expect(demographic_info).to_not be_valid
+    end
+
+    it 'with valid after graduation explanation input' do
+      demographic_info = FactoryBot.build(:demographic_info, after_graduation: DemographicInfo::AFTER_OPTIONS[-1], after_graduation_explanation: 'test explanation')
+      expect(demographic_info).to be_valid
+    end
   end
 
   describe 'updating close.io with demographics info' do
@@ -66,7 +97,7 @@ describe DemographicInfo do
 
     it 'updates the record successfully', :vcr, :dont_stub_crm do
       demographic_info = FactoryBot.build(:demographic_info, :genders=>["Female"], :job=>"test occupation", :salary=>15000, :races=>["Asian or Asian American"], student: student)
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, {'custom.Demographics - Gender' => demographic_info.genders.join(", "), 'custom.Demographics - Birth date' => demographic_info.birth_date, 'custom.Demographics - Education' => demographic_info.education, 'custom.Demographics - CS Degree' => demographic_info.cs_degree, 'custom.Demographics - Shirt size' => demographic_info.shirt, 'custom.Demographics - Previous job' => demographic_info.job, 'custom.Demographics - Previous salary' => demographic_info.salary, 'custom.Demographics - Race' => demographic_info.races.join(', '), 'custom.Demographics - Veteran' => demographic_info.veteran, 'custom.Demographics - Disability' => demographic_info.disability, "addresses"=> [{:label => "mailing", :address_1 => demographic_info.address, :city => demographic_info.city, :state => demographic_info.state, :zipcode => demographic_info.zip, :country => demographic_info.country}]})
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, {'custom.Demographics - Gender' => demographic_info.genders.join(", "), 'custom.Demographics - After graduation plan' => demographic_info.after_graduation, 'custom.Demographics - Birth date' => demographic_info.birth_date, 'custom.Demographics - Education' => demographic_info.education, 'custom.Demographics - CS Degree' => demographic_info.cs_degree, 'custom.Demographics - Shirt size' => demographic_info.shirt, 'custom.Demographics - Previous job' => demographic_info.job, 'custom.Demographics - Previous salary' => demographic_info.salary, 'custom.Demographics - Race' => demographic_info.races.join(', '), 'custom.Demographics - Veteran' => demographic_info.veteran, 'custom.Demographics - Disability' => demographic_info.disability, "addresses"=> [{:label => "mailing", :address_1 => demographic_info.address, :city => demographic_info.city, :state => demographic_info.state, :zipcode => demographic_info.zip, :country => demographic_info.country}]})
       demographic_info.save
     end
   end

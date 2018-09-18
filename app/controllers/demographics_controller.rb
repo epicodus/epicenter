@@ -18,12 +18,20 @@ class DemographicsController < ApplicationController
         redirect_to student_courses_path(current_student)
       end
     else
+      @birth_date = @demographic_info.birth_date
+      @education = @demographic_info.education
+      @shirt = @demographic_info.shirt
+      @after_graduation = @demographic_info.after_graduation
+      @country = @demographic_info.country
+      @demographic_info.after_graduation_explanation.try('gsub!', 'Other: ', '')
       render :new
     end
   end
 
 private
   def demographic_info_params
-    params.require(:demographic_info).permit(:birth_date, :disability, :veteran, :education, :cs_degree, :address, :city, :state, :zip, :country, :shirt, :job, :salary, :genders => [], :races => [])
+    params.require(:demographic_info).permit(:birth_date, :disability, :veteran, :education, :cs_degree,
+                    :address, :city, :state, :zip, :country, :shirt, :job, :salary, :after_graduation,
+                    :after_graduation_explanation, :time_off, :genders => [], :races => [])
   end
 end
