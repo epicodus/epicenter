@@ -166,6 +166,10 @@ class Student < User
     plan.student_portion + cost_adjustments.sum(:amount)
   end
 
+  def total_remaining_owed
+    total_owed - total_paid
+  end
+
   def upfront_amount_owed
     plan.standard? ? plan.upfront_amount - total_paid : total_owed - total_paid
   end

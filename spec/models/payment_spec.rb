@@ -214,6 +214,7 @@ describe Payment do
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com', plan: standard_plan, referral_email_sent: true)
 
       allow(EmailJob).to receive(:perform_later).and_return({})
+      allow(student).to receive(:total_paid).and_return(100_00)
 
       FactoryBot.create(:payment_with_credit_card, student: student, amount: standard_plan.upfront_amount)
 
@@ -222,7 +223,7 @@ describe Payment do
           to: student.email,
           bcc: ENV['FROM_EMAIL_PAYMENT'],
           subject: "Epicodus tuition payment receipt",
-          text: "Hi #{student.name}. This is to confirm your payment of $103.00 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the #{standard_plan.name} plan and that you will be required to pay the remaining #{number_to_currency(standard_plan.student_portion / 100, precision: 0)} before the end of the fifth week of class. Please let us know immediately if this is not correct. Thanks so much!" }
+          text: "Hi #{student.name}. This is to confirm your payment of $103.00 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the #{standard_plan.name} plan and that you will be required to pay the remaining #{number_to_currency(student.total_remaining_owed / 100, precision: 0)} before the end of the fifth week of class. Please let us know immediately if this is not correct. Thanks so much!" }
       )
     end
 
