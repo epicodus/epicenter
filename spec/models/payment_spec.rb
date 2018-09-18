@@ -21,6 +21,42 @@ describe Payment do
       before { allow(subject).to receive(:offline?).and_return(true) }
       it { should_not validate_presence_of :payment_method }
     end
+
+    context 'if refund' do
+      let(:student) { FactoryBot.create(:user_with_verified_bank_account) }
+
+      it 'should not validate refund date on stripe payment', :stripe_mock do
+        payment = FactoryBot.build(:payment, student: student, payment_method: student.payment_methods.first)
+        expect(student).to_not receive(:validate_refund_date)
+        payment.save
+      end
+
+      it 'should not validate refund date on offline payment' do
+        payment = FactoryBot.build(:payment, student: student, offline: true)
+        expect(student).to_not receive(:validate_refund_date)
+        payment.save
+      end
+
+      it 'should not update with refund date before course start date', :stripe_mock do
+        payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first)
+        expect(payment.update(refund_amount: 50, refund_date: student.course.start_date - 1.day)).to eq false
+      end
+
+      it 'should not update with refund date before course start date for offline refund' do
+        payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first, offline: true)
+        expect(payment.update(refund_amount: 50, refund_date: student.course.start_date - 1.day)).to eq false
+      end
+
+      it 'should update with refund date on course start date', :stripe_mock do
+        payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first)
+        expect(payment.update(refund_amount: 50, refund_date: student.course.start_date)).to eq true
+      end
+
+      it 'should update with refund date after course start date', :stripe_mock do
+        payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first)
+        expect(payment.update(refund_amount: 50, refund_date: student.course.start_date + 1.day)).to eq true
+      end
+    end
   end
 
   describe 'offline payment status', :vcr do

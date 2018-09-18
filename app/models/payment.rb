@@ -8,6 +8,7 @@ class Payment < ApplicationRecord
   validates :student_id, presence: true
   validates :payment_method, presence: true, unless: ->(payment) { payment.offline? }
   validates :category, presence: true, on: :create
+  validate :validate_refund_date, if: ->(payment) { payment.refund_date.present? }
 
   before_create :check_amount
   before_create :set_category, if: ->(payment) { payment.category == 'tuition' }
@@ -161,6 +162,10 @@ private
       errors.add(:amount, 'cannot be negative or greater than $8,500.')
       throw :abort
     end
+  end
+
+  def validate_refund_date
+    errors.add(:refund_date, "is before first course start_date") if student.courses_with_withdrawn.first && refund_date < student.courses_with_withdrawn.first.start_date
   end
 
   def send_webhook
