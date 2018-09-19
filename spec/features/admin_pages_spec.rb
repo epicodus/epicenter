@@ -228,7 +228,8 @@ end
 
 feature 'viewing the student page' do
   let(:admin) { FactoryBot.create(:admin) }
-  let(:student) { FactoryBot.create(:student) }
+  let(:course) { FactoryBot.create(:midway_course) }
+  let(:student) { FactoryBot.create(:student, course: course) }
   let(:unenrolled_student) { FactoryBot.create(:unenrolled_student) }
   let(:internship_student) { FactoryBot.create(:student, courses: [FactoryBot.create(:internship_course)]) }
 
@@ -271,7 +272,7 @@ end
 
 feature 'viewing the student courses list' do
   let(:admin) { FactoryBot.create(:admin) }
-  let(:course1) { FactoryBot.create(:course) }
+  let(:course1) { FactoryBot.create(:midway_course) }
   let(:course2) { FactoryBot.create(:internship_course) }
   let(:student) { FactoryBot.create(:student, courses: [course1, course2]) }
 

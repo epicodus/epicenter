@@ -60,7 +60,7 @@ end
 
 feature 'deleting a course for a student' do
   let(:course1) { FactoryBot.create(:course) }
-  let(:course2) { FactoryBot.create(:internship_course) }
+  let(:course2) { FactoryBot.create(:midway_internship_course) }
   let(:student) { FactoryBot.create(:student, courses: [course1, course2]) }
   let(:admin) { FactoryBot.create(:admin) }
 
