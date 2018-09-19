@@ -84,6 +84,10 @@ FactoryBot.define do
       class_days { ((Time.zone.now.to_date - 18.weeks).beginning_of_week..(Time.zone.now.to_date - 14.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? } }
     end
 
+    factory :midway_course do
+      class_days { ((Time.zone.now.to_date - 2.weeks).beginning_of_week..(Time.zone.now.to_date + 3.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? } }
+    end
+
     factory :level_3_just_finished_course do
       end_time_friday { '12:00 PM' }
       association :language, factory: :rails_language
@@ -117,6 +121,20 @@ FactoryBot.define do
     factory :internship_course do
       description { 'internship course' }
       active { true }
+      association :language, factory: :internship_language
+    end
+
+    factory :midway_internship_course do
+      description { 'internship course' }
+      active { true }
+      association :language, factory: :internship_language
+      class_days { ((Time.zone.now.to_date - 2.weeks).beginning_of_week..(Time.zone.now.to_date + 3.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? } }
+    end
+
+    factory :past_internship_course do
+      description { 'internship course' }
+      active { true }
+      class_days { ((Time.zone.now.to_date - 18.weeks).beginning_of_week..(Time.zone.now.to_date - 14.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? } }
       association :language, factory: :internship_language
     end
 

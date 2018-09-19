@@ -13,28 +13,35 @@ describe Enrollment do
   end
 
   describe 'archiving enrollments when withdrawing students' do
-    let(:past_course) { FactoryBot.create(:past_course) }
-    let(:future_course) { FactoryBot.create(:future_course) }
-
     context 'before course start date' do
-      let(:student) { FactoryBot.create(:student, course: future_course) }
-
       it 'permanently destroys enrollment' do
+        future_course = FactoryBot.create(:future_course)
+        student = FactoryBot.create(:student, course: future_course)
         student.enrollments.first.destroy
         expect(student.enrollments.with_deleted).to eq []
       end
     end
 
-    context 'after course start date' do
+    context 'within first week of course' do
+      it 'permanently destroys enrollment' do
+        student = FactoryBot.create(:student)
+        travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 8.hours do
+          FactoryBot.create(:attendance_record, student: student, date: student.course.start_date)
+          enrollment = student.enrollments.first
+          student.enrollments.first.destroy
+          student.reload
+          expect(student.enrollments.with_deleted).to eq []
+        end
+      end
+    end
+
+    context 'after first week of course' do
+      let(:past_course) { FactoryBot.create(:past_course) }
+      let(:future_course) { FactoryBot.create(:future_course) }
       let(:student) { FactoryBot.create(:student, course: past_course) }
 
-      it 'permanently destroys enrollment if no attendance record exists' do
-        student.enrollments.first.destroy
-        expect(student.enrollments.with_deleted).to eq []
-      end
-
-      it 'archives internship course enrollment regardless of attendance' do
-        student.courses = [FactoryBot.create(:internship_course)]
+      it 'archives enrollment with paranoia if attendance record exists' do
+        FactoryBot.create(:attendance_record, student: student, date: student.course.start_date)
         enrollment = student.enrollments.first
         student.enrollments.first.destroy
         student.reload
@@ -42,8 +49,13 @@ describe Enrollment do
         expect(student.enrollments.with_deleted).to eq [enrollment]
       end
 
-      it 'archives enrollment with paranoia if attendance record exists' do
-        FactoryBot.create(:attendance_record, student: student, date: student.course.start_date)
+      it 'permanently destroys enrollment if no attendance record exists' do
+        student.enrollments.first.destroy
+        expect(student.enrollments.with_deleted).to eq []
+      end
+
+      it 'archives internship course enrollment regardless of attendance' do
+        student.courses = [FactoryBot.create(:past_internship_course)]
         enrollment = student.enrollments.first
         student.enrollments.first.destroy
         student.reload

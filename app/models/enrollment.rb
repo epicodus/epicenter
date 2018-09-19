@@ -48,7 +48,7 @@ private
   end
 
   def really_destroy_if_withdrawn_before_attending
-    if (Time.zone.now.to_date < course.start_date) || (student.attendance_records_for(:all, course) == 0 && course.language.level != 4)
+    if (Time.zone.now.to_date < course.start_date.end_of_week) || (student.attendance_records_for(:all, course) == 0 && course.language.level != 4)
       really_destroy!
     end
   end

@@ -117,7 +117,7 @@ describe Student do
 
   describe '#courses_withdrawn' do
     let!(:first_course) { FactoryBot.create(:past_course) }
-    let!(:second_course) { FactoryBot.create(:course) }
+    let!(:second_course) { FactoryBot.create(:midway_course) }
     let!(:student) { FactoryBot.create(:student, courses: [first_course, second_course]) }
 
     it 'returns courses student was withdrawn from' do
@@ -130,7 +130,7 @@ describe Student do
 
   describe '#courses_with_withdrawn' do
     let!(:first_course) { FactoryBot.create(:past_course) }
-    let!(:second_course) { FactoryBot.create(:course) }
+    let!(:second_course) { FactoryBot.create(:midway_course) }
     let!(:student) { FactoryBot.create(:student, courses: [first_course, second_course]) }
 
     it 'returns all courses, including withdrawn courses' do
