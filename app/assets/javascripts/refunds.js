@@ -31,9 +31,4 @@ $(function() {
     $(this).parent().find('.refund-form').removeClass('hidden');
     $(this).hide();
   });
-
-  $('#show-student-tuition-adjustment').click(function() {
-    $('#cost-adjustment-form').removeClass('hidden')
-    $(this).hide();
-  });
 });

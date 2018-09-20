@@ -5,16 +5,16 @@
     <%= f.hidden_field :student_id, value: @student.id %>
 
     <div class="form-group" id="offline-payment-notes">
-      <%= f.label :refund_notes %>
+      <%= f.label :refund_notes, 'Offline refund notes' %>
       <%= f.text_area :refund_notes, class: 'form-control' %>
     </div>
 
     <div class="input-group refund-input-group">
-      <%= f.label :refund_amount, 'Refund amount:' %>
+      <%= f.label :refund_amount, 'Offline refund amount' %>
       <%= f.number_field :refund_amount, { value: nil, class: 'form-control payment-refund-input', id: "refund-offline-input", placeholder: 'refund amount', required: true, step: 0.01 } %>
     </div>
     <div class="input-group refund-input-group">
-      <%= f.label :refund_date, 'Effective refund date:' %>
+      <%= f.label :refund_date, 'Effective refund date' %>
       <%= f.date_field :refund_date, { class: 'form-control payment-refund-date-input', id: "refund-date-offline-input", required: true } %>
     </div>
     <div class="input-group">
