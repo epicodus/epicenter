@@ -145,12 +145,19 @@ feature "Student signs in while class is not in session" do
 end
 
 feature "Student visits homepage after logged in" do
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
-
-  it "takes them to the correct path" do
+  it "takes student with payment due to the correct path" do
+    student = FactoryBot.create(:user_with_all_documents_signed, plan: FactoryBot.create(:upfront_plan))
     sign_in_as(student)
     visit root_path
-    expect(current_path).to_not eq root_path
+    expect(current_path).to eq new_payment_method_path
+    expect(page).to have_content "How would you like to make payments for the class?"
+  end
+
+  it "takes student with no payment due to the correct path" do
+    student = FactoryBot.create(:user_with_all_documents_signed, plan: FactoryBot.create(:special_plan))
+    sign_in_as(student)
+    visit root_path
+    expect(current_path).to eq student_courses_path(student)
     expect(page).to have_content "Your courses"
   end
 end
@@ -170,10 +177,10 @@ feature "Portland student signs in while class is in session" do
   let(:student) { FactoryBot.create(:portland_student_with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
 
   context "not at school" do
-    it "takes them to the courses page" do
+    it "takes them to the new payment method page" do
       sign_in_as(student)
-      expect(current_path).to eq student_courses_path(student)
-      expect(page).to have_content "Your courses"
+      expect(current_path).to eq new_payment_method_path
+      expect(page).to have_content "How would you like to make payments for the class?"
     end
 
     it "does not create an attendance record" do
@@ -186,10 +193,10 @@ feature "Philadelphia student signs in while class is in session" do
   let(:student) { FactoryBot.create(:user_with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
 
   context "not at school" do
-    it "takes them to the courses page" do
+    it "takes them to the new payment method page" do
       sign_in_as(student)
-      expect(current_path).to eq student_courses_path(student)
-      expect(page).to have_content "Your courses"
+      expect(current_path).to eq new_payment_method_path
+      expect(page).to have_content "How would you like to make payments for the class?"
     end
 
     it "does not create an attendance record" do

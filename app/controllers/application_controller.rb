@@ -33,11 +33,7 @@ protected
     elsif user.is_a? Company
       company_path(user)
     elsif user.is_a? Student
-      if user.signed_main_documents? && user.class_in_session?
-        student_courses_path(user)
-      elsif user.signed_main_documents? && user.payment_methods.any? && user.courses.any?
-        student_courses_path(user)
-      elsif user.signed_main_documents? && user.upfront_payment_due?
+      if user.signed_main_documents? && user.upfront_payment_due?
         proper_payments_path(user)
       elsif user.signed_main_documents?
         student_courses_path(user)
