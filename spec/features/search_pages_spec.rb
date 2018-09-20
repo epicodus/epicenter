@@ -8,7 +8,7 @@ feature 'searching for a student' do
     student = FactoryBot.create(:user_with_all_documents_signed)
     login_as(student, scope: :student)
     visit students_path
-    expect(page).to have_content 'Your courses'
+    expect(page).to have_content 'You are not authorized to access this page.'
   end
 
   context 'as an admin' do
