@@ -137,75 +137,112 @@
     <% end %>
   </div>
 
-  <div class="well">
-    <h3>Manual payment <small class="text-info">($8,500 limit)</small></h3>
-    <div class="row">
-      <div class="col-md-5">
-        <%= render 'form' %>
+  <div class="panel-group" id="accordion">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" class="payment-accordion-label">
+          Manual Payment</a>
+        </h4>
       </div>
-    </div>
-  </div>
-
-  <div class="well">
-    <btn class='show-refund-form-button btn btn-warning'>Offline Refund...</btn>
-    <div class="refund-form hidden">
-      <h3>Offline refund</h3>
-      <div class="row">
-        <div class="col-md-5">
-          <%= render 'offline_refund_form' %>
+      <div id="collapse1" class="panel-collapse collapse">
+        <div class="panel-body payment-form well">
+          <div class="row">
+            <div class="col-md-5">
+              <%= render 'form' %>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="well" id="cost-adjustment-section">
-    <% if @student.cost_adjustments.any? %>
-      <h3>Tuition adjustments</h3>
-      <div class="table-responsive">
-        <table class="table">
-          <thead>
-            <tr>
-              <th class="col-md-2">Date</th>
-              <th class="col-md-2">Adjustment</th>
-              <th class="col-md-7">Reason</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @student.cost_adjustments.reverse.each do |adjustment| %>
-              <tr>
-                <td class="col-md-2"><%= adjustment.created_at.strftime("%a %b %d, %Y") %></td>
-                <td class="col-md-2"><%= number_to_currency(adjustment.amount / 100.00) %></td>
-                <td class="col-md-7"><%= adjustment.reason %></td>
-                <td>
-                  <%= link_to student_cost_adjustment_path(@student, adjustment), data: { method: :delete, confirm: 'Are you sure?' } do %>
-                    <i class="glyphicon glyphicon-remove" id="remove-cost-adjustment-<%= adjustment.id %>"></i>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" class="payment-accordion-label">
+          Offline Refund</a>
+        </h4>
+      </div>
+      <div id="collapse2" class="panel-collapse collapse">
+        <div class="panel-body refund-form well">
+          <div class="row">
+            <div class="col-md-5">
+              <%= render 'offline_refund_form' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" class="payment-accordion-label">
+          Tuition Adjustments</a>
+        </h4>
+      </div>
+      <div id="collapse3" class="panel-collapse collapse">
+        <div class="panel-body cost-adjustment well">
+          <% if @student.cost_adjustments.any? %>
+            <h4><strong>Tuition adjustments:</strong></h4>
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="col-md-2">Date</th>
+                    <th class="col-md-2">Adjustment</th>
+                    <th class="col-md-7">Reason</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% @student.cost_adjustments.reverse.each do |adjustment| %>
+                    <tr>
+                      <td class="col-md-2"><%= adjustment.created_at.strftime("%a %b %d, %Y") %></td>
+                      <td class="col-md-2"><%= number_to_currency(adjustment.amount / 100.00) %></td>
+                      <td class="col-md-7"><%= adjustment.reason %></td>
+                      <td>
+                        <%= link_to student_cost_adjustment_path(@student, adjustment), data: { method: :delete, confirm: 'Are you sure?' } do %>
+                          <i class="glyphicon glyphicon-remove" id="remove-cost-adjustment-<%= adjustment.id %>"></i>
+                        <% end %>
+                      </td>
+                    </tr>
                   <% end %>
-                </td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+                </tbody>
+              </table>
+            </div>
+            <hr>
+          <% end %>
+          <h4 id='show-student-tuition-adjustment'><strong>New adjustment to amount student owes:</strong></h4>
+          <div id="cost-adjustment-form">
+            <div class="row">
+              <div class="col-md-5">
+                <%= render 'cost_adjustment_form' %>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    <% end %>
+    </div>
 
-    <btn class='btn btn-warning' id='show-student-tuition-adjustment'>Adjust student tuition...</btn>
-    <div class="hidden" id="cost-adjustment-form">
-      <div class="row">
-        <div class="col-md-5">
-          <%= render 'cost_adjustment_form' %>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse4" class="payment-accordion-label">
+          Change Payment Plan</a>
+        </h4>
+      </div>
+      <div id="collapse4" class="panel-collapse collapse">
+        <div class="panel-body payment-plan well">
+          <p>Current plan: <%= @student.plan.try(:name) || 'No payment plan selected!' %></p>
+          <%= form_for @student do |f| %>
+            <%= f.label :plan_id, "Change plan to:" %>
+            <%= f.select :plan_id, Plan.active.collect {|p| [ p.name, p.id ] }, {include_blank: true} %>
+            <%= f.submit 'Change Plan', class: 'btn-sm btn-primary', data: { confirm: "Change payment plan?" } %>
+          <% end %>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="well">
-    <h3>Payment plan</h3>
-    <p><strong>Current plan:</strong> <%= @student.plan.try(:name) || 'No payment plan selected!' %></p>
-    <%= form_for @student do |f| %>
-      <%= f.label :plan_id, "Change payment plan:" %>
-      <%= f.select :plan_id, Plan.active.collect {|p| [ p.name, p.id ] }, {include_blank: true} %>
-      <%= f.submit 'Change Plan', class: 'btn-sm btn-primary', data: { confirm: "Change payment plan?" } %>
-    <% end %>
-  </div>
 <% end %>

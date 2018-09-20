@@ -313,6 +313,7 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
 
   scenario 'unsuccessfully with an improperly formatted amount', :js do
     visit student_payments_path(student)
+    click_on 'Manual Payment'
     fill_in 'payment_amount', with: 60.1
     message = accept_prompt do
       click_on 'Manual payment'
@@ -360,6 +361,7 @@ feature 'make an offline payment', :js, :vcr do
 
   scenario 'successfully with cents' do
     visit student_payments_path(student)
+    click_on 'Manual Payment'
     check 'offline-payment-checkbox'
     fill_in 'Notes', with: 'Test offline payment'
     fill_in 'payment_amount', with: 60.18
@@ -404,6 +406,7 @@ feature 'make a cost adjustment' do
 
     it 'allows admin to make tuition adjustment without cents', :js do
       visit student_payments_path(student)
+      click_on 'Tuition Adjustments'
       find('#show-student-tuition-adjustment').click
       fill_in 'cost_adjustment_amount', with: 100
       fill_in 'cost_adjustment_reason', with: 'test adjustment'
@@ -415,6 +418,7 @@ feature 'make a cost adjustment' do
 
     it 'allows admin to make tuition adjustment with cents', :js do
       visit student_payments_path(student)
+      click_on 'Tuition Adjustments'
       find('#show-student-tuition-adjustment').click
       fill_in 'cost_adjustment_amount', with: '100.50'
       fill_in 'cost_adjustment_reason', with: 'test adjustment'
@@ -426,6 +430,7 @@ feature 'make a cost adjustment' do
 
     it 'allows admin to make tuition adjustment with negative amount without cents', :js do
       visit student_payments_path(student)
+      click_on 'Tuition Adjustments'
       find('#show-student-tuition-adjustment').click
       fill_in 'cost_adjustment_amount', with: '-100'
       fill_in 'cost_adjustment_reason', with: 'test adjustment'
@@ -437,6 +442,7 @@ feature 'make a cost adjustment' do
 
     it 'allows admin to make tuition adjustment with negative amount with cents', :js do
       visit student_payments_path(student)
+      click_on 'Tuition Adjustments'
       find('#show-student-tuition-adjustment').click
       fill_in 'cost_adjustment_amount', with: '-100.50'
       fill_in 'cost_adjustment_reason', with: 'test adjustment'
@@ -448,6 +454,7 @@ feature 'make a cost adjustment' do
 
     it 'does not allow tuition adjustment with invalid amount', :js do
       visit student_payments_path(student)
+      click_on 'Tuition Adjustments'
       find('#show-student-tuition-adjustment').click
       fill_in 'cost_adjustment_amount', with: '100.5'
       fill_in 'cost_adjustment_reason', with: 'test adjustment'
@@ -458,6 +465,7 @@ feature 'make a cost adjustment' do
     it 'allows admin to view tuition adjustments' do
       cost_adjustment = FactoryBot.create(:cost_adjustment, student: student)
       visit student_payments_path(student)
+      click_on 'Tuition Adjustments'
       expect(page).to have_content 'Tuition adjustments'
       expect(page).to have_content '$100'
       expect(page).to have_content 'test adjustment'
@@ -466,6 +474,7 @@ feature 'make a cost adjustment' do
     it 'allows admin to delete tuition adjustment', :js do
       cost_adjustment = FactoryBot.create(:cost_adjustment, student: student)
       visit student_payments_path(student)
+      click_on 'Tuition Adjustments'
       find("#remove-cost-adjustment-#{cost_adjustment.id}").click
       wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoAlertPresentError
       alert = wait.until { page.driver.browser.switch_to.alert }
