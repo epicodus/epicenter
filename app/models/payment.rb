@@ -27,19 +27,6 @@ class Payment < ApplicationRecord
     amount + fee
   end
 
-  def calculate_category
-    if refund_amount.present?
-      'refund'
-    elsif student.plan.try(:name) == "Pay As You Go (4 payments of $2,125)" && student.payments.any? #legacy (remove soon)
-      'standard'
-    elsif student.plan
-      'upfront'
-    else
-      errors.add(:base, "No payment plan found.")
-      throw :abort
-    end
-  end
-
 private
 
   def update_crm
@@ -120,7 +107,8 @@ private
   end
 
   def set_category
-    self.category = calculate_category
+    self.category = refund_amount.present? ? 'refund' : 'upfront'
+    self.category = 'standard' if student.id == 2900 #legacy; remove after final payment (jan 2019)
   end
 
   def set_description
