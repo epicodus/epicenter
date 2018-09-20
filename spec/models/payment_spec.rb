@@ -146,53 +146,18 @@ describe Payment do
     end
   end
 
-  describe '#calculate_category' do
+  describe 'sets payment category', :stub_mailgun do
     let(:student_upfront_plan) { FactoryBot.create :student, email: 'example@example.com' }
     let(:student_standard_plan) { FactoryBot.create :student, email: 'example@example.com', plan: FactoryBot.create(:standard_plan) }
 
-    it 'calculates category when refund, regardless of plan' do
-      payment = Payment.new(student: student_upfront_plan, category: 'tuition', offline: true, amount: 0, refund_amount: 50_00)
-      expect(payment.calculate_category).to eq 'refund'
+    it 'calculates category on payment' do
+      payment = Payment.create(student: student_upfront_plan, category: 'tuition', offline: true, amount: 50_00)
+      expect(payment.category).to eq 'upfront'
     end
 
-    it 'calculates category when refund, regardless of plan' do
-      payment = Payment.new(student: student_standard_plan, category: 'tuition', offline: true, amount: 0, refund_amount: 50_00)
-      expect(payment.calculate_category).to eq 'refund'
-    end
-
-    it 'calculates category when upfront payment' do
-      payment = Payment.new(student: student_upfront_plan, category: 'tuition', offline: true, amount: 50_00)
-      expect(payment.calculate_category).to eq 'upfront'
-    end
-
-    it 'calculates category when second payment on plan other than standard' do
-      payment = Payment.create(student: student_upfront_plan, category: 'tuition', offline: true, amount: 100_00)
-      payment2 = Payment.new(student: student_upfront_plan, category: 'tuition', offline: true, amount: 4700_00)
-      expect(payment2.calculate_category).to eq 'upfront'
-    end
-
-    it 'calculates category when first payment on standard plan' do
-      payment = Payment.new(student: student_upfront_plan, category: 'tuition', offline: true, amount: 4700_00)
-      expect(payment.calculate_category).to eq 'upfront'
-    end
-
-    it 'calculates category when second payment on legacy standard plan' do
-      legacy_student = FactoryBot.create(:student, plan: FactoryBot.create(:standard_plan_legacy))
-      payment = Payment.create(student: legacy_student, category: 'tuition', offline: true, amount: 100_00)
-      payment2 = Payment.new(student: legacy_student, category: 'tuition', offline: true, amount: 4700_00)
-      expect(payment2.calculate_category).to eq 'standard'
-    end
-
-    it 'calculates category when second payment on new standard plan' do
-      payment = Payment.create(student: student_standard_plan, category: 'tuition', offline: true, amount: 100_00)
-      payment2 = Payment.new(student: student_standard_plan, category: 'tuition', offline: true, amount: 4700_00)
-      expect(payment2.calculate_category).to eq 'upfront'
-    end
-
-    it 'raises error when no payment plan' do
-      student = FactoryBot.create(:student, plan: nil)
-      payment = Payment.new(student: student, category: 'tuition', offline: true, amount: 100_00)
-      expect(payment.save).to eq false
+    it 'calculates category when refund' do
+      payment = Payment.create(student: student_upfront_plan, category: 'tuition', offline: true, amount: 0, refund_amount: 50_00)
+      expect(payment.category).to eq 'refund'
     end
   end
 

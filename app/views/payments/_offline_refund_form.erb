@@ -1,12 +1,8 @@
   <%= form_for [@student, @payment] do |f| %>
     <%= f.hidden_field :offline, value: true %>
+    <%= f.hidden_field :category, value: 'refund' %>
     <%= f.hidden_field :amount, value: 0 %>
     <%= f.hidden_field :student_id, value: @student.id %>
-
-    <div class="form-group">
-      <%= f.label :category %>
-      <%= f.select :category, options_for_select(["tuition", "special"], "tuition"), {}, { class: "form-control" } %>
-    </div>
 
     <div class="form-group" id="offline-payment-notes">
       <%= f.label :refund_notes %>
