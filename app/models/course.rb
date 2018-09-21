@@ -145,7 +145,7 @@ class Course < ApplicationRecord
     elsif language.name == "Internship"
       tracks = cohorts.map { |cohort| cohort.track.description }.sort.join(", ")
       self.description = "#{start_date.strftime('%Y-%m')} Internship (#{tracks})"
-    elsif language.level == 0 && office.name != "Portland" && office.name != 'Online'
+    elsif language.level == 0 && office.name != "Portland"
       self.description = "#{start_date.strftime('%Y-%m')} #{language.name} #{office.name.upcase}"
     else
       self.description = "#{start_date.strftime('%Y-%m')} #{language.name}"
@@ -170,13 +170,13 @@ private
   end
 
   def set_parttime
-    self.parttime = language.name.downcase.include?('evening') || language.name == 'Online'
-    return true
+    self.parttime = language.name.downcase.include?('evening')
+    true
   end
 
   def set_internship_course
     self.internship_course = language.name.downcase.include? "internship"
-    return true
+    true
   end
 
   def update_cohort_end_date(cohort)
@@ -191,9 +191,6 @@ private
         day = day.next_week
       end
       while language.parttime? && !(day.monday? || day.wednesday?)
-        day = day.next
-      end
-      while language.online? && !(day.tuesday? || day.wednesday? || day.thursday?)
         day = day.next
       end
       class_days << day unless Rails.configuration.holidays.include? day.strftime('%Y-%m-%d')

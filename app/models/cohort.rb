@@ -36,10 +36,6 @@ class Cohort < ApplicationRecord
       course = Course.find_or_create_by({ language: track.languages.first, start_date: start_date, office: office, track: track, start_time: '6:00 PM', end_time: '9:00 PM' })
       course.admin = course.admin || admin
       self.courses << course
-    elsif track.description == 'Online'
-      course = Course.find_or_create_by({ language: track.languages.first, start_date: start_date, office: office, track: track, start_time: '5:30 PM', end_time: '7:30 PM' })
-      course.admin = course.admin || admin
-      self.courses << course
     else
       next_course_start_date = start_date
       5.times do |level|
@@ -78,7 +74,7 @@ private
 
   def set_description
     description = "#{start_date.strftime('%Y-%m')} #{office.short_name} #{track.description} (#{start_date.strftime('%b %-d')} - #{end_date.strftime('%b %-d')})"
-    description = "PT: " + description if track.description == 'Part-time' || track.description == 'Online'
+    description = "PT: " + description if track.description == 'Part-time'
     update(description: description)
   end
 end

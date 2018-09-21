@@ -136,8 +136,6 @@ describe Course do
     let(:office) { FactoryBot.create(:portland_office) }
     let(:full_time_track) { FactoryBot.create(:track) }
     let(:part_time_track) { FactoryBot.create(:part_time_track) }
-    let(:online_track) { FactoryBot.create(:online_track) }
-    let(:online_office) { FactoryBot.create(:online_office) }
     let(:admin) { FactoryBot.create(:admin) }
 
     it 'calculates class days for a regular full-time class' do
@@ -159,13 +157,6 @@ describe Course do
       expect(course.start_date).to eq(Date.parse('2017-03-13'))
       expect(course.end_date).to eq(Date.parse('2017-06-21'))
       expect(course.class_days.count).to eq(29) # 1 holiday
-    end
-
-    it 'calculates class days for an online class' do
-      course = Course.create({ language: online_track.languages.first, start_date: Date.parse('2017-03-13'), office: online_office, track: online_track, start_time: '5:30 PM', end_time: '7:30 PM' })
-      expect(course.start_date).to eq(Date.parse('2017-03-14'))
-      expect(course.end_date).to eq(Date.parse('2017-06-22'))
-      expect(course.class_days.count).to eq(45) # 1 holiday
     end
   end
 
@@ -421,11 +412,6 @@ describe Course do
       expect(course.parttime).to eq true
     end
 
-    it 'sets parttime flag for online course' do
-      course = FactoryBot.create(:online_course)
-      expect(course.parttime).to eq true
-    end
-
     it 'does not set parttime flag for intro course' do
       course = FactoryBot.create(:course)
       expect(course.parttime).to eq false
@@ -446,11 +432,6 @@ describe Course do
 
   describe '#set_description' do
     it 'sets description for course to date and language' do
-      course = FactoryBot.create(:portland_ruby_course)
-      expect(course.description).to eq "#{course.start_date.strftime('%Y-%m')} #{course.language.name}"
-    end
-
-    it 'sets description for online course to date and language' do
       course = FactoryBot.create(:portland_ruby_course)
       expect(course.description).to eq "#{course.start_date.strftime('%Y-%m')} #{course.language.name}"
     end

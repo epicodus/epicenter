@@ -145,12 +145,6 @@ FactoryBot.define do
       association :language, factory: :ruby_language
     end
 
-    factory :online_course do
-      association :office, factory: :online_office
-      association :language, factory: :online_language
-      class_days { (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 15.weeks).end_of_week).select { |day| day if day.tuesday? || day.wednesday? || day.thursday? } }
-    end
-
     factory :level0_course do
       office { nil }
       association :language, factory: :intro_language
@@ -259,12 +253,6 @@ FactoryBot.define do
       short_name { 'PHL' }
       time_zone { 'Eastern Time (US & Canada)' }
     end
-
-    factory :online_office do
-      name { 'Online' }
-      short_name { 'WEB' }
-      time_zone { 'Pacific Time (US & Canada)' }
-    end
   end
 
   factory :language do
@@ -281,14 +269,6 @@ FactoryBot.define do
       number_of_days { 30 }
       skip_holiday_weeks { true }
       parttime { true }
-    end
-
-    factory :online_language do
-      name { 'Online' }
-      level { 0 }
-      number_of_days { 45 }
-      skip_holiday_weeks { true }
-      online { true }
     end
 
     factory :ruby_language do
@@ -717,14 +697,6 @@ FactoryBot.define do
       before(:create) do |track|
         track.languages = []
         track.languages << build(:evening_language)
-      end
-    end
-
-    factory :online_track do
-      description { 'Online' }
-      before(:create) do |track|
-        track.languages = []
-        track.languages << build(:online_language)
       end
     end
   end
