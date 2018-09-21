@@ -9,6 +9,6 @@ class Track < ApplicationRecord
   scope :active, -> { where(archived: nil) }
 
   def self.fulltime
-    where('description != ? AND description != ?', 'Part-time', 'Online')
+    where('description != ?', 'Part-time')
   end
 end
