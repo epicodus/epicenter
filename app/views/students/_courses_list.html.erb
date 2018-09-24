@@ -1,1 +1,1 @@
-<%= f.collection_select :course_id, courses, :id, :teacher_and_description, { include_blank: "Please select a #{descriptor} course" }, { class: 'col-md-4 form-control', id: "enrollment_course_id_#{descriptor}", required: true } %>
+<%= f.collection_select :course_id, courses, :id, :teacher_and_description, { include_blank: "Please select a #{descriptor} course" }, { class: 'col-md-4 form-control', id: "enrollment_course_id_#{descriptor}" } %>

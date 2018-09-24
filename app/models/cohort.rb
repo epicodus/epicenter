@@ -31,6 +31,10 @@ class Cohort < ApplicationRecord
     where('start_date > ?', Time.zone.now.to_date)
   end
 
+  def self.current_and_future_cohorts
+    where('end_date >= ?', Time.zone.now.to_date)
+  end
+
   def find_or_create_courses
     if track.description == 'Part-time'
       course = Course.find_or_create_by({ language: track.languages.first, start_date: start_date, office: office, track: track, start_time: '6:00 PM', end_time: '9:00 PM' })
