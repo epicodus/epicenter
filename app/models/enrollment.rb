@@ -14,6 +14,8 @@ class Enrollment < ApplicationRecord
   after_create :update_cohort
   after_destroy :update_cohort
 
+  attr_reader :cohort_id
+  
 private
 
   def update_cohort

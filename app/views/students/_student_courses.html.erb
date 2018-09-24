@@ -87,6 +87,18 @@
           </nav>
 
           <%= f.hidden_field :student_id, value: @student.id %>
+
+          <div class="input-group">
+            <span class="assign-cohorts-to-student">
+              <%= render 'students/cohorts_list', f: f, cohorts: Office.first.cohorts.current_and_future_cohorts.order(:description).reverse, descriptor: Office.first.short_name %>
+            </span>
+            <span class="input-group-btn">
+              <%= f.submit 'Add cohort', class: 'btn btn-info' %>
+            </span>
+          </div>
+
+          <br>
+
           <div class="input-group">
             <span class="assign-courses-to-student">
               <%= render 'students/courses_list', f: f, courses: @student.other_courses.current_and_future_courses.courses_for(Office.first).order(:description).reverse, descriptor: Office.first.short_name %>

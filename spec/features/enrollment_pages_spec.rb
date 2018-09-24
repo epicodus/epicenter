@@ -36,6 +36,24 @@ feature 'adding another course for a student' do
   end
 end
 
+feature 'adding full cohort for a student' do
+  let(:student) { FactoryBot.create(:student, courses: []) }
+  let(:admin) { FactoryBot.create(:admin) }
+  let!(:cohort) { FactoryBot.create(:full_cohort, office: FactoryBot.create(:portland_office)) }
+
+  before { login_as(admin, scope: :admin) }
+
+  scenario 'as an admin on the individual student page', js: true do
+    travel_to cohort.start_date do
+      visit student_courses_path(student)
+      click_on 'PDX'
+      select cohort.description, from: 'enrollment_cohort_id_PDX'
+      click_on 'Add cohort'
+      expect(page).to have_content "#{student.name} enrolled in all current and future courses in #{cohort.description}."
+    end
+  end
+end
+
 feature 'deleting a student' do
   let(:course1) { FactoryBot.create(:course) }
   let(:course2) { FactoryBot.create(:internship_course) }

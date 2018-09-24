@@ -42,6 +42,10 @@ describe Cohort do
     it 'returns all previous cohorts' do
       expect(Cohort.previous_cohorts).to eq [past_cohort]
     end
+
+    it 'returns all current and future cohorts' do
+      expect(Cohort.current_and_future_cohorts).to eq [current_cohort, future_cohort]
+    end
   end
 
   describe 'creating a cohort when classes already exist' do
