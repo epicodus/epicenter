@@ -1,7 +1,7 @@
 class Admin < User
   default_scope { order(:name) }
 
-  belongs_to :current_course, class_name: 'Course'
+  belongs_to :current_course, class_name: 'Course', optional: true
   has_many :courses
   has_many :cohorts
 
