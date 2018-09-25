@@ -1,5 +1,5 @@
 describe Admin do
-  it { should belong_to :current_course }
+  # it { should belong_to :current_course }
   it { should have_many :courses }
   it { should have_many :cohorts }
 

@@ -66,16 +66,18 @@ describe Enrollment do
   end
 
   describe 'updates cohorts only when changes' do
-    let(:student) { FactoryBot.create(:student, courses: []) }
-    let(:past_cohort) { FactoryBot.create(:full_cohort, start_date: (Date.today - 1.year).beginning_of_week) }
-    let(:current_cohort) { FactoryBot.create(:full_cohort, start_date: Date.today.beginning_of_week - 1.week) }
-    let(:future_cohort) { FactoryBot.create(:full_cohort, start_date: (Date.today + 1.year).beginning_of_week) }
-    let(:part_time_cohort) { FactoryBot.create(:part_time_cohort, start_date: Date.today.beginning_of_week - 1.week) }
-    let(:non_internship_course) { FactoryBot.create(:course) }
+    let(:track) { FactoryBot.create(:track) }
+    let(:office) { FactoryBot.create(:portland_office) }
+    let(:admin) { FactoryBot.create(:admin_without_course) }
+    let(:past_cohort) { FactoryBot.create(:full_cohort, start_date: (Date.today - 1.year).beginning_of_week, office: office, admin: admin, track: track) }
+    let(:current_cohort) { FactoryBot.create(:full_cohort, start_date: Date.today.beginning_of_week - 1.week, office: office, admin: admin, track: track) }
+    let(:future_cohort) { FactoryBot.create(:full_cohort, start_date: (Date.today + 1.year).beginning_of_week, office: office, admin: admin, track: track) }
+    let(:part_time_cohort) { FactoryBot.create(:part_time_cohort, start_date: Date.today.beginning_of_week - 1.week, office: office, admin: admin, track: track) }
+    let(:non_internship_course) { FactoryBot.create(:course, office: office) }
+    let!(:student) { FactoryBot.create(:student_without_courses, office: office) }
 
     context 'adding new enrollments' do
       it 'updates starting & current cohort & start & end dates when adding first course' do
-        student.save
         allow_any_instance_of(CrmLead).to receive(:update_internship_class)
         expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort - Starting': current_cohort.description, 'custom.Start Date': current_cohort.start_date.to_s, 'custom.Cohort - Current': current_cohort.description, 'custom.End Date': current_cohort.end_date.to_s })
         student.course = current_cohort.courses.last
@@ -102,7 +104,6 @@ describe Enrollment do
       end
 
       it 'does not update starting or current cohort when adding non-internship course' do
-        student.save
         expect_any_instance_of(CrmLead).to_not receive(:update)
         student.course = non_internship_course
       end
@@ -157,10 +158,9 @@ describe Enrollment do
       end
 
       it 'clears only current cohort when removing last internship course' do
-        full_cohort_student = FactoryBot.create(:student_in_full_cohort)
-        full_cohort = full_cohort_student.cohort
+        student.courses = current_cohort.courses
         expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort - Current': nil, 'custom.End Date': nil })
-        full_cohort_student.enrollments.find_by(course: full_cohort.courses.last).really_destroy!
+        student.enrollments.find_by(course: current_cohort.courses.last).really_destroy!
       end
 
       it 'does not clear ending cohort when removing course' do

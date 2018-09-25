@@ -181,11 +181,11 @@ FactoryBot.define do
   end
 
   factory :cohort do
-    description { '2000-01 PHL Ruby/Rails (Jan 3 - Jul 7)' }
+    description { '2000-01 PDX Ruby/Rails (Jan 3 - Jul 7)' }
     start_date { Time.new(2016, 1, 4).to_date }
-    association :office, factory: :philadelphia_office
+    association :office, factory: :portland_office
     association :track, factory: :track
-    association :admin, factory: :admin
+    association :admin, factory: :admin_without_course
     before(:create) do |cohort|
       cohort.courses << build(:course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days])
       cohort.courses.last.save
@@ -195,13 +195,6 @@ FactoryBot.define do
 
     factory :portland_cohort do
       association :office, factory: :portland_office
-    end
-
-    factory :cohort_internship_course do
-      before(:create) do |cohort|
-        cohort.courses = [FactoryBot.create(:internship_course)]
-        cohort.save
-      end
     end
 
     factory :part_time_cohort do
@@ -498,6 +491,11 @@ FactoryBot.define do
     password { "password" }
     password_confirmation { "password" }
 
+    factory :student_without_courses do
+      courses { [] }
+      course { nil }
+    end
+
     factory :seattle_student do
       association :course, factory: :seattle_course
       association :office, factory: :seattle_office
@@ -635,14 +633,6 @@ FactoryBot.define do
         submission = create(:submission, student: student)
         review = create(:passing_review, submission: submission)
         create(:passing_grade, review: review, objective: review.submission.code_review.objectives.first)
-      end
-    end
-
-    factory :student_in_full_cohort do
-      before(:create) do |student|
-        full_cohort = create(:full_cohort)
-        student.courses = []
-        full_cohort.courses.each { |course| student.courses << course }
       end
     end
   end
