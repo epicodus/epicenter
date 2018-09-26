@@ -15,6 +15,10 @@ class Submission < ApplicationRecord
   before_create :mark_as_needing_review
   before_save :update_times_submitted
 
+  def other_submissions_for_course
+    student.submissions.for_course(code_review.course).where.not(id: id)
+  end
+
   def has_been_reviewed?
     needs_review == false
   end

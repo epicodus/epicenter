@@ -31,6 +31,21 @@ describe Submission do
     end
   end
 
+  describe '#previous_submissions_for_course' do
+    it 'returns other submissions for the same course' do
+      course = FactoryBot.create(:course)
+      student = FactoryBot.create(:student, courses: [course])
+      other_course = FactoryBot.create(:course)
+      code_review1 = FactoryBot.create(:code_review, course: course)
+      code_review2 = FactoryBot.create(:code_review, course: course)
+      other_code_review = FactoryBot.create(:code_review, course: other_course)
+      submission1 = FactoryBot.create(:submission, code_review: code_review1, student: student)
+      submission2 = FactoryBot.create(:submission, code_review: code_review2, student: student)
+      submission_for_other_code_review = FactoryBot.create(:submission, code_review: other_code_review, student: student)
+      expect(submission2.other_submissions_for_course).to eq [submission1]
+    end
+  end
+
   describe 'updating the number of times submitted' do
     let(:submission) { FactoryBot.create(:submission, needs_review: true) }
 
