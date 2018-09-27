@@ -1,3 +1,9 @@
+<% if @submission.review_status == 'pass' %>
+  <div class="alert alert-info">
+    <h1>This submission has already been marked as passing.</h1>
+  </div>
+<% end %>
+
 <%= render 'layouts/errors', object: @review %>
 
 <h1>Submission for <%= @submission.code_review.title %></h1>
@@ -16,6 +22,10 @@
       </h4>
     <% end %>
 
+    <% @submission.other_submissions_for_course.each do |submission| %>
+      <h4 class="small"><%= link_to "[View CR #{submission.code_review.number} review: #{submission.code_review.title}]", new_submission_review_path(submission), target: '_blank' if submission.reviews.any? %></h4>
+    <% end %>
+
     <h4><%= link_to 'View code', @submission.link, target: '_blank' if @submission.link %></h4>
 
     <% if @submission.notes.any? %>
@@ -31,3 +41,9 @@
     <%= render 'form' %>
   </div>
 </div>
+
+<% if @submission.review_status == 'pass' %>
+  <div class="alert alert-info">
+    <h1>This submission has already been marked as passing.</h1>
+  </div>
+<% end %>
