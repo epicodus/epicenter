@@ -118,6 +118,26 @@ feature 'Visiting the submissions index page' do
             expect(page).to have_content('second note')
           end
         end
+
+        describe 'shows links to other reviews for same course' do
+          it 'displays links when at least one exists' do
+            code_review = submission.code_review
+            course = code_review.course
+            code_review2 = FactoryBot.create(:code_review, course: course)
+            submission2 = FactoryBot.create(:submission, code_review: code_review2, student: student)
+            FactoryBot.create(:passing_review, submission: submission2)
+            click_on 'Review'
+            expect(page).to have_content("[View CR #{code_review2.number} review: #{code_review2.title}]")
+          end
+        end
+
+        describe 'notes when submission is already passing' do
+          it 'displays alert' do
+            FactoryBot.create(:passing_review, submission: submission)
+            click_on 'Review'
+            expect(page).to have_content 'This submission has already been marked as passing.'
+          end
+        end
       end
     end
   end
