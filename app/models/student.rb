@@ -190,6 +190,14 @@ class Student < User
     payments.without_failed.sum(:amount) - payments.without_failed.sum(:refund_amount)
   end
 
+  def total_paid_online
+    payments.without_failed.online.sum(:amount) - payments.without_failed.online.sum(:refund_amount)
+  end
+
+  def total_paid_offline
+    payments.without_failed.offline.sum(:amount) - payments.without_failed.offline.sum(:refund_amount)
+  end
+
   def signed_in_today?
     attendance_records.select { |attendance_record| attendance_record.date == Time.zone.now.to_date }.any? # needs to be refactored; this is more efficient than using the today scope for attendance records, but not an ideal solution
   end

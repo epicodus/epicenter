@@ -22,6 +22,8 @@ class Payment < ApplicationRecord
 
   scope :order_by_latest, -> { order('created_at DESC') }
   scope :without_failed, -> { where.not(status: 'failed') }
+  scope :offline, -> { where(status: 'offline') }
+  scope :online, -> { where.not(status: 'offline') }
 
   def total_amount
     amount + fee

@@ -411,7 +411,6 @@ feature 'make a cost adjustment' do
       fill_in 'cost_adjustment_amount', with: 100
       fill_in 'cost_adjustment_reason', with: 'test adjustment'
       click_button 'Adjust student cost'
-      expect(page).to have_content 'Student tuition increased by $100.00.'
       expect(student.cost_adjustments.first.amount).to eq 100_00
       expect(student.cost_adjustments.first.reason).to eq 'test adjustment'
     end
@@ -423,7 +422,6 @@ feature 'make a cost adjustment' do
       fill_in 'cost_adjustment_amount', with: '100.50'
       fill_in 'cost_adjustment_reason', with: 'test adjustment'
       click_button 'Adjust student cost'
-      expect(page).to have_content 'Student tuition increased by $100.50.'
       expect(student.cost_adjustments.first.amount).to eq 100_50
       expect(student.cost_adjustments.first.reason).to eq 'test adjustment'
     end
@@ -435,7 +433,6 @@ feature 'make a cost adjustment' do
       fill_in 'cost_adjustment_amount', with: '-100'
       fill_in 'cost_adjustment_reason', with: 'test adjustment'
       click_button 'Adjust student cost'
-      expect(page).to have_content 'Student tuition decreased by $100.00.'
       expect(student.cost_adjustments.first.amount).to eq -100_00
       expect(student.cost_adjustments.first.reason).to eq 'test adjustment'
     end
@@ -447,7 +444,6 @@ feature 'make a cost adjustment' do
       fill_in 'cost_adjustment_amount', with: '-100.50'
       fill_in 'cost_adjustment_reason', with: 'test adjustment'
       click_button 'Adjust student cost'
-      expect(page).to have_content 'Student tuition decreased by $100.50.'
       expect(student.cost_adjustments.first.amount).to eq -100_50
       expect(student.cost_adjustments.first.reason).to eq 'test adjustment'
     end

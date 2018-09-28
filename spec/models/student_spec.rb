@@ -992,6 +992,38 @@ describe Student do
     end
   end
 
+  describe '#total_paid_online', :vcr, :stripe_mock, :stub_mailgun do
+    let(:student) { FactoryBot.create(:user_with_credit_card, email: 'example@example.com') }
+
+    it 'sums all of the stripe payments only' do
+      FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00)
+      FactoryBot.create(:payment, student: student, amount: 100_00, offline: true)
+      expect(student.total_paid_online).to eq 200_00
+    end
+
+    it 'includes online refunds only' do
+      FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00, refund_amount: 50_00)
+      FactoryBot.create(:payment, student: student, amount: 100_00, offline: true, refund_amount: 25_00)
+      expect(student.total_paid_online).to eq 150_00
+    end
+  end
+
+  describe '#total_paid_offline', :vcr, :stripe_mock, :stub_mailgun do
+    let(:student) { FactoryBot.create(:user_with_credit_card, email: 'example@example.com') }
+
+    it 'sums all of the offline payments only' do
+      FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00)
+      FactoryBot.create(:payment, student: student, amount: 100_00, offline: true)
+      expect(student.total_paid_offline).to eq 100_00
+    end
+
+    it 'includes offline refunds only' do
+      FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00, refund_amount: 50_00)
+      FactoryBot.create(:payment, student: student, amount: 100_00, offline: true, refund_amount: 25_00)
+      expect(student.total_paid_offline).to eq 75_00
+    end
+  end
+
   describe '#find_rating' do
     it 'finds the rating based on internship' do
       student = FactoryBot.create(:student)

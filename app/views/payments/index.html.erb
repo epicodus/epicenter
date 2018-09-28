@@ -121,16 +121,10 @@
     <h3>Payment status</h3>
     <% if @student.plan.present? %>
       <p>Payment plan: <%= @student.plan.name %></p>
-      <p>
-        <% if @student.cost_adjustments.sum(:amount) > 0 %>
-          Student tuition <em>increased</em> by <%= number_to_currency(@student.cost_adjustments.sum(:amount) / 100.00) %>.
-        <% elsif @student.cost_adjustments.sum(:amount) < 0 %>
-          Student tuition <em>decreased</em> by <%= number_to_currency(@student.cost_adjustments.sum(:amount) / -100.00) %>.
-        <% end %>
-      </p>
-      <p>Total amount student owes: <%= number_to_currency(@student.total_owed / 100.00) %></p>
-      <p>Total paid: <%= number_to_currency(@student.total_paid / 100.00) %></p>
-      <p>Amount student still owes: <%= number_to_currency((@student.total_owed - @student.total_paid) / 100.00) %></p>
+      <p>Total amount <em>student</em> owes: <%= number_to_currency(@student.total_owed / 100.00) %></p>
+      <p>Total paid by student (stripe): <%= number_to_currency(@student.total_paid_online / 100.00) %></p>
+      <p>Total paid by third parties (offline): <%= number_to_currency(@student.total_paid_offline / 100.00) %></p>
+      <p>Amount <em>student</em> still owes: <%= number_to_currency((@student.total_owed - @student.total_paid_online) / 100.00) %></p>
       <p>Upfront payment due? <%= @student.upfront_payment_due? ? number_to_currency(@student.upfront_amount_owed / 100.00) : 'None' %></p>
     <% else %>
       <p><strong>No payment plan selected!</strong></p>
