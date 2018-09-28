@@ -122,9 +122,9 @@
       <p>Payment plan: <%= @student.plan.name %></p>
       <hr>
       <p class='text-primary small'>The numbers below are for student portion of tuition only.</p>
-      <p>Total amount <em>student</em> owes: <%= number_to_currency(@student.total_owed / 100.00) %></p>
+      <p>Overall <em>student portion</em> of tuition <span class='small'>(adjustable via tuition adjustments)</span>: <%= number_to_currency(@student.total_owed / 100.00) %></p>
       <p>Total paid by <em>student</em> (stripe): <%= number_to_currency(@student.total_paid_online / 100.00) %></p>
-      <p>Amount <em>student</em> still owes: <%= number_to_currency((@student.total_owed - @student.total_paid_online) / 100.00) %></p>
+      <p>Remaining amount <em>student</em> owes: <%= number_to_currency((@student.total_owed - @student.total_paid_online) / 100.00) %></p>
       <p>Upfront payment due? <%= @student.upfront_payment_due? ? number_to_currency(@student.upfront_amount_owed / 100.00) : 'None' %></p>
       <% if @student.payments.offline.any? %>
         <hr>
