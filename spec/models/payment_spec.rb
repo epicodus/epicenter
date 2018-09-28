@@ -82,12 +82,28 @@ describe Payment do
     end
   end
 
-  describe '.without_failed' do
-    it "doesn't include failed payments", :vcr, :stripe_mock, :stub_mailgun do
-      student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
-      failed_payment = FactoryBot.create(:payment_with_credit_card, student: student)
-      failed_payment.update(status: 'failed')
-      expect(Payment.without_failed).to eq []
+  describe 'scopes', :vcr, :stripe_mock, :stub_mailgun do
+    let(:student) { FactoryBot.create(:user_with_credit_card, email: 'example@example.com') }
+    let(:stripe_payment) { FactoryBot.create(:payment_with_credit_card, student: student) }
+    let(:offline_payment) { FactoryBot.create(:payment, offline: true, student: student) }
+
+    describe '.without_failed' do
+      it "doesn't include failed payments" do
+        Payment.update_all(status: 'failed')
+        expect(Payment.without_failed).to eq []
+      end
+    end
+
+    describe '.online' do
+      it "includes only stripe payments" do
+        expect(Payment.online).to eq [stripe_payment]
+      end
+    end
+
+    describe '.offline' do
+      it "includes only offline payments" do
+        expect(Payment.offline).to eq [offline_payment]
+      end
     end
   end
 
