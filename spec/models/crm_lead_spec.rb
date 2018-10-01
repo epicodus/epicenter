@@ -19,12 +19,12 @@ describe CrmLead, :dont_stub_crm do
 
   describe '#cohort', :vcr do
     it 'returns cohort for full-time student' do
-      cohort = FactoryBot.create(:cohort, start_date: Date.parse('2000-01-03'))
+      cohort = FactoryBot.create(:intro_only_cohort, start_date: Date.parse('2000-01-03'))
       expect(CrmLead.new('example@example.com').cohort).to eq cohort
     end
 
     it 'returns Fidgetech cohort' do
-      cohort = FactoryBot.create(:cohort, description: 'Fidgetech')
+      cohort = FactoryBot.create(:intro_only_cohort, description: 'Fidgetech')
       expect(CrmLead.new('example-fidgetech@example.com').cohort).to eq cohort
     end
 
@@ -40,7 +40,7 @@ describe CrmLead, :dont_stub_crm do
 
   describe '#first_course', :vcr do
     it 'for full-time student' do
-      cohort = FactoryBot.create(:cohort, start_date: Date.parse('2000-01-03'))
+      cohort = FactoryBot.create(:intro_only_cohort, start_date: Date.parse('2000-01-03'))
       expect(CrmLead.new('example@example.com').first_course).to eq cohort.courses.first
     end
 
@@ -51,7 +51,7 @@ describe CrmLead, :dont_stub_crm do
 
     it 'for fidgetech student' do
       course = FactoryBot.create(:course, description: 'Fidgetech')
-      cohort = FactoryBot.create(:cohort, description: 'Fidgetech')
+      cohort = FactoryBot.create(:intro_only_cohort, description: 'Fidgetech')
       cohort.courses = [course]
       expect(CrmLead.new('example-fidgetech@example.com').first_course).to eq course
     end

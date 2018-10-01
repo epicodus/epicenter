@@ -85,7 +85,7 @@ feature 'Does not change current course for non-teacher admin' do
 end
 
 feature 'Inviting new full-time students', :vcr, :dont_stub_crm do
-  let(:cohort) { FactoryBot.create(:cohort, start_date: Date.parse('2000-01-03')) }
+  let(:cohort) { FactoryBot.create(:intro_only_cohort, start_date: Date.parse('2000-01-03')) }
 
   before do
     admin = cohort.admin
@@ -179,7 +179,7 @@ end
 
 feature 'Inviting new Fidgetech students', :vcr, :dont_stub_crm do
   let(:course) { FactoryBot.create(:course, description: 'Fidgetech') }
-  let(:cohort) { FactoryBot.create(:cohort, description: 'Fidgetech') }
+  let(:cohort) { FactoryBot.create(:intro_only_cohort, description: 'Fidgetech') }
   let(:admin) { FactoryBot.create(:admin, courses: [course]) }
 
   before do

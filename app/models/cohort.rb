@@ -3,6 +3,8 @@ class Cohort < ApplicationRecord
   validates :office, presence: true
 
   default_scope { order(:start_date) }
+  scope :parttime_cohorts, -> { joins(:track).where("tracks.description = 'Part-time' OR tracks.description = 'Online'") }
+  scope :fulltime_cohorts, -> { joins(:track).where("tracks.description != 'Part-time' AND tracks.description != 'Online'") }
 
   has_and_belongs_to_many :courses, -> { order(:end_date) }, after_add: :update_end_date
   has_many :starting_cohort_students, class_name: :User, foreign_key: :starting_cohort_id

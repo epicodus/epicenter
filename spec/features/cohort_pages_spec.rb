@@ -20,7 +20,7 @@ feature 'visiting the cohort index page' do
 end
 
 feature 'viewing cohort' do
-  let(:cohort) { FactoryBot.create(:cohort) }
+  let(:cohort) { FactoryBot.create(:intro_only_cohort) }
 
   scenario 'not logged in' do
     visit cohort_path(cohort)
@@ -36,7 +36,7 @@ feature 'viewing cohort' do
 
   scenario 'as an admin' do
     admin = FactoryBot.create(:admin)
-    cohort = FactoryBot.create(:cohort)
+    cohort = FactoryBot.create(:intro_only_cohort)
     login_as(admin, scope: :admin)
     visit cohort_path(cohort)
     expect(page).to have_content 'Courses'
@@ -100,7 +100,7 @@ feature 'creating a cohort' do
 end
 
 feature 'editing a cohort' do
-  let!(:cohort) { FactoryBot.create(:cohort) }
+  let!(:cohort) { FactoryBot.create(:intro_only_cohort) }
 
   scenario 'not logged in' do
     visit edit_cohort_path(cohort)

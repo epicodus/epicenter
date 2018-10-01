@@ -7,9 +7,9 @@ describe Cohort do
   it { should validate_presence_of(:office) }
 
   describe 'past, current, future cohorts' do
-    let(:current_cohort) { FactoryBot.create(:cohort, start_date: Time.zone.now.to_date) }
-    let(:past_cohort) { FactoryBot.create(:cohort, start_date: Time.zone.now.to_date - 1.year) }
-    let(:future_cohort) { FactoryBot.create(:cohort, start_date: Time.zone.now.to_date + 1.year) }
+    let(:current_cohort) { FactoryBot.create(:intro_only_cohort, start_date: Time.zone.now.to_date) }
+    let(:past_cohort) { FactoryBot.create(:intro_only_cohort, start_date: Time.zone.now.to_date - 1.year) }
+    let(:future_cohort) { FactoryBot.create(:intro_only_cohort, start_date: Time.zone.now.to_date + 1.year) }
 
     it 'returns all current cohorts' do
       expect(Cohort.current_cohorts).to eq [current_cohort]
@@ -25,6 +25,19 @@ describe Cohort do
 
     it 'returns all current and future cohorts' do
       expect(Cohort.current_and_future_cohorts).to eq [current_cohort, future_cohort]
+    end
+  end
+
+  describe 'parttime and fulltime scopes' do
+    let!(:fulltime_cohort) { FactoryBot.create(:intro_only_cohort) }
+    let!(:parttime_cohort) { FactoryBot.create(:part_time_cohort) }
+
+    it 'returns all fulltime cohorts' do
+      expect(Cohort.fulltime_cohorts).to eq [fulltime_cohort]
+    end
+
+    it 'returns all parttime cohorts' do
+      expect(Cohort.parttime_cohorts).to eq [parttime_cohort]
     end
   end
 
@@ -111,7 +124,7 @@ describe Cohort do
     end
 
     it 'calculates cohort start date correctly for course with start_date later than 2016-01-04' do
-      cohort = FactoryBot.create(:portland_cohort, start_date: Time.now.to_date)
+      cohort = FactoryBot.create(:intro_only_cohort, start_date: Time.now.to_date)
       expect(Cohort.calculate_cohort_start_date(cohort.courses.first)).to eq cohort.courses.reorder(:start_date).first.start_date.to_s
     end
   end
