@@ -186,28 +186,29 @@ FactoryBot.define do
     association :office, factory: :portland_office
     association :track, factory: :track
     association :admin, factory: :admin_without_course
-    before(:create) do |cohort|
-      cohort.courses << build(:course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days])
-      cohort.courses.last.save
-      cohort.end_date = cohort.courses.last.end_date
+    after(:create) do |cohort|
       cohort.admin.current_course = cohort.courses.first
+      cohort.end_date = cohort.courses.last.end_date
+      cohort.save
     end
 
-    factory :portland_cohort do
-      association :office, factory: :portland_office
+    factory :intro_only_cohort do
+      before(:create) do |cohort|
+        cohort.courses << build(:level0_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days])
+      end
     end
 
     factory :part_time_cohort do
+      description { 'PT: Evening cohort' }
+      association :track, factory: :part_time_track
       before(:create) do |cohort|
-        course = cohort.courses.first
-        course.parttime = true
-        course.description = 'part-time course'
-        course.save
+        cohort.courses << build(:part_time_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 14.weeks + 2.days])
       end
     end
 
     factory :full_cohort do
       before(:create) do |cohort|
+        cohort.courses << build(:level0_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days])
         cohort.courses << build(:level1_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week + 5.weeks, cohort.start_date.beginning_of_week + 9.weeks + 3.days])
         cohort.courses << build(:level2_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week + 10.weeks, cohort.start_date.beginning_of_week + 14.weeks + 3.days])
         cohort.courses << build(:level3_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week + 15.weeks, cohort.start_date.beginning_of_week + 19.weeks + 3.days])
