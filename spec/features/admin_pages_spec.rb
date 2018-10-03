@@ -65,7 +65,7 @@ feature 'Changing current course for teacher' do
     login_as(teacher, scope: :admin)
     visit root_path
     click_link 'Courses'
-    click_link course2.description
+    all('a', text: course2.description).last.click
     expect(page).to have_content "You have switched to #{course2.description}"
   end
 end

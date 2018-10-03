@@ -59,13 +59,6 @@ class Cohort < ApplicationRecord
     end
   end
 
-  def self.calculate_cohort_start_date(course)
-    start_dates = Course.fulltime_courses.where(office: Office.find_by(name: 'Portland')).reorder(:start_date).map {|c| c.start_date.to_s}.uniq
-    cohort_start_date = start_dates[start_dates.find_index(course.start_date.to_s) - course.language.level]
-    cohort_start_date = '2016-01-04' if Date.parse(cohort_start_date) < Date.parse('2016-01-04')
-    cohort_start_date
-  end
-
 private
   def update_end_date(course)
     update(end_date: course.end_date) if self.end_date.nil? || course.end_date > self.end_date

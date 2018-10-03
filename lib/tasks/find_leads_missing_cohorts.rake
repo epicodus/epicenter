@@ -51,7 +51,7 @@ task :find_leads_missing_cohorts => [:environment] do
     # ******************** #
     # CURRENT COHORT CHECK #
     # ******************** #
-    fulltime_students_who_should_have_current_cohort_assigned = Student.select {|s| s.courses.internship_courses.any? && s.courses.internship_courses.last.start_date > Date.parse('2017-01-01')}
+    fulltime_students_who_should_have_current_cohort_assigned = Student.select {|s| s.courses.internship_courses.any? && s.courses.first.start_date > Date.parse('2017-01-01')}
     fulltime_students_who_should_have_current_cohort_assigned.each do |student|
       unless IGNORE_LIST.include? student.email
         calculated_current_cohort = student.calculate_current_cohort

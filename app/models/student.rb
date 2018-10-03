@@ -301,38 +301,23 @@ class Student < User
   end
 
   def calculate_starting_cohort
-    if courses_with_withdrawn.fulltime_courses.any?
-      courses = courses_with_withdrawn.fulltime_courses - [Course.find_by(description: 'Legacy Internship Course')] - [Course.find_by(description: 'Internship Exempt')]
-      if courses.first.try(:cohorts).try(:count) == 1
-        calculated_starting_cohort = courses.first.cohorts.first
-      elsif courses.select {|c| c.track.present?}.compact.empty? # no courses with associated track, so use an 'all' cohort
-        calculated_starting_cohort = courses.first.try(:cohorts).try(:find_by, 'description LIKE ?', '%ALL%')
-      else
-        cohort_start_date = Cohort.calculate_cohort_start_date(courses.first)
-        courses_with_tracks = courses.select { |c| c.track.present? }
-        calculated_starting_cohort = courses.first.cohorts.find_by(track: courses_with_tracks.first.track, start_date: cohort_start_date)
-        calculated_starting_cohort = courses_with_tracks.first.cohorts.find_by(track: courses_with_tracks.first.track, start_date: cohort_start_date) if calculated_starting_cohort.nil?
-        calculated_starting_cohort = courses.first.cohorts.find_by('description LIKE ?', '%ALL%') if calculated_starting_cohort.nil?
-        calculated_starting_cohort
-      end
-    end
+    courses_with_withdrawn.fulltime_courses.first.try(:cohorts).try(:first)
   end
 
   def calculate_current_cohort
-    if self.courses.internship_courses.any?
-      courses = self.courses.fulltime_courses.reorder(:start_date) - [Course.find_by(description: 'Legacy Internship Course')] - [Course.find_by(description: 'Internship Exempt')]
-      if courses.last.cohorts.count == 1
-        calculated_current_cohort = courses.last.cohorts.first
-      elsif courses.select {|c| c.track.present? }.compact.empty? # no courses with associated track, so use an 'all' cohort
-        calculated_current_cohort = courses.last.cohorts.find_by('description LIKE ?', '%ALL%')
+    if courses.internship_courses.any?
+      fulltime_courses = courses.fulltime_courses.where.not(description: 'Internship Exempt')
+      if fulltime_courses.last.cohorts.count == 1
+        fulltime_courses.last.cohorts.first
       else
-        cohort_start_date = Cohort.calculate_cohort_start_date(courses.last)
-        courses_with_tracks = courses.select { |c| c.track.present? }
-        calculated_current_cohort = courses.last.cohorts.find_by(track: courses_with_tracks.last.track, start_date: cohort_start_date)
-        calculated_current_cohort = courses_with_tracks.last.cohorts.find_by(track: courses_with_tracks.last.track, start_date: cohort_start_date) if calculated_current_cohort.nil?
-        calculated_current_cohort = courses.last.cohorts.find_by('description LIKE ?', '%ALL%') if calculated_current_cohort.nil?
-        calculated_current_cohort = courses.last.cohorts.order(:description).first if calculated_current_cohort.nil? # just pick one if student switched to internship course that doesn't go with student's track
-        calculated_current_cohort
+        possible_cohorts = fulltime_courses.last.cohorts
+        non_internship_courses = fulltime_courses.where(internship_course: false)
+        cohort_of_level3_course = non_internship_courses.last.try(:cohorts).try(:first)
+        if possible_cohorts.include? cohort_of_level3_course
+          cohort_of_level3_course
+        else
+          possible_cohorts.first # just pick one if student switched to later internship course that doesn't go with student's track
+        end
       end
     end
   end

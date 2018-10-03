@@ -34,6 +34,14 @@ describe Course do
     end
   end
 
+  describe 'default scope' do
+    it 'orders by start_date ascending' do
+      future_course = FactoryBot.create(:future_course)
+      past_course = FactoryBot.create(:past_course)
+      expect(Course.all).to eq [past_course, future_course]
+    end
+  end
+
   describe '#teacher' do
     it 'returns the teacher name if the course has an assigned teacher' do
       admin = FactoryBot.create(:admin)
