@@ -165,7 +165,7 @@ feature 'visiting the course index page' do
 end
 
 feature 'selecting a new course manually' do
-  let(:admin) { FactoryBot.create(:admin) }
+  let!(:admin) { FactoryBot.create(:admin) }
 
   scenario 'as an admin' do
     course2 = FactoryBot.create(:internship_course)
