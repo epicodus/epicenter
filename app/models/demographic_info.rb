@@ -24,6 +24,7 @@ class DemographicInfo
   validate :validate_shirt
   validate :validate_after_graduation
   validates_length_of :after_graduation_explanation, maximum: 255, allow_nil: true # only required if @after_graduation == 'Other (please explain)'
+  validates_numericality_of :ssn, less_than: 1000000000, allow_nil: true
 
   # optional fields
   validate :validate_array_genders, if: ->(obj) { obj.genders.present? }
@@ -31,7 +32,7 @@ class DemographicInfo
   validates_length_of :job, maximum: 35, allow_nil: true
   validates_numericality_of :salary, greater_than_or_equal_to: 0, allow_nil: true
 
-  attr_accessor :student, :birth_date, :disability, :veteran, :education, :cs_degree, :address, :city, :state, :zip, :country, :shirt, :job, :salary, :genders, :races, :after_graduation, :after_graduation_explanation, :time_off
+  attr_accessor :student, :birth_date, :disability, :veteran, :education, :cs_degree, :address, :city, :state, :zip, :country, :shirt, :job, :salary, :genders, :races, :after_graduation, :after_graduation_explanation, :time_off, :ssn
 
   def initialize(student = nil, attributes = {})
     @student = student
@@ -53,6 +54,7 @@ class DemographicInfo
     @after_graduation = attributes[:after_graduation]
     @time_off = attributes[:time_off] if [AFTER_OPTIONS[0], AFTER_OPTIONS[1]].include? @after_graduation
     @after_graduation_explanation = 'Other: ' + attributes[:after_graduation_explanation] if @after_graduation == AFTER_OPTIONS[-1] && attributes[:after_graduation_explanation].present?
+    @ssn = attributes[:ssn].gsub(/\D/, '').to_i if attributes[:ssn].present?
   end
 
   def save
@@ -73,11 +75,17 @@ class DemographicInfo
       fields['custom.Demographics - Time off planned'] = @time_off
       fields = fields.compact
       @student.crm_lead.update(fields)
+      @student.crm_lead.update({ 'custom.Demographics - Encrypted SSN': encrypted_ssn }) if ssn
       true
     end
   end
 
 private
+
+  def encrypted_ssn
+    public_key = OpenSSL::PKey::RSA.new(ENV['PUBLIC_KEY'])
+    Base64.encode64(public_key.public_encrypt(ssn.to_s))
+  end
 
   def validate_array_genders
     @genders.each do |gender|
