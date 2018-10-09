@@ -36,6 +36,7 @@ gem 'resque'
 gem 'active_model_serializers'
 gem 'rest-client'
 gem 'plaid'
+gem 'openssl'
 
 group :development do
   gem 'spring'

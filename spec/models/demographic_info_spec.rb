@@ -14,6 +14,7 @@ describe DemographicInfo do
   it { should validate_inclusion_of(:cs_degree).in_array(["Yes", "No"]) }
   it { should validate_length_of(:job).is_at_most(35) }
   it { should validate_length_of(:after_graduation_explanation).is_at_most(255) }
+  it { should validate_numericality_of(:ssn).is_less_than(1000000000) }
 
   it 'validates birth date is valid format' do
     demographic_info = FactoryBot.build(:demographic_info, birth_date: 'invalid')
@@ -88,16 +89,23 @@ describe DemographicInfo do
     end
   end
 
-  describe 'updating close.io with demographics info' do
+  describe 'updating close.io with demographics info', :vcr, :dont_stub_crm do
     let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
     let(:lead_id) { get_lead_id(student.email) }
 
     before { allow(CrmUpdateJob).to receive(:perform_later).and_return({}) }
 
-    it 'updates the record successfully', :vcr, :dont_stub_crm do
+    it 'updates the record successfully' do
       demographic_info = FactoryBot.build(:demographic_info, :genders=>["Female"], :job=>"test occupation", :salary=>15000, :races=>["Asian or Asian American"], student: student)
       expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, {'custom.Demographics - Gender' => demographic_info.genders.join(", "), 'custom.Demographics - After graduation plan' => demographic_info.after_graduation, 'custom.Demographics - Birth date' => demographic_info.birth_date, 'custom.Demographics - Education' => demographic_info.education, 'custom.Demographics - CS Degree' => demographic_info.cs_degree, 'custom.Demographics - Shirt size' => demographic_info.shirt, 'custom.Demographics - Previous job' => demographic_info.job, 'custom.Demographics - Previous salary' => demographic_info.salary, 'custom.Demographics - Race' => demographic_info.races.join(', '), 'custom.Demographics - Veteran' => demographic_info.veteran, 'custom.Demographics - Disability' => demographic_info.disability, "addresses"=> [{:label => "mailing", :address_1 => demographic_info.address, :city => demographic_info.city, :state => demographic_info.state, :zipcode => demographic_info.zip, :country => demographic_info.country}]})
+      demographic_info.save
+    end
+
+    it 'sends ssn encrypted' do
+      demographic_info = FactoryBot.build(:demographic_info, student: student, ssn: 111111111)
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, hash_including('custom.Demographics - Encrypted SSN'.to_sym))
+      expect(CrmUpdateJob).to_not receive(:perform_later).with(lead_id, {'custom.Demographics - Encryped SSN' => '111-11-1111'})
       demographic_info.save
     end
   end

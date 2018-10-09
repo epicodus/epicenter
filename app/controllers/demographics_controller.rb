@@ -32,6 +32,6 @@ private
   def demographic_info_params
     params.require(:demographic_info).permit(:birth_date, :disability, :veteran, :education, :cs_degree,
                     :address, :city, :state, :zip, :country, :shirt, :job, :salary, :after_graduation,
-                    :after_graduation_explanation, :time_off, :genders => [], :races => [])
+                    :after_graduation_explanation, :time_off, :ssn, :genders => [], :races => [])
   end
 end
