@@ -18,7 +18,7 @@ class Payment < ApplicationRecord
 
   after_update :send_payment_failure_notice, if: ->(payment) { payment.status == "failed" && !payment.failure_notice_sent? }
   after_save :update_crm
-  after_create :send_webhook, if: ->(payment) { payment.status == 'succeeded' || payment.status == 'offline' }
+  after_create :send_webhook, if: ->(payment) { payment.category != 'keycard' && (payment.status == 'succeeded' || payment.status == 'offline') }
 
   scope :order_by_latest, -> { order('created_at DESC') }
   scope :without_failed, -> { where.not(status: 'failed') }
@@ -110,27 +110,16 @@ private
 
   def set_category
     self.category = refund_amount.present? ? 'refund' : 'upfront'
-    self.category = 'standard' if student.id == 2900 #legacy; remove after final payment (jan 2019)
   end
 
   def set_description
-    attendance_status = student.attendance_status
-    courses = student.courses.reorder(:start_date)
     if category == 'keycard'
       self.description = 'keycard'
-    elsif student.office.nil? && courses.empty?
-      self.description = "special: #{student.email} not enrolled in any courses and unknown office"
-    elsif student.office.nil?
-      student.update(office: courses.first.office)
     else
-      if courses.fulltime_courses.any?
-        start_date = courses.fulltime_courses.first.start_date.strftime("%Y-%m-%d")
-      elsif courses.any?
-        start_date = courses.first.start_date.strftime("%Y-%m-%d")
-      else
-        start_date = 'no enrollments'
-      end
-      self.description = "#{student.office.name}; #{start_date}; #{attendance_status}; #{category}"
+      enrolled_courses_in_cohort = student.courses & student.cohort.courses
+      start_date = enrolled_courses_in_cohort.first.try(:start_date)
+      end_date = student.cohort.try(:end_date)
+      self.description = "#{start_date.to_s}-#{end_date.to_s} | #{student.cohort.try(:description)}"
     end
   end
 

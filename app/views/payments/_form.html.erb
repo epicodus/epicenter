@@ -36,7 +36,7 @@
 
   <div id="payment-warning">
     <% if @student.plan %>
-      <p class="alert alert-warning"><strong>Payment for <%= @student.attendance_status %></strong></p>
+      <p class="alert alert-warning"><strong>Payment for <%= @student.ending_cohort.description %></strong></p>
     <% else %>
       <p class="alert alert-danger"><strong>Set payment plan before making payment!</strong><br></p>
     <% end %>
