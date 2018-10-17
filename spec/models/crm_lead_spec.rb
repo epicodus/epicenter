@@ -1,26 +1,40 @@
-describe CrmLead, :dont_stub_crm do
-  describe '#initialize', :vcr do
+describe CrmLead, :dont_stub_crm, :vcr do
+  describe '#initialize' do
     it 'raises error if lead not found' do
       expect { CrmLead.new('does_not_exist@example.com').status }.to raise_error(CrmError, "The Close.io lead for does_not_exist@example.com was not found.")
     end
   end
 
-  describe '#status', :vcr do
+  describe '.lead_exists?' do
+    it 'returns true if lead exists' do
+      expect(CrmLead.lead_exists?('example@example.com')).to eq true
+    end
+    it 'returns true if lead exists' do
+      expect(CrmLead.lead_exists?('lead_does_not_exist_in_close@example.com')).to eq false
+    end
+  end
+
+  describe '#status' do
     it 'returns lead status' do
       expect(CrmLead.new('example@example.com').status).to eq "Applicant - No longer interested (legacy)"
     end
   end
 
-  describe '#name', :vcr do
+  describe '#name' do
     it 'returns lead name' do
       expect(CrmLead.new('example@example.com').name).to eq "THIS LEAD IS USED FOR TESTING PURPOSES. PLEASE DO NOT DELETE."
     end
   end
 
-  describe '#cohort', :vcr do
+  describe '#cohort' do
     it 'returns cohort for full-time student' do
       cohort = FactoryBot.create(:intro_only_cohort, start_date: Date.parse('2000-01-03'))
       expect(CrmLead.new('example@example.com').cohort).to eq cohort
+    end
+
+    it 'returns cohort for part-time student' do
+      cohort = FactoryBot.create(:part_time_cohort, start_date: Date.parse('2000-01-03'))
+      expect(CrmLead.new('example-part-time@example.com').cohort).to eq cohort
     end
 
     it 'returns Fidgetech cohort' do
@@ -32,20 +46,16 @@ describe CrmLead, :dont_stub_crm do
       FactoryBot.create(:track)
       expect { CrmLead.new('example@example.com').cohort }.to raise_error(CrmError, "Cohort not found in Epicenter")
     end
-
-    it 'returns nil for part-time student' do
-      expect(CrmLead.new('example-part-time@example.com').cohort).to eq nil
-    end
   end
 
-  describe '#first_course', :vcr do
-    it 'for full-time student' do
+  describe '#first_course' do
+    it 'returns first course for full-time student' do
       cohort = FactoryBot.create(:intro_only_cohort, start_date: Date.parse('2000-01-03'))
       expect(CrmLead.new('example@example.com').first_course).to eq cohort.courses.first
     end
 
-    it 'for part-time student' do
-      course = FactoryBot.create(:part_time_course, class_days: [Date.parse('2000-01-03')], office: FactoryBot.create(:philadelphia_office))
+    it 'returns first course for part-time student' do
+      course = FactoryBot.create(:part_time_course, class_days: [Date.parse('2000-01-03')], office: FactoryBot.create(:portland_office))
       expect(CrmLead.new('example-part-time@example.com').first_course).to eq course
     end
 
@@ -62,7 +72,7 @@ describe CrmLead, :dont_stub_crm do
     end
   end
 
-  describe '#update_internship_class', :vcr do
+  describe '#update_internship_class' do
     let!(:student) { FactoryBot.create(:student, email: "example@example.com", courses: []) }
 
     it 'updates internship class field in CRM' do
@@ -78,7 +88,7 @@ describe CrmLead, :dont_stub_crm do
     end
   end
 
-  describe 'updating close.io when student email is updated', :vcr do
+  describe 'updating close.io when student email is updated' do
     let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
 
@@ -96,7 +106,7 @@ describe CrmLead, :dont_stub_crm do
     end
   end
 
-  describe 'adding note to close.io', :vcr do
+  describe 'adding note to close.io' do
     let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
     let(:lead_id) { get_lead_id(student.email) }

@@ -136,11 +136,11 @@ feature 'Inviting new full-time students', :vcr, :dont_stub_crm do
 end
 
 feature 'Inviting new part-time students', :vcr, :dont_stub_crm do
-  let(:course) { FactoryBot.create(:part_time_course, description: '* Placement Test', class_days: [Date.parse('2000-01-03')]) }
-  let(:admin) { FactoryBot.create(:admin, courses: [course]) }
+  let(:cohort) { FactoryBot.create(:part_time_cohort, start_date: Date.parse('2000-01-03')) }
+  let(:admin) { FactoryBot.create(:admin, courses: cohort.courses) }
 
   before do
-    admin.current_course = course
+    admin.current_course = cohort.courses.first
     login_as(admin, scope: :admin)
   end
 
