@@ -67,6 +67,7 @@ Rails.application.routes.draw do
 
   resources :stripe_callbacks, only: [:create]
   resources :payment_callbacks, only: [:create]
+  resources :invitation_callbacks, only: [:create]
 
   resources :signatures, only: [:create] do
     collection do

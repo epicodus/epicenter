@@ -3,6 +3,10 @@ class CrmLead
     @email = email
   end
 
+  def self.lead_exists?(email)
+    Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false).list_leads('email: "' + email + '"')['total_results'] >= 1
+  end
+
   def update(update_fields)
     CrmUpdateJob.perform_later(lead['id'], update_fields)
   end
@@ -18,8 +22,6 @@ class CrmLead
   def cohort
     if fidgetech?
       Cohort.find_by(description: 'Fidgetech')
-    elsif parttime?
-      nil
     else
       Cohort.find_by(office: office, start_date: start_date, track: track) || CrmLead.raise_error("Cohort not found in Epicenter")
     end
