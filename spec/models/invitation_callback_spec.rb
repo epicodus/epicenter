@@ -7,6 +7,11 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
     expect { InvitationCallback.new(email: 'does_not_exist_in_close@example.com') }.to raise_error(CrmError, "Invitation callback: CRM lead not found for does_not_exist_in_close@example.com")
   end
 
+  it 'raises error if email already found in Epicenter' do
+    FactoryBot.create(:student, email: 'example@example.com')
+    expect { InvitationCallback.new(email: 'example@example.com') }.to raise_error(CrmError, "Invitation callback: example@example.com already exists in Epicenter")
+  end
+
   it 'creates Epicenter account for full-time student if email found in CRM' do
     cohort = FactoryBot.create(:full_cohort, start_date: Date.parse('2000-01-03'))
     InvitationCallback.new(email: 'example@example.com')
