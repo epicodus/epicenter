@@ -12,7 +12,7 @@ task :find_duplicate_leads => [:environment] do
           file.puts("NOT FOUND: #{student.email}")
           counter += 1
         elsif leads['total_results'] > 1
-          file.puts("DUPLICATES FOUND: #{student.email}") if lead['total_results'] > 1
+          file.puts("DUPLICATES FOUND: #{student.email}")
           counter += 1
         end
       end
