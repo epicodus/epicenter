@@ -4,7 +4,7 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
   before { allow(CrmUpdateJob).to receive(:perform_later).and_return({}) }
 
   it 'raises error if no lead found with matching email' do
-    expect { InvitationCallback.new(email: 'does_not_exist_in_close@example.com') }.to raise_error(CrmError, "Invitation callback: CRM lead not found for does_not_exist_in_close@example.com")
+    expect { InvitationCallback.new(email: 'does_not_exist_in_close@example.com') }.to raise_error(CrmError, "Invitation callback: unique CRM lead not found for does_not_exist_in_close@example.com")
   end
 
   it 'raises error if email already found in Epicenter' do

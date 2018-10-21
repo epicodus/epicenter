@@ -4,7 +4,7 @@ class CrmLead
   end
 
   def self.lead_exists?(email)
-    Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false).list_leads('email: "' + email + '"')['total_results'] >= 1
+    Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false).list_leads('email: "' + email + '"')['total_results'] == 1
   end
 
   def update(update_fields)
