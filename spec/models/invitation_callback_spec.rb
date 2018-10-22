@@ -12,6 +12,11 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
     expect { InvitationCallback.new(email: 'example@example.com') }.to raise_error(CrmError, "Invitation callback: example@example.com already exists in Epicenter")
   end
 
+  it 'raises error if cohort not found in Epicenter' do
+    FactoryBot.create(:track)
+    expect { InvitationCallback.new(email: 'example-invalid-cohort@example.com') }.to raise_error(CrmError, "Cohort not found in Epicenter")
+  end
+
   it 'creates Epicenter account for full-time student if email found in CRM' do
     cohort = FactoryBot.create(:full_cohort, start_date: Date.parse('2000-01-03'))
     InvitationCallback.new(email: 'example@example.com')

@@ -12,11 +12,11 @@ class InvitationCallback
     else
       Rails.logger.info "Invitation callback: beginning invitation"
       crm_lead = CrmLead.new(email)
-      student = Student.invite!(email: email, name: crm_lead.name) do |u|
+      student = Student.invite!(email: email, name: crm_lead.name, course: crm_lead.cohort.courses.first) do |u|
         u.skip_invitation = true
       end
       crm_lead.cohort.courses.each do |course|
-        student.courses << course
+        student.courses << course unless student.courses.include? course
       end
       student.update(office: student.course.office)
       crm_lead.update({ 'custom.Epicenter - Raw Invitation Token': student.raw_invitation_token })
