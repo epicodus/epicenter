@@ -6,11 +6,15 @@ describe CrmLead, :dont_stub_crm, :vcr do
   end
 
   describe '.lead_exists?' do
-    it 'returns true if lead exists' do
+    it 'returns true if unique lead exists' do
       expect(CrmLead.lead_exists?('example@example.com')).to eq true
     end
-    it 'returns true if lead exists' do
+    it 'returns false if lead does not exist' do
       expect(CrmLead.lead_exists?('lead_does_not_exist_in_close@example.com')).to eq false
+    end
+    it 'returns false if duplicate lead exists' do
+      allow_any_instance_of(Closeio::Client).to receive(:list_leads).and_return({ 'total_results' => 2 })
+      expect(CrmLead.lead_exists?('example@example.com')).to eq false
     end
   end
 

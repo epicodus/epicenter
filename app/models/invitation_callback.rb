@@ -7,8 +7,8 @@ class InvitationCallback
       Rails.logger.info "Invitation callback error: #{email} already exists in Epicenter"
       raise CrmError, "Invitation callback: #{email} already exists in Epicenter"
     elsif !CrmLead.lead_exists?(email)
-      Rails.logger.info "Invitation callback error: CRM lead not found for #{email}"
-      raise CrmError, "Invitation callback: CRM lead not found for #{email}"
+      Rails.logger.info "Invitation callback error: unique CRM lead not found for #{email}"
+      raise CrmError, "Invitation callback: unique CRM lead not found for #{email}"
     else
       Rails.logger.info "Invitation callback: beginning invitation"
       crm_lead = CrmLead.new(email)
