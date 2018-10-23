@@ -46,10 +46,12 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
   end
 
   it 'does not enroll international students in internship course' do
+    internship_exempt_course = FactoryBot.create(:internship_course, description: 'Internship Exempt')
     cohort = FactoryBot.create(:full_cohort, start_date: Date.parse('2000-01-03'))
     InvitationCallback.new(email: 'example-international@example.com')
     student = Student.find_by(email: 'example-international@example.com')
-    expect(student.courses.count).to eq 4
+    expect(student.courses.count).to eq 5
+    expect(student.courses.last).to eq internship_exempt_course
   end
 
   it 'updates CRM status after creating student account' do
