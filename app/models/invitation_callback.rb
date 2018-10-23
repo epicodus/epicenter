@@ -16,7 +16,11 @@ class InvitationCallback
         u.skip_invitation = true
       end
       crm_lead.cohort.courses.each do |course|
-        student.courses << course unless student.courses.include?(course) || (course.internship_course? && !crm_lead.work_eligible?)
+        if course.internship_course? && !crm_lead.work_eligible?
+          student.courses << Course.find_by(description: 'Internship Exempt')
+        else
+          student.courses << course unless student.courses.include?(course)
+        end
       end
       student.update(office: student.course.office)
       crm_lead.update({ 'custom.Epicenter - Raw Invitation Token': student.raw_invitation_token })
