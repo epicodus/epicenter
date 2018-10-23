@@ -36,6 +36,10 @@ class CrmLead
     course || CrmLead.raise_error("Course not found in Epicenter")
   end
 
+  def work_eligible?
+    lead.try('dig', 'custom').try('dig', 'Demographics - Work Eligibility') == 'Yes'
+  end
+
   def update_internship_class(course)
     if course && course.description == "Internship Exempt"
       description = "Internship Exempt"

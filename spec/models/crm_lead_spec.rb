@@ -76,6 +76,16 @@ describe CrmLead, :dont_stub_crm, :vcr do
     end
   end
 
+  describe '#work_eligible?' do
+    it 'returns true if student is work eligible' do
+      expect(CrmLead.new('example@example.com').work_eligible?).to eq true
+    end
+
+    it 'returns false if student is work eligible' do
+      expect(CrmLead.new('example-international@example.com').work_eligible?).to eq false
+    end
+  end
+
   describe '#update_internship_class' do
     let!(:student) { FactoryBot.create(:student, email: "example@example.com", courses: []) }
 

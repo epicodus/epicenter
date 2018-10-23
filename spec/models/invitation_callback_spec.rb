@@ -17,6 +17,20 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
     expect { InvitationCallback.new(email: 'example-invalid-cohort@example.com') }.to raise_error(CrmError, "Cohort not found in Epicenter")
   end
 
+  it 'creates Epicenter account for part-time student if email found in CRM' do
+    part_time_cohort = FactoryBot.create(:part_time_cohort, start_date: Date.parse('2000-01-03'))
+    InvitationCallback.new(email: 'example-part-time@example.com')
+    student = Student.find_by(email: 'example-part-time@example.com')
+    expect(student.cohort).to eq nil
+    expect(student.starting_cohort).to eq nil
+    expect(student.parttime_cohort).to eq part_time_cohort
+    expect(student.ending_cohort).to eq part_time_cohort
+    expect(student.courses.count).to eq 1
+    expect(student.course).to eq part_time_cohort.courses.first
+    expect(student.office).to eq part_time_cohort.courses.first.office
+    expect(student.name).to eq 'THIS LEAD IS USED FOR TESTING PURPOSES. PLEASE DO NOT DELETE.'
+  end
+
   it 'creates Epicenter account for full-time student if email found in CRM' do
     cohort = FactoryBot.create(:full_cohort, start_date: Date.parse('2000-01-03'))
     InvitationCallback.new(email: 'example@example.com')
@@ -31,18 +45,11 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
     expect(student.name).to eq 'THIS LEAD IS USED FOR TESTING PURPOSES. PLEASE DO NOT DELETE.'
   end
 
-  it 'creates Epicenter account for part-time student if email found in CRM' do
-    part_time_cohort = FactoryBot.create(:part_time_cohort, start_date: Date.parse('2000-01-03'))
-    InvitationCallback.new(email: 'example-part-time@example.com')
-    student = Student.find_by(email: 'example-part-time@example.com')
-    expect(student.cohort).to eq nil
-    expect(student.starting_cohort).to eq nil
-    expect(student.parttime_cohort).to eq part_time_cohort
-    expect(student.ending_cohort).to eq part_time_cohort
-    expect(student.courses.count).to eq 1
-    expect(student.course).to eq part_time_cohort.courses.first
-    expect(student.office).to eq part_time_cohort.courses.first.office
-    expect(student.name).to eq 'THIS LEAD IS USED FOR TESTING PURPOSES. PLEASE DO NOT DELETE.'
+  it 'does not enroll international students in internship course' do
+    cohort = FactoryBot.create(:full_cohort, start_date: Date.parse('2000-01-03'))
+    InvitationCallback.new(email: 'example-international@example.com')
+    student = Student.find_by(email: 'example-international@example.com')
+    expect(student.courses.count).to eq 4
   end
 
   it 'updates CRM status after creating student account' do
