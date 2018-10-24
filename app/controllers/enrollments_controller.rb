@@ -33,7 +33,7 @@ class EnrollmentsController < ApplicationController
         redirect_to student_courses_path(student), notice: "#{course.description} has been removed"
       else
         student.destroy
-        redirect_to root_path, notice: "#{course.description} has been removed. #{student.name} has been archived!"
+        redirect_to root_path, notice: "#{course.description} has been removed. #{student.name} has been #{User.exists?(student.id)? 'archived' : 'expunged'}!"
       end
     end
   end

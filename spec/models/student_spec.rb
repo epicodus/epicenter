@@ -1118,15 +1118,16 @@ describe Student do
   end
 
   describe 'paranoia' do
+    let(:student) { FactoryBot.create(:student) }
+    let!(:ar) { FactoryBot.create(:attendance_record, student: student) }
+
     it 'archives destroyed user' do
-      student = FactoryBot.create(:student)
       student.destroy
       expect(Student.count).to eq 0
       expect(Student.with_deleted.count).to eq 1
     end
 
     it 'restores archived user' do
-      student = FactoryBot.create(:student)
       student.destroy
       student.restore
       expect(Student.count).to eq 1
@@ -1137,6 +1138,7 @@ describe Student do
     let(:student) { FactoryBot.create(:student) }
 
     it 'reports status when student is archived' do
+      FactoryBot.create(:attendance_record, student: student)
       student.destroy
       expect(Student.with_deleted.find(student.id).get_status).to eq 'Archived'
     end
