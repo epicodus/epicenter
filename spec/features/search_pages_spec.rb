@@ -23,7 +23,7 @@ feature 'searching for a student' do
 
     scenario 'when a query is made for an archived student' do
       archived_student = FactoryBot.create(:student)
-      Enrollment.find_by(student: archived_student).destroy
+      FactoryBot.create(:attendance_record, student: archived_student)
       archived_student.destroy
       visit root_path
       within '#navbar-search' do

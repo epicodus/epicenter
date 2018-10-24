@@ -58,34 +58,49 @@ end
 feature 'deleting a student' do
   let(:course1) { FactoryBot.create(:course) }
   let(:course2) { FactoryBot.create(:internship_course) }
-  let(:student) { FactoryBot.create(:student, courses: [course1, course2]) }
   let(:admin) { FactoryBot.create(:admin) }
 
   before { login_as(admin, scope: :admin) }
 
-  scenario 'as an admin deleting a student with enrollments' do
+  scenario 'as an admin deleting a student with payments and no attendance records' do
+    student = FactoryBot.create(:user_with_upfront_payment)
     visit student_courses_path(student)
     click_on 'Drop All'
     expect(page).to have_content "#{student.name} has been archived!"
   end
 
-  scenario 'as an admin deleting a student without enrollments' do
-    student.courses = []
+  scenario 'as an admin deleting a student with attendance records and no payments' do
+    student = FactoryBot.create(:user_with_upfront_payment)
+    FactoryBot.create(:attendance_record, student: student)
+    visit student_courses_path(student)
+    click_on 'Drop All'
+    expect(page).to have_content "#{student.name} has been archived!"
+  end
+
+  scenario 'as an admin deleting a student with enrollments but no payments and no attendance records' do
+    student = FactoryBot.create(:student)
+    visit student_courses_path(student)
+    click_on 'Drop All'
+    expect(page).to have_content "#{student.name} has been expunged!"
+  end
+
+  scenario 'as an admin deleting a student without enrollments, payments or attendance records' do
+    student = FactoryBot.create(:student, courses: [])
     visit student_courses_path(student)
     click_on 'Archive student'
-    expect(page).to have_content "#{student.name} has been archived!"
+    expect(page).to have_content "#{student.name} has been expunged!"
   end
 end
 
 feature 'deleting a course for a student' do
   let(:course1) { FactoryBot.create(:course) }
   let(:course2) { FactoryBot.create(:midway_internship_course) }
-  let(:student) { FactoryBot.create(:student, courses: [course1, course2]) }
   let(:admin) { FactoryBot.create(:admin) }
 
   before { login_as(admin, scope: :admin) }
 
   scenario 'as an admin deleting a course that is not the last course for that student' do
+    student = FactoryBot.create(:student, courses: [course1, course2])
     visit student_courses_path(student)
     within "#student-course-#{course2.id}" do
       click_on 'Withdraw'
@@ -94,11 +109,28 @@ feature 'deleting a course for a student' do
     expect(page).to have_content "#{course1.description}"
   end
 
-  scenario 'as an admin deleting the last course for that student' do
+  scenario 'as an admin deleting the last course for student without payments or attendance records' do
+    student = FactoryBot.create(:student, courses: [course1])
     visit student_courses_path(student)
-    within "#student-course-#{course2.id}" do
+    within "#student-course-#{course1.id}" do
       click_on 'Withdraw'
     end
+    expect(page).to have_content "#{course1.description} has been removed. #{student.name} has been expunged!"
+  end
+
+  scenario 'as an admin deleting the last course for student with payments' do
+    student = FactoryBot.create(:user_with_upfront_payment, courses: [course1])
+    visit student_courses_path(student)
+    within "#student-course-#{course1.id}" do
+      click_on 'Withdraw'
+    end
+    expect(page).to have_content "#{course1.description} has been removed. #{student.name} has been archived!"
+  end
+
+  scenario 'as an admin deleting the last course for student with attendance records' do
+    student = FactoryBot.create(:student, courses: [course1])
+    FactoryBot.create(:attendance_record, student: student)
+    visit student_courses_path(student)
     within "#student-course-#{course1.id}" do
       click_on 'Withdraw'
     end
@@ -106,6 +138,7 @@ feature 'deleting a course for a student' do
   end
 
   scenario 'as an admin permanently deleting a course from the withdrawn courses list' do
+    student = FactoryBot.create(:student, courses: [course1, course2])
     student.enrollments.find_by(course: course2).destroy
     visit student_courses_path(student)
     click_on 'destroy'

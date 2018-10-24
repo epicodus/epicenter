@@ -34,9 +34,9 @@ class StudentsController < ApplicationController
   end
 
   def destroy
-    @student = Student.find(params[:id])
-    @student.destroy
-    redirect_to root_path, notice: "#{@student.name} has been archived!"
+    student = Student.find(params[:id])
+    student.destroy
+    redirect_to root_path, notice: "#{student.name} has been #{User.exists?(student.id)? 'archived' : 'expunged'}!"
   end
 
 private
