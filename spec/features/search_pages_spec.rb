@@ -131,5 +131,15 @@ feature 'searching for a student' do
       expect(page).to have_content student.name
       expect(page).to have_content 'Part-time'
     end
+
+    scenario 'when a query is made for a student id' do
+      student = FactoryBot.create(:student)
+      visit root_path
+      within '#navbar-search' do
+        fill_in 'search', with: student.id
+        click_on 'student-search'
+      end
+      expect(page).to have_content student.name
+    end
   end
 end

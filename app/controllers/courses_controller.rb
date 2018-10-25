@@ -3,10 +3,14 @@ class CoursesController < ApplicationController
 
   def index
     if params[:student_id]
-      @student = Student.find(params[:student_id])
-      @courses = @student.courses
-      @enrollment = Enrollment.new
-      authorize! :manage, @student
+      @student = Student.find_by_id(params[:student_id])
+      if @student
+        @courses = @student.courses
+        @enrollment = Enrollment.new
+        authorize! :manage, @student
+      else
+        redirect_to students_path(search: params[:student_id])
+      end
     else
       office = Office.find_by(short_name: params[:office])
       @courses = Course.all.includes(:admin).includes(:office)

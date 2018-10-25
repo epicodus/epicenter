@@ -4,7 +4,11 @@ class StudentsController < ApplicationController
   def index
     authorize! :manage, Course
     if params[:search]
-      @query = params[:search]
+      if params[:search].match?(/^[0-9]*$/)
+        @query = Student.with_deleted.find_by_id(params[:search]).try(:email)
+      else
+        @query = params[:search]
+      end
       @results = Student.with_deleted.includes(:courses).search(@query).order(:name)
       render 'search_results'
     else
