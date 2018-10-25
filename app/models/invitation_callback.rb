@@ -33,7 +33,7 @@ class InvitationCallback
       end
     end
     student.update(office: student.course.office)
-    crm_lead.update({ 'custom.Epicenter - Raw Invitation Token': student.raw_invitation_token })
+    crm_lead.update({ 'custom.Epicenter - Raw Invitation Token': student.raw_invitation_token, 'custom.Epicenter - ID': student.id })
     Rails.logger.info "Invitation callback: completing invitation"
   end
 end

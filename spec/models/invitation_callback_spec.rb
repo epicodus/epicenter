@@ -61,10 +61,10 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
     expect(student.courses.last).to eq internship_exempt_course
   end
 
-  it 'updates CRM status after creating student account' do
+  it 'updates CRM status with invitation token and student id after creating student account' do
     part_time_cohort = FactoryBot.create(:part_time_cohort, start_date: Date.parse('2000-01-03'))
     allow_any_instance_of(Enrollment).to receive(:update_cohort).and_return({})
-    expect_any_instance_of(CrmLead).to receive(:update).with(hash_including(:"custom.Epicenter - Raw Invitation Token"))
+    expect_any_instance_of(CrmLead).to receive(:update).with(hash_including(:"custom.Epicenter - Raw Invitation Token", :"custom.Epicenter - ID"))
     InvitationCallback.new(email: 'example-part-time@example.com')
   end
 end
