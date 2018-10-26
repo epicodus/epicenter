@@ -1132,6 +1132,14 @@ describe Student do
       student.restore
       expect(Student.count).to eq 1
     end
+
+    it 'clears CRM student id when student expunged' do
+      student.enrollments.destroy_all
+      student.attendance_records.destroy_all
+      allow_any_instance_of(CrmLead).to receive(:update).and_return({})
+      expect_any_instance_of(CrmLead).to receive(:update).with({:"custom.Epicenter - ID" => nil })
+      student.destroy
+    end
   end
 
   describe 'get_status' do

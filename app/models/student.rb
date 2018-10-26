@@ -7,7 +7,7 @@ class Student < User
   after_create :update_plan_in_crm, if: ->(student) { student.plan.present? }
   after_update :update_plan_in_crm, if: :saved_change_to_plan_id
   before_destroy :archive_enrollments
-  before_destroy :really_destroy!, if: ->(student) { Student.with_deleted.exists?(student.id) && student.payments.empty? && student.attendance_records.empty? }
+  after_destroy :really_destroy, if: ->(student) { Student.with_deleted.exists?(student.id) && student.payments.empty? && student.attendance_records.empty? }
 
   belongs_to :plan, optional: true
   belongs_to :starting_cohort, class_name: :Cohort, optional: true
@@ -413,5 +413,10 @@ private
 
   def update_plan_in_crm
     crm_lead.update({ 'custom.Payment plan': plan.try(:close_io_description) })
+  end
+
+  def really_destroy
+    crm_lead.update({ 'custom.Epicenter - ID': nil })
+    really_destroy!
   end
 end
