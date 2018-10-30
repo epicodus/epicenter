@@ -5,7 +5,7 @@ class WebhookPayment < Webhook
     else
       @payload = PaymentSerializer.new(attributes[:payment]).as_json
     end
-    @endpoint = ENV['ZAPIER_WEBHOOK_URL']
+    @endpoint = ENV['ZAPIER_PAYMENT_WEBHOOK_URL']
     super()
   end
 end

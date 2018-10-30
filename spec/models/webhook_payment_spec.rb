@@ -4,7 +4,7 @@ describe WebhookPayment do
 
   it 'creates webhook with endpoint' do
     webhook = WebhookPayment.new({ payment: payment })
-    expect(webhook.endpoint).to eq ENV['ZAPIER_WEBHOOK_URL']
+    expect(webhook.endpoint).to eq ENV['ZAPIER_PAYMENT_WEBHOOK_URL']
   end
 
   it 'creates webhook with payload' do

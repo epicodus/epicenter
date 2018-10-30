@@ -491,26 +491,26 @@ describe Payment do
     it 'posts webhook for a successful stripe payment', :stripe_mock, :stub_mailgun do
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
-      expect(WebhookJob).to have_received(:perform_later).with(ENV['ZAPIER_WEBHOOK_URL'], PaymentSerializer.new(payment).as_json.merge({ event_name: 'payment' }))
+      expect(WebhookJob).to have_received(:perform_later).with(ENV['ZAPIER_PAYMENT_WEBHOOK_URL'], PaymentSerializer.new(payment).as_json.merge({ event_name: 'payment' }))
     end
 
     it 'posts webhook after refund issued', :vcr, :stub_mailgun do
       student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
-      expect(WebhookJob).to receive(:perform_later).with(ENV['ZAPIER_WEBHOOK_URL'], PaymentSerializer.new(payment).as_json.merge({ event_name: 'refund', refund_amount: 500, refund_date: Date.today.to_s }))
+      expect(WebhookJob).to receive(:perform_later).with(ENV['ZAPIER_PAYMENT_WEBHOOK_URL'], PaymentSerializer.new(payment).as_json.merge({ event_name: 'refund', refund_amount: 500, refund_date: Date.today.to_s }))
       payment.update(refund_amount: 500, refund_date: Date.today)
     end
 
     it 'posts webhook for an offline payment', :vcr do
       student = FactoryBot.create(:student, email: 'example@example.com')
       payment = FactoryBot.create(:payment, student: student, amount: 600_00, offline: true)
-      expect(WebhookJob).to have_received(:perform_later).with(ENV['ZAPIER_WEBHOOK_URL'], PaymentSerializer.new(payment).as_json.merge({ event_name: 'payment_offline' }))
+      expect(WebhookJob).to have_received(:perform_later).with(ENV['ZAPIER_PAYMENT_WEBHOOK_URL'], PaymentSerializer.new(payment).as_json.merge({ event_name: 'payment_offline' }))
     end
 
     it 'posts webhook for an offline refund', :vcr do
       student = FactoryBot.create(:student, email: 'example@example.com')
       payment = FactoryBot.create(:payment, student: student, amount: 0, refund_amount: 600_00, offline: true)
-      expect(WebhookJob).to have_received(:perform_later).with(ENV['ZAPIER_WEBHOOK_URL'], PaymentSerializer.new(payment).as_json.merge({ event_name: 'refund_offline' }))
+      expect(WebhookJob).to have_received(:perform_later).with(ENV['ZAPIER_PAYMENT_WEBHOOK_URL'], PaymentSerializer.new(payment).as_json.merge({ event_name: 'refund_offline' }))
     end
   end
 end
