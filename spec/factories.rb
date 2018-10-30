@@ -198,6 +198,13 @@ FactoryBot.define do
       end
     end
 
+    factory :fidgetech_cohort do
+      description { 'Fidgetech' }
+      before(:create) do |cohort|
+        cohort.courses << build(:level0_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days], description: 'Fidgetech')
+      end
+    end
+
     factory :part_time_cohort do
       description { 'PT: Evening cohort' }
       association :track, factory: :part_time_track

@@ -75,7 +75,8 @@ VCR.configure do |config|
   config.filter_sensitive_data('<COMPLAINT_DISCLOSURE_WA_TEMPLATE_ID>') { ENV['COMPLAINT_DISCLOSURE_WA_TEMPLATE_ID'] }
   config.filter_sensitive_data('<ENROLLMENT_AGREEMENT_TEMPLATE_ID>') { ENV['ENROLLMENT_AGREEMENT_TEMPLATE_ID'] }
   config.filter_sensitive_data('<CLOSE_IO_API_KEY>') { ENV['CLOSE_IO_API_KEY'] }
-  config.filter_sensitive_data('<ZAPIER_WEBHOOK_URL>') { ENV['ZAPIER_WEBHOOK_URL'] }
+  config.filter_sensitive_data('<ZAPIER_PAYMENT_WEBHOOK_URL>') { ENV['ZAPIER_PAYMENT_WEBHOOK_URL'] }
+  config.filter_sensitive_data('<ZAPIER_INVITE_WEBHOOK_URL>') { ENV['ZAPIER_INVITE_WEBHOOK_URL'] }
   config.filter_sensitive_data('<PLAID_PUBLIC_KEY>') { ENV['PLAID_PUBLIC_KEY'] }
   config.filter_sensitive_data('<PLAID_SECRET_KEY>') { ENV['PLAID_SECRET_KEY'] }
   config.filter_sensitive_data('<PLAID_CLIENT_ID>') { ENV['PLAID_CLIENT_ID'] }
