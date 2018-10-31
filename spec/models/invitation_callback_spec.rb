@@ -9,8 +9,9 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
     end
 
     it 'expunges existing user if no payments or attendance records' do
+      FactoryBot.create(:intro_only_cohort, start_date: Date.parse('2000-01-03'))
       student = FactoryBot.create(:student, email: 'example@example.com')
-      expect { InvitationCallback.new(email: 'example@example.com') }.to_not raise_error(CrmError, "Invitation callback: example@example.com already exists in Epicenter")
+      expect { InvitationCallback.new(email: 'example@example.com') }.to_not raise_error
       expect(User.exists?(student.id)).to eq false
     end
 
