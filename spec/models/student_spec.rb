@@ -5,10 +5,10 @@ describe Student do
   it { should have_many :payments }
   it { should have_many :ratings }
   it { should have_many(:internships).through(:ratings) }
-  it { should belong_to :plan }
+  it { should belong_to(:plan).optional }
   it { should have_many :attendance_records }
   it { should have_many(:courses).through(:enrollments) }
-  it { should belong_to(:primary_payment_method).class_name('PaymentMethod') }
+  it { should belong_to(:primary_payment_method).class_name('PaymentMethod').optional }
   it { should have_many :signatures }
   it { should have_many :interview_assignments }
   it { should have_one :internship_assignment }

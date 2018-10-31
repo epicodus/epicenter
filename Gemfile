@@ -59,7 +59,7 @@ group :test do
   gem 'capybara'
   gem 'capybara-selenium'
   gem 'selenium-webdriver', '~> 3.12.0'
-  gem 'shoulda-matchers'
+  gem 'shoulda-matchers', '4.0.0.rc1'
   gem 'launchy'
   gem 'poltergeist'
   gem 'database_cleaner'

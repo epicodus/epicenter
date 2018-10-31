@@ -1,6 +1,6 @@
 describe Objective do
   it { should validate_presence_of :content }
-  it { should belong_to :code_review }
+  it { should belong_to(:code_review).optional }
   it { should have_many :grades }
 
   describe '.default_scope' do

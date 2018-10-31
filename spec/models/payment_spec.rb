@@ -2,7 +2,6 @@ describe Payment do
   include ActionView::Helpers::NumberHelper  #for number_to_currency
 
   it { should belong_to :student }
-  it { should belong_to :payment_method }
   it { should validate_presence_of :amount }
   it { should validate_presence_of :category }
 

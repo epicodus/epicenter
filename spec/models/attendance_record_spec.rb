@@ -1,6 +1,11 @@
 describe AttendanceRecord do
-  it { should belong_to :student }
-  # it { should validate_presence_of :student_id } # exception is raised before reaching validation of student_id
+  describe 'validates uniqueness of student_id per day' do
+    it do
+      FactoryBot.create(:attendance_record)
+      FactoryBot.create(:student)
+      should validate_uniqueness_of(:student_id).scoped_to(:date)
+    end
+  end
 
   describe "validates uniqueness of pair_id to student_id and day" do
     it do
