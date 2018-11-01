@@ -327,21 +327,6 @@ class Student < User
     courses_with_withdrawn.parttime_courses.last.try(:cohorts).try(:first)
   end
 
-  def attendance_status
-    if courses.any?
-      first_course = courses.reorder(:start_date).first
-      if first_course.parttime? && courses.fulltime_courses.empty?
-        'Part-time'
-      elsif first_course.parttime? && courses.fulltime_courses.any?
-        'Full-time conversion'
-      else
-        'Full-time'
-      end
-    else
-      'no enrollments'
-    end
-  end
-
 private
 
   def total_number_of_course_days(start_course=nil, end_course=nil)

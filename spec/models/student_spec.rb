@@ -471,20 +471,20 @@ describe Student do
   describe "#upfront_amount_with_fees", :stripe_mock do
     it "calculates the total upfront amount including fees" do
       plan = FactoryBot.create(:upfront_plan, upfront_amount: 200_00, student_portion: 200_00)
-      student = FactoryBot.create(:user_with_credit_card, plan: plan)
+      student = FactoryBot.create(:student_with_credit_card, plan: plan)
       expect(student.upfront_amount_with_fees).to eq 206_00
     end
 
     it "calculates the total upfront amount on second payment including fees" do
       plan = FactoryBot.create(:upfront_plan, upfront_amount: 200_00, student_portion: 200_00)
-      student = FactoryBot.create(:user_with_credit_card, plan: plan)
+      student = FactoryBot.create(:student_with_credit_card, plan: plan)
       FactoryBot.create(:payment_with_credit_card, student: student, amount: student.plan.upfront_amount - 100_00)
       expect(student.upfront_amount_with_fees).to eq 103_00
     end
   end
 
   describe "#upfront_payment_due?", :stripe_mock do
-    let(:student) { FactoryBot.create :user_with_credit_card }
+    let(:student) { FactoryBot.create :student_with_credit_card }
 
     it "is true if upfront_amount_owed is greater than 0" do
       expect(student.upfront_payment_due?).to eq true
@@ -512,7 +512,7 @@ describe Student do
   end
 
   describe "#make_upfront_payment", :vcr, :stripe_mock, :stub_mailgun do
-    let(:student) { FactoryBot.create :user_with_credit_card }
+    let(:student) { FactoryBot.create :student_with_credit_card }
 
     it "makes a payment for the upfront amount of the student's plan if first payment" do
       student.make_upfront_payment
@@ -964,14 +964,14 @@ describe Student do
 
   describe '#total_paid', :vcr, :stripe_mock, :stub_mailgun do
     it 'sums all of the students payments' do
-      student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
+      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
       FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00)
       FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00)
       expect(student.total_paid).to eq 400_00
     end
 
     it 'does not include failed payments' do
-      student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
+      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
       FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00)
       failed_payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00)
       failed_payment.update(status: 'failed')
@@ -979,21 +979,21 @@ describe Student do
     end
 
     it 'subtracts refunds' do
-      student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
+      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00, offline: true)
       payment.update(refund_amount: 5000)
       expect(student.total_paid).to eq 150_00
     end
 
     it 'includes negative offline transactions' do
-      student = FactoryBot.create(:user_with_credit_card, email: 'example@example.com')
+      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 0, refund_amount: 200_00, offline: true)
       expect(student.total_paid).to eq -200_00
     end
   end
 
   describe '#total_paid_online', :vcr, :stripe_mock, :stub_mailgun do
-    let(:student) { FactoryBot.create(:user_with_credit_card, email: 'example@example.com') }
+    let(:student) { FactoryBot.create(:student_with_credit_card, email: 'example@example.com') }
 
     it 'sums all of the stripe payments only' do
       FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00)
@@ -1009,7 +1009,7 @@ describe Student do
   end
 
   describe '#total_paid_offline', :vcr, :stripe_mock, :stub_mailgun do
-    let(:student) { FactoryBot.create(:user_with_credit_card, email: 'example@example.com') }
+    let(:student) { FactoryBot.create(:student_with_credit_card, email: 'example@example.com') }
 
     it 'sums all of the offline payments only' do
       FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00)
@@ -1273,29 +1273,6 @@ describe Student do
         student = FactoryBot.create(:student, courses: [current_cohort.courses.first])
         expect(student.calculate_parttime_cohort).to eq nil
       end
-    end
-  end
-
-  describe '#attendance_status' do
-    it 'calculates attendance status for student with only full-time courses' do
-      student = FactoryBot.create(:student)
-      expect(student.attendance_status).to eq 'Full-time'
-    end
-
-    it 'calculates attendance status for student with only part-time courses' do
-      student = FactoryBot.create(:part_time_student)
-      expect(student.attendance_status).to eq 'Part-time'
-    end
-
-    it 'calculates attendance status for student with part-time course followed by full-time course' do
-      student = FactoryBot.create(:part_time_student)
-      student.courses << FactoryBot.create(:course)
-      expect(student.attendance_status).to eq 'Full-time conversion'
-    end
-
-    it 'reports no enrollment if no courses' do
-      student = FactoryBot.create(:student, courses: [])
-      expect(student.attendance_status).to eq 'no enrollments'
     end
   end
 end

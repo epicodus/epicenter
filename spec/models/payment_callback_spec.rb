@@ -1,5 +1,6 @@
 describe PaymentCallback do
-  let(:payment) { FactoryBot.create(:payment_with_credit_card) }
+  let(:student) { FactoryBot.create(:student_with_credit_card) }
+  let(:payment) { FactoryBot.create(:payment_with_credit_card, student: student) }
 
   it 'adds doc_number to payment', :stripe_mock do
     payment_callback = PaymentCallback.new({ 'paymentId' => payment.id.to_s, 'docNumber' => '1A' })
