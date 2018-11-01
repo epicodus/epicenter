@@ -182,7 +182,7 @@ FactoryBot.define do
 
   factory :cohort do
     description { '2000-01 PDX Ruby/Rails (Jan 3 - Jul 7)' }
-    start_date { Time.new(2016, 1, 4).to_date }
+    start_date { Date.today.beginning_of_week }
     association :office, factory: :portland_office
     association :track, factory: :track
     association :admin, factory: :admin_without_course
@@ -195,6 +195,12 @@ FactoryBot.define do
     factory :intro_only_cohort do
       before(:create) do |cohort|
         cohort.courses << build(:level0_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days])
+      end
+    end
+
+    factory :internship_only_cohort do
+      before(:create) do |cohort|
+        cohort.courses << build(:level4_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days])
       end
     end
 
@@ -490,19 +496,125 @@ FactoryBot.define do
     end
   end
 
-  factory :student do
-    course
-    association :plan, factory: :upfront_plan
-    association :office, factory: :philadelphia_office
+  factory :student_without_courses, class: Student do
     sequence(:name) { |n| "Example Brown #{n}" }
     sequence(:email) { |n| "student#{n}@example.com" }
     password { "password" }
     password_confirmation { "password" }
 
-    factory :student_without_courses do
-      courses { [] }
-      course { nil }
+    factory :student_with_cohort do
+      association :plan, factory: :upfront_plan
+      before(:create) do |student|
+        create(:internship_only_cohort, students: [student])
+        student.starting_cohort = student.cohort
+        student.ending_cohort = student.cohort
+        student.office = student.cohort.office
+        student.course = student.cohort.courses.first
+      end
+
+      factory :student_with_credit_card do
+        after(:create) do |student|
+          create(:credit_card, student: student)
+        end
+      end
+
+      factory :student_with_invalid_credit_card do
+        after(:create) do |student|
+          create(:invalid_credit_card, student: student)
+        end
+      end
+
+      factory :student_with_unverified_bank_account do
+        after(:create) do |student|
+          create(:bank_account, student: student)
+        end
+      end
+
+      factory :student_with_verified_bank_account do
+        after(:create) do |student|
+          create(:verified_bank_account, student: student)
+        end
+
+        factory :student_with_upfront_payment do
+          after(:create) do |student|
+            student.make_upfront_payment
+          end
+        end
+      end
+
+      factory :student_waiting_on_demographics do
+        after(:create) do |student|
+          create(:completed_code_of_conduct, student: student)
+          create(:completed_refund_policy, student: student)
+          create(:completed_enrollment_agreement, student: student)
+        end
+      end
+
+      factory :student_with_all_documents_signed do
+        demographics { true }
+        after(:create) do |student|
+          create(:completed_code_of_conduct, student: student)
+          create(:completed_refund_policy, student: student)
+          create(:completed_enrollment_agreement, student: student)
+        end
+      end
+
+      factory :student_with_all_documents_signed_and_verified_bank_account do
+        demographics { true }
+        after(:create) do |student|
+          create(:completed_code_of_conduct, student: student)
+          create(:completed_refund_policy, student: student)
+          create(:completed_enrollment_agreement, student: student)
+          create(:verified_bank_account, student: student)
+        end
+      end
+
+      factory :student_with_all_documents_signed_and_unverified_bank_account do
+        demographics { true }
+        after(:create) do |student|
+          create(:completed_code_of_conduct, student: student)
+          create(:completed_refund_policy, student: student)
+          create(:completed_enrollment_agreement, student: student)
+          create(:bank_account, student: student)
+        end
+      end
+
+      factory :student_with_all_documents_signed_and_credit_card do
+        demographics { true }
+        after(:create) do |student|
+          create(:completed_code_of_conduct, student: student)
+          create(:completed_refund_policy, student: student)
+          create(:completed_enrollment_agreement, student: student)
+          create(:credit_card, student: student)
+        end
+      end
     end
+
+    factory :part_time_student_with_cohort do
+      association :plan, factory: :parttime_plan
+      before(:create) do |student|
+        cohort = create(:part_time_cohort)
+        student.parttime_cohort = cohort
+        student.ending_cohort = cohort
+        student.office = cohort.office
+        student.course = cohort.courses.first
+      end
+
+      factory :part_time_student_with_credit_card do
+        after(:create) do |student|
+          create(:credit_card, student: student)
+        end
+      end
+    end
+  end
+
+  factory :student do
+    course
+    association :plan, factory: :upfront_plan
+    sequence(:name) { |n| "Example Brown #{n}" }
+    sequence(:email) { |n| "student#{n}@example.com" }
+    password { "password" }
+    password_confirmation { "password" }
 
     factory :seattle_student do
       association :course, factory: :seattle_course

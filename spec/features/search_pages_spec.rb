@@ -84,7 +84,7 @@ feature 'searching for a student' do
     end
 
     scenario 'when a query is made for an existing student with a payment made', :vcr, :stripe_mock, :stub_mailgun do
-      in_class_student = FactoryBot.create(:user_with_all_documents_signed_and_credit_card, email: 'example@example.com')
+      in_class_student = FactoryBot.create(:student_with_all_documents_signed_and_credit_card, email: 'example@example.com')
       FactoryBot.create(:payment_with_credit_card, student: in_class_student)
       visit root_path
       within '#navbar-search' do

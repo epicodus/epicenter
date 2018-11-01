@@ -63,14 +63,14 @@ feature 'deleting a student' do
   before { login_as(admin, scope: :admin) }
 
   scenario 'as an admin deleting a student with payments and no attendance records' do
-    student = FactoryBot.create(:user_with_upfront_payment)
+    student = FactoryBot.create(:student_with_upfront_payment)
     visit student_courses_path(student)
     click_on 'Drop All'
     expect(page).to have_content "#{student.name} has been archived!"
   end
 
   scenario 'as an admin deleting a student with attendance records and no payments' do
-    student = FactoryBot.create(:user_with_upfront_payment)
+    student = FactoryBot.create(:student_with_upfront_payment)
     FactoryBot.create(:attendance_record, student: student)
     visit student_courses_path(student)
     click_on 'Drop All'
@@ -119,12 +119,13 @@ feature 'deleting a course for a student' do
   end
 
   scenario 'as an admin deleting the last course for student with payments' do
-    student = FactoryBot.create(:user_with_upfront_payment, courses: [course1])
+    student = FactoryBot.create(:student_with_upfront_payment)
+    course = student.course
     visit student_courses_path(student)
-    within "#student-course-#{course1.id}" do
+    within "#student-course-#{course.id}" do
       click_on 'Withdraw'
     end
-    expect(page).to have_content "#{course1.description} has been removed. #{student.name} has been archived!"
+    expect(page).to have_content "#{course.description} has been removed. #{student.name} has been archived!"
   end
 
   scenario 'as an admin deleting the last course for student with attendance records' do

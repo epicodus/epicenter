@@ -116,10 +116,10 @@ private
     if category == 'keycard'
       self.description = 'keycard'
     else
-      enrolled_courses_in_cohort = student.courses & student.cohort.courses
+      enrolled_courses_in_cohort = student.courses & student.ending_cohort.courses
       start_date = enrolled_courses_in_cohort.first.try(:start_date)
-      end_date = student.cohort.try(:end_date)
-      self.description = "#{start_date.to_s}-#{end_date.to_s} | #{student.cohort.try(:description)}"
+      end_date = student.ending_cohort.try(:end_date)
+      self.description = "#{start_date.to_s}-#{end_date.to_s} | #{student.ending_cohort.try(:description)}"
     end
   end
 
