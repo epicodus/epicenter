@@ -205,6 +205,19 @@ describe Payment do
       FactoryBot.create(:payment_with_credit_card, student: student, amount: 25_00, category: 'keycard')
       expect(student.payments.first.description).to eq "keycard"
     end
+
+    it 'sets payment description for offline refund' do
+      student = FactoryBot.create(:student_with_cohort)
+      payment = FactoryBot.create(:payment, student: student, amount: 0, refund_amount: 100_00, offline: true)
+      expect(payment.description).to eq "#{student.courses.first.start_date.to_s}-#{student.courses.last.end_date.to_s} | #{student.ending_cohort.description}"
+    end
+
+    it 'sets payment description for offline refund when no courses' do
+      student = FactoryBot.create(:student_with_cohort)
+      student.courses = []
+      payment = FactoryBot.create(:payment, student: student, amount: 0, refund_amount: 100_00, offline: true)
+      expect(student.payments.first.description).to eq "-#{student.ending_cohort.end_date.to_s} | #{student.ending_cohort.description}"
+    end
   end
 
   describe "#send_payment_receipt" do
