@@ -34,6 +34,9 @@ protected
       company_path(user)
     elsif user.is_a? Student
       if user.signed_main_documents? && user.upfront_payment_due?
+        if user.course && user.course.language.name == 'Intro' && Date.today >= user.course.end_date.beginning_of_week
+          flash[:alert] = '<strong>You have not yet completed your enrollment.</strong><br> Please make your remaining tuition payment as soon as possible.'
+        end
         proper_payments_path(user)
       elsif user.signed_main_documents?
         student_courses_path(user)

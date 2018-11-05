@@ -29,7 +29,7 @@ feature 'Visiting students index page' do
 end
 
 feature 'Student signs up via invitation', :vcr do
-  let(:course) { FactoryBot.create(:course, class_days: [Time.new(2018, 1, 1).to_date]) }
+  let(:course) { FactoryBot.create(:course, class_days: [Date.today.beginning_of_week + 5.weeks]) }
   let(:plan) { FactoryBot.create(:upfront_plan) }
   let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com', courses: [course], plan: plan) }
 
@@ -151,6 +151,25 @@ feature "Student visits homepage after logged in" do
     visit root_path
     expect(current_path).to eq new_payment_method_path
     expect(page).to have_content "How would you like to make payments for the class?"
+    expect(page).to_not have_content "Please make your remaining tuition payment as soon as possible."
+  end
+
+  it "shows alert if payment due and last week of intro" do
+    student = FactoryBot.create(:user_with_all_documents_signed, plan: FactoryBot.create(:upfront_plan))
+    sign_in_as(student)
+    travel_to student.course.end_date.beginning_of_week do
+      visit root_path
+      expect(page).to have_content "Please make your remaining tuition payment as soon as possible."
+    end
+  end
+
+  it "does not show alert if not intro course" do
+    student = FactoryBot.create(:student_with_cohort, plan: FactoryBot.create(:upfront_plan))
+    sign_in_as(student)
+    travel_to student.course.end_date.beginning_of_week do
+      visit root_path
+      expect(page).to_not have_content "Please make your remaining tuition payment as soon as possible."
+    end
   end
 
   it "takes student with no payment due to the correct path" do
