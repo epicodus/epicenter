@@ -62,6 +62,12 @@ describe Payment do
       payment.update(refund_amount: 50, refund_date: student.course.start_date + 1.day)
       expect(payment.refund_date).to_not eq student.course.start_date
     end
+
+    it 'should throw error if refund date after end of last course' do
+      payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first)
+      payment.update(refund_amount: 50, refund_date: student.course.end_date + 1.year)
+      expect(payment.errors.full_messages.first).to eq 'Refund date cannot be later than end date of last course.'
+    end
   end
 
   describe 'offline payment status', :vcr do
