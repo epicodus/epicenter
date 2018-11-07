@@ -38,12 +38,14 @@ feature 'restoring a student' do
       expect(page).to have_content 'restored'
     end
 
-    scenario 'you can permandently delete an archived student' do
+    scenario 'you can permanently delete an archived student' do
       visit root_path
       within '#navbar-search' do
         fill_in 'search', with: archived_student.name
         click_on 'student-search'
       end
+      allow_any_instance_of(CrmLead).to receive(:update).and_return({})
+      expect_any_instance_of(CrmLead).to receive(:update).with({:"custom.Epicenter - ID" => nil })
       click_on "student-expunge-#{archived_student.id}"
       expect(page).to have_content 'expunged'
     end

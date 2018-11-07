@@ -7,6 +7,7 @@ class StudentRestoreController < ApplicationController
       student.restore
       redirect_to student_courses_path(student), notice: "#{student.name} has been restored."
     elsif params[:expunge]
+      student.crm_lead.update({ 'custom.Epicenter - ID': nil })
       student.really_destroy!
       redirect_to root_path, alert: "#{student.name} has been expunged."
     end
