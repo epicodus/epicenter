@@ -327,6 +327,13 @@ class Student < User
     courses_with_withdrawn.parttime_courses.last.try(:cohorts).try(:first)
   end
 
+  def really_destroy
+    forum_id = crm_lead.forum_id
+    WebhookForum.new(id: forum_id) if forum_id
+    crm_lead.update({ 'custom.Epicenter - ID': nil, 'custom.Epicenter - Raw Invitation Token': nil, 'custom.Forum - ID': nil })
+    really_destroy!
+  end
+
 private
 
   def total_number_of_course_days(start_course=nil, end_course=nil)
@@ -398,10 +405,5 @@ private
 
   def update_plan_in_crm
     crm_lead.update({ 'custom.Payment plan': plan.try(:close_io_description) })
-  end
-
-  def really_destroy
-    crm_lead.update({ 'custom.Epicenter - ID': nil })
-    really_destroy!
   end
 end

@@ -86,6 +86,16 @@ describe CrmLead, :dont_stub_crm, :vcr do
     end
   end
 
+  describe '#forum_id' do
+    it 'returns forum id as integer if present in CRM' do
+      expect(CrmLead.new('example@example.com').forum_id).to eq 9999
+    end
+
+    it 'returns nil if forum id not present in CRM' do
+      expect(CrmLead.new('example-part-time@example.com').forum_id).to eq nil
+    end
+  end
+
   describe '#update_internship_class' do
     let!(:student) { FactoryBot.create(:student, email: "example@example.com", courses: []) }
 
