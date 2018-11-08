@@ -63,6 +63,10 @@ class CrmLead
     CrmLead.raise_error(errors) if errors.present?
   end
 
+  def forum_id
+    lead.try('dig', 'custom').try('dig', 'Forum - ID').try(:to_int)
+  end
+
 private
 
   def lead

@@ -4,7 +4,7 @@ describe Webhook do
 
   it 'sends webhook', :stripe_mock, :stub_mailgun, :vcr, :dont_stub_webhook do
     webhook = WebhookPayment.new({ payment: payment })
-    response = Webhook.send(webhook.endpoint, webhook.payload)
+    response = Webhook.send({ method: webhook.method, endpoint: webhook.endpoint, payload: webhook.payload })
     expect(response.code).to eq 200
   end
 end

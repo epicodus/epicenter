@@ -15,7 +15,7 @@ RSpec.describe WebhookJob, type: :job do
     payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
     webhook = WebhookPayment.new({ payment: payment })
     allow(Webhook).to receive(:send).and_return({})
-    expect(Webhook).to receive(:send).with(webhook.endpoint, webhook.payload)
-    perform_enqueued_jobs { WebhookJob.perform_later(webhook.endpoint, webhook.payload) }
+    expect(Webhook).to receive(:send).with({ endpoint: webhook.endpoint, payload: webhook.payload })
+    perform_enqueued_jobs { WebhookJob.perform_later({ endpoint: webhook.endpoint, payload: webhook.payload }) }
   end
 end

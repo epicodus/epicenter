@@ -44,8 +44,8 @@ feature 'restoring a student' do
         fill_in 'search', with: archived_student.name
         click_on 'student-search'
       end
-      allow_any_instance_of(CrmLead).to receive(:update).and_return({})
-      expect_any_instance_of(CrmLead).to receive(:update).with({:"custom.Epicenter - ID" => nil })
+      allow_any_instance_of(Student).to receive(:really_destroy).and_return({})
+      expect_any_instance_of(Student).to receive(:really_destroy)
       click_on "student-expunge-#{archived_student.id}"
       expect(page).to have_content 'expunged'
     end

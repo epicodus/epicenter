@@ -85,6 +85,7 @@ VCR.configure do |config|
   config.filter_sensitive_data('<PLAID_TEST_BANK_ACCOUNT_TOKEN>') { ENV['PLAID_TEST_BANK_ACCOUNT_TOKEN'] }
   config.filter_sensitive_data('<PLAID_TEST_ACCESS_TOKEN>') { ENV['PLAID_TEST_ACCESS_TOKEN'] }
   config.filter_sensitive_data('<EXAMPLE_CRM_LEAD_ID>') { ENV['EXAMPLE_CRM_LEAD_ID'] }
+  config.filter_sensitive_data('<FORUM_API_KEY>') { ENV['FORUM_API_KEY'] }
 end
 
 Shoulda::Matchers.configure do |config|
