@@ -38,6 +38,21 @@ class Student < User
   NUMBER_OF_RANDOM_PAIRS = 5
   TARDY_WEIGHT = 0.5
 
+  def self.manually_invite(email)
+    crm_lead = CrmLead.new(email)
+    student = Student.invite!(email: email, name: crm_lead.name, course: crm_lead.cohort.courses.first) do |u|
+      u.skip_invitation = true
+    end
+    crm_lead.cohort.courses.each do |course|
+      if course.internship_course? && !crm_lead.work_eligible?
+        student.courses << Course.find_by(description: 'Internship Exempt')
+      else
+        student.courses << course unless student.courses.include?(course)
+      end
+    end
+    student.update(office: student.course.office)
+  end
+
   def attendance_score(filtered_course)
     absences_penalty = attendance_records_for(:absent, filtered_course)
     tardies_penalty = attendance_records_for(:tardy, filtered_course) * TARDY_WEIGHT
@@ -172,7 +187,7 @@ class Student < User
   end
 
   def upfront_amount_owed
-    plan.standard? ? plan.upfront_amount - total_paid : total_owed - total_paid
+    plan.standard? ? plan.upfront_amount + cost_adjustments.sum(:amount) - total_paid : total_owed - total_paid
   end
 
   def upfront_amount_with_fees

@@ -466,6 +466,14 @@ describe Student do
       expect(student.upfront_amount_owed).to eq student.plan.upfront_amount - 50_00
       expect(student.upfront_amount_owed).to_not eq student.plan.student_portion - 50_00
     end
+
+    it "calculates the upfront amount owed with standard payment plan with cost adjustment" do
+      student = FactoryBot.create(:user_with_credit_card, plan: FactoryBot.create(:standard_plan))
+      allow(student).to receive(:total_paid).and_return(50_00)
+      student.cost_adjustments.create(amount: 25_00, reason: 'test')
+      expect(student.upfront_amount_owed).to eq student.plan.upfront_amount - 25_00
+      expect(student.upfront_amount_owed).to_not eq student.plan.student_portion - 25_00
+    end
   end
 
   describe "#upfront_amount_with_fees", :stripe_mock do
@@ -1282,6 +1290,22 @@ describe Student do
         student = FactoryBot.create(:student, courses: [current_cohort.courses.first])
         expect(student.calculate_parttime_cohort).to eq nil
       end
+    end
+  end
+
+  describe '.manually_invite', :dont_stub_crm do
+    let(:cohort) { FactoryBot.create(:full_cohort) }
+
+    before { allow_any_instance_of(CrmLead).to receive(:cohort).and_return(cohort) }
+
+    it 'manually invites student to Epicenter without sending email' do
+      Student.manually_invite('example@example.com')
+      student = Student.find_by(email: 'example@example.com')
+      expect(student.name).to eq 'THIS LEAD IS USED FOR TESTING PURPOSES. PLEASE DO NOT DELETE.'
+      expect(student.courses.count).to eq 5
+      expect(student.courses.last.description).to_not eq 'Internship Exempt'
+      expect(student.cohort.description).to eq cohort.description
+      expect(student.office).to eq cohort.office
     end
   end
 end
