@@ -319,69 +319,80 @@ describe Payment do
       allow(CrmUpdateJob).to receive(:perform_later).and_return({})
     end
 
-    it 'updates status and amount paid on the first payment' do
-      allow_any_instance_of(CrmLead).to receive(:status).and_return("Applicant - Accepted")
-      payment = Payment.new(student: student, amount: 270_00, payment_method: student.primary_payment_method, category: 'standard')
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { status: "Enrolled", 'custom.Amount paid': payment.amount / 100 })
-      payment.save
+    context 'lead status is Applicant - Accepted' do
+      before do
+        allow_any_instance_of(CrmLead).to receive(:status).and_return("Applicant - Accepted")
+      end
+
+      it 'updates status and amount paid' do
+        payment = Payment.new(student: student, amount: 270_00, payment_method: student.primary_payment_method, category: 'standard')
+        expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { status: "Enrolled", 'custom.Amount paid': payment.amount / 100 })
+        payment.save
+      end
+
+      it 'updates status for part-time students and amount paid' do
+        part_time_student = FactoryBot.create(:part_time_student_with_credit_card, email: 'example-part-time@example.com')
+        part_time_lead_id = close_io_client.list_leads('email: "' + part_time_student.email + '"')['data'].first['id']
+        allow_any_instance_of(CrmLead).to receive(:status).and_return("Applicant - Accepted")
+        payment = Payment.new(student: part_time_student, amount: 270_00, payment_method: part_time_student.primary_payment_method, category: 'upfront')
+        expect(CrmUpdateJob).to receive(:perform_later).with(part_time_lead_id, { status: "Enrolled - Part-Time", 'custom.Amount paid': payment.amount / 100 })
+        payment.save
+      end
     end
 
-    it 'updates status for part-time students and amount paid on the first payment' do
-      part_time_student = FactoryBot.create(:part_time_student_with_credit_card, email: 'example-part-time@example.com')
-      part_time_lead_id = close_io_client.list_leads('email: "' + part_time_student.email + '"')['data'].first['id']
-      allow_any_instance_of(CrmLead).to receive(:status).and_return("Applicant - Accepted")
-      payment = Payment.new(student: part_time_student, amount: 270_00, payment_method: part_time_student.primary_payment_method, category: 'upfront')
-      expect(CrmUpdateJob).to receive(:perform_later).with(part_time_lead_id, { status: "Enrolled - Part-Time", 'custom.Amount paid': payment.amount / 100 })
-      payment.save
-    end
+    context 'lead status is not Applicant - Accepted' do
+      before do
+        allow_any_instance_of(CrmLead).to receive(:status).and_return("Enrolled")
+      end
 
-    it 'only updates amount paid on payments beyond the first' do
-      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
-      payment_2 = Payment.new(student: student, amount: 50_00, payment_method: student.primary_payment_method, category: 'standard')
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
-      payment_2.save
-    end
+      it 'only updates amount paid' do
+        payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
+        payment_2 = Payment.new(student: student, amount: 50_00, payment_method: student.primary_payment_method, category: 'standard')
+        expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
+        payment_2.save
+      end
 
-    it 'updates amount paid for offline payments' do
-      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
-      payment_2 = Payment.new(student: student, amount: 50_00, category: 'standard', offline: true)
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
-      payment_2.save
-    end
+      it 'updates amount paid for offline payments' do
+        payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
+        payment_2 = Payment.new(student: student, amount: 50_00, category: 'standard', offline: true)
+        expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
+        payment_2.save
+      end
 
-    it 'updates amount paid for refunds' do
-      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
-      payment_2 = Payment.new(student: student, amount: 50_00, category: 'standard', offline: true)
-      payment_2.update(refund_amount: 5000, refund_date: Date.today)
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Amount paid': (payment.amount + payment_2.amount - payment_2.refund_amount) / 100 })
-      payment_2.save
-    end
+      it 'updates amount paid for refunds' do
+        payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
+        payment_2 = Payment.new(student: student, amount: 50_00, category: 'standard', offline: true)
+        payment_2.update(refund_amount: 5000, refund_date: Date.today)
+        expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Amount paid': (payment.amount + payment_2.amount - payment_2.refund_amount) / 100 })
+        payment_2.save
+      end
 
-    it 'adds note to CRM' do
-      payment = Payment.new(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { note: "PAYMENT #{number_to_currency(payment.amount / 100.00)}: " })
-      payment.save
-    end
+      it 'adds note to CRM' do
+        payment = Payment.new(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
+        expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { note: "PAYMENT #{number_to_currency(payment.amount / 100.00)}: " })
+        payment.save
+      end
 
-    it 'adds note to CRM including notes when present' do
-      payment = Payment.new(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard', notes: 'test payment note from api')
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { note: "PAYMENT #{number_to_currency(payment.amount / 100.00)}: #{payment.notes}" })
-      payment.save
-    end
+      it 'adds note to CRM including notes when present' do
+        payment = Payment.new(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard', notes: 'test payment note from api')
+        expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { note: "PAYMENT #{number_to_currency(payment.amount / 100.00)}: #{payment.notes}" })
+        payment.save
+      end
 
-    it 'adds note to CRM on refund including refund notes' do
-      payment = FactoryBot.create(:payment_with_bank_account, student: student)
-      payment.refund_amount = 50
-      payment.refund_notes = 'foo'
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { note: "PAYMENT REFUND #{number_to_currency(payment.refund_amount / 100.00)}: #{payment.refund_notes}" })
-      payment.save
-    end
+      it 'adds note to CRM on refund including refund notes' do
+        payment = FactoryBot.create(:payment_with_bank_account, student: student)
+        payment.refund_amount = 50
+        payment.refund_notes = 'foo'
+        expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { note: "PAYMENT REFUND #{number_to_currency(payment.refund_amount / 100.00)}: #{payment.refund_notes}" })
+        payment.save
+      end
 
-    it 'does not add note to CRM on payment update unless refund' do
-      payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
-      payment.status = "changed"
-      expect(CrmUpdateJob).to_not receive(:perform_later).with(lead_id, { note: "PAYMENT #{number_to_currency(payment.amount / 100.00)}: " })
-      payment.save
+      it 'does not add note to CRM on payment update unless refund' do
+        payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
+        payment.status = "changed"
+        expect(CrmUpdateJob).to_not receive(:perform_later).with(lead_id, { note: "PAYMENT #{number_to_currency(payment.amount / 100.00)}: " })
+        payment.save
+      end
     end
   end
 

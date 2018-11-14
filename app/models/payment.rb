@@ -33,7 +33,7 @@ private
 
   def update_crm
     amount_paid = student.total_paid / 100
-    if student.payments.count == 1 && student.crm_lead.status == "Applicant - Accepted"
+    if student.crm_lead.status == "Applicant - Accepted"
       if student.course.try(:parttime?)
         student.crm_lead.update({ status: "Enrolled - Part-Time", 'custom.Amount paid': amount_paid })
       else
