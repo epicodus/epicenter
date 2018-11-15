@@ -144,7 +144,7 @@ private
   end
 
   def check_refund_date
-    if refund_date < student.courses_with_withdrawn.first.start_date
+    if refund_date < student.courses_with_withdrawn.first.start_date + 5.weeks
       self.refund_date = student.courses_with_withdrawn.first.start_date
     elsif refund_date > student.courses_with_withdrawn.last.end_date
       errors.add(:refund_date, 'cannot be later than end date of last course.')

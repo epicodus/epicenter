@@ -57,9 +57,15 @@ describe Payment do
       expect(payment.refund_date).to eq student.course.start_date
     end
 
-    it 'should not modify refund date after course start date', :stripe_mock do
+    it 'should modify refund date if within first 5 weeks of courses' do
       payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first)
-      payment.update(refund_amount: 50, refund_date: student.course.start_date + 1.day)
+      payment.update(refund_amount: 50, refund_date: student.course.start_date + 4.weeks)
+      expect(payment.refund_date).to eq student.course.start_date
+    end
+
+    it 'should not modify refund date after first 5 weeks of courses', :stripe_mock do
+      payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first)
+      payment.update(refund_amount: 50, refund_date: student.course.start_date + 5.weeks)
       expect(payment.refund_date).to_not eq student.course.start_date
     end
 
@@ -508,8 +514,8 @@ describe Payment do
     it 'posts webhook after refund issued', :stub_mailgun do
       student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
-      expect(WebhookJob).to receive(:perform_later).with({ method: nil, endpoint: ENV['ZAPIER_PAYMENT_WEBHOOK_URL'], payload: PaymentSerializer.new(payment).as_json.merge({ event_name: 'refund', refund_amount: 500, start_date: Date.today.to_s }) })
-      payment.update(refund_amount: 500, refund_date: Date.today)
+      expect(WebhookJob).to receive(:perform_later).with({ method: nil, endpoint: ENV['ZAPIER_PAYMENT_WEBHOOK_URL'], payload: PaymentSerializer.new(payment).as_json.merge({ event_name: 'refund', refund_amount: 500, start_date: student.course.start_date.to_s }) })
+      payment.update(refund_amount: 500, refund_date: student.course.start_date)
     end
 
     it 'posts webhook for an offline payment', :vcr do
