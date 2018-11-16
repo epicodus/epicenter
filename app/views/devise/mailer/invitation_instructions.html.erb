@@ -7,27 +7,9 @@
   <p>You have been invited to create an account at <%= root_url %>.</p>
   <p>Click <%= link_to "here", accept_invitation_url(@resource, :invitation_token => @token) %> to create your account on Epicenter.</p>
 <% else %>
-  <p>Hi <%= @resource.name %>. I'm really happy to welcome you to the <strong><%= @resource.course.description %> (<%= @resource.course.office.name %>)</strong> track at Epicodus!</p>
-
-  <p>The next step is to read and sign our code of conduct, refund policy, and enrollment agreement, and then pay your deposit.</p>
-
-  <p>Click <%= link_to "here", accept_invitation_url(@resource, :invitation_token => @token) %> to enroll and complete these steps.</p>
-
-  <p>To reserve your spot in the class, you need to sign these agreements and make your payment within the next seven days. Verifying your bank account can take up to four days, so please start that process as soon as possible.</p>
-
-  <p>If I haven't heard from you within a week, we’ll open your spot up. If you decide you don’t want to enroll in Epicodus, I’d very much appreciate you telling me as soon as you make up your mind so we can offer your place to someone else.</p>
-
-  <p>Now, on to the fun stuff!</p>
-
-  <p>After you complete your enrollment, I'll invite you to our forum to connect with your fellow students and Epicodus alumni.</p>
-
-  <p>There will be a new student orientation the first day of class where we'll go over the policies and student handbook.</p>
-
-  <p>The weekend before class starts, you'll have a few videos to watch for homework, so make sure to budget time to watch them. If you'd like to get a head start on your studies, feel free to review some early lessons for your class at learnhowtoprogram.com.</p>
-
-  <% if @resource.course.office.name == "Portland" %>
-    <p>Finally, if you want to get plugged into the Portland tech community, pretty much every tech event around town is listed at <%= link_to 'calagator.org', 'http://calagator.org' %>. Check it out!
-  <% end %>
-
-  <p>Thanks so much, <%= @resource.name %>! We're really excited to have you at Epicodus.</p>
+  <p>Hi <%= @resource.name %>. I'm really happy to welcome you to the <%= @resource.cohort.try(:description) || @resource.parttime_cohort.try(:description) %> track at Epicodus!</p>
+  <p><%= link_to "This link will let you sign up for our student portal", accept_invitation_url(@resource, :invitation_token => @token) %>, where you can read and sign our code of conduct, refund policy, and enrollment agreement, and then pay your deposit.</p>
+  <p>We'll hold your place in class for the next seven days. If you haven't registered and paid by then, we'll open up your spot to another student.</p>
+  <p>If you're still not totally sure you want to enroll, just reply to me with any questions or concerns you have. I'll be happy to answer them, and give you a call if you like.</p>
+  <p>-- Michael, Epicodus founder/president</p>
 <% end %>
