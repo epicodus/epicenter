@@ -1141,17 +1141,15 @@ describe Student do
       expect(Student.count).to eq 1
     end
 
-    it 'clears CRM student id, forum id & invitation token when student expunged' do
+    it 'clears CRM student id & invitation token when student expunged' do
       student.enrollments.destroy_all
       student.attendance_records.destroy_all
       allow_any_instance_of(CrmLead).to receive(:update).and_return({})
-      expect_any_instance_of(CrmLead).to receive(:update).with({:"custom.Epicenter - ID" => nil, :"custom.Epicenter - Raw Invitation Token" => nil, :"custom.Forum - ID" => nil })
+      expect_any_instance_of(CrmLead).to receive(:update).with({:"custom.Epicenter - ID" => nil, :"custom.Epicenter - Raw Invitation Token" => nil })
       student.destroy
     end
 
-    it 'sends webhook to anonymize user on forum when student expunged', :dont_stub_webhook do
-      student.enrollments.destroy_all
-      student.attendance_records.destroy_all
+    it 'sends webhook to anonymize user on forum when student deleted', :dont_stub_webhook do
       allow_any_instance_of(CrmLead).to receive(:forum_id).and_return(999999)
       allow(WebhookJob).to receive(:perform_later).and_return({})
       expect(WebhookJob).to receive(:perform_later).with({ method: 'PUT', endpoint: "https://forum.epicodus.com/admin/users/999999/anonymize?api_username=michael&api_key=#{ENV['FORUM_API_KEY']}", payload: {} })
