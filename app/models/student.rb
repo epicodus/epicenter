@@ -7,6 +7,7 @@ class Student < User
   after_create :update_plan_in_crm, if: ->(student) { student.plan.present? }
   after_update :update_plan_in_crm, if: :saved_change_to_plan_id
   before_destroy :archive_enrollments
+  after_destroy :remove_from_forum, if: ->(student) { student.crm_lead.forum_id }
   after_destroy :really_destroy, if: ->(student) { Student.with_deleted.exists?(student.id) && student.payments.empty? && student.attendance_records.empty? }
 
   belongs_to :plan, optional: true
@@ -344,13 +345,16 @@ class Student < User
   end
 
   def really_destroy
-    forum_id = crm_lead.forum_id
-    WebhookForum.new(id: forum_id) if forum_id
-    crm_lead.update({ 'custom.Epicenter - ID': nil, 'custom.Epicenter - Raw Invitation Token': nil, 'custom.Forum - ID': nil })
+    crm_lead.update({ 'custom.Epicenter - ID': nil, 'custom.Epicenter - Raw Invitation Token': nil })
     really_destroy!
   end
 
 private
+
+  def remove_from_forum
+    WebhookForum.new(id: crm_lead.forum_id)
+    crm_lead.update({ 'custom.Forum - ID': nil })
+  end
 
   def total_number_of_course_days(start_course=nil, end_course=nil)
     if start_course
