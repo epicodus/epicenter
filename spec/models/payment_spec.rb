@@ -232,60 +232,6 @@ describe Payment do
     end
   end
 
-  describe "#send_payment_receipt" do
-    it "emails the student a receipt after successful payment when the student is on the standard tuition plan", :vcr, :stripe_mock do
-      standard_plan = FactoryBot.create(:standard_plan)
-      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com', plan: standard_plan, referral_email_sent: true)
-
-      allow(EmailJob).to receive(:perform_later).and_return({})
-      allow(student).to receive(:total_paid).and_return(100_00)
-
-      FactoryBot.create(:payment_with_credit_card, student: student, amount: standard_plan.upfront_amount)
-
-      expect(EmailJob).to have_received(:perform_later).with(
-        { from: ENV['FROM_EMAIL_PAYMENT'],
-          to: student.email,
-          bcc: ENV['FROM_EMAIL_PAYMENT'],
-          subject: "Epicodus tuition payment receipt",
-          text: "Hi #{student.name}. This is to confirm your payment of $103.00 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the #{standard_plan.name} plan and that you will be required to pay the remaining #{number_to_currency(student.total_remaining_owed / 100, precision: 0)} before the end of the fifth week of class. Please let us know immediately if this is not correct. Thanks so much!" }
-      )
-    end
-
-    it "emails the student a receipt after successful payment when the student is on the loan plan", :vcr, :stripe_mock do
-      loan_plan = FactoryBot.create(:loan_plan)
-      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com', plan: loan_plan)
-
-      allow(EmailJob).to receive(:perform_later).and_return({})
-
-      FactoryBot.create(:payment_with_credit_card, student: student, amount: loan_plan.upfront_amount)
-
-      expect(EmailJob).to have_received(:perform_later).with(
-        { from: ENV['FROM_EMAIL_PAYMENT'],
-          to: student.email,
-          bcc: ENV['FROM_EMAIL_PAYMENT'],
-          subject: "Epicodus tuition payment receipt",
-          text: "Hi #{student.name}. This is to confirm your payment of $103.00 for Epicodus tuition. I am going over the payments for your class and just wanted to confirm that you have chosen the #{loan_plan.name} plan. Since you are in the process of obtaining a loan for program tuition, would you please let me know (which loan company, date you applied, etc.)? Thanks so much!" }
-      )
-    end
-
-    it "emails the student a receipt after successful payment when the student is on the upfront plan", :vcr, :stripe_mock do
-      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
-
-      allow(EmailJob).to receive(:perform_later).and_return({})
-
-      FactoryBot.create(:payment_with_credit_card, student: student, amount: student.plan.upfront_amount)
-      FactoryBot.create(:payment_with_credit_card, student: student)
-
-      expect(EmailJob).to have_received(:perform_later).with(
-        { from: ENV['FROM_EMAIL_PAYMENT'],
-          to: student.email,
-          bcc: ENV['FROM_EMAIL_PAYMENT'],
-          subject: "Epicodus tuition payment receipt",
-          text: "Hi #{student.name}. This is to confirm your payment of $7,107.00 for Epicodus tuition. Thanks so much!" }
-      )
-    end
-  end
-
   describe "failed" do
     it "emails the student a failure notice if payment status is updated to 'failed'", :vcr, :stripe_mock do
       student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
@@ -409,7 +355,6 @@ describe Payment do
       payment.update(refund_amount: 51)
       expect(payment.refund_amount).to eq 51
       expect(payment).to_not receive(:issue_refund)
-      expect(payment).to_not receive(:send_refund_receipt)
     end
 
     it 'refunds a credit card payment' do
@@ -463,36 +408,6 @@ describe Payment do
       payment.update(refund_amount: 50, refund_date: Date.today)
       expect(payment).to_not receive(:issue_refund)
       payment.update(status: "successful")
-    end
-  end
-
-  describe "#send_refund_receipt" do
-    it "emails the student a receipt after successful refund", :vcr do
-      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
-
-      allow(EmailJob).to receive(:perform_later).and_return({})
-
-      payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
-      payment.update(refund_amount: 5000, refund_date: Date.today)
-
-      expect(EmailJob).to have_received(:perform_later).with(
-        { :from => ENV['FROM_EMAIL_PAYMENT'],
-          :to => student.email,
-          :bcc => ENV['FROM_EMAIL_PAYMENT'],
-          :subject => "Epicodus tuition refund receipt",
-          :text => "Hi #{student.name}. This is to confirm your refund of $50.00 from your Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
-      )
-    end
-
-    it "does not send second copy of refund receipt for payment", :vcr do
-      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
-
-      allow(EmailJob).to receive(:perform_later).and_return({})
-
-      payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00, refund_issued: true)
-
-      expect(EmailJob).to_not receive(:perform_later)
-      payment.update(refund_amount: 50_00, refund_date: Date.today)
     end
   end
 

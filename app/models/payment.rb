@@ -11,7 +11,7 @@ class Payment < ApplicationRecord
   before_create :check_amount
   before_create :set_category, if: ->(payment) { payment.category == 'tuition' }
   before_create :set_description
-  before_create :make_payment, :send_payment_receipt, unless: ->(payment) { payment.offline? }
+  before_create :make_payment, unless: ->(payment) { payment.offline? }
   before_create :set_offline_status, if: ->(payment) { payment.offline? }
   before_save :check_refund_date, if: ->(payment) { payment.refund_date.present? && payment.student.courses_with_withdrawn.any? }
   before_update :issue_refund, if: ->(payment) { payment.refund_amount? && !payment.offline? && !payment.refund_issued? }
@@ -49,17 +49,6 @@ private
     end
   end
 
-  def determine_payment_receipt_email_body
-    email_body = "Hi #{student.name}. This is to confirm your payment of #{number_to_currency(total_amount / 100.00)} for Epicodus tuition. "
-    if student.plan.standard? && student.payments.count == 0
-      email_body += "I am going over the payments for your class and just wanted to confirm that you have chosen the #{student.plan.name} plan and that you will be required to pay the remaining #{number_to_currency(student.total_remaining_owed / 100, precision: 0)} before the end of the fifth week of class. Please let us know immediately if this is not correct. Thanks so much!"
-    elsif student.plan.loan? && student.payments.count == 0
-      email_body += "I am going over the payments for your class and just wanted to confirm that you have chosen the #{student.plan.name} plan. Since you are in the process of obtaining a loan for program tuition, would you please let me know (which loan company, date you applied, etc.)? Thanks so much!"
-    else
-      email_body += "Thanks so much!"
-    end
-  end
-
   def set_offline_status
     self.status = 'offline'
   end
@@ -70,31 +59,10 @@ private
       refund = Stripe::Refund.create(charge: charge_id, amount: refund_amount)
       self.refund_issued = true
       WebhookPayment.new({ event_name: 'refund', payment: self })
-      send_refund_receipt
     rescue Stripe::StripeError => exception
       errors.add(:base, exception.message)
       throw :abort
     end
-  end
-
-  def send_refund_receipt
-    EmailJob.perform_later(
-      { :from => ENV['FROM_EMAIL_PAYMENT'],
-        :to => student.email,
-        :bcc => ENV['FROM_EMAIL_PAYMENT'],
-        :subject => "Epicodus tuition refund receipt",
-        :text => "Hi #{student.name}. This is to confirm your refund of #{number_to_currency(refund_amount / 100.00)} from your Epicodus tuition. If you have any questions, reply to this email. Thanks!" }
-    )
-  end
-
-  def send_payment_receipt
-    EmailJob.perform_later(
-      { :from => ENV['FROM_EMAIL_PAYMENT'],
-        :to => student.email,
-        :bcc => ENV['FROM_EMAIL_PAYMENT'],
-        :subject => "Epicodus tuition payment receipt",
-        :text => determine_payment_receipt_email_body }
-    )
   end
 
   def send_payment_failure_notice
