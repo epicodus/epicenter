@@ -104,8 +104,30 @@
             </div>
           </div>
         </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <%= form_for @student do |f| %>
+                <%= f.hidden_field :plan_id, value: Plan.active.loan.first.id %>
+                <%= f.submit 'Loan', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the loan plan? Your seat will not be reserved until your loan is approved, so please apply immediately." } %>
+                <p><br>Pay a $100 deposit and take out a loan with one of our lending partners, <a href="http://epicodus.skills.fund/" target=_blank>Skills Fund</a> and <a href="https://www.climbcredit.com/apply/epicodus" target=_blank>Climb</a>, for $8,400. Your seat will not be reserved until your loan is approved. Be sure to read our <a href="https://www.epicodus.com/financial-aid/" target=_blank>information on financial aid</a>.</p>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <%= form_for @student do |f| %>
+                <%= f.hidden_field :plan_id, value: Plan.find_by(short_name: 'special-grant').id %>
+                <%= f.submit '3rd-party grant', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the 3rd-party grant plan? Your seat will not be reserved until we have documentation of your grant approval." } %>
+                <p><br>Pay a $100 deposit and pay some or all of your $8,400 balance with a third-party grant, such as unemployment retraining or veterans' VR&E. Your seat will not be reserved until you submit documentation of your grant approval to <a href="mailto:hi@epicodus.com">hi@epicodus.com</a>. Be sure to read our <a href="https://www.epicodus.com/financial-aid/" target=_blank>information on financial aid</a>.</p>
+              <% end %>
+            </div>
+          </div>
+        </div>
       </div>
-      <p id="loan-message">If you'd like to take out a loan or pay with a third-party grant, be sure to read our <a href="https://www.epicodus.com/financial-aid/" target=_blank>information on financial aid</a>, and then choose the "Standard plan" and email <a href="mailto:applications@epicodus.com">applications@epicodus.com</a>.</p>
     </div>
     <br>
   <% elsif @student.upfront_payment_due? %>

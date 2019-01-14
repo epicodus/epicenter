@@ -414,6 +414,14 @@ FactoryBot.define do
       upfront_amount { 0 }
       student_portion { 0 }
     end
+
+    factory :grant_plan do
+      short_name { 'special-grant' }
+      name { 'Special (3rd-party grant)' }
+      close_io_description { '3rd-party grant' }
+      upfront_amount { 100_00 }
+      student_portion { 100_00 }
+    end
   end
 
   factory :objective do
