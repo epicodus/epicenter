@@ -22,11 +22,10 @@ task :send_warnings => [:environment] do
             Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message("epicodus.com",
               { :from => "it@epicodus.com",
                 :to => "#{course.admin.email}",
-                :cc => "debbie@epicodus.com",
                 :subject => "#{student.name} has #{student.absences(course)} absences",
                 :text => "Notification to teacher: #{student.name} has #{student.absences(course)} absences this unit." })
           else
-            p "#{student.name} absent #{student.absences(course)} days. Email teacher & Debbie."
+            p "#{student.name} absent #{student.absences(course)} days. Email teacher."
           end
           student.update(attendance_warnings_sent: 2)
         elsif !student.attendance_warnings_sent && student.absences(course) >= 2.5
