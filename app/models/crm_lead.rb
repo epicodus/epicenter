@@ -37,7 +37,7 @@ class CrmLead
   end
 
   def work_eligible?
-    lead.try('dig', 'custom').try('dig', 'Demographics - Work Eligibility') != 'No'
+    lead.try('dig', 'custom').try('dig', 'Demographics - Work Eligibility (USA)') != 'No'
   end
 
   def update_internship_class(course)

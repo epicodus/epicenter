@@ -13,7 +13,6 @@ describe DemographicInfo do
   it { should validate_inclusion_of(:veteran).in_array(["Yes", "No"]) }
   it { should validate_inclusion_of(:cs_degree).in_array(["Yes", "No"]) }
   it { should validate_length_of(:job).is_at_most(35) }
-  it { should validate_length_of(:after_graduation_explanation).is_at_most(255) }
   it { should validate_numericality_of(:ssn).is_less_than(1000000000) }
 
   it 'validates birth date is valid format' do
@@ -75,16 +74,6 @@ describe DemographicInfo do
 
     it 'with valid time off input' do
       demographic_info = FactoryBot.build(:demographic_info, after_graduation: DemographicInfo::AFTER_OPTIONS[0], time_off: 'No')
-      expect(demographic_info).to be_valid
-    end
-
-    it 'with no after graduation explanation input when required' do
-      demographic_info = FactoryBot.build(:demographic_info, after_graduation: DemographicInfo::AFTER_OPTIONS[-1], after_graduation_explanation: '')
-      expect(demographic_info).to_not be_valid
-    end
-
-    it 'with valid after graduation explanation input' do
-      demographic_info = FactoryBot.build(:demographic_info, after_graduation: DemographicInfo::AFTER_OPTIONS[-1], after_graduation_explanation: 'test explanation')
       expect(demographic_info).to be_valid
     end
   end

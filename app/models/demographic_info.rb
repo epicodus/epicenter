@@ -4,10 +4,11 @@ class DemographicInfo
   include ActiveModel::Validations::Callbacks
 
   GENDER_OPTIONS = ["Female", "Male", "Non-binary", "Transgender", "Other"]
+  PRONOUN_OPTIONS = ["she / her / hers", "he / him / his", "they / them / their", "Other"]
   RACE_OPTIONS = ["Asian or Asian American", "American Indian or Alaska Native", "Black or African American", "Hispanic or Latino", "Middle Eastern", "Native Hawaiian or Other Pacific Islander", "White", "Other"]
   EDUCATION_OPTIONS = ["less than high school diploma", "GED", "high school diploma", "some post high school but no degree or certificate", "certificate (less than 2 years)", "associate's degree", "bachelor's degree", "master's degree", "doctoral degree or above", "other"]
   SHIRT_OPTIONS = ["XS", "S", "M", "L", "XL", "2XL", "3XL", "4XL"]
-  AFTER_OPTIONS = ["Look for a full-time job that requires the skills I'll learn at Epicodus", "Look for a part-time job that requires the skills I'll learn at Epicodus", "Return to my previous employer", "Start a business or become a self-employed contractor", "Not look for work in the U.S., because I don't have a U.S. work visa", "Continue education at another institution", "Something else; I'm just taking Epicodus for self-enrichment and don't plan to work in-field", "Other (please explain)"]
+  AFTER_OPTIONS = ["I intend to start a new in-field job within 180 days of graduating the program.", "I intend to remain with my current employer upon graduation.", "I am attending the program to learn new skills for self-enrichment and do not intend to pursue an in-field job upon graduation.", "I intend to continue education in an accredited post-secondary institution and do not intend to pursue an in-field job upon graduation."]
 
   # required fields
   validates_presence_of :address, :city, :state, :zip, :country, :birth_date
@@ -23,7 +24,6 @@ class DemographicInfo
   validate :validate_education
   validate :validate_shirt
   validate :validate_after_graduation
-  validates_length_of :after_graduation_explanation, maximum: 255, allow_nil: true # only required if @after_graduation == 'Other (please explain)'
   validates_numericality_of :ssn, less_than: 1000000000, allow_nil: true
 
   # optional fields
@@ -32,7 +32,7 @@ class DemographicInfo
   validates_length_of :job, maximum: 35, allow_nil: true
   validates_numericality_of :salary, greater_than_or_equal_to: 0, allow_nil: true
 
-  attr_accessor :student, :birth_date, :disability, :veteran, :education, :cs_degree, :address, :city, :state, :zip, :country, :shirt, :job, :salary, :genders, :races, :after_graduation, :after_graduation_explanation, :time_off, :ssn
+  attr_accessor :student, :birth_date, :disability, :veteran, :education, :cs_degree, :address, :city, :state, :zip, :country, :shirt, :job, :salary, :genders, :races, :after_graduation, :time_off, :ssn, :pronouns, :pronouns_blank
 
   def initialize(student = nil, attributes = {})
     @student = student
@@ -52,13 +52,15 @@ class DemographicInfo
     @genders = attributes[:genders]
     @races = attributes[:races]
     @after_graduation = attributes[:after_graduation]
-    @time_off = attributes[:time_off] if [AFTER_OPTIONS[0], AFTER_OPTIONS[1]].include? @after_graduation
-    @after_graduation_explanation = 'Other: ' + attributes[:after_graduation_explanation] if @after_graduation == AFTER_OPTIONS[-1] && attributes[:after_graduation_explanation].present?
+    @time_off = attributes[:time_off] if @after_graduation == "I intend to start a new in-field job within 180 days of graduating the program."
     @ssn = attributes[:ssn].gsub(/\D/, '').to_i if attributes[:ssn].present?
+    @pronouns = attributes[:pronouns]
+    @pronouns_blank = attributes[:pronouns_blank]
   end
 
   def save
     if valid?
+      @pronouns.delete('Other') && @pronouns.push(@pronouns_blank) if @pronouns.present? && @pronouns_blank.present? && @pronouns.include?('Other')
       fields = {}
       fields['addresses'] = ["label": "mailing", "address_1": @address, "city": @city, "state": @state, "zipcode": @zip, "country": @country]
       fields['custom.Demographics - Birth date'] = @birth_date
@@ -71,8 +73,9 @@ class DemographicInfo
       fields['custom.Demographics - Shirt size'] = @shirt
       fields['custom.Demographics - Gender'] = @genders.join(", ") if @genders
       fields['custom.Demographics - Race'] = @races.join(", ") if @races
-      fields['custom.Demographics - After graduation plan'] = @after_graduation_explanation || @after_graduation
+      fields['custom.Demographics - After graduation plan'] = @after_graduation
       fields['custom.Demographics - Time off planned'] = @time_off
+      fields['custom.Demographics - Pronouns'] = @pronouns.join(", ") if @pronouns
       fields = fields.compact
       @student.crm_lead.update(fields)
       @student.crm_lead.update({ 'custom.Demographics - Encrypted SSN': encrypted_ssn }) if ssn
@@ -122,12 +125,10 @@ private
   end
 
   def validate_after_graduation
-    if [AFTER_OPTIONS[0], AFTER_OPTIONS[1]].include? @after_graduation
-      errors.add(:custom, "Missing required field: When do you plan to start looking for work?") unless ['Yes', 'No'].include? @time_off
-    elsif @after_graduation == AFTER_OPTIONS[-1]
-      errors.add(:custom, 'Please explain your selection of "Other".') unless @after_graduation_explanation.present?
+    if @after_graduation == 'I intend to start a new in-field job within 180 days of graduating the program.' && @time_off != 'Yes' && @time_off != 'No'
+      errors.add(:custom, "Missing required field: When do you plan to start looking for work?")
     else
-      errors.add(:custom, "Missing required field: What is your plan after graduating?") unless AFTER_OPTIONS.include? @after_graduation
+      errors.add(:custom, "Missing required field: What are your primary intentions for enrolling in this program?") unless AFTER_OPTIONS.include? @after_graduation
     end
   end
 end
