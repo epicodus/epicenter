@@ -34,7 +34,7 @@ feature 'Submitting demographics info' do
       select 'GED', from: 'demographic_info_education'
       choose 'demographic_info_cs_degree_no'
       select 'S', from: 'demographic_info_shirt'
-      select 'Return to my previous employer', from: 'demographic_info_after_graduation'
+      select 'I intend to remain with my current employer upon graduation.', from: 'demographic_info_after_graduation'
       click_on 'Submit'
       expect(page).to have_content "Your payment methods"
     end
@@ -51,9 +51,10 @@ feature 'Submitting demographics info' do
       select 'GED', from: 'demographic_info_education'
       choose 'demographic_info_cs_degree_no'
       select 'S', from: 'demographic_info_shirt'
-      select 'Return to my previous employer', from: 'demographic_info_after_graduation'
+      select 'I intend to remain with my current employer upon graduation.', from: 'demographic_info_after_graduation'
       check 'demographic_info_genders_female'
       check 'demographic_info_genders_non-binary'
+      check 'demographic_info_pronouns_they__them__their'
       fill_in 'demographic_info_job', with: 'test job'
       fill_in 'demographic_info_salary', with: '10000'
       check 'Middle Eastern'
@@ -67,18 +68,16 @@ feature 'Submitting demographics info' do
       expect(page).to have_content "Please correct these problems"
     end
 
-    scenario 'can not see extra after graduation questions until picked', js: true do
+    scenario 'can not see pronouns blank until selected', js: true do
+      expect(page).to_not have_content 'Pronouns'
+      check 'demographic_info_pronouns_other'
+      expect(page).to have_content 'Pronouns'
+    end
+
+    scenario 'can not see pronouns blank until selected', js: true do
       expect(page).to_not have_content 'When do you plan to start looking for work?'
-      expect(page).to_not have_content 'Please explain:'
-      select "Look for a full-time job that requires the skills I'll learn at Epicodus", from: 'demographic_info_after_graduation'
+      select 'I intend to start a new in-field job within 180 days of graduating the program.', from: 'demographic_info_after_graduation'
       expect(page).to have_content 'When do you plan to start looking for work?'
-      expect(page).to_not have_content 'Please explain:'
-      select "Other (please explain)", from: 'demographic_info_after_graduation'
-      expect(page).to have_content 'Please explain:'
-      expect(page).to_not have_content 'When do you plan to start looking for work?'
-      select "Return to my previous employer", from: 'demographic_info_after_graduation'
-      expect(page).to_not have_content 'When do you plan to start looking for work?'
-      expect(page).to_not have_content 'Please explain:'
     end
   end
 
@@ -98,7 +97,7 @@ feature 'Submitting demographics info' do
       select 'GED', from: 'demographic_info_education'
       choose 'demographic_info_cs_degree_no'
       select 'S', from: 'demographic_info_shirt'
-      select 'Return to my previous employer', from: 'demographic_info_after_graduation'
+      select 'I intend to remain with my current employer upon graduation.', from: 'demographic_info_after_graduation'
       click_on 'Submit'
       expect(page).to have_content "Your courses"
     end
