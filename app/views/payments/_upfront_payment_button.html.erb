@@ -1,5 +1,5 @@
 <div class="action-buttons">
   <%= form_for @payment, url: upfront_payments_path do |f| %>
-    <%= f.submit "Make upfront payment of #{number_to_currency(@payment.amount / 100.00)}", data: { confirm: "Make upfront payment?" }, class: 'btn btn-success' %>
+    <%= f.submit "Charge #{number_to_currency(@payment.amount / 100.00)} to my #{@student.primary_payment_method.type.underscore.humanize.downcase} ending in #{@student.primary_payment_method.last_four_string}", data: { confirm: "Charge #{number_to_currency(@payment.amount / 100.00)} to my #{@payment_method_type} ending in #{@student.primary_payment_method.last_four_string}?" }, class: 'btn btn-success' %>
   <% end %>
 </div>
