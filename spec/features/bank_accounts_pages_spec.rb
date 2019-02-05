@@ -5,8 +5,8 @@ feature 'Creating a bank account manually' do
   end
 
   context 'as a student' do
+    let(:student) { FactoryBot.create(:student) }
     before do
-      student = FactoryBot.create(:student)
       login_as(student, scope: :student)
       visit new_bank_account_path
       click_on 'Enter bank account info manually'
@@ -57,8 +57,8 @@ feature 'Verifying a bank account' do
       end
 
       it 'gives the student a confirmation notice and redirects to payments page', :vcr, js: true do
-        expect(page).to have_content 'account has been confirmed'
-        expect(current_path).to eq payment_methods_path
+        expect(page).to have_content 'Your bank account has been confirmed but not yet charged'
+        expect(current_path).to eq student_payments_path(student)
       end
     end
 
@@ -97,7 +97,8 @@ feature 'Creating a bank account via plaid' do
         all('[class="AccountItem"]').sample.click
         click_on 'Continue'
         sleep 10
-        expect(page).to have_content 'account has been confirmed'
+        expect(page).to have_content 'Your bank account has been confirmed but not yet charged'
+        expect(current_path).to eq student_payments_path(student)
       end
     end
 

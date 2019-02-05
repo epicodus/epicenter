@@ -5,8 +5,9 @@ feature 'Creating a credit card' do
   end
 
   context 'as a student' do
+    let(:student) { FactoryBot.create(:student) }
+
     before do
-      student = FactoryBot.create(:student)
       login_as(student, scope: :student)
       visit new_credit_card_path
       fill_in 'name', with: student.name
@@ -19,7 +20,8 @@ feature 'Creating a credit card' do
       fill_in 'cvc_code', with: '123'
       fill_in 'zip_code', with: '11211'
       click_on 'Add credit card'
-      expect(page).to have_content('Your credit card has been added.', wait: 5)
+      expect(page).to have_content('Your credit card has been added but not yet charged.', wait: 5)
+      expect(current_path).to eq student_payments_path(student)
     end
 
     scenario 'with missing account information', :vcr, js: true do
