@@ -11,8 +11,8 @@ class BankAccountsController < ApplicationController
       respond_to do |format|
         format.html { render :create } # setup manually
         format.js do # setup via Plaid
-          flash[:notice] = "Your bank account has been confirmed."
-          render js: "window.location.pathname ='#{payment_methods_path}'"
+          flash[:notice] = "Your bank account has been confirmed but not yet charged."
+          render js: "window.location.pathname ='#{student_payments_path(current_student)}'"
         end
       end
     else
@@ -33,7 +33,8 @@ class BankAccountsController < ApplicationController
   def update
     @bank_account = BankAccount.find(params[:id])
     if @bank_account.update(bank_account_params)
-      redirect_to payment_methods_path, notice: "Your bank account has been confirmed."
+      @bank_account.student.update(primary_payment_method: @bank_account) if !@bank_account.student.primary_payment_method
+      redirect_to student_payments_path(@bank_account.student), notice: "Your bank account has been confirmed but not yet charged."
     else
       render :edit
     end

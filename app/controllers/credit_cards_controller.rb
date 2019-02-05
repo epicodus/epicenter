@@ -8,7 +8,7 @@ class CreditCardsController < ApplicationController
   def create
     @credit_card = CreditCard.new(credit_card_params.merge(student: current_student))
     if @credit_card.save
-      redirect_to payment_methods_path, notice: "Your credit card has been added."
+      redirect_to student_payments_path(current_student), notice: "Your credit card has been added but not yet charged."
     else
       render :new
     end
