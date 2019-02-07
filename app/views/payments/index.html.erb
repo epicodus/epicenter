@@ -159,18 +159,23 @@
   </div>
 
   <div class="panel-group" id="accordion">
+
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
           <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" class="payment-accordion-label">
-          Manual Payment</a>
+          Stripe Payment</a>
         </h4>
       </div>
       <div id="collapse1" class="panel-collapse collapse">
         <div class="panel-body payment-form well">
           <div class="row">
             <div class="col-md-5">
-              <%= render 'form' %>
+              <% if @student.payment_methods.any? %>
+                <%= render 'stripe_payment_form' %>
+              <% else %>
+                <p>No primary payment method has been selected.</p>
+              <% end %>
             </div>
           </div>
         </div>
@@ -181,10 +186,28 @@
       <div class="panel-heading">
         <h4 class="panel-title">
           <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" class="payment-accordion-label">
-          Offline Refund</a>
+          Offline Payment</a>
         </h4>
       </div>
       <div id="collapse2" class="panel-collapse collapse">
+        <div class="panel-body payment-form well">
+          <div class="row">
+            <div class="col-md-5">
+              <%= render 'offline_payment_form' %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" class="payment-accordion-label">
+          Offline Refund</a>
+        </h4>
+      </div>
+      <div id="collapse3" class="panel-collapse collapse">
         <div class="panel-body refund-form well">
           <div class="row">
             <div class="col-md-5">
@@ -198,11 +221,11 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" class="payment-accordion-label">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse4" class="payment-accordion-label">
           Tuition Adjustments</a>
         </h4>
       </div>
-      <div id="collapse3" class="panel-collapse collapse">
+      <div id="collapse4" class="panel-collapse collapse">
         <div class="panel-body cost-adjustment well">
           <% if @student.cost_adjustments.any? %>
             <h4><strong>Tuition adjustments:</strong></h4>
@@ -249,11 +272,11 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse4" class="payment-accordion-label">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse5" class="payment-accordion-label">
           Change Payment Plan</a>
         </h4>
       </div>
-      <div id="collapse4" class="panel-collapse collapse">
+      <div id="collapse5" class="panel-collapse collapse">
         <div class="panel-body payment-plan well">
           <p>Current plan: <%= @student.plan.try(:name) || 'No payment plan selected!' %></p>
           <%= form_for @student do |f| %>
@@ -264,6 +287,7 @@
         </div>
       </div>
     </div>
+
   </div>
 
 <% end %>

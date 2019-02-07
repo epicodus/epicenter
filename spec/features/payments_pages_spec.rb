@@ -291,7 +291,7 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
   end
 end
 
-feature 'make a manual payment', :stripe_mock, :stub_mailgun do
+feature 'make a manual stripe payment', :stripe_mock, :stub_mailgun do
   let(:admin) { FactoryBot.create(:admin) }
   let(:student) { FactoryBot.create(:student_with_all_documents_signed_and_credit_card, email: 'example@example.com') }
 
@@ -300,8 +300,10 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
   scenario 'successfully with cents', :vcr do
     visit student_payments_path(student)
     select student.primary_payment_method.description
-    fill_in 'payment_amount', with: 1765.24
-    click_on 'Manual payment'
+    within '#stripe-payment-form' do
+      fill_in 'payment_amount', with: 1765.24
+    end
+    click_on 'Stripe payment'
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Succeeded'
     expect(page).to have_content '$1,818.19'
@@ -311,8 +313,10 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
     other_payment_method = FactoryBot.create(:bank_account, student: student)
     visit student_payments_path(student)
     select other_payment_method.description
-    fill_in 'payment_amount', with: 1765.24
-    click_on 'Manual payment'
+    within '#stripe-payment-form' do
+      fill_in 'payment_amount', with: 1765.24
+    end
+    click_on 'Stripe payment'
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Pending'
     expect(page).to have_content '$1,765.24'
@@ -320,8 +324,10 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
 
   scenario 'successfully without cents', :vcr do
     visit student_payments_path(student)
-    fill_in 'payment_amount', with: 1765
-    click_on 'Manual payment'
+    within '#stripe-payment-form' do
+      fill_in 'payment_amount', with: 1765
+    end
+    click_on 'Stripe payment'
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Succeeded'
     expect(page).to have_content '$1,817.95'
@@ -329,25 +335,31 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
 
   scenario 'unsuccessfully with an improperly formatted amount', :js do
     visit student_payments_path(student)
-    click_on 'Manual Payment'
-    fill_in 'payment_amount', with: 60.1
+    click_on 'Stripe Payment'
+    within '#stripe-payment-form' do
+      fill_in 'payment_amount', with: 60.1
+    end
     message = accept_prompt do
-      click_on 'Manual payment'
+      click_on 'Stripe payment'
     end
     expect(message).to eq 'Please enter a valid amount.'
   end
 
   scenario 'with an invalid amount (too high)' do
     visit student_payments_path(student)
-    fill_in 'payment_amount', with: 9000
-    click_on 'Manual payment'
+    within '#stripe-payment-form' do
+      fill_in 'payment_amount', with: 9000
+    end
+    click_on 'Stripe payment'
     expect(page).to have_content 'Amount cannot be negative or greater than $8,500.'
   end
 
   scenario 'with an invalid amount (negative)' do
     visit student_payments_path(student)
-    fill_in 'payment_amount', with: -100
-    click_on 'Manual payment'
+    within '#stripe-payment-form' do
+      fill_in 'payment_amount', with: -100
+    end
+    click_on 'Stripe payment'
     expect(page).to have_content 'Amount cannot be negative or greater than $8,500.'
   end
 
@@ -361,8 +373,10 @@ feature 'make a manual payment', :stripe_mock, :stub_mailgun do
     student = FactoryBot.create(:student_with_all_documents_signed_and_credit_card, email: 'wrong_email@test.com')
     visit student_payments_path(student)
     select student.primary_payment_method.description
-    fill_in 'payment_amount', with: 1765.24
-    click_on 'Manual payment'
+    within '#stripe-payment-form' do
+      fill_in 'payment_amount', with: 1765.24
+    end
+    click_on 'Stripe payment'
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Succeeded'
     expect(page).to have_content '$1,818.19'
@@ -377,11 +391,12 @@ feature 'make an offline payment', :js, :vcr do
 
   scenario 'successfully with cents' do
     visit student_payments_path(student)
-    click_on 'Manual Payment'
-    check 'offline-payment-checkbox'
+    click_on 'Offline Payment'
     fill_in 'Notes', with: 'Test offline payment'
-    fill_in 'payment_amount', with: 60.18
-    click_on 'Manual payment'
+    within '#offline-payment-form' do
+      fill_in 'payment_amount', with: 60.18
+    end
+    click_on 'Offline payment'
     wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoAlertPresentError
     alert = wait.until { page.driver.browser.switch_to.alert }
     alert.accept

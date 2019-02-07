@@ -1,10 +1,10 @@
-  <%= form_for [@student, @payment] do |f| %>
+  <%= form_for [@student, @payment], html: { id: 'offline-refund-form' } do |f| %>
     <%= f.hidden_field :offline, value: true %>
     <%= f.hidden_field :category, value: 'refund' %>
     <%= f.hidden_field :amount, value: 0 %>
     <%= f.hidden_field :student_id, value: @student.id %>
 
-    <div class="form-group" id="offline-payment-notes">
+    <div class="form-group">
       <%= f.label :refund_notes, 'Offline refund notes' %>
       <%= f.text_area :refund_notes, class: 'form-control' %>
     </div>
