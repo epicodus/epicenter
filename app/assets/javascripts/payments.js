@@ -12,7 +12,7 @@ $(function() {
     show_or_hide_payment_warning();
   });
 
-  $('#payment_amount').keyup(function() {
+  $('.payment-input').keyup(function() {
     show_or_hide_payment_warning();
   });
 });
