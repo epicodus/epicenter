@@ -170,7 +170,7 @@
       <div id="collapse1" class="panel-collapse collapse">
         <div class="panel-body payment-form well">
           <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-6">
               <% if @student.payment_methods.any? %>
                 <%= render 'stripe_payment_form' %>
               <% else %>
@@ -192,7 +192,7 @@
       <div id="collapse2" class="panel-collapse collapse">
         <div class="panel-body payment-form well">
           <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-6">
               <%= render 'offline_payment_form' %>
             </div>
           </div>
