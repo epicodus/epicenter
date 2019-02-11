@@ -8,7 +8,7 @@
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <% if resource.errors.any? %>
     <div class="alert alert-danger">
-      <%= devise_error_messages! %>
+      <%= render "devise/shared/error_messages", resource: resource %>
     </div>
   <% end %>
   <span class="text-primary">* Indicates required field</span>
