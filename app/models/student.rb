@@ -39,11 +39,11 @@ class Student < User
   NUMBER_OF_RANDOM_PAIRS = 5
   TARDY_WEIGHT = 0.5
 
-  def self.manually_invite(attributes)
+  def self.invite(attributes)
     email = attributes[:email]
     crm_lead = CrmLead.new(email)
     student = Student.invite!(email: email, name: crm_lead.name, course: crm_lead.cohort.courses.first) do |u|
-      u.skip_invitation = true unless attributes[:send_email]
+      u.skip_invitation = true
     end
     crm_lead.cohort.courses.each do |course|
       if course.internship_course? && !crm_lead.work_eligible?
@@ -53,6 +53,7 @@ class Student < User
       end
     end
     student.update(office: student.course.office)
+    crm_lead.update({ 'custom.Epicenter - Raw Invitation Token': student.raw_invitation_token, 'custom.Epicenter - ID': student.id })
   end
 
   def attendance_score(filtered_course)

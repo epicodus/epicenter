@@ -1291,14 +1291,14 @@ describe Student do
     end
   end
 
-  describe '.manually_invite', :dont_stub_crm do
+  describe '.invite', :dont_stub_crm do
     let(:cohort) { FactoryBot.create(:full_cohort) }
 
     before { allow_any_instance_of(CrmLead).to receive(:cohort).and_return(cohort) }
 
     it 'manually invites student to Epicenter without sending email' do
       emails_sent = Devise.mailer.deliveries.count
-      Student.manually_invite(email: 'example@example.com')
+      Student.invite(email: 'example@example.com')
       student = Student.find_by(email: 'example@example.com')
       expect(student.name).to eq 'THIS LEAD IS USED FOR TESTING PURPOSES. PLEASE DO NOT DELETE.'
       expect(student.courses.count).to eq 5
@@ -1306,13 +1306,6 @@ describe Student do
       expect(student.cohort.description).to eq cohort.description
       expect(student.office).to eq cohort.office
       expect(Devise.mailer.deliveries.count).to eq(emails_sent)
-    end
-
-    it 'manually invites student to Epicenter and sends email invitation' do
-      emails_sent = Devise.mailer.deliveries.count
-      Student.manually_invite(email: 'example@example.com', send_email: true)
-      student = Student.find_by(email: 'example@example.com')
-      expect(Devise.mailer.deliveries.count).to eq(emails_sent + 1)
     end
   end
 end
