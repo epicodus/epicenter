@@ -1,15 +1,3 @@
-<% if @resource.is_a?(Admin) %>
-  <p>Hi <%= @resource.name %>,</p>
-  <p>You have been invited to create an admin account at <%= root_url %>. Lucky you!</p>
-  <p><%= link_to "Accept Invitation", accept_invitation_url(@resource, :invitation_token => @token) %></p>
-<% elsif @resource.course == Course.find_by(description: 'Fidgetech') %>
-  <p>Hi <%= @resource.name %>,</p>
-  <p>You have been invited to create an account at <%= root_url %>.</p>
-  <p>Click <%= link_to "here", accept_invitation_url(@resource, :invitation_token => @token) %> to create your account on Epicenter.</p>
-<% else %>
-  <p>Hi <%= @resource.name %>. I'm really happy to welcome you to the <%= @resource.cohort.try(:description) || @resource.parttime_cohort.try(:description) %> track at Epicodus!</p>
-  <p><%= link_to "This link will let you sign up for our student portal", accept_invitation_url(@resource, :invitation_token => @token) %>, where you can read and sign our code of conduct, refund policy, and enrollment agreement, and then pay your deposit.</p>
-  <p>We'll hold your place in class for the next seven days. If you haven't registered and paid by then, we'll open up your spot to another student.</p>
-  <p>If you're still not totally sure you want to enroll, just reply to me with any questions or concerns you have. I'll be happy to answer them, and give you a call if you like.</p>
-  <p>-- Michael, Epicodus founder/president</p>
-<% end %>
+<p>Hi <%= @resource.name %>,</p>
+<p>You have been invited to create an account at <%= root_url %>.</p>
+<p>Click <%= link_to "here", accept_invitation_url(@resource, :invitation_token => @token) %> to create your account on Epicenter.</p>
