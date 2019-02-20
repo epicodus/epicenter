@@ -67,6 +67,37 @@ class CrmLead
     lead.try('dig', 'custom').try('dig', 'Forum - ID').try(:to_int)
   end
 
+  def contact_id
+    lead.try('dig', 'contacts').try('first').try('dig', 'id')
+  end
+
+  def subscribe_to_welcome_email_sequence
+    if fidgetech?
+      sequence_id = ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_FIDGETECH']
+    elsif parttime?
+      sequence_id = ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_PT']
+    else
+      sequence_id = ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_FT']
+    end
+    if email_subscription?(sequence_id)
+      create_task('Welcome email not sent due to existing email subscription.')
+    else
+      subscribe(sequence_id)
+    end
+  end
+
+  def email_subscription?(sequence_id = nil)
+    close_io_client.list_sequence_subscriptions(sequence_id: sequence_id, contact_id: contact_id).try('dig', 'data').any? if contact_id
+  end
+
+  def subscribe(sequence_id)
+    close_io_client.create_sequence_subscription(sequence_id: sequence_id, contact_id: contact_id, contact_email: @email, sender_email: ENV['ADMISSIONS_FROM_EMAIL'], sender_name: ENV['ADMISSIONS_FROM_NAME'], sender_account_id: ENV['CLOSE_ADMISSIONS_FROM_ACCOUNT_ID'])
+  end
+
+  def create_task(text)
+    close_io_client.create_task(lead_id: lead.try('dig', 'id'), text: text)
+  end
+
 private
 
   def lead

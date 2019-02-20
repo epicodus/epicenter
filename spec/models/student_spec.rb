@@ -1308,4 +1308,27 @@ describe Student do
       expect(Devise.mailer.deliveries.count).to eq(emails_sent)
     end
   end
+
+  describe '#fulltime?, #parttime?, #fidgetech?' do
+    it 'returns true if student ending_cohort is a fulltime cohort' do
+      student = FactoryBot.create(:student_with_cohort)
+      expect(student.fulltime?).to eq true
+      expect(student.parttime?).to eq false
+      expect(student.fidgetech?).to eq false
+    end
+
+    it 'returns true if student ending_cohort is a parttime cohort' do
+      student = FactoryBot.create(:part_time_student_with_cohort)
+      expect(student.fulltime?).to eq false
+      expect(student.parttime?).to eq true
+      expect(student.fidgetech?).to eq false
+    end
+
+    it 'returns true if student ending_cohort is Fidgetech' do
+      student = FactoryBot.create(:fidgetech_student_with_cohort)
+      expect(student.fulltime?).to eq false
+      expect(student.parttime?).to eq false
+      expect(student.fidgetech?).to eq true
+    end
+  end
 end

@@ -1,4 +1,9 @@
 describe CrmLead, :dont_stub_crm, :vcr do
+  before do
+    allow_any_instance_of(Closeio::Client).to receive(:subscribe).and_return({})
+    allow_any_instance_of(Closeio::Client).to receive(:create_task).and_return({})
+  end
+
   describe '#initialize' do
     it 'raises error if lead not found' do
       expect { CrmLead.new('does_not_exist@example.com').status }.to raise_error(CrmError, "The Close.io lead for does_not_exist@example.com was not found.")
@@ -93,6 +98,87 @@ describe CrmLead, :dont_stub_crm, :vcr do
 
     it 'returns nil if forum id not present in CRM' do
       expect(CrmLead.new('example-part-time@example.com').forum_id).to eq nil
+    end
+  end
+
+  describe '#contact_id' do
+    it 'returns contact_id if present in CRM' do
+      expect(CrmLead.new('example@example.com').contact_id).to include 'cont_'
+    end
+  end
+
+  describe '#email_subscription?' do
+    it 'returns true if student has ever had any email subscriptions' do
+      expect(CrmLead.new('testing-email-subscription-true@example.com').email_subscription?).to eq true
+    end
+
+    it 'returns false if student has never had any email subscriptions' do
+      expect(CrmLead.new('testing-email-subscription-false@example.com').email_subscription?).to eq false
+    end
+
+    it 'returns true if student has ever had specific email subscription' do
+      expect(CrmLead.new('testing-email-subscription-true@example.com').email_subscription?(ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_FIDGETECH'])).to eq true
+    end
+
+    it 'returns false if student has never had specific email subscription' do
+      expect(CrmLead.new('testing-email-subscription-true@example.com').email_subscription?(ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_PT'])).to eq false
+    end
+  end
+
+  describe '#subscribe' do
+    it 'subscribes contact to the email sequence' do
+      crm_lead = CrmLead.new('example@example.com')
+      allow_any_instance_of(Closeio::Client).to receive(:create_sequence_subscription).and_return({})
+      allow(crm_lead).to receive(:email_subscription?).with(ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_FT']).and_return(false)
+      expect_any_instance_of(Closeio::Client).to receive(:create_sequence_subscription)
+      crm_lead.subscribe(ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_FT'])
+    end
+  end
+
+  describe '#create_task' do
+    it 'creates task' do
+      crm_lead = CrmLead.new('example@example.com')
+      allow_any_instance_of(Closeio::Client).to receive(:create_task).and_return({})
+      expect_any_instance_of(Closeio::Client).to receive(:create_task)
+      crm_lead.create_task('test task')
+    end
+  end
+
+  describe '#subscribe_to_welcome_email_sequence' do
+    let(:crm_lead) { CrmLead.new('example@example.com') }
+    before do
+      allow(crm_lead).to receive(:subscribe).and_return({})
+      allow(crm_lead).to receive(:create_task).and_return({})
+    end
+
+    it 'subscribes FT students to FT sequence' do
+      allow(crm_lead).to receive(:email_subscription?).and_return(false)
+      allow(crm_lead).to receive(:fidgetech?).and_return(false)
+      allow(crm_lead).to receive(:parttime?).and_return(false)
+      expect(crm_lead).to receive(:subscribe).with(ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_FT'])
+      crm_lead.subscribe_to_welcome_email_sequence
+    end
+
+    it 'subscribes PT students to PT sequence' do
+      allow(crm_lead).to receive(:email_subscription?).and_return(false)
+      allow(crm_lead).to receive(:fidgetech?).and_return(false)
+      allow(crm_lead).to receive(:parttime?).and_return(true)
+      expect(crm_lead).to receive(:subscribe).with(ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_PT'])
+      crm_lead.subscribe_to_welcome_email_sequence
+    end
+
+    it 'subscribes Fidgetech students to Fidgetech sequence' do
+      allow(crm_lead).to receive(:email_subscription?).and_return(false)
+      allow(crm_lead).to receive(:fidgetech?).and_return(true)
+      allow(crm_lead).to receive(:parttime?).and_return(false)
+      expect(crm_lead).to receive(:subscribe).with(ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_FIDGETECH'])
+      crm_lead.subscribe_to_welcome_email_sequence
+    end
+
+    it 'creates task when student is already subscribed to email sequence' do
+      allow(crm_lead).to receive(:email_subscription?).and_return(true)
+      expect(crm_lead).to receive(:create_task).with('Welcome email not sent due to existing email subscription.')
+      crm_lead.subscribe_to_welcome_email_sequence
     end
   end
 

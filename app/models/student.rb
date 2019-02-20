@@ -42,18 +42,32 @@ class Student < User
   def self.invite(attributes)
     email = attributes[:email]
     crm_lead = CrmLead.new(email)
-    student = Student.invite!(email: email, name: crm_lead.name, course: crm_lead.cohort.courses.first) do |u|
+    cohort = crm_lead.cohort
+    student = Student.invite!(email: email, name: crm_lead.name, course: cohort.courses.first) do |u|
       u.skip_invitation = true
     end
-    crm_lead.cohort.courses.each do |course|
+    cohort.courses.each do |course|
       if course.internship_course? && !crm_lead.work_eligible?
         student.courses << Course.find_by(description: 'Internship Exempt')
       else
         student.courses << course unless student.courses.include?(course)
       end
     end
-    student.update(office: student.course.office)
+    student.update(office: student.course.office, ending_cohort: cohort)
     crm_lead.update({ 'custom.Epicenter - Raw Invitation Token': student.raw_invitation_token, 'custom.Epicenter - ID': student.id })
+    student
+  end
+
+  def parttime?
+    ending_cohort.try(:description).try('include?', 'PT')
+  end
+
+  def fidgetech?
+    ending_cohort.try(:description) == 'Fidgetech'
+  end
+
+  def fulltime?
+    ending_cohort && !parttime? && !fidgetech?
   end
 
   def attendance_score(filtered_course)

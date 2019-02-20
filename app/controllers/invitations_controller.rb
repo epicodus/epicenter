@@ -8,8 +8,9 @@ class InvitationsController < Devise::InvitationsController
       if User.find_by(email: email)
         redirect_to new_student_invitation_path, alert: "Email already used in Epicenter"
       else
-        WebhookInvite.new(email: email)
-        redirect_to root_path, notice: "An invitation has been initiated for #{email}"
+        student = Student.invite(email: email)
+        student.crm_lead.subscribe_to_welcome_email_sequence
+        redirect_to root_path, notice: "#{email} has been invited to Epicenter & subscribed to welcome sequence"
       end
     end
   end

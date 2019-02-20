@@ -614,6 +614,16 @@ FactoryBot.define do
         end
       end
     end
+
+    factory :fidgetech_student_with_cohort do
+      association :plan, factory: :parttime_plan
+      before(:create) do |student|
+        cohort = create(:fidgetech_cohort)
+        student.ending_cohort = cohort
+        student.office = cohort.office
+        student.course = cohort.courses.first
+      end
+    end
   end
 
   factory :student do
