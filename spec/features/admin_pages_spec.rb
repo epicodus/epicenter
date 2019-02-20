@@ -94,10 +94,12 @@ feature 'Inviting new students', :vcr, :stub_mailgun, :dont_stub_crm do
   end
 
   scenario 'admin invites student' do
+    allow_any_instance_of(Closeio::Client).to receive(:subscribe).and_return({})
+    allow_any_instance_of(Closeio::Client).to receive(:create_task).and_return({})
     visit new_student_invitation_path
     fill_in 'Email', with: 'example@example.com'
     click_on 'Invite student'
-    expect(page).to have_content "An invitation has been initiated for example@example.com"
+    expect(page).to have_content "example@example.com has been invited to Epicenter & subscribed to welcome sequence"
   end
 
   scenario 'does not allow inviting if email already taken' do
