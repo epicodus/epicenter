@@ -72,6 +72,7 @@ class CrmLead
   end
 
   def subscribe_to_welcome_email_sequence
+    Rails.logger.info "Invitation: Subscribing to email sequence"
     if fidgetech?
       sequence_id = ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_FIDGETECH']
     elsif parttime?

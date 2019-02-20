@@ -40,6 +40,7 @@ class Student < User
   TARDY_WEIGHT = 0.5
 
   def self.invite(attributes)
+    Rails.logger.info "Invitation: creating Epicenter account"
     email = attributes[:email]
     crm_lead = CrmLead.new(email)
     cohort = crm_lead.cohort
