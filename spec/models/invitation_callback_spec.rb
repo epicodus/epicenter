@@ -14,15 +14,22 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
 
     it 'expunges existing user if no payments or attendance records' do
       FactoryBot.create(:intro_only_cohort, start_date: Date.parse('2000-01-03'))
-      student = FactoryBot.create(:student, email: 'example@example.com')
-      expect { InvitationCallback.new(email: 'example@example.com') }.to_not raise_error
-      expect(User.exists?(student.id)).to eq false
+      FactoryBot.create(:student, email: 'example@example.com')
+      expect_any_instance_of(Student).to receive(:really_destroy)
+      InvitationCallback.new(email: 'example@example.com')
     end
 
-    it 'raises error if email already found in Epicenter and student can not be expunged' do
+    it 'creates task on CRM lead if email already found in Epicenter and student has attendance record' do
       student = FactoryBot.create(:student, email: 'example@example.com')
       FactoryBot.create(:attendance_record, student: student)
-      expect { InvitationCallback.new(email: 'example@example.com') }.to raise_error(CrmError, "Invitation callback: example@example.com already exists in Epicenter")
+      expect_any_instance_of(CrmLead).to receive(:create_task).with('Unable to invite due to existing Epicenter account')
+      InvitationCallback.new(email: 'example@example.com')
+    end
+
+    it 'creates task on CRM lead if email already found in Epicenter and student has payment' do
+      student = FactoryBot.create(:student_with_upfront_payment, email: 'example@example.com')
+      expect_any_instance_of(CrmLead).to receive(:create_task).with('Unable to invite due to existing Epicenter account')
+      InvitationCallback.new(email: 'example@example.com')
     end
 
     it 'raises error if cohort not found in Epicenter' do
