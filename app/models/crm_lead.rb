@@ -96,7 +96,7 @@ class CrmLead
   end
 
   def create_task(text)
-    close_io_client.create_task(lead_id: lead.try('dig', 'id'), text: text)
+    close_io_client.create_task(lead_id: lead.try('dig', 'id'), text: text, date: Time.zone.now.to_date.to_s)
   end
 
 private
