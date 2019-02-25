@@ -429,7 +429,7 @@ describe Payment do
     it 'posts webhook after refund issued', :stub_mailgun do
       student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
-      expect(WebhookJob).to receive(:perform_later).with({ method: nil, endpoint: ENV['ZAPIER_PAYMENT_WEBHOOK_URL'], payload: PaymentSerializer.new(payment).as_json.merge({ event_name: 'refund', refund_amount: 500, start_date: student.course.start_date.to_s }) })
+      expect(WebhookJob).to receive(:perform_later).with({ method: nil, endpoint: ENV['ZAPIER_PAYMENT_WEBHOOK_URL'], payload: PaymentSerializer.new(payment).as_json.merge({ event_name: 'refund', refund_amount: 500, start_date: student.course.start_date.to_s, created_at: payment.created_at.to_date.to_s, updated_at: payment.updated_at.to_date.to_s }) })
       payment.update(refund_amount: 500, refund_date: student.course.start_date)
     end
 
