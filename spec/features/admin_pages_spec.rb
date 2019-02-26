@@ -292,3 +292,23 @@ feature 'exporting course students emails to a file' do
     end
   end
 end
+
+feature 'archiving student' do
+  let(:admin) { FactoryBot.create(:admin) }
+  before { login_as(admin, scope: :admin) }
+
+  scenario 'archiving a student with courses' do
+    student = FactoryBot.create(:student)
+    visit student_courses_path(student)
+    click_on 'Drop All'
+    click_on 'Archive student'
+    expect(page).to have_content "#{student.name} has been archived!"
+  end
+
+  scenario 'archiving a student without courses' do
+    student = FactoryBot.create(:student_without_courses)
+    visit student_courses_path(student)
+    click_on 'Archive student'
+    expect(page).to have_content "#{student.name} has been archived!"
+  end
+end

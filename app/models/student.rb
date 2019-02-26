@@ -8,7 +8,6 @@ class Student < User
   after_update :update_plan_in_crm, if: :saved_change_to_plan_id
   before_destroy :archive_enrollments
   after_destroy :remove_from_forum, if: ->(student) { student.crm_lead.forum_id }
-  after_destroy :really_destroy, if: ->(student) { Student.with_deleted.exists?(student.id) && student.payments.empty? && student.attendance_records.empty? }
 
   belongs_to :plan, optional: true
   belongs_to :starting_cohort, class_name: :Cohort, optional: true

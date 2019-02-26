@@ -39,8 +39,14 @@ class StudentsController < ApplicationController
 
   def destroy
     student = Student.find(params[:id])
-    student.destroy
-    redirect_to root_path, notice: "#{student.name} has been #{User.exists?(student.id)? 'archived' : 'expunged'}!"
+    if params['drop_all'] == 'true'
+      student.enrollments.destroy_all
+      redirect_to student_courses_path(student), notice: "#{student.email} has been withdrawn from all courses."
+    else
+      student = Student.find(params[:id])
+      student.destroy
+      redirect_to root_path, notice: "#{student.name} has been archived!"
+    end
   end
 
 private
