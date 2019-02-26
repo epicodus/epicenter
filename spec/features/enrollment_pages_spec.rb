@@ -55,40 +55,33 @@ feature 'adding full cohort for a student' do
   end
 end
 
-feature 'deleting a student' do
+feature 'withdrawing a student from all courses' do
   let(:course1) { FactoryBot.create(:course) }
   let(:course2) { FactoryBot.create(:internship_course) }
   let(:admin) { FactoryBot.create(:admin) }
 
   before { login_as(admin, scope: :admin) }
 
-  scenario 'as an admin deleting a student with payments and no attendance records' do
+  scenario 'as an admin drop all for a student with payments and no attendance records' do
     student = FactoryBot.create(:student_with_upfront_payment)
     visit student_courses_path(student)
     click_on 'Drop All'
-    expect(page).to have_content "#{student.name} has been archived!"
+    expect(page).to have_content "#{student.email} has been withdrawn from all courses."
   end
 
-  scenario 'as an admin deleting a student with attendance records and no payments' do
+  scenario 'as an admin drop all for a student with attendance records and no payments' do
     student = FactoryBot.create(:student_with_upfront_payment)
     FactoryBot.create(:attendance_record, student: student)
     visit student_courses_path(student)
     click_on 'Drop All'
-    expect(page).to have_content "#{student.name} has been archived!"
+    expect(page).to have_content "#{student.email} has been withdrawn from all courses."
   end
 
-  scenario 'as an admin deleting a student with enrollments but no payments and no attendance records' do
+  scenario 'as an admin drop all for a student with enrollments but no payments and no attendance records' do
     student = FactoryBot.create(:student)
     visit student_courses_path(student)
     click_on 'Drop All'
-    expect(page).to have_content "#{student.name} has been expunged!"
-  end
-
-  scenario 'as an admin deleting a student without enrollments, payments or attendance records' do
-    student = FactoryBot.create(:student, courses: [])
-    visit student_courses_path(student)
-    click_on 'Archive student'
-    expect(page).to have_content "#{student.name} has been expunged!"
+    expect(page).to have_content "#{student.email} has been withdrawn from all courses."
   end
 end
 
@@ -115,7 +108,9 @@ feature 'deleting a course for a student' do
     within "#student-course-#{course1.id}" do
       click_on 'Withdraw'
     end
-    expect(page).to have_content "#{course1.description} has been removed. #{student.name} has been expunged!"
+    expect(page).to have_content "#{course1.description} has been removed"
+    expect(page).to_not have_content "archived"
+    expect(page).to_not have_content "expunged"
   end
 
   scenario 'as an admin deleting the last course for student with payments' do
@@ -125,7 +120,9 @@ feature 'deleting a course for a student' do
     within "#student-course-#{course.id}" do
       click_on 'Withdraw'
     end
-    expect(page).to have_content "#{course.description} has been removed. #{student.name} has been archived!"
+    expect(page).to have_content "#{course.description} has been removed"
+    expect(page).to_not have_content "archived"
+    expect(page).to_not have_content "expunged"
   end
 
   scenario 'as an admin deleting the last course for student with attendance records' do
@@ -135,7 +132,9 @@ feature 'deleting a course for a student' do
     within "#student-course-#{course1.id}" do
       click_on 'Withdraw'
     end
-    expect(page).to have_content "#{course1.description} has been removed. #{student.name} has been archived!"
+    expect(page).to have_content "#{course1.description} has been removed"
+    expect(page).to_not have_content "archived"
+    expect(page).to_not have_content "expunged"
   end
 
   scenario 'as an admin permanently deleting a course from the withdrawn courses list' do

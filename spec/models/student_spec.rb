@@ -1142,11 +1142,9 @@ describe Student do
     end
 
     it 'clears CRM student id & invitation token when student expunged' do
-      student.enrollments.destroy_all
-      student.attendance_records.destroy_all
       allow_any_instance_of(CrmLead).to receive(:update).and_return({})
       expect_any_instance_of(CrmLead).to receive(:update).with({:"custom.Epicenter - ID" => nil, :"custom.Epicenter - Raw Invitation Token" => nil })
-      student.destroy
+      student.really_destroy
     end
 
     it 'sends webhook to anonymize user on forum when student deleted', :dont_stub_webhook do
