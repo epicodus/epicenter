@@ -312,3 +312,21 @@ feature 'archiving student' do
     expect(page).to have_content "#{student.name} has been archived!"
   end
 end
+
+feature 'receiving callback to archive student', :js do
+  context 'with valid token' do
+    it "initiates WithdrawCallback" do
+      fake_webhook = FakeWebhook.new( fixture: "zapier_withdraw_webhook.json", path: "/withdraw_callbacks", host: Capybara.current_session.server.host, port: Capybara.current_session.server.port, token: ENV['ZAPIER_SECRET_TOKEN'] )
+      expect(WithdrawCallback).to receive(:new)
+      fake_webhook.send
+    end
+  end
+
+  context 'with invalid token' do
+    it "does not initiate WithdrawCallback" do
+      fake_webhook = FakeWebhook.new( fixture: "zapier_withdraw_webhook.json", path: "/withdraw_callbacks", host: Capybara.current_session.server.host, port: Capybara.current_session.server.port )
+      expect(WithdrawCallback).to_not receive(:new)
+      fake_webhook.send
+    end
+  end
+end
