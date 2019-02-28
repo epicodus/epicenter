@@ -323,10 +323,10 @@ feature 'receiving callback to archive student', :js do
   end
 
   context 'with invalid token' do
-    it "does not initiate WithdrawCallback" do
+    it "returns 404" do
       fake_webhook = FakeWebhook.new( fixture: "zapier_withdraw_webhook.json", path: "/withdraw_callbacks", host: Capybara.current_session.server.host, port: Capybara.current_session.server.port )
       expect(WithdrawCallback).to_not receive(:new)
-      fake_webhook.send
+      expect { fake_webhook.send }.to raise_error(RestClient::NotFound)
     end
   end
 end
