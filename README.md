@@ -1,4 +1,5 @@
 [![Build status](https://travis-ci.org/epicodus/epicenter.svg?branch=master)](https://travis-ci.org/epicodus/epicenter)
+[![Code climate](https://codeclimate.com/github/epicodus/epicenter/badges/gpa.svg)](https://codeclimate.com/github/epicodus/epicenter)
 [![Coverage status](https://coveralls.io/repos/github/epicodus/epicenter/badge.svg?branch=master)](https://coveralls.io/github/epicodus/epicenter?branch=master)
 # Epicenter
 
