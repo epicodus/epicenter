@@ -77,33 +77,50 @@ describe Enrollment do
     let!(:student) { FactoryBot.create(:student_without_courses, office: office) }
 
     context 'adding new enrollments' do
-      it 'updates starting & current cohort & start & end dates when adding first course' do
+      it 'updates starting & current cohort & start & end dates when adding full-time course as first course' do
         allow_any_instance_of(CrmLead).to receive(:update_internship_class)
         expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort - Starting': current_cohort.description, 'custom.Start Date': current_cohort.start_date.to_s, 'custom.Cohort - Current': current_cohort.description, 'custom.End Date': current_cohort.end_date.to_s })
         student.course = current_cohort.courses.last
       end
 
-      it 'updates only starting cohort and start date when adding second course from earlier cohort' do
+      it 'updates starting & current cohort & start & end dates when adding part-time course as first course' do
+        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort - Starting': part_time_cohort.description, 'custom.Start Date': part_time_cohort.start_date.to_s, 'custom.Cohort - Current': part_time_cohort.description, 'custom.End Date': part_time_cohort.end_date.to_s })
+        student.course = part_time_cohort.courses.first
+      end
+
+      it 'updates starting & current cohort & start & end dates when adding full-time course after part-time course' do
+        allow_any_instance_of(CrmLead).to receive(:update_internship_class)
+        student.course = part_time_cohort.courses.first
+        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort - Starting': current_cohort.description, 'custom.Start Date': current_cohort.start_date.to_s, 'custom.Cohort - Current': current_cohort.description, 'custom.End Date': current_cohort.end_date.to_s })
+        student.course = current_cohort.courses.last
+      end
+
+      it 'updates only current cohort when adding part-time course after withdrawn full-time course' do
+        allow_any_instance_of(CrmLead).to receive(:update_internship_class)
+        student.course = current_cohort.courses.first
+        student.attendance_records.create(date: student.course.start_date)
+        student.enrollments.destroy_all
+        student.reload
+        expect_any_instance_of(CrmLead).to_not receive(:update).with({ 'custom.Cohort - Starting': current_cohort.description })
+        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort - Current': part_time_cohort.description, 'custom.End Date': part_time_cohort.end_date.to_s })
+        student.course = part_time_cohort.courses.last
+      end
+
+      it 'updates only starting cohort and start date when adding second full-time course from earlier cohort' do
         student.course = current_cohort.courses.first
         allow_any_instance_of(CrmLead).to receive(:update_internship_class)
         expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort - Starting': past_cohort.description, 'custom.Start Date': past_cohort.start_date.to_s })
         student.course = past_cohort.courses.first
       end
 
-      it 'updates only current cohort and end date when adding second course with later start date' do
+      it 'updates only current cohort and end date when adding second full-time course with later start date' do
         student.course = current_cohort.courses.first
         allow_any_instance_of(CrmLead).to receive(:update_internship_class)
         expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort - Current': current_cohort.description, 'custom.End Date': future_cohort.end_date.to_s })
         student.course = future_cohort.courses.last
       end
 
-      it 'updates only part-time cohort when adding part-time course' do
-        student.save
-        expect_any_instance_of(CrmLead).to receive(:update).with({ 'custom.Cohort - Part-time': part_time_cohort.description })
-        student.course = part_time_cohort.courses.first
-      end
-
-      it 'does not update starting or current cohort when adding non-internship course' do
+      it 'does not update starting or current cohort when adding full-time non-internship course' do
         expect_any_instance_of(CrmLead).to_not receive(:update)
         student.course = non_internship_course
       end
@@ -166,7 +183,6 @@ describe Enrollment do
       it 'does not clear ending cohort when removing course' do
         student.course = part_time_cohort.courses.first
         student.enrollments.first.destroy
-        expect(student.cohort).to eq nil
         expect(student.ending_cohort).to eq part_time_cohort
       end
     end

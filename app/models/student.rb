@@ -334,10 +334,15 @@ class Student < User
   end
 
   def calculate_starting_cohort
-    courses_with_withdrawn.fulltime_courses.first.try(:cohorts).try(:first)
+    # 1st FT cohort ever enrolled in if exists; else first PT cohort
+    # if student switches from PT -> FT will replace starting cohort with FT one
+    # if student switches from FT -> PT will remain FT cohort
+    courses_with_withdrawn.fulltime_courses.first.try(:cohorts).try(:first) || courses_with_withdrawn.parttime_courses.first.try(:cohorts).try(:first)
   end
 
   def calculate_current_cohort
+    # current FT cohort if student enrolled in internship course; else current PT cohort
+    # always ignores withdrawn courses, cuz we're interested in *current* cohort
     if courses.internship_courses.any?
       fulltime_courses = courses.fulltime_courses.where.not(description: 'Internship Exempt')
       if fulltime_courses.last.cohorts.count == 1
@@ -352,11 +357,9 @@ class Student < User
           possible_cohorts.first # just pick one if student switched to later internship course that doesn't go with student's track
         end
       end
+    else
+      courses.parttime_courses.last.try(:cohorts).try(:first)
     end
-  end
-
-  def calculate_parttime_cohort
-    courses_with_withdrawn.parttime_courses.last.try(:cohorts).try(:first)
   end
 
   def really_destroy

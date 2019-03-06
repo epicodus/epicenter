@@ -15,27 +15,21 @@ class Enrollment < ApplicationRecord
   after_destroy :update_cohort
 
   attr_reader :cohort_id
-  
+
 private
 
   def update_cohort
-    new_starting_cohort = student.calculate_starting_cohort
-    new_current_cohort = student.calculate_current_cohort
-    new_parttime_cohort = student.calculate_parttime_cohort
     crm_update = {}
-    if student.starting_cohort != new_starting_cohort
-      student.update(starting_cohort: new_starting_cohort)
-      crm_update = crm_update.merge({ 'custom.Cohort - Starting': new_starting_cohort.try(:description), 'custom.Start Date': new_starting_cohort.try(:start_date).try(:to_s) })
+    starting_cohort = student.calculate_starting_cohort
+    unless student.starting_cohort == starting_cohort
+      student.update(starting_cohort: starting_cohort)
+      crm_update = crm_update.merge({ 'custom.Cohort - Starting': starting_cohort.try(:description), 'custom.Start Date': starting_cohort.try(:start_date).try(:to_s) })
     end
-    if student.cohort != new_current_cohort
-      student.update(cohort: new_current_cohort)
-      student.update(ending_cohort: new_current_cohort) unless new_current_cohort.nil?
-      crm_update = crm_update.merge({ 'custom.Cohort - Current': new_current_cohort.try(:description), 'custom.End Date': new_current_cohort.try(:end_date).try(:to_s) })
-    end
-    if student.parttime_cohort != new_parttime_cohort
-      student.update(parttime_cohort: new_parttime_cohort)
-      student.update(ending_cohort: new_parttime_cohort) unless new_parttime_cohort.nil?
-      crm_update = crm_update.merge({ 'custom.Cohort - Part-time': new_parttime_cohort.try(:description) })
+    current_cohort = student.calculate_current_cohort
+    unless student.cohort == current_cohort
+      student.update(cohort: current_cohort)
+      student.update(ending_cohort: current_cohort) unless current_cohort.nil?
+      crm_update = crm_update.merge({ 'custom.Cohort - Current': current_cohort.try(:description), 'custom.End Date': current_cohort.try(:end_date).try(:to_s) })
     end
     student.crm_lead.update(crm_update) if crm_update.present?
   end
