@@ -5,7 +5,7 @@ task :check_payment_plans => [:environment] do
   filename = File.join(Rails.root.join('tmp'), 'incorrect_payment_plans.txt')
   counter = 0
   File.open(filename, 'w') do |file|
-    Student.where(cohort_id: Cohort.where('start_date > ?', Date.parse('2018-10-01'))).or(Student.where(parttime_cohort_id: Cohort.where('start_date > ?', Date.parse('2018-10-01')))).each do |student|
+    Student.where(cohort_id: Cohort.where('start_date > ?', Date.parse('2018-10-01'))).each do |student|
       unless IGNORE_LIST.include? student.email
         lead = close_io_client.list_leads('email: "' + student.email + '"')['data'].first
         plan_in_close = lead['custom']['Payment plan']

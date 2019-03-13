@@ -197,12 +197,12 @@ describe Payment do
     it 'sets stripe charge description for regular part-time' do
       student = FactoryBot.create(:part_time_student_with_credit_card)
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 100_00, category: 'part-time')
-      expect(payment.description).to eq "#{student.course.start_date.to_s}-#{student.course.end_date.to_s} | #{student.parttime_cohort.description}"
+      expect(payment.description).to eq "#{student.course.start_date.to_s}-#{student.course.end_date.to_s} | #{student.course.cohorts.last.description}"
     end
 
     it 'sets stripe charge descriptions for full-time payment after part-time payment' do
       student = FactoryBot.create(:part_time_student_with_credit_card)
-      part_time_cohort = student.parttime_cohort
+      part_time_cohort = student.course.cohorts.first
       part_time_course = student.course
       first_payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 100_00, category: 'part-time')
       full_time_cohort = FactoryBot.create(:internship_only_cohort, start_date: student.course.end_date.next_week)

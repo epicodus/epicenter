@@ -602,7 +602,8 @@ FactoryBot.define do
       association :plan, factory: :parttime_plan
       before(:create) do |student|
         cohort = create(:part_time_cohort)
-        student.parttime_cohort = cohort
+        student.starting_cohort = cohort
+        student.cohort = cohort
         student.ending_cohort = cohort
         student.office = cohort.office
         student.course = cohort.courses.first
