@@ -3,8 +3,8 @@ class Cohort < ApplicationRecord
   validates :office, presence: true
 
   default_scope { order(:start_date) }
-  scope :parttime_cohorts, -> { joins(:track).where("tracks.description = 'Part-time' OR tracks.description = 'Online'") }
-  scope :fulltime_cohorts, -> { joins(:track).where("tracks.description != 'Part-time' AND tracks.description != 'Online'") }
+  scope :parttime_cohorts, -> { joins(:track).where("tracks.description = 'Part-Time Intro to Programming' OR tracks.description = 'Online'") }
+  scope :fulltime_cohorts, -> { joins(:track).where("tracks.description != 'Part-Time Intro to Programming' AND tracks.description != 'Online'") }
 
   has_and_belongs_to_many :courses, -> { order(:end_date) }, after_add: :update_end_date
   has_many :starting_cohort_students, class_name: :User, foreign_key: :starting_cohort_id
@@ -34,7 +34,7 @@ class Cohort < ApplicationRecord
   end
 
   def find_or_create_courses
-    if track.description == 'Part-time'
+    if track.description == 'Part-Time Intro to Programming'
       course = Course.create({ track: track, office: office, admin: admin, language: track.languages.first, start_date: start_date, start_time: '6:00 PM', end_time: '9:00 PM' })
       self.courses << course
     else
@@ -72,8 +72,6 @@ private
   end
 
   def set_description
-    description = "#{start_date.strftime('%Y-%m')} #{office.short_name} #{track.description} (#{start_date.strftime('%b %-d')} - #{end_date.strftime('%b %-d')})"
-    description = "PT: " + description if track.description == 'Part-time'
-    update(description: description)
+    update(description: "#{start_date.to_s} to #{end_date.to_s} #{office.short_name} #{track.description}")
   end
 end

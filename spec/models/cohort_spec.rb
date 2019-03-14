@@ -48,7 +48,7 @@ describe Cohort do
     it 'creates a part-time cohort and course' do
       office = admin.current_course.office
       cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-13'))
-      expect(cohort.description).to eq "PT: 2017-03 #{office.short_name} #{track.description} (Mar 13 - Jun 21)"
+      expect(cohort.description).to eq "2017-03-13 to 2017-06-21 #{office.short_name} Part-Time Intro to Programming"
       expect(cohort.office).to eq office
       expect(cohort.track).to eq track
       expect(cohort.admin).to eq admin
@@ -65,7 +65,7 @@ describe Cohort do
     it 'creates a cohort with classes' do
       office = admin.current_course.office
       cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-13'))
-      expect(cohort.description).to eq "2017-03 #{office.short_name} #{track.description} (Mar 13 - Sep 15)"
+      expect(cohort.description).to eq "2017-03-13 to 2017-09-15 #{office.short_name} #{track.description}"
       expect(cohort.office).to eq office
       expect(cohort.track).to eq track
       expect(cohort.admin).to eq admin

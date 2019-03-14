@@ -181,7 +181,7 @@ FactoryBot.define do
   end
 
   factory :cohort do
-    description { '2000-01 PDX Ruby/Rails (Jan 3 - Jul 7)' }
+    description { '2000-01-03 to 2000-07-07 PDX Ruby/Rails' }
     start_date { Date.today.beginning_of_week }
     association :office, factory: :portland_office
     association :track, factory: :track
@@ -212,7 +212,7 @@ FactoryBot.define do
     end
 
     factory :part_time_cohort do
-      description { 'PT: Evening cohort' }
+      description { '2000-01-03 to 2000-04-12 PDX Part-Time Intro to Programming' }
       association :track, factory: :part_time_track
       before(:create) do |cohort|
         cohort.courses << build(:part_time_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 14.weeks + 2.days])
@@ -822,7 +822,7 @@ FactoryBot.define do
     end
 
     factory :part_time_track do
-      description { 'Part-time' }
+      description { 'Part-Time Intro to Programming' }
       before(:create) do |track|
         track.languages = []
         track.languages << build(:evening_language)

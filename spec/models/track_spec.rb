@@ -15,7 +15,7 @@ describe Track do
   describe '.fulltime' do
     it 'returns all full-time tracks' do
       track = FactoryBot.create(:track, description: 'Ruby/Rails')
-      parttime_track = FactoryBot.create(:track, description: 'Part-time')
+      parttime_track = FactoryBot.create(:part_time_track)
       expect(Track.fulltime).to eq [track]
     end
   end
