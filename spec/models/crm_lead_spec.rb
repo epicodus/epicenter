@@ -57,30 +57,6 @@ describe CrmLead, :dont_stub_crm, :vcr do
     end
   end
 
-  describe '#first_course' do
-    it 'returns first course for full-time student' do
-      cohort = FactoryBot.create(:intro_only_cohort, start_date: Date.parse('2000-01-03'))
-      expect(CrmLead.new('example@example.com').first_course).to eq cohort.courses.first
-    end
-
-    it 'returns first course for part-time student' do
-      course = FactoryBot.create(:part_time_course, class_days: [Date.parse('2000-01-03')], office: FactoryBot.create(:portland_office))
-      expect(CrmLead.new('example-part-time@example.com').first_course).to eq course
-    end
-
-    it 'for fidgetech student' do
-      course = FactoryBot.create(:course, description: 'Fidgetech')
-      cohort = FactoryBot.create(:intro_only_cohort, description: 'Fidgetech')
-      cohort.courses = [course]
-      expect(CrmLead.new('example-fidgetech@example.com').first_course).to eq course
-    end
-
-    it 'raises error if course does not exist in Epicenter' do
-      FactoryBot.create(:track)
-      expect { CrmLead.new('example-part-time@example.com').first_course }.to raise_error(CrmError, "Course not found in Epicenter")
-    end
-  end
-
   describe '#work_eligible?' do
     it 'returns true if student is work eligible' do
       expect(CrmLead.new('example@example.com').work_eligible?).to eq true

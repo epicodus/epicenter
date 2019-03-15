@@ -27,15 +27,6 @@ class CrmLead
     end
   end
 
-  def first_course
-    if parttime?
-      course = Course.parttime_courses.find_by(office: office, start_date: start_date)
-    else
-      course = cohort.courses.first
-    end
-    course || CrmLead.raise_error("Course not found in Epicenter")
-  end
-
   def work_eligible?
     lead.try('dig', 'custom').try('dig', 'Demographics - Work Eligibility (USA)') != 'No'
   end
@@ -127,13 +118,15 @@ private
   def track
     if cohort_applied.include? 'Front End Development'
       Track.find_by(description: 'Front End Development')
+    elsif cohort_applied.include? 'Part-'
+      Track.find_by(description: 'Part-Time Intro to Programming')
     else
       Track.find_by(description: cohort_applied.split[2]) || CrmLead.raise_error("Track not found in Epicenter")
     end
   end
 
   def parttime?
-    cohort_applied.include? 'Part-time'
+    cohort_applied.include? 'Part-'
   end
 
   def fidgetech?

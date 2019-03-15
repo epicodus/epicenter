@@ -58,7 +58,7 @@ class Student < User
   end
 
   def parttime?
-    ending_cohort.try(:description).try('include?', 'PT')
+    ending_cohort.try(:description).try('include?', 'Part-')
   end
 
   def fidgetech?
