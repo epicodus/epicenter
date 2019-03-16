@@ -112,7 +112,7 @@ private
   end
 
   def office
-    Office.find_by(short_name: cohort_applied.split[1])
+    Office.find_by(short_name: cohort_applied.split[3])
   end
 
   def track
@@ -121,7 +121,7 @@ private
     elsif cohort_applied.include? 'Part-'
       Track.find_by(description: 'Part-Time Intro to Programming')
     else
-      Track.find_by(description: cohort_applied.split[2]) || CrmLead.raise_error("Track not found in Epicenter")
+      Track.find_by(description: cohort_applied.split[4]) || CrmLead.raise_error("Track not found in Epicenter")
     end
   end
 
