@@ -134,11 +134,7 @@ private
   end
 
   def start_date
-    year = cohort_applied.split[0].to_i
-    start_section = cohort_applied.split(' - ').first.split('(').last
-    month = Date::ABBR_MONTHNAMES.index(start_section.split.first)
-    day = start_section.split.last.to_i
-    Time.new(year, month, day).to_date
+    Date.parse(cohort_applied[0,10])
   end
 
   def self.update_email(lead_id, new_email)
