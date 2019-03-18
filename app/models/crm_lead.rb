@@ -103,7 +103,7 @@ private
   end
 
   def cohort_applied
-    cohort = lead.try('dig', 'custom').try('dig', 'Cohort - Applied') || lead.try('dig', 'custom').try('dig', 'Cohort - Part-time')
+    cohort = lead.try('dig', 'custom').try('dig', 'Cohort - Applied')
     if cohort.nil? || cohort.include?('Legacy') || cohort.include?('A later class')
       CrmLead.raise_error("Cohort - Applied not found in CRM")
     else
