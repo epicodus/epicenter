@@ -99,7 +99,7 @@ feature 'Inviting new students', :vcr, :stub_mailgun, :dont_stub_crm do
     visit new_student_invitation_path
     fill_in 'Email', with: 'example@example.com'
     click_on 'Invite student'
-    expect(page).to have_content "example@example.com has been invited to Epicenter & subscribed to welcome sequence"
+    expect(page).to have_content "example@example.com has been invited to Epicenter"
   end
 
   scenario 'does not allow inviting if email already taken' do
