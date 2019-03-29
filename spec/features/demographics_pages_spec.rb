@@ -36,7 +36,7 @@ feature 'Submitting demographics info' do
       select 'S', from: 'demographic_info_shirt'
       select 'I intend to remain with my current employer upon graduation.', from: 'demographic_info_after_graduation'
       click_on 'Submit'
-      expect(page).to have_content "Your payment methods"
+      expect(page).to have_content "How would you like to make payments for the class?"
     end
 
     scenario "can submit demographics form after filling out required and optional fields", vcr: true do
@@ -59,7 +59,7 @@ feature 'Submitting demographics info' do
       fill_in 'demographic_info_salary', with: '10000'
       check 'Middle Eastern'
       click_on 'Submit'
-      expect(page).to have_content "Your payment methods"
+      expect(page).to have_content "How would you like to make payments for the class?"
     end
 
     scenario "sees errors if enters invalid info" do

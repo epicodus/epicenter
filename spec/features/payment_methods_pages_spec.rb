@@ -4,7 +4,7 @@ feature 'Student views payment methods page' do
       student = FactoryBot.create(:user_with_all_documents_signed)
       sign_in_as student
       visit payment_methods_path
-      expect(page).to have_content "Looks like you haven't added any payment methods yet."
+      expect(page).to have_content "How would you like to make payments for the class?"
       expect(page).to_not have_link "Make or review payments"
     end
   end

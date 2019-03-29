@@ -1,7 +1,8 @@
 <h1>Welcome to Epicodus</h1>
 <h2>How would you like to make payments for the class?</h2>
 <p>
-  <%= link_to "Bank account", new_bank_account_path, class: 'btn btn-info' %>
-  <%= link_to "Credit/debit card *", new_credit_card_path, class: 'btn btn-info' %>
+  <%= link_to "Pay by credit/debit card", new_credit_card_path, class: 'btn btn-info' %>
+  <%= link_to "Pay by e-check/bank transfer", new_bank_account_path, class: 'btn btn-info' %>
 </p>
-<p class="text-primary">* Payments made with a credit or debit card will be charged a nonrefundable 3% processing fee.</p>
+<p class="text-primary">Payments made by credit/debit card will be charged a nonrefundable 3% processing fee.</p>
+<p>Paying by e-check/bank transfer is like paying by check but more secure. Instead of your account number being sent on a paper check that anybody can see, it's encrypted and transmitted directly to our payments processor.</p>
