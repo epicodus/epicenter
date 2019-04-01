@@ -256,7 +256,7 @@ feature 'unenrolled student signs in' do
 
   it 'student can view the payments page' do
     visit student_payments_path(student)
-    expect(page).to have_content 'Your payment methods'
+    expect(page).to have_content 'How would you like to make payments for the class?'
   end
 
   it 'student can view the profile page' do

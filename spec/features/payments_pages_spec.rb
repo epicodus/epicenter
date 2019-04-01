@@ -10,7 +10,7 @@ feature 'Viewing payment index page' do
       student = FactoryBot.create(:student_with_all_documents_signed)
       login_as(student, scope: :student)
       visit student_payments_path(student)
-      expect(page).to have_content "Your payment methods"
+      expect(page).to have_content "How would you like to make payments for the class?"
     end
 
     context "viewing another student's payments page", :stripe_mock do

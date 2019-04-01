@@ -3,8 +3,6 @@
   <div class="col-md-8">
     <div class="panel panel-default">
       <div class="panel-body">
-        <p class="text-primary">* Payments made with a credit or debit card will be charged a nonrefundable 3% processing fee.</p>
-
         <% if @payment_methods.present? %>
           <div class="table-responsive">
             <table class="table">
@@ -60,8 +58,10 @@
           <p>Looks like you haven't added any payment methods yet.</p>
         <% end %>
 
-        <p><%= link_to 'Add credit card', new_credit_card_path %></p>
-        <p><%= link_to 'Add bank account', new_bank_account_path %></p>
+        <p><%= link_to 'Add credit/debit card', new_credit_card_path %></p>
+        <p><%= link_to 'Add e-check/bank transfer', new_bank_account_path %></p>
+        <p>Paying by e-check/bank transfer is like paying by check but more secure. Instead of your account number being sent on a paper check that anybody can see, it's encrypted and transmitted directly to our payments processor.</p>
+        <p class="text-primary">Payments made by credit/debit card will be charged a nonrefundable 3% processing fee.</p>
       </div>
     </div>
   </div>
