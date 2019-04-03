@@ -17,9 +17,16 @@
       <%= f.label :refund_date, 'Effective refund date' %>
       <%= f.date_field :refund_date, { class: 'form-control payment-refund-date-input', id: "refund-date-offline-input", required: true } %>
     </div>
-    <div class="input-group">
-      <span class="input-group-btn">
-        <%= f.submit 'Offline refund', class: 'btn btn-primary payment-refund-button', id: "refund-offline-button", data: { confirm: 'Confirm offline refund?' } %>
-      </span>
+    <div>
+      <% if @student.starting_cohort == @student.cohort %>
+        <span class="input-group-btn">
+          <%= f.submit 'Offline refund', class: 'btn btn-primary payment-refund-button', id: "refund-offline-button", data: { confirm: 'Confirm offline refund?' } %>
+        </span>
+      <% else %>
+        <p class="text-primary"><strong>NOTE: Starting Cohort does not match Current Cohort</strong></p>
+        <span class="input-group-btn">
+          <%= f.submit 'Offline refund', class: 'btn btn-primary payment-refund-button', id: "refund-offline-button", data: { confirm: 'WARNING: COHORT HAS CHANGED! Confirm offline refund?' } %>
+        </span>
+      <% end %>
     </div>
   <% end %>

@@ -236,6 +236,14 @@ feature 'issuing an offline refund as an admin', :vcr do
     click_on 'Offline refund'
     expect(student.payments.first.category).to eq 'refund'
   end
+
+  it 'shows warning if starting cohort does not match current cohort' do
+    student.cohort = FactoryBot.create(:intro_only_cohort)
+    student.save
+    visit student_payments_path(student)
+    expect(page).to have_content 'Starting Cohort does not match Current Cohort'
+  end
+
 end
 
 feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
@@ -288,6 +296,13 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
     fill_in "refund-date-#{payment.id}-input", with: Date.today
     click_on 'Refund'
     expect(page).to have_content 'Invalid positive integer'
+  end
+
+  scenario 'shows warning if starting cohort does not match current cohort' do
+    student.cohort = FactoryBot.create(:intro_only_cohort)
+    student.save
+    visit student_payments_path(student)
+    expect(page).to have_content 'Starting Cohort does not match Current Cohort'
   end
 end
 
