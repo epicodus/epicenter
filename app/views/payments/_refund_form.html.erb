@@ -12,10 +12,17 @@
       <%= f.label :refund_date, 'Effective refund date:' %>
       <%= f.date_field :refund_date, { class: 'form-control payment-refund-date-input', id: "refund-date-#{payment.id}-input", required: true } %>
     </div>
-    <div class="input-group">
-      <span class="input-group-btn">
-        <%= f.submit 'Refund', class: 'btn btn-info payment-refund-button', id: "refund-#{payment.id}-button", data: { confirm: 'Are you sure?' } %>
-      </span>
+    <div>
+      <% if @student.starting_cohort == @student.cohort %>
+        <span class="input-group-btn">
+          <%= f.submit 'Refund', class: 'btn btn-info payment-refund-button', id: "refund-#{payment.id}-button", data: { confirm: 'Confirm refund?' } %>
+        </span>
+      <% else %>
+        <p class="text-primary"><strong>NOTE: Starting Cohort does not match Current Cohort</strong></p>
+        <span class="input-group-btn">
+          <%= f.submit 'Refund', class: 'btn btn-info payment-refund-button', id: "refund-#{payment.id}-button", data: { confirm: 'WARNING: COHORT HAS CHANGED! Confirm refund?' } %>
+        </span>
+      <% end %>
     </div>
   </div>
 <% end %>
