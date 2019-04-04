@@ -45,7 +45,7 @@ class StudentsController < ApplicationController
     else
       student = Student.find(params[:id])
       student.destroy
-      redirect_to root_path, notice: "#{student.name} has been archived!"
+      redirect_to root_path, notice: "#{student.name} has been archived! (#{view_context.link_to('view', students_path(search: student.id)).html_safe})"
     end
   end
 
