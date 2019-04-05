@@ -158,6 +158,24 @@ describe CrmLead, :dont_stub_crm, :vcr do
     end
   end
 
+  describe '#update' do
+    it 'adds CRM update job to queue' do
+      allow(CrmUpdateJob).to receive(:perform_later)
+      student = FactoryBot.create(:student, email: 'example@example.com')
+      expect(CrmUpdateJob).to receive(:perform_later)
+      student.crm_lead.update({'test': 'test'})
+    end
+  end
+
+  describe '#update_now' do
+    it 'calls perform_update (skips queue)' do
+      allow(CrmLead).to receive(:perform_update)
+      student = FactoryBot.create(:student, email: 'example@example.com')
+      expect(CrmLead).to receive(:perform_update)
+      student.crm_lead.update_now({'test': 'test'})
+    end
+  end
+
   describe '#update_internship_class' do
     let!(:student) { FactoryBot.create(:student, email: "example@example.com", courses: []) }
 

@@ -53,7 +53,7 @@ class Student < User
       end
     end
     student.update(office: student.course.office, ending_cohort: cohort)
-    crm_lead.update({ 'custom.Epicenter - Raw Invitation Token': student.raw_invitation_token, 'custom.Epicenter - ID': student.id })
+    crm_lead.update_now({ 'custom.Epicenter - Raw Invitation Token': student.raw_invitation_token, 'custom.Epicenter - ID': student.id })
     student
   end
 
