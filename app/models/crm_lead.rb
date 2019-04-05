@@ -11,6 +11,10 @@ class CrmLead
     CrmUpdateJob.perform_later(lead['id'], update_fields)
   end
 
+  def update_now(update_fields)
+    CrmLead.perform_update(lead['id'], update_fields)
+  end
+
   def status
     lead.try('dig', 'status_label')
   end
