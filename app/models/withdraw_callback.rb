@@ -5,7 +5,7 @@ class WithdrawCallback
     email = params[:email]
     student = Student.with_deleted.find_by(email: email)
     if student
-      student.destroy
+      student.enrollments.destroy_all
     else
       raise ActiveRecord::RecordNotFound, "WithdrawCallback: #{email} not found"
     end
