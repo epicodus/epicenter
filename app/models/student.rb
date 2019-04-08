@@ -7,7 +7,6 @@ class Student < User
   after_create :update_plan_in_crm, if: ->(student) { student.plan.present? }
   after_update :update_plan_in_crm, if: :saved_change_to_plan_id
   before_destroy :archive_enrollments
-  after_destroy :remove_from_forum, if: ->(student) { student.crm_lead.forum_id }
 
   belongs_to :plan, optional: true
   belongs_to :starting_cohort, class_name: :Cohort, optional: true
@@ -367,11 +366,6 @@ class Student < User
   end
 
 private
-
-  def remove_from_forum
-    WebhookForum.new(id: crm_lead.forum_id)
-    crm_lead.update({ 'custom.Forum - ID': nil })
-  end
 
   def total_number_of_course_days(start_course=nil, end_course=nil)
     if start_course

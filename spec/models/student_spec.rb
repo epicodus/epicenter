@@ -1146,13 +1146,6 @@ describe Student do
       expect_any_instance_of(CrmLead).to receive(:update).with({:"custom.Epicenter - ID" => nil, :"custom.Epicenter - Raw Invitation Token" => nil })
       student.really_destroy
     end
-
-    it 'sends webhook to anonymize user on forum when student deleted', :dont_stub_webhook do
-      allow_any_instance_of(CrmLead).to receive(:forum_id).and_return(999999)
-      allow(WebhookJob).to receive(:perform_later).and_return({})
-      expect(WebhookJob).to receive(:perform_later).with({ method: 'PUT', endpoint: "https://forum.epicodus.com/admin/users/999999/anonymize?api_username=michael&api_key=#{ENV['FORUM_API_KEY']}", payload: {} })
-      student.destroy
-    end
   end
 
   describe 'get_status' do
