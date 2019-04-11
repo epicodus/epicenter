@@ -8,7 +8,8 @@ class SubmissionsController < ApplicationController
 
   def create
     @code_review = CodeReview.find(params[:code_review_id])
-    @submission = @code_review.submissions.new(submission_params)
+    student = Student.find(submission_params[:student_id])
+    @submission = @code_review.submission_for(student) || @code_review.submissions.new(submission_params)
     if @submission.save
       if @code_review.submissions_not_required? && current_admin
         redirect_to new_submission_review_path(@submission)
