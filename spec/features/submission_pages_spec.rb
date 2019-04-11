@@ -154,4 +154,13 @@ feature 'Creating a student submission for an internship course code review' do
     visit course_path(student.course)
     expect { click_on('missing') }.to change { student.submissions.count }.by 1
   end
+
+  it 'finds existing submission if already exists when no submission required' do
+    code_review = FactoryBot.create(:code_review, course: student.course, submissions_not_required: true)
+    visit course_path(student.course)
+    FactoryBot.create(:submission, student: student, code_review: code_review)
+    click_on 'missing'
+    expect(page).to_not have_content 'There was a problem'
+    expect(page).to have_content 'Submitted less than a minute ago'
+  end
 end
