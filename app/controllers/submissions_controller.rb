@@ -14,7 +14,7 @@ class SubmissionsController < ApplicationController
       if @code_review.submissions_not_required? && current_admin
         redirect_to new_submission_review_path(@submission)
       else
-        redirect_to course_code_review_path(@code_review.course, @code_review), notice: "Thank you for submitting."
+        redirect_to new_meeting_path, notice: "Thank you for submitting."
       end
     else
       flash[:alert] = 'There was a problem submitting. Please review the form below.'
@@ -31,7 +31,7 @@ class SubmissionsController < ApplicationController
       @code_review = CodeReview.find(params[:code_review_id])
       @submission = @code_review.submission_for(current_student)
       if @submission.update(submission_params)
-        redirect_to course_code_review_path(@code_review.course, @code_review), notice: "Submission updated!"
+        redirect_to new_meeting_path, notice: "Submission updated!"
       else
         flash[:alert] = 'There was a problem submitting. Please review the form below.'
         render 'code_reviews/show'
