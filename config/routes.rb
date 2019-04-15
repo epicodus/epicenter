@@ -97,4 +97,6 @@ Rails.application.routes.draw do
   resources :internship_assignments, only: [:create, :destroy]
 
   resources :demographics, only: [:new, :create]
+
+  resource :meeting, only: [:new, :create]
 end

@@ -173,8 +173,7 @@ feature 'visiting the code review show page' do
         check 'understand-guidelines'
         click_button 'Submit'
         is_expected.to have_content 'Thank you for submitting'
-        is_expected.to have_content 'student note'
-        is_expected.to have_content code_review.title
+        is_expected.to have_content "I'd like to request a meeting with a teacher this week."
       end
 
       scenario 'sets review status to pending on inital submission' do
@@ -226,8 +225,7 @@ feature 'visiting the code review show page' do
         fill_in 'submission-student-note', with: 'resubmission student note'
         click_button 'Resubmit'
         expect(page).to have_content 'Submission updated'
-        expect(page).to have_content 'pending review'
-        expect(page).to have_content 'resubmission student note'
+        expect(page).to have_content "I'd like to request a meeting with a teacher this week."
       end
 
       scenario 'sets review_status to pending on resubmission' do
