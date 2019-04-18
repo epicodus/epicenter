@@ -36,6 +36,9 @@ gem 'active_model_serializers'
 gem 'rest-client'
 gem 'plaid'
 gem 'openssl'
+gem 'jwt'
+gem 'octokit'
+gem 'httparty'
 
 group :development do
   gem 'spring'

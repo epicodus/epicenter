@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_13_224645) do
+ActiveRecord::Schema.define(version: 2019_04_18_060947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,7 @@ ActiveRecord::Schema.define(version: 2019_03_13_224645) do
     t.text "content"
     t.date "date"
     t.string "survey"
+    t.string "github_path"
   end
 
   create_table "cohorts", id: :serial, force: :cascade do |t|

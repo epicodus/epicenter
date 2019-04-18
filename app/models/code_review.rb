@@ -11,6 +11,7 @@ class CodeReview < ApplicationRecord
 
   accepts_nested_attributes_for :objectives, reject_if: :attributes_blank?, allow_destroy: true
 
+  before_validation :update_from_github, if: ->(code_review) { code_review.github_path.present? }
   before_save :regex_survey_input, if: ->(cr) { cr.survey.present? }
   before_create :set_number
   before_destroy :check_for_submissions
@@ -109,6 +110,16 @@ private
       self.survey = results.present? ? results[0] : nil
     elsif ! survey.include?('.js')
       self.survey = nil
+    end
+  end
+
+  def update_from_github
+    response = Github.get_content(github_path)
+    if response[:error]
+      errors.add(:base, 'Unable to pull lesson from Github')
+      throw(:abort)
+    else
+      self.content = response[:content]
     end
   end
 end

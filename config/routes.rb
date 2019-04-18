@@ -99,4 +99,5 @@ Rails.application.routes.draw do
   resources :demographics, only: [:new, :create]
 
   resource :meeting, only: [:new, :create]
+  resources :github_callbacks, only: [:create]
 end
