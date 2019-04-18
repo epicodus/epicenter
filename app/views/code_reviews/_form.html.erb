@@ -7,6 +7,11 @@
   </div>
 
   <div class='form-group'>
+    <%= f.label :github_path, 'Github URL' %>
+    <%= f.text_field :github_path, class: "form-control" %>
+  </div>
+
+  <div class='form-group'>
     <%= f.label :survey do %>
       Survey code if any <small><em>(copy & paste from surveymonkey is fine)</em></small>
     <% end %>

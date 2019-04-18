@@ -214,4 +214,28 @@ describe CodeReview do
       expect(code_review.survey).to eq nil
     end
   end
+
+  describe 'retrieves code review from github' do
+    it 'tries to update code review from github when github_path present' do
+      allow(Github).to receive(:get_content).and_return({})
+      github_path = "https://github.com/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/testing/blob/master/README.md"
+      expect(Github).to receive(:get_content).with(github_path)
+      code_review = FactoryBot.create(:code_review, github_path: github_path)
+    end
+
+    it 'saves when code review successfully fetched from github' do
+      allow(Github).to receive(:get_content).and_return({content: 'new code review content'})
+      github_path = "https://github.com/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/testing/blob/master/README.md"
+      code_review = FactoryBot.create(:code_review, github_path: github_path)
+      expect(code_review.content).to_not eq 'test content'
+    end
+
+    it 'does not save when problem fetching code review from github' do
+      allow(Github).to receive(:get_content).and_return({error: true})
+      github_path = "https://github.com/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/testing/blob/master/README.md"
+      code_review = FactoryBot.create(:code_review)
+      code_review.github_path = github_path
+      expect(code_review.save).to eq false
+    end
+  end
 end
