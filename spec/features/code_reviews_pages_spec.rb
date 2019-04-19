@@ -374,7 +374,7 @@ feature 'editing a code review' do
     scenario 'adding invalid Github URL', vcr: true do
       fill_in 'Github URL', with: "https://github.com/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/testing/blob/master/does_not_exist.md"
       click_button 'Update Code review'
-      expect(page).to have_content 'Unable to pull lesson from Github'
+      expect(page).to have_content 'Unable to pull code review from Github'
       expect(code_review.content).to eq 'test content'
     end
   end
