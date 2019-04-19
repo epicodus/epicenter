@@ -1,7 +1,7 @@
 class Github
   def self.get_content(github_path)
-    repo = github_path.match(/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}\/(.*)\/blob\/master/)[1]
-    file = github_path.match(/\/blob\/master\/(.*)/)[1]
+    repo = github_path.match(/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}\/(.*)\/blob\/master/).try(:values_at, 1).try(:first)
+    file = github_path.match(/\/blob\/master\/(.*)/).try(:values_at, 1).try(:first)
     begin
       { content: client.contents("#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/#{repo}", path: "/#{file}", accept: 'application/vnd.github.3.raw') }
     rescue Faraday::Error => e

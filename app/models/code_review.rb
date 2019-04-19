@@ -116,7 +116,7 @@ private
   def update_from_github
     response = Github.get_content(github_path)
     if response[:error]
-      errors.add(:base, 'Unable to pull lesson from Github')
+      errors.add(:base, 'Unable to pull code review from Github')
       throw(:abort)
     else
       self.content = response[:content]
