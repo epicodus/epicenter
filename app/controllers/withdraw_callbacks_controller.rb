@@ -3,7 +3,11 @@ class WithdrawCallbacksController < ApplicationController
 
   def create
     if params[:token] == ENV['ZAPIER_SECRET_TOKEN']
-      WithdrawCallback.new(params)
+      begin
+        WithdrawCallback.new(params)
+      rescue ActiveRecord::RecordNotFound
+        render json: {:status => 200, :error => "User not found"} and return
+      end
       head :ok
     else
       head 404
