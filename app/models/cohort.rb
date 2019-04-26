@@ -59,6 +59,14 @@ class Cohort < ApplicationRecord
     end
   end
 
+  def get_nth_week_of_cohort(n)
+  nth_week = start_date
+    n.times do
+      nth_week = skip_holidays(nth_week+1.week).beginning_of_week
+    end
+  nth_week
+  end
+
 private
   def update_end_date(course)
     update(end_date: course.end_date) if self.end_date.nil? || course.end_date > self.end_date
