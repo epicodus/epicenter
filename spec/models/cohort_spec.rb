@@ -116,4 +116,16 @@ describe Cohort do
       expect(cohort.end_date).to eq cohort.courses.order(:end_date).last.end_date
     end
   end
+
+  describe 'get_nth_week_of_cohort' do
+    let(:cohort) { FactoryBot.create(:cohort, start_date: Date.parse('2018-07-30')) }
+
+    it 'ignores single day holidays' do
+      expect(cohort.get_nth_week_of_cohort(5)).to eq Date.parse('2018-09-03')
+    end
+
+    it 'skips holiday weeks' do
+      expect(cohort.get_nth_week_of_cohort(16)).to eq Date.parse('2018-11-26')
+    end
+  end
 end
