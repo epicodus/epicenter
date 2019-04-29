@@ -26,6 +26,19 @@ feature 'requesting a meeting' do
       expect(page).to have_content("Attendance")
     end
 
+    it 'sends email when meeting requested without explanation', :js do
+      allow(EmailJob).to receive(:perform_later).and_return({})
+      find('#teacher-meeting').set true
+      click_on 'Submit'
+      expect(EmailJob).to have_received(:perform_later).with(
+        { :from => ENV['FROM_EMAIL_REVIEW'],
+          :to => student.course.admin.email,
+          :subject => "Meeting request for: #{student.name}",
+          :text => "no explanation provided" }
+      )
+      expect(page).to have_content("Attendance")
+    end
+
     it 'does not send email when not requested' do
       allow(EmailJob).to receive(:perform_later).and_return({})
       expect(EmailJob).to_not receive(:perform_later)
