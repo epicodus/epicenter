@@ -16,8 +16,8 @@ task :send_warnings => [:environment] do
           attendance_record.save
         end
 
-        # send attendance warnings (fulltime and parttime)
-        if student.attendance_warnings_sent == 1 && student.absences(course) >= 4
+        # send attendance warnings (all fulltime and parttime except online)
+        if student.attendance_warnings_sent == 1 && student.absences(course) >= 4 && !course.description.include?('ONLINE')
           if Rails.env.production?
             Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message("epicodus.com",
               { :from => "it@epicodus.com",

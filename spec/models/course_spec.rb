@@ -310,10 +310,18 @@ describe Course do
   end
 
   describe '#non_internship_courses' do
-    it 'returns all courses that are internship courses' do
+    it 'returns all courses that are not internship courses' do
       FactoryBot.create(:internship_course)
       course = FactoryBot.create(:course)
       expect(Course.non_internship_courses).to eq [course]
+    end
+  end
+
+  describe '#non_online_courses' do
+    it 'returns all courses that are not online courses' do
+      FactoryBot.create(:part_time_course, description: '2019-04 Evening ONLINE')
+      course = FactoryBot.create(:course)
+      expect(Course.non_online_courses).to eq [course]
     end
   end
 

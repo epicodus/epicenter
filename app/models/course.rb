@@ -7,6 +7,7 @@ class Course < ApplicationRecord
   scope :parttime_courses, -> { where(parttime: true) }
   scope :internship_courses, -> { where(internship_course: true) }
   scope :non_internship_courses, -> { where(internship_course: false) }
+  scope :non_online_courses, -> { where.not('description LIKE ?', '%ONLINE%') }
   scope :active_courses, -> { where(active: true).order(:description) }
   scope :inactive_courses, -> { where(active: false).order(:description) }
   scope :full_internship_courses, -> { where(full: true).order(:description) }
