@@ -8,7 +8,7 @@
 
   <div class="form-group">
     <%= f.label :track_id, 'Track' %>
-    <%= f.select :track_id, Track.all.order(:description).collect {|c| [ c.description, c.id ] }, {include_blank: true}, { class: 'form-control' } %>
+    <%= f.select :track_id, Track.active.order(:description).collect {|c| [ c.description, c.id ] }, {include_blank: true}, { class: 'form-control' } %>
   </div>
 
   <div class="form-group">
