@@ -124,8 +124,6 @@ private
       Track.find_by(description: 'Front End Development')
     elsif cohort_applied.include? 'Part-'
       Track.find_by(description: 'Part-Time Intro to Programming')
-    elsif start_date < Date.parse('2019-08-05')
-      Track.find_by(description: cohort_applied.split[4] + ' old') || Track.find_by(description: cohort_applied.split[4]) || CrmLead.raise_error("Track not found in Epicenter")
     else
       Track.find_by(description: cohort_applied.split[4]) || CrmLead.raise_error("Track not found in Epicenter")
     end
