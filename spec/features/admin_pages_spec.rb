@@ -94,7 +94,6 @@ feature 'Inviting new students', :vcr, :stub_mailgun, :dont_stub_crm do
   end
 
   scenario 'admin invites student' do
-    allow_any_instance_of(Closeio::Client).to receive(:subscribe).and_return({})
     allow_any_instance_of(Closeio::Client).to receive(:create_task).and_return({})
     visit new_student_invitation_path
     fill_in 'Email', with: 'example@example.com'

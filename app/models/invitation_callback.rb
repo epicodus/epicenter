@@ -8,8 +8,7 @@ class InvitationCallback
       existing_student.crm_lead.create_task("Unable to invite due to existing Epicenter account")
     else
       existing_student.try(:really_destroy)
-      student = Student.invite(email: email)
-      student.crm_lead.subscribe_to_welcome_email_sequence
+      Student.invite(email: email)
     end
   end
 end
