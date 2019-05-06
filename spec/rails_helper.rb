@@ -90,6 +90,16 @@ VCR.configure do |config|
   config.filter_sensitive_data('<GITHUB_APP_ID>') { ENV['GITHUB_APP_ID'] }
   config.filter_sensitive_data('<GITHUB_INSTALLATION_ID>') { ENV['GITHUB_INSTALLATION_ID'] }
   config.filter_sensitive_data('<GITHUB_CURRICULUM_ORGANIZATION>') { ENV['GITHUB_CURRICULUM_ORGANIZATION'] }
+  config.filter_sensitive_data('<CLOSE_INVITATION_SEQUENCE_FT_SEA>') { ENV['CLOSE_INVITATION_SEQUENCE_FT_SEA'] }
+  config.filter_sensitive_data('<CLOSE_INVITATION_SEQUENCE_PT_SEA>') { ENV['CLOSE_INVITATION_SEQUENCE_PT_SEA'] }
+  config.filter_sensitive_data('<CLOSE_ADMISSIONS_FROM_ACCOUNT_ID_SEA>') { ENV['CLOSE_ADMISSIONS_FROM_ACCOUNT_ID_SEA'] }
+  config.filter_sensitive_data('<CLOSE_INVITATION_SEQUENCE_FT_PDX>') { ENV['CLOSE_INVITATION_SEQUENCE_FT_PDX'] }
+  config.filter_sensitive_data('<CLOSE_INVITATION_SEQUENCE_PT_PDX>') { ENV['CLOSE_INVITATION_SEQUENCE_PT_PDX'] }
+  config.filter_sensitive_data('<CLOSE_ADMISSIONS_FROM_ACCOUNT_ID_PDX>') { ENV['CLOSE_ADMISSIONS_FROM_ACCOUNT_ID_PDX'] }
+  config.filter_sensitive_data('<CLOSE_INVITATION_SEQUENCE_FT_FID>') { ENV['CLOSE_INVITATION_SEQUENCE_FT_FID'] }
+  config.filter_sensitive_data('<CLOSE_ADMISSIONS_FROM_ACCOUNT_ID_FT_FID>') { ENV['CLOSE_ADMISSIONS_FROM_ACCOUNT_ID_FT_FID'] }
+  config.filter_sensitive_data('<CLOSE_INVITATION_SEQUENCE_PT_WEB>') { ENV['CLOSE_INVITATION_SEQUENCE_PT_WEB'] }
+  config.filter_sensitive_data('<CLOSE_ADMISSIONS_FROM_ACCOUNT_ID_PT_WEB>') { ENV['CLOSE_ADMISSIONS_FROM_ACCOUNT_ID_PT_WEB'] }
 end
 
 Shoulda::Matchers.configure do |config|

@@ -93,11 +93,11 @@ describe CrmLead, :dont_stub_crm, :vcr do
     end
 
     it 'returns true if student has ever had specific email subscription' do
-      expect(CrmLead.new('testing-email-subscription-true@example.com').email_subscription?(ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_FIDGETECH'])).to eq true
+      expect(CrmLead.new('testing-email-subscription-true@example.com').email_subscription?(ENV['CLOSE_INVITATION_SEQUENCE_FIDGETECH'])).to eq true
     end
 
     it 'returns false if student has never had specific email subscription' do
-      expect(CrmLead.new('testing-email-subscription-true@example.com').email_subscription?(ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_PT'])).to eq false
+      expect(CrmLead.new('testing-email-subscription-true@example.com').email_subscription?(ENV['CLOSE_INVITATION_SEQUENCE_PT_SEA'])).to eq false
     end
   end
 
@@ -105,9 +105,9 @@ describe CrmLead, :dont_stub_crm, :vcr do
     it 'subscribes contact to the email sequence' do
       crm_lead = CrmLead.new('example@example.com')
       allow_any_instance_of(Closeio::Client).to receive(:create_sequence_subscription).and_return({})
-      allow(crm_lead).to receive(:email_subscription?).with(ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_FT']).and_return(false)
+      allow(crm_lead).to receive(:email_subscription?).with(ENV['CLOSE_INVITATION_SEQUENCE_FT_SEA']).and_return(false)
       expect_any_instance_of(Closeio::Client).to receive(:create_sequence_subscription)
-      crm_lead.subscribe(ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_FT'])
+      crm_lead.subscribe(ENV['CLOSE_INVITATION_SEQUENCE_FT_SEA'])
     end
   end
 
@@ -131,7 +131,7 @@ describe CrmLead, :dont_stub_crm, :vcr do
       allow(crm_lead).to receive(:email_subscription?).and_return(false)
       allow(crm_lead).to receive(:fidgetech?).and_return(false)
       allow(crm_lead).to receive(:parttime?).and_return(false)
-      expect(crm_lead).to receive(:subscribe).with(ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_FT'])
+      expect(crm_lead).to receive(:subscribe).with(ENV['CLOSE_INVITATION_SEQUENCE_FT_SEA'])
       crm_lead.subscribe_to_welcome_email_sequence
     end
 
@@ -139,7 +139,7 @@ describe CrmLead, :dont_stub_crm, :vcr do
       allow(crm_lead).to receive(:email_subscription?).and_return(false)
       allow(crm_lead).to receive(:fidgetech?).and_return(false)
       allow(crm_lead).to receive(:parttime?).and_return(true)
-      expect(crm_lead).to receive(:subscribe).with(ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_PT'])
+      expect(crm_lead).to receive(:subscribe).with(ENV['CLOSE_INVITATION_SEQUENCE_PT_SEA'])
       crm_lead.subscribe_to_welcome_email_sequence
     end
 
@@ -147,7 +147,7 @@ describe CrmLead, :dont_stub_crm, :vcr do
       allow(crm_lead).to receive(:email_subscription?).and_return(false)
       allow(crm_lead).to receive(:fidgetech?).and_return(true)
       allow(crm_lead).to receive(:parttime?).and_return(false)
-      expect(crm_lead).to receive(:subscribe).with(ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_FIDGETECH'])
+      expect(crm_lead).to receive(:subscribe).with(ENV['CLOSE_INVITATION_SEQUENCE_FIDGETECH'])
       crm_lead.subscribe_to_welcome_email_sequence
     end
 

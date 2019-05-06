@@ -68,17 +68,14 @@ class CrmLead
 
   def subscribe_to_welcome_email_sequence
     Rails.logger.info "Invitation: Subscribing to email sequence"
-    if fidgetech?
-      sequence_id = ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_FIDGETECH']
-    elsif parttime?
-      sequence_id = ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_PT']
-    else
-      sequence_id = ENV['CLOSE_EMAIL_SEQUENCE_WELCOME_FT']
-    end
+    # TEMP: switch to just using office.short_name instead of office_name after 2019-05-28 cohort admissions
+    office_name = office.short_name
+    office_name = 'SEA' if start_date == Date.parse('2019-05-28')
+    sequence_id = ENV["CLOSE_INVITATION_SEQUENCE_#{parttime? ? 'PT' : 'FT'}_#{office_name}"]
     if email_subscription?(sequence_id)
       create_task('Welcome email not sent due to existing email subscription.')
     else
-      subscribe(sequence_id)
+      subscribe(sequence_id, office_name)
     end
   end
 
@@ -86,8 +83,11 @@ class CrmLead
     close_io_client.list_sequence_subscriptions(sequence_id: sequence_id, contact_id: contact_id).try('dig', 'data').any? if contact_id
   end
 
-  def subscribe(sequence_id)
-    close_io_client.create_sequence_subscription(sequence_id: sequence_id, contact_id: contact_id, contact_email: @email, sender_email: ENV['ADMISSIONS_FROM_EMAIL'], sender_name: ENV['ADMISSIONS_FROM_NAME'], sender_account_id: ENV['CLOSE_ADMISSIONS_FROM_ACCOUNT_ID'])
+  def subscribe(sequence_id, office_name)
+    sender_email = ENV['ADMISSIONS_FROM_EMAIL_' + office_name]
+    sender_name = ENV['ADMISSIONS_FROM_NAME_' + office_name]
+    sender_account_id = ENV['CLOSE_ADMISSIONS_FROM_ACCOUNT_ID_' + office_name]
+    close_io_client.create_sequence_subscription(sequence_id: sequence_id, contact_id: contact_id, contact_email: @email, sender_email: sender_email, sender_name: sender_name, sender_account_id: sender_account_id)
   end
 
   def create_task(text)
