@@ -3,7 +3,6 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
 
   before do
     allow(CrmUpdateJob).to receive(:perform_later).and_return({})
-    allow_any_instance_of(Closeio::Client).to receive(:subscribe).and_return({})
     allow_any_instance_of(Closeio::Client).to receive(:create_task).and_return({})
   end
 
@@ -83,13 +82,6 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
         expect(student.plan).to eq parttime_plan
       end
     end
-
-    describe 'subscribes to email welcome sequence' do
-      it 'subscribe student to email welcome sequence' do
-        expect_any_instance_of(CrmLead).to receive(:subscribe_to_welcome_email_sequence)
-        InvitationCallback.new(email: 'example-part-time@example.com')
-      end
-    end
   end
 
   context 'for full-time students' do
@@ -134,13 +126,6 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
       it 'does not assign payment plan' do
         student = Student.find_by(email: 'example@example.com')
         expect(student.plan).to eq nil
-      end
-    end
-
-    describe 'subscribes to email welcome sequence' do
-      it 'subscribe student to email welcome sequence' do
-        expect_any_instance_of(CrmLead).to receive(:subscribe_to_welcome_email_sequence)
-        InvitationCallback.new(email: 'example@example.com')
       end
     end
   end
@@ -188,13 +173,6 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
       it 'assign special payment plan' do
         student = Student.find_by(email: 'example-fidgetech@example.com')
         expect(student.plan).to eq special_plan
-      end
-    end
-
-    describe 'subscribes to email welcome sequence' do
-      it 'subscribe student to email welcome sequence' do
-        expect_any_instance_of(CrmLead).to receive(:subscribe_to_welcome_email_sequence)
-        InvitationCallback.new(email: 'example-fidgetech@example.com')
       end
     end
   end
