@@ -24,7 +24,7 @@ describe CrmLead, :dont_stub_crm, :vcr do
 
   describe '#status' do
     it 'returns lead status' do
-      expect(CrmLead.new('example@example.com').status).to eq "Applicant - Declined - not interested (legacy)"
+      expect(CrmLead.new('example@example.com').status).to eq "Applicant - Declined - Not Interested (legacy)"
     end
   end
 
