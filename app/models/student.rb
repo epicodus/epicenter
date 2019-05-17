@@ -341,7 +341,7 @@ class Student < User
   def calculate_current_cohort
     # current FT cohort if student enrolled in internship course; else current PT cohort
     # always ignores withdrawn courses, cuz we're interested in *current* cohort
-    if courses.internship_courses.any?
+    if courses.internship_courses.where.not(description: 'Internship Exempt').any?
       fulltime_courses = courses.fulltime_courses.where.not(description: 'Internship Exempt')
       if fulltime_courses.last.cohorts.count == 1
         fulltime_courses.last.cohorts.first
