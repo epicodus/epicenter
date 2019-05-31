@@ -63,7 +63,7 @@ class DemographicInfo
       @pronouns.delete('Other') && @pronouns.push(@pronouns_blank) if @pronouns.present? && @pronouns_blank.present? && @pronouns.include?('Other')
       fields = {}
       fields['addresses'] = ["label": "mailing", "address_1": @address, "city": @city, "state": @state, "zipcode": @zip, "country": @country]
-      fields['custom.Demographics - Birth date'] = @birth_date
+      fields['custom.Demographics - Birth Date'] = @birth_date
       fields['custom.Demographics - Disability'] = @disability
       fields['custom.Demographics - Veteran'] = @veteran
       fields['custom.Demographics - Education'] = @education
@@ -77,6 +77,7 @@ class DemographicInfo
       fields['custom.Demographics - Time off planned'] = @time_off
       fields['custom.Demographics - Pronouns'] = @pronouns.join(", ") if @pronouns
       fields = fields.compact
+      # @student.crm_lead.update(fields.transform_values{nil})
       @student.crm_lead.update(fields)
       @student.crm_lead.update({ 'custom.Demographics - Encrypted SSN': encrypted_ssn }) if ssn
       true
