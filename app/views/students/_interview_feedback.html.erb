@@ -3,7 +3,7 @@
     <h3>Interview feedback<br><small>(order is randomized)</small></h3>
     <div class="panel panel-default">
       <div class="panel-body">
-        <% if @student.interview_assignments.for_course(@course).any? && Time.zone.now > @student.internship_course.start_date.in_time_zone(@course.office.time_zone) + 1.week %>
+        <% if @student.interview_assignments.for_course(@course).any? && Time.zone.now > @student.internship_course.start_date.in_time_zone(@course.office.time_zone).beginning_of_week + 1.week %>
           <div class="alert alert-info">
             <p>Ranking 1-2 means best fit, ranking 3-4 means good fit, ranking 5-6 means not a good fit.</p>
           </div>
