@@ -240,3 +240,57 @@ feature "admin viewing a student's internship page" do
     expect(page).to have_content internship.description
   end
 end
+
+feature "viewing a student's internship page after internship assignment" do
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:course) { FactoryBot.create(:internship_course) }
+  let(:student) { FactoryBot.create(:student, course: course) }
+  let(:internship) { FactoryBot.create(:internship, courses: [student.course]) }
+  let!(:interview_assignment) { FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_student: 1, feedback_from_student: 'Great interview!') }
+  let!(:internship_assignment) { FactoryBot.create(:internship_assignment, student: student, internship: internship, course: course) }
+
+  scenario "an admin can see internship assignment" do
+    login_as(admin, scope: :admin)
+    visit course_student_path(student.course, student)
+    expect(page).to have_content internship.name
+    expect(page).to have_content 'Contact name'
+  end
+
+  scenario "students can not see internship assignment before course.internship_assignments_visible is set" do
+    login_as(student, scope: :student)
+    visit course_student_path(student.course, student)
+    expect(page).to_not have_content 'Contact name'
+  end
+
+  scenario "students can see internship assignment after course.internship_assignments_visible is set" do
+    course.internship_assignments_visible = true
+    course.save
+    login_as(student, scope: :student)
+    visit course_student_path(student.course, student)
+    expect(page).to have_content internship.name
+    expect(page).to have_content 'Contact name'
+  end
+
+  scenario "admin can enable internship assignment student visibility" do
+    login_as(admin, scope: :admin)
+    visit course_path(student.course)
+    click_on 'Make internship assignments public'
+    logout(admin)
+    login_as(student, scope: :student)
+    visit course_student_path(student.course, student)
+    expect(page).to have_content internship.name
+    expect(page).to have_content 'Contact name'
+  end
+
+  scenario "admin can disable internship assignment student visibility" do
+    course.internship_assignments_visible = true
+    course.save
+    login_as(admin, scope: :admin)
+    visit course_path(student.course)
+    click_on 'Hide internship assignments'
+    logout(admin)
+    login_as(student, scope: :student)
+    visit course_student_path(student.course, student)
+    expect(page).to_not have_content 'Contact name'
+  end
+end

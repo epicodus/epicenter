@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_30_222450) do
+ActiveRecord::Schema.define(version: 2019_06_04_194149) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,7 @@ ActiveRecord::Schema.define(version: 2019_04_30_222450) do
     t.string "end_time_friday"
     t.integer "track_id"
     t.boolean "full"
+    t.boolean "internship_assignments_visible"
     t.index ["start_date"], name: "index_courses_on_start_date"
     t.index ["track_id"], name: "index_courses_on_track_id"
   end

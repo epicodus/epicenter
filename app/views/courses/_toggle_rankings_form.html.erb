@@ -9,3 +9,15 @@
     <% end %>
   <% end %>
 <% end %>
+<p></p>
+<% if course.internship_course? %>
+  <%= form_for course, method: :put do |f| %>
+    <% if course.internship_assignments_visible? %>
+      <%= f.hidden_field :internship_assignments_visible, value: false %>
+      <%= f.submit 'Hide internship assignments', class: 'btn btn-default' %>
+    <% else %>
+      <%= f.hidden_field :internship_assignments_visible, value: true %>
+      <%= f.submit 'Make internship assignments public', class: 'btn btn-default' %>
+    <% end %>
+  <% end %>
+<% end %>
