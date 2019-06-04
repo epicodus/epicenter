@@ -28,7 +28,7 @@
       </div>
     </div>
   </div>
-<% elsif @student.internship_assignment %>
+<% elsif @student.internship_assignment && @course.internship_assignments_visible? %>
   <div class="col-md-7">
     <h3>Internship</h3>
     <div class="panel panel-default">
