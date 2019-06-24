@@ -69,7 +69,7 @@ private
     EmailJob.perform_later(
       { :from => ENV['FROM_EMAIL_PAYMENT'],
         :to => student.email,
-        :bcc => ENV['FROM_EMAIL_PAYMENT'],
+        :bcc => ENV['ADMISSIONS_FROM_EMAIL'],
         :subject => "Epicodus payment failure notice",
         :text => "Hi #{student.name}. This is to notify you that a recent payment you made for Epicodus tuition has failed. Please reply to this email so we can sort it out together. Thanks!" }
     )
