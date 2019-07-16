@@ -16,4 +16,9 @@ describe WebhookPayment do
     webhook = WebhookPayment.new({ event_name: 'test', payment: payment })
     expect(webhook.payload).to eq PaymentSerializer.new(payment).as_json.merge({ event_name: 'test' })
   end
+
+  it 'overrides end_date if end_date included in params' do
+    webhook = WebhookPayment.new({ event_name: 'test', payment: payment, end_date: 'test-end-date' })
+    expect(webhook.payload[:end_date]).to eq 'test-end-date'
+  end
 end
