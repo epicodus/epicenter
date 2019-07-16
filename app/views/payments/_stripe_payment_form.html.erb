@@ -23,7 +23,7 @@
     <%= f.number_field :amount, { value: nil, class: 'form-control payment-input', required: true, step: 0.01 } %>
     <%= f.hidden_field :student_id, value: @student.id %>
     <span class="input-group-btn">
-      <%= f.submit 'Stripe payment', class: 'btn btn-primary payment-button', data: { confirm: "Charge #{@student.primary_payment_method.type.underscore.humanize.downcase} ending in #{@student.primary_payment_method.last_four_string}? Are cohort & plan correct?" } %>
+      <%= f.submit 'Stripe payment', class: 'btn btn-primary payment-button', data: { confirm: "Charge selected payment method? Are cohort & plan correct?" } %>
     </span>
   </div>
 
