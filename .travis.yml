@@ -1,3 +1,5 @@
+services:
+  - postgresql
 sudo: false
 language: ruby
 rvm:
@@ -7,12 +9,12 @@ notifications:
   email: false
 before_script:
   - "cp .env.example .env"
-  - "bundle exec rake db:create db:schema:load"
+  - "bundle exec rails db:create db:schema:load"
 before_install:
   - gem update --system
   - gem install bundler
   - gem --version
-  - wget http://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip
+  - wget http://chromedriver.storage.googleapis.com/2.37/chromedriver_linux64.zip
   - unzip chromedriver_linux64.zip
   - rm chromedriver_linux64.zip
   - sudo mv -f chromedriver /usr/local/bin/
@@ -29,3 +31,4 @@ deploy:
   run: "rake db:migrate"
 addons:
   chrome: stable
+  postgresql: '9.6'
