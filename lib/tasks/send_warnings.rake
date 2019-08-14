@@ -28,7 +28,7 @@ task :send_warnings => [:environment] do
             p "#{student.name} absent #{student.absences(course)} days. Email teacher."
           end
           student.update(attendance_warnings_sent: 2)
-        elsif !student.attendance_warnings_sent && student.absences(course) >= 2.5
+        elsif !student.attendance_warnings_sent && student.absences(course) >= 2.5  && !course.description.include?('ONLINE')
           if Rails.env.production?
             Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message("epicodus.com",
               { :from => "#{course.teacher} <#{course.admin.email}>",
