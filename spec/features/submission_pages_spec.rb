@@ -28,6 +28,13 @@ feature 'Visiting the submissions index page' do
       expect(page).to_not have_content reviewed_submission.student.name
     end
 
+    scenario 'lists only submissions for enrolled students', :stub_mailgun do
+      reviewed_submission = FactoryBot.create(:submission, code_review: code_review, student: student)
+      student.enrollments.delete_all
+      visit code_review_submissions_path(code_review)
+      expect(page).to_not have_content reviewed_submission.student.name
+    end
+
     scenario 'lists submissions in order of when they were submitted' do
       another_student = FactoryBot.create(:student)
       first_submission = FactoryBot.create(:submission, code_review: code_review, student: student)

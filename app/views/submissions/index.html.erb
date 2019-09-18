@@ -19,7 +19,7 @@
         </thead>
         <tbody>
           <% @submissions.each do |submission| %>
-            <% if submission.student %>
+            <% if submission.student.try(:enrollments).try(:any?) %>
               <tr>
                 <td><%= link_to submission.student.name, course_student_path(@code_review.course, submission.student) %></td>
                 <td><%= link_to 'View code', submission.link, target: '_blank' if submission.link %></td>
