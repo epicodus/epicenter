@@ -222,4 +222,23 @@ describe Enrollment do
       student.enrollments.first.destroy
     end
   end
+
+  describe '#clear_submissions' do
+    it 'clears submissions for withdrawn course' do
+      student = FactoryBot.create(:student)
+      code_review = FactoryBot.create(:code_review, course: student.course)
+      submission = FactoryBot.create(:submission, student: student, code_review: code_review)
+      student.enrollments.first.destroy
+      expect(submission.reload.needs_review).to eq false
+    end
+
+    it 'does not clear submissions for a different course' do
+      student = FactoryBot.create(:student)
+      other_course = FactoryBot.create(:course)
+      code_review = FactoryBot.create(:code_review, course: other_course)
+      submission = FactoryBot.create(:submission, student: student, code_review: code_review)
+      student.enrollments.first.destroy
+      expect(submission.reload.needs_review).to eq true
+    end
+  end
 end
