@@ -1,7 +1,7 @@
 <% if is_weekday? && IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip) %>
   <div class="row">
-    <div class="alert alert-danger col-md-6 col-md-offset-3 text-center">
-      This is Epicenter sign in. &nbsp;Attendance sign in has moved to <%= link_to '/attendance', attendance_path %>.
+    <div class="alert alert-info col-md-6 col-md-offset-3 text-center">
+      This is Epicenter sign in. &nbsp;For attendance sign in, go to <%= link_to '/attendance', attendance_path %>.
     </div>
   </div>
 <% end %>
