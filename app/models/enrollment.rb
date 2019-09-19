@@ -9,6 +9,7 @@ class Enrollment < ApplicationRecord
   acts_as_paranoid
 
   before_create :update_internship_class_in_crm, if: ->(enrollment) { enrollment.course.internship_course? }
+  before_destroy :clear_submissions
   before_destroy :remove_internship_class_in_crm, if: ->(enrollment) { enrollment.course.internship_course? && !enrollment.deleted? }
   after_destroy :really_destroy_if_withdrawn_before_attending, if: ->(enrollment) { Enrollment.with_deleted.exists?(enrollment.id) }
   after_create :update_cohort
@@ -47,5 +48,9 @@ private
     if (Time.zone.now.to_date < course.start_date.end_of_week) || (student.attendance_records_for(:all, course) == 0 && course.language.level != 4)
       really_destroy!
     end
+  end
+
+  def clear_submissions
+    student.submissions.where(code_review_id: course.code_reviews.pluck(:id)).update_all(needs_review: false)
   end
 end

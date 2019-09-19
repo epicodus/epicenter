@@ -1,6 +1,6 @@
 feature 'Visiting the submissions index page' do
-  let(:code_review) { FactoryBot.create(:code_review) }
   let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+  let(:code_review) { FactoryBot.create(:code_review, course: student.course) }
 
   context 'as a student' do
     before { login_as(student, scope: :student) }
@@ -30,7 +30,7 @@ feature 'Visiting the submissions index page' do
 
     scenario 'lists only submissions for enrolled students', :stub_mailgun do
       reviewed_submission = FactoryBot.create(:submission, code_review: code_review, student: student)
-      student.enrollments.delete_all
+      student.enrollments.destroy_all
       visit code_review_submissions_path(code_review)
       expect(page).to_not have_content reviewed_submission.student.name
     end
