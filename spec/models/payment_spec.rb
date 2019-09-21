@@ -232,36 +232,6 @@ describe Payment do
     end
   end
 
-  describe "failed" do
-    it "emails the student a failure notice if payment status is updated to 'failed'", :vcr, :stripe_mock do
-      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
-
-      allow(EmailJob).to receive(:perform_later).and_return({})
-
-      payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
-      payment.update(status: 'failed')
-
-      expect(EmailJob).to have_received(:perform_later).with(
-        { :from => ENV['FROM_EMAIL_PAYMENT'],
-          :to => student.email,
-          :bcc => ENV['ADMISSIONS_FROM_EMAIL'],
-          :subject => "Epicodus payment failure notice",
-          :text => "Hi #{student.name}. This is to notify you that a recent payment you made for Epicodus tuition has failed. Please reply to this email so we can sort it out together. Thanks!" }
-      )
-    end
-
-    it "does not email the student a failure notice twice for the same payment", :vcr, :stripe_mock do
-      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
-
-      allow(EmailJob).to receive(:perform_later).and_return({})
-
-      payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00, failure_notice_sent: true)
-
-      expect(EmailJob).to_not receive(:perform_later)
-      payment.update(status: 'failed')
-    end
-  end
-
   describe 'updating Close.io when a payment is made', :stub_mailgun, :dont_stub_crm, :vcr do
     let(:student) { FactoryBot.create :student_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com' }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
