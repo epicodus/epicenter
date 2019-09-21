@@ -103,7 +103,7 @@ describe Cohort do
     end
 
     it 'updates cohort end_date when adding more recent course to cohort' do
-      cohort = Cohort.create(start_date: Date.today, office: office, track: track, admin: admin)
+      cohort = Cohort.create(start_date: Date.today.beginning_of_week, office: office, track: track, admin: admin)
       future_course = FactoryBot.create(:future_course, class_days: [Date.today.monday + 30.weeks])
       cohort.courses << future_course
       expect(cohort.end_date).to eq future_course.end_date

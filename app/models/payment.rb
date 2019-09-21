@@ -16,7 +16,6 @@ class Payment < ApplicationRecord
   before_save :check_refund_date, if: ->(payment) { payment.refund_date.present? && payment.student.courses_with_withdrawn.any? }
   before_update :issue_refund, if: ->(payment) { payment.refund_amount? && !payment.offline? && !payment.refund_issued? }
 
-  after_update :send_payment_failure_notice, if: ->(payment) { payment.status == "failed" && !payment.failure_notice_sent? }
   after_save :update_crm
   after_create :send_webhook, if: ->(payment) { payment.category != 'keycard' && (payment.status == 'succeeded' || payment.status == 'offline') }
 
@@ -63,17 +62,6 @@ private
       errors.add(:base, exception.message)
       throw :abort
     end
-  end
-
-  def send_payment_failure_notice
-    EmailJob.perform_later(
-      { :from => ENV['FROM_EMAIL_PAYMENT'],
-        :to => student.email,
-        :bcc => ENV['ADMISSIONS_FROM_EMAIL'],
-        :subject => "Epicodus payment failure notice",
-        :text => "Hi #{student.name}. This is to notify you that a recent payment you made for Epicodus tuition has failed. Please reply to this email so we can sort it out together. Thanks!" }
-    )
-    update_attribute(:failure_notice_sent, true)
   end
 
   def set_category
