@@ -15,6 +15,19 @@
         <% end %>
         </p>
       </td>
+      <td>
+        <% if student.attendance_score(@course) <= 92 %>
+            <p class="text-danger">
+          <% else %>
+            <p>
+        <% end %>
+        <% if student.attendance_score(@course).nan? %>
+          No records yet
+        <% else %>
+          <%= student.absences(@course) %>
+        <% end %>
+        </p>
+      </td>
     <% end %>
     <% if params[:payment_plans] == "true" %>
       <td>

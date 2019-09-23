@@ -16,6 +16,7 @@
             <% unless @course.internship_course? %>
               <% if params[:attendance] == "true" %>
                 <th>Attendance</th>
+                <th>Absences</th>
               <% end %>
               <% if params[:payment_plans] == "true" %>
                 <th>Payment plan</th>
