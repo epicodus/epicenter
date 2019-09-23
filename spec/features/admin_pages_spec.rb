@@ -241,6 +241,7 @@ feature 'student roster page' do
     visit course_path(course)
     click_link 'View attendance'
     expect(page).to have_content '0%'
+    expect(page).to have_content '0'
   end
 
   scenario 'allows viewing payment plans' do
