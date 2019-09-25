@@ -19,10 +19,10 @@ task :tmp_update_cohorts3 => [:environment] do
 
   # rename cohorts in Close
   # Student.where.not(starting_cohort: nil).each do |student|
-  #   student.crm_lead.update({ 'custom.Cohort - Starting': student.starting_cohort.description })
+  #   student.crm_lead.update({ "custom.#{Rails.application.config.x.crm_fields['COHORT_STARTING']}": student.starting_cohort.description })
   # end
   # Student.where.not(cohort: nil).each do |student|
-  #   student.crm_lead.update({ 'custom.Cohort - Current': student.cohort.description })
+  #   student.crm_lead.update({ "custom.#{Rails.application.config.x.crm_fields['COHORT_CURRENT']}": student.cohort.description })
   # end
 
   if Rails.env.production?

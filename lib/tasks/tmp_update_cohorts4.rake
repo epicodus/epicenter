@@ -30,7 +30,7 @@ task :tmp_update_cohorts4 => [:environment] do
         # file.puts new_cohort_description || 'NOT FOUND'
         # file.puts ""
         # if new_cohort_description
-          # close_io_client.update_lead(lead['id'], {'custom.Cohort - Applied': new_cohort_description })
+          # close_io_client.update_lead(lead['id'], {"custom.#{Rails.application.config.x.crm_fields['COHORT_APPLIED']}": new_cohort_description })
           # file.puts existing_cohort_description + " => " + new_cohort_description
         # end
       # end
@@ -38,7 +38,7 @@ task :tmp_update_cohorts4 => [:environment] do
       #   new_cohort_description = cohorts_conversion[existing_cohort_description]
       #   if new_cohort_description
       #     file.puts existing_cohort_description + " => " + new_cohort_description
-      #     close_io_client.update_lead(lead['id'], {'custom.Cohort - Applied': new_cohort_description })
+      #     close_io_client.update_lead(lead['id'], {"custom.#{Rails.application.config.x.crm_fields['COHORT_APPLIED']}": new_cohort_description })
       #   end
       # end
     end

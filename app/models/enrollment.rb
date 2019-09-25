@@ -24,13 +24,13 @@ private
     starting_cohort = student.calculate_starting_cohort
     unless student.starting_cohort == starting_cohort
       student.update(starting_cohort: starting_cohort)
-      crm_update = crm_update.merge({ 'custom.Cohort - Starting': starting_cohort.try(:description), 'custom.Start Date': starting_cohort.try(:start_date).try(:to_s) })
+      crm_update = crm_update.merge({ "custom.#{Rails.application.config.x.crm_fields['COHORT_STARTING']}": starting_cohort.try(:description), "custom.#{Rails.application.config.x.crm_fields['START_DATE']}": starting_cohort.try(:start_date).try(:to_s) })
     end
     current_cohort = student.calculate_current_cohort
     unless student.cohort == current_cohort
       student.update(cohort: current_cohort)
       student.update(ending_cohort: current_cohort) unless current_cohort.nil?
-      crm_update = crm_update.merge({ 'custom.Cohort - Current': current_cohort.try(:description), 'custom.End Date': current_cohort.try(:end_date).try(:to_s) })
+      crm_update = crm_update.merge({ "custom.#{Rails.application.config.x.crm_fields['COHORT_CURRENT']}": current_cohort.try(:description), "custom.#{Rails.application.config.x.crm_fields['END_DATE']}": current_cohort.try(:end_date).try(:to_s) })
     end
     student.crm_lead.update(crm_update) if crm_update.present?
   end

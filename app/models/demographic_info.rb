@@ -63,23 +63,22 @@ class DemographicInfo
       @pronouns.delete('Other') && @pronouns.push(@pronouns_blank) if @pronouns.present? && @pronouns_blank.present? && @pronouns.include?('Other')
       fields = {}
       fields['addresses'] = ["label": "mailing", "address_1": @address, "city": @city, "state": @state, "zipcode": @zip, "country": @country]
-      fields['custom.Demographics - Birth Date'] = @birth_date
-      fields['custom.Demographics - Disability'] = @disability
-      fields['custom.Demographics - Veteran'] = @veteran
-      fields['custom.Demographics - Education'] = @education
-      fields['custom.Demographics - CS Degree'] = @cs_degree
-      fields['custom.Demographics - Previous job'] = @job
-      fields['custom.Demographics - Previous salary'] = @salary
-      fields['custom.Demographics - Shirt size'] = @shirt
-      fields['custom.Demographics - Gender'] = @genders.join(", ") if @genders
-      fields['custom.Demographics - Race'] = @races.join(", ") if @races
-      fields['custom.Demographics - After graduation plan'] = @after_graduation
-      fields['custom.Demographics - Time off planned'] = @time_off
-      fields['custom.Demographics - Pronouns'] = @pronouns.join(", ") if @pronouns
+      fields["custom.#{Rails.application.config.x.crm_fields['DEMOGRAPHICS_BIRTH_DATE']}"] = @birth_date
+      fields["custom.#{Rails.application.config.x.crm_fields['DEMOGRAPHICS_DISABILITY']}"] = @disability
+      fields["custom.#{Rails.application.config.x.crm_fields['DEMOGRAPHICS_VETERAN']}"] = @veteran
+      fields["custom.#{Rails.application.config.x.crm_fields['DEMOGRAPHICS_EDUCATION']}"] = @education
+      fields["custom.#{Rails.application.config.x.crm_fields['DEMOGRAPHICS_DEGREE']}"] = @cs_degree
+      fields["custom.#{Rails.application.config.x.crm_fields['DEMOGRAPHICS_PREVIOUS_JOB']}"] = @job
+      fields["custom.#{Rails.application.config.x.crm_fields['DEMOGRAPHICS_PREVIOUS_SALARY']}"] = @salary
+      fields["custom.#{Rails.application.config.x.crm_fields['DEMOGRAPHICS_SHIRT']}"] = @shirt
+      fields["custom.#{Rails.application.config.x.crm_fields['DEMOGRAPHICS_GENDER']}"] = @genders.join(", ") if @genders
+      fields["custom.#{Rails.application.config.x.crm_fields['DEMOGRAPHICS_RACE']}"] = @races.join(", ") if @races
+      fields["custom.#{Rails.application.config.x.crm_fields['DEMOGRAPHICS_AFTER_GRADUATION']}"] = @after_graduation
+      fields["custom.#{Rails.application.config.x.crm_fields['DEMOGRAPHICS_TIME_OFF']}"] = @time_off
+      fields["custom.#{Rails.application.config.x.crm_fields['DEMOGRAPHICS_PRONOUNS']}"] = @pronouns.join(", ") if @pronouns
       fields = fields.compact
-      # @student.crm_lead.update(fields.transform_values{nil})
       @student.crm_lead.update(fields)
-      @student.crm_lead.update({ 'custom.Demographics - Encrypted SSN': encrypted_ssn }) if ssn
+      @student.crm_lead.update({ "custom.#{Rails.application.config.x.crm_fields['SSN']}": encrypted_ssn }) if ssn
       true
     end
   end

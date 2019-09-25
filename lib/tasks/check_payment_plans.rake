@@ -8,7 +8,7 @@ task :check_payment_plans => [:environment] do
     Student.where(cohort_id: Cohort.where('start_date > ?', Date.parse('2018-10-01'))).each do |student|
       unless IGNORE_LIST.include? student.email
         lead = close_io_client.list_leads('email: "' + student.email + '"')['data'].first
-        plan_in_close = lead['custom']['Payment plan']
+        plan_in_close = lead['custom'][Rails.application.config.x.crm_fields['PAYMENT_PLAN']]
         if student.plan.try(:close_io_description) != plan_in_close
           file.puts "EPICENTER: #{student.plan.try(:close_io_description)} | CLOSE: #{plan_in_close} | #{student.email}"
           counter += 1
