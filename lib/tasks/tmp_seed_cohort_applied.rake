@@ -33,7 +33,7 @@ task :tmp_seed_cohort_applied => [:environment] do
         description = "Legacy: " + what_class_are_you_interested_in
       end
       file.puts "#{description} | #{what_class_are_you_interested_in} | #{email}"
-      close_io_client.update_lead(lead['id'], { 'custom.Cohort - Applied': description })
+      close_io_client.update_lead(lead['id'], { "custom.#{Rails.application.config.x.crm_fields['COHORT_APPLIED']}": description })
     end
   end
 

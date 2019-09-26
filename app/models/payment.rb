@@ -34,12 +34,12 @@ private
     amount_paid = student.total_paid / 100
     if student.crm_lead.status == "Applicant - Accepted"
       if student.course.try(:parttime?)
-        student.crm_lead.update({ status: "Enrolled - Part-Time", 'custom.Amount paid': amount_paid })
+        student.crm_lead.update({ status: "Enrolled - Part-Time", "custom.#{Rails.application.config.x.crm_fields['AMOUNT_PAID']}": amount_paid })
       else
-        student.crm_lead.update({ status: "Enrolled", 'custom.Amount paid': amount_paid })
+        student.crm_lead.update({ status: "Enrolled", "custom.#{Rails.application.config.x.crm_fields['AMOUNT_PAID']}": amount_paid })
       end
     else
-      student.crm_lead.update('custom.Amount paid': amount_paid)
+      student.crm_lead.update("custom.#{Rails.application.config.x.crm_fields['AMOUNT_PAID']}": amount_paid)
     end
     if refund_amount?
       student.crm_lead.update(note: "PAYMENT REFUND #{number_to_currency(refund_amount / 100.00)}: #{refund_notes}")

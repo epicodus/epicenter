@@ -11,7 +11,7 @@ task :tmp_update_cohorts_in_close2 => [:environment] do
         cohort = course.cohorts.first
         student.update(starting_cohort: cohort)
         file.puts "#{student.starting_cohort.description} | #{course.description} | #{student.email}"
-        student.crm_lead.update({ 'custom.Cohort - Starting': student.starting_cohort.try(:description) })
+        student.crm_lead.update({ "custom.#{Rails.application.config.x.crm_fields['COHORT_STARTING']}": student.starting_cohort.try(:description) })
       end
     end
   end

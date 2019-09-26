@@ -1,0 +1,37 @@
+default: &default
+  DEMOGRAPHICS_WORK_ELIGIBILITY_USA: 'Demographics - Work Eligibility (USA)'
+  FORUM_ID: 'Forum - ID'
+  EPICENTER_ID: 'Epicenter - ID'
+  INVITATION_TOKEN: 'Epicenter - Raw Invitation Token'
+  PAYMENT_PLAN: 'Payment plan'
+  AMOUNT_PAID: 'Amount paid'
+  SIGNED_INTERNSHIP_AGREEMENT: 'Signed internship agreement?'
+  COHORT_APPLIED: 'Cohort - Applied'
+  COHORT_STARTING: 'Cohort - Starting'
+  COHORT_CURRENT: 'Cohort - Current'
+  START_DATE: 'Start Date'
+  END_DATE: 'End Date'
+  INTERNSHIP_CLASS: '* Internship class'
+  DEMOGRAPHICS_BIRTH_DATE: 'Demographics - Birth Date'
+  DEMOGRAPHICS_DISABILITY: 'Demographics - Disability'
+  DEMOGRAPHICS_VETERAN: 'Demographics - Veteran'
+  DEMOGRAPHICS_EDUCATION: 'Demographics - Education'
+  DEMOGRAPHICS_DEGREE: 'Demographics - CS Degree'
+  DEMOGRAPHICS_PREVIOUS_JOB: 'Demographics - Previous job'
+  DEMOGRAPHICS_PREVIOUS_SALARY: 'Demographics - Previous salary'
+  DEMOGRAPHICS_SHIRT: 'Demographics - Shirt size'
+  DEMOGRAPHICS_GENDER: 'Demographics - Gender'
+  DEMOGRAPHICS_RACE: 'Demographics - Race'
+  DEMOGRAPHICS_AFTER_GRADUATION: 'Demographics - After graduation plan'
+  DEMOGRAPHICS_TIME_OFF: 'Demographics - Time off planned'
+  DEMOGRAPHICS_PRONOUNS: 'Demographics - Pronouns'
+  SSN: 'Demographics - Encrypted SSN'
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

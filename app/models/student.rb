@@ -52,7 +52,7 @@ class Student < User
       end
     end
     student.update(office: student.course.office, ending_cohort: cohort)
-    crm_lead.update_now({ 'custom.Epicenter - Raw Invitation Token': student.raw_invitation_token, 'custom.Epicenter - ID': student.id })
+    crm_lead.update_now({ "custom.#{Rails.application.config.x.crm_fields['INVITATION_TOKEN']}": student.raw_invitation_token, "custom.#{Rails.application.config.x.crm_fields['EPICENTER_ID']}": student.id })
     student
   end
 
@@ -351,7 +351,7 @@ class Student < User
   end
 
   def really_destroy
-    crm_lead.update({ 'custom.Epicenter - ID': nil, 'custom.Epicenter - Raw Invitation Token': nil })
+    crm_lead.update({ "custom.#{Rails.application.config.x.crm_fields['EPICENTER_ID']}": nil, "custom.#{Rails.application.config.x.crm_fields['INVITATION_TOKEN']}": nil })
     really_destroy!
   end
 
@@ -425,6 +425,6 @@ private
   end
 
   def update_plan_in_crm
-    crm_lead.update({ 'custom.Payment plan': plan.try(:close_io_description) })
+    crm_lead.update({ "custom.#{Rails.application.config.x.crm_fields['PAYMENT_PLAN']}": plan.try(:close_io_description) })
   end
 end

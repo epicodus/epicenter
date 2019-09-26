@@ -115,12 +115,12 @@ describe CrmLead, :dont_stub_crm, :vcr do
     it 'updates internship class field in CRM' do
       internship_course = FactoryBot.create(:internship_course)
       description = "#{internship_course.office.short_name} #{internship_course.description.split.first} #{internship_course.start_date.strftime('%b %-d')} - #{internship_course.end_date.strftime('%b %-d')}"
-      expect_any_instance_of(CrmLead).to receive(:update).with({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => description })
+      expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['INTERNSHIP_CLASS'] => description })
       student.crm_lead.update_internship_class(internship_course)
     end
 
     it 'clears internship class field in CRM if no course passed in' do
-      expect_any_instance_of(CrmLead).to receive(:update).with({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => nil })
+      expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['INTERNSHIP_CLASS'] => nil })
       student.crm_lead.update_internship_class(nil)
     end
   end

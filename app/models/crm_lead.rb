@@ -32,7 +32,7 @@ class CrmLead
   end
 
   def work_eligible?
-    lead.try('dig', 'custom').try('dig', 'Demographics - Work Eligibility (USA)') != 'No'
+    lead.try('dig', 'custom').try('dig', Rails.application.config.x.crm_fields['DEMOGRAPHICS_WORK_ELIGIBILITY_USA']) != 'No'
   end
 
   def update_internship_class(course)
@@ -43,7 +43,7 @@ class CrmLead
     else
       description = nil
     end
-    update({ ENV['CRM_INTERNSHIP_CLASS_FIELD'] => description })
+    update({ Rails.application.config.x.crm_fields['INTERNSHIP_CLASS'] => description })
   end
 
   def self.perform_update(lead_id, update_fields)
@@ -59,7 +59,7 @@ class CrmLead
   end
 
   def forum_id
-    lead.try('dig', 'custom').try('dig', 'Forum - ID').try(:to_int)
+    lead.try('dig', 'custom').try('dig', Rails.application.config.x.crm_fields['FORUM_ID']).try(:to_int)
   end
 
   def contact_id
@@ -83,7 +83,7 @@ private
   end
 
   def cohort_applied
-    cohort = lead.try('dig', 'custom').try('dig', 'Cohort - Applied')
+    cohort = lead.try('dig', 'custom').try('dig', Rails.application.config.x.crm_fields['COHORT_APPLIED'])
     if cohort.nil? || cohort.include?('Legacy') || cohort.include?('A later class')
       CrmLead.raise_error("Cohort - Applied not found in CRM")
     else

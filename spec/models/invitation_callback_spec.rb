@@ -189,7 +189,7 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
   it 'updates CRM status after creating student account with invitation token and student id' do
     part_time_cohort = FactoryBot.create(:part_time_cohort, start_date: Date.parse('2000-01-03'))
     allow_any_instance_of(Enrollment).to receive(:update_cohort).and_return({})
-    expect_any_instance_of(CrmLead).to receive(:update_now).with(hash_including(:"custom.Epicenter - Raw Invitation Token", :"custom.Epicenter - ID"))
+    expect_any_instance_of(CrmLead).to receive(:update_now).with(hash_including(:"custom.#{Rails.application.config.x.crm_fields['INVITATION_TOKEN']}", :"custom.#{Rails.application.config.x.crm_fields['EPICENTER_ID']}"))
     InvitationCallback.new(email: 'example-part-time@example.com')
   end
 end

@@ -248,7 +248,7 @@ describe Payment do
 
       it 'updates status and amount paid' do
         payment = Payment.new(student: student, amount: 270_00, payment_method: student.primary_payment_method, category: 'standard')
-        expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { status: "Enrolled", 'custom.Amount paid': payment.amount / 100 })
+        expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { status: "Enrolled", "custom.#{Rails.application.config.x.crm_fields['AMOUNT_PAID']}": payment.amount / 100 })
         payment.save
       end
 
@@ -257,7 +257,7 @@ describe Payment do
         part_time_lead_id = close_io_client.list_leads('email: "' + part_time_student.email + '"')['data'].first['id']
         allow_any_instance_of(CrmLead).to receive(:status).and_return("Applicant - Accepted")
         payment = Payment.new(student: part_time_student, amount: 270_00, payment_method: part_time_student.primary_payment_method, category: 'upfront')
-        expect(CrmUpdateJob).to receive(:perform_later).with(part_time_lead_id, { status: "Enrolled - Part-Time", 'custom.Amount paid': payment.amount / 100 })
+        expect(CrmUpdateJob).to receive(:perform_later).with(part_time_lead_id, { status: "Enrolled - Part-Time", "custom.#{Rails.application.config.x.crm_fields['AMOUNT_PAID']}": payment.amount / 100 })
         payment.save
       end
     end
@@ -270,14 +270,14 @@ describe Payment do
       it 'only updates amount paid' do
         payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
         payment_2 = Payment.new(student: student, amount: 50_00, payment_method: student.primary_payment_method, category: 'standard')
-        expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
+        expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { "custom.#{Rails.application.config.x.crm_fields['AMOUNT_PAID']}": (payment.amount + payment_2.amount) / 100 })
         payment_2.save
       end
 
       it 'updates amount paid for offline payments' do
         payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
         payment_2 = Payment.new(student: student, amount: 50_00, category: 'standard', offline: true)
-        expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Amount paid': (payment.amount + payment_2.amount) / 100 })
+        expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { "custom.#{Rails.application.config.x.crm_fields['AMOUNT_PAID']}": (payment.amount + payment_2.amount) / 100 })
         payment_2.save
       end
 
@@ -285,7 +285,7 @@ describe Payment do
         payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
         payment_2 = Payment.new(student: student, amount: 50_00, category: 'standard', offline: true)
         payment_2.update(refund_amount: 5000, refund_date: Date.today)
-        expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { 'custom.Amount paid': (payment.amount + payment_2.amount - payment_2.refund_amount) / 100 })
+        expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { "custom.#{Rails.application.config.x.crm_fields['AMOUNT_PAID']}": (payment.amount + payment_2.amount - payment_2.refund_amount) / 100 })
         payment_2.save
       end
 
