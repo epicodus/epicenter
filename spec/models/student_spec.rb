@@ -71,7 +71,7 @@ describe Student do
       plan = FactoryBot.create(:parttime_plan)
       course = FactoryBot.create(:part_time_course)
       student = FactoryBot.build(:student, email: 'example@example.com', plan: nil, courses: [course])
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { "custom.#{Rails.application.config.x.crm_fields['PAYMENT_PLAN']}": plan.close_io_description })
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PAYMENT_PLAN'] => plan.close_io_description })
       student.save
     end
 
@@ -79,14 +79,14 @@ describe Student do
       plan = FactoryBot.create(:special_plan)
       course = FactoryBot.create(:course, description: 'Fidgetech')
       student = FactoryBot.build(:student, email: 'example@example.com', plan: nil, courses: [course])
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { "custom.#{Rails.application.config.x.crm_fields['PAYMENT_PLAN']}": plan.close_io_description })
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PAYMENT_PLAN'] => plan.close_io_description })
       student.save
     end
 
     it 'updates in Close when plan_id changed' do
       student = FactoryBot.create(:student, email: 'example@example.com')
       new_plan = FactoryBot.create(:loan_plan)
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { "custom.#{Rails.application.config.x.crm_fields['PAYMENT_PLAN']}": new_plan.close_io_description })
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PAYMENT_PLAN'] => new_plan.close_io_description })
       student.update(plan: new_plan)
     end
 
@@ -1143,7 +1143,7 @@ describe Student do
 
     it 'clears CRM student id & invitation token when student expunged' do
       allow_any_instance_of(CrmLead).to receive(:update).and_return({})
-      expect_any_instance_of(CrmLead).to receive(:update).with({:"custom.#{Rails.application.config.x.crm_fields['EPICENTER_ID']}" => nil, :"custom.#{Rails.application.config.x.crm_fields['INVITATION_TOKEN']}" => nil })
+      expect_any_instance_of(CrmLead).to receive(:update).with({Rails.application.config.x.crm_fields['EPICENTER_ID'] => nil, Rails.application.config.x.crm_fields['INVITATION_TOKEN'] => nil })
       student.really_destroy
     end
   end

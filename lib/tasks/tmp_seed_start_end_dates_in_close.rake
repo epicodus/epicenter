@@ -9,7 +9,7 @@ task :tmp_seed_start_end_dates_in_close => [:environment] do
       start_date = student.starting_cohort.try(:start_date)
       end_date  = student.cohort.try(:end_date)
       puts "#{student.email} | #{start_date.try(:to_s)} | #{end_date.try(:to_s)}"
-      student.crm_lead.update({ "custom.#{Rails.application.config.x.crm_fields['START_DATE']}": start_date.try(:to_s), "custom.#{Rails.application.config.x.crm_fields['END_DATE']}": end_date.try(:to_s) })
+      student.crm_lead.update({ Rails.application.config.x.crm_fields['START_DATE'] => start_date.try(:to_s), Rails.application.config.x.crm_fields['END_DATE'] => end_date.try(:to_s) })
     end
   end
 end

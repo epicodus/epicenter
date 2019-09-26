@@ -9,8 +9,8 @@ task :find_leads_missing_cohorts_2 => [:environment] do
       email = lead['contacts'].first['emails'].first['email']
       student = Student.with_deleted.find_by(email: email)
       if student
-        starting_cohort_crm = lead.try('dig', 'custom').try('dig', Rails.application.config.x.crm_fields['COHORT_STARTING'])
-        current_cohort_crm = lead.try('dig', 'custom').try('dig', Rails.application.config.x.crm_fields['COHORT_CURRENT'])
+        starting_cohort_crm = lead.try('dig', Rails.application.config.x.crm_fields['COHORT_STARTING'])
+        current_cohort_crm = lead.try('dig', Rails.application.config.x.crm_fields['COHORT_CURRENT'])
         starting_cohort_epicenter = student.starting_cohort.try(:description)
         current_cohort_epicenter = student.cohort.try(:description)
         if starting_cohort_crm.try(:include?, '2018') || starting_cohort_crm.try(:include?, '2019') || current_cohort_crm.try(:include?, '2018') || current_cohort_crm.try(:include?, '2019')

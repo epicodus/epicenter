@@ -25,13 +25,13 @@ task :find_leads_missing_cohorts => [:environment] do
           file.puts "#{student.email}: Missing starting cohort in Epicenter"
           # log(student, file) if student.courses_with_withdrawn.fulltime_courses.any?
           # student.update(starting_cohort: calculated_starting_cohort)
-          # student.crm_lead.update({ "custom.#{Rails.application.config.x.crm_fields['COHORT_STARTING']}": calculated_starting_cohort.description, "custom.#{Rails.application.config.x.crm_fields['START_DATE']}": calculated_starting_cohort.start_date.to_s })
+          # student.crm_lead.update({ Rails.application.config.x.crm_fields['COHORT_STARTING'] => calculated_starting_cohort.description, Rails.application.config.x.crm_fields['START_DATE'] => calculated_starting_cohort.start_date.to_s })
         elsif student.starting_cohort.description != calculated_starting_cohort.description
           counter += 1
           file.puts "#{student.email}: Starting cohort should be updated: #{student.starting_cohort.description} ==> #{calculated_starting_cohort.description}"
           # log(student, file)
           # student.update(starting_cohort: calculated_starting_cohort)
-          # student.crm_lead.update({ "custom.#{Rails.application.config.x.crm_fields['COHORT_STARTING']}": calculated_starting_cohort.description, "custom.#{Rails.application.config.x.crm_fields['START_DATE']}": calculated_starting_cohort.start_date.to_s })
+          # student.crm_lead.update({ Rails.application.config.x.crm_fields['COHORT_STARTING'] => calculated_starting_cohort.description, Rails.application.config.x.crm_fields['START_DATE'] => calculated_starting_cohort.start_date.to_s })
         end
 
         # check starting_cohort & start date in Close matches starting_cohort in Epicenter
@@ -73,13 +73,13 @@ task :find_leads_missing_cohorts => [:environment] do
           file.puts "#{student.email}: Missing cohort in Epicenter"
           # log(student, file) if student.courses.internship_courses.any?
           # student.update(cohort: calculated_current_cohort)
-          # student.crm_lead.update({ "custom.#{Rails.application.config.x.crm_fields['COHORT_CURRENT']}": calculated_current_cohort.description, "custom.#{Rails.application.config.x.crm_fields['END_DATE']}": calculated_current_cohort.end_date.to_s })
+          # student.crm_lead.update({ Rails.application.config.x.crm_fields['COHORT_CURRENT'] => calculated_current_cohort.description, Rails.application.config.x.crm_fields['END_DATE'] => calculated_current_cohort.end_date.to_s })
         elsif student.cohort.description != calculated_current_cohort.description
           counter += 1
           file.puts "#{student.email}: Current Cohort should be updated: #{student.cohort.description} ==> #{calculated_current_cohort.description}"
           # log(student, file)
           # student.update(cohort: calculated_current_cohort)
-          # student.crm_lead.update({ "custom.#{Rails.application.config.x.crm_fields['COHORT_CURRENT']}": calculated_current_cohort.description, "custom.#{Rails.application.config.x.crm_fields['END_DATE']}": calculated_current_cohort.end_date.to_s })
+          # student.crm_lead.update({ Rails.application.config.x.crm_fields['COHORT_CURRENT'] => calculated_current_cohort.description, Rails.application.config.x.crm_fields['END_DATE'] => calculated_current_cohort.end_date.to_s })
         end
 
         # check current cohort & end date in Close matches cohort in Epicenter
