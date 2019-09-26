@@ -139,6 +139,19 @@ describe Enrollment do
         student.course = part_time_cohort.courses.first
         expect(student.ending_cohort).to eq part_time_cohort
       end
+
+      it 'updates office when adding course in different office' do
+        seattle_course = FactoryBot.create(:seattle_course)
+        student.course = seattle_course
+        expect(student.office).to eq seattle_course.office
+      end
+
+      it 'does not update office when adding course in same office' do
+        office = student.office
+        seattle_course = FactoryBot.create(:course, office: office)
+        expect(student).to_not receive(:update)
+        student.course = seattle_course
+      end
     end
 
     context 'removing enrollments' do
