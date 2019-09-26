@@ -23,7 +23,7 @@ RSpec.describe CrmUpdateJob, :vcr, type: :job do
   end
 
   it "executes perform for updating lead" do
-    update_fields = { "custom.#{Rails.application.config.x.crm_fields['AMOUNT_PAID']}": '100' }
+    update_fields = { Rails.application.config.x.crm_fields['AMOUNT_PAID'] => '100' }
     expect_any_instance_of(Closeio::Client).to receive(:update_lead).with(lead_id, update_fields)
     perform_enqueued_jobs { CrmUpdateJob.perform_later(lead_id, update_fields) }
   end

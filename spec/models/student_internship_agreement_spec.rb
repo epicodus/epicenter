@@ -22,7 +22,7 @@ describe StudentInternshipAgreement do
     it 'updates the internship agreement field in close', :stub_mailgun, :dont_stub_crm do
       allow_any_instance_of(CrmLead).to receive(:update)
       student.reload
-      expect_any_instance_of(CrmLead).to receive(:update).with({ "custom.#{Rails.application.config.x.crm_fields['SIGNED_INTERNSHIP_AGREEMENT']}": 'Yes' })
+      expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['SIGNED_INTERNSHIP_AGREEMENT'] => 'Yes' })
       StudentInternshipAgreement.create_from_signature_id(signature.signature_id)
     end
   end
