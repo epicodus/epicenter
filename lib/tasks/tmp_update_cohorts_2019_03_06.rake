@@ -36,8 +36,8 @@ task :tmp_update_cohorts_2019_03_06 => [:environment] do
 
         # check starting_cohort & start date in Close matches starting_cohort in Epicenter
         # lead = close_io_client.list_leads('email: "' + student.email + '"')['data'].first
-        # close_starting_cohort = lead['custom'][Rails.application.config.x.crm_fields['COHORT_STARTING']]
-        # close_start_date = lead['custom'][Rails.application.config.x.crm_fields['START_DATE']]
+        # close_starting_cohort = lead[Rails.application.config.x.crm_fields['COHORT_STARTING']]
+        # close_start_date = lead[Rails.application.config.x.crm_fields['START_DATE']]
         # if close_starting_cohort.nil?
         #   counter += 1
         #   file.puts "ERROR: #{student.email}: Missing starting_cohort in Close"
@@ -84,8 +84,8 @@ task :tmp_update_cohorts_2019_03_06 => [:environment] do
 
         # check current cohort & end date in Close matches cohort in Epicenter
         # lead = close_io_client.list_leads('email: "' + student.email + '"')['data'].first
-        # close_current_cohort = lead['custom'][Rails.application.config.x.crm_fields['COHORT_CURRENT']]
-        # close_end_date = lead['custom'][Rails.application.config.x.crm_fields['END_DATE']]
+        # close_current_cohort = lead[Rails.application.config.x.crm_fields['COHORT_CURRENT']]
+        # close_end_date = lead[Rails.application.config.x.crm_fields['END_DATE']]
         # if close_current_cohort.nil?
         #   counter += 1
         #   file.puts "ERROR: #{student.email}: Missing current cohort in Close"
