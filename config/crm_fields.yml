@@ -1,5 +1,8 @@
 default: &default
+  DEMOGRAPHICS_DIPLOMA: 'custom.lcf_ZD6EzawTf851IK6BqkKi9PugNKthpgjJotbNc9hMSAu'
+  DEMOGRAPHICS_OVER18: 'custom.lcf_4qKJ9VGRB1DYjwFSOnrDBowHD4rxBT6KmS82HqU9uoQ'
   DEMOGRAPHICS_WORK_ELIGIBILITY_USA: 'custom.lcf_A6Wt06IbJVBIWiqgOKWveZjWmd1SJNrExmA6mFse0qT'
+  DEMOGRAPHICS_WORK_ELIGIBILITY_COUNTRY: 'custom.lcf_qogMsgZA0BqO8EhNvX7ArkNqSteDR68to4YbYP9uqeX'
   FORUM_ID: 'custom.lcf_lfdvql0X4wl4vWdLawHg0Z02F8mOg62COYzQynsWiws'
   EPICENTER_ID: 'custom.lcf_KKAmJRVPbnDXx5PawPeoMVbtevmzGYxWYM6h4nbRcJk'
   INVITATION_TOKEN: 'custom.lcf_TYIs6589OLrpwJdq3SZN8q4b8bTPcJDDL8BODUlz5WQ'
@@ -26,6 +29,8 @@ default: &default
   DEMOGRAPHICS_TIME_OFF: 'custom.lcf_Tpvla2MOt4WF7P6J1UvOs1e1wpgb0fUwFIYMUpX7S3L'
   DEMOGRAPHICS_PRONOUNS: 'custom.lcf_Ao2W8RL1PK6Q7ofjizg13tUmCsUWW5byZjXffliA8Af'
   SSN: 'custom.lcf_dyL6MH1fyoZDutSMeAJqTH27vp2RampGnyioDeHOL7e'
+  WITHDRAWAL_DATE: 'custom.lcf_se5gJLcIu02UU85KOqs0c8mjm7FmlBIDlbIViKM0y4e'
+  KEYCARD: 'custom.lcf_aCBCdhCvvTd7pVi5w4DGnRaQfR9Qty0juUFjt2v0jxa'
 
 development:
   <<: *default
