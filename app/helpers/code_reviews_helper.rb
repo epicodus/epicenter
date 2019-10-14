@@ -2,7 +2,7 @@ module CodeReviewsHelper
   def markdown(text)
     html = Redcarpet::Render::HTML.new(prettify: true, escape_html: true)
     markdown = Redcarpet::Markdown.new(html, space_after_headers: true, fenced_code_blocks: true, disable_indented_code_blocks: true)
-    markdown.render(text).html_safe
+    markdown.render(text).html_safe unless text.nil?
   end
 
   def tr_for_grade(grade, &block)
