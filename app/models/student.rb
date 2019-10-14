@@ -153,6 +153,10 @@ class Student < User
     end
   end
 
+  def pairs
+    attendance_records.map {|s| s.pair_id}.compact.sort
+  end
+
   def latest_total_grade_score
     @latest_total_grade_score ||= most_recent_submission_grades.try(:inject, 0) { |score, grade| score += grade.score.value }
   end

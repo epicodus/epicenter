@@ -250,6 +250,10 @@ describe Student do
     end
   end
 
+  describe "#pairs" do
+    
+  end
+
   describe "#latest_total_grade_score" do
     let(:student) { FactoryBot.create(:student) }
     let(:submission) { FactoryBot.create(:submission, student: student) }

@@ -107,7 +107,7 @@ class Course < ApplicationRecord
   end
 
   def other_course_students(student)
-    students.where.not(id: student.id)
+    students.where.not(id: student.id).order(:name)
   end
 
   def other_students
