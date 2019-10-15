@@ -51,6 +51,7 @@
       <h3>Pairing Roster</h3>
       <div class="panel panel-default">
         <div class="panel-body">
+          <p class="alert" id="pairing-roster-row" data-content="<%= @student.attendance_records.count - @student.pairs.count %>">Number of times signed in solo: &nbsp;<%= @student.attendance_records.count - @student.pairs.count %></p>
           <table class="table table-hover">
             <thead>
               <th>Name</th>
@@ -58,7 +59,7 @@
             </thead>
             <tbody>
               <% @course.other_course_students(@student).each do |student| %>
-                <tr>
+                <tr id="pairing-roster-row" data-content="<%= student.pairs.count(@student.id) %>">
                   <td class="col-md-4"><%= student.name %></td>
                   <td class="col-md-2"><%= student.pairs.count(@student.id) %></td>
                 </tr>
