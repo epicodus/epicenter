@@ -251,7 +251,14 @@ describe Student do
   end
 
   describe "#pairs" do
-    
+    let(:course) { FactoryBot.create(:course) }
+    let(:student_1) { FactoryBot.create(:student, course: course) }
+    let(:student_2) { FactoryBot.create(:student, course: course) }
+
+    it "returns list of all pair ids" do
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair_id: student_2.id)
+      expect(student_1.pairs).to eq [student_2.id]
+    end
   end
 
   describe "#latest_total_grade_score" do
