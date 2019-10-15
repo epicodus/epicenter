@@ -29,7 +29,7 @@ private
     authorize! :update, attendance_record
     if attendance_record.update(attendance_record_params)
       sign_out student
-      redirect_to sign_out_path, notice: "Goodbye #{attendance_record.student.name}. Your attendance record has been updated."
+      redirect_to sign_out_path, notice: "Goodbye #{attendance_record.student.name}. Your attendance record has been updated. Please remember to shut down your computer."
     else
       fail("Something went wrong: " + attendance_record.errors.full_messages.join(", "))
     end
