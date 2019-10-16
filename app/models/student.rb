@@ -82,8 +82,12 @@ class Student < User
     absences_penalty + tardies_penalty + left_earlies_penalty
   end
 
-  def solos(filtered_course)
-    attendance_records.where(pair_id: nil, ignore: nil).where("date between ? and ?", filtered_course.try(:start_date), filtered_course.try(:end_date)).select { |ar| !ar.date.friday? }.count
+  def solos(filtered_course = nil)
+    if filtered_course
+      attendance_records.where(pair_id: nil, ignore: nil).where("date between ? and ?", filtered_course.try(:start_date), filtered_course.try(:end_date)).select { |ar| !ar.date.friday? }.count
+    else
+      attendance_records.where(pair_id: nil, ignore: nil).select { |ar| !ar.date.friday? }.count
+    end
   end
 
   def internship_course

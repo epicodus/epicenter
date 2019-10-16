@@ -261,6 +261,20 @@ describe Student do
     end
   end
 
+  describe "#solos" do
+    let(:student) { FactoryBot.create(:student) }
+
+    it "returns number of times student signed in without pair" do
+      attendance_record = FactoryBot.create(:attendance_record, student: student, date: Date.today.beginning_of_week)
+      expect(student.solos).to eq 1
+    end
+
+    it "does not include Fridays in solo count" do
+      attendance_record = FactoryBot.create(:attendance_record, student: student, date: Date.today.beginning_of_week + 4.days)
+      expect(student.solos).to eq 0
+    end
+  end
+
   describe "#latest_total_grade_score" do
     let(:student) { FactoryBot.create(:student) }
     let(:submission) { FactoryBot.create(:submission, student: student) }
