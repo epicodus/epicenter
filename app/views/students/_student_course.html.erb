@@ -51,7 +51,7 @@
       <h3>Pairing Roster</h3>
       <div class="panel panel-default">
         <div class="panel-body">
-          <p class="alert" id="pairing-roster-row" data-content="<%= @student.attendance_records.count - @student.pairs.count %>">Number of times signed in solo: &nbsp;<%= @student.attendance_records.count - @student.pairs.count %></p>
+          <p class="alert" id="pairing-roster-row" data-content="<%= @student.solos %>">Number of times signed in solo: &nbsp;<%= @student.solos %></p>
           <table class="table table-hover">
             <thead>
               <th>Name</th>
