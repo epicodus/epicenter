@@ -39,6 +39,7 @@ gem 'openssl'
 gem 'jwt'
 gem 'octokit'
 gem 'httparty'
+gem "sprockets", "~> 3.7.2" # temp until issue fixed
 
 group :development do
   gem 'spring'
