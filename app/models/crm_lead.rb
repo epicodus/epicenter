@@ -96,9 +96,9 @@ private
   end
 
   def track
-    if cohort_applied.include? 'Front End Development'
-      Track.find_by(description: 'Front End Development')
-    elsif cohort_applied.include? 'Part-'
+    if cohort_applied.include? 'Part-Time JS/React'
+      Track.find_by(description: 'Part-Time JS/React')
+    elsif cohort_applied.include? 'Part-Time Intro to Programming'
       Track.find_by(description: 'Part-Time Intro to Programming')
     else
       Track.find_by(description: cohort_applied.split[4]) || CrmLead.raise_error("Track not found in Epicenter")

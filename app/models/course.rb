@@ -159,8 +159,8 @@ class Course < ApplicationRecord
 private
 
   def set_start_and_end_dates
-    self.start_date = class_days.select { |day| !day.saturday? && !day.sunday? }.sort.first
-    self.end_date = class_days.select { |day| !day.saturday? && !day.sunday? }.sort.last
+    self.start_date = class_days.sort.first
+    self.end_date = class_days.sort.last
   end
 
   def import_code_reviews
@@ -174,7 +174,7 @@ private
   end
 
   def set_parttime
-    self.parttime = language.name.downcase.include?('evening')
+    self.parttime = language.name.downcase.include?('evening') || language.name.downcase.include?('part-time')
     true
   end
 
@@ -188,16 +188,24 @@ private
   end
 
   def set_class_days
+    if language.name.include?('part-time track')
+      days = [0,2,4]
+    elsif language.parttime?
+      days = [1,3]
+    else
+      days = [1,2,3,4,5]
+    end
     class_days = []
     day = start_date.beginning_of_week
     language.number_of_days.times do
-      while day.saturday? || day.sunday? || (language.skip_holiday_weeks? && Rails.configuration.holiday_weeks.include?(day.strftime('%Y-%m-%d'))) do
-        day = day.next_week
+      while !days.include?(day.wday) || (language.skip_holiday_weeks? && Rails.configuration.holiday_weeks.include?(day.strftime('%Y-%m-%d')))
+        if language.skip_holiday_weeks? && Rails.configuration.holiday_weeks.include?(day.strftime('%Y-%m-%d'))
+          day = day.next_week
+        else
+          day = day.next
+        end
       end
-      while language.parttime? && !(day.monday? || day.wednesday?)
-        day = day.next
-      end
-      class_days << day unless Rails.configuration.holidays.include? day.strftime('%Y-%m-%d')
+      class_days << day unless Rails.configuration.holidays.include?(day.strftime('%Y-%m-%d'))
       day = day.next
     end
     self.class_days = class_days

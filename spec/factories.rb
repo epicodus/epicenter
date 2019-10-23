@@ -398,7 +398,7 @@ FactoryBot.define do
     end
 
     factory :parttime_plan do
-      short_name { 'parttime' }
+      short_name { 'parttime-intro' }
       name { 'Evening intro class ($100)' }
       close_io_description { 'Evening intro class ($100)' }
       parttime { true }
