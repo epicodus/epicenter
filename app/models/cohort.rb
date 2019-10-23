@@ -37,6 +37,13 @@ class Cohort < ApplicationRecord
     if track.description == 'Part-Time Intro to Programming'
       course = Course.create({ track: track, office: office, admin: admin, language: track.languages.first, start_date: start_date, start_time: '6:00 PM', end_time: '9:00 PM' })
       self.courses << course
+    elsif track.description == 'Part-Time JS/React'
+      next_course_start_date = start_date
+      3.times do |level|
+        course = Course.create({ language: track.languages.find_by(level: level), start_date: skip_holidays(next_course_start_date), office: office, track: track, admin: admin, start_time: '6:00 PM', end_time: '9:00 PM' })
+        next_course_start_date = course.end_date.next_week
+        self.courses << course
+      end
     else
       next_course_start_date = start_date
       5.times do |level|

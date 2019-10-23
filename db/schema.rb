@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_04_194149) do
+ActiveRecord::Schema.define(version: 2019_10_23_001721) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -163,6 +163,8 @@ ActiveRecord::Schema.define(version: 2019_06_04_194149) do
     t.integer "number_of_days"
     t.boolean "skip_holiday_weeks"
     t.boolean "parttime"
+    t.integer "number_of_weeks"
+    t.boolean "archived"
   end
 
   create_table "languages_tracks", id: false, force: :cascade do |t|
