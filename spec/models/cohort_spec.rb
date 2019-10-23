@@ -41,11 +41,11 @@ describe Cohort do
     end
   end
 
-  describe 'creating a part-time cohort' do
+  describe 'creating a part-time intro cohort' do
     let(:admin) { FactoryBot.create(:admin) }
     let(:track) { FactoryBot.create(:part_time_track) }
 
-    it 'creates a part-time cohort and course' do
+    it 'creates a part-time intro cohort and course' do
       office = admin.current_course.office
       cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-13'))
       expect(cohort.description).to eq "2017-03-13 to 2017-06-21 #{office.short_name} Part-Time Intro to Programming"
@@ -54,6 +54,23 @@ describe Cohort do
       expect(cohort.admin).to eq admin
       expect(cohort.start_date).to eq Date.parse('2017-03-13')
       expect(cohort.courses.count).to eq 1
+      expect(cohort.courses.first.language).to eq track.languages.first
+    end
+  end
+
+  describe 'creating a part-time js/react cohort' do
+    let(:admin) { FactoryBot.create(:admin) }
+    let(:track) { FactoryBot.create(:part_time_js_react_track) }
+
+    it 'creates a part-time js/react cohort and courses' do
+      office = admin.current_course.office
+      cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2020-01-07'))
+      expect(cohort.description).to eq "2020-01-07 to 2020-06-21 #{office.short_name} Part-Time JS/React"
+      expect(cohort.office).to eq office
+      expect(cohort.track).to eq track
+      expect(cohort.admin).to eq admin
+      expect(cohort.start_date).to eq Date.parse('2020-01-07')
+      expect(cohort.courses.count).to eq 3
       expect(cohort.courses.first.language).to eq track.languages.first
     end
   end
