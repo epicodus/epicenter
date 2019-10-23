@@ -104,6 +104,24 @@ FactoryBot.define do
       association :language, factory: :evening_language
     end
 
+    factory :intro_part_time_js_react_course do
+      start_time { '6:00 PM' }
+      end_time { '9:00 PM' }
+      association :language, factory: :intro_part_time_js_react_language
+    end
+
+    factory :js_part_time_js_react_course do
+      start_time { '6:00 PM' }
+      end_time { '9:00 PM' }
+      association :language, factory: :js_part_time_js_react_language
+    end
+
+    factory :react_part_time_js_react_course do
+      start_time { '6:00 PM' }
+      end_time { '9:00 PM' }
+      association :language, factory: :react_part_time_js_react_language
+    end
+
     factory :seattle_part_time_course do
       start_time { '6:00 PM' }
       end_time { '9:00 PM' }
@@ -219,6 +237,14 @@ FactoryBot.define do
       end
     end
 
+    factory :part_time_js_react_cohort do
+      description { '2020-01-07 to 2000-04-12 PDX Part-Time Intro to Programming' }
+      association :track, factory: :part_time_js_react_track
+      before(:create) do |cohort|
+        cohort.courses << build(:intro_part_time_js_react_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 6.weeks - 2.days])
+      end
+    end
+
     factory :full_cohort do
       before(:create) do |cohort|
         cohort.courses << build(:level0_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days])
@@ -267,6 +293,7 @@ FactoryBot.define do
       name { 'Intro' }
       level { 0 }
       number_of_days { 24 }
+      number_of_weeks { 5 }
       skip_holiday_weeks { true }
     end
 
@@ -274,6 +301,7 @@ FactoryBot.define do
       name { 'Evening' }
       level { 0 }
       number_of_days { 30 }
+      number_of_weeks { 15 }
       skip_holiday_weeks { true }
       parttime { true }
     end
@@ -304,6 +332,30 @@ FactoryBot.define do
       level { 4 }
       number_of_days { 35 }
       skip_holiday_weeks { false }
+    end
+
+    factory :intro_part_time_js_react_language do
+      name { 'Intro (part-time track)' }
+      level { 0 }
+      number_of_days { 18 }
+      number_of_weeks { 6 }
+      skip_holiday_weeks { true }
+    end
+
+    factory :js_part_time_js_react_language do
+      name { 'JavaScript (part-time track)' }
+      level { 1 }
+      number_of_days { 21 }
+      number_of_weeks { 7 }
+      skip_holiday_weeks { true }
+    end
+
+    factory :react_part_time_js_react_language do
+      name { 'React (part-time track)' }
+      level { 2 }
+      number_of_days { 33 }
+      number_of_weeks { 11 }
+      skip_holiday_weeks { true }
     end
   end
 
@@ -826,6 +878,16 @@ FactoryBot.define do
       before(:create) do |track|
         track.languages = []
         track.languages << build(:evening_language)
+      end
+    end
+
+    factory :part_time_js_react_track do
+      description { 'Part-Time JS/React' }
+      before(:create) do |track|
+        track.languages = []
+        track.languages << build(:intro_part_time_js_react_language)
+        track.languages << build(:js_part_time_js_react_language)
+        track.languages << build(:react_part_time_js_react_language)
       end
     end
   end
