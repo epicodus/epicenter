@@ -238,7 +238,7 @@ FactoryBot.define do
     end
 
     factory :part_time_js_react_cohort do
-      description { '2020-01-07 to 2000-04-12 PDX Part-Time Intro to Programming' }
+      description { '2020-01-07 to 2000-04-12 PDX Part-Time JS/React' }
       association :track, factory: :part_time_js_react_track
       before(:create) do |cohort|
         cohort.courses << build(:intro_part_time_js_react_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 6.weeks - 2.days])
@@ -456,6 +456,16 @@ FactoryBot.define do
       parttime { true }
       upfront_amount { 100_00 }
       student_portion { 100_00 }
+    end
+
+    factory :parttime_track_plan do
+      short_name { 'parttime-track' }
+      name { 'Part-Time Track Plan ($5400)' }
+      close_io_description { 'Part-Time Track Plan ($5400)' }
+      parttime { true }
+      upfront { true }
+      upfront_amount { 5400_00 }
+      student_portion { 5400_00 }
     end
 
     factory :special_plan do

@@ -36,12 +36,20 @@ describe Student do
       expect(student.plan).to eq special_plan
     end
 
-    it 'sets parttime students to parttime plan' do
+    it 'sets parttime intro students to parttime plan' do
       parttime_plan = FactoryBot.create(:parttime_plan)
       course = FactoryBot.create(:part_time_course)
       student = FactoryBot.build(:student, plan_id: nil, courses: [course])
       student.save
       expect(student.plan).to eq parttime_plan
+    end
+
+    it 'does not set payment plan for parttime track students' do
+      parttime_plan = FactoryBot.create(:parttime_plan)
+      cohort = FactoryBot.create(:part_time_js_react_cohort)
+      student = FactoryBot.build(:student, plan_id: nil, courses: cohort.courses)
+      student.save
+      expect(student.plan).to eq nil
     end
 
     it 'does not change payment plan if one already assigned' do
