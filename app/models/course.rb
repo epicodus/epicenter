@@ -72,6 +72,10 @@ class Course < ApplicationRecord
     where('start_date > ?', Time.zone.now.to_date).includes(:admin).order(:description)
   end
 
+  def self.current_and_previous_courses
+    where('start_date <= ?', Time.zone.now.to_date).order(:start_date)
+  end
+
   def self.current_and_future_courses
     today = Time.zone.now.to_date
     where('start_date <= ? AND end_date >= ? OR start_date >= ?', today, today, today).order(:description)
