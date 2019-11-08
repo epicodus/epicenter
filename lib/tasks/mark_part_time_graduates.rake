@@ -1,9 +1,9 @@
-desc "update part-time students lead status on last day of class - run this script after 9pm"
+desc "update part-time intro students lead status on last day of class - run this script after 9pm"
 task :mark_part_time_graduates => [:environment] do
   filename = File.join(Rails.root.join('tmp'), 'updated_part_time_graduates.txt')
   counter = 0
   File.open(filename, 'w') do |file|
-    Course.parttime_courses.current_courses.each do |course|
+    Course.parttime_courses.current_courses.where(language: Language.find_by(name: 'Evening')).each do |course|
       local_date = Time.now.in_time_zone(course.office.time_zone).to_date
       if course.end_date == local_date
         course.students.each do |student|
