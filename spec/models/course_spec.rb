@@ -259,6 +259,15 @@ describe Course do
     end
   end
 
+  describe '#current_and_previous_courses' do
+    it 'returns all current and previous courses' do
+      previous_course = FactoryBot.create(:past_course)
+      current_course = FactoryBot.create(:course)
+      future_course = FactoryBot.create(:future_course)
+      expect(Course.current_and_previous_courses).to eq [previous_course, current_course]
+    end
+  end
+
   describe '#current_and_future_courses' do
     it 'returns all current and future courses' do
       FactoryBot.create(:past_course)

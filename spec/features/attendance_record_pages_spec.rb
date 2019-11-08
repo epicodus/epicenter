@@ -73,12 +73,29 @@ end
 feature 'viewing attendance records index page' do
   let(:admin) { FactoryBot.create(:admin) }
   let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
-  let(:attendance_record) { FactoryBot.create(:attendance_record, student: student, date: student.course.start_date) }
+  let!(:attendance_record) { FactoryBot.create(:attendance_record, student: student, date: student.course.start_date, tardy: false, left_early: false) }
 
-  scenario 'as an admin' do
+  scenario 'as an admin shows daily attendance records' do
     login_as(admin, scope: :admin)
     visit student_attendance_records_path(student)
     expect(page).to have_content attendance_record.date.strftime("%B %d, %Y")
+  end
+
+  scenario 'as an admin shows absences for this course' do
+    login_as(admin, scope: :admin)
+    visit student_attendance_records_path(student)
+    class_days = student.course.number_of_days_since_start
+    expect(page).to have_content "Absent #{class_days - 1} of #{class_days} days from this course."
+  end
+
+  scenario 'as an admin shows absences for all courses' do
+    previous_course = FactoryBot.create(:past_course, students: [student])
+    login_as(admin, scope: :admin)
+    visit student_attendance_records_path(student)
+    class_days = student.course.number_of_days_since_start
+    total_class_days = previous_course.class_days.count + class_days
+    expect(page).to have_content "Absent #{class_days - 1} of #{class_days} days from this course."
+    expect(page).to have_content "Absent #{total_class_days - 1} of #{total_class_days} days since the start of the program."
   end
 
   scenario 'as a student' do
