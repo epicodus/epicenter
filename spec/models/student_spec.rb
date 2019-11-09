@@ -105,6 +105,32 @@ describe Student do
     end
   end
 
+  describe 'updates probation in Close', :dont_stub_crm, :vcr do
+
+    let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
+    let(:lead_id) { ENV['EXAMPLE_CRM_LEAD_ID'] }
+
+    before { allow(CrmUpdateJob).to receive(:perform_later).and_return({}) }
+
+    it 'updates in Close when probation set' do
+      student = FactoryBot.create(:student, email: 'example@example.com')
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PROBATION'] => 'Yes' })
+      student.update(probation: true)
+    end
+
+    it 'clears in Close when probation unset' do
+      student = FactoryBot.create(:student, email: 'example@example.com')
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PROBATION'] => nil })
+      student.update(probation: false)
+    end
+
+    it 'does not update in Close when probation not changed' do
+      student = FactoryBot.create(:student, email: 'example@example.com')
+      expect(CrmUpdateJob).to_not receive(:perform_later)
+      student.update(name: 'foo')
+    end
+  end
+
   describe '#with_activated_accounts' do
     it 'returns all students who have activated their accounts' do
       inactive_student = FactoryBot.create(:student, sign_in_count: 0)
