@@ -51,7 +51,7 @@ class StudentsController < ApplicationController
 
 private
   def student_params
-    params.require(:student).permit(:primary_payment_method_id, :course_id, :plan_id,
+    params.require(:student).permit(:primary_payment_method_id, :course_id, :plan_id, :probation,
                                     ratings_attributes: [:id, :internship_id, :number])
   end
 
@@ -61,9 +61,19 @@ private
       if student_params[:plan_id]
         redirect_to student_payments_path(@student), notice: "Payment plan for #{@student.name} has been updated."
       end
+      if student_params[:probation]
+        if @student.probation
+          redirect_to student_courses_path(@student), alert: "#{@student.name} has been placed on academic probation!"
+        else
+          redirect_to student_courses_path(@student), notice: "#{@student.name} has been removed from academic probation! :)"
+        end
+      end
     else
       if student_params[:plan_id]
         redirect_to student_payments_path(@student), alert: "Payment plan update failed."
+      end
+      if student_params[:probation]
+        redirect_to student_payments_path(@student), alert: "Probation status update failed."
       end
     end
   end

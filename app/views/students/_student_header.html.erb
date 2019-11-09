@@ -24,8 +24,14 @@
     </span>
   </p>
 
-  <% if current_admin && @student.courses.empty? %>
-    <%= link_to 'Archive student', student_path(id: @student.id), data: { method: :delete, confirm: 'Are you sure you want to archive this student and all enrollments?' }, class: 'btn btn-primary btn-sm' %>
+  <% if @student.courses.empty? %>
+    <p><%= link_to 'Archive student', student_path(id: @student.id), data: { method: :delete, confirm: 'Are you sure you want to archive this student and all enrollments?' }, class: 'btn btn-primary btn-sm' %></p>
+  <% end %>
+
+  <%= form_for @student do |f| %>
+    <div class="<%= @student.probation ? 'alert alert-danger' : '' %>">
+      <p>Academic probation: &nbsp;<%= f.check_box :probation %></p>
+    </div>
   <% end %>
 
   <% if @student.starting_cohort && @student.cohort && @student.starting_cohort == @student.cohort %>
@@ -48,7 +54,7 @@
 
   <% if @student.courses.previous_courses.any? %>
     <p><%= link_to 'View transcript', student_transcript_path(@student) %></p>
-    <% if current_admin.try(:super_admin) %>
+    <% if current_admin.super_admin %>
       <p><%= link_to 'Manually generate certificate', student_certificate_path(@student) %></p>
     <% end %>
   <% else %>
@@ -63,7 +69,7 @@
 
   <p>Total paid: <%= number_to_currency(@student.total_paid / 100.00) %></p>
 
-  <% if current_admin && !@student.invitation_accepted_at? && @student.invitation_token? %>
+  <% if !@student.invitation_accepted_at? && @student.invitation_token? %>
     <p><%= link_to 'Resend invitation', student_invitation_path(student_id: @student), method: :post %></p>
   <% end %>
 <% end %>

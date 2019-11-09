@@ -218,6 +218,38 @@ feature 'viewing the student courses list' do
   end
 end
 
+feature 'setting academic probation', :js do
+  let(:admin) { FactoryBot.create(:admin) }
+  let(:student) { FactoryBot.create(:student) }
+
+  before do
+    login_as(admin, scope: :admin)
+  end
+
+  it 'sets academic probation' do
+    visit student_courses_path(student)
+    find(:css, "#student_probation").set(true)
+    wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoSuchAlertError
+    alert = wait.until { page.driver.browser.switch_to.alert }
+    alert.accept
+    expect(page).to have_content "#{student.name} has been placed on academic probation!"
+    student.reload
+    expect(student.probation).to eq true
+  end
+
+  it 'unsets academic probation' do
+    student.update_columns(probation: true)
+    visit student_courses_path(student)
+    find(:css, "#student_probation").set(false)
+    wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoSuchAlertError
+    alert = wait.until { page.driver.browser.switch_to.alert }
+    alert.accept
+    expect(page).to have_content "#{student.name} has been removed from academic probation! :)"
+    student.reload
+    expect(student.probation).to eq false
+  end
+end
+
 feature 'student roster page' do
   let(:admin) { FactoryBot.create(:admin) }
   let!(:course) { FactoryBot.create(:course) }
