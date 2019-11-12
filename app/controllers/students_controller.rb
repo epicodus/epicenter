@@ -63,9 +63,9 @@ private
       end
       if student_params[:probation]
         if @student.probation
-          redirect_to student_courses_path(@student), alert: "#{@student.name} has been placed on academic probation!"
+          redirect_back(fallback_location: student_courses_path(@student), alert: "#{@student.name} has been placed on academic probation!")
         else
-          redirect_to student_courses_path(@student), notice: "#{@student.name} has been removed from academic probation! :)"
+          redirect_back(fallback_location: student_courses_path(@student), notice: "#{@student.name} has been removed from academic probation! :)")
         end
       end
     else
@@ -73,7 +73,7 @@ private
         redirect_to student_payments_path(@student), alert: "Payment plan update failed."
       end
       if student_params[:probation]
-        redirect_to student_payments_path(@student), alert: "Probation status update failed."
+        redirect_back(fallback_location: student_courses_path(@student), alert: "Probation status update failed.")
       end
     end
   end

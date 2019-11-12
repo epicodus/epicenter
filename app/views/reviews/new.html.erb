@@ -14,6 +14,13 @@
         <%= @submission.student.name %>
       <% end %>
     </h3>
+
+    <%= form_for @submission.student do |f| %>
+      <div class="<%= @submission.student.probation ? 'alert alert-danger' : '' %>">
+        <p>Academic probation: &nbsp;<%= f.check_box :probation %></p>
+      </div>
+    <% end %>
+
     <h4>Submitted <%= time_ago_in_words(@submission.updated_at) %> ago</h4>
 
     <% unless @submission.times_submitted.nil? %>
