@@ -10,6 +10,10 @@
         <p>Academic probation: &nbsp;<%= f.check_box :probation %></p>
       </div>
     <% end %>
+  <% elsif @student.probation %>
+    <div class="alert alert-danger">
+      <p>Academic probation</p>
+    </div>
   <% end %>
   <h2>
     <%= @course.description %>

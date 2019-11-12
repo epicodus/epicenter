@@ -177,3 +177,25 @@ feature 'selecting a new course manually' do
     expect(page).to have_content "You have switched to #{course2.description}"
   end
 end
+
+feature "shows warning if on probation" do
+  context "when not on probation" do
+    it "as a student viewing their own page" do
+      student = FactoryBot.create(:user_with_all_documents_signed)
+      login_as(student, scope: :student)
+      visit root_path
+      click_on 'Courses'
+      expect(page).to_not have_content "Academic probation"
+    end
+  end
+
+  context "when on probation" do
+    it "as a student viewing their own page" do
+      student = FactoryBot.create(:user_with_all_documents_signed, probation: true)
+      login_as(student, scope: :student)
+      visit root_path
+      click_on 'Courses'
+      expect(page).to have_content "Academic probation"
+    end
+  end
+end
