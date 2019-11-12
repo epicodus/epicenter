@@ -4,6 +4,17 @@
       <%= @student.name %>
     <% end %>
   </h1>
+  <% if current_admin %>
+    <%= form_for @student do |f| %>
+      <div class="<%= @student.probation ? 'alert alert-danger' : '' %>">
+        <p>Academic probation: &nbsp;<%= f.check_box :probation %></p>
+      </div>
+    <% end %>
+  <% elsif @student.probation %>
+    <div class="alert alert-danger">
+      <p>Academic probation</p>
+    </div>
+  <% end %>
   <h2>
     <%= @course.description %>
     <% if @student.courses_withdrawn.include? @course %>

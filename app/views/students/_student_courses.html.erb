@@ -1,4 +1,9 @@
 <% if current_student %>
+  <% if @student.probation %>
+    <div class="alert alert-danger">
+      <p>Academic probation</p>
+    </div>
+  <% end %>
   <h1>Your courses</h1>
 <% else %>
   <%= render 'students/student_header' %>
