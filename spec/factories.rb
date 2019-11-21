@@ -286,6 +286,12 @@ FactoryBot.define do
       short_name { 'PHL' }
       time_zone { 'Eastern Time (US & Canada)' }
     end
+
+    factory :online_office do
+      name { 'Online' }
+      short_name { 'WEB' }
+      time_zone { 'Pacific Time (US & Canada)' }
+    end
   end
 
   factory :language do
