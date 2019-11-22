@@ -23,7 +23,7 @@
       <% end %>
     </ul>
 
-    <% unless @completed_courses.last.try(:office).try(:short_name) == 'WEB' %>
+    <% if @completed_courses.non_internship_courses.non_online_courses.any? %>
       <p>Attendance:</p>
       <ul>
         <li>Present <%= pluralize(@student.attendance_records_for(:all, @completed_courses.non_internship_courses.non_online_courses.first, @completed_courses.non_internship_courses.non_online_courses.last), 'day') %></li>
