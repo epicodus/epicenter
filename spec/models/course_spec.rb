@@ -162,9 +162,9 @@ describe Course do
 
     it 'calculates class days for a part-time class' do
       course = Course.create({ language: part_time_track.languages.first, start_date: Date.parse('2017-03-13'), office: office, track: part_time_track, start_time: '6:00 PM', end_time: '9:00 PM' })
-      expect(course.start_date).to eq(Date.parse('2017-03-13'))
-      expect(course.end_date).to eq(Date.parse('2017-06-21'))
-      expect(course.class_days.count).to eq(29) # 1 holiday
+      expect(course.start_date).to eq(Date.parse('2017-03-14'))
+      expect(course.end_date).to eq(Date.parse('2017-06-22'))
+      expect(course.class_days.count).to eq(30)
     end
   end
 

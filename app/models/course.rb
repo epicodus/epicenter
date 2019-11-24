@@ -195,7 +195,7 @@ private
     if language.name.include?('part-time track')
       days = [0,2,4]
     elsif language.parttime?
-      days = [1,3]
+      days = [2,4]
     else
       days = [1,2,3,4,5]
     end
