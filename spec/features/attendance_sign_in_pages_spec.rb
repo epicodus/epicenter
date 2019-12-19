@@ -21,26 +21,13 @@ feature "Portland student does attendance sign in" do
   context "not at school" do
     it "does not show attendance sign in page" do
       allow(IpLocation).to receive(:is_local?).and_return(false)
-      allow(IpLocation).to receive(:is_local_computer?).and_return(false)
       visit sign_in_path
       expect(page).to have_content "Attendance sign in unavailable."
     end
   end
 
-  context "not a class day" do
-    it "does not show attendance sign in page" do
-      allow_any_instance_of(ApplicationController).to receive(:is_class_day?).and_return(false)
-      visit sign_in_path
-      expect(page).to have_content "Attendance sign in unavailable."
-    end
-  end
-
-  context "a class day at school when course is in session" do
-    before do
-      allow(IpLocation).to receive(:is_local?).and_return(true)
-      allow(IpLocation).to receive(:is_local_computer?).and_return(true)
-      allow_any_instance_of(ApplicationController).to receive(:is_class_day?).and_return(true)
-    end
+  context "at school" do
+    before { allow(IpLocation).to receive(:is_local?).and_return(true) }
 
     it "shows attendance sign in page" do
       visit sign_in_path
@@ -50,31 +37,52 @@ feature "Portland student does attendance sign in" do
     context "when soloing" do
       context "incorrect login credentials" do
         it "gives an error for an incorrect email" do
-          visit sign_in_path
-          fill_in 'email1', with: 'wrong'
-          fill_in 'password1', with: student.password
-          click_button 'Attendance sign in'
-          expect(page).to have_content 'Invalid email or password.'
+          travel_to student.course.start_date do
+            visit sign_in_path
+            fill_in 'email1', with: 'wrong'
+            fill_in 'password1', with: student.password
+            click_button 'Attendance sign in'
+            expect(page).to have_content 'Invalid login credentials.'
+          end
         end
 
         it "gives an error for an incorrect password" do
-          visit sign_in_path
-          fill_in 'email1', with: student.email
-          fill_in 'password1', with: 'wrong'
-          click_button 'Attendance sign in'
-          expect(page).to have_content 'Invalid email or password.'
+          travel_to student.course.start_date do
+            visit sign_in_path
+            fill_in 'email1', with: student.email
+            fill_in 'password1', with: 'wrong'
+            click_button 'Attendance sign in'
+            expect(page).to have_content 'Invalid login credentials.'
+          end
+        end
+      end
+
+      it "redirects if sign in attempt on a Friday" do
+        travel_to Time.zone.now.to_date.beginning_of_week + 4.days do
+          attendance_sign_in_solo
+          expect(current_path).to eq sign_in_path
+          expect(page).to have_content 'Attendance sign in not required on Fridays.'
+        end
+      end
+
+      it "redirects if not a class day" do
+        travel_to student.course.start_date - 1.day do
+          attendance_sign_in_solo
+          expect(current_path).to eq sign_in_path
+          expect(page).to have_content 'This does not appear to be a class day for you.'
         end
       end
 
       it "takes them to the welcome page" do
-        attendance_sign_in_solo
-        expect(current_path).to eq welcome_path
-        expect(page).to have_content 'Your sign in time has been recorded'
+        travel_to student.course.start_date do
+          attendance_sign_in_solo
+          expect(current_path).to eq welcome_path
+          expect(page).to have_content 'Your sign in time has been recorded'
+        end
       end
 
       it "creates an attendance record for them" do
-        thursday = Time.zone.now.to_date.beginning_of_week + 3.days
-        travel_to thursday do
+        travel_to student.course.start_date do
           expect { attendance_sign_in_solo }.to change { student.attendance_records.count }.by 1
         end
       end
@@ -135,28 +143,57 @@ feature "Portland student does attendance sign in" do
         end
       end
 
+      it "redirects if sign in attempt on a Friday" do
+        travel_to Time.zone.now.to_date.beginning_of_week + 4.days do
+          attendance_sign_in_pair
+          expect(current_path).to eq sign_in_path
+          expect(page).to have_content 'Attendance sign in not required on Fridays.'
+        end
+      end
+
+      it "redirects if not a class day for student 1" do
+        travel_to student.course.start_date - 1.day do
+          attendance_sign_in_solo
+          expect(current_path).to eq sign_in_path
+          expect(page).to have_content 'This does not appear to be a class day for you.'
+        end
+      end
+
+      it "redirects if not a class day for student 2" do
+        travel_to pair.course.start_date - 1.day do
+          attendance_sign_in_solo
+          expect(current_path).to eq sign_in_path
+          expect(page).to have_content 'This does not appear to be a class day for you.'
+        end
+      end
+
       it "takes them to the welcome page" do
-        attendance_sign_in_pair
-        expect(current_path).to eq welcome_path
-        expect(page).to have_content 'Your attendance records have been created.'
+        travel_to student.course.start_date do
+          attendance_sign_in_pair
+          expect(current_path).to eq welcome_path
+          expect(page).to have_content 'Your attendance records have been created.'
+        end
       end
 
       it "creates attendance records for both students" do
-        thursday = Time.zone.now.to_date.beginning_of_week + 3.days
-        travel_to thursday do
+        travel_to student.course.start_date do
           attendance_sign_in_pair
           expect(AttendanceRecord.count).to equal 2
         end
       end
 
       it 'creates attendance records if one student has already signed in for the day' do
-        FactoryBot.create(:attendance_record, student: student)
-        expect { attendance_sign_in_pair }.to change { AttendanceRecord.count }.by 1
+        travel_to student.course.start_date do
+          FactoryBot.create(:attendance_record, student: student)
+          expect { attendance_sign_in_pair }.to change { AttendanceRecord.count }.by 1
+        end
       end
 
       it 'updates the pair id if one student has already signed in for the day' do
-        FactoryBot.create(:attendance_record, student: student)
-        expect { attendance_sign_in_pair }.to change { AttendanceRecord.first.pair_id }.from(nil).to(pair.id)
+        travel_to student.course.start_date do
+          FactoryBot.create(:attendance_record, student: student)
+          expect { attendance_sign_in_pair }.to change { AttendanceRecord.first.pair_id }.from(nil).to(pair.id)
+        end
       end
 
       it 'does not update the attendance record when signing as pairs, then solo during same day' do
@@ -193,20 +230,6 @@ feature "Portland student does attendance sign in" do
           attendance_sign_in_solo
           expect(attendance_record.tardy).to be false
         end
-      end
-    end
-
-    describe "links to help queue for correct office" do
-      it "links to Seattle queue if connecting from Seattle IP" do
-        allow(IpLocation).to receive(:is_local_computer_seattle?).and_return(true)
-        visit welcome_path
-        expect(page).to have_link("Queue", href: "https://seattle-help.epicodus.com")
-      end
-
-      it "links to Portland queue unless connecting from Seattle IP" do
-        allow(IpLocation).to receive(:is_local_computer_seattle?).and_return(false)
-        visit welcome_path
-        expect(page).to have_link("Queue", href: "https://help.epicodus.com")
       end
     end
   end
@@ -235,26 +258,13 @@ feature "Philadelphia student does attendance sign in" do
   context "not at school" do
     it "does not show attendance sign in page" do
       allow(IpLocation).to receive(:is_local?).and_return(false)
-      allow(IpLocation).to receive(:is_local_computer?).and_return(false)
       visit sign_in_path
       expect(page).to have_content "Attendance sign in unavailable."
     end
   end
 
-  context "not a class day" do
-    it "does not show attendance sign in page" do
-      allow_any_instance_of(ApplicationController).to receive(:is_class_day?).and_return(false)
-      visit sign_in_path
-      expect(page).to have_content "Attendance sign in unavailable."
-    end
-  end
-
-  context "a class day at school" do
-    before do
-      allow(IpLocation).to receive(:is_local?).and_return(true)
-      allow(IpLocation).to receive(:is_local_computer?).and_return(true)
-      allow_any_instance_of(ApplicationController).to receive(:is_class_day?).and_return(true)
-    end
+  context "at school" do
+    before { allow(IpLocation).to receive(:is_local?).and_return(true) }
 
     it "shows attendance sign in page" do
       visit sign_in_path
@@ -264,43 +274,52 @@ feature "Philadelphia student does attendance sign in" do
     context "when soloing" do
       context "incorrect login credentials" do
         it "gives an error for an incorrect email" do
-          visit sign_in_path
-          fill_in 'email1', with: 'wrong'
-          fill_in 'password1', with: student.password
-          click_button 'Attendance sign in'
-          expect(page).to have_content 'Invalid email or password.'
+          travel_to student.course.start_date do
+            visit sign_in_path
+            fill_in 'email1', with: 'wrong'
+            fill_in 'password1', with: student.password
+            click_button 'Attendance sign in'
+            expect(page).to have_content 'Invalid login credentials.'
+          end
         end
 
         it "gives an error for an incorrect password" do
-          visit sign_in_path
-          fill_in 'email1', with: student.email
-          fill_in 'password1', with: 'wrong'
-          click_button 'Attendance sign in'
-          expect(page).to have_content 'Invalid email or password.'
+          travel_to student.course.start_date do
+            visit sign_in_path
+            fill_in 'email1', with: student.email
+            fill_in 'password1', with: 'wrong'
+            click_button 'Attendance sign in'
+            expect(page).to have_content 'Invalid login credentials.'
+          end
         end
       end
 
-      it "takes them to the welcome page with a warning about solo if not on a friday" do
-        monday = Time.zone.now.to_date.beginning_of_week
-        travel_to monday do
+      it "redirects if sign in attempt on a Friday" do
+        travel_to Time.zone.now.to_date.beginning_of_week + 4.days do
           attendance_sign_in_solo
-          expect(current_path).to eq welcome_path
-          expect(page).to have_content 'Your sign in time has been recorded, but you are signed in without a pair.'
+          expect(current_path).to eq sign_in_path
+          expect(page).to have_content 'Attendance sign in not required on Fridays.'
         end
       end
 
-      it "takes them to the welcome page with confirmation if on a friday" do
-        friday = Time.zone.now.to_date.beginning_of_week + 4.days
-        travel_to friday do
+      it "redirects if not a class day" do
+        travel_to student.course.start_date - 1.day do
+          attendance_sign_in_solo
+          expect(current_path).to eq sign_in_path
+          expect(page).to have_content 'This does not appear to be a class day for you.'
+        end
+      end
+
+      it "takes them to the welcome page" do
+        travel_to student.course.start_date do
           attendance_sign_in_solo
           expect(current_path).to eq welcome_path
-          expect(page).to have_content 'Your sign in time has been recorded.'
+          expect(page).to have_content 'Your sign in time has been recorded'
         end
       end
 
       it "creates an attendance record for them" do
-        thursday = Time.zone.now.to_date.beginning_of_week + 3.days
-        travel_to thursday do
+        travel_to student.course.start_date do
           expect { attendance_sign_in_solo }.to change { student.attendance_records.count }.by 1
         end
       end
@@ -361,28 +380,57 @@ feature "Philadelphia student does attendance sign in" do
         end
       end
 
+      it "redirects if sign in attempt on a Friday" do
+        travel_to Time.zone.now.to_date.beginning_of_week + 4.days do
+          attendance_sign_in_pair
+          expect(current_path).to eq sign_in_path
+          expect(page).to have_content 'Attendance sign in not required on Fridays.'
+        end
+      end
+
+      it "redirects if not a class day for student 1" do
+        travel_to student.course.start_date - 1.day do
+          attendance_sign_in_solo
+          expect(current_path).to eq sign_in_path
+          expect(page).to have_content 'This does not appear to be a class day for you.'
+        end
+      end
+
+      it "redirects if not a class day for student 2" do
+        travel_to pair.course.start_date - 1.day do
+          attendance_sign_in_solo
+          expect(current_path).to eq sign_in_path
+          expect(page).to have_content 'This does not appear to be a class day for you.'
+        end
+      end
+
       it "takes them to the welcome page" do
-        attendance_sign_in_pair
-        expect(current_path).to eq welcome_path
-        expect(page).to have_content 'Your attendance records have been created.'
+        travel_to student.course.start_date do
+          attendance_sign_in_pair
+          expect(current_path).to eq welcome_path
+          expect(page).to have_content 'Your attendance records have been created.'
+        end
       end
 
       it "creates attendance records for both students" do
-        thursday = Time.zone.now.to_date.beginning_of_week + 3.days
-        travel_to thursday do
+        travel_to student.course.start_date do
           attendance_sign_in_pair
           expect(AttendanceRecord.count).to equal 2
         end
       end
 
       it 'creates attendance records if one student has already signed in for the day' do
-        FactoryBot.create(:attendance_record, student: student)
-        expect { attendance_sign_in_pair }.to change { AttendanceRecord.count }.by 1
+        travel_to student.course.start_date do
+          FactoryBot.create(:attendance_record, student: student)
+          expect { attendance_sign_in_pair }.to change { AttendanceRecord.count }.by 1
+        end
       end
 
       it 'updates the pair id if one student has already signed in for the day' do
-        FactoryBot.create(:attendance_record, student: student)
-        expect { attendance_sign_in_pair }.to change { AttendanceRecord.first.pair_id }.from(nil).to(pair.id)
+        travel_to student.course.start_date do
+          FactoryBot.create(:attendance_record, student: student)
+          expect { attendance_sign_in_pair }.to change { AttendanceRecord.first.pair_id }.from(nil).to(pair.id)
+        end
       end
 
       it 'does not update the attendance record when signing as pairs, then solo during same day' do
@@ -420,6 +468,22 @@ feature "Philadelphia student does attendance sign in" do
           expect(attendance_record.tardy).to be false
         end
       end
+    end
+  end
+end
+
+feature 'help queue link' do
+  describe "links to help queue for correct office" do
+    it "links to Seattle queue if connecting from Seattle IP" do
+      allow(IpLocation).to receive(:is_local_computer_seattle?).and_return(true)
+      visit welcome_path
+      expect(page).to have_link("Queue", href: "https://seattle-help.epicodus.com")
+    end
+
+    it "links to Portland queue unless connecting from Seattle IP" do
+      allow(IpLocation).to receive(:is_local_computer_seattle?).and_return(false)
+      visit welcome_path
+      expect(page).to have_link("Queue", href: "https://help.epicodus.com")
     end
   end
 end

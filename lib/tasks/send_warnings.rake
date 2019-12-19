@@ -8,8 +8,8 @@ task :send_warnings => [:environment] do
     else
       course.students.each do |student|
 
-        # set friday attendance to on time automatically for fulltime classes (except week 1 of intro)
-        if Date.today.friday? && (course.language.level > 0 || course.number_of_days_since_start > 5) && !course.parttime?
+        # set friday attendance to on time automatically for fulltime classes
+        if Date.today.friday? && !course.parttime?
           attendance_record = AttendanceRecord.find_or_initialize_by(student: student, date: Date.today)
           attendance_record.tardy = false
           attendance_record.left_early = false

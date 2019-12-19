@@ -1,6 +1,7 @@
 class AttendanceRecord < ApplicationRecord
   attr_accessor :signing_out
   scope :today, -> { where(date: Time.zone.now.to_date) }
+
   validates :student_id, presence: true, uniqueness: { scope: :date }
   validates :date, presence: true
   validates :pair_id, uniqueness: { scope: [:student_id, :date] }
@@ -8,6 +9,7 @@ class AttendanceRecord < ApplicationRecord
   before_validation :set_date
   before_validation :sign_in
   before_update :sign_out, if: :signing_out
+
   belongs_to :student
 
   def self.todays_totals_for(course, status)
@@ -38,24 +40,28 @@ class AttendanceRecord < ApplicationRecord
 
 private
 
-  def sign_out
-    if Time.zone.now.friday? && student.course.end_time_friday
-      class_end_time = student.course.end_time_friday.in_time_zone(student.course.office.time_zone) - 15.minutes
-    else
-      class_end_time = student.course.end_time.in_time_zone(student.course.office.time_zone) - 15.minutes
-    end
-    current_time = Time.zone.now.in_time_zone(student.course.office.time_zone)
-    self.left_early = current_time < class_end_time
-    self.signed_out_time = current_time
-  end
-
   def sign_in
     if self.tardy.nil?
-      class_late_time = student.course.start_time.in_time_zone(student.course.office.time_zone) + 15.minutes
-      current_time = Time.zone.now
+      current_time = Time.zone.now.in_time_zone(student.course.office.time_zone)
+      if current_time.sunday?
+        class_late_time = "9:00 AM".in_time_zone(student.course.office.time_zone) + 15.minutes
+      else
+        class_late_time = student.course.start_time.in_time_zone(student.course.office.time_zone) + 15.minutes
+      end
       self.tardy = current_time >= class_late_time
       self.left_early = true
     end
+  end
+
+  def sign_out
+    current_time = Time.zone.now.in_time_zone(student.course.office.time_zone)
+    if current_time.sunday?
+      class_end_time = "3:00 PM".in_time_zone(student.course.office.time_zone) - 15.minutes
+    else
+      class_end_time = student.course.end_time.in_time_zone(student.course.office.time_zone) - 15.minutes
+    end
+    self.left_early = current_time < class_end_time
+    self.signed_out_time = current_time
   end
 
   def set_date
