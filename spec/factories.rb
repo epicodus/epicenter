@@ -89,7 +89,6 @@ FactoryBot.define do
     end
 
     factory :level_3_just_finished_course do
-      end_time_friday { '12:00 PM' }
       association :language, factory: :rails_language
       class_days { ((Time.zone.now.to_date - 5.weeks).beginning_of_week..(Time.zone.now.to_date - 1.week).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? } }
     end
@@ -157,7 +156,6 @@ FactoryBot.define do
     end
 
     factory :portland_ruby_course do
-      end_time_friday { '12:00 PM' }
       active { true }
       association :office, factory: :portland_office
       association :language, factory: :ruby_language
@@ -241,7 +239,7 @@ FactoryBot.define do
       description { '2020-01-07 to 2000-04-12 PDX Part-Time JS/React' }
       association :track, factory: :part_time_js_react_track
       before(:create) do |cohort|
-        cohort.courses << build(:intro_part_time_js_react_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 6.weeks - 2.days])
+        cohort.courses << build(:intro_part_time_js_react_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 2.days])
       end
     end
 
@@ -688,6 +686,16 @@ FactoryBot.define do
       association :plan, factory: :parttime_plan
       before(:create) do |student|
         cohort = create(:fidgetech_cohort)
+        student.ending_cohort = cohort
+        student.office = cohort.office
+        student.course = cohort.courses.first
+      end
+    end
+
+    factory :part_time_track_student_with_cohort do
+      association :plan, factory: :parttime_track_plan
+      before(:create) do |student|
+        cohort = create(:part_time_js_react_cohort)
         student.ending_cohort = cohort
         student.office = cohort.office
         student.course = cohort.courses.first

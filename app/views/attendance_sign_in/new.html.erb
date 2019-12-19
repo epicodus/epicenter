@@ -1,4 +1,4 @@
-<% if is_class_day? && IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip) %>
+<% if IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip) %>
   <h2 id="attendance-signin-label" class="text-center">Attendance sign in</h2>
   <div class="row">
     <div class="col-md-4 col-md-offset-4">

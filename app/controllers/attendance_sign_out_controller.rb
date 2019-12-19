@@ -1,5 +1,5 @@
 class AttendanceSignOutController < ApplicationController
-  before_action :redirect_if_not_authorized_to_sign_out, only: [:create]
+  before_action :redirect_if_not_in_classroom, only: [:create]
 
   def create
     student = Student.find_by(email: params[:email].downcase)
@@ -15,8 +15,8 @@ class AttendanceSignOutController < ApplicationController
 
 private
 
-  def redirect_if_not_authorized_to_sign_out
-    if !is_weekday? || !IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip)
+  def redirect_if_not_in_classroom
+    if !IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip)
       redirect_to root_path, alert: 'Unable to update attendance record.'
     end
   end
