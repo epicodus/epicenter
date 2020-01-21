@@ -516,10 +516,10 @@ describe Course do
     end
 
     it 'creates course days for part-time js/react course including sundays' do
-      course = FactoryBot.create(:intro_part_time_js_react_course, class_days: [], start_date: Date.parse('2020-01-07'))
+      course = FactoryBot.create(:js_part_time_js_react_course, class_days: [], start_date: Date.parse('2020-01-07'))
       expect(course.start_date).to eq Date.parse('2020-01-07')
-      expect(course.end_date).to eq Date.parse('2020-02-16')
-      expect(course.class_days.count).to eq 18
+      expect(course.end_date).to eq Date.parse('2020-03-01')
+      expect(course.class_days.count).to eq 24
       expect(course.class_days.last.sunday?).to eq true
     end
   end
