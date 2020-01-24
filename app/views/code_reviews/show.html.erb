@@ -89,15 +89,12 @@
     <% end %>
 
     <% if @submission.has_been_reviewed? %>
-      <div class="table-responsive">
-        <table class="table">
-          <thead>
-            <tr><th>Feedback</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><%= markdown(@submission.latest_review.note) %></td></tr>
-          </tbody>
-        </table>
+      <div class="well">
+        <p><strong>Feedback</strong></p>
+        <% @submission.reviews.reorder('CREATED_AT DESC').each do |review| %>
+          <hr>
+          <em><%= review.created_at.strftime('%Y-%m-%d  %-I:%M %p') %></em> <%= markdown(review.note) %>
+        <% end %>
       </div>
     <% end %>
 
