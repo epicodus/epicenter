@@ -95,7 +95,8 @@ feature 'Visiting the submissions index page' do
 
           scenario 'should be prepopulated with information from the last review created for this submission', :stub_mailgun do
             click_on 'Review'
-            expect(find_field('Note (Markdown compatible)').value).to eq review.note
+            expect(page).to have_content "Great job!"
+            expect(find_field('Note (Markdown compatible)').value).to eq ''
           end
         end
 

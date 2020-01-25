@@ -25,7 +25,9 @@ class Submission < ApplicationRecord
 
   def clone_or_build_review
     if latest_review
-      latest_review.deep_clone(include: :grades)
+      review = latest_review.deep_clone(include: :grades)
+      review.note = nil
+      review
     else
       review = Review.new(submission: self)
       code_review.objectives.each { |objective| review.grades.build(objective: objective) }

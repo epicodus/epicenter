@@ -129,8 +129,8 @@ describe Submission do
       let!(:old_review) { FactoryBot.create(:passing_review, submission: submission) }
       let(:new_review) { submission.clone_or_build_review }
 
-      it "clones the note of the latest review" do
-        expect(new_review.note).to eq old_review.note
+      it "does not clone the note of the latest review" do
+        expect(new_review.note).to_not eq old_review.note
       end
 
       it "clones the submission_id of the latest review" do
@@ -147,7 +147,7 @@ describe Submission do
     it 'returns a cloned review object if there is a latest review', :stub_mailgun do
       old_review = FactoryBot.create(:passing_review, submission: submission)
       new_review = submission.clone_or_build_review
-      expect(new_review.note).to eq old_review.note
+      expect(new_review.note).to eq nil # does not clone note
       expect(new_review.submission).to eq old_review.submission
       expect(new_review.grades.first.score).to eq old_review.grades.first.score
     end
