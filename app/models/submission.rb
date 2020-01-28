@@ -7,6 +7,7 @@ class Submission < ApplicationRecord
 
   belongs_to :student
   belongs_to :code_review
+  belongs_to :admin, optional: true
   has_many :reviews
   has_many :notes, dependent: :destroy
 

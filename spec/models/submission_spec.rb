@@ -2,6 +2,7 @@ describe Submission do
   it { should belong_to :code_review }
   it { should have_many :reviews }
   it { should belong_to :student }
+  it { should belong_to(:admin).optional }
 
   describe "validations" do
     let(:code_review_with_optional_submissions) { FactoryBot.create(:code_review, submissions_not_required: true) }

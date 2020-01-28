@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_17_003150) do
+ActiveRecord::Schema.define(version: 2020_01_28_210026) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -291,6 +291,7 @@ ActiveRecord::Schema.define(version: 2020_01_17_003150) do
     t.boolean "needs_review"
     t.integer "times_submitted"
     t.string "review_status"
+    t.integer "admin_id"
     t.index ["code_review_id"], name: "index_submissions_on_code_review_id"
     t.index ["student_id"], name: "index_submissions_on_student_id"
   end

@@ -45,6 +45,19 @@ feature 'Visiting the submissions index page' do
       end
     end
 
+    context 'assign teacher to submission' do
+      let!(:admin2) { FactoryBot.create(:admin, name: 'second teacher')}
+
+      scenario 'assign teacher' do
+        submission = FactoryBot.create(:submission, code_review: code_review, student: student)
+        visit code_review_submissions_path(code_review)
+        select admin2.name, from: 'submission_admin_id'
+        click_on 'Update'
+        expect(submission.reload.admin).to eq admin2
+        expect(page).to have_content admin2.name
+      end
+    end
+
     context 'within an individual submission' do
       scenario 'shows how long ago the submission was last updated' do
         travel_to 2.days.ago do
