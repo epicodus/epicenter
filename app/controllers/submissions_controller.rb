@@ -27,6 +27,10 @@ class SubmissionsController < ApplicationController
       @submission = Submission.find(params[:id])
       @submission.update_columns(times_submitted: submission_params[:times_submitted])
       render 'update_submission_times'
+    elsif submission_params['admin_id']
+      @submission = Submission.find(params[:id])
+      @submission.update_columns(admin_id: submission_params[:admin_id])
+      redirect_to code_review_submissions_path(@submission.code_review)
     else
       @code_review = CodeReview.find(params[:code_review_id])
       @submission = @code_review.submission_for(current_student)
@@ -42,6 +46,6 @@ class SubmissionsController < ApplicationController
 private
 
   def submission_params
-    params.require(:submission).permit(:link, :needs_review, :student_id, :times_submitted, notes_attributes: [:id, :content]).merge(review_status: 'pending')
+    params.require(:submission).permit(:link, :needs_review, :student_id, :times_submitted, :admin_id, notes_attributes: [:id, :content]).merge(review_status: 'pending')
   end
 end

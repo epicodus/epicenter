@@ -4,6 +4,7 @@ class Admin < User
   belongs_to :current_course, class_name: 'Course', optional: true
   has_many :courses
   has_many :cohorts
+  has_many :submissions
 
   before_validation :assign_current_course, on: :create
   devise :database_authenticatable, :validatable

@@ -2,6 +2,7 @@ describe Admin do
   # it { should belong_to :current_course }
   it { should have_many :courses }
   it { should have_many :cohorts }
+  it { should have_many :submissions }
 
   describe "default scope" do
     it "alphabetizes the admins by name" do
