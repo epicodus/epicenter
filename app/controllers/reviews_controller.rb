@@ -16,6 +16,15 @@ class ReviewsController < ApplicationController
     end
   end
 
+  def update
+    review = Review.find(params[:id])
+    if review.update_columns(note: review_params[:note])
+      redirect_to new_submission_review_path(review.submission), notice: "Previous feedback updated."
+    else
+      redirect_to new_submission_review_path(review.submission), alert: "There was a problem updating the previous feedback."
+    end
+  end
+
 private
 
   def review_params

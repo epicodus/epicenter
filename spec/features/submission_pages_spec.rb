@@ -106,10 +106,17 @@ feature 'Visiting the submissions index page' do
 
           before { submission.update(needs_review: true) }
 
-          scenario 'should be prepopulated with information from the last review created for this submission', :stub_mailgun do
+          scenario 'should be prepopulated with information from the last review created for this submission' do
             click_on 'Review'
             expect(page).to have_content "Great job!"
-            expect(find_field('Note (Markdown compatible)').value).to eq ''
+            expect(all('#review_note').last.value).to eq ''
+          end
+
+          scenario 'allow editing past review feedback' do
+            click_on 'Review'
+            all('#review_note').first.set('updated old feedback')
+            click_on 'Update previously submitted note'
+            expect(page).to have_content 'updated old feedback'
           end
         end
 
