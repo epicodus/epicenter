@@ -62,7 +62,7 @@ Rails.application.routes.draw do
   end
 
   resources :submissions, only: [] do
-    resources :reviews, only: [:new, :create]
+    resources :reviews, only: [:new, :create, :update]
   end
 
   resources :stripe_callbacks, only: [:create]
