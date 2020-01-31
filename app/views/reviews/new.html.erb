@@ -35,15 +35,42 @@
 
     <h4><%= link_to 'View code', @submission.link, target: '_blank' if @submission.link %></h4>
 
+    <br>
+
     <% if @submission.notes.any? %>
       <div class="well">
+        <p><strong>Student's notes:</strong></p>
         <ul>
-          <% @submission.notes.each do |note| %>
-            <li><strong><%= note.created_at.strftime('%B %d') %>:</strong> <%= note.content %></li>
+          <% @submission.notes.reorder('CREATED_AT DESC').each do |note| %>
+            <li><em><%= note.created_at.strftime('%B %d') %>:</em> <%= note.content %></li>
           <% end %>
         </ul>
       </div>
     <% end %>
+
+    <% if @submission.reviews.any? %>
+      <div class="well">
+        <p><strong>Past feedback from instructors:</strong></p>
+        <% @submission.reviews.reorder('CREATED_AT DESC').each do |review| %>
+          <hr>
+          <div class='review-note'>
+            <div class='review-note-display'>
+              <p><em><%= review.created_at.strftime('%Y-%m-%d  %-I:%M %p') %></em> <span class='btn-xs btn-danger pull-right review-note-edit-button'>edit</span></p>
+              <p><%= markdown(review.note) %></p>
+            </div>
+            <div class='hide review-note-edit'>
+              <p><em><%= review.created_at.strftime('%Y-%m-%d  %-I:%M %p') %></em>
+              <%= form_for [@submission, review] do |review_form| %>
+                <p><%= review_form.text_area :note, class: 'form-control', rows: 10 %></p>
+                <p><%= review_form.submit 'Update previously submitted note', class: 'btn-sm btn-danger'%></p>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <br>
 
     <%= render 'form' %>
   </div>
