@@ -4,6 +4,28 @@
   <button type='button' class='btn btn-primary mark-all-objectives' name='all_1' id='all_1'>All Objectives Failing</button>
 </div>
 
+<% if @submission.reviews.any? %>
+  <div class="well">
+    <p><strong>Past feedback</strong></p>
+    <% @submission.reviews.reorder('CREATED_AT DESC').each do |review| %>
+      <hr>
+      <div class='review-note'>
+        <div class='review-note-display'>
+          <p><em><%= review.created_at.strftime('%Y-%m-%d  %-I:%M %p') %></em> <span class='btn-xs btn-danger pull-right review-note-edit-button'>edit</span></p>
+          <p><%= markdown(review.note) %></p>
+        </div>
+        <div class='hide review-note-edit'>
+          <p><em><%= review.created_at.strftime('%Y-%m-%d  %-I:%M %p') %></em>
+          <%= form_for [@submission, review] do |review_form| %>
+            <p><%= review_form.text_area :note, class: 'form-control', rows: 10 %></p>
+            <p><%= review_form.submit 'Update previously submitted note', class: 'btn-sm btn-danger'%></p>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
 <%= form_for [@submission, @review] do |f| %>
   <div class="table-responsive">
     <table class="table">
@@ -24,28 +46,6 @@
       </tbody>
     </table>
   </div>
-
-  <% if @submission.reviews.any? %>
-    <div class="well">
-      <p><strong>Past feedback</strong></p>
-      <% @submission.reviews.reorder('CREATED_AT DESC').each do |review| %>
-        <hr>
-        <div class='review-note'>
-          <div class='review-note-display'>
-            <p><em><%= review.created_at.strftime('%Y-%m-%d  %-I:%M %p') %></em> <span class='btn-xs btn-danger pull-right review-note-edit-button'>edit</span></p>
-            <p><%= markdown(review.note) %></p>
-          </div>
-          <div class='hide review-note-edit'>
-            <p><em><%= review.created_at.strftime('%Y-%m-%d  %-I:%M %p') %></em>
-            <%= form_for [@submission, review] do |review_form| %>
-              <p><%= review_form.text_area :note, class: 'form-control', rows: 10 %></p>
-              <p><%= review_form.submit 'Update previously submitted note', class: 'btn-sm btn-danger'%></p>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  <% end %>
 
   <div class="form-group">
     <%= f.label :note, 'Note (Markdown compatible)' %>
