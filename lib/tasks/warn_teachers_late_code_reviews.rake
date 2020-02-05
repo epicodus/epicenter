@@ -7,7 +7,7 @@ task :warn_teachers_late_code_reviews => [:environment] do
       unless student.submission_for(code_review).try(:review_status) == 'pass'
         if Rails.env.production?
           Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message("epicodus.com",
-            { :from => "it@epicodus.com",
+            { :from => "no-reply@epicodus.com",
               :to => "#{course.teacher} <#{course.admin.email}>",
               :subject => "#{student.name} not passing #{code_review.title}",
               :text => "#{student.name} not passing #{code_review.title} (#{course.description} #{student.office.short_name}) after 17 days." })

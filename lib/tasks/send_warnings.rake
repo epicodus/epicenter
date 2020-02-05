@@ -20,7 +20,7 @@ task :send_warnings => [:environment] do
         if student.attendance_warnings_sent == 1 && student.absences(course) >= 4 && !course.description.include?('ONLINE')
           if Rails.env.production?
             Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message("epicodus.com",
-              { :from => "it@epicodus.com",
+              { :from => "no-reply@epicodus.com",
                 :to => "#{course.admin.email}",
                 :subject => "#{student.name} has #{student.absences(course)} absences",
                 :text => "Notification to teacher: #{student.name} has #{student.absences(course)} absences this unit." })
@@ -31,9 +31,9 @@ task :send_warnings => [:environment] do
         elsif !student.attendance_warnings_sent && student.absences(course) >= 2.5  && !course.description.include?('ONLINE')
           if Rails.env.production?
             Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message("epicodus.com",
-              { :from => "#{course.teacher} <#{course.admin.email}>",
+              { :from => "no-reply@epicodus.com",
                 :to => "#{student.name} <#{student.email}>",
-                :bcc => course.admin.email,
+                :cc => course.admin.email,
                 :subject => "Missing class - #{student.name}",
                 :text => "This is an automated message. As of today, you've missed #{student.absences(course)} class days. We've found that our students do much better in class when they come every day to work with their peers and get support from our teachers, and that the structure and accountability of an attendance policy helps many people prioritize coming in. As a reminder, for our full-time program you will be expelled if you miss more than 10 days of class, or 3 days in one week. For our part-time program, if you miss more than 4 days of class, you will be expelled from the class.",
                 :html => "<p>This is an automated message. As of today, you've missed #{student.absences(course)} class days.</p><p>We've found that our students do much better in class when they come every day to work with their peers and get support from our teachers, and that the structure and accountability of an attendance policy helps many people prioritize coming in.</p><p>As a reminder, for our full-time program you will be expelled if you miss more than 10 days of class, or 3 days in one week. For our part-time program, if you miss more than 4 days of class, you will be expelled from the class. </p>" })
@@ -47,7 +47,7 @@ task :send_warnings => [:environment] do
         if !student.solo_warnings_sent && student.solos(course) >= 2 && !course.parttime?
           if Rails.env.production?
             Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message("epicodus.com",
-              { :from => "it@epicodus.com",
+              { :from => "no-reply@epicodus.com",
                 :to => "#{course.admin.email}",
                 :subject => "#{student.name} has #{student.solos(course)} solos",
                 :text => "Notification to teacher: #{student.name} has #{student.solos(course)} solos this unit. The student has NOT been notified." })

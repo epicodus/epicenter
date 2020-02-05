@@ -9,9 +9,9 @@ task :send_code_review_reminders => [:environment] do
           if code_review.submission_for(student).nil?
             if Rails.env.production?
               Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message("epicodus.com",
-              { :from => "#{course.teacher} <#{course.admin.email}>",
+              { :from => "no-reply@epicodus.com",
                 :to => "#{student.name} <#{student.email}>",
-                :bcc => course.admin.email,
+                :cc => course.admin.email,
                 :subject => "Friday project for week #{code_review.number} of #{course.description} not yet submitted - #{student.name}",
                 :text => "This is an automated message. According to our records, we have not yet received a submission for your Friday work. Please remember to submit your work as soon as you complete it. Your teacher has received a copy of this email." })
             else
