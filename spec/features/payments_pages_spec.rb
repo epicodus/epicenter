@@ -401,7 +401,7 @@ feature 'make a manual stripe payment', :stripe_mock, :stub_mailgun do
       fill_in 'payment_amount', with: 9000
     end
     click_on 'Stripe payment'
-    expect(page).to have_content 'Amount cannot be negative or greater than $8,500.'
+    expect(page).to have_content 'Amount cannot be negative or greater than $8,800.'
   end
 
   scenario 'with an invalid amount (negative)' do
@@ -410,7 +410,7 @@ feature 'make a manual stripe payment', :stripe_mock, :stub_mailgun do
       fill_in 'payment_amount', with: -100
     end
     click_on 'Stripe payment'
-    expect(page).to have_content 'Amount cannot be negative or greater than $8,500.'
+    expect(page).to have_content 'Amount cannot be negative or greater than $8,800.'
   end
 
   scenario 'with no primary payment method selected' do
