@@ -16,4 +16,22 @@ $(function() {
       list[i].value=valueToSet;
     }
   });
+
+  $('.objectives-scores').each(function() {
+    colorObjectiveScores($(this));
+  });
+
+  $('.objectives-scores').change(function() {
+    colorObjectiveScores($(this));
+  });
 });
+
+var colorObjectiveScores = function(obj) {
+  var colors = ['', 'red', 'yellow', 'green']
+  obj.removeClass('red');
+  obj.removeClass('yellow');
+  obj.removeClass('green');
+  var score = obj.val();
+  var color = colors[score];
+  obj.addClass(color);
+};
