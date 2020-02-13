@@ -69,7 +69,7 @@
               <th># of times paired</th>
             </thead>
             <tbody>
-              <% @course.other_course_students(@student).each do |student| %>
+              <% @course.other_course_students(@student).sort { |a,b| a.pairs.count(@student.id) <=> b.pairs.count(@student.id) }.each do |student| %>
                 <tr id="pairing-roster-row" data-content="<%= student.pairs.count(@student.id) %>">
                   <td class="col-md-4"><%= student.name %></td>
                   <td class="col-md-2"><%= student.pairs.count(@student.id) %></td>
