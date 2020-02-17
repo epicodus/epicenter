@@ -330,7 +330,7 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
     fill_in "refund-#{payment.id}-input", with: -16.46
     fill_in "refund-date-#{payment.id}-input", with: Date.today
     click_on 'Refund'
-    expect(page).to have_content 'Invalid positive integer'
+    expect(page).to have_content 'Please correct these problems'
   end
 
   scenario 'shows warning if starting cohort does not match current cohort' do
