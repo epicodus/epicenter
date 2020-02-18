@@ -26,21 +26,18 @@
       <%= ff.label :number_of_students do %>
         <%= ff.radio_button :number_of_students, 2, required: true %> 2
       <% end %>
-      </label>
     </div>
 
     <div class="radio">
       <%= ff.label :number_of_students do %>
         <%= ff.radio_button :number_of_students, 4 %> 4
       <% end %>
-      </label>
     </div>
 
     <div class="radio">
       <%= ff.label :number_of_students do %>
         <%= ff.radio_button :number_of_students, 6 %> 6
       <% end %>
-      </label>
     </div>
   </div>
 
@@ -50,21 +47,13 @@
       <%= ff.label :remote do %>
         <%= ff.radio_button :remote, false, checked: true %> on-site
       <% end %>
-      </label>
     </div>
 
     <div class="radio">
       <%= ff.label :remote do %>
         <%= ff.radio_button :remote, true %> remote
       <% end %>
-      </label>
     </div>
-  </div>
-
-  <div class="form-group" id="course-multiselect">
-    <%= ff.label :track_ids, "* Which classes are you willing to interview students from? (all include JavaScript)" %>
-    <br>
-    <%= ff.collection_select :track_ids, Track.active.fulltime, :id, :description, {}, { class: 'multiselect-dropdown', multiple: true, include_hidden: false, required: true } %>
   </div>
 
   <div class='form-group'>

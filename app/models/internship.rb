@@ -15,7 +15,6 @@ class Internship < ApplicationRecord
   validates :description, presence: true
   validates :courses, presence: true
   validates :number_of_students, presence: true
-  validates :tracks, presence: true
 
   before_validation :fix_url
   before_save :check_number_of_students
