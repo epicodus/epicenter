@@ -10,7 +10,6 @@ feature 'signing up as a company' do
     fill_in 'Address', with: '123 N Main st. Portland, OR 97200'
     select course.description
     choose '2'
-    select track.description
     fill_in '* Describe your ideal intern.', with: 'Somebody who writes awesome software!'
     find('#clearance-checkbox').set true
     fill_in 'Clearance description', with: 'Security clearance needed.'
@@ -31,7 +30,6 @@ feature 'signing up as a company' do
     fill_in 'Address', with: '123 N Main st. Portland, OR 97200'
     select course.description
     choose '2'
-    select track.description
     fill_in '* Describe your ideal intern.', with: 'Somebody who writes awesome software!'
     find('#clearance-checkbox').set true
     fill_in 'Clearance description', with: 'Security clearance needed.'
@@ -52,7 +50,6 @@ feature 'signing up as a company' do
     fill_in 'Address', with: '123 N Main st. Portland, OR 97200'
     select course.description
     choose '2'
-    select track.description
     fill_in '* Describe your ideal intern.', with: 'Somebody who writes awesome software!'
     find('#clearance-checkbox').set true
     fill_in 'Clearance description', with: 'Security clearance needed.'
@@ -68,7 +65,6 @@ feature 'signing up as a company' do
     fill_in 'Address', with: '123 N Main st. Portland, OR 97200'
     select course.description
     choose '2'
-    select track.description
     fill_in '* Describe your ideal intern.', with: 'Somebody who writes awesome software!'
     find('#clearance-checkbox').set true
     fill_in 'Clearance description', with: 'Security clearance needed.'

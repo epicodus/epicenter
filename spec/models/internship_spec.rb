@@ -12,7 +12,6 @@ describe Internship do
   it { should validate_presence_of :name }
   it { should validate_presence_of :website }
   it { should validate_presence_of :number_of_students }
-  it { should validate_presence_of :tracks }
 
   describe 'validations' do
     it 'returns false if an internship is saved with number_of_students not equal to 2, 4, or 6' do
