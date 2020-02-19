@@ -184,12 +184,21 @@ describe CodeReview do
       end
     end
 
-    it 'returns true if on day before code review date for part-time course' do
+    it 'returns true if 2 days before code review date for part-time course' do
       part_time_course = FactoryBot.create(:part_time_course)
-      part_time_student = FactoryBot.create(:student, courses: [part_time_course])
+      student = FactoryBot.create(:student, courses: [part_time_course])
       part_time_code_review = FactoryBot.create(:code_review, course: part_time_course)
-      travel_to code_review.date - 1.day do
+      travel_to part_time_code_review.date - 2.days do
         expect(part_time_code_review.visible?(student)).to eq true
+      end
+    end
+
+    it 'returns true if on day before code review date for part-time track course' do
+      js_part_time_js_react_course = FactoryBot.create(:part_time_course)
+      student = FactoryBot.create(:student, courses: [js_part_time_js_react_course])
+      part_time_js_react_code_review = FactoryBot.create(:code_review, course: js_part_time_js_react_course)
+      travel_to part_time_js_react_code_review.date - 2.days do
+        expect(part_time_js_react_code_review.visible?(student)).to eq true
       end
     end
   end
