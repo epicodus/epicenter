@@ -88,7 +88,7 @@
       </div>
     <% end %>
 
-    <% if @submission.has_been_reviewed? %>
+    <% if @submission.reviews.any? %>
       <div class="well">
         <p><strong>Feedback</strong></p>
         <% @submission.reviews.reorder('CREATED_AT DESC').each do |review| %>
