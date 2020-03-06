@@ -3,7 +3,7 @@ desc "daily attendance fix"
 task :attendance_fix => [:environment] do
   courses = Course.current_courses.where(office_id: 1).or(Course.current_courses.where(office_id: 2))
   courses = courses.select { |course| course.class_days.include? Date.today }
-  courses = courses.select { |course| course.id != 461 } # skip PDX React course
+  courses = courses.select { |course| course.id != 506 } # skip PDX C# course
   courses.each do |course|
     course.students.each do |student|
       attendance_record = AttendanceRecord.find_or_create_by(student: student, date: Date.today)
