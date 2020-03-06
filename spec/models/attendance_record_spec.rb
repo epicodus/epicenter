@@ -157,7 +157,7 @@ describe AttendanceRecord do
           end
         end
 
-        it 'is false if checks in before the start of class' do
+        xit 'is false if checks in before the start of class' do
           travel_to pt_track_start_time.beginning_of_week + 6.days + 9.hours - 1.minute do
             on_time_attendance_record = FactoryBot.create(:attendance_record, student: pt_track_student)
             expect(on_time_attendance_record.tardy).to eq false
@@ -246,7 +246,7 @@ describe AttendanceRecord do
           end
         end
 
-        it 'is true when leaves early' do
+        xit 'is true when leaves early' do
           travel_to pt_track_end_time.beginning_of_week + 6.days + 9.hours do
             FactoryBot.create(:attendance_record, student: pt_track_student)
           end
