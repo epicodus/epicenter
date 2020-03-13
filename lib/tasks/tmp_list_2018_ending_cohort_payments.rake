@@ -6,7 +6,7 @@ task :tmp_list_2018_ending_cohort_payments => [:environment] do
     cohorts.each do |cohort|
       file.puts "#{cohort.description}"
       file.puts ""
-      cohort.students.each do |student|
+      cohort.ending_cohort_students.each do |student|
         file.puts student.name
         student.payments.each do |payment|
           date = payment.created_at.strftime('%Y-%m-%d')
