@@ -13,6 +13,7 @@ describe Student do
   it { should have_many :interview_assignments }
   it { should have_one :internship_assignment }
   it { should have_many :cost_adjustments }
+  it { should have_many :daily_submissions }
 
   describe 'validations' do
     context 'does not validate plan_id when a student has not accepted the epicenter invitation' do

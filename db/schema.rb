@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_28_210026) do
+ActiveRecord::Schema.define(version: 2020_03_14_023847) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,6 +95,13 @@ ActiveRecord::Schema.define(version: 2020_01_28_210026) do
     t.boolean "internship_assignments_visible"
     t.index ["start_date"], name: "index_courses_on_start_date"
     t.index ["track_id"], name: "index_courses_on_track_id"
+  end
+
+  create_table "daily_submissions", force: :cascade do |t|
+    t.bigint "student_id"
+    t.string "link"
+    t.date "date"
+    t.index ["student_id"], name: "index_daily_submissions_on_student_id"
   end
 
   create_table "enrollments", id: :serial, force: :cascade do |t|
@@ -362,6 +369,7 @@ ActiveRecord::Schema.define(version: 2020_01_28_210026) do
   add_foreign_key "cohorts", "tracks"
   add_foreign_key "cost_adjustments", "users", column: "student_id"
   add_foreign_key "courses", "tracks"
+  add_foreign_key "daily_submissions", "users", column: "student_id"
   add_foreign_key "notes", "submissions"
   add_foreign_key "users", "offices"
 end
