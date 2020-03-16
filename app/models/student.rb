@@ -29,6 +29,7 @@ class Student < User
   has_many :signatures
   has_one :internship_assignment
   has_many :cost_adjustments
+  has_many :daily_submissions
 
   acts_as_paranoid
 

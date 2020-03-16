@@ -1,0 +1,39 @@
+<h1>Daily Submissions for <%= @date.strftime("%A %B %d, %Y") %></h1>
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h4><%= @course.description %></h4>
+    <h4><%= @course.teacher %></h4>
+
+    <%= form_tag course_daily_submissions_path(@course), method: 'get', enforce_utf8: false do %>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="input-group">
+            <%= select_tag :date, options_for_select(formatted_class_days, selected: @date), { class: 'form-control' } %>
+            <span class="input-group-btn">
+              <%= submit_tag 'Change day', name: nil, class: 'btn btn-info' %>
+            </span>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="table-responsive">
+      <table class="table table-hover datatable">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>URL</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @course.students.each do |student| %>
+            <tr>
+              <td class="col-md-2"><%= link_to student.name, course_student_path(@course, student) %></td>
+              <td class="col-md-4"><%= student.daily_submissions.find_by(date: @date).try(:link) || '-'%></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
