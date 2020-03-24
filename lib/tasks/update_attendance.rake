@@ -17,13 +17,13 @@ task :update_attendance, [:day] => [:environment] do |t, args|
   else
     update_absent_students = false
   end
-  puts "Update ALL day-time courses for an office? (y/N)"
+  puts "Update ALL courses for an office? (y/N)"
   input = STDIN.gets.chomp.downcase[0]
   if input == "y"
     puts "Enter office name or id:"
     input = STDIN.gets.chomp
     office = Office.find_by(name: input) || Office.find(input)
-    course_ids = Course.where(internship_course: false, parttime: false, office_id: office.id).where('start_date <= ? AND end_date >= ?', day, day).order(:description).map {|course| course.id}
+    course_ids = Course.where(internship_course: false, office_id: office.id).where('start_date <= ? AND end_date >= ?', day, day).order(:description).map {|course| course.id}
   else
     puts "Enter course id:"
     course_ids = [STDIN.gets.chomp.to_i]
