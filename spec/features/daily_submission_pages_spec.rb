@@ -23,8 +23,8 @@ feature 'Visiting the student course page' do
 
     scenario 'you can view submissions for today' do
       student2 = FactoryBot.create(:student, course: student.course)
-      DailySubmission.create(student: student, link: 'student 1 submission')
-      DailySubmission.create(student: student2, link: 'student 2 submission')
+      DailySubmission.create(student: student, link: 'student 1 submission', date: Date.today)
+      DailySubmission.create(student: student2, link: 'student 2 submission', date: Date.today)
       visit course_daily_submissions_path(student.course)
       expect(page).to have_content 'student 1 submission'
       expect(page).to have_content 'student 2 submission'
@@ -32,10 +32,8 @@ feature 'Visiting the student course page' do
 
     scenario 'you can view submission for another class day' do
       student2 = FactoryBot.create(:student, course: student.course)
-      DailySubmission.create(student: student, link: 'today submission')
-      travel_to student2.course.start_date do
-        DailySubmission.create(student: student2, link: 'course start date submission')
-      end
+      DailySubmission.create(student: student, link: 'today submission', date: Date.today)
+      DailySubmission.create(student: student2, link: 'course start date submission', date: student2.course.start_date)
       visit course_daily_submissions_path(student.course)
       expect(page).to have_content 'today submission'
       select student2.course.start_date.strftime("%B %d, %Y, %A"), from: 'date'
@@ -74,6 +72,15 @@ feature 'Visiting the student course page' do
       click_on 'Submit'
       expect(page).to have_content 'Thank you for your daily submission.'
       expect(DailySubmission.first.link).to eq 'example.com/foo2'
+    end
+
+    scenario 'submits daily submission for a different day' do
+      visit course_student_path(student.course, student)
+      fill_in 'daily_submission_link', with: 'example.com/foo'
+      fill_in 'Date', with: '2020-01-01'
+      click_on 'Submit'
+      expect(page).to have_content 'Thank you for your daily submission.'
+      expect(DailySubmission.first.date).to eq Date.parse('2020-01-01')
     end
   end
 end

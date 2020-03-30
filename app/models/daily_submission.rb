@@ -2,16 +2,12 @@ class DailySubmission < ApplicationRecord
   belongs_to :student
 
   validates :link, presence: true
+  validates :date, presence: true
 
-  before_validation :set_date
-  before_validation :remove_exsting
+  before_validation :remove_existing
 
 private
-  def set_date
-    self.date = Time.zone.now.to_date
-  end
-
-  def remove_exsting
+  def remove_existing
     DailySubmission.where(student: student, date: date).destroy_all
   end
 end
