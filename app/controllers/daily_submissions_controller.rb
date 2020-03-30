@@ -19,6 +19,6 @@ class DailySubmissionsController < ApplicationController
 private
 
   def daily_submission_params
-    params.require(:daily_submission).permit(:link)
+    params.require(:daily_submission).permit(:link, :date)
   end
 end
