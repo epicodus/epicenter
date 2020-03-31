@@ -15,13 +15,22 @@ class AttendanceRecordAmendmentsController < ApplicationController
 
   def create
     @attendance_record_amendment = AttendanceRecordAmendment.new(attendance_record_amendment_params)
-    student = Student.find(params[:attendance_record_amendment][:student_id])
+    @student = Student.find(params[:attendance_record_amendment][:student_id])
     day = Date.parse(@attendance_record_amendment.date) if @attendance_record_amendment.date
-    @course = student.courses.find_by('start_date <= ? AND end_date >= ?', day, day) || student.course
+    @course = @student.courses.find_by('start_date <= ? AND end_date >= ?', day, day) || @student.course
     if @attendance_record_amendment.save
-      redirect_to course_student_path(@course, student), notice: "The attendance record for #{student.name} on #{@attendance_record_amendment.date.to_date.strftime('%A, %B %d, %Y')} has been amended to #{@attendance_record_amendment.status}."
+      respond_to do |format|
+        format.html { redirect_to course_student_path(@course, @student), notice: "The attendance record for #{@student.name} on #{@attendance_record_amendment.date.to_date.strftime('%A, %B %d, %Y')} has been amended to #{@attendance_record_amendment.status}." }
+        format.js { render 'create' }
+      end
     else
-      render 'new'
+      respond_to do |format|
+        format.html { render 'new' }
+        format.js do
+          flash[:alert] = "There was a problem updating attendance status."
+          render js: "window.location.pathname ='#{course_day_attendance_records_path(@course, day: params[:attendance_records][:day])}'"
+        end
+      end
     end
   end
 

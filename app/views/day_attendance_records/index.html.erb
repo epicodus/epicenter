@@ -29,13 +29,14 @@
             <th>Signed out</th>
             <th>Pair</th>
             <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           <% @course.students.each do |student| %>
             <tr>
               <td class="col-md-3"><%= link_to student.name, course_student_path(@course, student) %></td>
-              <td class="col-md-2">
+              <td class="col-md-2 status-display">
                 <% if !student.attendance_record_on_day(@day) %>
                   <span class="label label-primary">Absent</span>
                 <% elsif student.attendance_record_on_day(@day).tardy && student.attendance_record_on_day(@day).left_early %>
@@ -52,6 +53,14 @@
               <td><%= student.attendance_record_on_day(@day).try(:created_at).try(:in_time_zone, @course.office.time_zone).try(:strftime, '%l:%M %p') %></td>
               <td><%= student.attendance_record_on_day(@day).try(:signed_out_time).try(:in_time_zone, @course.office.time_zone).try(:strftime, '%l:%M %p') %></td>
               <td><%= student.pair_on_day(@day) ? student.pair_on_day(@day).name : 'Solo' %></td>
+              <td>
+                <%= form_for AttendanceRecordAmendment.new, remote: true do |f| %>
+                  <%= f.select :status, options_for_select(["On time", "Tardy", "Left early", "Tardy and Left early", "Absent"], student.attendance_record_on_day(@day).try(:status) || 'Absent'), {}, {class: 'attendance-adjust', id: student.id} %>
+                  <%= f.hidden_field :student_id, value: student.id %>
+                  <%= f.hidden_field :date, value: @day %>
+                  <%= f.hidden_field :pair_id, value: student.pair_on_day(@day).try(:id) %>
+                <% end %>
+              </td>
               <td class="edit-attendance">
                 <% if current_admin && can?(:manage, AttendanceRecord) %>
                   <%= link_to 'Edit', new_attendance_record_amendment_path(course: @course, student: student, day: @day, status: student.attendance_record_on_day(@day).try(:status)) %>

@@ -1,0 +1,14 @@
+var element = $("#<%= @student.id %>").closest('tr').children('.status-display').first();
+var status = "<%= @attendance_record_amendment.status %>";
+var label = '';
+switch(status) {
+  case 'Absent':
+    label = 'primary';
+    break;
+  case 'On time':
+    label = 'success'
+    break;
+  default:
+    label = 'danger';
+}
+element.html('<span class="label label-' + label + '"><%= @attendance_record_amendment.status %></span>');
