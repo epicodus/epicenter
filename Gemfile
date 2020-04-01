@@ -70,7 +70,7 @@ group :test do
   gem 'webmock'
   gem 'vcr'
   gem 'simplecov', require: false
-  gem 'coveralls', require: false
+  gem 'coveralls', '~> 0.8', require: false
   gem 'stripe-ruby-mock', :require => 'stripe_mock'
 end
 

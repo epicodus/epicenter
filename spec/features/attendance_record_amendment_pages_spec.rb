@@ -103,5 +103,57 @@ feature "creating an attendance record amendment" do
       expect(page).to have_content "You are not authorized to access this page."
     end
   end
+end
 
+feature "creating an attendance record amendment from the day attendance page", :js do
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+
+  context "as an admin" do
+    let(:admin) { FactoryBot.create(:admin, current_course: student.course) }
+    before { login_as(admin, scope: :admin) }
+
+    scenario "when a new record needs to be created" do
+      visit course_day_attendance_records_path(student.course, day: student.course.start_date)
+      select "On time", from: student.id.to_s
+      wait_for_ajax
+      expect(student.attendance_record_on_day(student.course.start_date).status).to eq 'On time'
+      expect(page).to have_css('.label-success', text: 'On time')
+    end
+
+    scenario "when marking a student as tardy" do
+      visit course_day_attendance_records_path(student.course, day: student.course.start_date)
+      select "Tardy", from: student.id.to_s
+      wait_for_ajax
+      expect(student.attendance_record_on_day(student.course.start_date).status).to eq 'Tardy'
+      expect(page).to have_css('.label-danger', text: 'Tardy')
+    end
+
+    scenario "when marking a student as left early" do
+      visit course_day_attendance_records_path(student.course, day: student.course.start_date)
+      select "Left early", from: student.id.to_s
+      wait_for_ajax
+      expect(student.attendance_record_on_day(student.course.start_date).status).to eq 'Left early'
+      expect(page).to have_css('.label-danger', text: 'Left early')
+    end
+
+    scenario "when marking a student as absent" do
+      FactoryBot.create(:attendance_record, student: student, date: student.course.start_date, tardy: true)
+      visit course_day_attendance_records_path(student.course, day: student.course.start_date)
+      select "Absent", from: student.id.to_s
+      wait_for_ajax
+      expect(student.attendance_record_on_day(student.course.start_date)).to eq nil
+      expect(page).to have_css('.label-primary', text: 'Absent')
+    end
+
+    scenario "does not change pair" do
+      student2 = FactoryBot.create(:student)
+      FactoryBot.create(:attendance_record, student: student, date: student.course.start_date, tardy: true, pair_id: student2.id)
+      visit course_day_attendance_records_path(student.course, day: student.course.start_date)
+      select "On time", from: student.id.to_s
+      wait_for_ajax
+      expect(student.attendance_record_on_day(student.course.start_date).pair_id).to eq student2.id
+      expect(page).to have_css('.label-success', text: 'On time')
+      expect(page).to have_content student2.name
+    end
+  end
 end

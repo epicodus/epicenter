@@ -1,6 +1,7 @@
 describe DailySubmission do
   it { should belong_to :student }
   it { should validate_presence_of :link }
+  it { should validate_presence_of :date }
 
   describe "one submission per student per day" do
     it 'allows one submission per student per day' do

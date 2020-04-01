@@ -23,8 +23,8 @@ feature 'Visiting the student course page' do
 
     scenario 'you can view submissions for today' do
       student2 = FactoryBot.create(:student, course: student.course)
-      DailySubmission.create(student: student, link: 'student 1 submission', date: Date.today)
-      DailySubmission.create(student: student2, link: 'student 2 submission', date: Date.today)
+      DailySubmission.create(student: student, link: 'student 1 submission', date: Time.zone.now.to_date)
+      DailySubmission.create(student: student2, link: 'student 2 submission', date: Time.zone.now.to_date)
       visit course_daily_submissions_path(student.course)
       expect(page).to have_content 'student 1 submission'
       expect(page).to have_content 'student 2 submission'
@@ -32,7 +32,7 @@ feature 'Visiting the student course page' do
 
     scenario 'you can view submission for another class day' do
       student2 = FactoryBot.create(:student, course: student.course)
-      DailySubmission.create(student: student, link: 'today submission', date: Date.today)
+      DailySubmission.create(student: student, link: 'today submission', date: Time.zone.now.to_date)
       DailySubmission.create(student: student2, link: 'course start date submission', date: student2.course.start_date)
       visit course_daily_submissions_path(student.course)
       expect(page).to have_content 'today submission'
