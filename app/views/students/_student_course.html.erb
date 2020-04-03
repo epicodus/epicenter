@@ -56,6 +56,8 @@
           </div>
           <p><%= f.submit "Submit", class: 'btn btn-info' %></p>
         <% end %>
+        <br>
+        <p><%= link_to 'View past daily submissions', student_daily_submissions_path(@student) %></p>
       </div>
     </div>
   <% end %>

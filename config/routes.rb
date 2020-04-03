@@ -27,7 +27,7 @@ Rails.application.routes.draw do
     resource :add_course, only: [:update], to: 'add_course#update'
     resource :transcript, only: [:show]
     resource :certificate, only: [:show]
-    resources :daily_submissions, only: [:create]
+    resources :daily_submissions, only: [:index, :create]
   end
   resources :admins, only: [:update]
   resources :payment_methods, only: [:index, :new]

@@ -44,4 +44,12 @@ $(function() {
     searching: false,
     order: [[ 1, "asc" ]],
   });
+
+  $('.daily-submissions-datatable').DataTable({
+    paging: false,
+    autoWidth: false,
+    info: false,
+    searching: false,
+    order: [[ 0, "desc" ]]
+  });
 });

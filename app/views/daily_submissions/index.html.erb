@@ -1,0 +1,27 @@
+<p><%= link_to 'Return to course', course_student_path(@student.course, @student) %></p>
+
+<div class="row">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4><strong>Daily submissions for <%= @student.name %></strong></h4>
+    </div>
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table class="daily-submissions-datatable table table-hover">
+          <thead>
+            <th>Date</th>
+            <th>Links</th>
+          </thead>
+            <tbody>
+              <% @student.daily_submissions.order(date: :desc).each do |sub| %>
+                <tr>
+                  <td><%= sub.date.to_s %></td>
+                  <td><%= sub.link %></td>
+                </tr>
+              <% end %>
+            </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

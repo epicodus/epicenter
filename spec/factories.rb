@@ -844,6 +844,12 @@ FactoryBot.define do
     student
   end
 
+  factory :daily_submission do
+    link { 'http://github.com' }
+    date { Time.zone.now.to_date }
+    student
+  end
+
   factory :company do
     sequence(:name) { |n| "Company employee #{n}" }
     sequence(:email) { |n| "employee#{n}@company.com" }
