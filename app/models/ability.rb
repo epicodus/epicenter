@@ -33,7 +33,7 @@ private
   def set_enrolled_student_permissions(user, ip)
     can [:create, :update], BankAccount
     can [:create, :update], Submission, student_id: user.id
-    can [:create], DailySubmission, student_id: user.id
+    can [:read, :create], DailySubmission, student_id: user.id
     can :manage, AttendanceRecord if IpLocation.is_local?(ip)
     can :read, CodeReview, course_id: user.course_id
     can :read, Course, id: user.courses.map(&:id)

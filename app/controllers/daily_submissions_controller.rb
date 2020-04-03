@@ -1,9 +1,15 @@
 class DailySubmissionsController < ApplicationController
   authorize_resource
 
+  def index
+    @student = Student.find(params[:student_id])
+    authorize! :read, @student
+  end
+
   def show
     @course = Course.find(params[:course_id])
     @date = params[:date] ? Date.parse(params[:date]) : Time.zone.now.to_date
+    authorize! :manage, @course
   end
 
   def create
