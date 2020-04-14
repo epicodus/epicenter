@@ -27,6 +27,10 @@
   <h1><%= @course.description %></h1>
 <% end %>
 
+<% if current_admin %>
+  <%= link_to 'Peer evaluations', student_peer_evaluations_path(@student) %>
+<% end %>
+
 <% if @course.internship_course? %>
   <%= render 'students/student_code_reviews' %>
 

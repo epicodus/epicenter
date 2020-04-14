@@ -1,0 +1,39 @@
+<% if @student %>
+  <% if current_student %>
+    <p><%= link_to 'New peer evaluation', new_student_peer_evaluation_path(@student) %></p>
+  <% end %>
+
+  <% if current_admin %>
+    <h3>Peer evaluations written by <%= @student.name %>:</h3>
+  <% else %>
+    <h3>Peer evaluations you wrote:</h3>
+  <% end %>
+  <ul>
+    <% @student.evaluations_of_peers.each do |eval| %>
+      <li><%= eval.created_at.to_date.strftime("%B %d %Y") %> <%= link_to eval.evaluatee.name, student_peer_evaluation_path(@student, eval) %></li>
+    <% end %>
+  </ul>
+
+  <hr>
+
+  <% if current_admin %>
+    <h3>Peer evaluations of <%= @student.name %>:</h3>
+  <% else %>
+    <h3>Peer evaluations of your whiteboarding:</h3>
+  <% end %>
+  <ul>
+    <% @student.evaluations_by_peers.each do |eval| %>
+      <li><%= link_to eval.created_at.to_date.strftime("%B %d %Y"), student_peer_evaluation_path(@student, eval) %></li>
+    <% end %>
+  </ul>
+
+<% elsif @course %>
+  <h3>Peer evaluations by or of students in this course:</h3>
+  <ul>
+    <% @course.students.reorder(:name).each do |student| %>
+      <li class='list-unstyled'>
+        <%= link_to student.name, student_peer_evaluations_path(student) %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

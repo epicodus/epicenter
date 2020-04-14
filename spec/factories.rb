@@ -938,4 +938,32 @@ FactoryBot.define do
     amount { 100_00 }
     reason { 'test adjustment' }
   end
+
+  factory :peer_evaluation do
+    association :evaluator, factory: :user_with_all_documents_signed
+    association :evaluatee, factory: :user_with_all_documents_signed
+  end
+
+  factory :peer_question do
+    content { 'test question' }
+    category { 'technical' }
+    input_type { 'select_box' }
+
+    factory :peer_question_feedback do
+      category { 'feedback' }
+      input_type { 'text_field' }
+    end
+  end
+
+  factory :peer_response do
+    peer_evaluation
+    peer_question
+    score { 3 }
+
+    factory :peer_response_feedback do
+      association :peer_question, factory: :peer_question_feedback
+      score { nil }
+      comment { 'foo' }
+    end
+  end
 end

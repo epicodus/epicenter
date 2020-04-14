@@ -30,6 +30,8 @@ class Student < User
   has_one :internship_assignment
   has_many :cost_adjustments
   has_many :daily_submissions
+  has_many :evaluations_of_peers, class_name: :PeerEvaluation, foreign_key: :evaluator
+  has_many :evaluations_by_peers, class_name: :PeerEvaluation, foreign_key: :evaluatee
 
   acts_as_paranoid
 

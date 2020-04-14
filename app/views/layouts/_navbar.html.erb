@@ -27,6 +27,10 @@
             <%= link_to 'Pair suggestions', random_pairs_path %>
           <% end %>
 
+          <%= set_navbar_link_class('peer_evaluations') do %>
+            <%= link_to 'Peer evaluations', student_peer_evaluations_path(current_student) %>
+          <% end %>
+
           <%= set_navbar_link_class('registrations') do %>
             <%= link_to 'Profile', edit_student_registration_path %>
           <% end %>

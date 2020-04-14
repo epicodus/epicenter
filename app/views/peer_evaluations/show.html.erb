@@ -1,0 +1,51 @@
+<% if current_admin %>
+  <p>Interviewer: <%= @peer_evaluation.evaluator.name %></p>
+<% end %>
+<p>Interviewee: <%= @peer_evaluation.evaluatee.name %></p>
+<p>Date: <%= @peer_evaluation.created_at.to_date.strftime("%B %d %Y") %></p>
+
+<h3>Technical</h3>
+<div class="table-responsive">
+  <table class="table">
+    <tbody>
+      <% @peer_evaluation.peer_responses.each do |response| %>
+        <% if response.peer_question.try(:category) == 'technical' %>
+          <tr>
+            <td class="col-md-8"><%= response.peer_question.content %></td>
+            <td><%= @options.find {|o| o[:value] == response.score }[:text] %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<h3>Professionalism</h3>
+<div class="table-responsive">
+  <table class="table">
+    <tbody>
+      <% @peer_evaluation.peer_responses.each do |response| %>
+        <% if response.peer_question.try(:category) == 'professionalism' %>
+          <tr>
+            <td class="col-md-8"><%= response.peer_question.content %></td>
+            <td><%= @options.find {|o| o[:value] == response.score }[:text] %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<h3>Feedback</h3>
+<div class="peer-feedback">
+  <table class="table">
+    <% @peer_evaluation.peer_responses.each do |response| %>
+      <% if response.peer_question.try(:category) == 'feedback' %>
+        <tr><td>
+          <p><%= response.peer_question.content %></p>
+          <p><%= response.comment %></p>
+        </td></tr>
+      <% end %>
+    <% end %>
+  </table>
+</div>

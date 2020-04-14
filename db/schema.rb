@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_14_023847) do
+ActiveRecord::Schema.define(version: 2020_04_14_064331) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -237,6 +237,31 @@ ActiveRecord::Schema.define(version: 2020_03_14_023847) do
     t.index ["student_id"], name: "index_payments_on_student_id"
   end
 
+  create_table "peer_evaluations", force: :cascade do |t|
+    t.bigint "evaluator_id"
+    t.bigint "evaluatee_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["evaluatee_id"], name: "index_peer_evaluations_on_evaluatee_id"
+    t.index ["evaluator_id"], name: "index_peer_evaluations_on_evaluator_id"
+  end
+
+  create_table "peer_questions", force: :cascade do |t|
+    t.string "content"
+    t.string "category"
+    t.string "input_type"
+    t.integer "number"
+  end
+
+  create_table "peer_responses", force: :cascade do |t|
+    t.bigint "peer_evaluation_id"
+    t.bigint "peer_question_id"
+    t.integer "score"
+    t.string "comment"
+    t.index ["peer_evaluation_id"], name: "index_peer_responses_on_peer_evaluation_id"
+    t.index ["peer_question_id"], name: "index_peer_responses_on_peer_question_id"
+  end
+
   create_table "plans", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255
     t.integer "upfront_amount"
@@ -371,5 +396,7 @@ ActiveRecord::Schema.define(version: 2020_03_14_023847) do
   add_foreign_key "courses", "tracks"
   add_foreign_key "daily_submissions", "users", column: "student_id"
   add_foreign_key "notes", "submissions"
+  add_foreign_key "peer_evaluations", "users", column: "evaluatee_id"
+  add_foreign_key "peer_evaluations", "users", column: "evaluator_id"
   add_foreign_key "users", "offices"
 end
