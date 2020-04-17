@@ -12,7 +12,7 @@
         <% if response.peer_question.try(:category) == 'technical' %>
           <tr>
             <td class="col-md-8"><%= response.peer_question.content %></td>
-            <td><%= @options.find {|o| o[:value] == response.score }[:text] %></td>
+            <td><%= response.response %></td>
           </tr>
         <% end %>
       <% end %>
@@ -28,7 +28,7 @@
         <% if response.peer_question.try(:category) == 'professionalism' %>
           <tr>
             <td class="col-md-8"><%= response.peer_question.content %></td>
-            <td><%= @options.find {|o| o[:value] == response.score }[:text] %></td>
+            <td><%= response.response %></td>
           </tr>
         <% end %>
       <% end %>
@@ -43,7 +43,7 @@
       <% if response.peer_question.try(:category) == 'feedback' %>
         <tr><td>
           <p><%= response.peer_question.content %></p>
-          <p><%= response.comment %></p>
+          <p><%= response.response %></p>
         </td></tr>
       <% end %>
     <% end %>

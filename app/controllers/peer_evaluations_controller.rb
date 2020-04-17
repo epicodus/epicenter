@@ -22,7 +22,7 @@ class PeerEvaluationsController < ApplicationController
   def create
     peer_evaluation = PeerEvaluation.new(peer_evaluation_params)
     if peer_evaluation.save
-      redirect_to new_student_peer_evaluation_path(peer_evaluation.evaluator), notice: "Peer evaluation submitted for #{peer_evaluation.evaluatee.name}."
+      redirect_to new_student_peer_evaluation_path(peer_evaluation.evaluator), notice: "Peer evaluation of #{peer_evaluation.evaluatee.name} submitted."
     else
       @student = current_student
       @peer_evaluation = peer_evaluation
@@ -40,6 +40,6 @@ class PeerEvaluationsController < ApplicationController
 
 private
   def peer_evaluation_params
-    params.require(:peer_evaluation).permit(:evaluatee_id, peer_responses_attributes: [:peer_question_id, :score, :comment]).merge(evaluator_id: current_student.id)
+    params.require(:peer_evaluation).permit(:evaluatee_id, peer_responses_attributes: [:peer_question_id, :response]).merge(evaluator_id: current_student.id)
   end
 end

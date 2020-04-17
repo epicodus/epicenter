@@ -27,11 +27,12 @@ feature 'Visiting the peer evaluations index page' do
         expect(page).to_not have_content peer_evaluation.evaluator.name
       end
 
-      scenario 'you can view the list of all students with peer evaluations' do
+      scenario 'you can view the list of all students with number of peer evaluations' do
         visit course_path(student.course)
         click_on 'Peer Evaluations'
         expect(page).to have_content 'Peer evaluations by or of students in this course'
         expect(page).to have_content student.name
+        expect(page).to have_content 0
       end
     end
 
@@ -66,7 +67,7 @@ feature 'Visiting the peer evaluations index page' do
         peer_response = FactoryBot.create(:peer_response_feedback, peer_evaluation: peer_evaluation)
         visit student_peer_evaluation_path(student, peer_evaluation)
         expect(page).to have_content peer_response.peer_question.content
-        expect(page).to have_content peer_response.comment
+        expect(page).to have_content peer_response.response
       end
     end
   end
@@ -80,7 +81,7 @@ feature 'Visiting the peer evaluations index page' do
       scenario 'via the navbar' do
         visit root_path
         click_on 'Peer evaluations'
-        expect(page).to have_content "Peer evaluations you wrote"
+        expect(page).to have_content "Peer evaluations written by you"
       end
 
       scenario 'of evals you wrote' do
@@ -134,7 +135,7 @@ feature 'Visiting the peer evaluations index page' do
       scenario 'writen about you' do
         eval_of_you = FactoryBot.create(:peer_evaluation, evaluator: other_student, evaluatee: student)
         visit student_peer_evaluations_path(student)
-        click_on peer_evaluation.created_at.to_date.strftime('%B %d %Y')
+        click_on 'click to view'
         expect(page).to have_content 'Technical'
       end
 
@@ -160,7 +161,7 @@ feature 'Visiting the peer evaluations index page' do
         peer_response = FactoryBot.create(:peer_response_feedback, peer_evaluation: peer_evaluation)
         visit student_peer_evaluation_path(student, peer_evaluation)
         expect(page).to have_content peer_response.peer_question.content
-        expect(page).to have_content peer_response.comment
+        expect(page).to have_content peer_response.response
       end
     end
 
@@ -177,14 +178,15 @@ feature 'Visiting the peer evaluations index page' do
         cohort_student = FactoryBot.create(:student, course: student.course)
         visit new_student_peer_evaluation_path(student)
         select cohort_student.name, from: 'peer-eval-select-name'
-        find('#peer_evaluation_peer_responses_attributes_0_score option:last-of-type').select_option
+        find('#peer_evaluation_peer_responses_attributes_0_response option:last-of-type').select_option
         find('textarea').set('foo')
         click_on 'Submit peer evaluation'
+        expect(page).to have_content "Peer evaluation of #{cohort_student.name} submitted"
         eval = PeerEvaluation.first
         expect(eval.evaluator).to eq student
         expect(eval.evaluatee).to eq cohort_student
-        expect(eval.peer_responses.first.score).to eq 0
-        expect(eval.peer_responses.last.comment).to eq 'foo'
+        expect(eval.peer_responses.first.response).to eq 'None of the time'
+        expect(eval.peer_responses.last.response).to eq 'foo'
       end
     end
   end

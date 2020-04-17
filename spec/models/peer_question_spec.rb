@@ -3,7 +3,6 @@ describe PeerQuestion do
 
   it { should validate_presence_of :content }
   it { should validate_presence_of :category }
-  it { should validate_presence_of :input_type }
 
   describe '.default_scope' do
     let(:question_2) { FactoryBot.create(:peer_question) }

@@ -1,39 +1,83 @@
 <% if @student %>
   <% if current_student %>
-    <p><%= link_to 'New peer evaluation', new_student_peer_evaluation_path(@student) %></p>
+    <p><%= link_to 'New peer evaluation', new_student_peer_evaluation_path(@student) %></p><br>
   <% end %>
 
-  <% if current_admin %>
-    <h3>Peer evaluations written by <%= @student.name %>:</h3>
-  <% else %>
-    <h3>Peer evaluations you wrote:</h3>
-  <% end %>
-  <ul>
-    <% @student.evaluations_of_peers.each do |eval| %>
-      <li><%= eval.created_at.to_date.strftime("%B %d %Y") %> <%= link_to eval.evaluatee.name, student_peer_evaluation_path(@student, eval) %></li>
-    <% end %>
-  </ul>
-
-  <hr>
-
-  <% if current_admin %>
-    <h3>Peer evaluations of <%= @student.name %>:</h3>
-  <% else %>
-    <h3>Peer evaluations of your whiteboarding:</h3>
-  <% end %>
-  <ul>
-    <% @student.evaluations_by_peers.each do |eval| %>
-      <li><%= link_to eval.created_at.to_date.strftime("%B %d %Y"), student_peer_evaluation_path(@student, eval) %></li>
-    <% end %>
-  </ul>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h4>Peer evaluations written by <%= current_admin ? @student.name : 'you' %>:</h4>
+          <div class="table-responsive">
+            <table class="table">
+              <tbody>
+                <% @student.evaluations_of_peers.each do |eval| %>
+                  <tr>
+                    <td class="col-md-6">
+                      <%= eval.created_at.to_date.strftime("%B %d %Y") %>
+                    </td>
+                    <td class="col-md-6"><%= link_to eval.evaluatee.name, student_peer_evaluation_path(@student, eval) %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <h4>Peer evaluations of <%= current_admin ? @student.name : 'your whiteboarding' %>:</h4>
+          <div class="table-responsive">
+            <table class="table">
+              <tbody>
+                <% @student.evaluations_by_peers.each do |eval| %>
+                  <tr>
+                    <td class="col-md-6">
+                      <%= eval.created_at.to_date.strftime("%B %d %Y") %>
+                    </td>
+                    <td class="col-md-6"><%= link_to 'click to view', student_peer_evaluation_path(@student, eval) %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <% elsif @course %>
   <h3>Peer evaluations by or of students in this course:</h3>
-  <ul>
-    <% @course.students.reorder(:name).each do |student| %>
-      <li class='list-unstyled'>
-        <%= link_to student.name, student_peer_evaluations_path(student) %>
-      </li>
-    <% end %>
-  </ul>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Evaluator</th>
+              <th>Evaluatee</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @course.students.reorder(:name).each do |student| %>
+              <tr>
+                <td class="col-md-8">
+                  <% if student.evaluations_of_peers.any? || student.evaluations_by_peers.any? %>
+                    <%= link_to student.name, student_peer_evaluations_path(student) %>
+                  <% else %>
+                    <%= student.name %>
+                  <% end %>
+                </td>
+                <td class="col-md-2"><%= student.evaluations_of_peers.count %></td>
+                <td class="col-md-2"><%= student.evaluations_by_peers.count %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 <% end %>

@@ -9,15 +9,13 @@ class CreatePeerEvaluations < ActiveRecord::Migration[5.2]
     create_table :peer_questions do |t|
       t.string :content
       t.string :category
-      t.string :input_type
       t.integer :number
     end
 
     create_table :peer_responses do |t|
       t.belongs_to :peer_evaluation
       t.belongs_to :peer_question
-      t.integer :score
-      t.string :comment
+      t.string :response
     end
   end
 end

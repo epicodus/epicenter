@@ -249,15 +249,13 @@ ActiveRecord::Schema.define(version: 2020_04_14_064331) do
   create_table "peer_questions", force: :cascade do |t|
     t.string "content"
     t.string "category"
-    t.string "input_type"
     t.integer "number"
   end
 
   create_table "peer_responses", force: :cascade do |t|
     t.bigint "peer_evaluation_id"
     t.bigint "peer_question_id"
-    t.integer "score"
-    t.string "comment"
+    t.string "response"
     t.index ["peer_evaluation_id"], name: "index_peer_responses_on_peer_evaluation_id"
     t.index ["peer_question_id"], name: "index_peer_responses_on_peer_question_id"
   end
