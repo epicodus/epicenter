@@ -100,6 +100,8 @@ private
       Track.find_by(description: 'Part-Time JS/React')
     elsif cohort_applied.include? 'Part-Time Intro to Programming'
       Track.find_by(description: 'Part-Time Intro to Programming')
+    elsif cohort_applied.include? 'Special'
+      Track.find_by(description: 'C#/React')
     else
       Track.find_by(description: cohort_applied.split[4]) || CrmLead.raise_error("Track not found in Epicenter")
     end
