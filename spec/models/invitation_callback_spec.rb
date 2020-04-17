@@ -149,9 +149,9 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
         expect(student.ending_cohort).to eq fidgetech_cohort
       end
 
-      it 'does not set cohort' do
+      it 'sets cohort' do
         student = Student.find_by(email: 'example-fidgetech@example.com')
-        expect(student.cohort).to eq nil
+        expect(student.cohort).to eq fidgetech_cohort
       end
 
       it 'sets starting cohort' do
