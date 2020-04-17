@@ -1,0 +1,80 @@
+<%= form_with model: [@student, @peer_evaluation] do |f| %>
+  <%= render 'layouts/errors', object: @peer_evaluation %>
+
+  <div class='form-group'>
+    <%= f.label :evaluatee_id, 'Interviewee Name' %>
+    <%= f.select :evaluatee_id, @student.course.students.where.not(id: @student).order(:name).collect {|c| [ c.name, c.id ] }, { prompt: '-- please select --' }, { class: 'form-control', id: 'peer-eval-select-name', required: true } %>
+  </div>
+
+  <p>Interview the candidate using the following criteria. Meets expectations:</p>
+  <ul>
+    <li><strong>All of the time</strong>: The candidate always met these expectations. Great work!</li>
+    <li><strong>Most of the time</strong>: The candidate met these expectations most of the time. Nice work, but there is room for improvement.</li>
+    <li><strong>Some of the time</strong>: The candidate met these expectations some of the time. Further practice is recommended.</li>
+    <li><strong>None of the time</strong>: The candidate did not need to meet the expectations and will need to redo the interview. Further practice is needed.</li>
+  </ul>
+
+  <h3>Technical</h3>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Did the interviewee:</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= f.nested_fields_for :peer_responses do |ff| %>
+          <% if ff.object.peer_question.try(:category) == 'technical' %>
+            <tr>
+              <td class="col-md-8"><%= ff.object.peer_question.content %></td>
+              <td>
+                <%= ff.select :score, @options.collect {|o| [ o[:text], o[:value] ] }, { prompt: '-- please select --' }, { class: 'form-control peer-eval-options', required: true } %>
+                <%= ff.hidden_field :peer_question_id, value: ff.object.peer_question.id %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Professionalism</h3>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Did the interviewee:</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= f.nested_fields_for :peer_responses do |ff| %>
+          <% if ff.object.peer_question.try(:category) == 'professionalism' %>
+            <tr>
+              <td class="col-md-8"><%= ff.object.peer_question.content %></td>
+              <td>
+                <%= ff.select :score, @options.collect {|o| [ o[:text], o[:value] ] }, { prompt: '-- please select --' }, { class: 'form-control peer-eval-options', required: true } %>
+                <%= ff.hidden_field :peer_question_id, value: ff.object.peer_question.id %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Feedback</h3>
+  <div class="peer-feedback">
+    <%= f.nested_fields_for :peer_responses do |ff| %>
+      <% if ff.object.peer_question.try(:category) == 'feedback' %>
+        <p><%= ff.object.peer_question.content %></p>
+        <p><%= ff.text_area :comment, rows: 10, required: true, class: 'form-control peer-feedback-comment' %></p>
+        <%= ff.hidden_field :peer_question_id, value: ff.object.peer_question.id %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <%= f.submit 'Submit peer evaluation', class: 'btn btn-success' %>
+  <p>&nbsp;</p>
+<% end %>

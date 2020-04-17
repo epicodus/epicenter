@@ -28,6 +28,7 @@ Rails.application.routes.draw do
     resource :transcript, only: [:show]
     resource :certificate, only: [:show]
     resources :daily_submissions, only: [:index, :create]
+    resources :peer_evaluations, only: [:index, :new, :create, :show]
   end
   resources :admins, only: [:update]
   resources :payment_methods, only: [:index, :new]
@@ -50,6 +51,7 @@ Rails.application.routes.draw do
     resources :students, only: [:show]
     resources :day_attendance_records, only: [:index, :create]
     resources :ratings, only: [:index]
+    resources :peer_evaluations, only: [:index]
     resource :daily_submissions, only: [:show]
   end
   resources :ratings, only: [:create]
@@ -102,4 +104,6 @@ Rails.application.routes.draw do
 
   resource :meeting, only: [:new, :create]
   resources :github_callbacks, only: [:create]
+
+  resources :peer_evaluations, only: [:new]
 end
