@@ -27,11 +27,12 @@ feature 'Visiting the peer evaluations index page' do
         expect(page).to_not have_content peer_evaluation.evaluator.name
       end
 
-      scenario 'you can view the list of all students with peer evaluations' do
+      scenario 'you can view the list of all students with number of peer evaluations' do
         visit course_path(student.course)
         click_on 'Peer Evaluations'
         expect(page).to have_content 'Peer evaluations by or of students in this course'
         expect(page).to have_content student.name
+        expect(page).to have_content 0
       end
     end
 
@@ -80,7 +81,7 @@ feature 'Visiting the peer evaluations index page' do
       scenario 'via the navbar' do
         visit root_path
         click_on 'Peer evaluations'
-        expect(page).to have_content "Peer evaluations you wrote"
+        expect(page).to have_content "Peer evaluations written by you"
       end
 
       scenario 'of evals you wrote' do
@@ -134,7 +135,7 @@ feature 'Visiting the peer evaluations index page' do
       scenario 'writen about you' do
         eval_of_you = FactoryBot.create(:peer_evaluation, evaluator: other_student, evaluatee: student)
         visit student_peer_evaluations_path(student)
-        click_on peer_evaluation.created_at.to_date.strftime('%B %d %Y')
+        click_on 'click to view'
         expect(page).to have_content 'Technical'
       end
 
