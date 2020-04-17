@@ -3,7 +3,6 @@ class PeerQuestion < ApplicationRecord
 
   validates :content, presence: true
   validates :category, presence: true
-  validates :input_type, presence: true
 
   default_scope { order(:number) }
   before_create :set_number

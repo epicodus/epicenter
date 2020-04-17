@@ -21,13 +21,13 @@ class SeedPeerEvaluationQuestions < ActiveRecord::Migration[5.2]
       'What could be improved?'
     ]
     technical_questions.each do |question|
-      PeerQuestion.create(content: question, category: 'technical', input_type: 'select_box')
+      PeerQuestion.create(content: question, category: 'technical')
     end
     professionalism_questions.each do |question|
-      PeerQuestion.create(content: question, category: 'professionalism', input_type: 'select_box')
+      PeerQuestion.create(content: question, category: 'professionalism')
     end
     feedback_questions.each do |question|
-      PeerQuestion.create(content: question, category: 'feedback', input_type: 'text_field')
+      PeerQuestion.create(content: question, category: 'feedback')
     end
   end
 

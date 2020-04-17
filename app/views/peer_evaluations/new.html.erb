@@ -29,7 +29,7 @@
             <tr>
               <td class="col-md-8"><%= ff.object.peer_question.content %></td>
               <td>
-                <%= ff.select :score, @options.collect {|o| [ o[:text], o[:value] ] }, { prompt: '-- please select --' }, { class: 'form-control peer-eval-options', required: true } %>
+                <%= ff.select :response, @options.collect, { prompt: '-- please select --' }, { class: 'form-control peer-eval-options', required: true } %>
                 <%= ff.hidden_field :peer_question_id, value: ff.object.peer_question.id %>
               </td>
             </tr>
@@ -54,7 +54,7 @@
             <tr>
               <td class="col-md-8"><%= ff.object.peer_question.content %></td>
               <td>
-                <%= ff.select :score, @options.collect {|o| [ o[:text], o[:value] ] }, { prompt: '-- please select --' }, { class: 'form-control peer-eval-options', required: true } %>
+                <%= ff.select :response, @options.collect, { prompt: '-- please select --' }, { class: 'form-control peer-eval-options', required: true } %>
                 <%= ff.hidden_field :peer_question_id, value: ff.object.peer_question.id %>
               </td>
             </tr>
@@ -69,7 +69,7 @@
     <%= f.nested_fields_for :peer_responses do |ff| %>
       <% if ff.object.peer_question.try(:category) == 'feedback' %>
         <p><%= ff.object.peer_question.content %></p>
-        <p><%= ff.text_area :comment, rows: 10, required: true, class: 'form-control peer-feedback-comment' %></p>
+        <p><%= ff.text_area :response, rows: 10, required: true, class: 'form-control peer-feedback-comment' %></p>
         <%= ff.hidden_field :peer_question_id, value: ff.object.peer_question.id %>
       <% end %>
     <% end %>

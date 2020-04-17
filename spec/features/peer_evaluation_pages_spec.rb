@@ -67,7 +67,7 @@ feature 'Visiting the peer evaluations index page' do
         peer_response = FactoryBot.create(:peer_response_feedback, peer_evaluation: peer_evaluation)
         visit student_peer_evaluation_path(student, peer_evaluation)
         expect(page).to have_content peer_response.peer_question.content
-        expect(page).to have_content peer_response.comment
+        expect(page).to have_content peer_response.response
       end
     end
   end
@@ -161,7 +161,7 @@ feature 'Visiting the peer evaluations index page' do
         peer_response = FactoryBot.create(:peer_response_feedback, peer_evaluation: peer_evaluation)
         visit student_peer_evaluation_path(student, peer_evaluation)
         expect(page).to have_content peer_response.peer_question.content
-        expect(page).to have_content peer_response.comment
+        expect(page).to have_content peer_response.response
       end
     end
 
@@ -178,14 +178,15 @@ feature 'Visiting the peer evaluations index page' do
         cohort_student = FactoryBot.create(:student, course: student.course)
         visit new_student_peer_evaluation_path(student)
         select cohort_student.name, from: 'peer-eval-select-name'
-        find('#peer_evaluation_peer_responses_attributes_0_score option:last-of-type').select_option
+        find('#peer_evaluation_peer_responses_attributes_0_response option:last-of-type').select_option
         find('textarea').set('foo')
         click_on 'Submit peer evaluation'
+        expect(page).to have_content "Peer evaluation of #{cohort_student.name} submitted"
         eval = PeerEvaluation.first
         expect(eval.evaluator).to eq student
         expect(eval.evaluatee).to eq cohort_student
-        expect(eval.peer_responses.first.score).to eq 0
-        expect(eval.peer_responses.last.comment).to eq 'foo'
+        expect(eval.peer_responses.first.response).to eq 'None of the time'
+        expect(eval.peer_responses.last.response).to eq 'foo'
       end
     end
   end
