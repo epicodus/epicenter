@@ -358,7 +358,7 @@ class Student < User
       last_unique_course = fulltime_courses.select { |course| course.cohorts.count == 1 }.last
       last_unique_course.try(:cohorts).try(:first)
     else
-      courses.parttime_courses.last.try(:cohorts).try(:first)
+      (courses.parttime_courses + courses.where(description: 'Fidgetech')).last.try(:cohorts).try(:first)
     end
   end
 

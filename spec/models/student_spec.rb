@@ -1329,6 +1329,12 @@ describe Student do
         student = FactoryBot.create(:student_without_courses, office: office, courses: [part_time_cohort.courses.first, current_cohort.courses.first])
         expect(student.calculate_current_cohort).to eq part_time_cohort
       end
+
+      it 'returns Fidgetech cohort when present' do
+        student = FactoryBot.create(:student_without_courses, office: office, courses: [part_time_cohort.courses.first])
+        student.course.update(description: 'Fidgetech', parttime: false)
+        expect(student.calculate_current_cohort).to eq part_time_cohort
+      end
     end
   end
 
