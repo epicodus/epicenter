@@ -431,8 +431,6 @@ private
   def assign_payment_plan
     if course.try(:description) == 'Fidgetech'
       self.plan = Plan.active.find_by(short_name: 'special-other')
-    elsif course.try(:description) == '2020-04 Intro JavaScript'
-      self.plan = Plan.active.find_by(short_name: 'special-quarantine')
     elsif course.try(:parttime?) && !course.try(:language).try(:name).try(:downcase).try('include?', 'part-time track')
       self.plan = Plan.active.find_by(short_name: 'parttime-intro')
     end
