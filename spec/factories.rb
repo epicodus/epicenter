@@ -103,6 +103,12 @@ FactoryBot.define do
       association :language, factory: :evening_language
     end
 
+    factory :intro_part_time_js_react_course do
+      start_time { '6:00 PM' }
+      end_time { '9:00 PM' }
+      association :language, factory: :intro_part_time_js_react_language
+    end
+
     factory :js_part_time_js_react_course do
       start_time { '6:00 PM' }
       end_time { '9:00 PM' }
@@ -330,6 +336,14 @@ FactoryBot.define do
       level { 4 }
       number_of_days { 35 }
       skip_holiday_weeks { false }
+    end
+
+    factory :intro_part_time_js_react_language do
+      name { 'Intro (part-time track)' }
+      level { 0 }
+      number_of_days { 9 }
+      number_of_weeks { 3 }
+      skip_holiday_weeks { true }
     end
 
     factory :js_part_time_js_react_language do
@@ -901,6 +915,7 @@ FactoryBot.define do
       description { 'Part-Time JS/React' }
       before(:create) do |track|
         track.languages = []
+        track.languages << build(:intro_part_time_js_react_language)
         track.languages << build(:js_part_time_js_react_language)
         track.languages << build(:react_part_time_js_react_language)
       end
