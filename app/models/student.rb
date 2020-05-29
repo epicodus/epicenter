@@ -353,7 +353,7 @@ class Student < User
   def calculate_current_cohort
     # current FT cohort if student enrolled in internship course; else current PT cohort
     # always ignores withdrawn courses, cuz we're interested in *current* cohort
-    if courses.internship_courses.any?
+    if courses.last.try(:internship_course?)
       fulltime_courses = courses.fulltime_courses.where.not(description: 'Internship Exempt')
       last_unique_course = fulltime_courses.select { |course| course.cohorts.count == 1 }.last
       last_unique_course.try(:cohorts).try(:first)
