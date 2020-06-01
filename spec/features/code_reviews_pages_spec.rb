@@ -350,6 +350,7 @@ feature 'editing a code review' do
         all('input').last.set 'The last objective'
       end
       click_button 'Update Code review'
+      sleep 1
       expect(code_review.objectives.count).to eq objective_count + 1
     end
 
@@ -362,6 +363,7 @@ feature 'editing a code review' do
         all('.objective-content').last.set 'The first objective'
       end
       click_button 'Update Code review'
+      sleep 1
       code_review.reload
       expect(code_review.objectives.last.content).to eq 'The last objective'
     end
