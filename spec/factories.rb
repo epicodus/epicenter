@@ -667,12 +667,11 @@ FactoryBot.define do
     factory :part_time_student_with_cohort do
       association :plan, factory: :parttime_plan
       before(:create) do |student|
-        cohort = create(:part_time_cohort)
-        student.starting_cohort = cohort
-        student.cohort = cohort
-        student.ending_cohort = cohort
-        student.office = cohort.office
-        student.course = cohort.courses.first
+        create(:part_time_cohort, students: [student])
+        student.starting_cohort = student.cohort
+        student.ending_cohort = student.cohort
+        student.office = student.cohort.office
+        student.course = student.cohort.courses.first
       end
 
       factory :part_time_student_with_credit_card do
