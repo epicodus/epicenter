@@ -1006,7 +1006,7 @@ describe Student do
     context 'for a particular range of courses' do
       before do
         student.courses = [past_course, course, future_course]
-        student.courses.each do |c|
+        student.courses.reload.each do |c|
           create_attendance_record_in_course(c, "on_time")
           create_attendance_record_in_course(c, "tardy")
           create_attendance_record_in_course(c, "left_early")
