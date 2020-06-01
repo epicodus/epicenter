@@ -339,6 +339,7 @@ feature 'editing a code review' do
         first(:link, 'x').click
       end
       click_button 'Update Code review'
+      sleep 1
       expect(code_review.objectives.count).to eq objective_count - 1
     end
 

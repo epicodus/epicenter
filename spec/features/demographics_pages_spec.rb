@@ -71,6 +71,7 @@ feature 'Submitting demographics info' do
     scenario 'can not see pronouns blank until selected', js: true do
       expect(page).to_not have_content 'Pronouns'
       check 'demographic_info_pronouns_other'
+      sleep 2
       expect(page).to have_content 'Pronouns'
     end
 
