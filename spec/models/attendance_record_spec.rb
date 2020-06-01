@@ -97,53 +97,59 @@ describe AttendanceRecord do
   end
 
   describe '#tardy' do
-    let(:student) { FactoryBot.create(:student) }
-    let(:start_time) { student.course.start_time.in_time_zone(student.course.office.time_zone) }
-    let(:part_time_student) { FactoryBot.create(:part_time_student) }
-    let(:part_time_start_time) { part_time_student.course.start_time.in_time_zone(part_time_student.course.office.time_zone) }
-    let(:pt_track_student) { FactoryBot.create(:part_time_track_student_with_cohort) }
-    let(:pt_track_start_time) { pt_track_student.course.start_time.in_time_zone(pt_track_student.course.office.time_zone) }
+    context 'for full-time student' do
+      let(:student) { FactoryBot.create(:student) }
+      let(:start_time) { Time.parse(student.course.start_date.to_s + ' ' + student.course.start_time.in_time_zone(student.course.office.time_zone).to_s) }
 
-    it 'is true if the student checks in after the start of class' do
-      travel_to start_time + 30.minute do
-        tardy_attendance_record = FactoryBot.create(:attendance_record)
-        expect(tardy_attendance_record.tardy).to eq true
+      it 'is true if the student checks in after the start of class' do
+        travel_to start_time + 30.minute do
+          tardy_attendance_record = FactoryBot.create(:attendance_record, student: student)
+          expect(tardy_attendance_record.tardy).to eq true
+        end
+      end
+
+      it 'is false if the student checks in before the start of class' do
+        travel_to start_time - 1.minute do
+          on_time_attendance_record = FactoryBot.create(:attendance_record, student: student)
+          expect(on_time_attendance_record.tardy).to eq false
+        end
       end
     end
 
-    it 'is false if the student checks in before the start of class' do
-      travel_to start_time - 1.minute do
-        on_time_attendance_record = FactoryBot.create(:attendance_record)
-        expect(on_time_attendance_record.tardy).to eq false
-      end
-    end
+    context 'for part-time intro student' do
+      let(:student) { FactoryBot.create(:part_time_student) }
+      let(:start_time) { Time.parse(student.course.start_date.to_s + ' ' + student.course.start_time.in_time_zone(student.course.office.time_zone).to_s) }
 
-    it 'is true if the part-time student checks in after the start of class' do
-      travel_to part_time_start_time + 30.minute do
-        tardy_attendance_record = FactoryBot.create(:attendance_record, student: part_time_student)
-        expect(tardy_attendance_record.tardy).to eq true
+      it 'is true if the part-time student checks in after the start of class' do
+        travel_to start_time + 30.minute do
+          tardy_attendance_record = FactoryBot.create(:attendance_record, student: student)
+          expect(tardy_attendance_record.tardy).to eq true
+        end
       end
-    end
 
-    it 'is false if the part-time student checks in before the start of class' do
-      travel_to part_time_start_time - 1.minute do
-        on_time_attendance_record = FactoryBot.create(:attendance_record, student: part_time_student)
-        expect(on_time_attendance_record.tardy).to eq false
+      it 'is false if the part-time student checks in before the start of class' do
+        travel_to start_time - 1.minute do
+          on_time_attendance_record = FactoryBot.create(:attendance_record, student: student)
+          expect(on_time_attendance_record.tardy).to eq false
+        end
       end
     end
 
     context 'for part-time js/react track student' do
+      let(:student) { FactoryBot.create(:part_time_track_student_with_cohort) }
+      let(:start_time) { Time.parse(student.course.start_date.to_s + ' ' + student.course.start_time.in_time_zone(student.course.office.time_zone).to_s) }
+
       context 'on a weekday' do
         it 'is true if checks in after the start of class' do
-          travel_to pt_track_start_time + 30.minute do
-            tardy_attendance_record = FactoryBot.create(:attendance_record, student: pt_track_student)
+          travel_to start_time + 30.minute do
+            tardy_attendance_record = FactoryBot.create(:attendance_record, student: student)
             expect(tardy_attendance_record.tardy).to eq true
           end
         end
 
         it 'is false if checks in before the start of class' do
-          travel_to pt_track_start_time - 1.minute do
-            on_time_attendance_record = FactoryBot.create(:attendance_record, student: pt_track_student)
+          travel_to start_time - 1.minute do
+            on_time_attendance_record = FactoryBot.create(:attendance_record, student: student)
             expect(on_time_attendance_record.tardy).to eq false
           end
         end
@@ -151,15 +157,15 @@ describe AttendanceRecord do
 
       context 'on Sunday' do
         it 'is true if checks in after the start of class' do
-          travel_to pt_track_start_time.beginning_of_week + 6.days + 9.hours + 30.minutes do
-            tardy_attendance_record = FactoryBot.create(:attendance_record, student: pt_track_student)
+          travel_to start_time.beginning_of_week + 6.days + 9.hours + 30.minutes do
+            tardy_attendance_record = FactoryBot.create(:attendance_record, student: student)
             expect(tardy_attendance_record.tardy).to eq true
           end
         end
 
         it 'is false if checks in before the start of class' do
-          travel_to pt_track_start_time.beginning_of_week + 6.days + 9.hours - 1.minute do
-            on_time_attendance_record = FactoryBot.create(:attendance_record, student: pt_track_student)
+          travel_to start_time.beginning_of_week + 6.days + 9.hours - 1.minute do
+            on_time_attendance_record = FactoryBot.create(:attendance_record, student: student)
             expect(on_time_attendance_record.tardy).to eq false
           end
         end
@@ -168,67 +174,73 @@ describe AttendanceRecord do
   end
 
   describe '#left_early' do
-    let(:student) { FactoryBot.create(:student) }
-    let(:end_time) { student.course.end_time.in_time_zone(student.course.office.time_zone) }
-    let(:part_time_student) { FactoryBot.create(:part_time_student) }
-    let(:part_time_end_time) { part_time_student.course.end_time.in_time_zone(part_time_student.course.office.time_zone) }
-    let(:pt_track_student) { FactoryBot.create(:part_time_track_student_with_cohort) }
-    let(:pt_track_end_time) { pt_track_student.course.end_time.in_time_zone(pt_track_student.course.office.time_zone) }
+    context 'for full-time students' do
+      let(:student) { FactoryBot.create(:student) }
+      let(:end_time) { Time.parse(student.course.start_date.to_s + ' ' + student.course.end_time.in_time_zone(student.course.office.time_zone).to_s) }
 
-    it 'is true by default' do
-      attendance_record = FactoryBot.create(:attendance_record)
-      expect(attendance_record.left_early).to eq true
-    end
+      it 'is true by default' do
+        attendance_record = FactoryBot.create(:attendance_record)
+        expect(attendance_record.left_early).to eq true
+      end
 
-    it 'is true when a student leaves early mon-thu' do
-      travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 17.hours - 21.minute do
-        shirker_attendance_record = FactoryBot.create(:attendance_record)
-        shirker_attendance_record.update({:signing_out => true})
-        expect(shirker_attendance_record.left_early).to eq true
+      it 'is true when a student leaves early mon-thu' do
+        travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 17.hours - 21.minute do
+          shirker_attendance_record = FactoryBot.create(:attendance_record)
+          shirker_attendance_record.update({:signing_out => true})
+          expect(shirker_attendance_record.left_early).to eq true
+        end
+      end
+
+      it 'is false when a student leaves after the alloted end time' do
+        travel_to end_time + 1.minute do
+          diligent_attendance_record = FactoryBot.create(:attendance_record)
+          diligent_attendance_record.update({:signing_out => true})
+          expect(diligent_attendance_record.left_early).to eq false
+        end
       end
     end
 
-    it 'is false when a student leaves after the alloted end time' do
-      travel_to end_time + 1.minute do
-        diligent_attendance_record = FactoryBot.create(:attendance_record)
-        diligent_attendance_record.update({:signing_out => true})
-        expect(diligent_attendance_record.left_early).to eq false
-      end
-    end
+    context 'for part-time intro students' do
+      let(:student) { FactoryBot.create(:part_time_student) }
+      let(:end_time) { Time.parse(student.course.start_date.to_s + ' ' + student.course.end_time.in_time_zone(student.course.office.time_zone).to_s) }
 
-    it 'is true when a part-time student leaves early' do
-      travel_to part_time_end_time - 21.minute do
-        shirker_attendance_record = FactoryBot.create(:attendance_record, student: part_time_student)
-        shirker_attendance_record.update({:signing_out => true})
-        expect(shirker_attendance_record.left_early).to eq true
+      it 'is true when a part-time student leaves early' do
+        travel_to end_time - 21.minute do
+          shirker_attendance_record = FactoryBot.create(:attendance_record, student: student)
+          shirker_attendance_record.update({:signing_out => true})
+          expect(shirker_attendance_record.left_early).to eq true
+        end
       end
-    end
 
-    it 'is false when a part-time student leaves after the alloted end time' do
-      travel_to part_time_end_time + 1.minute do
-        diligent_attendance_record = FactoryBot.create(:attendance_record, student: part_time_student)
-        diligent_attendance_record.update({:signing_out => true})
-        expect(diligent_attendance_record.left_early).to eq false
+      it 'is false when a part-time student leaves after the alloted end time' do
+        travel_to end_time + 1.minute do
+          diligent_attendance_record = FactoryBot.create(:attendance_record, student: student)
+          diligent_attendance_record.update({:signing_out => true})
+          expect(diligent_attendance_record.left_early).to eq false
+        end
       end
     end
 
     context 'for part-time js/react track student' do
+      let(:student) { FactoryBot.create(:part_time_track_student_with_cohort) }
+      let(:end_time) { Time.parse(student.course.start_date.to_s + ' ' + student.course.end_time.in_time_zone(student.course.office.time_zone).to_s) }
+
       context 'on a weekday' do
         it 'is false when leaves after end of class' do
-          travel_to pt_track_end_time - 1.hour do
-            FactoryBot.create(:attendance_record, student: pt_track_student)
+          travel_to end_time - 1.hour do
+            FactoryBot.create(:attendance_record, student: student)
           end
-          travel_to pt_track_end_time + 1.minute do
+          travel_to end_time + 1.minute do
             AttendanceRecord.last.update({:signing_out => true})
             expect(AttendanceRecord.last.left_early).to eq false
           end
         end
 
         it 'is true when leaves early' do
-          travel_to pt_track_end_time - 1.hour do
-            FactoryBot.create(:attendance_record, student: pt_track_student)
+          travel_to end_time - 1.hour do
+            FactoryBot.create(:attendance_record, student: student)
           end
-          travel_to pt_track_end_time - 30.minutes do
+          travel_to end_time - 30.minutes do
             AttendanceRecord.last.update({:signing_out => true})
             expect(AttendanceRecord.last.left_early).to eq true
           end
@@ -237,20 +249,20 @@ describe AttendanceRecord do
 
       context 'on Sunday' do
         it 'is false when leaves after end of class' do
-          travel_to pt_track_end_time.beginning_of_week + 6.days + 9.hours do
-            FactoryBot.create(:attendance_record, student: pt_track_student)
+          travel_to end_time.beginning_of_week + 6.days + 9.hours do
+            FactoryBot.create(:attendance_record, student: student)
           end
-          travel_to pt_track_end_time.beginning_of_week + 6.days + 15.hours + 1.minute do
+          travel_to end_time.beginning_of_week + 6.days + 15.hours + 1.minute do
             AttendanceRecord.last.update({:signing_out => true})
             expect(AttendanceRecord.last.left_early).to eq false
           end
         end
 
         it 'is true when leaves early' do
-          travel_to pt_track_end_time.beginning_of_week + 6.days + 9.hours do
-            FactoryBot.create(:attendance_record, student: pt_track_student)
+          travel_to end_time.beginning_of_week + 6.days + 9.hours do
+            FactoryBot.create(:attendance_record, student: student)
           end
-          travel_to pt_track_end_time.beginning_of_week + 6.days + 15.hours - 30.minutes do
+          travel_to end_time.beginning_of_week + 6.days + 15.hours - 30.minutes do
             AttendanceRecord.last.update({:signing_out => true})
             expect(AttendanceRecord.last.left_early).to eq true
           end
