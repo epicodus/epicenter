@@ -20,7 +20,7 @@ class Review < ApplicationRecord
 private
 
   def mark_submission_as_reviewed
-    submission.update(needs_review: false)
+    submission.update(needs_review: false, admin: nil)
   end
 
   def update_submission_status
