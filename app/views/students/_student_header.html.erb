@@ -36,7 +36,7 @@
 
   <% if @student.starting_cohort && @student.cohort && @student.starting_cohort == @student.cohort %>
     <p>Cohort: <%= link_to @student.cohort.description, cohort_path(@student.cohort) %></p>
-  <% else %>
+  <% elsif @student.starting_cohort || @student.cohort %>
     <p>
       <% if @student.starting_cohort %>
         Starting cohort: <%= link_to @student.starting_cohort.description, cohort_path(@student.starting_cohort) %>

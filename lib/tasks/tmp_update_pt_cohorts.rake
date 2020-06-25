@@ -22,7 +22,7 @@ task :tmp_update_pt_cohorts => [:environment] do
     mb_obj = Mailgun::MessageBuilder.new()
     mb_obj.set_from_address("it@epicodus.com");
     mb_obj.add_recipient(:to, "mike@epicodus.com");
-    mb_obj.set_subject("Leads missing cohorts");
+    mb_obj.set_subject("Updated cohorts for parttime students");
     mb_obj.set_text_body("rake task: tmp_update_pt_cohorts");
     mb_obj.add_attachment(filename, "tmp_update_pt_cohorts.txt");
     result = mg_client.send_message("epicodus.com", mb_obj)
