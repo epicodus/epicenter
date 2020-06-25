@@ -88,8 +88,8 @@ private
   end
 
   def check_amount
-    if amount < 0 || amount > 8800_00
-      errors.add(:amount, 'cannot be negative or greater than $8,800.')
+    if amount < 0 || amount > 9000_00
+      errors.add(:amount, 'cannot be negative or greater than $9,000.')
       throw :abort
     end
   end
