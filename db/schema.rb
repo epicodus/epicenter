@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_21_002538) do
+ActiveRecord::Schema.define(version: 2020_06_20_190545) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -377,12 +377,14 @@ ActiveRecord::Schema.define(version: 2020_05_21_002538) do
     t.integer "ending_cohort_id"
     t.boolean "super_admin"
     t.boolean "probation"
+    t.integer "parttime_cohort_id"
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
     t.index ["invitations_count"], name: "index_users_on_invitations_count"
     t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
     t.index ["office_id"], name: "index_users_on_office_id"
+    t.index ["parttime_cohort_id"], name: "index_users_on_parttime_cohort_id"
     t.index ["plan_id"], name: "index_users_on_plan_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true

@@ -51,14 +51,19 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
         expect(student.name).to eq 'THIS LEAD IS USED FOR TESTING PURPOSES. PLEASE DO NOT DELETE.'
       end
 
-      it 'sets starting cohort' do
+      it 'does not set starting cohort' do
         student = Student.find_by(email: 'example-part-time@example.com')
-        expect(student.starting_cohort).to eq part_time_cohort
+        expect(student.starting_cohort).to eq nil
       end
 
-      it 'sets current cohort' do
+      it 'does not set current cohort' do
         student = Student.find_by(email: 'example-part-time@example.com')
-        expect(student.cohort).to eq part_time_cohort
+        expect(student.cohort).to eq nil
+      end
+
+      it 'sets parttime cohort' do
+        student = Student.find_by(email: 'example-part-time@example.com')
+        expect(student.parttime_cohort).to eq part_time_cohort
       end
 
       it 'sets ending cohort' do
@@ -151,7 +156,7 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
 
       it 'sets cohort' do
         student = Student.find_by(email: 'example-fidgetech@example.com')
-        expect(student.cohort).to eq fidgetech_cohort
+        expect(student.parttime_cohort).to eq fidgetech_cohort
       end
 
       it 'sets starting cohort' do

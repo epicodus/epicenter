@@ -11,8 +11,6 @@ task :clear_lead, [:email] => [:environment] do |t, args|
   {
     Rails.application.config.x.crm_fields['COHORT_STARTING'] => nil,
     Rails.application.config.x.crm_fields['COHORT_CURRENT'] => nil,
-    Rails.application.config.x.crm_fields['START_DATE'] => nil,
-    Rails.application.config.x.crm_fields['END_DATE'] => nil,
     Rails.application.config.x.crm_fields['PAYMENT_PLAN'] => nil,
     Rails.application.config.x.crm_fields['AMOUNT_PAID'] => nil,
     Rails.application.config.x.crm_fields['SIGNED_INTERNSHIP_AGREEMENT'] => nil,

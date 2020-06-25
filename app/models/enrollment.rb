@@ -21,23 +21,16 @@ class Enrollment < ApplicationRecord
 private
 
   def update_office
-    student.update(office: course.office) unless student.office == course.office
+    student.office = course.office
+    student.save if student.changed?
   end
 
   def update_cohort
-    crm_update = {}
-    starting_cohort = student.calculate_starting_cohort
-    unless student.starting_cohort == starting_cohort
-      student.update(starting_cohort: starting_cohort)
-      crm_update = crm_update.merge({ Rails.application.config.x.crm_fields['COHORT_STARTING'] => starting_cohort.try(:description), Rails.application.config.x.crm_fields['START_DATE'] => starting_cohort.try(:start_date).try(:to_s) })
-    end
-    current_cohort = student.calculate_current_cohort
-    unless student.cohort == current_cohort
-      student.update(cohort: current_cohort)
-      student.update(ending_cohort: current_cohort) unless current_cohort.nil?
-      crm_update = crm_update.merge({ Rails.application.config.x.crm_fields['COHORT_CURRENT'] => current_cohort.try(:description), Rails.application.config.x.crm_fields['END_DATE'] => current_cohort.try(:end_date).try(:to_s) })
-    end
-    student.crm_lead.update(crm_update) if crm_update.present?
+    student.parttime_cohort = student.calculate_parttime_cohort
+    student.starting_cohort = student.calculate_starting_cohort
+    student.cohort = student.calculate_current_cohort
+    student.ending_cohort = [student.parttime_cohort, student.cohort].compact.sort_by(&:end_date).last || student.ending_cohort
+    student.save if student.changed?
   end
 
   def update_internship_class_in_crm
