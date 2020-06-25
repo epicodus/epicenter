@@ -7,6 +7,7 @@ class Cohort < ApplicationRecord
   scope :fulltime_cohorts, -> { joins(:track).where("tracks.description != 'Part-Time Intro to Programming' AND tracks.description != 'Online'") }
 
   has_and_belongs_to_many :courses, -> { order(:end_date) }, after_add: :update_end_date
+  has_many :parttime_cohort_students, class_name: :User, foreign_key: :parttime_cohort_id
   has_many :starting_cohort_students, class_name: :User, foreign_key: :starting_cohort_id
   has_many :ending_cohort_students, class_name: :User, foreign_key: :ending_cohort_id
   has_many :students

@@ -13,7 +13,7 @@ task :find_leads_missing_cohorts_2 => [:environment] do
         current_cohort_crm = lead.try('dig', Rails.application.config.x.crm_fields['COHORT_CURRENT'])
         starting_cohort_epicenter = student.starting_cohort.try(:description)
         current_cohort_epicenter = student.cohort.try(:description)
-        if starting_cohort_crm.try(:include?, '2018') || starting_cohort_crm.try(:include?, '2019') || current_cohort_crm.try(:include?, '2018') || current_cohort_crm.try(:include?, '2019')
+        if starting_cohort_crm.try(:include?, '2018') || starting_cohort_crm.try(:include?, '2019') || starting_cohort_crm.try(:include?, '2020')|| current_cohort_crm.try(:include?, '2018') || current_cohort_crm.try(:include?, '2019') || current_cohort_crm.try(:include?, '2020')
           if starting_cohort_crm != starting_cohort_epicenter || current_cohort_crm != current_cohort_epicenter
             counter += 1
             file.puts email

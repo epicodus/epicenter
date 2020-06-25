@@ -7,9 +7,11 @@ class Student < User
   after_create :update_plan_in_crm, if: ->(student) { student.plan.present? }
   after_update :update_plan_in_crm, if: :saved_change_to_plan_id
   after_update :update_probation_in_crm, if: :saved_change_to_probation
+  after_update :update_cohorts_in_crm, if: :cohorts_updated?
   before_destroy :archive_enrollments
 
   belongs_to :plan, optional: true
+  belongs_to :parttime_cohort, class_name: :Cohort, optional: true
   belongs_to :starting_cohort, class_name: :Cohort, optional: true
   belongs_to :ending_cohort, class_name: :Cohort, optional: true
   belongs_to :cohort, optional: true
@@ -344,22 +346,22 @@ class Student < User
   end
 
   def calculate_starting_cohort
-    # 1st FT cohort ever enrolled in if exists; else first PT cohort
-    # if student switches from PT -> FT will replace starting cohort with FT one
-    # if student switches from FT -> PT will remain FT cohort
-    courses_with_withdrawn.fulltime_courses.first.try(:cohorts).try(:first) || courses_with_withdrawn.parttime_courses.first.try(:cohorts).try(:first)
+    # 1st FT cohort ever enrolled in if exists
+    courses_with_withdrawn.fulltime_courses.first.try(:cohorts).try(:first)
   end
 
   def calculate_current_cohort
-    # current FT cohort if student enrolled in internship course; else current PT cohort
+    # current or completed FT cohort if student enrolled in internship course
     # always ignores withdrawn courses, cuz we're interested in *current* cohort
-    if courses.reload.last.try(:internship_course?)
+    if courses.internship_courses.any?
       fulltime_courses = courses.fulltime_courses.where.not(description: 'Internship Exempt')
       last_unique_course = fulltime_courses.select { |course| course.cohorts.count == 1 }.last
       last_unique_course.try(:cohorts).try(:first)
-    else
-      (courses.parttime_courses + courses.where(description: 'Fidgetech') + courses.where(description: '2020-04 Intro JavaScript')).last.try(:cohorts).try(:first)
     end
+  end
+
+  def calculate_parttime_cohort
+    (courses.parttime_courses + courses.where(description: 'Fidgetech')).last.try(:cohorts).try(:first)
   end
 
   def really_destroy
@@ -442,5 +444,17 @@ private
 
   def update_probation_in_crm
     crm_lead.update({ Rails.application.config.x.crm_fields['PROBATION'] => probation ? 'Yes' : nil })
+  end
+
+  def cohorts_updated?
+    saved_change_to_cohort_id? || saved_change_to_starting_cohort_id? || saved_change_to_parttime_cohort_id?
+  end
+
+  def update_cohorts_in_crm
+    crm_update = {}
+    crm_update = crm_update.merge({ Rails.application.config.x.crm_fields['COHORT_PARTTIME'] => parttime_cohort.try(:description) })
+    crm_update = crm_update.merge({ Rails.application.config.x.crm_fields['COHORT_STARTING'] => starting_cohort.try(:description) })
+    crm_update = crm_update.merge({ Rails.application.config.x.crm_fields['COHORT_CURRENT'] => cohort.try(:description) })
+    crm_lead.update(crm_update)
   end
 end

@@ -51,6 +51,9 @@
       <% end %>
     </p>
   <% end %>
+  <% if @student.parttime_cohort %>
+    <p>Part-Time Cohort: <%= link_to @student.parttime_cohort.description, cohort_path(@student.parttime_cohort) %></p>
+  <% end %>
 
   <% if @student.courses.previous_courses.any? %>
     <p><%= link_to 'View transcript', student_transcript_path(@student) %></p>
