@@ -5,10 +5,21 @@ class CodeReviewsController < ApplicationController
     @code_review = CodeReview.new
     @course = Course.find(params[:course_id])
     3.times { @code_review.objectives.build }
+    if @course.parttime?
+      @code_review.visible_date = DateTime.current.beginning_of_week + 3.days + 17.hours
+      @code_review.due_date = DateTime.current.beginning_of_week + 10.days + 17.hours
+    else
+      @code_review.visible_date = DateTime.current.beginning_of_week + 4.days + 8.hours
+      @code_review.due_date = DateTime.current.beginning_of_week + 4.days + 17.hours
+    end
   end
 
   def create
     @code_review = CodeReview.new(code_review_params)
+    if params[:always_visible]
+      @code_review.visible_date = nil
+      @code_review.due_date = nil
+    end
     @course = Course.find(params[:course_id])
     if @code_review.save
       redirect_to course_code_review_path(@course, @code_review), notice: "Code review has been saved!"
@@ -25,12 +36,26 @@ class CodeReviewsController < ApplicationController
   def edit
     @code_review = CodeReview.find(params[:id])
     @course = @code_review.course
+    if @code_review.due_date.nil?
+      if @course.parttime?
+        @code_review.visible_date = DateTime.current.beginning_of_week + 3.days + 17.hours
+        @code_review.due_date = DateTime.current.beginning_of_week + 10.days + 17.hours
+      else
+        @code_review.visible_date = DateTime.current.beginning_of_week + 4.days + 8.hours
+        @code_review.due_date = DateTime.current.beginning_of_week + 4.days + 17.hours
+      end
+    end
   end
 
   def update
     @code_review = CodeReview.find(params[:id])
     @course = @code_review.course
     if @code_review.update(code_review_params)
+      if params[:always_visible]
+        @code_review.visible_date = nil
+        @code_review.due_date = nil
+        @code_review.save
+      end
       redirect_to course_code_review_path(@course, @code_review), notice: "Code review updated."
     else
       render 'edit'
@@ -57,6 +82,6 @@ private
 
   def code_review_params
     params.require(:code_review).permit(:course_id, :title, :section, :url, :submissions_not_required, :github_path,
-                                        :content, :date, :survey, objectives_attributes: [:id, :number, :content, :_destroy])
+                                        :content, :visible_date, :due_date, :survey, objectives_attributes: [:id, :number, :content, :_destroy])
   end
 end

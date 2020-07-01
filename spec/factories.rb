@@ -58,7 +58,8 @@ FactoryBot.define do
     sequence(:title) { |n| "code_review #{n}" }
     course
     content { "test content" }
-    date { Date.today }
+    visible_date { DateTime.new(Date.today.year, Date.today.month, Date.today.day, 8, 0, 0) }
+    due_date { DateTime.new(Date.today.year, Date.today.month, Date.today.day, 17, 0, 0) }
 
     before(:create) do |code_review|
       code_review.objectives << build(:objective)

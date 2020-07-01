@@ -3,8 +3,8 @@
     <%= code_review.number %>
   </td>
   <td>
-    <% if (can? :manage, CodeReview) && code_review.date %>
-      <%= code_review.date.strftime('%b %d') %>
+    <% if (can? :manage, CodeReview) && code_review.visible_date %>
+      <%= code_review.due_date.strftime('%b %d') %>
     <% end %>
   </td>
   <td><p><%= link_to code_review.title, course_code_review_path(@course, code_review) %></p></td>
