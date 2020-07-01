@@ -113,14 +113,14 @@ feature 'visiting the code review show page' do
     end
 
     it 'displays message before code review is visible' do
-      travel_to code_review.date - 5.days do
+      travel_to code_review.visible_date - 5.days do
         visit course_code_review_path(code_review.course, code_review)
         expect(page).to have_content "Not yet available."
       end
     end
 
     it 'displays code review content when code review is visible' do
-      travel_to code_review.date + 1.day do
+      travel_to code_review.visible_date + 1.day do
         visit course_code_review_path(code_review.course, code_review)
         expect(page).to have_content "test content"
       end
@@ -140,7 +140,9 @@ feature 'visiting the code review show page' do
     end
 
     it 'does not display code review content section if review has no date' do
-      code_review.update(date: nil)
+      code_review.visible_date = nil
+      code_review.due_date = nil
+      code_review.save
       visit course_code_review_path(code_review.course, code_review)
       expect(page).to_not have_content "<h4><strong>Project</strong></h4>"
     end
@@ -251,6 +253,13 @@ feature 'creating a code review' do
     expect(page).to have_content 'need to sign in'
   end
 
+  scenario 'as a student' do
+    student = FactoryBot.create(:student)
+    login_as(student, scope: :student)
+    visit new_course_code_review_path(course)
+    expect(page).to have_content 'You are not authorized to access this page.'
+  end
+
   context 'as an admin' do
     let(:code_review) { FactoryBot.build(:code_review) }
     let(:admin) { FactoryBot.create(:admin) }
@@ -270,6 +279,33 @@ feature 'creating a code review' do
     scenario 'with invalid input' do
       click_button 'Create Code review'
       expect(page).to have_content "can't be blank"
+    end
+
+    scenario 'with dates' do
+      fill_in 'Title', with: code_review.title
+      fill_in 'code_review_objectives_attributes_0_content', with: 'objective'
+      click_button 'Create Code review'
+      expect(CodeReview.first.visible_date).to_not eq nil
+      expect(CodeReview.first.due_date).to eq CodeReview.first.visible_date + 9.hours
+    end
+
+    scenario 'part-time code review with dates' do
+      course.update(parttime: true)
+      visit new_course_code_review_path(course)
+      fill_in 'Title', with: code_review.title
+      fill_in 'code_review_objectives_attributes_0_content', with: 'objective'
+      click_button 'Create Code review'
+      expect(CodeReview.first.visible_date).to_not eq nil
+      expect(CodeReview.first.due_date).to eq CodeReview.first.visible_date + 1.week
+    end
+
+    scenario 'always visible' do
+      fill_in 'Title', with: code_review.title
+      fill_in 'code_review_objectives_attributes_0_content', with: 'objective'
+      find('#always_visible').set true
+      click_button 'Create Code review'
+      expect(CodeReview.first.visible_date).to eq nil
+      expect(CodeReview.first.due_date).to eq nil
     end
 
     context 'with objectives' do
@@ -313,6 +349,13 @@ feature 'editing a code review' do
     expect(page).to have_content 'need to sign in'
   end
 
+  scenario 'as a student' do
+    student = FactoryBot.create(:student)
+    login_as(student, scope: :student)
+    visit edit_course_code_review_path(code_review.course, code_review)
+    expect(page).to have_content 'You are not authorized to access this page.'
+  end
+
   context 'as an admin' do
     let(:admin) { FactoryBot.create(:admin) }
 
@@ -331,6 +374,41 @@ feature 'editing a code review' do
       fill_in 'Title', with: ''
       click_button 'Update Code review'
       expect(page).to have_content "can't be blank"
+    end
+
+    scenario 'with dates' do
+      code_review.visible_date = nil
+      code_review.due_date = nil
+      code_review.save
+      visit edit_course_code_review_path(code_review.course, code_review)
+      find('#always_visible').set false
+      click_button 'Update Code review'
+      expect(CodeReview.first.visible_date).to_not eq nil
+      expect(CodeReview.first.due_date).to eq CodeReview.first.visible_date + 9.hours
+    end
+
+    scenario 'part-time code review with dates' do
+      code_review.visible_date = nil
+      code_review.due_date = nil
+      code_review.save
+      code_review.course.parttime = true
+      code_review.course.save
+      visit edit_course_code_review_path(code_review.course, code_review)
+      fill_in 'Title', with: code_review.title
+      fill_in 'code_review_objectives_attributes_0_content', with: 'objective'
+      find('#always_visible').set false
+      click_button 'Update Code review'
+      expect(CodeReview.first.visible_date).to_not eq nil
+      expect(CodeReview.first.due_date).to eq CodeReview.first.visible_date + 1.week
+    end
+
+    scenario 'always visible' do
+      fill_in 'Title', with: code_review.title
+      fill_in 'code_review_objectives_attributes_0_content', with: 'objective'
+      find('#always_visible').set true
+      click_button 'Update Code review'
+      expect(CodeReview.first.visible_date).to eq nil
+      expect(CodeReview.first.due_date).to eq nil
     end
 
     scenario 'removing objectives', js: true do

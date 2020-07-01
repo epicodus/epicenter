@@ -6,20 +6,6 @@ describe CodeReview do
   it { should belong_to :course }
   it { should accept_nested_attributes_for :objectives }
 
-  it 'duplicates a code review and its objectives' do
-    course = FactoryBot.create(:course)
-    code_review = FactoryBot.create(:code_review)
-    copy_code_review = code_review.duplicate_code_review(course)
-    expect(copy_code_review.save).to be true
-  end
-
-  it 'sets date to next Friday when duplicating a code review with a date' do
-    course = FactoryBot.create(:course)
-    code_review = FactoryBot.create(:code_review)
-    copy_code_review = code_review.duplicate_code_review(course)
-    expect(copy_code_review.date).to eq Date.today.beginning_of_week + 4.days
-  end
-
   it 'validates presence of at least one objective' do
     code_review = FactoryBot.build(:code_review)
     code_review.save
@@ -156,12 +142,37 @@ describe CodeReview do
     end
   end
 
+  describe '#duplicate_code_review' do
+    it 'duplicates a code review and its objectives' do
+      course = FactoryBot.create(:course)
+      code_review = FactoryBot.create(:code_review)
+      copy_code_review = code_review.duplicate_code_review(course)
+      expect(copy_code_review.save).to be true
+    end
+
+    it 'sets visible date and due date to next Friday when duplicating a full-time code review with a date' do
+      course = FactoryBot.create(:course)
+      code_review = FactoryBot.create(:code_review)
+      copy_code_review = code_review.duplicate_code_review(course)
+      expect(copy_code_review.visible_date).to eq DateTime.current.beginning_of_week + 4.days + 8.hours
+      expect(copy_code_review.due_date).to eq DateTime.current.beginning_of_week + 4.days + 17.hours
+    end
+
+    it 'sets visible date and due date when duplicating a part-time code review with a date' do
+      course = FactoryBot.create(:part_time_course)
+      code_review = FactoryBot.create(:code_review)
+      copy_code_review = code_review.duplicate_code_review(course)
+      expect(copy_code_review.visible_date).to eq DateTime.current.beginning_of_week + 3.days + 17.hours
+      expect(copy_code_review.due_date).to eq DateTime.current.beginning_of_week + 10.days + 17.hours
+    end
+  end
+
   describe '#visible?' do
     let(:student) { FactoryBot.create(:student) }
     let(:code_review) { FactoryBot.create(:code_review, course: student.course) }
 
-    it 'returns true if code review has no date', :stub_mailgun do
-      code_review.date = nil
+    it 'returns true if code review has no visible_date', :stub_mailgun do
+      code_review.visible_date = nil
       code_review.save
       expect(code_review.visible?(student)).to eq true
     end
@@ -173,32 +184,14 @@ describe CodeReview do
     end
 
     it 'returns false if before class start time on code review date for full-time course' do
-      travel_to code_review.date do
+      travel_to code_review.visible_date.beginning_of_day do
         expect(code_review.visible?(student)).to eq false
       end
     end
 
     it 'returns true if on code review date at class start time for full-time course' do
-      travel_to code_review.date.in_time_zone(student.course.office.time_zone) + 8.hours do
+      travel_to code_review.visible_date.in_time_zone(student.course.office.time_zone).beginning_of_day + 8.hours do
         expect(code_review.visible?(student)).to eq true
-      end
-    end
-
-    it 'returns true if 2 days before code review date for part-time course' do
-      part_time_course = FactoryBot.create(:part_time_course)
-      student = FactoryBot.create(:student, courses: [part_time_course])
-      part_time_code_review = FactoryBot.create(:code_review, course: part_time_course)
-      travel_to part_time_code_review.date - 2.days do
-        expect(part_time_code_review.visible?(student)).to eq true
-      end
-    end
-
-    it 'returns true if on day before code review date for part-time track course' do
-      js_part_time_js_react_course = FactoryBot.create(:part_time_course)
-      student = FactoryBot.create(:student, courses: [js_part_time_js_react_course])
-      part_time_js_react_code_review = FactoryBot.create(:code_review, course: js_part_time_js_react_course)
-      travel_to part_time_js_react_code_review.date - 2.days do
-        expect(part_time_js_react_code_review.visible?(student)).to eq true
       end
     end
   end

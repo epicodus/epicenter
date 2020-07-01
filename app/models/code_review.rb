@@ -20,13 +20,6 @@ class CodeReview < ApplicationRecord
     objectives.length * 3
   end
 
-  def duplicate_code_review(course)
-    copy_code_review = self.deep_clone include: :objectives
-    copy_code_review.course = course
-    copy_code_review.date = Date.today.beginning_of_week + 4.days if self.date
-    copy_code_review
-  end
-
   def submission_for(student)
     submissions.find_by(student: student)
   end
@@ -63,20 +56,30 @@ class CodeReview < ApplicationRecord
     end
   end
 
+  def duplicate_code_review(course)
+    copy_code_review = self.deep_clone include: :objectives
+    copy_code_review.course = course
+    if self.due_date
+      if course.parttime?
+        copy_code_review.visible_date = Date.today.beginning_of_week + 3.days + 17.hours
+        copy_code_review.due_date = Date.today.beginning_of_week + 10.days + 17.hours
+      else
+        copy_code_review.visible_date = Date.today.beginning_of_week + 4.days + 8.hours
+        copy_code_review.due_date = Date.today.beginning_of_week + 4.days + 17.hours
+      end
+    end
+    copy_code_review
+  end
+
   def visible?(student)
-    if !date
+    if visible_date.blank?
       true
     elsif expectations_met_by?(student)
       false
     else
       zone = ActiveSupport::TimeZone[course.office.time_zone]
-      if course.parttime?
-        visible_time = zone.local(date.year, date.month, date.day, course.end_time) - 3.days
-      else
-        visible_time = zone.local(date.year, date.month, date.day, course.start_time)
-      end
       current_time = Time.now.in_time_zone(zone)
-      current_time >= visible_time
+      current_time >= visible_date
     end
   end
 

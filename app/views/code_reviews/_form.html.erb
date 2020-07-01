@@ -46,13 +46,19 @@
     <%= f.text_area :content, rows: 25, class: 'form-control' %>
   </div>
 
-  <div class="form-group">
-    <%= f.label :date, "Code Review date" %>
-    <% if params[:action] == 'new' %>
-      <%= f.date_field :date, value: Date.today.beginning_of_week + 4.days, class: 'form-control' %>
-    <% else %>
-      <%= f.date_field :date, value: code_review.date, class: 'form-control' %>
-    <% end %>
+  <div class="well">
+    <div class="form-group">
+      <%= f.label :visible_date %>
+      <%= f.datetime_select :visible_date %>
+    </div>
+    <div class="form-group">
+      <%= f.label :due_date %>
+      <%= f.datetime_select :due_date %>
+    </div>
+    <div class="form-group">
+      <label>Always visible?</label>
+      <%= check_box_tag 'always_visible', 'true', code_review.persisted? && CodeReview.find(code_review.id).due_date.nil? %>
+    </div>
   </div>
 
   <%= f.hidden_field :course_id, value: @course.id %>
