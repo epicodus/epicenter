@@ -1,7 +1,7 @@
 desc "warn teachers when not passing code review 17 days after due date"
 task :warn_teachers_late_code_reviews => [:environment] do
   due_date = Date.today - 17.days
-  CodeReview.where(date: due_date).each do |code_review|
+  CodeReview.where(due_date: due_date).each do |code_review|
     course = code_review.course
     unless course.description.include? 'Evening'
       course.students.each do |student|
