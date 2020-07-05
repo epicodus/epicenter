@@ -3,7 +3,7 @@ task :send_code_review_resubmission_reminders => [:environment] do
   Course.current_courses.fulltime_courses.non_internship_courses.each do |course|
     local_date = Time.now.in_time_zone(course.office.time_zone).to_date
     if local_date.sunday?
-      code_review = course.code_reviews.find_by(date: local_date - 9.days)
+      code_review = course.code_reviews.find_by(due_date: local_date - 9.days)
       if code_review
         course.students.each do |student|
           unless code_review.expectations_met_by?(student) || code_review.submission_for(student).try(:needs_review?)
