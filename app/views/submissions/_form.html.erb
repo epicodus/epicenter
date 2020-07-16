@@ -10,7 +10,7 @@
 
   <% if @code_review.survey? && !@code_review.expectations_met_by?(current_student) %>
     <%= render 'code_reviews/survey', survey: @code_review.survey %>
-    <p><strong>Please submit the survey above, then submit your code review here:</strong></p>
+    <p><strong>Please submit the survey above, then submit your <%= @code_review.course.internship_course? ? 'career' : 'code' %> review here:</strong></p>
   <% end %>
 
   <div class="form-group">

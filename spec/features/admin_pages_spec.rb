@@ -159,7 +159,7 @@ feature 'viewing the student page' do
   scenario 'when a student is enrolled in a course with internships' do
     FactoryBot.create(:internship, courses: [internship_student.course])
     visit course_student_path(internship_student.course, internship_student)
-    expect(page).to have_content 'Code reviews'
+    expect(page).to have_content 'Career reviews'
     expect(page).to have_content 'Internships'
   end
 
