@@ -9,7 +9,7 @@
   <% if @student.completed_internship_course? && @student.passed_all_code_reviews? %>
     <p><%= link_to "View certificate of completion", certificate_path, target: '_blank' %></p>
   <% else %>
-    <p>Certificate will be available after internship is completed and all code reviews are passing.</p>
+    <p>Certificate will be available after internship is completed and all code and career reviews are passing.</p>
   <% end %>
 <% end %>
 

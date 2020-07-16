@@ -129,7 +129,7 @@ feature 'editing a course' do
       find('#course_class_days', visible: false).set "2015-09-06,2015-09-07,2015-09-08"
       click_on 'Update Course'
       expect(page).to have_content "has been updated"
-      expect(page).to have_content 'Code reviews'
+      expect(page).to have_content 'Career reviews'
     end
 
     scenario 'from the internships index page' do
