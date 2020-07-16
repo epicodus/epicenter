@@ -2,22 +2,22 @@ describe PaymentCallback do
   let(:student) { FactoryBot.create(:student_with_credit_card) }
   let(:payment) { FactoryBot.create(:payment_with_credit_card, student: student) }
 
-  it 'adds doc_number to payment', :stripe_mock do
-    payment_callback = PaymentCallback.new({ 'paymentId' => payment.id.to_s, 'docNumber' => '1A' })
-    expect(payment.reload.qbo_doc_numbers).to eq ['1A']
+  it 'adds journal entry id to payment', :stripe_mock do
+    payment_callback = PaymentCallback.new({ 'paymentId' => payment.id.to_s, 'txnID' => '42' })
+    expect(payment.reload.qbo_journal_entry_ids).to eq ['42']
   end
 
   it 'adds multiple doc_numbers to payment', :stripe_mock do
-    payment_callback = PaymentCallback.new({ 'paymentId' => payment.id.to_s, 'docNumber' => '1A' })
-    payment_callback = PaymentCallback.new({ 'paymentId' => payment.id.to_s, 'docNumber' => '2A' })
-    expect(payment.reload.qbo_doc_numbers).to eq ['1A', '2A']
+    payment_callback = PaymentCallback.new({ 'paymentId' => payment.id.to_s, 'txnID' => '1' })
+    payment_callback = PaymentCallback.new({ 'paymentId' => payment.id.to_s, 'txnID' => '2' })
+    expect(payment.reload.qbo_journal_entry_ids).to eq ['1', '2']
   end
 
   it 'raises error if payment not found', :stripe_mock do
-    expect { PaymentCallback.new({ 'paymentId' => '99', 'docNumber' => '1A' }) }.to raise_error(PaymentError, "Unable to find payment 99 in response to Zapier callback.")
+    expect { PaymentCallback.new({ 'paymentId' => '99', 'txnID' => '1' }) }.to raise_error(PaymentError, "Unable to find payment 99 in response to Zapier callback.")
   end
 
-  it 'raises error if doc_number missing', :stripe_mock do
-    expect { PaymentCallback.new({ 'paymentId' => payment.id.to_s }) }.to raise_error(PaymentError, "Unable to find doc_number for payment #{payment.id} in response to Zapier callback.")
+  it 'raises error if txnID missing', :stripe_mock do
+    expect { PaymentCallback.new({ 'paymentId' => payment.id.to_s }) }.to raise_error(PaymentError, "Unable to find QBO txnID for payment #{payment.id} in response to Zapier callback.")
   end
 end
