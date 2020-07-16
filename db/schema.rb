@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_01_014031) do
+ActiveRecord::Schema.define(version: 2020_07_16_035027) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -235,6 +235,7 @@ ActiveRecord::Schema.define(version: 2020_07_01_014031) do
     t.date "refund_date"
     t.string "refund_notes"
     t.string "qbo_doc_numbers", default: [], array: true
+    t.string "qbo_journal_entry_ids", default: [], array: true
     t.index ["student_id"], name: "index_payments_on_student_id"
   end
 
