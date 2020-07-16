@@ -1,0 +1,26 @@
+<h1>Code Reviews for <%= @admin.name %></h1>
+<h2><%= @day.strftime('%A %B %-d') %></h2>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="code-review-report-datatable table table-hover">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Code Review</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @reviews.each do |review| %>
+            <tr>
+              <td class="col-md-3"><%= link_to review.submission.student.name, new_submission_review_path(review.submission) %></td>
+              <td><%= link_to review.submission.code_review.title, course_code_review_path(review.submission.code_review.course, review.submission.code_review) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

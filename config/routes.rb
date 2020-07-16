@@ -106,4 +106,9 @@ Rails.application.routes.draw do
   resources :github_callbacks, only: [:create]
 
   resources :peer_evaluations, only: [:new]
+
+  get 'reports', to: 'reports#index'
+  resource :reports, only: [:index] do
+    resources :teachers, only: [:index, :show]
+  end
 end

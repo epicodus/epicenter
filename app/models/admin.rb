@@ -5,6 +5,7 @@ class Admin < User
   has_many :courses
   has_many :cohorts
   has_many :submissions
+  has_many :reviews
 
   before_validation :assign_current_course, on: :create
   devise :database_authenticatable, :validatable

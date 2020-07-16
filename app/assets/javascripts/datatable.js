@@ -52,4 +52,12 @@ $(function() {
     searching: false,
     order: [[ 0, "desc" ]]
   });
+
+  $('.code-review-report-datatable').DataTable({
+    paging: false,
+    autoWidth: false,
+    info: false,
+    searching: false,
+    order: [[ 0, "asc" ]]
+  });
 });
