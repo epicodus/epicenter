@@ -444,6 +444,7 @@ private
 
   def update_probation_in_crm
     crm_lead.update({ Rails.application.config.x.crm_fields['PROBATION'] => probation ? 'Yes' : nil })
+    crm_lead.create_task('Student placed on probation. Send appropriate email.') if probation?
   end
 
   def cohorts_updated?
