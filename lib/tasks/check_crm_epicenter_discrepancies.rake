@@ -29,4 +29,5 @@ end
 
 def create_task(lead, text)
   WebhookCreateTask.new({ lead_id: lead['id'], text: text})
+  # puts "#{lead['contacts'].first['emails'].first['email']} #{text}"
 end
