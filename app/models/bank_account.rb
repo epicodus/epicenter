@@ -28,7 +28,7 @@ private
 
   def exchange_plaid_token
     environment = Rails.env.production? ? :production : :sandbox
-    client = Plaid::Client.new(env: environment, client_id: ENV['PLAID_CLIENT_ID'], secret: ENV['PLAID_SECRET_KEY'], public_key: ENV['PLAID_PUBLIC_KEY'])
+    client = Plaid::Client.new(env: environment, client_id: ENV['PLAID_CLIENT_ID'], secret: ENV['PLAID_SECRET_KEY'])
     exchange_token_response = client.item.public_token.exchange(plaid_public_token)
     access_token = exchange_token_response['access_token']
     stripe_response = client.processor.stripe.bank_account_token.create(access_token, plaid_account_id)
