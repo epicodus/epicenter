@@ -8,7 +8,7 @@ task :check_crm_epicenter_discrepancies => [:environment] do
       status = lead['status_label']
       is_enrolled = status == 'Enrolled'
       is_withdrawn = status.include?('Dropped') || status.include?('Expelled')
-      is_applicant = status.include?('Applicant')
+      is_potential = status.include?('Potential')
       withdrawal_date = lead[Rails.application.config.x.crm_fields['WITHDRAWAL_DATE']]
       cohort_current_crm = lead[Rails.application.config.x.crm_fields['COHORT_CURRENT']]
       cohort_current_epicenter = student.cohort.try(:description)
@@ -18,7 +18,7 @@ task :check_crm_epicenter_discrepancies => [:environment] do
       payment_plan_epicenter = student.plan.try(:close_io_description)
 
       create_task(lead, 'Missing current or part-time cohort') if is_enrolled && cohort_current_crm.blank? && cohort_pt_crm.blank?
-      create_task(lead, 'Current cohort should be blank?') if (is_applicant || is_withdrawn) && cohort_current_crm.present?
+      create_task(lead, 'Current cohort should be blank?') if (is_potential || is_withdrawn) && cohort_current_crm.present?
       create_task(lead, 'Missing withdrawal date') if is_withdrawn && withdrawal_date.blank?
       create_task(lead, 'Payment plan does not match Epicenter') if payment_plan_epicenter != payment_plan_crm
       create_task(lead, 'Current cohort does not match Epicenter') if cohort_current_epicenter != cohort_current_crm
