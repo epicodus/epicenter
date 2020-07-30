@@ -978,4 +978,12 @@ FactoryBot.define do
       response { 'foo' }
     end
   end
+
+  factory :pair_feedback do
+    student
+    association :pair, factory: :student
+    q1_response { 1 }
+    q2_response { 2 }
+    q3_response { 3 }
+  end
 end

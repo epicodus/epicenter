@@ -11,5 +11,9 @@
     <%= set_navbar_link_class('attendance_records') do %>
       <%= link_to 'Attendance', student_attendance_records_path(@student) %>
     <% end %>
+
+    <%= set_navbar_link_class('pair_feedbacks') do %>
+      <%= link_to 'Pair Feedback', student_pair_feedbacks_path(@student) %>
+    <% end %>
   </ul>
 <% end %>

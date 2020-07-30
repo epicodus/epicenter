@@ -118,6 +118,14 @@ class Course < ApplicationRecord
     Student.where.not(id: students.map(&:id)).order(:name)
   end
 
+  def courses_all_locations
+    Course.where(description: description)
+  end
+
+  def students_all_locations
+    Student.where(id: courses_all_locations.map {|c| c.students}.flatten)
+  end
+
   def number_of_days_since_start
     last_date = Time.zone.now.to_date <= end_date ? Time.zone.now.to_date : end_date
     class_dates_until(last_date).count

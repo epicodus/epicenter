@@ -26,7 +26,7 @@ private
                   Internship, InternshipAssignment, InterviewAssignment,
                   Payment, Student, Submission, Cohort, CostAdjustment, DailySubmission]
     can :manage, [AttendanceRecordAmendment, Review]
-    can :read, [Transcript, PeerEvaluation]
+    can :read, [Transcript, PeerEvaluation, PairFeedback]
     can :read, :certificate
   end
 
@@ -48,6 +48,7 @@ private
     can :read, Transcript, student: user
     can [:read, :create], PeerEvaluation, evaluator_id: user.id
     can [:read], PeerEvaluation, evaluatee_id: user.id
+    can [:read, :create], PairFeedback, student_id: user.id
   end
 
   def set_unenrolled_student_permissions(user)

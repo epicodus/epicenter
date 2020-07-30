@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_16_035027) do
+ActiveRecord::Schema.define(version: 2020_07_29_202757) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -201,6 +201,19 @@ ActiveRecord::Schema.define(version: 2020_07_16_035027) do
     t.datetime "updated_at"
     t.string "time_zone"
     t.string "short_name"
+  end
+
+  create_table "pair_feedback", force: :cascade do |t|
+    t.bigint "student_id"
+    t.bigint "pair_id"
+    t.integer "q1_response"
+    t.integer "q2_response"
+    t.integer "q3_response"
+    t.string "comments"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pair_id"], name: "index_pair_feedback_on_pair_id"
+    t.index ["student_id"], name: "index_pair_feedback_on_student_id"
   end
 
   create_table "payment_methods", id: :serial, force: :cascade do |t|
@@ -398,6 +411,8 @@ ActiveRecord::Schema.define(version: 2020_07_16_035027) do
   add_foreign_key "courses", "tracks"
   add_foreign_key "daily_submissions", "users", column: "student_id"
   add_foreign_key "notes", "submissions"
+  add_foreign_key "pair_feedback", "users", column: "pair_id"
+  add_foreign_key "pair_feedback", "users", column: "student_id"
   add_foreign_key "peer_evaluations", "users", column: "evaluatee_id"
   add_foreign_key "peer_evaluations", "users", column: "evaluator_id"
   add_foreign_key "users", "offices"
