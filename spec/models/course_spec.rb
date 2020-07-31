@@ -103,6 +103,24 @@ describe Course do
     end
   end
 
+  describe '#courses_all_locations' do
+    it 'returns all courses with same description' do
+      course = FactoryBot.create(:course)
+      course2 = FactoryBot.create(:course, description: course.description)
+      expect(course.courses_all_locations).to include(course, course2)
+    end
+  end
+
+  describe '#students_all_locations' do
+    it 'returns all students in courses with same description' do
+      course = FactoryBot.create(:course)
+      course2 = FactoryBot.create(:course, description: course.description)
+      student_1 = FactoryBot.create(:student, course: course)
+      student_2 = FactoryBot.create(:student, course: course2)
+      expect(course.students_all_locations).to include(student_1, student_2)
+    end
+  end
+
   describe '#in_session?' do
     it 'returns true if the course is in session' do
       course = FactoryBot.create(:course)

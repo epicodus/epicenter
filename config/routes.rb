@@ -29,6 +29,7 @@ Rails.application.routes.draw do
     resource :certificate, only: [:show]
     resources :daily_submissions, only: [:index, :create]
     resources :peer_evaluations, only: [:index, :new, :create, :show]
+    resources :pair_feedbacks, only: [:index]
   end
   resources :admins, only: [:update]
   resources :payment_methods, only: [:index, :new]
@@ -106,6 +107,9 @@ Rails.application.routes.draw do
   resources :github_callbacks, only: [:create]
 
   resources :peer_evaluations, only: [:new]
+
+  resource :pair_feedbacks, only: [:new, :create]
+  get 'pair_feedback', to: 'pair_feedbacks#new'
 
   get 'reports', to: 'reports#index'
   resource :reports, only: [:index] do

@@ -1,0 +1,49 @@
+<h3>Daily Pair Feedback Questions</h3><br>
+<%= form_with model: [@pair_feedback] do |f| %>
+  <%= render 'layouts/errors', object: @pair_feedback %>
+
+  <div class='form-group'>
+    <%= f.label :pair_id, '1. Who was your pair?', class: 'lead' %><br>
+    <%= f.select :pair_id, @student.course.students_all_locations.where.not(id: @student.id).order(:name).collect {|c| [ c.name, c.id ] }, { prompt: '-- please select --' }, { class: 'form-control', id: 'peer-eval-select-name', required: true } %>
+  </div>
+  <br>
+  <div class="form-group">
+    <%= f.label :q1_response, "2. My pair worked with me throughout the day:", class: 'lead' %><br>
+    <%= f.collection_radio_buttons :q1_response, PairFeedback::Q1_OPTIONS.map.with_index(1) {|opt, index| [opt, index]}, :last, :first do |b| %>
+      <div>
+        <%= b.radio_button %>
+        <%= b.label %>
+      </div>
+    <% end %>
+  </div>
+  <br>
+  <div class="form-group">
+    <%= f.label :q1_response, "3. My pair was polite, considerate, and professional:", class: 'lead' %><br>
+    <%= f.collection_radio_buttons :q2_response, PairFeedback::Q2_OPTIONS.map.with_index(1) {|opt, index| [opt, index]}, :last, :first do |b| %>
+      <div>
+        <%= b.radio_button %>
+        <%= b.label %>
+      </div>
+    <% end %>
+  </div>
+  <br>
+  <div class="form-group">
+    <%= f.label :q1_response, "4. I was able to communicate well with my pair throughout the day and we were able to work through any issues:", class: 'lead' %><br>
+    <%= f.collection_radio_buttons :q3_response, PairFeedback::Q3_OPTIONS.map.with_index(1) {|opt, index| [opt, index]}, :last, :first do |b| %>
+      <div>
+        <%= b.radio_button %>
+        <%= b.label %>
+      </div>
+    <% end %>
+  </div>
+  <br>
+  <div class="form-group">
+    <%= f.label :comments, "5. Additional comments? [optional]", class: 'lead' %>
+    <%= f.text_area :comments, rows: 8, class: 'form-control' %>
+  </div>
+  <br>
+  <div class="form-group">
+    <%= f.submit 'Submit pair feedback', class: 'btn btn-epicodus' %>
+  </div>
+  <p>&nbsp;</p>
+<% end %>

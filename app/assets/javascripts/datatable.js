@@ -60,4 +60,12 @@ $(function() {
     searching: false,
     order: [[ 0, "asc" ]]
   });
+
+  $('.pair-evaluations-datatable').DataTable({
+    paging: false,
+    autoWidth: false,
+    info: false,
+    searching: false,
+    order: [[ 5, "desc" ]]
+  });
 });
