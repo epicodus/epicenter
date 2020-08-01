@@ -9,7 +9,7 @@
   <br>
   <div class="form-group">
     <%= f.label :q1_response, "2. My pair worked with me throughout the day:", class: 'lead' %><br>
-    <%= f.collection_radio_buttons :q1_response, PairFeedback::Q1_OPTIONS.map.with_index(1) {|opt, index| [opt, index]}, :last, :first do |b| %>
+    <%= f.collection_radio_buttons :q1_response, PairFeedback::Q1_OPTIONS.map.with_index(1) {|opt, index| [opt, 6-index]}, :last, :first do |b| %>
       <div>
         <%= b.radio_button %>
         <%= b.label %>
@@ -19,7 +19,7 @@
   <br>
   <div class="form-group">
     <%= f.label :q1_response, "3. My pair was polite, considerate, and professional:", class: 'lead' %><br>
-    <%= f.collection_radio_buttons :q2_response, PairFeedback::Q2_OPTIONS.map.with_index(1) {|opt, index| [opt, index]}, :last, :first do |b| %>
+    <%= f.collection_radio_buttons :q2_response, PairFeedback::Q2_OPTIONS.map.with_index(1) {|opt, index| [opt, 6-index]}, :last, :first do |b| %>
       <div>
         <%= b.radio_button %>
         <%= b.label %>
@@ -28,8 +28,8 @@
   </div>
   <br>
   <div class="form-group">
-    <%= f.label :q1_response, "4. I was able to communicate well with my pair throughout the day and we were able to work through any issues:", class: 'lead' %><br>
-    <%= f.collection_radio_buttons :q3_response, PairFeedback::Q3_OPTIONS.map.with_index(1) {|opt, index| [opt, index]}, :last, :first do |b| %>
+    <%= f.label :q1_response, "4. My pair shared driving and considered my ideas:", class: 'lead' %><br>
+    <%= f.collection_radio_buttons :q3_response, PairFeedback::Q3_OPTIONS.map.with_index(1) {|opt, index| [opt, 6-index]}, :last, :first do |b| %>
       <div>
         <%= b.radio_button %>
         <%= b.label %>
