@@ -315,6 +315,10 @@ class Student < User
     ratings.where(internship_id: internship.id).first
   end
 
+  def enrolled?
+    cohort.present? || parttime_cohort.present?
+  end
+
   def get_status
     if deleted?
       "Archived"

@@ -1233,6 +1233,24 @@ describe Student do
     end
   end
 
+  describe 'enrolled?' do
+    it 'reports enrolled with full-time cohort' do
+      cohort = FactoryBot.create(:cohort)
+      student = FactoryBot.create(:student, courses: cohort.courses)
+      expect(student.enrolled?).to eq true
+    end
+
+    it 'reports enrolled with part-time cohort' do
+      student = FactoryBot.create(:part_time_student_with_cohort)
+      expect(student.enrolled?).to eq true
+    end
+
+    it 'reports not enrolled with no cohort' do
+      student = FactoryBot.create(:student_without_courses)
+      expect(student.enrolled?).to eq false
+    end
+  end
+
   describe 'get_status' do
     let(:student) { FactoryBot.create(:student) }
 
