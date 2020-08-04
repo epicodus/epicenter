@@ -75,7 +75,7 @@
   <p>No payments have been made yet.</p>
 <% end %>
 
-<% if current_student && @student.cohort %>
+<% if current_student && @student.enrolled? %>
   <% if @student.plan.nil? %>
     <br>
     <div class="well" id="choose-payment-plan">
