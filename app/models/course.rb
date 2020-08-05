@@ -119,7 +119,7 @@ class Course < ApplicationRecord
   end
 
   def courses_all_locations
-    Course.where(description: description)
+    Course.where(start_date: start_date).where(end_date: end_date)
   end
 
   def students_all_locations
