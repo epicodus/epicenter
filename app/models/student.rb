@@ -267,6 +267,14 @@ class Student < User
     Time.zone.now.to_date > course.end_date
   end
 
+  def is_class_day?(date = Time.zone.now.to_date)
+    courses.map { |course| course.class_days }.flatten.include? date
+  end
+
+  def is_classroom_day?(date = Time.zone.now.to_date)
+    is_class_day?(date) && !Time.zone.now.to_date.friday?
+  end
+
   def completed_internship_course?
     internship_course = courses.find_by(internship_course: true)
     internship_course && Time.zone.now.to_date > internship_course.end_date ? true : false

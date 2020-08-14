@@ -44,28 +44,6 @@
   <%= render 'students/student_internships' %>
   <%= render 'ratings/internships_modal' %>
 <% else %>
-
-  <% if current_student && @course == @student.try(:course) %>
-    <p><br></p>
-    <div class="row well">
-      <div class="col-md-12">
-        <%= form_for [@student, @student.daily_submissions.new] do |f| %>
-          <div class="form-group">
-            <p><%= f.label :link, "Your Github repo(s) for the day (separated by commas):" %></p>
-            <p><%= f.text_field :link, value: DailySubmission.find_by(student: @student, date: Time.zone.now.to_date).try(:link) %></p>
-          </div>
-          <div class="form-group">
-            <p><%= f.label :date %></p>
-            <p><%= f.date_field :date, value: Time.zone.now.to_date %></p>
-          </div>
-          <p><%= f.submit "Submit", class: 'btn btn-info' %></p>
-        <% end %>
-        <br>
-        <p><%= link_to 'View past daily submissions', student_daily_submissions_path(@student) %></p>
-      </div>
-    </div>
-  <% end %>
-
   <div class="row">
     <div class="col-md-4">
       <h3>Details</h3>

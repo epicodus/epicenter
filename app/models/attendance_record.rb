@@ -4,13 +4,14 @@ class AttendanceRecord < ApplicationRecord
 
   validates :student_id, presence: true, uniqueness: { scope: :date }
   validates :date, presence: true
-  validates :pair_id, uniqueness: { scope: [:student_id, :date] }
+  validate :course_in_session?
 
   before_validation :set_date
   before_validation :sign_in
   before_update :sign_out, if: :signing_out
 
   belongs_to :student
+  belongs_to :pair, class_name: 'Student', optional: true
 
   def self.todays_totals_for(course, status)
     student_ids = course.students(&:id)
@@ -40,9 +41,13 @@ class AttendanceRecord < ApplicationRecord
 
 private
 
+  def course_in_session?
+    errors.add(:attendance_record, "sign in not required.") unless student.is_class_day?(date)
+  end
+
   def sign_in
+    current_time = Time.zone.now.in_time_zone(student.course.office.time_zone)
     if self.tardy.nil?
-      current_time = Time.zone.now.in_time_zone(student.course.office.time_zone)
       if current_time.sunday?
         class_late_time = "9:00 AM".in_time_zone(student.course.office.time_zone) + 15.minutes
       else
@@ -56,11 +61,11 @@ private
   def sign_out
     current_time = Time.zone.now.in_time_zone(student.course.office.time_zone)
     if current_time.sunday?
-      class_end_time = "3:00 PM".in_time_zone(student.course.office.time_zone) - 15.minutes
+      class_end_time = "3:00 PM".in_time_zone(student.course.office.time_zone)
     else
-      class_end_time = student.course.end_time.in_time_zone(student.course.office.time_zone) - 15.minutes
+      class_end_time = student.course.end_time.in_time_zone(student.course.office.time_zone)
     end
-    self.left_early = current_time < class_end_time
+    self.left_early = current_time < (class_end_time - 15.minutes) || current_time > (class_end_time + 15.minutes)
     self.signed_out_time = current_time
   end
 
