@@ -17,7 +17,7 @@ feature 'restoring a student' do
     let(:admin) { FactoryBot.create(:admin) }
     let(:archived_student) { FactoryBot.create(:user_with_all_documents_signed) }
     before do
-      FactoryBot.create(:attendance_record, student: archived_student)
+      FactoryBot.create(:attendance_record, student: archived_student, date: archived_student.course.start_date)
       archived_student.destroy
       login_as(admin, scope: :admin)
     end

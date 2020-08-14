@@ -249,19 +249,19 @@ describe Student do
     let(:student_2) { FactoryBot.create(:student, course: course) }
 
     it "returns the pair partner" do
-      attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair_id: student_2.id)
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair_id: student_2.id, date: student_1.course.start_date)
       expect(student_1.pair_on_day(attendance_record.date)).to eq student_2
     end
 
     it "returns nil if a student has no pair for the day" do
-      attendance_record_1 = FactoryBot.create(:attendance_record, student: student_1)
+      attendance_record_1 = FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date)
       expect(student_1.pair_on_day(attendance_record_1.date)).to eq nil
     end
   end
 
   describe "#attendance_record_on_day" do
     let(:student) { FactoryBot.create(:student) }
-    let(:attendance_record) { FactoryBot.create(:attendance_record, student: student) }
+    let(:attendance_record) { FactoryBot.create(:attendance_record, student: student, date: student.course.start_date) }
 
     it "returns the student's attendance record for the specified day" do
       expect(student.attendance_record_on_day(attendance_record.date)).to eq attendance_record
@@ -316,7 +316,7 @@ describe Student do
     let(:student_2) { FactoryBot.create(:student, course: course) }
 
     it "returns list of all pair ids" do
-      attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair_id: student_2.id)
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair_id: student_2.id, date: student_1.course.start_date)
       expect(student_1.pairs).to eq [student_2.id]
     end
   end
@@ -639,8 +639,10 @@ describe Student do
     end
 
     it 'is true if the student has already signed in today' do
-      attendance_record = FactoryBot.create(:attendance_record, student: student)
-      expect(student.signed_in_today?).to eq true
+      travel_to student.course.start_date do
+        attendance_record = FactoryBot.create(:attendance_record, student: student)
+        expect(student.signed_in_today?).to eq true
+      end
     end
   end
 
@@ -648,20 +650,26 @@ describe Student do
     let(:student) { FactoryBot.create(:student) }
 
     it 'is false if the student has not signed out today' do
-      attendance_record = FactoryBot.create(:attendance_record, student: student)
-      expect(student.signed_out_today?).to eq false
+      travel_to student.course.start_date do
+        attendance_record = FactoryBot.create(:attendance_record, student: student)
+        expect(student.signed_out_today?).to eq false
+      end
     end
 
     it 'is true if the student has signed out' do
-      attendance_record = FactoryBot.create(:attendance_record, student: student)
-      attendance_record.update({:signing_out => true})
-      expect(student.signed_out_today?).to eq true
+      travel_to student.course.start_date do
+        attendance_record = FactoryBot.create(:attendance_record, student: student)
+        attendance_record.update({:signing_out => true})
+        expect(student.signed_out_today?).to eq true
+      end
     end
 
     it 'populates the signed_out_time field for a students attendance record' do
-      attendance_record = FactoryBot.create(:attendance_record, student: student)
-      attendance_record.update({:signing_out => true})
-      expect(attendance_record.signed_out_time).to_not eq nil
+      travel_to student.course.start_date do
+        attendance_record = FactoryBot.create(:attendance_record, student: student)
+        attendance_record.update({:signing_out => true})
+        expect(attendance_record.signed_out_time).to_not eq nil
+      end
     end
   end
 
@@ -708,6 +716,46 @@ describe Student do
       end
     end
   end
+
+  describe '#is_class_day?' do
+    let(:course) { FactoryBot.create(:course) }
+    let(:course_2) { FactoryBot.create(:future_course) }
+    let(:student) { FactoryBot.create(:student, courses: [course, course_2]) }
+
+    it 'returns true if during first course' do
+      expect(student.is_class_day?(course.start_date)).to eq true
+    end
+
+    it 'returns true if during second course' do
+      expect(student.is_class_day?(course_2.end_date)).to eq true
+    end
+
+    it 'returns false if not during either course' do
+      expect(student.is_class_day?(course_2.end_date + 1.week)).to eq false
+    end
+
+    it 'defaults to today if date not passed' do
+      travel_to course.start_date do
+        expect(student.is_class_day?).to eq true
+      end
+    end
+  end
+
+  describe '#is_classroom_day?' do
+  let(:student) { FactoryBot.create(:student) }
+
+  it 'returns true if today is monday class day for this course' do
+    travel_to student.course.start_date.beginning_of_week do
+      expect(student.is_classroom_day?).to eq true
+    end
+  end
+
+  it 'returns false if today is class day but friday' do
+    travel_to student.course.start_date.beginning_of_week + 4.days do
+      expect(student.is_classroom_day?).to eq false
+    end
+  end
+end
 
   describe '#completed_internship_course?' do
     let(:internship_course) { FactoryBot.create(:internship_course) }
@@ -898,7 +946,9 @@ describe Student do
       travel_to course.start_date do
         FactoryBot.create(:attendance_record, student: student)
       end
-      travel_to course.start_date - 5.days do
+      future_course = FactoryBot.create(:future_course)
+      student.courses << future_course
+      travel_to future_course.start_date do
         FactoryBot.create(:attendance_record, student: student)
       end
       expect(student.solos(course)).to eq 1
@@ -916,7 +966,7 @@ describe Student do
       travel_to course.start_date.in_time_zone(course.office.time_zone) + 8.hours do
         attendance_record = FactoryBot.create(:attendance_record, student: student)
       end
-      travel_to course.start_date.in_time_zone(course.office.time_zone) + 23.hours do
+      travel_to course.start_date.in_time_zone(course.office.time_zone) + 17.hours do
         student.attendance_records.last.update({:signing_out => true})
       end
       expect(student.attendance_records_for(:on_time)).to eq 1
@@ -953,12 +1003,9 @@ describe Student do
     end
 
     it 'counts the number of days the student has been absent' do
-      course.class_days=[course.start_date]
+      course.class_days = [course.start_date]
       course.save
       travel_to course.start_date do
-        FactoryBot.create(:attendance_record, student: student)
-      end
-      travel_to course.start_date + 2.days do
         FactoryBot.create(:attendance_record, student: student)
       end
       expect(student.attendance_records_for(:absent)).to eq 0
@@ -966,63 +1013,30 @@ describe Student do
 
     context 'for a particular course' do
       it 'counts the number of days the student has been on time to class' do
-        travel_to course.start_date.in_time_zone(course.office.time_zone) - 5.days + 8.hours do
-          attendance_record_outside_current_course_date_range = FactoryBot.create(:attendance_record, student: student)
-        end
-        travel_to course.start_date.in_time_zone(course.office.time_zone) - 5.days - 1.hour do
-          student.attendance_records.last.update({ signing_out: true })
-        end
-        travel_to course.start_date.in_time_zone(course.office.time_zone) + 8.hours do
-          attendance_record = FactoryBot.create(:attendance_record, student: student)
-        end
-        travel_to course.start_date.in_time_zone(course.office.time_zone) + 17.hours do
-          student.attendance_records.last.update({ signing_out: true })
-        end
-        expect(student.attendance_records_for(:on_time, student.course)).to eq 1
+        student.courses << future_course
+        FactoryBot.create(:on_time_attendance_record, student: student, date: course.start_date)
+        FactoryBot.create(:on_time_attendance_record, student: student, date: future_course.end_date)
+        expect(student.attendance_records_for(:on_time, course)).to eq 1
       end
 
       it 'counts the number of days the student has been tardy' do
-        travel_to course.start_date.in_time_zone(course.office.time_zone) - 5.days + 9.hours + 10.minutes do
-          FactoryBot.create(:attendance_record, student: student)
-        end
-        travel_to course.start_date.in_time_zone(course.office.time_zone) - 4.days + 9.hours + 10.minutes do
-          FactoryBot.create(:attendance_record, student: student)
-        end
-        travel_to course.start_date.in_time_zone(course.office.time_zone) + 9.hours + 20.minutes do
-          FactoryBot.create(:attendance_record, student: student)
-        end
-        travel_to course.start_date.in_time_zone(course.office.time_zone) + 1.day + 9.hours + 20.minutes do
-          FactoryBot.create(:attendance_record, student: student)
-          expect(student.attendance_records_for(:tardy, student.course)).to eq 2
-        end
+        student.courses << future_course
+        FactoryBot.create(:tardy_attendance_record, student: student, date: course.start_date)
+        FactoryBot.create(:tardy_attendance_record, student: student, date: future_course.end_date)
+        expect(student.attendance_records_for(:tardy, course)).to eq 1
       end
 
       it 'counts the number of days the student has left early (failed to sign out)' do
-        travel_to course.start_date.in_time_zone(course.office.time_zone) - 5.days + 8.hours + 55.minutes do
-          attendance_record_outside_current_course_date_range = FactoryBot.create(:attendance_record, student: student)
-        end
-        travel_to course.start_date.in_time_zone(course.office.time_zone) - 5.days + 15.hours + 55.minutes do
-          student.attendance_records.last.update({ signing_out: true })
-        end
-        travel_to course.start_date.in_time_zone(course.office.time_zone) + 8.hours + 55.minutes do
-          attendance_record = FactoryBot.create(:attendance_record, student: student)
-        end
-        travel_to course.start_date.in_time_zone(course.office.time_zone) + 15.hours + 55.minutes do
-          student.attendance_records.last.update({ signing_out: true })
-        end
-        expect(student.attendance_records_for(:left_early, student.course)).to eq 1
+        student.courses << future_course
+        FactoryBot.create(:left_early_attendance_record, student: student, date: course.start_date)
+        FactoryBot.create(:left_early_attendance_record, student: student, date: future_course.end_date)
+        expect(student.attendance_records_for(:left_early, course)).to eq 1
       end
 
       it 'counts the number of days the student has been absent' do
-        travel_to course.start_date - 5 do
-          travel 1.day
-          FactoryBot.create(:attendance_record, student: student)
-        end
-        travel_to course.start_date do
-          travel 1.day
-          FactoryBot.create(:attendance_record, student: student)
-          expect(student.attendance_records_for(:absent, student.course)).to eq 1
-        end
+        student.courses << future_course
+        FactoryBot.create(:attendance_record, student: student, date: future_course.start_date)
+        expect(student.attendance_records_for(:absent, past_course)).to eq past_course.class_days.count
       end
     end
 
@@ -1212,7 +1226,7 @@ describe Student do
 
   describe 'paranoia' do
     let(:student) { FactoryBot.create(:student) }
-    let!(:ar) { FactoryBot.create(:attendance_record, student: student) }
+    let!(:ar) { FactoryBot.create(:attendance_record, student: student, date: student.course.start_date) }
 
     it 'archives destroyed user' do
       student.destroy
@@ -1255,7 +1269,7 @@ describe Student do
     let(:student) { FactoryBot.create(:student) }
 
     it 'reports status when student is archived' do
-      FactoryBot.create(:attendance_record, student: student)
+      FactoryBot.create(:attendance_record, student: student, date: student.course.start_date)
       student.destroy
       expect(Student.with_deleted.find(student.id).get_status).to eq 'Archived'
     end

@@ -102,6 +102,14 @@ class Course < ApplicationRecord
     "#{description} (#{office.name})"
   end
 
+  def start_time_today(leeway=0)
+    DateTime.parse(Time.zone.now.strftime("%Y-%m-%dT" + start_time + "%z")) - leeway.minutes
+  end
+
+  def end_time_today(leeway=0)
+    DateTime.parse(Time.zone.now.strftime("%Y-%m-%dT" + end_time + "%z")) + leeway.minutes
+  end
+
   def in_session?
     start_date <= Time.zone.now.to_date && end_date >= Time.zone.now.to_date
   end

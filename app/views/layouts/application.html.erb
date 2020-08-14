@@ -18,6 +18,7 @@
       <%= sanitize(flash[:notice]) %>
       <%= sanitize(flash[:alert]) %>
     <% end %>
+    <%= render 'students/in_session' if current_student.try(:is_classroom_day?) && !hide_navbar %>
     <%= yield %>
   </div>
 </body>
