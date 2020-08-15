@@ -2,7 +2,7 @@
   <%= render 'layouts/errors', object: @attendance_record_amendment %>
   <div class="form-group">
     <%= f.label :student_id %>
-    <%= f.collection_select :student_id, @course.students.order(:name), :id, :name, {}, { class: "form-control" } %>
+    <%= f.collection_select :student_id, @course.students_all_locations.order(:name), :id, :name, {}, { class: "form-control" } %>
   </div>
   <div class="form-group">
     <%= f.label :date %>
@@ -14,7 +14,11 @@
   </div>
   <div class="form-group">
     <%= f.label :pair_id %>
-    <%= f.select :pair_id, @course.students.all.order(:name).collect {|c| [ c.name, c.id ] }, {include_blank: "Solo"}, { class: 'form-control' } %>
+    <%= f.select :pair_id, @course.students_all_locations.all.order(:name).collect {|c| [ c.name, c.id ] }, {include_blank: "Solo"}, { class: 'form-control' } %>
+  </div>
+  <div class="form-group">
+    <%= f.label :pair2_id %>
+    <%= f.select :pair2_id, @course.students_all_locations.all.order(:name).collect {|c| [ c.name, c.id ] }, {include_blank: "None"}, { class: 'form-control' } %>
   </div>
   <%= f.submit "Submit", class: 'btn btn-info' %>
 <% end %>

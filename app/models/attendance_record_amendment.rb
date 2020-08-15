@@ -3,13 +3,14 @@ class AttendanceRecordAmendment
 
   validates :student_id, :date, :status, presence: true
 
-  attr_accessor :student_id, :date, :status, :pair_id
+  attr_accessor :student_id, :date, :status, :pair_id, :pair2_id
 
   def initialize(attributes={})
     @student_id = attributes[:student_id]
     @date = attributes[:date] unless attributes[:date].blank?
     @status = attributes[:status]
     @pair_id = attributes[:pair_id]
+    @pair2_id = attributes[:pair2_id]
   end
 
   def save
@@ -23,7 +24,7 @@ class AttendanceRecordAmendment
 private
 
   def amend_attendance_record
-    attendance_record.update(pair_id: pair_id)
+    attendance_record.update(pair_id: pair_id, pair2_id: pair2_id)
     case status
     when "On time"
       attendance_record.update(tardy: false, left_early: false)

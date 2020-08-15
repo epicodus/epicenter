@@ -42,8 +42,12 @@
                 <td>
                   <% if day.friday? || @student.attendance_record_on_day(day) == nil %>
                     -
+                  <% elsif @student.pair2_on_day(day) %>
+                    <%= @student.pair_on_day(day).name %>, <%= @student.pair2_on_day(day).name %>
+                  <% elsif @student.pair_on_day(day) %>
+                    <%= @student.pair_on_day(day).name %>
                   <% else %>
-                    <%= @student.pair_on_day(day) ? @student.pair_on_day(day).name : 'Solo' %>
+                    Solo
                   <% end %>
                 </td>
                 <td><%= @student.attendance_record_on_day(day) && @student.attendance_record_on_day(day).station ? @student.attendance_record_on_day(day).station : '-' %></td>

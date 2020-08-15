@@ -259,6 +259,27 @@ describe Student do
     end
   end
 
+  describe "#pair2_on_day" do
+    let(:course) { FactoryBot.create(:course) }
+    let(:student_1) { FactoryBot.create(:student, course: course) }
+    let(:student_2) { FactoryBot.create(:student, course: course) }
+
+    it "returns the pair2 partner" do
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair2_id: student_2.id, date: student_1.course.start_date)
+      expect(student_1.pair2_on_day(attendance_record.date)).to eq student_2
+    end
+
+    it "returns nil if a student has no pair2 for the day" do
+      attendance_record_1 = FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date)
+      expect(student_1.pair2_on_day(attendance_record_1.date)).to eq nil
+    end
+
+    it "returns nil if a student has pair but no pair2 for the day" do
+      attendance_record_1 = FactoryBot.create(:attendance_record, student: student_1, pair_id: student_2.id, date: student_1.course.start_date)
+      expect(student_1.pair2_on_day(attendance_record_1.date)).to eq nil
+    end
+  end
+
   describe "#attendance_record_on_day" do
     let(:student) { FactoryBot.create(:student) }
     let(:attendance_record) { FactoryBot.create(:attendance_record, student: student, date: student.course.start_date) }
@@ -318,6 +339,11 @@ describe Student do
     it "returns list of all pair ids" do
       attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair_id: student_2.id, date: student_1.course.start_date)
       expect(student_1.pairs).to eq [student_2.id]
+    end
+
+    it "returns list of all pair ids for a given course time period" do
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair_id: student_2.id, date: student_1.course.start_date)
+      expect(student_1.pairs(student_1.course)).to eq [student_2.id]
     end
   end
 
