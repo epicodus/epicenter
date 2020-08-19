@@ -544,22 +544,22 @@ describe Course do
 
   describe 'calculates course start and end times today' do
     it '#start_time_today' do
-      course = FactoryBot.create(:course, start_time: '8:00 AM')
+      course = FactoryBot.create(:portland_course, start_time: '8:00 AM')
       expect(course.start_time_today).to eq Time.zone.now.beginning_of_day + 8.hours
     end
 
     it '#start_time_today with leeway' do
-      course = FactoryBot.create(:course, start_time: '8:00 AM')
+      course = FactoryBot.create(:portland_course, start_time: '8:00 AM')
       expect(course.start_time_today(15)).to eq Time.zone.now.beginning_of_day + 8.hours - 15.minutes
     end
 
     it '#end_time_today' do
-      course = FactoryBot.create(:course, end_time: '5:00 PM')
+      course = FactoryBot.create(:portland_course, end_time: '5:00 PM')
       expect(course.end_time_today).to eq Time.zone.now.beginning_of_day + 17.hours
     end
 
     it '#end_time_today with leeway' do
-      course = FactoryBot.create(:course, end_time: '5:00 PM')
+      course = FactoryBot.create(:portland_course, end_time: '5:00 PM')
       expect(course.end_time_today(15)).to eq Time.zone.now.beginning_of_day + 17.hours + 15.minutes
     end
   end

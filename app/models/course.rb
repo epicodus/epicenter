@@ -103,11 +103,13 @@ class Course < ApplicationRecord
   end
 
   def start_time_today(leeway=0)
-    DateTime.parse(Time.zone.now.strftime("%Y-%m-%dT" + start_time + "%z")) - leeway.minutes
+    the_start_time = Time.zone.now.to_date.sunday? ? '9:00 AM' : start_time
+    the_start_time.in_time_zone(office.time_zone) - leeway.minutes
   end
 
   def end_time_today(leeway=0)
-    DateTime.parse(Time.zone.now.strftime("%Y-%m-%dT" + end_time + "%z")) + leeway.minutes
+    the_end_time = Time.zone.now.to_date.sunday? ? '3:00 PM' : end_time
+    the_end_time.in_time_zone(office.time_zone) + leeway.minutes
   end
 
   def in_session?
