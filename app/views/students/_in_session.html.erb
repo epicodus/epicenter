@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-md-12 panel panel-info">
+    <h3>Attendance today</h3>
+    <p id='today-attendance-info'>
+      <% if current_student.signed_in_today? %>
+        Signed in: <%= current_student.attendance_records.today.first.created_at.strftime('%l:%M %p') %><br>
+        <% if current_student.signed_out_today? %>
+          Signed out: <%= current_student.attendance_records.today.first.signed_out_time.strftime('%l:%M %p') %><br>
+        <% else %>
+          <%= link_to 'Sign out', sign_out_path, id: 'attendance-sign-out-link' %><br>
+          <% if current_student.pair_on_day(Time.zone.now.to_date) && current_student.pair2_on_day(Time.zone.now.to_date) %>
+            You are signed in with <%= current_student.pair_on_day(Time.zone.now.to_date).name %> and <%= current_student.pair2_on_day(Time.zone.now.to_date).name %>. [<%= link_to 'change pair', sign_in_path, remote: true, id: 'attendance-change-pair-link' %>]
+          <% elsif current_student.pair_on_day(Time.zone.now.to_date) %>
+            You are signed in with <%= current_student.pair_on_day(Time.zone.now.to_date).name %>. [<%= link_to 'change pair', sign_in_path, remote: true, id: 'attendance-change-pair-link' %>]
+          <% else %>
+            <strong class='text-primary'>You are signed in without a pair!</strong> Click <%= link_to 'here', sign_in_path, remote: true, id: 'attendance-change-pair-link' %> to log your pair.
+          <% end %>
+        <% end %>
+      <% elsif Time.zone.now < current_student.try(:course).try(:start_time_today, 30) %>
+        Sign in will be available at <%= current_student.try(:course).try(:start_time_today, 30).strftime('%l:%M %p') %>
+      <% elsif Time.zone.now > current_student.try(:course).try(:end_time_today) %>
+        Sign in is not available after class end time.
+      <% else %>
+        <%= link_to 'Sign in', sign_in_path, remote: true, id: 'attendance-sign-in-link' %>
+      <% end %>
+    <div id="change-pair-form">
+    </div>
+  </p>
+  </div>
+</div>

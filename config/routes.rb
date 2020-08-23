@@ -2,15 +2,9 @@ Rails.application.routes.draw do
   devise_scope :user do
     root 'users/sessions#new'
   end
-  get 'sign_in', to: 'attendance_sign_in#new'
-  get 'sign_out', to: 'attendance_sign_out#new'
-  get '/sign-in' => redirect('/sign_in')
-  get '/signin' => redirect('/sign_in')
-  get '/sign-out' => redirect('/sign_out')
-  get '/signout' => redirect('/sign_out')
+  get 'sign_in', to: 'attendance_sign_in_remote#new'
+  get 'sign_out', to: 'pair_feedbacks#new'
 
-  get 'attendance', to: 'static_pages#attendance'
-  get 'welcome', to: 'static_pages#show'
   get 'auth/:provider/callback', to: 'omniauth_callbacks#create'
 
   devise_for :student, controllers: { invitations: 'invitations', registrations: 'registrations' }
@@ -88,8 +82,8 @@ Rails.application.routes.draw do
   resource :code_review_copy, only: [:create]
   resource :random_pairs, only: [:show]
   resources :enrollments, only: [:create, :destroy]
-  resource :sign_in, controller: 'attendance_sign_in', only: [:create]
-  resource :sign_out, controller: 'attendance_sign_out', only: [:create]
+  resource :sign_in, controller: 'attendance_sign_in_remote', only: [:create]
+  resource :sign_out, controller: 'pair_feedbacks', only: [:create]
   resource :course_internships, only: [:create, :destroy]
   resource :interview_assignments, only: [:destroy] do
     collection do
@@ -109,7 +103,6 @@ Rails.application.routes.draw do
   resources :peer_evaluations, only: [:new]
 
   resource :pair_feedbacks, only: [:new, :create]
-  get 'pair_feedback', to: 'pair_feedbacks#new'
 
   get 'reports', to: 'reports#index'
   resource :reports, only: [:index] do

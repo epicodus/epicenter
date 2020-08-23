@@ -152,6 +152,10 @@ class Student < User
     Student.find_by(id: attendance_record_on_day(day).try(:pair_id)) # using find_by so that nil is returned instead of raising exception if there is no pair
   end
 
+  def pair2_on_day(day)
+    Student.find_by(id: attendance_record_on_day(day).try(:pair2_id)) # using find_by so that nil is returned instead of raising exception if there is no pair
+  end
+
   def attendance_record_on_day(day)
     attendance_records.find_by(date: day)
   end
@@ -165,8 +169,9 @@ class Student < User
     end
   end
 
-  def pairs
-    attendance_records.map {|s| s.pair_id}.compact.sort
+  def pairs(course=nil)
+    selected_attendance_records = course ? attendance_records.where("date between ? and ?", course.try(:start_date), course.try(:end_date)) : attendance_records
+    (selected_attendance_records.map {|s| s.pair_id} + selected_attendance_records.map {|s| s.pair2_id}).compact.sort
   end
 
   def latest_total_grade_score
@@ -265,6 +270,14 @@ class Student < User
 
   def class_over?
     Time.zone.now.to_date > course.end_date
+  end
+
+  def is_class_day?(date = Time.zone.now.to_date)
+    courses.map { |course| course.class_days }.flatten.include? date
+  end
+
+  def is_classroom_day?(date = Time.zone.now.to_date)
+    is_class_day?(date) && !Time.zone.now.to_date.friday?
   end
 
   def completed_internship_course?

@@ -8,9 +8,11 @@ class AttendanceRecordAmendmentsController < ApplicationController
     if params[:student]
       student = Student.find(params[:student])
       pair = student.pair_on_day(day)
+      pair2 = student.pair2_on_day(day)
       pair_id = pair ? pair.id : nil
+      pair2_id = pair2 ? pair2.id : nil
     end
-    @attendance_record_amendment = AttendanceRecordAmendment.new(student_id: params[:student], date: day, pair_id: pair_id, status: status)
+    @attendance_record_amendment = AttendanceRecordAmendment.new(student_id: params[:student], date: day, pair_id: pair_id, pair2_id: pair2_id, status: status)
   end
 
   def create
@@ -37,6 +39,6 @@ class AttendanceRecordAmendmentsController < ApplicationController
 private
 
   def attendance_record_amendment_params
-    params.require(:attendance_record_amendment).permit(:student_id, :status, :date, :pair_id)
+    params.require(:attendance_record_amendment).permit(:student_id, :status, :date, :pair_id, :pair2_id)
   end
 end

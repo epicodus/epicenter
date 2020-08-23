@@ -18,19 +18,23 @@ feature "Viewing roster page" do
     before { login_as(admin, scope: :admin) }
 
     scenario "can view students" do
-      FactoryBot.create(:attendance_record, student: student, date: Time.zone.now.to_date)
-      visit roster_path
-      expect(page).to have_content "students currently signed in"
-      expect(page).to have_content student.name
+      travel_to student.course.start_date do
+        FactoryBot.create(:attendance_record, student: student, date: Time.zone.now.to_date)
+        visit roster_path
+        expect(page).to have_content "students currently signed in"
+        expect(page).to have_content student.name
+      end
     end
 
     scenario "can see students in different office" do
       other_student = FactoryBot.create(:portland_student_with_all_documents_signed)
-      FactoryBot.create(:attendance_record, student: other_student, date: Time.zone.now.to_date)
-      visit roster_path
-      click_link "Portland"
-      expect(page).to have_content "students currently signed in (Portland)"
-      expect(page).to have_content other_student.name
+      travel_to other_student.course.start_date do
+        FactoryBot.create(:attendance_record, student: other_student, date: Time.zone.now.to_date)
+        visit roster_path
+        click_link "Portland"
+        expect(page).to have_content "students currently signed in (Portland)"
+        expect(page).to have_content other_student.name
+      end
     end
 
     scenario "does not show absent students" do
@@ -39,10 +43,12 @@ feature "Viewing roster page" do
     end
 
     scenario "does not show signed out students" do
-      attendance_record = FactoryBot.create(:attendance_record, student: student, date: Time.zone.now.to_date)
-      attendance_record.update({ signing_out: true })
-      visit roster_path
-      expect(page).to_not have_content student.name
+      travel_to student.course.start_date do
+        attendance_record = FactoryBot.create(:attendance_record, student: student, date: Time.zone.now.to_date)
+        attendance_record.update({ signing_out: true })
+        visit roster_path
+        expect(page).to_not have_content student.name
+      end
     end
   end
 end

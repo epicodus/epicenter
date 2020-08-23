@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_29_202757) do
+ActiveRecord::Schema.define(version: 2020_08_14_185955) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 2020_07_29_202757) do
     t.integer "pair_id"
     t.string "station"
     t.boolean "ignore"
+    t.integer "pair2_id"
     t.index ["created_at"], name: "index_attendance_records_on_created_at"
     t.index ["student_id"], name: "index_attendance_records_on_student_id"
     t.index ["tardy"], name: "index_attendance_records_on_tardy"

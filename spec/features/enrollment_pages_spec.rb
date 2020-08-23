@@ -71,7 +71,7 @@ feature 'withdrawing a student from all courses' do
 
   scenario 'as an admin drop all for a student with attendance records and no payments' do
     student = FactoryBot.create(:student_with_upfront_payment)
-    FactoryBot.create(:attendance_record, student: student)
+    FactoryBot.create(:attendance_record, student: student, date: student.course.start_date)
     visit student_courses_path(student)
     click_on 'Drop All'
     expect(page).to have_content "#{student.email} has been withdrawn from all courses."
@@ -127,7 +127,7 @@ feature 'deleting a course for a student' do
 
   scenario 'as an admin deleting the last course for student with attendance records' do
     student = FactoryBot.create(:student, courses: [course1])
-    FactoryBot.create(:attendance_record, student: student)
+    FactoryBot.create(:attendance_record, student: student, date: student.course.start_date)
     visit student_courses_path(student)
     within "#student-course-#{course1.id}" do
       click_on 'Withdraw'

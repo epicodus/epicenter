@@ -52,13 +52,24 @@
               </td>
               <td><%= student.attendance_record_on_day(@day).try(:created_at).try(:in_time_zone, @course.office.time_zone).try(:strftime, '%l:%M %p') %></td>
               <td><%= student.attendance_record_on_day(@day).try(:signed_out_time).try(:in_time_zone, @course.office.time_zone).try(:strftime, '%l:%M %p') %></td>
-              <td><%= student.pair_on_day(@day) ? student.pair_on_day(@day).name : 'Solo' %></td>
+              <td>
+                <% if @day.friday? || student.attendance_record_on_day(@day) == nil %>
+                  -
+                <% elsif student.pair2_on_day(@day) %>
+                  <%= student.pair_on_day(@day).name %>, <%= student.pair2_on_day(@day).name %>
+                <% elsif student.pair_on_day(@day) %>
+                  <%= student.pair_on_day(@day).name %>
+                <% else %>
+                  Solo
+                <% end %>
+              </td>
               <td>
                 <%= form_for AttendanceRecordAmendment.new, remote: true do |f| %>
                   <%= f.select :status, options_for_select(["On time", "Tardy", "Left early", "Tardy and Left early", "Absent"], student.attendance_record_on_day(@day).try(:status) || 'Absent'), {}, {class: 'attendance-adjust', id: student.id} %>
                   <%= f.hidden_field :student_id, value: student.id %>
                   <%= f.hidden_field :date, value: @day %>
                   <%= f.hidden_field :pair_id, value: student.pair_on_day(@day).try(:id) %>
+                  <%= f.hidden_field :pair2_id, value: student.pair2_on_day(@day).try(:id) %>
                 <% end %>
               </td>
               <td class="edit-attendance">
