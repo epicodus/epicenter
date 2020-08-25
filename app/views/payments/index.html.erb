@@ -187,63 +187,69 @@
 
   <div class="panel-group" id="accordion">
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" class="payment-accordion-label">
-          Stripe Payment</a>
-        </h4>
-      </div>
-      <div id="collapse1" class="panel-collapse collapse">
-        <div class="panel-body payment-form well">
-          <div class="row">
-            <div class="col-md-6">
-              <% if @student.payment_methods.any? %>
-                <%= render 'stripe_payment_form' %>
-              <% else %>
-                <p>No primary payment method has been selected.</p>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <% if @student.cohort || @student.parttime_cohort %>
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" class="payment-accordion-label">
-          Offline Payment</a>
-        </h4>
-      </div>
-      <div id="collapse2" class="panel-collapse collapse">
-        <div class="panel-body payment-form well">
-          <div class="row">
-            <div class="col-md-6">
-              <%= render 'offline_payment_form' %>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse1" class="payment-accordion-label">
+            Stripe Payment</a>
+          </h4>
+        </div>
+        <div id="collapse1" class="panel-collapse collapse">
+          <div class="panel-body payment-form well">
+            <div class="row">
+              <div class="col-md-6">
+                <% if @student.payment_methods.any? %>
+                  <%= render 'stripe_payment_form' %>
+                <% else %>
+                  <p>No primary payment method has been selected.</p>
+                <% end %>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" class="payment-accordion-label">
-          Offline Refund</a>
-        </h4>
-      </div>
-      <div id="collapse3" class="panel-collapse collapse">
-        <div class="panel-body refund-form well">
-          <div class="row">
-            <div class="col-md-5">
-              <%= render 'offline_refund_form' %>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" class="payment-accordion-label">
+            Offline Payment</a>
+          </h4>
+        </div>
+        <div id="collapse2" class="panel-collapse collapse">
+          <div class="panel-body payment-form well">
+            <div class="row">
+              <div class="col-md-6">
+                <%= render 'offline_payment_form' %>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" class="payment-accordion-label">
+            Offline Refund</a>
+          </h4>
+        </div>
+        <div id="collapse3" class="panel-collapse collapse">
+          <div class="panel-body refund-form well">
+            <div class="row">
+              <div class="col-md-5">
+                <%= render 'offline_refund_form' %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <% else %>
+      <p class='alert alert-warning'>Payments and refunds can not be made when cohort is blank. Please enroll the student in the cohort to which the payment or refund should be applied.</p>
+    <% end %>
 
     <div class="panel panel-default">
       <div class="panel-heading">
