@@ -264,6 +264,12 @@ feature 'issuing an offline refund as an admin', :vcr do
 
   before { login_as(admin, scope: :admin) }
 
+  it 'is unavailable with no cohort or pt cohort' do
+    unenrolled_student = FactoryBot.create(:unenrolled_student)
+    visit student_payments_path(unenrolled_student)
+    expect(page).to have_content 'Payments and refunds can not be made when cohort is blank.'
+  end
+
   it 'sets category to refund for offline refunds' do
     visit student_payments_path(student)
     fill_in 'refund-offline-input', with: '600'
@@ -287,6 +293,12 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
   let!(:payment) { FactoryBot.create(:payment_with_credit_card, amount: 100_00, student: student) }
 
   before { login_as(admin, scope: :admin) }
+
+  it 'is unavailable with no cohort or pt cohort' do
+    unenrolled_student = FactoryBot.create(:unenrolled_student)
+    visit student_payments_path(unenrolled_student)
+    expect(page).to have_content 'Payments and refunds can not be made when cohort is blank.'
+  end
 
   scenario 'successfully without cents' do
     visit student_payments_path(student)
@@ -346,6 +358,12 @@ feature 'make a manual stripe payment', :stripe_mock, :stub_mailgun do
   let(:student) { FactoryBot.create(:student_with_all_documents_signed_and_credit_card, email: 'example@example.com') }
 
   before { login_as(admin, scope: :admin) }
+
+  it 'is unavailable with no cohort or pt cohort' do
+    unenrolled_student = FactoryBot.create(:unenrolled_student)
+    visit student_payments_path(unenrolled_student)
+    expect(page).to have_content 'Payments and refunds can not be made when cohort is blank.'
+  end
 
   scenario 'successfully with cents', :vcr do
     visit student_payments_path(student)
@@ -438,6 +456,12 @@ feature 'make an offline payment', :js, :vcr do
   let(:student) { FactoryBot.create(:student_with_all_documents_signed_and_credit_card) }
 
   before { login_as(admin, scope: :admin) }
+
+  it 'is unavailable with no cohort or pt cohort' do
+    unenrolled_student = FactoryBot.create(:unenrolled_student)
+    visit student_payments_path(unenrolled_student)
+    expect(page).to have_content 'Payments and refunds can not be made when cohort is blank.'
+  end
 
   scenario 'successfully with cents' do
     visit student_payments_path(student)
