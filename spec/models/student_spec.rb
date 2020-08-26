@@ -117,18 +117,11 @@ describe Student do
 
     before do
       allow(CrmUpdateJob).to receive(:perform_later).and_return({})
-      allow_any_instance_of(Closeio::Client).to receive(:create_task).and_return({})
     end
 
     it 'updates in Close when probation set' do
       student = FactoryBot.create(:student, email: 'example@example.com')
       expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PROBATION'] => 'Yes' })
-      student.update(probation: true)
-    end
-
-    it 'creates task if probation set' do
-      student = FactoryBot.create(:student, email: 'example@example.com')
-      expect_any_instance_of(CrmLead).to receive(:create_task)
       student.update(probation: true)
     end
 
@@ -141,18 +134,6 @@ describe Student do
     it 'does not update in Close when probation not changed' do
       student = FactoryBot.create(:student, email: 'example@example.com')
       expect(CrmUpdateJob).to_not receive(:perform_later)
-      student.update(name: 'foo')
-    end
-
-    it 'does not create task if probation unset' do
-      student = FactoryBot.create(:student, email: 'example@example.com')
-      expect_any_instance_of(CrmLead).to_not receive(:create_task)
-      student.update(probation: false)
-    end
-
-    it 'does not create task when probation not changed' do
-      student = FactoryBot.create(:student, email: 'example@example.com')
-      expect_any_instance_of(CrmLead).to_not receive(:create_task)
       student.update(name: 'foo')
     end
   end
