@@ -91,6 +91,7 @@ VCR.configure do |config|
   config.filter_sensitive_data('<GITHUB_APP_ID>') { ENV['GITHUB_APP_ID'] }
   config.filter_sensitive_data('<GITHUB_INSTALLATION_ID>') { ENV['GITHUB_INSTALLATION_ID'] }
   config.filter_sensitive_data('<GITHUB_CURRICULUM_ORGANIZATION>') { ENV['GITHUB_CURRICULUM_ORGANIZATION'] }
+  config.filter_sensitive_data('<REDIS_PASSWORD>') { ENV['REDIS_PASSWORD'] }
 end
 
 Shoulda::Matchers.configure do |config|
