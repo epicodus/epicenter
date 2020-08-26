@@ -166,13 +166,9 @@ class Course < ApplicationRecord
   end
 
   def set_description
-    if language.name == "Intro" && track.present?
-      self.description = "#{start_date.strftime('%Y-%m')} Intro #{track.languages.find_by(level: 1).name}"
-    elsif language.name == "Internship"
+    if language.name == "Internship"
       tracks = cohorts.map { |cohort| cohort.track.description }.sort.join(", ")
       self.description = "#{start_date.strftime('%Y-%m')} Internship (#{tracks})"
-    elsif language.level == 0 && office.name != "Portland"
-      self.description = "#{start_date.strftime('%Y-%m')} #{language.name} #{office.name.upcase}"
     else
       self.description = "#{start_date.strftime('%Y-%m')} #{language.name}"
     end

@@ -95,18 +95,6 @@ describe Cohort do
       expect(cohort.courses[4].start_date).to eq Date.parse('2017-07-31')
       expect(cohort.courses[4].track).to eq track
     end
-
-    it 'uses existing internship course when creating second cohort for same office & dates' do
-      office = admin.current_course.office
-      admin2 = FactoryBot.create(:admin, current_course: admin.current_course)
-      track2 = FactoryBot.create(:track)
-      cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-13'))
-      cohort2 = Cohort.create(track: track2, admin: admin2, office: office, start_date: Date.parse('2017-03-13'))
-      expect(cohort.courses.count).to eq 5
-      expect(cohort2.courses.count).to eq 5
-      expect(cohort.courses.last).to eq cohort2.courses.last
-      expect(cohort.courses.last.track).to eq nil
-    end
   end
 
   describe '#update_end_date' do

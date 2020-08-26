@@ -125,9 +125,11 @@ feature "viewing transcript & certificate" do
     it 'does not show attendance for students enrolled in only online course' do
       course = FactoryBot.create(:past_course, office: FactoryBot.create(:online_office))
       student = FactoryBot.create(:student, course: course)
-      login_as(student, scope: :student)
-      visit transcript_path
-      expect(page).to_not have_content "Attendance"
+      travel_to course.start_date - 1.week do
+        login_as(student, scope: :student)
+        visit transcript_path
+        expect(page).to_not have_content "Attendance"
+      end
     end
   end
 end

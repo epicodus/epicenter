@@ -479,16 +479,6 @@ describe Course do
       expect(course.description).to eq "#{course.start_date.strftime('%Y-%m')} #{course.language.name}"
     end
 
-    it 'sets description for fulltime intro course to date, language, and level 1 course name' do
-      course = FactoryBot.create(:portland_course, track: FactoryBot.create(:track))
-      expect(course.description).to eq "#{course.start_date.strftime('%Y-%m')} #{course.language.name} #{course.track.languages.find_by(level: 1).name}"
-    end
-
-    it 'sets description for parttime course in location other than portland to date, language, location' do
-      course = FactoryBot.create(:seattle_part_time_course)
-      expect(course.description).to eq "#{course.start_date.strftime('%Y-%m')} #{course.language.name} #{course.office.name.upcase}"
-    end
-
     it 'allows manual setting of description on creation' do
       course = FactoryBot.build(:course)
       course.description = 'an awesome course'
