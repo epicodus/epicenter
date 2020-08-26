@@ -43,22 +43,12 @@ class Cohort < ApplicationRecord
       self.courses << Course.create({ language: track.languages.find_by(level: 1), start_date: skip_holidays(self.courses.last.end_date.next_week), office: office, track: track, admin: admin, start_time: '6:00 PM', end_time: '9:00 PM' })
       self.courses << Course.create({ language: track.languages.find_by(level: 2), start_date: skip_holidays(self.courses.last.end_date.next_week), office: office, track: track, admin: admin, start_time: '6:00 PM', end_time: '9:00 PM' })
     else
-      next_course_start_date = start_date
-      5.times do |level|
-        if level == 4
-          course = Course.find_by({ language: Language.find_by(level: 4), start_date: skip_holidays(next_course_start_date), office: office, start_time: '8:00 AM', end_time: '5:00 PM' })
-          if course
-            course.update(track: nil)
-          else
-            course = Course.create({ language: Language.find_by(level: 4), start_date: skip_holidays(next_course_start_date), office: office, track: track, admin: admin, start_time: '8:00 AM', end_time: '5:00 PM', active: false })
-          end
-        else
-          course = Course.create({ language: track.languages.find_by(level: level), start_date: skip_holidays(next_course_start_date), office: office, track: track, admin: admin, start_time: '8:00 AM', end_time: '5:00 PM' })
-        end
-        next_course_start_date = course.end_date.next_week
-        self.courses << course
-      end
-      internship_course = courses.internship_courses.first
+      self.courses << Course.create({ language: track.languages.find_by(level: 0), start_date: skip_holidays(start_date), office: office, track: track, admin: admin, start_time: '8:00 AM', end_time: '5:00 PM' })
+      self.courses << Course.create({ language: track.languages.find_by(level: 1), start_date: skip_holidays(self.courses.last.end_date.next_week), office: office, track: track, admin: admin, start_time: '8:00 AM', end_time: '5:00 PM' })
+      self.courses << Course.create({ language: track.languages.find_by(level: 2), start_date: skip_holidays(self.courses.last.end_date.next_week), office: office, track: track, admin: admin, start_time: '8:00 AM', end_time: '5:00 PM' })
+      self.courses << Course.create({ language: track.languages.find_by(level: 3), start_date: skip_holidays(self.courses.last.end_date.next_week), office: office, track: track, admin: admin, start_time: '8:00 AM', end_time: '5:00 PM' })
+      self.courses << Course.find_or_create_by({ language: Language.find_by(level: 4), start_date: skip_holidays(self.courses.last.end_date.next_week), office: office, start_time: '8:00 AM', end_time: '5:00 PM', active: false })
+      internship_course = courses.internship_courses.last
       internship_course.set_description
       internship_course.save
     end
