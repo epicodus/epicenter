@@ -57,6 +57,7 @@ private
     can :create, Payment, student_id: user.id, payment_method: { student_id: user.id }
     can :read, Payment, student_id: user.id
     can :manage, Student, id: user.id
+    can :read, Course, id: user.courses.map(&:id)
   end
 
   def set_company_permissions(user)
