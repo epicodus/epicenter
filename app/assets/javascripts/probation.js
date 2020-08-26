@@ -1,6 +1,6 @@
 $(function() {
   $('#student_probation').change(function() {
-    var prompt = this.checked ? 'Are you sure you want to put this student on academic probation?' : 'Remove student from academic probation?'
+    var prompt = this.checked ? 'Are you sure you want to put this student on academic probation?' : 'Remove student from academic probation? Confirm with advisor before doing this!'
     var confirmed = confirm(prompt);
     if (confirmed) {
       this.form.submit();
