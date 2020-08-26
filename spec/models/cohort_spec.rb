@@ -93,7 +93,7 @@ describe Cohort do
       expect(cohort.courses[2].start_date).to eq Date.parse('2017-05-22')
       expect(cohort.courses[3].start_date).to eq Date.parse('2017-06-26')
       expect(cohort.courses[4].start_date).to eq Date.parse('2017-07-31')
-      expect(cohort.courses[4].track).to eq track
+      expect(cohort.courses[4].track).to eq nil
     end
 
     it 'uses existing internship course when creating second cohort for same office & dates' do
