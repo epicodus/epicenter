@@ -1,3 +1,4 @@
+<% content_for :title, 'Peer Evaluations' %>
 <% if @student %>
   <% if current_student %>
     <p><%= link_to 'New peer evaluation', new_student_peer_evaluation_path(@student) %></p><br>

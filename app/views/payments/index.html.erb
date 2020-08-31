@@ -1,6 +1,7 @@
 <% if current_student %>
   <h1>Your payments</h1>
 <% else %>
+  <% content_for :title, @student.name %>
   <%= render 'students/student_header' %>
   <%= render 'students/student_nav' %>
 <% end %>

@@ -1,6 +1,8 @@
 <% if @student %>
+  <% content_for :title, @student.name %>
   <%= render 'students/student_courses' %>
 <% else %>
+  <% content_for :title, 'Courses' %>
   <h1>
     Courses
     <%= link_to 'New', new_course_path %>
