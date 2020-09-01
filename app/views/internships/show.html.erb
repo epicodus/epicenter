@@ -1,3 +1,4 @@
+<% content_for :title, @internship.name %>
 <h1>
   <%= @internship.name %>
   <% if can?(:manage, @internship) %>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Epicenter</title>
+  <title><%= current_admin && content_for?(:title) ? yield(:title) : 'Epicenter' %></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= favicon_link_tag 'favicon.png' %>

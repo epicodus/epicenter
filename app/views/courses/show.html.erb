@@ -1,3 +1,4 @@
+<% content_for :title, @course.description %>
 <h1>
   <%= @course.description_and_office %>
   <% unless current_admin.current_course == @course %>
