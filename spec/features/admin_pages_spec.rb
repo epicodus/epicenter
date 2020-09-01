@@ -283,6 +283,16 @@ feature 'student roster page' do
     expect(page).to have_content student.plan.name
   end
 
+  scenario 'view only students who have payments' do
+    unpaid_student = FactoryBot.create(:student, course: course, name: 'Unpaid student', email: 'unpaid_student@example.com')
+    paid_student = FactoryBot.create(:student_with_upfront_payment, name: 'Paid student', email: 'paid_student@example.com')
+    paid_student.courses = [course]
+    visit course_path(course)
+    click_link 'Paid only'
+    expect(page).to have_content paid_student.name
+    expect(page).to_not have_content unpaid_student.name
+  end
+
   scenario 'allows viewing both attendance and payment plans' do
     student = FactoryBot.create(:student, course: course)
     visit course_path(course)
@@ -300,6 +310,20 @@ feature 'student roster page' do
     expect(page).to have_content '0%'
     expect(page).to have_content student.plan.name
   end
+
+  scenario 'allows viewing attendance and payment plans and paid only' do
+    unpaid_student = FactoryBot.create(:student, course: course, name: 'Unpaid student', email: 'unpaid_student@example.com')
+    paid_student = FactoryBot.create(:student_with_upfront_payment, name: 'Paid student', email: 'paid_student@example.com')
+    paid_student.courses = [course]
+    visit course_path(course)
+    click_link 'View attendance'
+    click_link 'View payment plans'
+    click_link 'Paid only'
+    expect(page).to have_content '0%'
+    expect(page).to have_content paid_student.plan.name
+    expect(page).to_not have_content unpaid_student.name
+  end
+
 end
 
 feature 'exporting course students emails to a file' do
