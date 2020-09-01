@@ -1,5 +1,6 @@
 class Admin < User
   default_scope { order(:name) }
+  scope :teachers, -> { where(teacher: true) }
 
   belongs_to :current_course, class_name: 'Course', optional: true
   has_many :courses
