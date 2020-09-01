@@ -48,6 +48,7 @@ Rails.application.routes.draw do
     resources :ratings, only: [:index]
     resources :peer_evaluations, only: [:index]
     resource :daily_submissions, only: [:show]
+    resource :meeting, only: [:new, :create]
   end
   resources :ratings, only: [:create]
   resources :companies, only: [:show]
@@ -97,7 +98,6 @@ Rails.application.routes.draw do
 
   resources :demographics, only: [:new, :create]
 
-  resource :meeting, only: [:new, :create]
   resources :github_callbacks, only: [:create]
 
   resources :peer_evaluations, only: [:new]
