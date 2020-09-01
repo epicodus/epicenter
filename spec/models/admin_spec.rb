@@ -12,6 +12,14 @@ describe Admin do
     end
   end
 
+  describe '#teachers' do
+    it 'returns all admins with teacher flag' do
+      admin = FactoryBot.create(:admin)
+      teacher = FactoryBot.create(:admin, teacher: true)
+      expect(Admin.teachers).to eq [teacher]
+    end
+  end
+
   describe "abilities" do
     let(:admin) { FactoryBot.create(:admin) }
     subject { Ability.new(admin, "::1") }

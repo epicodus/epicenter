@@ -56,34 +56,6 @@ feature 'Admin signs in' do
   end
 end
 
-feature 'Changing current course for teacher' do
-  let(:teacher) { FactoryBot.create(:teacher) }
-  let(:course) { FactoryBot.create(:course) }
-
-  scenario 'admin selects a new course' do
-    course2 = FactoryBot.create(:internship_course)
-    login_as(teacher, scope: :admin)
-    visit root_path
-    click_link 'Courses'
-    all('a', text: course2.description).last.click
-    expect(page).to have_content "You have switched to #{course2.description}"
-  end
-end
-
-feature 'Does not change current course for non-teacher admin' do
-  let(:admin) { FactoryBot.create(:admin) }
-  let(:course) { FactoryBot.create(:course) }
-
-  scenario 'non-teacher admin views a course' do
-    course2 = FactoryBot.create(:internship_course)
-    login_as(admin, scope: :admin)
-    visit root_path
-    click_link 'Courses'
-    click_link course2.description
-    expect(page).to_not have_content "You have switched to #{course2.description}"
-  end
-end
-
 feature 'Inviting new students', :vcr, :stub_mailgun, :dont_stub_crm do
   let(:cohort) { FactoryBot.create(:intro_only_cohort, start_date: Date.parse('2000-01-03')) }
 
