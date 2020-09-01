@@ -5,7 +5,7 @@ feature 'requesting a meeting' do
     let(:student) { FactoryBot.create(:student, course: course) }
     before do
       login_as(student, scope: :student)
-      visit new_meeting_path
+      visit new_course_meeting_path(course)
     end
 
     it 'shows page to request a meeting' do
@@ -46,9 +46,10 @@ feature 'requesting a meeting' do
 
   context 'visiting as a company' do
     it 'is not authorized' do
+      course = FactoryBot.create(:course)
       company = FactoryBot.create(:company)
       login_as(company, scope: :company)
-      visit new_meeting_path
+      visit new_course_meeting_path(course)
       expect(page).to have_content("not authorized")
     end
   end
