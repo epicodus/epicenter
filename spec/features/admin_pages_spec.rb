@@ -152,6 +152,12 @@ feature 'viewing the student page' do
     visit course_student_path(other_course, student)
     expect(page).to have_content 'not enrolled'
   end
+
+  scenario 'navigating to view course from student page' do
+    visit course_student_path(student.course, student)
+    click_link 'view'
+    expect(current_path).to eq course_path(course)
+  end
 end
 
 feature 'viewing the student courses list' do

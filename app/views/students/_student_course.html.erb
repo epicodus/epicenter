@@ -22,6 +22,7 @@
     <% elsif !@student.courses.include? @course %>
       <strong>(not enrolled)</strong>
     <% end %>
+    <small>(<%= link_to 'view', course_path(@course) %>)</small>
   </h2>
 <% else %>
   <h1><%= @course.description %></h1>

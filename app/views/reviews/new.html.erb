@@ -1,3 +1,4 @@
+<% content_for :title, "#{@submission.student.name} CR" %>
 <% if @submission.review_status == 'pass' %>
   <div class="alert alert-info">
     <h1>This submission has already been marked as passing.</h1>
