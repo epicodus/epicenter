@@ -30,6 +30,6 @@ task :check_crm_epicenter_discrepancies => [:environment] do
 end
 
 def create_task(lead, text)
-  WebhookCreateTask.new({ lead_id: lead['id'], text: text})
+  WebhookCreateTask.new({ lead_id: lead['id'], text: text, auth: ENV['ZAPIER_SECRET_TOKEN']})
   # puts "#{lead['contacts'].first['emails'].first['email']} #{text}"
 end
