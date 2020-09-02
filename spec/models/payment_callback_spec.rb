@@ -7,7 +7,7 @@ describe PaymentCallback do
     expect(payment.reload.qbo_journal_entry_ids).to eq ['42']
   end
 
-  it 'adds multiple doc_numbers to payment', :stripe_mock do
+  it 'adds multiple txnIDs to payment', :stripe_mock do
     payment_callback = PaymentCallback.new({ 'paymentId' => payment.id.to_s, 'txnID' => '1' })
     payment_callback = PaymentCallback.new({ 'paymentId' => payment.id.to_s, 'txnID' => '2' })
     expect(payment.reload.qbo_journal_entry_ids).to eq ['1', '2']
