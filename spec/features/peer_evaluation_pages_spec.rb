@@ -172,6 +172,13 @@ feature 'Visiting the peer evaluations index page' do
         expect(page).to have_content "Interview the candidate using the following criteria."
       end
 
+      scenario 'you can select a student from same course dates at a different office' do
+        course_other_office = FactoryBot.create(:course, class_days: student.course.class_days)
+        student_other_office = FactoryBot.create(:student, course: course_other_office)
+        visit new_student_peer_evaluation_path(student)
+        expect(page).to have_content student_other_office.name
+      end
+
       scenario 'you can submit the form' do
         FactoryBot.create(:peer_question)
         FactoryBot.create(:peer_question_feedback)

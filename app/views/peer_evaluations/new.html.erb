@@ -3,7 +3,7 @@
 
   <div class='form-group'>
     <%= f.label :evaluatee_id, 'Interviewee Name' %>
-    <%= f.select :evaluatee_id, @student.course.students.where.not(id: @student).order(:name).collect {|c| [ c.name, c.id ] }, { prompt: '-- please select --' }, { class: 'form-control', id: 'peer-eval-select-name', required: true } %>
+    <%= f.select :evaluatee_id, @student.course.students_all_locations.where.not(id: @student).order(:name).collect {|c| [ c.name, c.id ] }, { prompt: '-- please select --' }, { class: 'form-control', id: 'peer-eval-select-name', required: true } %>
   </div>
 
   <p>Interview the candidate using the following criteria. Meets expectations:</p>
