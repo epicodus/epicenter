@@ -3,9 +3,8 @@
   <div class="panel-body">
     <p>
       <% unless @course.internship_course? %>
-        <%= link_to 'View attendance', course_path(@course, attendance: true, payment_plans: params[:payment_plans], paid_only: params[:paid_only]), class: 'btn btn-default' unless params[:attendance] %>
-        <%= link_to 'View payment plans', course_path(@course, payment_plans: true, attendance: params[:attendance], paid_only: params[:paid_only]), class: 'btn btn-default' unless params[:payment_plans] %>
-        <%= link_to 'Paid only', course_path(@course, paid_only: true, payment_plans: params[:payment_plans], attendance: params[:attendance]), class: 'btn btn-default' unless params[:paid_only] %>
+        <%= link_to 'View attendance', course_path(@course, attendance: true, payment_plans: params[:payment_plans]), class: 'btn btn-default' unless params[:attendance] %>
+        <%= link_to 'View payment plans', course_path(@course, payment_plans: true, attendance: params[:attendance]), class: 'btn btn-default' unless params[:payment_plans] %>
         <%= link_to 'Export', course_export_path(@course), id: "export-btn", :class => "btn btn-default" %>
       <% end %>
     </p>
@@ -29,11 +28,7 @@
           </tr>
         </thead>
         <tbody id="course-students">
-          <% if params[:paid_only] %>
-            <%= render @students.select { |student| student.payments.any? } %>
-          <% else %>
-            <%= render @students %>
-          <% end %>
+          <%= render @students %>
         </tbody>
       </table>
     </div>
