@@ -3,7 +3,7 @@ task :send_code_review_reminders => [:environment] do
   Course.current_courses.fulltime_courses.non_internship_courses.each do |course|
     local_date = Time.now.in_time_zone(course.office.time_zone).to_date
     if local_date.friday?
-      code_review = course.code_reviews.find_by(date: local_date)
+      code_review = course.code_reviews.find_by(due_date: local_date)
       if code_review
         course.students.each do |student|
           if code_review.submission_for(student).nil?
