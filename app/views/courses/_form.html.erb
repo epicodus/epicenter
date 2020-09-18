@@ -35,13 +35,6 @@
     </div>
   </div>
 
-  <% unless course.persisted? %>
-    <div class="form-group">
-      <%= f.label :importing_course_id, 'Import code reviews from previous course' %>
-      <%= f.collection_select :importing_course_id, Course.all.order(:description).reverse, :id, :teacher_and_description, { :include_blank => "Do not import any code reviews" }, class: 'form-control' %>
-    </div>
-  <% end %>
-
   <div class="form-group">
     <%= f.submit nil, class: "btn btn-info" %>
   </div>

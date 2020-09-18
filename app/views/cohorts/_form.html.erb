@@ -21,6 +21,13 @@
     <%= f.date_field :start_date, value: cohort.start_date, class: 'form-control' %>
   </div>
 
+  <% unless cohort.persisted? %>
+    <div class="form-group">
+      <%= f.label :layout_file_path %>
+      <%= f.text_field :layout_file_path, class: 'form-control', required: true %>
+    </div>
+  <% end %>
+
   <div class="form-group">
     <%= f.submit nil, class: "btn btn-info" %>
   </div>

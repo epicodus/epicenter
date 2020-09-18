@@ -14,13 +14,16 @@ class Course < ApplicationRecord
   scope :available_internship_courses, -> { where(full: nil).or(where(full: false)).order(:description) }
   scope :level, -> (level) { joins(:language).where('level = ?', level) }
 
-
   validates :language_id, :start_date, :end_date, :start_time, :end_time, :office_id, presence: true
-  before_validation :set_class_days, if: ->(course) { course.class_days.empty? && course.start_date }
-  before_validation :set_start_and_end_dates
-  before_create :set_parttime
-  before_create :set_internship_course
-  before_create :set_description, if: ->(course) { course.description.blank? }
+
+  before_validation :set_parttime # no prerequisites
+  before_validation :set_internship_course # no prerequisites
+  before_validation :set_class_days, if: ->(course) { course.class_days.empty? && course.start_date } # only if created via cohort
+  before_validation :set_start_and_end_dates # relies on class_days
+  before_validation :set_description, if: ->(course) { course.description.blank? } # relies on start_date
+  before_create :import_code_reviews_from_layout_file, if: ->(course) { course.layout_file_path.present? } # relies on parttime being set correctly
+
+  after_destroy :reassign_admin_current_courses
 
   belongs_to :admin, optional: true
   belongs_to :office
@@ -37,11 +40,6 @@ class Course < ApplicationRecord
   has_many :internship_assignments
 
   serialize :class_days, Array
-
-  attr_accessor :importing_course_id
-
-  before_create :import_code_reviews
-  after_destroy :reassign_admin_current_courses
 
   def self.courses_for(office)
     includes(:office).where(offices: { name: office.name })
@@ -166,11 +164,11 @@ class Course < ApplicationRecord
   end
 
   def set_description
-    if language.name == "Internship"
+    if language.try(:name) == "Internship"
       tracks = cohorts.map { |cohort| cohort.track.description }.sort.join(", ")
       self.description = "#{start_date.strftime('%Y-%m')} Internship (#{tracks})"
     else
-      self.description = "#{start_date.strftime('%Y-%m')} #{language.name}"
+      self.description = "#{start_date.try('strftime', '%Y-%m')} #{language.try(:name)}"
     end
   end
 
@@ -181,10 +179,41 @@ private
     self.end_date = class_days.sort.last
   end
 
-  def import_code_reviews
-    unless @importing_course_id.blank?
-      self.code_reviews = Course.find(@importing_course_id).deep_clone(include: { code_reviews: :objectives }).code_reviews
+  def import_code_reviews_from_layout_file
+    response = Github.get_content(layout_file_path)
+    if response[:error]
+      errors.add(:base, 'Unable to pull layout file from Github')
+      throw(:abort)
+    else
+      layout_file = response[:content]
+      layout_params = YAML.load(layout_file)
+      if layout_params
+        layout_params.each do |params|
+          title = params[:title]
+          filename = params[:filename]
+          submissions_not_required = params[:submissions_not_required]
+          always_visible = params[:always_visible]
+          objectives = params[:objectives]
+          week = params[:week]
+
+          day = class_weeks[week-1].last
+          if always_visible
+            visible_date = nil
+            due_date = nil
+          elsif parttime?
+            visible_date = day.beginning_of_day + 17.hours
+            due_date = visible_date + 1.week
+          else
+            visible_date = day.beginning_of_day + 8.hours
+            due_date = visible_date + 9.hours
+          end
+
+          cr = code_reviews.new(title: title, github_path: filename, submissions_not_required: submissions_not_required, visible_date: visible_date, due_date: due_date)
+          cr.objectives = objectives.map.with_index(1) {|obj, i| Objective.new(content: obj, number: i)}
+        end
+      end
     end
+
   end
 
   def reassign_admin_current_courses
@@ -192,12 +221,12 @@ private
   end
 
   def set_parttime
-    self.parttime = language.name.downcase.include?('evening') || language.name.downcase.include?('part-time')
+    self.parttime = language.try(:name).try(:downcase).try('include?', 'evening') || language.try(:name).try(:downcase).try('include?', 'part-time')
     true
   end
 
   def set_internship_course
-    self.internship_course = language.name.downcase.include? "internship"
+    self.internship_course = language.try(:name).try(:downcase).try('include?', 'internship')
     true
   end
 
@@ -227,5 +256,9 @@ private
       day = day.next
     end
     self.class_days = class_days
+  end
+
+  def class_weeks
+    class_days.group_by { |day| day - day.wday }.values
   end
 end

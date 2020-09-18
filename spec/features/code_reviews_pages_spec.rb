@@ -290,7 +290,7 @@ feature 'creating a code review' do
     end
 
     scenario 'part-time code review with dates' do
-      course.update(parttime: true)
+      course.update_columns(parttime: true)
       visit new_course_code_review_path(course)
       fill_in 'Title', with: code_review.title
       fill_in 'code_review_objectives_attributes_0_content', with: 'objective'
@@ -391,8 +391,7 @@ feature 'editing a code review' do
       code_review.visible_date = nil
       code_review.due_date = nil
       code_review.save
-      code_review.course.parttime = true
-      code_review.course.save
+      code_review.course.update_columns(parttime: true)
       visit edit_course_code_review_path(code_review.course, code_review)
       fill_in 'Title', with: code_review.title
       fill_in 'code_review_objectives_attributes_0_content', with: 'objective'

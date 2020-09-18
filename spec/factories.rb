@@ -200,6 +200,7 @@ FactoryBot.define do
   factory :cohort do
     description { '2000-01-03 to 2000-07-07 PDX Ruby/Rails' }
     start_date { Date.today.beginning_of_week }
+    layout_file_path { 'example_cohort_layout_path' }
     association :office, factory: :portland_office
     association :track, factory: :track
     association :admin, factory: :admin_without_course
@@ -298,7 +299,6 @@ FactoryBot.define do
       name { 'Intro' }
       level { 0 }
       number_of_days { 24 }
-      number_of_weeks { 5 }
       skip_holiday_weeks { true }
     end
 
@@ -306,7 +306,6 @@ FactoryBot.define do
       name { 'Evening' }
       level { 0 }
       number_of_days { 30 }
-      number_of_weeks { 15 }
       skip_holiday_weeks { true }
       parttime { true }
     end
@@ -343,7 +342,6 @@ FactoryBot.define do
       name { 'Intro (part-time track)' }
       level { 0 }
       number_of_days { 9 }
-      number_of_weeks { 3 }
       skip_holiday_weeks { true }
     end
 
@@ -351,7 +349,6 @@ FactoryBot.define do
       name { 'JavaScript (part-time track)' }
       level { 1 }
       number_of_days { 24 }
-      number_of_weeks { 8 }
       skip_holiday_weeks { true }
     end
 
@@ -359,7 +356,6 @@ FactoryBot.define do
       name { 'React (part-time track)' }
       level { 2 }
       number_of_days { 36 }
-      number_of_weeks { 12 }
       skip_holiday_weeks { true }
     end
   end

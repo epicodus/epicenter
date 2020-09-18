@@ -3,7 +3,7 @@ class CodeReview < ApplicationRecord
 
   validates :title, presence: true
   validates :course, presence: true
-  validate :presence_of_objectives
+  validate :presence_of_objectives, unless: ->(cr) { cr.github_path.present? }
 
   has_many :objectives
   has_many :submissions
@@ -11,7 +11,7 @@ class CodeReview < ApplicationRecord
 
   accepts_nested_attributes_for :objectives, reject_if: :attributes_blank?, allow_destroy: true
 
-  before_validation :update_from_github, if: ->(code_review) { code_review.github_path.present? }
+  before_validation :update_from_github, if: ->(cr) { cr.github_path.present? }
   before_save :regex_survey_input, if: ->(cr) { cr.survey.present? }
   before_create :set_number
   before_destroy :check_for_submissions

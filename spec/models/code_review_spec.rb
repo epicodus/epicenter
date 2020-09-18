@@ -7,9 +7,15 @@ describe CodeReview do
   it { should accept_nested_attributes_for :objectives }
 
   it 'validates presence of at least one objective' do
-    code_review = FactoryBot.build(:code_review)
+    code_review = FactoryBot.build(:code_review, objectives: [])
     code_review.save
     expect(code_review.errors.full_messages.first).to eq 'Objectives must be present.'
+  end
+
+  it 'does not validate presence of objectives if github_path present' do
+    allow(Github).to receive(:get_content).and_return({})
+    code_review = FactoryBot.build(:code_review, objectives: [], github_path:'example.com')
+    expect(code_review.save).to eq true
   end
 
   it 'assigns an order number before creation (defaulted to last)' do
