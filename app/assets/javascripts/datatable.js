@@ -68,4 +68,12 @@ $(function() {
     searching: false,
     order: [[ 5, "desc" ]]
   });
+
+  $('.survey-code-reviews-datatable').DataTable({
+    paging: false,
+    autoWidth: false,
+    searching: false,
+    info: false,
+    order: [[0, "asc"]]
+  });
 });

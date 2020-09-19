@@ -104,6 +104,8 @@ Rails.application.routes.draw do
 
   resource :pair_feedbacks, only: [:new, :create]
 
+  resource :survey, only: [:new, :create]
+
   get 'reports', to: 'reports#index'
   resource :reports, only: [:index] do
     resources :teachers, only: [:index, :show]
