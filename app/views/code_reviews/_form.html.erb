@@ -12,6 +12,13 @@
   </div>
 
   <div class='form-group'>
+    <%= f.label :survey do %>
+      Survey code if any <small><em>(__________.js part only!)</em></small>
+    <% end %>
+    <%= f.text_field :survey, class: "form-control" %>
+  </div>
+
+  <div class='form-group'>
     <%= f.label :submissions_not_required do %>
       Submissions not required
     <% end %>
