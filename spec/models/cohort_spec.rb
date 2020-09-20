@@ -41,13 +41,22 @@ describe Cohort do
     end
   end
 
-  describe 'creating a part-time intro cohort' do
+  describe 'creating a part-time intro cohort from layout file' do
     let(:admin) { FactoryBot.create(:admin) }
     let(:track) { FactoryBot.create(:part_time_track) }
 
-    it 'creates a part-time intro cohort and course' do
+    it 'returns an error when unable to retrieve layout file from Github' do
+      allow(Github).to receive(:get_content).and_return({error: true})
       office = admin.current_course.office
-      cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-14'))
+      cohort = Cohort.new(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-14'), layout_file_path: 'example_cohort_layout_path')
+      expect { cohort.save }.to raise_error UncaughtThrowError
+    end
+
+    it 'creates a part-time intro cohort and course from layout file' do
+      allow(Github).to receive(:get_content).with('example_cohort_layout_path').and_return({:content=>"---\n:track: Part-Time Intro to Programming\n:start_time: 5:30 PM\n:end_time: 8:30 PM\n:course_layout_files:\n- example_course_layout_path\n"})
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n"})
+      office = admin.current_course.office
+      cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-14'), layout_file_path: 'example_cohort_layout_path')
       expect(cohort.description).to eq "2017-03-14 to 2017-06-22 #{office.short_name} Part-Time Intro to Programming"
       expect(cohort.office).to eq office
       expect(cohort.track).to eq track
@@ -58,13 +67,15 @@ describe Cohort do
     end
   end
 
-  describe 'creating a part-time js/react cohort' do
+  describe 'creating a part-time js/react cohort from layout file' do
     let(:admin) { FactoryBot.create(:admin) }
     let(:track) { FactoryBot.create(:part_time_js_react_track) }
 
     it 'creates a part-time js/react cohort and courses' do
+      allow(Github).to receive(:get_content).with('example_cohort_layout_path').and_return({:content=>"---\n:track: Part-Time Intro to Programming\n:start_time: 5:30 PM\n:end_time: 8:30 PM\n:course_layout_files:\n- example_course_layout_path\n- example_course_layout_path\n- example_course_layout_path\n"})
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n"})
       office = admin.current_course.office
-      cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2020-01-07'))
+      cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2020-01-07'), layout_file_path: 'example_cohort_layout_path')
       expect(cohort.description).to eq "2020-01-07 to 2020-06-14 #{office.short_name} Part-Time JS/React"
       expect(cohort.office).to eq office
       expect(cohort.track).to eq track
@@ -75,13 +86,19 @@ describe Cohort do
     end
   end
 
-  describe 'creating a full-time cohort' do
+  describe 'creating a full-time cohort from layout file' do
     let(:admin) { FactoryBot.create(:admin) }
     let(:track) { FactoryBot.create(:track) }
 
+    before do
+      allow(Github).to receive(:get_content).with('example_cohort_layout_path').and_return({:content=>"---\n:track: Part-Time Intro to Programming\n:start_time: 5:30 PM\n:end_time: 8:30 PM\n:course_layout_files:\n- example_course_layout_path\n- example_course_layout_path\n- example_course_layout_path\n- example_course_layout_path\n- example_internship_layout_path\n"})
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n"})
+      allow(Github).to receive(:get_content).with('example_internship_layout_path').and_return({:content=>"---\n"})
+    end
+
     it 'creates a cohort with classes' do
       office = admin.current_course.office
-      cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-13'))
+      cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-13'), layout_file_path: 'example_cohort_layout_path')
       expect(cohort.description).to eq "2017-03-13 to 2017-09-15 #{office.short_name} #{track.description}"
       expect(cohort.office).to eq office
       expect(cohort.track).to eq track
@@ -100,8 +117,8 @@ describe Cohort do
       office = admin.current_course.office
       admin2 = FactoryBot.create(:admin, current_course: admin.current_course)
       track2 = FactoryBot.create(:track)
-      cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-13'))
-      cohort2 = Cohort.create(track: track2, admin: admin2, office: office, start_date: Date.parse('2017-03-13'))
+      cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-13'), layout_file_path: 'example_cohort_layout_path')
+      cohort2 = Cohort.create(track: track2, admin: admin2, office: office, start_date: Date.parse('2017-03-13'), layout_file_path: 'example_cohort_layout_path')
       expect(cohort.courses.count).to eq 5
       expect(cohort2.courses.count).to eq 5
       expect(cohort.courses.last).to eq cohort2.courses.last
@@ -114,20 +131,26 @@ describe Cohort do
     let(:track) { FactoryBot.create(:track) }
     let(:admin) { FactoryBot.create(:admin) }
 
+    before do
+      allow(Github).to receive(:get_content).with('example_cohort_layout_path').and_return({:content=>"---\n:track: Part-Time Intro to Programming\n:start_time: 5:30 PM\n:end_time: 8:30 PM\n:course_layout_files:\n- example_course_layout_path\n"})
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n"})
+      allow(Github).to receive(:get_content).with('example_internship_layout_path').and_return({:content=>"---\n"})
+    end
+
     it 'sets cohort end date when adding courses at same time as cohort creation' do
-      cohort = Cohort.create(start_date: Date.today, office: office, track: track, admin: admin)
+      cohort = Cohort.create(start_date: Date.today, office: office, track: track, admin: admin, layout_file_path: 'example_cohort_layout_path')
       expect(cohort.end_date).to eq cohort.courses.last.end_date
     end
 
     it 'updates cohort end_date when adding more recent course to cohort' do
-      cohort = Cohort.create(start_date: Date.today.beginning_of_week, office: office, track: track, admin: admin)
+      cohort = Cohort.create(start_date: Date.today.beginning_of_week, office: office, track: track, admin: admin, layout_file_path: 'example_cohort_layout_path')
       future_course = FactoryBot.create(:future_course, class_days: [Date.today.monday + 30.weeks])
       cohort.courses << future_course
       expect(cohort.end_date).to eq future_course.end_date
     end
 
     it 'does not update cohort end_date when adding less recent course to cohort' do
-      cohort = Cohort.create(start_date: Date.today, office: office, track: track, admin: admin)
+      cohort = Cohort.create(start_date: Date.today, office: office, track: track, admin: admin, layout_file_path: 'example_cohort_layout_path')
       past_course = FactoryBot.create(:past_course, class_days: [Date.today.monday - 30.weeks])
       cohort.courses << past_course
       expect(cohort.end_date).to eq cohort.courses.order(:end_date).last.end_date
@@ -136,6 +159,12 @@ describe Cohort do
 
   describe 'get_nth_week_of_cohort' do
     let(:cohort) { FactoryBot.create(:cohort, start_date: Date.parse('2018-07-30')) }
+
+    before do
+      allow(Github).to receive(:get_content).with('example_cohort_layout_path').and_return({:content=>"---\n:track: Part-Time Intro to Programming\n:start_time: 5:30 PM\n:end_time: 8:30 PM\n:course_layout_files:\n- example_course_layout_path\n"})
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n"})
+      allow(Github).to receive(:get_content).with('example_internship_layout_path').and_return({:content=>"---\n"})
+    end
 
     it 'ignores single day holidays' do
       expect(cohort.get_nth_week_of_cohort(5)).to eq Date.parse('2018-09-03')

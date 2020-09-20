@@ -1,0 +1,15 @@
+<div class="row">
+  <%= form_tag survey_path do %>
+    <%= render 'layouts/custom_errors', object: @survey %>
+    <div class="well">
+      <div class="form-group">
+        <p>
+          <strong>Survey URL for all code reviews <%= Time.zone.now.beginning_of_week.strftime('%b %-d') %> &ndash; <%= (Time.zone.now.beginning_of_week + 4.days).strftime('%b %-d') %>:</strong><br>
+          <small>(copy/paste embed code from surveymonkey is fine)</small>
+        </p>
+        <%= text_area_tag 'url', nil, rows: 10, autofocus: true, class: 'form-control' %><br>
+        <%= submit_tag "Add survey to this week's code reviews", class: 'btn btn-sm btn-info' %>
+      </div>
+    </div>
+  <% end %>
+</div>

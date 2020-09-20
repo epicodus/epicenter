@@ -29,11 +29,7 @@ class CohortsController < ApplicationController
 
   def update
     @cohort = Cohort.find(params[:id])
-    if params[:add_courses] == "true"
-      @cohort.find_or_create_courses
-      flash[:notice] = "#{@cohort.description} has been updated."
-      redirect_to cohort_path(@cohort)
-    elsif @cohort.update(cohort_params)
+    if @cohort.update(cohort_params)
       flash[:notice] = "#{@cohort.description} has been updated."
       redirect_to cohort_path(@cohort)
     else
@@ -44,6 +40,6 @@ class CohortsController < ApplicationController
 private
 
   def cohort_params
-    params.require(:cohort).permit(:start_date, :office_id, :admin_id, :track_id, :description)
+    params.require(:cohort).permit(:start_date, :office_id, :admin_id, :track_id, :description, :layout_file_path)
   end
 end

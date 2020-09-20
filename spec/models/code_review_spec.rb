@@ -7,9 +7,15 @@ describe CodeReview do
   it { should accept_nested_attributes_for :objectives }
 
   it 'validates presence of at least one objective' do
-    code_review = FactoryBot.build(:code_review)
+    code_review = FactoryBot.build(:code_review, objectives: [])
     code_review.save
     expect(code_review.errors.full_messages.first).to eq 'Objectives must be present.'
+  end
+
+  it 'does not validate presence of objectives if github_path present' do
+    allow(Github).to receive(:get_content).and_return({})
+    code_review = FactoryBot.build(:code_review, objectives: [], github_path:'example.com')
+    expect(code_review.save).to eq true
   end
 
   it 'assigns an order number before creation (defaulted to last)' do
@@ -193,27 +199,6 @@ describe CodeReview do
       travel_to code_review.visible_date.in_time_zone(student.course.office.time_zone).beginning_of_day + 8.hours do
         expect(code_review.visible?(student)).to eq true
       end
-    end
-  end
-
-  describe 'before_save_survey' do
-    it 'saves survey URL correctly when full code pasted in from surveymonkey' do
-      input = '<script>(function(t,e,s,n){var o,a,c;t.SMCX=t.SMCX||[],e.getElementById(n)||(o=e.getElementsByTagName(s),a=o[o.length-1],c=e.createElement(s),c.type="text/javascript",c.async=!0,c.id=n,c.src=["https:"===location.protocol?"https://":"http://","widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgd4JtpE_2BzvN0y_2F5yj2I6l3GecJTVxOlGlsNUZGz_2F9oNyq.js"].join(""),a.parentNode.insertBefore(c,a))})(window,document,"script","smcx-sdk");</script><a style="font: 12px Helvetica, sans-serif; color: #999; text-decoration: none;" href=https://www.surveymonkey.com> Create your own user feedback survey </a>'
-      code_review = FactoryBot.create(:code_review, survey: input)
-      expect(code_review.survey).to eq 'tRaiETqnLgj758hTBazgd4JtpE_2BzvN0y_2F5yj2I6l3GecJTVxOlGlsNUZGz_2F9oNyq.js'
-    end
-
-    it 'saves survey URL correctly when already previously saved' do
-      input = '<script>(function(t,e,s,n){var o,a,c;t.SMCX=t.SMCX||[],e.getElementById(n)||(o=e.getElementsByTagName(s),a=o[o.length-1],c=e.createElement(s),c.type="text/javascript",c.async=!0,c.id=n,c.src=["https:"===location.protocol?"https://":"http://","widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgd4JtpE_2BzvN0y_2F5yj2I6l3GecJTVxOlGlsNUZGz_2F9oNyq.js"].join(""),a.parentNode.insertBefore(c,a))})(window,document,"script","smcx-sdk");</script><a style="font: 12px Helvetica, sans-serif; color: #999; text-decoration: none;" href=https://www.surveymonkey.com> Create your own user feedback survey </a>'
-      code_review = FactoryBot.create(:code_review, survey: input)
-      code_review.save
-      expect(code_review.survey).to eq 'tRaiETqnLgj758hTBazgd4JtpE_2BzvN0y_2F5yj2I6l3GecJTVxOlGlsNUZGz_2F9oNyq.js'
-    end
-
-    it 'saves survey URL as nil when does not include .js' do
-      input = 'bad code'
-      code_review = FactoryBot.create(:code_review, survey: input)
-      expect(code_review.survey).to eq nil
     end
   end
 

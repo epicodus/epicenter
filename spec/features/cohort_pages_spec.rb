@@ -86,12 +86,15 @@ feature 'creating a cohort' do
       expect(page).to have_content "can't be blank"
     end
 
-    scenario 'from scratch' do
+    scenario 'from layout file' do
+      allow(Github).to receive(:get_content).with('example_cohort_layout_path').and_return({:content=>"---\n:track: Part-Time Intro to Programming\n:start_time: 5:30 PM\n:end_time: 8:30 PM\n:course_layout_files:\n- example_course_layout_path\n"})
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n"})
       visit new_cohort_path
       select office.name, from: 'Office'
       select track.description, from: 'Track'
       select admin.name, from: 'Teacher'
       fill_in 'Start Date', with: Date.today
+      fill_in 'Layout file path', with: 'example_cohort_layout_path'
       click_on 'Create Cohort'
       expect(page).to have_content 'Cohort has been created'
       expect(page).to have_content 'Courses'
@@ -135,13 +138,6 @@ feature 'editing a cohort' do
       visit edit_cohort_path(cohort)
       select cohort.track.description, from: 'Track'
       click_on 'Update Cohort'
-      expect(page).to have_content "has been updated"
-      expect(page).to have_content 'Courses'
-    end
-
-    scenario 'auto-adding courses is possible when cohort has track, office, and fewer than 5 courses' do
-      visit edit_cohort_path(cohort)
-      click_on 'auto-add courses'
       expect(page).to have_content "has been updated"
       expect(page).to have_content 'Courses'
     end

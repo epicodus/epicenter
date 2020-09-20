@@ -44,22 +44,6 @@ feature 'creating a course' do
         expect(page).to have_content 'Code reviews'
       end
     end
-
-    scenario 'cloned from another course' do
-      previous_course = FactoryBot.create(:portland_ruby_course)
-      code_review = FactoryBot.create(:code_review, course: previous_course)
-      visit new_course_path
-      select admin.current_course.language.name, from: 'Language'
-      select admin.current_course.office.name, from: 'Office'
-      select admin.name, from: 'Teacher'
-      fill_in 'Start time', with: '8:00 AM'
-      fill_in 'End time', with: '5:00 PM'
-      find('#course_class_days', visible: false).set "2015-09-06,2015-09-07,2015-09-08"
-      select previous_course.description, from: 'Import code reviews from previous course'
-      click_on 'Create Course'
-      expect(page).to have_content 'Course has been created'
-      expect(page).to have_content code_review.title
-    end
   end
 end
 

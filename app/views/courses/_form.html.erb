@@ -26,6 +26,11 @@
     <%= f.text_field :end_time, value: @course.end_time, class: 'timepicker form-control', required: true %>
   </div>
 
+  <div class="form-group">
+    <%= f.label :layout_file_path %>
+    <%= f.text_field :layout_file_path, class: 'form-control' %>
+  </div>
+
   <%= f.hidden_field :active %>
 
   <div class="form-group">
@@ -34,13 +39,6 @@
       <%= f.hidden_field :class_days, value: @course.class_days.join(','), required: true %>
     </div>
   </div>
-
-  <% unless course.persisted? %>
-    <div class="form-group">
-      <%= f.label :importing_course_id, 'Import code reviews from previous course' %>
-      <%= f.collection_select :importing_course_id, Course.all.order(:description).reverse, :id, :teacher_and_description, { :include_blank => "Do not import any code reviews" }, class: 'form-control' %>
-    </div>
-  <% end %>
 
   <div class="form-group">
     <%= f.submit nil, class: "btn btn-info" %>

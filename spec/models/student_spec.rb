@@ -1256,12 +1256,17 @@ end
 
   describe 'enrolled?' do
     it 'reports enrolled with full-time cohort' do
+      allow(Github).to receive(:get_content).with('example_cohort_layout_path').and_return({:content=>"---\n:track: Ruby/React\n:start_time: 5:30 PM\n:end_time: 8:30 PM\n:course_layout_files:\n- example_course_layout_path\n- example_course_layout_path\n- example_course_layout_path\n- example_course_layout_path\n- example_course_layout_path\n"})
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n"})
+      allow(Github).to receive(:get_content).with('example_internship_layout_path').and_return({:content=>"---\n"})
       cohort = FactoryBot.create(:cohort)
       student = FactoryBot.create(:student, courses: cohort.courses)
       expect(student.enrolled?).to eq true
     end
 
     it 'reports enrolled with part-time cohort' do
+      allow(Github).to receive(:get_content).with('example_cohort_layout_path').and_return({:content=>"---\n:track: Part-Time Intro to Programming\n:start_time: 5:30 PM\n:end_time: 8:30 PM\n:course_layout_files:\n- example_course_layout_path\n"})
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n"})
       student = FactoryBot.create(:part_time_student_with_cohort)
       expect(student.enrolled?).to eq true
     end

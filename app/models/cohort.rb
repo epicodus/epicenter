@@ -15,8 +15,10 @@ class Cohort < ApplicationRecord
   belongs_to :track
   belongs_to :admin
 
-  after_create :find_or_create_courses, if: ->(cohort) { cohort.courses.empty? }
+  after_create :create_courses_from_layout_file, if: ->(cohort) { cohort.courses.empty? }
   after_create :set_description, if: ->(cohort) { cohort.description.blank? }
+
+  attr_accessor :layout_file_path
 
   def self.previous_cohorts
     where('end_date < ?', Time.zone.now.to_date).order(:description)
@@ -35,22 +37,27 @@ class Cohort < ApplicationRecord
     where('end_date >= ?', Time.zone.now.to_date)
   end
 
-  def find_or_create_courses
-    if track.description == 'Part-Time Intro to Programming'
-      self.courses << Course.create({ track: track, office: office, admin: admin, language: track.languages.first, start_date: start_date, start_time: '5:30 PM', end_time: '8:30 PM' })
-    elsif track.description == 'Part-Time JS/React'
-      self.courses << Course.create({ language: track.languages.find_by(level: 0), start_date: skip_holidays(start_date), office: office, track: track, admin: admin, start_time: '6:00 PM', end_time: '9:00 PM' })
-      self.courses << Course.create({ language: track.languages.find_by(level: 1), start_date: skip_holidays(self.courses.last.end_date.next_week), office: office, track: track, admin: admin, start_time: '6:00 PM', end_time: '9:00 PM' })
-      self.courses << Course.create({ language: track.languages.find_by(level: 2), start_date: skip_holidays(self.courses.last.end_date.next_week), office: office, track: track, admin: admin, start_time: '6:00 PM', end_time: '9:00 PM' })
+  def create_courses_from_layout_file
+    response = Github.get_content(layout_file_path)
+    if response[:error]
+      errors.add(:base, 'Unable to pull layout file from Github')
+      throw(:abort)
     else
-      self.courses << Course.create({ language: track.languages.find_by(level: 0), start_date: skip_holidays(start_date), office: office, track: track, admin: admin, start_time: '8:00 AM', end_time: '5:00 PM' })
-      self.courses << Course.create({ language: track.languages.find_by(level: 1), start_date: skip_holidays(self.courses.last.end_date.next_week), office: office, track: track, admin: admin, start_time: '8:00 AM', end_time: '5:00 PM' })
-      self.courses << Course.create({ language: track.languages.find_by(level: 2), start_date: skip_holidays(self.courses.last.end_date.next_week), office: office, track: track, admin: admin, start_time: '8:00 AM', end_time: '5:00 PM' })
-      self.courses << Course.create({ language: track.languages.find_by(level: 3), start_date: skip_holidays(self.courses.last.end_date.next_week), office: office, track: track, admin: admin, start_time: '8:00 AM', end_time: '5:00 PM' })
-      self.courses << Course.find_or_create_by({ language: Language.find_by(level: 4), start_date: skip_holidays(self.courses.last.end_date.next_week), office: office, start_time: '8:00 AM', end_time: '5:00 PM', active: false })
-      internship_course = courses.internship_courses.last
-      internship_course.set_description
-      internship_course.save
+      layout_file = response[:content]
+      layout_params = YAML.load(layout_file)
+      start_time = layout_params[:start_time]
+      end_time = layout_params[:end_time]
+      layout_params[:course_layout_files].each_with_index do |course_layout_filename, index|
+        next_course_start_date = skip_holidays(self.courses.last.try(:end_date).try(:next_week) || start_date)
+        if course_layout_filename.include? 'internship'
+          self.courses << Course.find_or_create_by({ office: office, language: Language.find_by(level: 4), start_date: next_course_start_date, start_time: start_time, end_time: end_time, layout_file_path: course_layout_filename, active: false })
+          internship_course = courses.internship_courses.last
+          internship_course.set_description
+          internship_course.save
+        else
+          self.courses << Course.create({ track: track, office: office, admin: admin, language: track.languages.find_by(level: index), start_date: next_course_start_date, start_time: start_time, end_time: end_time, layout_file_path: course_layout_filename })
+        end
+      end
     end
   end
 

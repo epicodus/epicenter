@@ -561,4 +561,89 @@ describe Course do
       end
     end
   end
+
+  describe 'auto-add code reviews based on layout file' do
+    it 'when no code reviews' do
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n"})
+      course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+      expect(course.code_reviews.count).to eq 0
+    end
+
+    it 'for full-time course with 1 code review with 1 objective' do
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1\n"})
+      allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+      course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+      expect(course.code_reviews.count).to eq 1
+      expect(course.code_reviews.first.objectives.count).to eq 1
+      expect(course.code_reviews.first.visible_date).to eq Date.parse('2017-03-31').beginning_of_day + 8.hours
+      expect(course.code_reviews.first.due_date).to eq Date.parse('2017-03-31').beginning_of_day + 17.hours
+    end
+
+    it 'for full-time course with 2 code reviews with 1 and 2 objectives' do
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1\n- :title: Second CR\n  :week: 4\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1 for second cr\n  - Test objective 2 for second cr\n"})
+      allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+      course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+      expect(course.code_reviews.count).to eq 2
+      expect(course.code_reviews.first.objectives.count).to eq 1
+      expect(course.code_reviews.last.objectives.count).to eq 2
+      expect(course.code_reviews.first.visible_date).to eq Date.parse('2017-03-31').beginning_of_day + 8.hours
+      expect(course.code_reviews.first.due_date).to eq Date.parse('2017-03-31').beginning_of_day + 17.hours
+      expect(course.code_reviews.last.visible_date).to eq Date.parse('2017-04-07').beginning_of_day + 8.hours
+      expect(course.code_reviews.last.due_date).to eq Date.parse('2017-04-07').beginning_of_day + 17.hours
+    end
+
+    it 'for part-time course' do
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1\n"})
+      allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+      course = FactoryBot.create(:part_time_course, class_days: [], start_date: Date.parse('2017-03-14'), layout_file_path: 'example_course_layout_path')
+      expect(course.code_reviews.count).to eq 1
+      expect(course.code_reviews.first.objectives.count).to eq 1
+      expect(course.code_reviews.first.visible_date).to eq Date.parse('2017-03-30').beginning_of_day + 17.hours
+      expect(course.code_reviews.first.due_date).to eq Date.parse('2017-04-06').beginning_of_day + 17.hours
+    end
+
+    it 'for code review where submissions not required' do
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: true\n  :always_visible: false\n  :objectives:\n  - Test objective 1\n"})
+      allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+      course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+      expect(course.code_reviews.first.submissions_not_required).to eq true
+    end
+
+    it 'for code review that should always be visible to students' do
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: true\n  :objectives:\n  - Test objective 1\n"})
+      allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+      course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+      expect(course.code_reviews.first.visible_date).to eq nil
+      expect(course.code_reviews.first.due_date).to eq nil
+    end
+
+    it 'adding code reviews to existing course' do
+      course = FactoryBot.create(:course)
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: true\n  :objectives:\n  - Test objective 1\n"})
+      allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+      course.update(layout_file_path: 'example_course_layout_path')
+      expect(course.code_reviews.count).to eq 1
+    end
+
+    it 'adding only additional code reviews to existing course' do
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: true\n  :objectives:\n  - Test objective 1\n"})
+      allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+      course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+      expect(course.code_reviews.count).to eq 1
+      course.update(layout_file_path: nil)
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1\n- :title: Second CR\n  :week: 4\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1 for second cr\n  - Test objective 2 for second cr\n"})
+      course.update(layout_file_path: 'example_course_layout_path')
+      expect(course.code_reviews.count).to eq 2
+    end
+
+    it 'does not add code reviews if layout file path not changed' do
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: true\n  :objectives:\n  - Test objective 1\n"})
+      allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+      course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+      expect(course.code_reviews.count).to eq 1
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1\n- :title: Second CR\n  :week: 4\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1 for second cr\n  - Test objective 2 for second cr\n"})
+      course.update(layout_file_path: 'example_course_layout_path')
+      expect(course.code_reviews.count).to eq 1
+    end
+  end
 end

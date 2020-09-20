@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_02_195928) do
+ActiveRecord::Schema.define(version: 2020_09_09_231808) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(version: 2020_09_02_195928) do
     t.integer "track_id"
     t.boolean "full"
     t.boolean "internship_assignments_visible"
+    t.string "layout_file_path"
     t.index ["start_date"], name: "index_courses_on_start_date"
     t.index ["track_id"], name: "index_courses_on_track_id"
   end
@@ -171,7 +172,6 @@ ActiveRecord::Schema.define(version: 2020_09_02_195928) do
     t.integer "number_of_days"
     t.boolean "skip_holiday_weeks"
     t.boolean "parttime"
-    t.integer "number_of_weeks"
     t.boolean "archived"
   end
 
