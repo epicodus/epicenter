@@ -21,7 +21,7 @@ class Course < ApplicationRecord
   before_validation :set_class_days, if: ->(course) { course.class_days.empty? && course.start_date } # only if created via cohort
   before_validation :set_start_and_end_dates # relies on class_days
   before_validation :set_description, if: ->(course) { course.description.blank? } # relies on start_date
-  before_create :import_code_reviews_from_layout_file, if: ->(course) { course.layout_file_path.present? } # relies on parttime being set correctly
+  before_save :import_code_reviews_from_layout_file, if: ->(course) { course.layout_file_path.present? && course.will_save_change_to_layout_file_path? } # relies on parttime being set correctly
 
   after_destroy :reassign_admin_current_courses
 
@@ -189,27 +189,29 @@ private
       layout_params = YAML.load(layout_file)
       if layout_params
         layout_params.each do |params|
-          title = params[:title]
-          filename = params[:filename]
-          submissions_not_required = params[:submissions_not_required]
-          always_visible = params[:always_visible]
-          objectives = params[:objectives]
-          week = params[:week]
+          unless code_reviews.where(title: params[:title]).any?
+            title = params[:title]
+            filename = params[:filename]
+            submissions_not_required = params[:submissions_not_required]
+            always_visible = params[:always_visible]
+            objectives = params[:objectives]
+            week = params[:week]
 
-          day = class_weeks[week-1].last
-          if always_visible
-            visible_date = nil
-            due_date = nil
-          elsif parttime?
-            visible_date = day.beginning_of_day + 17.hours
-            due_date = visible_date + 1.week
-          else
-            visible_date = day.beginning_of_day + 8.hours
-            due_date = visible_date + 9.hours
+            day = class_weeks[week-1].last
+            if always_visible
+              visible_date = nil
+              due_date = nil
+            elsif parttime?
+              visible_date = day.beginning_of_day + 17.hours
+              due_date = visible_date + 1.week
+            else
+              visible_date = day.beginning_of_day + 8.hours
+              due_date = visible_date + 9.hours
+            end
+
+            cr = code_reviews.new(title: title, github_path: filename, submissions_not_required: submissions_not_required, visible_date: visible_date, due_date: due_date)
+            cr.objectives = objectives.map.with_index(1) {|obj, i| Objective.new(content: obj, number: i)}
           end
-
-          cr = code_reviews.new(title: title, github_path: filename, submissions_not_required: submissions_not_required, visible_date: visible_date, due_date: due_date)
-          cr.objectives = objectives.map.with_index(1) {|obj, i| Objective.new(content: obj, number: i)}
         end
       end
     end

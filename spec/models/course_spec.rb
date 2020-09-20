@@ -616,5 +616,34 @@ describe Course do
       expect(course.code_reviews.first.visible_date).to eq nil
       expect(course.code_reviews.first.due_date).to eq nil
     end
+
+    it 'adding code reviews to existing course' do
+      course = FactoryBot.create(:course)
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: true\n  :objectives:\n  - Test objective 1\n"})
+      allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+      course.update(layout_file_path: 'example_course_layout_path')
+      expect(course.code_reviews.count).to eq 1
+    end
+
+    it 'adding only additional code reviews to existing course' do
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: true\n  :objectives:\n  - Test objective 1\n"})
+      allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+      course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+      expect(course.code_reviews.count).to eq 1
+      course.update(layout_file_path: nil)
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1\n- :title: Second CR\n  :week: 4\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1 for second cr\n  - Test objective 2 for second cr\n"})
+      course.update(layout_file_path: 'example_course_layout_path')
+      expect(course.code_reviews.count).to eq 2
+    end
+
+    it 'does not add code reviews if layout file path not changed' do
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: true\n  :objectives:\n  - Test objective 1\n"})
+      allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+      course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+      expect(course.code_reviews.count).to eq 1
+      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1\n- :title: Second CR\n  :week: 4\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1 for second cr\n  - Test objective 2 for second cr\n"})
+      course.update(layout_file_path: 'example_course_layout_path')
+      expect(course.code_reviews.count).to eq 1
+    end
   end
 end
