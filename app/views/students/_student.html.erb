@@ -1,4 +1,4 @@
-<tr class="<%= 'alert alert-danger' if student.probation %>">
+<tr class="<%= 'alert alert-danger' if student.probation_teacher || student.probation_advisor %>">
   <td><%= link_to student.name, course_student_path(@course, student), class: "unstyled-link" %></td>
   <% unless @course.internship_course? %>
     <% if params[:attendance] == "true" %>

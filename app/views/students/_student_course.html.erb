@@ -6,11 +6,17 @@
   </h1>
   <% if current_admin %>
     <%= form_for @student do |f| %>
-      <div class="<%= @student.probation ? 'alert alert-danger' : '' %>">
-        <p>Academic probation: &nbsp;<%= f.check_box :probation %></p>
+      <div class="<%= @student.probation_teacher ? 'alert alert-danger' : '' %>">
+        <p>Teacher probation: &nbsp;<%= f.check_box :probation_teacher %></p>
       </div>
     <% end %>
-  <% elsif @student.probation %>
+    <%= form_for @student do |f| %>
+      <div class="<%= @student.probation_advisor ? 'alert alert-danger' : '' %>">
+        <p>Student services probation: &nbsp;<%= f.check_box :probation_advisor %></p>
+      </div>
+    <% end %>
+
+  <% elsif @student.probation_teacher || @student.probation_advisor %>
     <div class="alert alert-danger">
       <p>Academic probation</p>
     </div>

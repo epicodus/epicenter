@@ -1,5 +1,5 @@
 <% if current_student %>
-  <% if @student.probation %>
+  <% if @student.probation_teacher || @student.probation_advisor %>
     <div class="alert alert-danger">
       <p>Academic probation</p>
     </div>

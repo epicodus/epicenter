@@ -6,7 +6,8 @@ class Student < User
   before_create :assign_payment_plan
   after_create :update_plan_in_crm, if: ->(student) { student.plan.present? }
   after_update :update_plan_in_crm, if: :saved_change_to_plan_id
-  after_update :update_probation_in_crm, if: :saved_change_to_probation
+  after_update :update_probation_teacher_in_crm, if: :saved_change_to_probation_teacher
+  after_update :update_probation_advisor_in_crm, if: :saved_change_to_probation_advisor
   after_update :update_cohorts_in_crm, if: :cohorts_updated?
   before_destroy :archive_enrollments
 
@@ -461,8 +462,12 @@ private
     crm_lead.update({ Rails.application.config.x.crm_fields['PAYMENT_PLAN'] => plan.try(:close_io_description) })
   end
 
-  def update_probation_in_crm
-    crm_lead.update({ Rails.application.config.x.crm_fields['PROBATION'] => probation ? 'Yes' : nil })
+  def update_probation_teacher_in_crm
+    crm_lead.update({ Rails.application.config.x.crm_fields['PROBATION_TEACHER'] => probation_teacher ? 'Yes' : nil })
+  end
+
+  def update_probation_advisor_in_crm
+    crm_lead.update({ Rails.application.config.x.crm_fields['PROBATION_ADVISOR'] => probation_advisor ? 'Yes' : nil })
   end
 
   def cohorts_updated?
