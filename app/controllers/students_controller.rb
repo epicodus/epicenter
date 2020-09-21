@@ -51,7 +51,7 @@ class StudentsController < ApplicationController
 
 private
   def student_params
-    params.require(:student).permit(:primary_payment_method_id, :course_id, :plan_id, :probation,
+    params.require(:student).permit(:primary_payment_method_id, :course_id, :plan_id, :probation_teacher, :probation_advisor,
                                     ratings_attributes: [:id, :internship_id, :number])
   end
 
@@ -61,18 +61,24 @@ private
       if student_params[:plan_id]
         redirect_to student_payments_path(@student), notice: "Payment plan for #{@student.name} has been updated."
       end
-      if student_params[:probation]
-        if @student.probation
-          redirect_back(fallback_location: student_courses_path(@student), alert: "#{@student.name} has been placed on academic probation!")
+      if student_params[:probation_teacher]
+        if @student.probation_teacher
+          redirect_back(fallback_location: student_courses_path(@student), alert: "#{@student.name} has been placed on teacher probation!")
         else
-          redirect_back(fallback_location: student_courses_path(@student), notice: "#{@student.name} has been removed from academic probation! :)")
+          redirect_back(fallback_location: student_courses_path(@student), notice: "#{@student.name} has been removed from teacher probation! :)")
+        end
+      elsif student_params[:probation_advisor]
+        if @student.probation_advisor
+          redirect_back(fallback_location: student_courses_path(@student), alert: "#{@student.name} has been placed on student services probation!")
+        else
+          redirect_back(fallback_location: student_courses_path(@student), notice: "#{@student.name} has been removed from student services probation! :)")
         end
       end
     else
       if student_params[:plan_id]
         redirect_to student_payments_path(@student), alert: "Payment plan update failed."
       end
-      if student_params[:probation]
+      if student_params[:probation_teacher] || student_params[:probation_advisor]
         redirect_back(fallback_location: student_courses_path(@student), alert: "Probation status update failed.")
       end
     end

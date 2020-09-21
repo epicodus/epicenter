@@ -204,27 +204,50 @@ feature 'setting academic probation', :js do
     login_as(admin, scope: :admin)
   end
 
-  it 'sets academic probation' do
+  it 'sets teacher academic probation' do
     visit student_courses_path(student)
-    find(:css, "#student_probation").set(true)
+    find(:css, "#student_probation_teacher").set(true)
     wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoSuchAlertError
     alert = wait.until { page.driver.browser.switch_to.alert }
     alert.accept
-    expect(page).to have_content "#{student.name} has been placed on academic probation!"
+    expect(page).to have_content "#{student.name} has been placed on teacher probation!"
     student.reload
-    expect(student.probation).to eq true
+    expect(student.probation_teacher).to eq true
   end
 
-  it 'unsets academic probation' do
-    student.update_columns(probation: true)
+  it 'sets advisor academic probation' do
     visit student_courses_path(student)
-    find(:css, "#student_probation").set(false)
+    find(:css, "#student_probation_advisor").set(true)
     wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoSuchAlertError
     alert = wait.until { page.driver.browser.switch_to.alert }
     alert.accept
-    expect(page).to have_content "#{student.name} has been removed from academic probation! :)"
+    expect(page).to have_content "#{student.name} has been placed on student services probation!"
     student.reload
-    expect(student.probation).to eq false
+    expect(student.probation_advisor).to eq true
+  end
+
+  it 'unsets teacher academic probation' do
+    student.update_columns(probation_teacher: true)
+    visit student_courses_path(student)
+    find(:css, "#student_probation_teacher").set(false)
+    wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoSuchAlertError
+    alert = wait.until { page.driver.browser.switch_to.alert }
+    alert.accept
+    expect(page).to have_content "#{student.name} has been removed from teacher probation! :)"
+    student.reload
+    expect(student.probation_teacher).to eq false
+  end
+
+  it 'unsets advisor academic probation' do
+    student.update_columns(probation_advisor: true)
+    visit student_courses_path(student)
+    find(:css, "#student_probation_advisor").set(false)
+    wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoSuchAlertError
+    alert = wait.until { page.driver.browser.switch_to.alert }
+    alert.accept
+    expect(page).to have_content "#{student.name} has been removed from student services probation! :)"
+    student.reload
+    expect(student.probation_advisor).to eq false
   end
 end
 

@@ -119,16 +119,28 @@ describe Student do
       allow(CrmUpdateJob).to receive(:perform_later).and_return({})
     end
 
-    it 'updates in Close when probation set' do
+    it 'updates teacher probation in Close when set' do
       student = FactoryBot.create(:student, email: 'example@example.com')
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PROBATION'] => 'Yes' })
-      student.update(probation: true)
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PROBATION_TEACHER'] => 'Yes' })
+      student.update(probation_teacher: true)
     end
 
-    it 'clears in Close when probation unset' do
+    it 'clears teacher probation in Close when unset' do
       student = FactoryBot.create(:student, email: 'example@example.com')
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PROBATION'] => nil })
-      student.update(probation: false)
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PROBATION_TEACHER'] => nil })
+      student.update(probation_teacher: false)
+    end
+
+    it 'updates advisor probation in Close when set' do
+      student = FactoryBot.create(:student, email: 'example@example.com')
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PROBATION_ADVISOR'] => 'Yes' })
+      student.update(probation_advisor: true)
+    end
+
+    it 'clears advisor probation in Close when unset' do
+      student = FactoryBot.create(:student, email: 'example@example.com')
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PROBATION_ADVISOR'] => nil })
+      student.update(probation_advisor: false)
     end
 
     it 'does not update in Close when probation not changed' do
