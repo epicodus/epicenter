@@ -5,7 +5,42 @@ describe InterviewAssignment do
   it { should validate_presence_of(:student) }
   it { should validate_presence_of(:internship) }
   it { should validate_presence_of(:course) }
-  it { should validate_uniqueness_of(:internship_id).scoped_to(:student_id) }
+  it { should validate_uniqueness_of(:internship_id).scoped_to(:student_id, :course_id) }
+
+  describe 'uniqueness check' do
+    let(:internship) { FactoryBot.create(:internship, name: 'z labs') }
+    let(:internship_2) { FactoryBot.create(:internship, name: 'a labs') }
+    let(:course) { FactoryBot.create(:internship_course) }
+    let(:course_2) { FactoryBot.create(:internship_course) }
+    let(:student) { FactoryBot.create(:student, courses: [course]) }
+    let(:student_2) { FactoryBot.create(:student, courses: [course]) }
+    let!(:interview_assignment) { FactoryBot.create(:interview_assignment, student: student, internship: internship, course: course)}
+
+    it 'allows multiple interview assignments for same internship but different courses' do
+      interview_assignment_2 = InterviewAssignment.new(student: student, internship: internship, course: course_2)
+      expect(interview_assignment_2.save).to eq true
+    end
+
+    it 'allows multiple interview assignments for same course but different internships' do
+      interview_assignment_2 = InterviewAssignment.new(student: student, internship: internship_2, course: course)
+      expect(interview_assignment_2.save).to eq true
+    end
+
+    it 'allows multiple interview assignments for different course and different internships' do
+      interview_assignment_2 = InterviewAssignment.new(student: student, internship: internship_2, course: course_2)
+      expect(interview_assignment_2.save).to eq true
+    end
+
+    it 'allows multiple interview assignments for different student but same course and internship' do
+      interview_assignment_2 = InterviewAssignment.new(student: student_2, internship: internship, course: course)
+      expect(interview_assignment_2.save).to eq true
+    end
+
+    it 'does not allows multiple interview assignments for same course with same internship' do
+      interview_assignment_2 = InterviewAssignment.new(student: student, internship: internship, course: course)
+      expect(interview_assignment_2.save).to eq false
+    end
+  end
 
   describe '#order_by_internship_name' do
     let(:internship) { FactoryBot.create(:internship, name: 'z labs') }
