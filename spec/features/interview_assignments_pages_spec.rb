@@ -33,7 +33,7 @@ feature 'adding an interview assignment' do
     end
 
     scenario 'adding it unsuccessfully' do
-      FactoryBot.create(:interview_assignment, student: student, internship: internship)
+      FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
       select internship.name, from: 'interview_assignment_internship_id'
       click_on 'Add interviews'
       expect(page).to have_content 'Something went wrong'

@@ -6,7 +6,7 @@ class InterviewAssignment < ApplicationRecord
   validates :student, presence: true
   validates :internship, presence: true
   validates :course, presence: true
-  validates :internship_id, uniqueness: { scope: :student_id }
+  validates :internship_id, uniqueness: { scope: [:student_id, :course_id] }
 
   scope :order_by_internship_name, -> { includes(internship: :company).order('internships.name') }
   scope :for_course, ->(course) { where(course_id: course.id) }
