@@ -3,8 +3,9 @@
   <div class="panel-body">
     <p>
       <% unless @course.internship_course? %>
-        <%= link_to 'View attendance', course_path(@course, attendance: true, payment_plans: params[:payment_plans]), class: 'btn btn-default' unless params[:attendance] %>
-        <%= link_to 'View payment plans', course_path(@course, payment_plans: true, attendance: params[:attendance]), class: 'btn btn-default' unless params[:payment_plans] %>
+        <%= link_to 'View attendance', course_path(@course, attendance: true, payment_plans: params[:payment_plans], feedback: params[:feedback]), class: 'btn btn-default' unless params[:attendance] %>
+        <%= link_to 'View payment plans', course_path(@course, payment_plans: true, attendance: params[:attendance], feedback: params[:feedback]), class: 'btn btn-default' unless params[:payment_plans] %>
+        <%= link_to 'View feedback', course_path(@course, feedback: true, attendance: params[:attendance], payment_plans: params[:payment_plans]), class: 'btn btn-default' unless params[:feedback] %>
         <%= link_to 'Export', course_export_path(@course), id: "export-btn", :class => "btn btn-default" %>
       <% end %>
     </p>
@@ -24,6 +25,9 @@
             <% end %>
             <% @course.code_reviews.each do |code_review| %>
               <th><%= code_review.title %></th>
+            <% end %>
+            <% if params[:feedback] == "true" %>
+              <th>Feedback Average</th>
             <% end %>
           </tr>
         </thead>

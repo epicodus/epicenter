@@ -52,4 +52,7 @@
       <% end %>
     </td>
   <% end %>
+  <% if params[:feedback] == "true" %>
+    <td><%= link_to PairFeedback.average(student, @course), student_pair_feedbacks_path(student) %></td>
+  <% end %>
 </tr>
