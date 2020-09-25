@@ -15,4 +15,13 @@ class PairFeedback < ApplicationRecord
   def score
     q1_response + q2_response + q3_response
   end
+
+  def self.average(student, course)
+    evals = student.evaluations_by_pairs.where(created_at: course.start_date.beginning_of_day..course.end_date.end_of_day)
+    if evals.any?
+      evals.map {|eval| eval.score}.sum / evals.count
+    else
+      '-'
+    end
+  end
 end

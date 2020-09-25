@@ -284,6 +284,14 @@ feature 'student roster page' do
     expect(page).to have_content student.plan.name
   end
 
+  scenario 'allows viewing feedback of student' do
+    student = FactoryBot.create(:student, course: course)
+    FactoryBot.create(:pair_feedback, pair: student)
+    visit course_path(course)
+    click_link 'View feedback'
+    expect(page).to have_content 6
+  end
+
   scenario 'allows viewing both attendance and payment plans' do
     student = FactoryBot.create(:student, course: course)
     visit course_path(course)
@@ -299,6 +307,46 @@ feature 'student roster page' do
     click_link 'View payment plans'
     click_link 'View attendance'
     expect(page).to have_content '0%'
+    expect(page).to have_content student.plan.name
+  end
+
+  scenario 'allows viewing both attendance and feedback' do
+    student = FactoryBot.create(:student, course: course)
+    FactoryBot.create(:pair_feedback, pair: student)
+    visit course_path(course)
+    click_link 'View attendance'
+    click_link 'View feedback'
+    expect(page).to have_content '0%'
+    expect(page).to have_content 6
+  end
+
+  scenario 'allows viewing both attendance and feedback (other order)' do
+    student = FactoryBot.create(:student, course: course)
+    FactoryBot.create(:pair_feedback, pair: student)
+    visit course_path(course)
+    click_link 'View feedback'
+    click_link 'View attendance'
+    expect(page).to have_content '0%'
+    expect(page).to have_content 6
+  end
+
+  scenario 'allows viewing both feedback and payment plans' do
+    student = FactoryBot.create(:student, course: course)
+    FactoryBot.create(:pair_feedback, pair: student)
+    visit course_path(course)
+    click_link 'View feedback'
+    click_link 'View payment plans'
+    expect(page).to have_content 6
+    expect(page).to have_content student.plan.name
+  end
+
+  scenario 'allows viewing both feedback and payment plans (other order)' do
+    student = FactoryBot.create(:student, course: course)
+    FactoryBot.create(:pair_feedback, pair: student)
+    visit course_path(course)
+    click_link 'View payment plans'
+    click_link 'View feedback'
+    expect(page).to have_content 6
     expect(page).to have_content student.plan.name
   end
 end
