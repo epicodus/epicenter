@@ -557,7 +557,7 @@ describe Course do
     it '#end_time_today with leeway' do
       course = FactoryBot.create(:portland_course, end_time: '5:00 PM')
       travel_to course.start_date do
-        expect(course.end_time_today(15)).to eq Time.zone.now.beginning_of_day + 17.hours + 15.minutes
+        expect(course.end_time_today(30)).to eq Time.zone.now.beginning_of_day + 17.hours + 30.minutes
       end
     end
   end
