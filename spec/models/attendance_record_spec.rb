@@ -214,8 +214,8 @@ describe AttendanceRecord do
         end
       end
 
-      it 'is true when a student leaves more than 15 minutes after the alloted end time' do
-        travel_to end_time + 16.minutes do
+      it 'is true when a student leaves more than 30 minutes after the alloted end time' do
+        travel_to end_time + 32.minutes do
           late_signer_out_attendance_record = FactoryBot.create(:attendance_record)
           late_signer_out_attendance_record.update({:signing_out => true})
           expect(late_signer_out_attendance_record.left_early).to eq true

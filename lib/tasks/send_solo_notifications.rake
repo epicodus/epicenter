@@ -1,7 +1,7 @@
 desc "notify teacher of full-time students soloing today"
 task :send_solo_notifications => [:environment] do
   Course.current_courses.fulltime_courses.non_internship_courses.where.not(track_id: nil).each do |course|
-    if course.is_class_day? && !Time.zone.now.to_date.friday? && Time.zone.now > (course.start_time_today + 45.minutes) && Time.zone.now < (course.start_time_today + 100.minutes)
+    if course.is_class_day? && !Time.zone.now.to_date.friday? && Time.zone.now > (course.start_time_today + 105.minutes) && Time.zone.now < (course.start_time_today + 160.minutes)
       students = []
       course.students.each do |student|
         students << student if student.signed_in_today? && student.attendance_records.today.first.pair_id.nil?
