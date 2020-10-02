@@ -58,6 +58,40 @@ feature 'Visiting the submissions index page' do
       end
     end
 
+    context 'reassign passing submission to different code review' do
+      scenario 'with non-passing submission' do
+        submission = FactoryBot.create(:submission, code_review: code_review, student: student)
+        visit new_submission_review_path(submission)
+        expect(page).to_not have_content 'Move submission to different course'
+      end
+
+      scenario 'with valid id', :js do
+        internship_course = FactoryBot.create(:internship_course)
+        new_code_review = FactoryBot.create(:code_review, title: code_review.title, course: internship_course)
+        submission = FactoryBot.create(:submission, code_review: code_review, student: student, review_status: 'pass')
+        visit new_submission_review_path(submission)
+        click_on 'move submission'
+        select new_code_review.course_description_and_code_review_title, from: 'submission_code_review_id'
+        click_on 'Move submission to different course'
+        wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoSuchAlertError
+        alert = wait.until { page.driver.browser.switch_to.alert }
+        alert.accept
+        expect(page).to have_content "Submission reassigned to #{new_code_review.course_description_and_code_review_title}"
+        expect(submission.reload.code_review).to eq new_code_review
+      end
+
+      scenario 'with invalid id', :js do
+        submission = FactoryBot.create(:submission, code_review: code_review, student: student, review_status: 'pass')
+        visit new_submission_review_path(submission)
+        click_on 'move submission'
+        click_on 'Move submission to different course'
+        wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoSuchAlertError
+        alert = wait.until { page.driver.browser.switch_to.alert }
+        alert.accept
+        expect(page).to have_content 'Code review ID not found.'
+      end
+    end
+
     context 'within an individual submission' do
       scenario 'shows how long ago the submission was last updated' do
         travel_to 2.days.ago do

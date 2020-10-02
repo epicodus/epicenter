@@ -84,7 +84,12 @@
 </div>
 
 <% if @submission.review_status == 'pass' %>
+  <div id='move-submission-form-box'>
+  </div>
   <div class="alert alert-info">
-    <h1>This submission has already been marked as passing.</h1>
+    <h1>
+      This submission has already been marked as passing.
+      <%= link_to 'move submission', submission_path(@submission), remote: true, class: 'btn btn-xs btn-default', id: 'show-move-submission-form-button' %>
+    </h1>
   </div>
 <% end %>
