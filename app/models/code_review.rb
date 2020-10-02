@@ -82,6 +82,10 @@ class CodeReview < ApplicationRecord
     end
   end
 
+  def course_description_and_code_review_title
+    "#{course.description} - #{course.office.name} - #{title}"
+  end
+
 private
 
   def check_for_submissions

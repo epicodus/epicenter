@@ -48,6 +48,14 @@ describe CodeReview do
     end
   end
 
+  describe '#course_description_and_code_review_title' do
+    it 'returns the course description, office name, code review title' do
+      course = FactoryBot.create(:course)
+      code_review = FactoryBot.create(:code_review, course: course)
+      expect(code_review.course_description_and_code_review_title).to eq "#{course.description} - #{course.office.name} - #{code_review.title}"
+    end
+  end
+
   describe '#submission_for' do
     it 'returns submission of given user for this code_review' do
       student = FactoryBot.create(:student)
