@@ -13,9 +13,6 @@ class Submission < ApplicationRecord
 
   accepts_nested_attributes_for :notes
 
-  before_create :mark_as_needing_review
-  before_save :update_times_submitted
-
   def other_submissions_for_course
     student.submissions.for_course(code_review.course).where.not(id: id)
   end
@@ -47,18 +44,9 @@ class Submission < ApplicationRecord
   def similar_code_reviews
     similar_courses = code_review.course.similar_courses
     code_reviews = similar_courses.map { |course| course.code_reviews}.flatten
-    code_reviews.select { |cr| cr.title.strip == code_review.title.strip }
-  end
-
-private
-
-  def update_times_submitted
-    if needs_review == true
-      times_submitted.nil? ? self.times_submitted = 1 : self.times_submitted += 1
-    end
-  end
-
-  def mark_as_needing_review
-    self.needs_review = true
+    binding.pry
+    # change this to use SQL query rather than ruby, because faster
+    # can just check title rather than using title.strip (and fix any inconsistent titles)
+    CodeReview.where(id: code_reviews.select { |cr| cr.title.strip == code_review.title.strip })
   end
 end

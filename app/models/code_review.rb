@@ -16,6 +16,10 @@ class CodeReview < ApplicationRecord
   before_create :set_number
   before_destroy :check_for_submissions
 
+  def self.without_submission_for(student)
+    CodeReview.select { |cr| !cr.submission_for(student) }
+  end
+
   def total_points_available
     objectives.length * 3
   end

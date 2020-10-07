@@ -30,32 +30,22 @@ class SubmissionsController < ApplicationController
   end
 
   def update
-    binding.pry
-    if submission_params['times_submitted']
-      @submission = Submission.find(params[:id])
-      @submission.update_columns(times_submitted: submission_params[:times_submitted])
-      render 'update_submission_times'
-    elsif submission_params['admin_id']
-      @submission = Submission.find(params[:id])
-      @submission.update_columns(admin_id: submission_params[:admin_id])
-      redirect_to code_review_submissions_path(@submission.code_review)
-    elsif submission_params['code_review_id']
-      @submission = Submission.find(params[:id])
-      if CodeReview.find_by_id(submission_params[:code_review_id])
-        @submission.update_columns(code_review_id: submission_params[:code_review_id])
+    @submission = Submission.find(params[:id])
+    @submission.assign_attributes(submission_params)
+    if @submission.save(touch: false)
+      if submission_params['times_submitted']
+        render 'update_submission_times'
+      elsif submission_params['admin_id']
+        redirect_to code_review_submissions_path(@submission.code_review)
+      elsif submission_params['code_review_id']
         redirect_to new_submission_review_path(@submission), notice: "Submission reassigned to #{@submission.code_review.course_description_and_code_review_title}"
       else
-        redirect_to new_submission_review_path(@submission), alert: "Code review ID #{submission_params[:code_review_id]} not found."
+        redirect_to new_course_meeting_path(@submission.code_review.course), notice: "Submission updated!"
       end
     else
-      @code_review = CodeReview.find(params[:code_review_id])
-      @submission = @code_review.submission_for(current_student)
-      if @submission.update(submission_params)
-        redirect_to new_course_meeting_path(@code_review.course), notice: "Submission updated!"
-      else
-        flash[:alert] = 'There was a problem submitting. Please review the form below.'
-        render 'code_reviews/show'
-      end
+      binding.pry
+      flash[:alert] = 'There was a problem submitting. Please review the form below.'
+      render 'code_reviews/show'
     end
   end
 

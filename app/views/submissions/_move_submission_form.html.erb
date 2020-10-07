@@ -2,7 +2,7 @@
   <%= form_for [submission.code_review, submission] do |f| %>
     <%= render 'layouts/errors', object: submission %>
     <div class="form-group">
-      <%= f.collection_select :code_review_id, submission.similar_code_reviews.reverse, :id, :course_description_and_code_review_title, {include_blank: 'Select to move submission', selected: 'Select if you want to move submission'}, { class: 'form-control' } %>
+      <%= f.collection_select :code_review_id, submission.similar_code_reviews.without_submission_for(submission.student).reverse, :id, :course_description_and_code_review_title, {include_blank: 'Select to move submission', selected: 'Select if you want to move submission'}, { class: 'form-control' } %>
     </div>
     <div class="form-group">
       <%= f.submit 'Move submission to different course', data: { confirm: "Are you REALLY sure you want to move this student's submission to a different code review in a different course?" }, class: "btn btn-xs btn-primary" %>

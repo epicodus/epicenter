@@ -61,6 +61,16 @@ describe CodeReview do
     end
   end
 
+  describe '.without_submission_for' do
+    it 'returns code reviews without submissions for given student' do
+      code_review = FactoryBot.create(:code_review)
+      code_review_2 = FactoryBot.create(:code_review)
+      submission = FactoryBot.create(:submission, code_review: code_review)
+      submission_other_student = FactoryBot.create(:submission, code_review: code_review)
+      expect(CodeReview.without_submission_for(submission.student)).to eq [code_review_2]
+    end
+  end
+
   describe '#submission_for' do
     it 'returns submission of given user for this code_review' do
       student = FactoryBot.create(:student)

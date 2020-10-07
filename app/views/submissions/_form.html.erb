@@ -3,6 +3,7 @@
   <%= f.hidden_field :needs_review, value: true %>
   <%= f.hidden_field :review_status, value: 'pending' %>
   <%= f.hidden_field :student_id, value: current_student.try(:id) %>
+  <%= f.hidden_field :times_submitted, value: @submission.times_submitted? ? @submission.times_submitted + 1 : 1 %>
 
   <div class="form-group">
     <%= f.label :link, 'Submission link' %>
