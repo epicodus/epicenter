@@ -66,7 +66,7 @@ feature 'Visiting the submissions index page' do
       end
 
       scenario 'with valid id', :js do
-        internship_course = FactoryBot.create(:internship_course)
+        internship_course = FactoryBot.create(:internship_course, language: student.course.language)
         new_code_review = FactoryBot.create(:code_review, title: code_review.title, course: internship_course)
         submission = FactoryBot.create(:submission, code_review: code_review, student: student, review_status: 'pass')
         visit new_submission_review_path(submission)

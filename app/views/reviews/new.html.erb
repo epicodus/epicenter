@@ -89,7 +89,7 @@
   <div class="alert alert-info">
     <h1>
       This submission has already been marked as passing.
-      <%= link_to 'move submission', submission_path(@submission), remote: true, class: 'btn btn-xs btn-default', id: 'show-move-submission-form-button' %>
+      <%= link_to 'move submission', edit_submission_path(@submission), remote: true, class: 'btn btn-xs btn-default', id: 'show-move-submission-form-button' %>
     </h1>
   </div>
 <% end %>

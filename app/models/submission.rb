@@ -44,6 +44,12 @@ class Submission < ApplicationRecord
     latest_review.try(:meets_expectations?)
   end
 
+  def similar_code_reviews
+    similar_courses = code_review.course.similar_courses
+    code_reviews = similar_courses.map { |course| course.code_reviews}.flatten
+    code_reviews.select { |cr| cr.title.strip == code_review.title.strip }
+  end
+
 private
 
   def update_times_submitted

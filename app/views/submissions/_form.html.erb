@@ -1,7 +1,8 @@
 <%= form_for [@code_review, @submission] do |f| %>
   <%= render 'layouts/errors', object: @submission %>
   <%= f.hidden_field :needs_review, value: true %>
-  <%= f.hidden_field :student_id, value: current_student.id if current_student %>
+  <%= f.hidden_field :review_status, value: 'pending' %>
+  <%= f.hidden_field :student_id, value: current_student.try(:id) %>
 
   <div class="form-group">
     <%= f.label :link, 'Submission link' %>

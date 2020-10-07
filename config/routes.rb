@@ -61,7 +61,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :submissions, only: [:show] do
+  resources :submissions, only: [:edit] do
     resources :reviews, only: [:new, :create, :update]
   end
 

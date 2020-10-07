@@ -172,6 +172,10 @@ class Course < ApplicationRecord
     end
   end
 
+  def similar_courses
+    Course.where(language: language).where.not(id: id)
+  end
+
 private
 
   def set_start_and_end_dates

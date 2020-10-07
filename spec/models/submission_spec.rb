@@ -180,4 +180,15 @@ describe Submission do
       expect(Submission.for_course(course_2)).to eq [submission_2]
     end
   end
+
+  describe '#similar_code_reviews' do
+    it 'returns other code reviews with same title' do
+      course_1 = FactoryBot.create(:course)
+      course_2 = FactoryBot.create(:course, language: course_1.language)
+      code_review_1 = FactoryBot.create(:code_review, course: course_1)
+      code_review_2 = FactoryBot.create(:code_review, course: course_2, title: code_review_1.title)
+      submission = FactoryBot.create(:submission, code_review: code_review_1)
+      expect(submission.similar_code_reviews).to eq [code_review_2]
+    end
+  end
 end

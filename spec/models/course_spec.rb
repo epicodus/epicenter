@@ -416,6 +416,17 @@ describe Course do
     end
   end
 
+  describe '#similar_courses' do
+    it 'returns other courses with same language' do
+      intro_language = FactoryBot.create(:intro_language)
+      internship_language = FactoryBot.create(:internship_language)
+      intro_course = FactoryBot.create(:course, language: intro_language)
+      internship_course = FactoryBot.create(:internship_course, language: internship_language)
+      internship_course_2 = FactoryBot.create(:internship_course, language: internship_language)
+      expect(internship_course.similar_courses).to eq [internship_course_2]
+    end
+  end
+
   describe '#total_internship_students_requested' do
     it 'returns the total number of students requested for an internship course' do
       internship_course = FactoryBot.create(:internship_course)

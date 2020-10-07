@@ -1,14 +1,6 @@
 class SubmissionsController < ApplicationController
   authorize_resource
 
-  def show #show form to move submission to different code review
-    @submission = Submission.find(params[:id])
-    @similar_code_reviews = Course.internship_courses.current_and_future_courses.map {|course| course.code_reviews}.flatten.select {|cr| cr.title.strip == @submission.code_review.title.strip}
-    respond_to do |format|
-      format.js { render 'show_move_submission_form' }
-    end
-  end
-
   def index
     @code_review = CodeReview.find(params[:code_review_id])
     @submissions = @code_review.submissions.needing_review.includes(:student)
@@ -30,7 +22,15 @@ class SubmissionsController < ApplicationController
     end
   end
 
+  def edit #show form to move submission to different code review
+    @submission = Submission.find(params[:id])
+    respond_to do |format|
+      format.js { render 'show_move_submission_form' }
+    end
+  end
+
   def update
+    binding.pry
     if submission_params['times_submitted']
       @submission = Submission.find(params[:id])
       @submission.update_columns(times_submitted: submission_params[:times_submitted])
@@ -62,6 +62,6 @@ class SubmissionsController < ApplicationController
 private
 
   def submission_params
-    params.require(:submission).permit(:link, :needs_review, :student_id, :times_submitted, :admin_id, :code_review_id, notes_attributes: [:id, :content]).merge(review_status: 'pending')
+    params.require(:submission).permit(:link, :needs_review, :review_status, :student_id, :times_submitted, :admin_id, :code_review_id, notes_attributes: [:id, :content])
   end
 end
