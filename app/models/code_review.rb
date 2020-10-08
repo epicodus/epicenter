@@ -12,6 +12,7 @@ class CodeReview < ApplicationRecord
   accepts_nested_attributes_for :objectives, reject_if: :attributes_blank?, allow_destroy: true
 
   before_validation :update_from_github, if: ->(cr) { cr.github_path.present? }
+  before_create :normalize_title
   before_create :set_number
   before_destroy :check_for_submissions
 
@@ -113,5 +114,9 @@ private
     else
       self.content = response[:content]
     end
+  end
+
+  def normalize_title
+    self.title = title.strip
   end
 end

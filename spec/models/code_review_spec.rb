@@ -18,6 +18,11 @@ describe CodeReview do
     expect(code_review.save).to eq true
   end
 
+  it 'normalizes title before saving' do
+    code_review = FactoryBot.create(:code_review, title: 'test title ')
+    expect(code_review.title).to eq 'test title'
+  end
+
   it 'assigns an order number before creation (defaulted to last)' do
     code_review = FactoryBot.create(:code_review)
     next_code_review = FactoryBot.create(:code_review, course: code_review.course)
