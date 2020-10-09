@@ -275,6 +275,9 @@ feature 'student roster page' do
     click_link 'View attendance'
     expect(page).to have_content '0%'
     expect(page).to have_content '0'
+    expect(page).to have_content 'Attendance'
+    expect(page).to have_content 'Course absences'
+    expect(page).to have_content 'Overall absences'
   end
 
   scenario 'allows viewing payment plans' do

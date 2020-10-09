@@ -915,6 +915,45 @@ end
         expect(student.absences(course)).to eq 0
       end
     end
+
+    it "calculates the number of absences overall with more than one course and perfect attendance" do
+      student.course.update(class_days: [course.start_date])
+      course_2 = FactoryBot.create(:future_course)
+      course_2.update(class_days: [course_2.start_date])
+      student.courses << course_2
+      FactoryBot.create(:attendance_record, student: student, date: course.start_date, tardy: false, left_early: false)
+      FactoryBot.create(:attendance_record, student: student, date: course_2.start_date, tardy: false, left_early: false)
+      expect(student.absences_overall).to eq 0
+    end
+
+    it "calculates the number of absences overall with more than one course and tardy" do
+      student.course.update(class_days: [course.start_date])
+      course_2 = FactoryBot.create(:future_course)
+      course_2.update(class_days: [course_2.start_date])
+      student.courses << course_2
+      FactoryBot.create(:attendance_record, student: student, date: course.start_date, tardy: true, left_early: false)
+      FactoryBot.create(:attendance_record, student: student, date: course_2.start_date, tardy: true, left_early: false)
+      expect(student.absences_overall).to eq 1
+    end
+
+    it "calculates the number of absences overall with more than one course and left early" do
+      student.course.update(class_days: [course.start_date])
+      course_2 = FactoryBot.create(:future_course)
+      course_2.update(class_days: [course_2.start_date])
+      student.courses << course_2
+      FactoryBot.create(:attendance_record, student: student, date: course.start_date, tardy: false, left_early: true)
+      FactoryBot.create(:attendance_record, student: student, date: course_2.start_date, tardy: false, left_early: true)
+      expect(student.absences_overall).to eq 1
+    end
+
+    it "calculates the number of absences overall with more than one course and 1 absence" do
+      student.course.update(class_days: [course.start_date])
+      course_2 = FactoryBot.create(:future_course)
+      course_2.update(class_days: [course_2.start_date])
+      student.courses << course_2
+      FactoryBot.create(:attendance_record, student: student, date: course.start_date, tardy: false, left_early: false)
+      expect(student.absences_overall).to eq 1
+    end
   end
 
   describe '#solos' do
