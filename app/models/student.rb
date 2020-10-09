@@ -91,6 +91,13 @@ class Student < User
     absences_penalty + tardies_penalty + left_earlies_penalty
   end
 
+  def absences_overall
+    absences_penalty = attendance_records_for(:absent)
+    tardies_penalty = attendance_records_for(:tardy) * TARDY_WEIGHT
+    left_earlies_penalty = attendance_records_for(:left_early) * TARDY_WEIGHT
+    absences_penalty + tardies_penalty + left_earlies_penalty
+  end
+
   def solos(filtered_course = nil)
     if filtered_course
       attendance_records.where(pair_id: nil, ignore: nil).where("date between ? and ?", filtered_course.try(:start_date), filtered_course.try(:end_date)).select { |ar| !ar.date.friday? }.count
