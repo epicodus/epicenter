@@ -11,9 +11,8 @@ class AttendanceSignInRemoteController < ApplicationController
 
   def create
     record = AttendanceRecord.find_or_initialize_by(student: current_student, date: Time.zone.now.in_time_zone(current_student.course.office.time_zone).to_date)
-    params[:pair2_id] = nil if params[:pair_id].blank? || params[:pair2_id] == params[:pair_id]
-    record.pair_id = params[:pair_id]
-    record.pair2_id = params[:pair2_id]
+    pair_ids = params[:pair_ids].uniq.reject {|p| p.empty?}
+    record.pair_ids = pair_ids
     if record.save
       redirect_back(fallback_location: root_path)
     else

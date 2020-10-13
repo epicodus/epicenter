@@ -13,12 +13,17 @@
     <%= f.select :status, options_for_select(["On time", "Tardy", "Left early", "Tardy and Left early", "Absent"], @attendance_record_amendment.status), {}, { class: "form-control" } %>
   </div>
   <div class="form-group">
-    <%= f.label :pair_id %>
-    <%= f.select :pair_id, @course.students_all_locations.all.order(:name).collect {|c| [ c.name, c.id ] }, {include_blank: "Solo"}, { class: 'form-control' } %>
+    <%= f.label :pair_ids, 'Pairs' %>
+    <%= select_tag "attendance_record_amendment[pair_ids][]", options_for_select(@course.students_all_locations.where.not(id: @attendance_record_amendment.student_id).order(:name).map {|s| [s.name, s.id]}.prepend(['-Solo-', '']), selected: @attendance_record_amendment.pair_ids.try(:first)), { class: 'form-control', id: 'pair-select-1' } %>
   </div>
   <div class="form-group">
-    <%= f.label :pair2_id %>
-    <%= f.select :pair2_id, @course.students_all_locations.all.order(:name).collect {|c| [ c.name, c.id ] }, {include_blank: "None"}, { class: 'form-control' } %>
+    <%= select_tag "attendance_record_amendment[pair_ids][]", options_for_select(@course.students_all_locations.where.not(id: @attendance_record_amendment.student_id).order(:name).map {|s| [s.name, s.id]}.prepend(['-', '']), selected: @attendance_record_amendment.pair_ids.try(:second)), { class: 'form-control', id: 'pair-select-2' } %>
+  </div>
+  <div class="form-group hide">
+    <%= select_tag "attendance_record_amendment[pair_ids][]", options_for_select(@course.students_all_locations.where.not(id: @attendance_record_amendment.student_id).order(:name).map {|s| [s.name, s.id]}.prepend(['-', '']), selected: @attendance_record_amendment.pair_ids.try(:third)), { class: 'form-control', id: 'pair-select-3' } %>
+  </div>
+  <div class="form-group hide">
+    <%= select_tag "attendance_record_amendment[pair_ids][]", options_for_select(@course.students_all_locations.where.not(id: @attendance_record_amendment.student_id).order(:name).map {|s| [s.name, s.id]}.prepend(['-', '']), selected: @attendance_record_amendment.pair_ids.try(:fourth)), { class: 'form-control', id: 'pair-select-4' } %>
   </div>
   <%= f.submit "Submit", class: 'btn btn-info' %>
 <% end %>

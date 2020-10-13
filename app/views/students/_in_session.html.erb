@@ -8,10 +8,8 @@
           Signed out: <%= current_student.attendance_records.today.first.signed_out_time.strftime('%l:%M %p') %><br>
         <% else %>
           <%= link_to 'Sign out', sign_out_path, id: 'attendance-sign-out-link' %><br>
-          <% if current_student.pair_on_day(Time.zone.now.to_date) && current_student.pair2_on_day(Time.zone.now.to_date) %>
-            You are signed in with <%= current_student.pair_on_day(Time.zone.now.to_date).name %> and <%= current_student.pair2_on_day(Time.zone.now.to_date).name %>. [<%= link_to 'change pair', sign_in_path, remote: true, id: 'attendance-change-pair-link' %>]
-          <% elsif current_student.pair_on_day(Time.zone.now.to_date) %>
-            You are signed in with <%= current_student.pair_on_day(Time.zone.now.to_date).name %>. [<%= link_to 'change pair', sign_in_path, remote: true, id: 'attendance-change-pair-link' %>]
+          <% if current_student.pairs_on_day(Time.zone.now.to_date).any? %>
+            You are signed in with <%= current_student.pairs_on_day(Time.zone.now.to_date).map {|s| s.name}.join(' & ') %>. [<%= link_to 'change pair', sign_in_path, remote: true, id: 'attendance-change-pair-link' %>]
           <% else %>
             <strong class='text-primary'>You are signed in without a pair!</strong> Click <%= link_to 'here', sign_in_path, remote: true, id: 'attendance-change-pair-link' %> to log your pair.
           <% end %>

@@ -1,16 +1,16 @@
 feature "remote attendance" do
-  let(:student) { FactoryBot.create(:portland_student_with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
+  let(:student) { FactoryBot.create(:portland_student_with_all_documents_signed) }
 
   before { login_as(student, scope: :student) }
 
   describe 'sign in', :js do
-    let!(:pair) { FactoryBot.create(:portland_student_with_all_documents_signed, courses: [student.course], password: 'password2', password_confirmation: 'password2') }
+    let!(:pair) { FactoryBot.create(:portland_student_with_all_documents_signed, courses: [student.course]) }
 
     it 'allows sign in solo' do
       travel_to student.course.start_date.beginning_of_day + 8.hours do
         visit root_path
         click_link 'attendance-sign-in-link'
-        select 'Solo', from: 'peer-eval-select-name'
+        select 'Solo', from: 'pair-select-1'
         click_button 'Sign in'
         expect(page).to have_content 'You are signed in without a pair'
       end
@@ -20,7 +20,7 @@ feature "remote attendance" do
       travel_to student.course.start_date.beginning_of_day + 8.hours do
         visit root_path
         click_link 'attendance-sign-in-link'
-        select pair.name, from: 'peer-eval-select-name'
+        select pair.name, from: 'pair-select-1'
         click_button 'Sign in'
         expect(page).to have_content 'You are signed in with ' + pair.name
       end
@@ -31,33 +31,72 @@ feature "remote attendance" do
       travel_to student.course.start_date.beginning_of_day + 8.hours do
         visit root_path
         click_link 'attendance-sign-in-link'
-        select pair.name, from: 'peer-eval-select-name'
-        select pair2.name, from: 'peer-eval-select-name-2'
+        select pair.name, from: 'pair-select-1'
+        select pair2.name, from: 'pair-select-2'
         click_button 'Sign in'
-        expect(page).to have_content "You are signed in with #{pair.name} and #{pair2.name}"
+        expect(page).to have_content "You are signed in with" #{pair.name} & #{pair2.name}"
+        expect(page).to have_content pair.name
+        expect(page).to have_content pair2.name
       end
     end
+
+    # it 'allows sign in with group of 4' do
+    #   pair2 = FactoryBot.create(:student)
+    #   pair3 = FactoryBot.create(:student)
+    #   travel_to student.course.start_date.beginning_of_day + 8.hours do
+    #     visit root_path
+    #     click_link 'attendance-sign-in-link'
+    #     select pair.name, from: 'pair-select-1'
+    #     select pair2.name, from: 'pair-select-2'
+    #     select pair3.name, from: 'pair-select-3'
+    #     click_button 'Sign in'
+    #     expect(page).to have_content "You are signed in with"
+    #     expect(page).to have_content pair.name
+    #     expect(page).to have_content pair2.name
+    #     expect(page).to have_content pair3.name
+    #   end
+    # end
+    #
+    # it 'allows sign in with group of 5' do
+    #   pair2 = FactoryBot.create(:student)
+    #   pair3 = FactoryBot.create(:student)
+    #   pair4 = FactoryBot.create(:student)
+    #   travel_to student.course.start_date.beginning_of_day + 8.hours do
+    #     visit root_path
+    #     click_link 'attendance-sign-in-link'
+    #     select pair.name, from: 'pair-select-1'
+    #     select pair2.name, from: 'pair-select-2'
+    #     select pair3.name, from: 'pair-select-3'
+    #     select pair4.name, from: 'pair-select-4'
+    #     click_button 'Sign in'
+    #     expect(page).to have_content "You are signed in with"
+    #     expect(page).to have_content pair.name
+    #     expect(page).to have_content pair2.name
+    #     expect(page).to have_content pair3.name
+    #     expect(page).to have_content pair4.name
+    #   end
+    # end
 
     it 'removes 2nd pair if same as 1st pair' do
       travel_to student.course.start_date.beginning_of_day + 8.hours do
         visit root_path
         click_link 'attendance-sign-in-link'
-        select pair.name, from: 'peer-eval-select-name'
-        select pair.name, from: 'peer-eval-select-name-2'
+        select pair.name, from: 'pair-select-1'
+        select pair.name, from: 'pair-select-2'
         click_button 'Sign in'
         expect(page).to have_content "You are signed in with #{pair.name}"
-        expect(page).to_not have_content "You are signed in with #{pair.name} and #{pair.name}"
+        expect(page).to_not have_content "You are signed in with #{pair.name} & #{pair.name}"
       end
     end
 
-    it 'removes 2nd pair if 1st pair field blank' do
+    it 'assigns 2nd pair if 1st pair field blank' do
       travel_to student.course.start_date.beginning_of_day + 8.hours do
         visit root_path
         click_link 'attendance-sign-in-link'
-        select 'Solo', from: 'peer-eval-select-name'
-        select pair.name, from: 'peer-eval-select-name-2'
+        select 'Solo', from: 'pair-select-1'
+        select pair.name, from: 'pair-select-2'
         click_button 'Sign in'
-        expect(page).to have_content "You are signed in without a pair"
+        expect(page).to have_content "You are signed in with #{pair.name}"
       end
     end
 
@@ -65,11 +104,11 @@ feature "remote attendance" do
       travel_to student.course.start_date.beginning_of_day + 8.hours do
         visit root_path
         click_link 'attendance-sign-in-link'
-        select 'Solo', from: 'peer-eval-select-name'
+        select 'Solo', from: 'pair-select-1'
         click_button 'Sign in'
         expect(page).to have_content 'You are signed in without a pair'
         expect(student.attendance_records.any?).to eq true
-        expect(student.attendance_records.today.first.pair_id).to eq nil
+        expect(student.attendance_records.today.first.pair_ids).to eq []
       end
     end
 
@@ -77,11 +116,11 @@ feature "remote attendance" do
       travel_to student.course.start_date.beginning_of_day + 8.hours do
         visit root_path
         click_link 'attendance-sign-in-link'
-        select pair.name, from: 'peer-eval-select-name'
+        select pair.name, from: 'pair-select-1'
         click_button 'Sign in'
         expect(page).to have_content 'You are signed in with ' + pair.name
         expect(student.attendance_records.any?).to eq true
-        expect(student.attendance_records.today.first.pair_id).to eq pair.id
+        expect(student.attendance_records.today.first.pair_ids).to eq [pair.id]
       end
     end
 
@@ -90,13 +129,14 @@ feature "remote attendance" do
       travel_to student.course.start_date.beginning_of_day + 8.hours do
         visit root_path
         click_link 'attendance-sign-in-link'
-        select pair.name, from: 'peer-eval-select-name'
-        select pair2.name, from: 'peer-eval-select-name-2'
+        select pair.name, from: 'pair-select-1'
+        select pair2.name, from: 'pair-select-2'
         click_button 'Sign in'
-        expect(page).to have_content "You are signed in with #{pair.name} and #{pair2.name}"
+        expect(page).to have_content "You are signed in with"
+        expect(page).to have_content pair.name
+        expect(page).to have_content pair2.name
         expect(student.attendance_records.any?).to eq true
-        expect(student.attendance_records.today.first.pair_id).to eq pair.id
-        expect(student.attendance_records.today.first.pair2_id).to eq pair2.id
+        expect(student.attendance_records.today.first.pair_ids).to eq [pair.id, pair2.id]
       end
     end
 
@@ -121,7 +161,7 @@ feature "remote attendance" do
         FactoryBot.create(:attendance_record, student: student)
         visit root_path
         click_link 'attendance-change-pair-link'
-        select pair.name, from: 'peer-eval-select-name'
+        select pair.name, from: 'pair-select-1'
         click_button 'Change pair'
         expect(page).to have_content 'You are signed in with ' + pair.name
       end
@@ -129,10 +169,10 @@ feature "remote attendance" do
 
     it 'allows changing from one pair to another' do
       travel_to student.course.start_date.beginning_of_day + 8.hours do
-        FactoryBot.create(:attendance_record, student: student, pair: FactoryBot.create(:student))
+        FactoryBot.create(:attendance_record, student: student, pair_ids: [FactoryBot.create(:student).id])
         visit root_path
         click_link 'attendance-change-pair-link'
-        select pair.name, from: 'peer-eval-select-name'
+        select pair.name, from: 'pair-select-1'
         click_button 'Change pair'
         expect(page).to have_content 'You are signed in with ' + pair.name
       end
@@ -141,13 +181,15 @@ feature "remote attendance" do
     it 'allows changing from one pair to group of 3' do
       pair2 = FactoryBot.create(:student)
       travel_to student.course.start_date.beginning_of_day + 8.hours do
-        FactoryBot.create(:attendance_record, student: student, pair: FactoryBot.create(:student))
+        FactoryBot.create(:attendance_record, student: student, pair_ids: [FactoryBot.create(:student).id])
         visit root_path
         click_link 'attendance-change-pair-link'
-        select pair.name, from: 'peer-eval-select-name'
-        select pair2.name, from: 'peer-eval-select-name-2'
+        select pair.name, from: 'pair-select-1'
+        select pair2.name, from: 'pair-select-2'
         click_button 'Change pair'
-        expect(page).to have_content "You are signed in with #{pair.name} and #{pair2.name}"
+        expect(page).to have_content "You are signed in with"
+        expect(page).to have_content pair.name
+        expect(page).to have_content pair2.name
       end
     end
 

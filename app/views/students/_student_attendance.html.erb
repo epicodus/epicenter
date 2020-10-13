@@ -42,10 +42,8 @@
                 <td>
                   <% if day.friday? || @student.attendance_record_on_day(day) == nil %>
                     -
-                  <% elsif @student.pair2_on_day(day) %>
-                    <%= @student.pair_on_day(day).name %>, <%= @student.pair2_on_day(day).name %>
-                  <% elsif @student.pair_on_day(day) %>
-                    <%= @student.pair_on_day(day).name %>
+                  <% elsif @student.pairs_on_day(day).any? %>
+                    <%= @student.pairs_on_day(day).map {|s| s.name}.join(', ') %>
                   <% else %>
                     Solo
                   <% end %>
