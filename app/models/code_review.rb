@@ -20,12 +20,12 @@ class CodeReview < ApplicationRecord
     objectives.length * 3
   end
 
-  def submission_for(student)
-    submissions.find_by(student: student)
+  def latest_submission_for(student)
+    submissions.where(student: student).last
   end
 
   def expectations_met_by?(student)
-    submission_for(student).try(:meets_expectations?)
+    latest_submission_for(student).try(:meets_expectations?)
   end
 
   def latest_total_score_for(student)

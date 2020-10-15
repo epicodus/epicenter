@@ -19,7 +19,6 @@ describe Submission do
     end
 
     subject { FactoryBot.build(:submission) }
-    it { should validate_uniqueness_of(:student_id).scoped_to(:code_review_id) }
 
     it 'is invalid if link is not a valid url' do
       submission = FactoryBot.build(:submission, link: 'github.com', code_review: regular_code_review)

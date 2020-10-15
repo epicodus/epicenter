@@ -53,16 +53,17 @@ describe CodeReview do
     end
   end
 
-  describe '#submission_for' do
-    it 'returns submission of given user for this code_review' do
+  describe '#latest_submission_for' do
+    it 'returns latest submission of given user for this code_review' do
       student = FactoryBot.create(:student)
       code_review = FactoryBot.create(:code_review)
       submission = FactoryBot.create(:submission, student: student, code_review: code_review)
-      expect(code_review.submission_for(student)).to eq submission
+      later_submission = FactoryBot.create(:submission, student: student, code_review: code_review)
+      expect(code_review.latest_submission_for(student)).to eq later_submission
     end
   end
 
-  describe '#exepectations_met_by?' do
+  describe '#expectations_met_by?' do
     let(:code_review) { FactoryBot.create(:code_review) }
     let(:student) { FactoryBot.create(:student) }
 

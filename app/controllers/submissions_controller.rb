@@ -9,7 +9,7 @@ class SubmissionsController < ApplicationController
   def create
     @code_review = CodeReview.find(params[:code_review_id])
     student = Student.find(submission_params[:student_id])
-    @submission = @code_review.submission_for(student) || @code_review.submissions.new(submission_params)
+    @submission = @code_review.submissions.new(submission_params)
     if @submission.save
       if @code_review.submissions_not_required? && current_admin
         redirect_to new_submission_review_path(@submission)
@@ -23,11 +23,7 @@ class SubmissionsController < ApplicationController
   end
 
   def update
-    if submission_params['times_submitted']
-      @submission = Submission.find(params[:id])
-      @submission.update_columns(times_submitted: submission_params[:times_submitted])
-      render 'update_submission_times'
-    elsif submission_params['admin_id']
+    if submission_params['admin_id']
       @submission = Submission.find(params[:id])
       @submission.update_columns(admin_id: submission_params[:admin_id])
       redirect_to code_review_submissions_path(@submission.code_review)
