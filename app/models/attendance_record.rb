@@ -11,8 +11,6 @@ class AttendanceRecord < ApplicationRecord
   before_update :sign_out, if: :signing_out
 
   belongs_to :student
-  belongs_to :pair, class_name: 'Student', optional: true
-  belongs_to :pair2, class_name: 'Student', optional: true
 
   def self.todays_totals_for(course, status)
     student_ids = course.students(&:id)

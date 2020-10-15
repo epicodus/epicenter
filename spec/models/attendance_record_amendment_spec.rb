@@ -76,9 +76,9 @@ describe AttendanceRecordAmendment do
     it 'updates the pair_id to solo' do
       travel_to student.course.start_date do
         FactoryBot.create(:attendance_record, student: student, date: Time.zone.now.to_date, tardy: true)
-        attendance_record_amendment = AttendanceRecordAmendment.new(student_id: student.id, date: Time.zone.now.to_date, status: 'On time', pair_id: nil)
+        attendance_record_amendment = AttendanceRecordAmendment.new(student_id: student.id, date: Time.zone.now.to_date, status: 'On time', pair_ids: [])
         attendance_record_amendment.save
-        expect(AttendanceRecord.last.pair_id).to eq nil
+        expect(AttendanceRecord.last.pair_ids).to eq []
       end
     end
 
@@ -86,9 +86,9 @@ describe AttendanceRecordAmendment do
       travel_to student.course.start_date do
         pair = FactoryBot.create(:student)
         FactoryBot.create(:attendance_record, student: student, date: Time.zone.now.to_date, tardy: true)
-        attendance_record_amendment = AttendanceRecordAmendment.new(student_id: student.id, date: Time.zone.now.to_date, status: 'On time', pair_id: pair.id)
+        attendance_record_amendment = AttendanceRecordAmendment.new(student_id: student.id, date: Time.zone.now.to_date, status: 'On time', pair_ids: [pair.id])
         attendance_record_amendment.save
-        expect(AttendanceRecord.last.pair_id).to eq pair.id
+        expect(AttendanceRecord.last.pair_ids).to eq [pair.id]
       end
     end
 

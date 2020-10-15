@@ -236,41 +236,26 @@ describe Student do
     end
   end
 
-  describe "#pair_on_day" do
+  describe "#pairs_on_day" do
     let(:course) { FactoryBot.create(:course) }
     let(:student_1) { FactoryBot.create(:student, course: course) }
     let(:student_2) { FactoryBot.create(:student, course: course) }
 
     it "returns the pair partner" do
-      attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair_id: student_2.id, date: student_1.course.start_date)
-      expect(student_1.pair_on_day(attendance_record.date)).to eq student_2
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair_ids: [student_2.id], date: student_1.course.start_date)
+      expect(student_1.pairs_on_day(attendance_record.date)).to eq [student_2]
     end
 
-    it "returns nil if a student has no pair for the day" do
+    it "returns empty array if a student has no pair for the day" do
       attendance_record_1 = FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date)
-      expect(student_1.pair_on_day(attendance_record_1.date)).to eq nil
-    end
-  end
-
-  describe "#pair2_on_day" do
-    let(:course) { FactoryBot.create(:course) }
-    let(:student_1) { FactoryBot.create(:student, course: course) }
-    let(:student_2) { FactoryBot.create(:student, course: course) }
-
-    it "returns the pair2 partner" do
-      attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair2_id: student_2.id, date: student_1.course.start_date)
-      expect(student_1.pair2_on_day(attendance_record.date)).to eq student_2
+      expect(student_1.pairs_on_day(attendance_record_1.date)).to eq []
     end
 
-    it "returns nil if a student has no pair2 for the day" do
-      attendance_record_1 = FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date)
-      expect(student_1.pair2_on_day(attendance_record_1.date)).to eq nil
+    it "returns two pairs if present" do
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair_ids: [student_1.id, student_2.id], date: student_1.course.start_date)
+      expect(student_1.pairs_on_day(attendance_record.date)).to eq [student_1, student_2]
     end
 
-    it "returns nil if a student has pair but no pair2 for the day" do
-      attendance_record_1 = FactoryBot.create(:attendance_record, student: student_1, pair_id: student_2.id, date: student_1.course.start_date)
-      expect(student_1.pair2_on_day(attendance_record_1.date)).to eq nil
-    end
   end
 
   describe "#attendance_record_on_day" do
@@ -330,12 +315,12 @@ describe Student do
     let(:student_2) { FactoryBot.create(:student, course: course) }
 
     it "returns list of all pair ids" do
-      attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair_id: student_2.id, date: student_1.course.start_date)
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair_ids: [student_2.id], date: student_1.course.start_date)
       expect(student_1.pairs).to eq [student_2.id]
     end
 
     it "returns list of all pair ids for a given course time period" do
-      attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair_id: student_2.id, date: student_1.course.start_date)
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair_ids: [student_2.id], date: student_1.course.start_date)
       expect(student_1.pairs(student_1.course)).to eq [student_2.id]
     end
   end
@@ -972,7 +957,7 @@ end
 
     it "calculates the number of solos when some" do
       travel_to course.start_date do
-        FactoryBot.create(:attendance_record, student: student, pair_id: 1)
+        FactoryBot.create(:attendance_record, student: student, pair_ids: [1])
       end
       travel_to course.start_date + 2.days do
         FactoryBot.create(:attendance_record, student: student)

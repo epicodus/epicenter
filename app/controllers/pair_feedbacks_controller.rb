@@ -8,19 +8,13 @@ class PairFeedbacksController < ApplicationController
 
   def new
     @student = current_student
-    attendance_record = AttendanceRecord.find_by(date: Time.zone.now.to_date, student: @student)
+    authorize! :read, @student
+    today = Time.zone.now.to_date
+    attendance_record = AttendanceRecord.find_by(date: today, student: @student)
     if attendance_record
-      pair1 = @student.pair_on_day(Time.zone.now.to_date)
-      pair2 = @student.pair2_on_day(Time.zone.now.to_date)
-      if pair2 && !PairFeedback.find_by(student: @student, pair: pair2)
-        @pair = pair2
-        @sign_out_button_text = 'Continue to next pair feedback'
-      else
-        @pair = pair1
-        @sign_out_button_text = 'Attendance sign out'
-      end
+      pairs = @student.pairs_on_day(today)
+      @pairs_without_feedback = pairs.select { |pair| !PairFeedback.where(created_at: today.all_day).find_by(student: @student, pair: pair)}
       @pair_feedback = PairFeedback.new
-      authorize! :read, @student
     else
       redirect_back(fallback_location: root_path, alert: "You haven't signed in yet today.")
     end
@@ -28,17 +22,19 @@ class PairFeedbacksController < ApplicationController
 
   def create
     @student = current_student
-    if @student.pair_on_day(Time.zone.now.to_date)
+    today = Time.zone.now.to_date
+    if @student.pairs_on_day(today).any?
       @pair_feedback = PairFeedback.new(pair_feedback_params)
+      pairs = @student.pairs_on_day(today)
       if @pair_feedback.save
-        pair1 = @student.pair_on_day(Time.zone.now.to_date)
-        if !PairFeedback.find_by(student: @student, pair: pair1)
+        @pairs_without_feedback = pairs.select { |pair| !PairFeedback.where(created_at: today.all_day).find_by(student: @student, pair: pair)}
+        if @pairs_without_feedback.any?
           redirect_to sign_out_path
         else
           sign_out_student
         end
       else
-        @pair = Student.find(pair_feedback_params[:pair_id])
+        @pairs_without_feedback = pairs.select { |pair| !PairFeedback.where(created_at: today.all_day).find_by(student: @student, pair: pair)}
         render :new
       end
     else

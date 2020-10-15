@@ -55,10 +55,8 @@
               <td>
                 <% if @day.friday? || student.attendance_record_on_day(@day) == nil %>
                   -
-                <% elsif student.pair2_on_day(@day) %>
-                  <%= student.pair_on_day(@day).name %>, <%= student.pair2_on_day(@day).name %>
-                <% elsif student.pair_on_day(@day) %>
-                  <%= student.pair_on_day(@day).name %>
+                <% elsif student.pairs_on_day(@day).any? %>
+                  <%= student.pairs_on_day(@day).map {|s| s.name}.join(', ') %>
                 <% else %>
                   Solo
                 <% end %>
@@ -68,8 +66,9 @@
                   <%= f.select :status, options_for_select(["On time", "Tardy", "Left early", "Tardy and Left early", "Absent"], student.attendance_record_on_day(@day).try(:status) || 'Absent'), {}, {class: 'attendance-adjust', id: student.id} %>
                   <%= f.hidden_field :student_id, value: student.id %>
                   <%= f.hidden_field :date, value: @day %>
-                  <%= f.hidden_field :pair_id, value: student.pair_on_day(@day).try(:id) %>
-                  <%= f.hidden_field :pair2_id, value: student.pair2_on_day(@day).try(:id) %>
+                  <% student.pairs_on_day(@day).each do |pair| %>
+                    <%= hidden_field_tag "attendance_record_amendment[pair_ids][]", pair.id %>
+                  <% end %>
                 <% end %>
               </td>
               <td class="edit-attendance">

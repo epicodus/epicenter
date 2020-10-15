@@ -36,7 +36,7 @@ feature "creating an attendance record amendment" do
       select student.name, from: "attendance_record_amendment_student_id"
       fill_in "attendance_record_amendment_date", with: student.course.start_date.strftime("%F")
       select "On time", from: "attendance_record_amendment_status"
-      select "Solo", from: "Pair"
+      select "Solo", from: "pair-select-1"
       click_button "Submit"
       attendance_record = AttendanceRecord.last
       expect(page).to have_content "The attendance record for #{student.name} on #{attendance_record.date.to_date.strftime('%A, %B %d, %Y')} has been amended to"
@@ -49,7 +49,7 @@ feature "creating an attendance record amendment" do
       select student.name, from: "attendance_record_amendment_student_id"
       fill_in "attendance_record_amendment_date", with: student.course.start_date.strftime("%F")
       select "On time", from: "attendance_record_amendment_status"
-      select pair.name, from: "Pair"
+      select pair.name, from: "pair-select-1"
       click_button "Submit"
       attendance_record = AttendanceRecord.last
       expect(page).to have_content "The attendance record for #{student.name} on #{attendance_record.date.to_date.strftime('%A, %B %d, %Y')} has been amended to"
@@ -63,15 +63,14 @@ feature "creating an attendance record amendment" do
       select student.name, from: "attendance_record_amendment_student_id"
       fill_in "attendance_record_amendment_date", with: student.course.start_date.strftime("%F")
       select "On time", from: "attendance_record_amendment_status"
-      select pair.name, from: "Pair"
-      select pair2.name, from: "Pair2"
+      select pair.name, from: "pair-select-1"
+      select pair2.name, from: "pair-select-2"
       click_button "Submit"
       attendance_record = AttendanceRecord.last
       expect(page).to have_content "The attendance record for #{student.name} on #{attendance_record.date.to_date.strftime('%A, %B %d, %Y')} has been amended to"
       expect(page).to have_content pair.name
       expect(page).to have_content pair2.name
-      expect(attendance_record.pair).to eq pair
-      expect(attendance_record.pair2).to eq pair2
+      expect(attendance_record.pair_ids).to eq [pair.id, pair2.id]
     end
 
     scenario "adjusting existing attendance record pair only" do
@@ -79,7 +78,7 @@ feature "creating an attendance record amendment" do
       attendance_record = FactoryBot.create(:attendance_record, student: student, date: student.course.start_date, tardy: true)
       visit student_attendance_records_path(student)
       all('.edit-attendance').last.click_link('Edit')
-      select pair.name, from: "Pair"
+      select pair.name, from: "pair-select-1"
       click_button "Submit"
       expect(page).to have_content "The attendance record for #{student.name} on #{attendance_record.date.to_date.strftime('%A, %B %d, %Y')} has been amended to #{attendance_record.status}"
       expect(page).to have_content pair.name
@@ -165,11 +164,11 @@ feature "creating an attendance record amendment from the day attendance page", 
 
     scenario "does not change pair" do
       student2 = FactoryBot.create(:student)
-      FactoryBot.create(:attendance_record, student: student, date: student.course.start_date, tardy: true, pair_id: student2.id)
+      FactoryBot.create(:attendance_record, student: student, date: student.course.start_date, tardy: true, pair_ids: [student2.id])
       visit course_day_attendance_records_path(student.course, day: student.course.start_date)
       select "On time", from: student.id.to_s
       wait_for_ajax
-      expect(student.attendance_record_on_day(student.course.start_date).pair_id).to eq student2.id
+      expect(student.attendance_record_on_day(student.course.start_date).pair_ids).to eq [student2.id]
       expect(page).to have_css('.label-success', text: 'On time')
       expect(page).to have_content student2.name
     end

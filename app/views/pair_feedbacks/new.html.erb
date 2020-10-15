@@ -6,15 +6,15 @@
   </div>
 <% end %>
 
-<% if @student.pair_on_day(Time.zone.now.in_time_zone(@student.course.office.time_zone)) %>
+<% if @pairs_without_feedback.any? %>
   <h2>Attendance sign out + pair feedback</h2>
   <p>Only Epicodus staff will see your pair feedback, and it will never be shared directly with the person you are giving feedback about. If (and only if) a student's pairs consistently share challenges working with that person, we will share the aggregate, common themes of the feedback with the student - never any individual feedback or anything that could be tied to the person giving the feedback.</p><br>
   <div class='alert alert-info'>
-    <p><strong>Pair feedback for <%= @pair.name %></strong></p>
+    <p><strong>Pair feedback for <%= @pairs_without_feedback.first.name %></strong></p>
   </div>
   <%= form_with model: [@pair_feedback] do |f| %>
     <%= render 'layouts/errors', object: @pair_feedback %>
-    <%= f.hidden_field :pair_id, value: @pair.id %>
+    <%= f.hidden_field :pair_id, value: @pairs_without_feedback.first.id %>
     <div class="form-group">
       <%= f.label :q1_response, "1. My pair worked with me throughout the day:", class: 'lead' %><br>
       <%= f.collection_radio_buttons :q1_response, PairFeedback::Q1_OPTIONS.map.with_index(1) {|opt, index| [opt, 6-index]}, :last, :first do |b| %>
@@ -51,7 +51,7 @@
     </div>
     <br>
     <div class="form-group">
-      <%= f.submit @sign_out_button_text, class: 'btn btn-primary' %>
+      <%= f.submit @pairs_without_feedback.count > 1 ? 'Continue to next pair feedback' : 'Attendance sign out', class: 'btn btn-primary' %>
     </div>
   <% end %>
 <% else %>

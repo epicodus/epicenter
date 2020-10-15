@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_07_235101) do
+ActiveRecord::Schema.define(version: 2020_10_09_223001) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,10 +23,9 @@ ActiveRecord::Schema.define(version: 2020_10_07_235101) do
     t.date "date"
     t.boolean "left_early"
     t.datetime "signed_out_time"
-    t.integer "pair_id"
     t.string "station"
     t.boolean "ignore"
-    t.integer "pair2_id"
+    t.integer "pair_ids", default: [], array: true
     t.index ["created_at"], name: "index_attendance_records_on_created_at"
     t.index ["student_id"], name: "index_attendance_records_on_student_id"
     t.index ["tardy"], name: "index_attendance_records_on_tardy"

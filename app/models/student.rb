@@ -100,9 +100,9 @@ class Student < User
 
   def solos(filtered_course = nil)
     if filtered_course
-      attendance_records.where(pair_id: nil, ignore: nil).where("date between ? and ?", filtered_course.try(:start_date), filtered_course.try(:end_date)).select { |ar| !ar.date.friday? }.count
+      attendance_records.where(pair_ids: [], ignore: nil).where("date between ? and ?", filtered_course.try(:start_date), filtered_course.try(:end_date)).select { |ar| !ar.date.friday? }.count
     else
-      attendance_records.where(pair_id: nil, ignore: nil).select { |ar| !ar.date.friday? }.count
+      attendance_records.where(pair_ids: [], ignore: nil).select { |ar| !ar.date.friday? }.count
     end
   end
 
@@ -156,12 +156,8 @@ class Student < User
     submissions.find { |submission| submission.code_review_id == code_review.id }
   end
 
-  def pair_on_day(day)
-    Student.find_by(id: attendance_record_on_day(day).try(:pair_id)) # using find_by so that nil is returned instead of raising exception if there is no pair
-  end
-
-  def pair2_on_day(day)
-    Student.find_by(id: attendance_record_on_day(day).try(:pair2_id)) # using find_by so that nil is returned instead of raising exception if there is no pair
+  def pairs_on_day(day)
+    Student.where(id: attendance_record_on_day(day).try(:pair_ids))
   end
 
   def attendance_record_on_day(day)
@@ -179,7 +175,7 @@ class Student < User
 
   def pairs(course=nil)
     selected_attendance_records = course ? attendance_records.where("date between ? and ?", course.try(:start_date), course.try(:end_date)) : attendance_records
-    (selected_attendance_records.map {|s| s.pair_id} + selected_attendance_records.map {|s| s.pair2_id}).compact.sort
+    (selected_attendance_records.map {|s| s.pair_ids}.flatten).compact.sort
   end
 
   def latest_total_grade_score
