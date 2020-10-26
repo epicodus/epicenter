@@ -172,9 +172,11 @@ describe CodeReview do
     it 'sets visible date and due date when duplicating a part-time code review with a date' do
       course = FactoryBot.create(:part_time_course)
       code_review = FactoryBot.create(:code_review)
-      copy_code_review = code_review.duplicate_code_review(course)
-      expect(copy_code_review.visible_date).to eq DateTime.current.beginning_of_week + 3.days + 17.hours
-      expect(copy_code_review.due_date).to eq DateTime.current.beginning_of_week + 10.days + 17.hours
+      travel_to Date.parse('2021-01-04') do
+        copy_code_review = code_review.duplicate_code_review(course)
+        expect(copy_code_review.visible_date).to eq DateTime.current.beginning_of_week + 3.days + 17.hours
+        expect(copy_code_review.due_date).to eq DateTime.current.beginning_of_week + 10.days + 17.hours
+      end
     end
   end
 

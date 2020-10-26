@@ -164,7 +164,7 @@ describe AttendanceRecord do
 
       context 'on Sunday' do
         it 'is true if checks in after the start of class' do
-          travel_to start_time.beginning_of_week + 6.days + 9.hours + 30.minutes do
+          travel_to start_time.beginning_of_week + 6.days + 10.hours + 30.minutes do
             tardy_attendance_record = FactoryBot.create(:attendance_record, student: student)
             expect(tardy_attendance_record.tardy).to eq true
           end
@@ -275,7 +275,7 @@ describe AttendanceRecord do
           travel_to end_time.beginning_of_week + 6.days + 9.hours do
             FactoryBot.create(:attendance_record, student: student)
           end
-          travel_to end_time.beginning_of_week + 6.days + 15.hours + 1.minute do
+          travel_to end_time.beginning_of_week + 6.days + 16.hours + 1.minute do
             AttendanceRecord.last.update({:signing_out => true})
             expect(AttendanceRecord.last.left_early).to eq false
           end

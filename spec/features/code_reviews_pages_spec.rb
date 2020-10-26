@@ -291,12 +291,14 @@ feature 'creating a code review' do
 
     scenario 'part-time code review with dates' do
       course.update_columns(parttime: true)
-      visit new_course_code_review_path(course)
-      fill_in 'Title', with: code_review.title
-      fill_in 'code_review_objectives_attributes_0_content', with: 'objective'
-      click_button 'Create Code review'
-      expect(CodeReview.first.visible_date).to_not eq nil
-      expect(CodeReview.first.due_date).to eq CodeReview.first.visible_date + 1.week
+      travel_to Date.parse('2021-01-04') do
+        visit new_course_code_review_path(course)
+        fill_in 'Title', with: code_review.title
+        fill_in 'code_review_objectives_attributes_0_content', with: 'objective'
+        click_button 'Create Code review'
+        expect(CodeReview.first.visible_date).to_not eq nil
+        expect(CodeReview.first.due_date).to eq CodeReview.first.visible_date + 1.week
+      end
     end
 
     scenario 'always visible' do
@@ -380,11 +382,13 @@ feature 'editing a code review' do
       code_review.visible_date = nil
       code_review.due_date = nil
       code_review.save
-      visit edit_course_code_review_path(code_review.course, code_review)
-      find('#always_visible').set false
-      click_button 'Update Code review'
-      expect(CodeReview.first.visible_date).to_not eq nil
-      expect(CodeReview.first.due_date).to eq CodeReview.first.visible_date + 9.hours
+      travel_to Date.parse('2021-01-04') do
+        visit edit_course_code_review_path(code_review.course, code_review)
+        find('#always_visible').set false
+        click_button 'Update Code review'
+        expect(CodeReview.first.visible_date).to_not eq nil
+        expect(CodeReview.first.due_date).to eq CodeReview.first.visible_date + 9.hours
+      end
     end
 
     scenario 'part-time code review with dates' do
@@ -392,13 +396,15 @@ feature 'editing a code review' do
       code_review.due_date = nil
       code_review.save
       code_review.course.update_columns(parttime: true)
-      visit edit_course_code_review_path(code_review.course, code_review)
-      fill_in 'Title', with: code_review.title
-      fill_in 'code_review_objectives_attributes_0_content', with: 'objective'
-      find('#always_visible').set false
-      click_button 'Update Code review'
-      expect(CodeReview.first.visible_date).to_not eq nil
-      expect(CodeReview.first.due_date).to eq CodeReview.first.visible_date + 1.week
+      travel_to Date.parse('2021-01-04') do
+        visit edit_course_code_review_path(code_review.course, code_review)
+        fill_in 'Title', with: code_review.title
+        fill_in 'code_review_objectives_attributes_0_content', with: 'objective'
+        find('#always_visible').set false
+        click_button 'Update Code review'
+        expect(CodeReview.first.visible_date).to_not eq nil
+        expect(CodeReview.first.due_date).to eq CodeReview.first.visible_date + 1.week
+      end
     end
 
     scenario 'always visible' do

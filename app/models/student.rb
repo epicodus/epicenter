@@ -322,7 +322,7 @@ class Student < User
     elsif start_course
       filtered_results.count
     elsif status == :absent
-      [0, total_number_of_course_days - attendance_records.count].max
+      [0, days_since_start_of_program - attendance_records.count].max
     else
       results.count
     end
@@ -401,6 +401,10 @@ private
     else
       courses.non_internship_courses.map(&:class_days).flatten.count
     end
+  end
+
+  def days_since_start_of_program
+    courses.non_internship_courses.map(&:class_days).flatten.select {|day| day <= Date.today}.count
   end
 
   def next_course

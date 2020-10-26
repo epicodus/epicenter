@@ -933,7 +933,7 @@ end
 
     it "calculates the number of absences overall with more than one course and 1 absence" do
       student.course.update(class_days: [course.start_date])
-      course_2 = FactoryBot.create(:future_course)
+      course_2 = FactoryBot.create(:past_course)
       course_2.update(class_days: [course_2.start_date])
       student.courses << course_2
       FactoryBot.create(:attendance_record, student: student, date: course.start_date, tardy: false, left_early: false)
@@ -1042,7 +1042,9 @@ end
       travel_to course.start_date + 2.days do
         FactoryBot.create(:attendance_record, student: student)
       end
-      expect(student.attendance_records_for(:absent)).to eq 23
+      travel_to course.end_date do
+        expect(student.attendance_records_for(:absent)).to eq 23
+      end
     end
 
     it 'counts the number of days the student has been absent' do
