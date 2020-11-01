@@ -40,42 +40,42 @@ feature "remote attendance" do
       end
     end
 
-    # it 'allows sign in with group of 4' do
-    #   pair2 = FactoryBot.create(:student)
-    #   pair3 = FactoryBot.create(:student)
-    #   travel_to student.course.start_date.beginning_of_day + 8.hours do
-    #     visit root_path
-    #     click_link 'attendance-sign-in-link'
-    #     select pair.name, from: 'pair-select-1'
-    #     select pair2.name, from: 'pair-select-2'
-    #     select pair3.name, from: 'pair-select-3'
-    #     click_button 'Sign in'
-    #     expect(page).to have_content "You are signed in with"
-    #     expect(page).to have_content pair.name
-    #     expect(page).to have_content pair2.name
-    #     expect(page).to have_content pair3.name
-    #   end
-    # end
-    #
-    # it 'allows sign in with group of 5' do
-    #   pair2 = FactoryBot.create(:student)
-    #   pair3 = FactoryBot.create(:student)
-    #   pair4 = FactoryBot.create(:student)
-    #   travel_to student.course.start_date.beginning_of_day + 8.hours do
-    #     visit root_path
-    #     click_link 'attendance-sign-in-link'
-    #     select pair.name, from: 'pair-select-1'
-    #     select pair2.name, from: 'pair-select-2'
-    #     select pair3.name, from: 'pair-select-3'
-    #     select pair4.name, from: 'pair-select-4'
-    #     click_button 'Sign in'
-    #     expect(page).to have_content "You are signed in with"
-    #     expect(page).to have_content pair.name
-    #     expect(page).to have_content pair2.name
-    #     expect(page).to have_content pair3.name
-    #     expect(page).to have_content pair4.name
-    #   end
-    # end
+    it 'allows sign in with group of 4' do
+      pair2 = FactoryBot.create(:student)
+      pair3 = FactoryBot.create(:student)
+      travel_to student.course.start_date.beginning_of_day + 8.hours do
+        visit root_path
+        click_link 'attendance-sign-in-link'
+        select pair.name, from: 'pair-select-1'
+        select pair2.name, from: 'pair-select-2'
+        select pair3.name, from: 'pair-select-3'
+        click_button 'Sign in'
+        expect(page).to have_content "You are signed in with"
+        expect(page).to have_content pair.name
+        expect(page).to have_content pair2.name
+        expect(page).to have_content pair3.name
+      end
+    end
+
+    it 'allows sign in with group of 5' do
+      pair2 = FactoryBot.create(:student)
+      pair3 = FactoryBot.create(:student)
+      pair4 = FactoryBot.create(:student)
+      travel_to student.course.start_date.beginning_of_day + 8.hours do
+        visit root_path
+        click_link 'attendance-sign-in-link'
+        select pair.name, from: 'pair-select-1'
+        select pair2.name, from: 'pair-select-2'
+        select pair3.name, from: 'pair-select-3'
+        select pair4.name, from: 'pair-select-4'
+        click_button 'Sign in'
+        expect(page).to have_content "You are signed in with"
+        expect(page).to have_content pair.name
+        expect(page).to have_content pair2.name
+        expect(page).to have_content pair3.name
+        expect(page).to have_content pair4.name
+      end
+    end
 
     it 'removes 2nd pair if same as 1st pair' do
       travel_to student.course.start_date.beginning_of_day + 8.hours do
