@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_09_223001) do
+ActiveRecord::Schema.define(version: 2020_10_30_030912) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,19 @@ ActiveRecord::Schema.define(version: 2020_10_09_223001) do
     t.index ["created_at"], name: "index_attendance_records_on_created_at"
     t.index ["student_id"], name: "index_attendance_records_on_student_id"
     t.index ["tardy"], name: "index_attendance_records_on_tardy"
+  end
+
+  create_table "class_times", force: :cascade do |t|
+    t.integer "wday"
+    t.string "start_time"
+    t.string "end_time"
+  end
+
+  create_table "class_times_courses", id: false, force: :cascade do |t|
+    t.bigint "class_time_id"
+    t.bigint "course_id"
+    t.index ["class_time_id"], name: "index_class_times_courses_on_class_time_id"
+    t.index ["course_id"], name: "index_class_times_courses_on_course_id"
   end
 
   create_table "code_reviews", id: :serial, force: :cascade do |t|
@@ -82,8 +95,6 @@ ActiveRecord::Schema.define(version: 2020_10_09_223001) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text "class_days"
-    t.string "start_time"
-    t.string "end_time"
     t.integer "admin_id"
     t.boolean "internship_course"
     t.boolean "active"
@@ -168,9 +179,6 @@ ActiveRecord::Schema.define(version: 2020_10_09_223001) do
   create_table "languages", id: :serial, force: :cascade do |t|
     t.string "name"
     t.integer "level"
-    t.integer "number_of_days"
-    t.boolean "skip_holiday_weeks"
-    t.boolean "parttime"
     t.boolean "archived"
   end
 
@@ -342,8 +350,6 @@ ActiveRecord::Schema.define(version: 2020_10_09_223001) do
 
   create_table "tracks", id: :serial, force: :cascade do |t|
     t.string "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.boolean "archived"
   end
 

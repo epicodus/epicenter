@@ -43,15 +43,15 @@ describe Student do
 
     it 'sets parttime intro students to parttime plan' do
       parttime_plan = FactoryBot.create(:parttime_plan)
-      course = FactoryBot.create(:part_time_course)
+      course = FactoryBot.create(:part_time_course, track: FactoryBot.create(:part_time_track))
       student = FactoryBot.build(:student, plan_id: nil, courses: [course])
       student.save
       expect(student.plan).to eq parttime_plan
     end
 
-    it 'does not set payment plan for parttime track students' do
+    it 'does not set payment plan for part-time full-stack students' do
       parttime_plan = FactoryBot.create(:parttime_plan)
-      cohort = FactoryBot.create(:part_time_js_react_cohort)
+      cohort = FactoryBot.create(:part_time_c_react_cohort)
       student = FactoryBot.build(:student, plan_id: nil, courses: cohort.courses)
       student.save
       expect(student.plan).to eq nil
@@ -82,7 +82,7 @@ describe Student do
 
     it 'updates in Close when parttime student created' do
       plan = FactoryBot.create(:parttime_plan)
-      course = FactoryBot.create(:part_time_course)
+      course = FactoryBot.create(:part_time_course, track: FactoryBot.create(:part_time_track))
       student = FactoryBot.build(:student, email: 'example@example.com', plan: nil, courses: [course])
       expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PAYMENT_PLAN'] => plan.close_io_description })
       student.save
@@ -1109,7 +1109,9 @@ end
 
       it 'counts the number of days the student has been absent' do
         attended = past_course.total_class_days + course.total_class_days + future_course.total_class_days - AttendanceRecord.count
-        expect(student.attendance_records_for(:absent, past_course, future_course)).to eq attended
+        travel_to future_course.end_date do
+          expect(student.attendance_records_for(:absent, past_course, future_course)).to eq attended
+        end
       end
     end
   end
@@ -1294,18 +1296,14 @@ end
 
   describe 'enrolled?' do
     it 'reports enrolled with full-time cohort' do
-      allow(Github).to receive(:get_content).with('example_cohort_layout_path').and_return({:content=>"---\n:track: Ruby/React\n:start_time: 5:30 PM\n:end_time: 8:30 PM\n:course_layout_files:\n- example_course_layout_path\n- example_course_layout_path\n- example_course_layout_path\n- example_course_layout_path\n- example_course_layout_path\n"})
-      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n"})
-      allow(Github).to receive(:get_content).with('example_internship_layout_path').and_return({:content=>"---\n"})
-      cohort = FactoryBot.create(:cohort)
+      cohort = FactoryBot.create(:cohort, courses: [FactoryBot.create(:internship_course)])
       student = FactoryBot.create(:student, courses: cohort.courses)
       expect(student.enrolled?).to eq true
     end
 
     it 'reports enrolled with part-time cohort' do
-      allow(Github).to receive(:get_content).with('example_cohort_layout_path').and_return({:content=>"---\n:track: Part-Time Intro to Programming\n:start_time: 5:30 PM\n:end_time: 8:30 PM\n:course_layout_files:\n- example_course_layout_path\n"})
-      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n"})
-      student = FactoryBot.create(:part_time_student_with_cohort)
+      cohort = FactoryBot.create(:part_time_cohort, courses: [FactoryBot.create(:part_time_course)])
+      student = FactoryBot.create(:student, courses: cohort.courses)
       expect(student.enrolled?).to eq true
     end
 
@@ -1386,29 +1384,31 @@ end
   end
 
   describe 'calculate cohorts' do
-    let!(:track) { FactoryBot.create(:track) }
-    let!(:office) { FactoryBot.create(:portland_office) }
-    let!(:admin) { FactoryBot.create(:admin_without_course) }
-    let!(:past_cohort) { FactoryBot.create(:full_cohort, start_date: (Date.today - 1.year).beginning_of_week, office: office, admin: admin, track: track) }
-    let!(:current_cohort) { FactoryBot.create(:full_cohort, start_date: Date.today.beginning_of_week - 1.week, office: office, admin: admin, track: track) }
-    let!(:future_cohort) { FactoryBot.create(:full_cohort, start_date: (Date.today + 1.year).beginning_of_week, office: office, admin: admin, track: track) }
-    let!(:part_time_cohort) { FactoryBot.create(:part_time_cohort, start_date: Date.today.beginning_of_week - 1.week, office: office, admin: admin, track: track) }
-
-    before { allow_any_instance_of(CrmLead).to receive(:update_internship_class) }
+    let!(:cohort) { FactoryBot.create(:full_cohort, start_date: Date.today) }
+    let!(:past_cohort) { FactoryBot.create(:full_cohort, start_date: Date.today - 1.year) }
+    let!(:future_cohort) { FactoryBot.create(:full_cohort, start_date: Date.today + 1.year) }
+    let!(:part_time_cohort) { FactoryBot.create(:part_time_cohort, start_date: Date.today) }
+    let!(:part_time_full_stack_cohort) { FactoryBot.create(:part_time_c_react_cohort, start_date: Date.today) }
+    let!(:part_time_js_react_cohort) { FactoryBot.create(:part_time_js_react_cohort, start_date: Date.today) }
 
     describe '#calculate_parttime_cohort' do
-      it 'returns part-time cohort when only part-time courses' do
-        student = FactoryBot.create(:student_without_courses, office: office, courses: [part_time_cohort.courses.first])
+      it 'returns part-time cohort when only part-time intro courses' do
+        student = FactoryBot.create(:student, courses: [part_time_cohort.courses.first])
         expect(student.calculate_parttime_cohort).to eq part_time_cohort
       end
 
-      it 'returns nil when when no internship course and no part-time course' do
-        student = FactoryBot.create(:student_without_courses, office: office, courses: [current_cohort.courses.first])
+      it 'returns part-time cohort when only part-time js/react courses' do
+        student = FactoryBot.create(:student, courses: [part_time_js_react_cohort.courses.first])
+        expect(student.calculate_parttime_cohort).to eq part_time_js_react_cohort
+      end
+
+      it 'returns nil when when no part-time intro or js/reacat course' do
+        student = FactoryBot.create(:student, courses: [cohort.courses.first, part_time_full_stack_cohort.courses.first])
         expect(student.calculate_parttime_cohort).to eq nil
       end
 
       it 'returns Fidgetech cohort when only Fidgetech cohort' do
-        student = FactoryBot.create(:student_without_courses, office: office, courses: [part_time_cohort.courses.first])
+        student = FactoryBot.create(:student, courses: [part_time_cohort.courses.first])
         student.course.update(description: 'Fidgetech', parttime: false)
         expect(student.calculate_parttime_cohort).to eq part_time_cohort
       end
@@ -1416,45 +1416,50 @@ end
 
     describe '#calculate_starting_cohort' do
       it 'returns nil when only part-time courses' do
-        student = FactoryBot.create(:student_without_courses, office: office, courses: [part_time_cohort.courses.first])
+        student = FactoryBot.create(:student, courses: [part_time_cohort.courses.first, part_time_js_react_cohort.courses.first])
         expect(student.calculate_starting_cohort).to eq nil
       end
 
       it 'returns full-time cohort when part-time and full-time courses' do
-        student = FactoryBot.create(:student_without_courses, office: office, courses: [part_time_cohort.courses.first] + future_cohort.courses)
+        student = FactoryBot.create(:student, courses: [part_time_cohort.courses.first] + future_cohort.courses)
         expect(student.calculate_starting_cohort).to eq future_cohort
       end
 
       it 'returns first full-time cohort under normal conditions' do
-        student = FactoryBot.create(:student_without_courses, office: office, courses: future_cohort.courses + current_cohort.courses)
-        expect(student.calculate_starting_cohort).to eq current_cohort
+        student = FactoryBot.create(:student, courses: future_cohort.courses + cohort.courses)
+        expect(student.calculate_starting_cohort).to eq cohort
+      end
+
+      it 'returns part-time full-stack cohort' do
+        student = FactoryBot.create(:student, courses: part_time_full_stack_cohort.courses)
+        expect(student.calculate_starting_cohort).to eq part_time_full_stack_cohort
       end
     end
 
     describe '#calculate_current_cohort' do
-      it 'returns nil when no internship course and no part-time course' do
-        student = FactoryBot.create(:student_without_courses, office: office, courses: [current_cohort.courses.first])
+      it 'returns nil when no internship course and no part-time full-stack cohort' do
+        student = FactoryBot.create(:student, courses: [cohort.courses.first])
         expect(student.calculate_current_cohort).to eq nil
       end
 
       it 'returns last full-time cohort under normal conditions' do
-        student = FactoryBot.create(:student, courses: future_cohort.courses + current_cohort.courses)
+        student = FactoryBot.create(:student, courses: future_cohort.courses + cohort.courses)
         expect(student.calculate_current_cohort).to eq future_cohort
       end
 
       it 'returns correct cohort when internship course belongs to multiple cohorts' do
-        current_cohort.courses.last.cohorts << future_cohort
+        cohort.courses.last.cohorts << future_cohort
         student = FactoryBot.create(:student, courses: future_cohort.courses)
         expect(student.calculate_current_cohort).to eq future_cohort
       end
 
-      it 'returns nil when no internship course' do
-        student = FactoryBot.create(:student_without_courses, office: office, courses: [part_time_cohort.courses.first, current_cohort.courses.first])
-        expect(student.calculate_current_cohort).to eq nil
+      it 'returns part-time full-stack cohort when course from that cohort is present' do
+        student = FactoryBot.create(:student, courses: [part_time_cohort.courses.first, cohort.courses.first, part_time_full_stack_cohort.courses.first])
+        expect(student.calculate_current_cohort).to eq part_time_full_stack_cohort
       end
 
       it 'returns nil when only Fidgetech cohort' do
-        student = FactoryBot.create(:student_without_courses, office: office, courses: [part_time_cohort.courses.first])
+        student = FactoryBot.create(:student, courses: [part_time_cohort.courses.first])
         student.course.update(description: 'Fidgetech', parttime: false)
         expect(student.calculate_current_cohort).to eq nil
       end

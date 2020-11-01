@@ -32,7 +32,7 @@ class CoursesController < ApplicationController
   end
 
   def new
-    @course = Course.new(start_time: "8:00 AM", end_time: "5:00 PM")
+    @course = Course.new
   end
 
   def create
@@ -67,7 +67,7 @@ private
 
   def course_params
     params[:course][:class_days] = params[:course][:class_days].split(',').map { |day| Date.parse(day) } if params[:course][:class_days]
-    params.require(:course).permit(:admin_id, :language_id, :start_time, :end_time, :layout_file_path,
+    params.require(:course).permit(:admin_id, :language_id, :layout_file_path,
                                    :active, :full, :office_id, :rankings_visible, :internship_assignments_visible, class_days: [])
   end
 end

@@ -11,34 +11,174 @@ describe Course do
   it { should have_many(:interview_assignments) }
   it { should have_many(:internship_assignments) }
   it { should validate_presence_of(:office_id) }
+  it { should validate_presence_of(:start_date) }
+  it { should validate_presence_of(:end_date) }
 
-  describe "validations" do
-    it "validates the presence of start_date" do
-      course = FactoryBot.build(:course, class_days: nil)
-      expect(course.start_date).to eq nil
-    end
+  context 'after_destroy' do
+    let(:course) { FactoryBot.create(:course) }
 
-    it "validates the presence of end_date" do
-      course = FactoryBot.build(:course, class_days: nil)
-      expect(course.end_date).to eq nil
-    end
-
-    it "validates the presence of start_time" do
-      course = FactoryBot.build(:course, start_time: nil)
-      expect(course).to_not be_valid
-    end
-
-    it "validates the presence of end_time" do
-      course = FactoryBot.build(:course, end_time: nil)
-      expect(course).to_not be_valid
+    it 'reassigns all admins that have this as their current course to a different course' do
+      another_course = FactoryBot.create(:course)
+      admin = FactoryBot.create(:admin, current_course: course)
+      course.destroy
+      admin.reload
+      expect(admin.current_course).to eq another_course
     end
   end
 
-  describe 'default scope' do
-    it 'orders by start_date ascending' do
+  context 'scopes' do
+    describe 'default scope' do
+      it 'orders by start_date ascending' do
+        future_course = FactoryBot.create(:future_course)
+        past_course = FactoryBot.create(:past_course)
+        expect(Course.all).to eq [past_course, future_course]
+      end
+    end
+
+    describe 'course scopes' do
+      let!(:ft_course) { FactoryBot.create(:course) }
+      let!(:pt_intro_course) { FactoryBot.create(:part_time_course, track: FactoryBot.create(:part_time_track)) }
+      let!(:pt_full_stack_course) { FactoryBot.create(:part_time_course, track: FactoryBot.create(:part_time_c_react_track)) }
+      let!(:pt_js_react_course) { FactoryBot.create(:part_time_course, track: FactoryBot.create(:track, description: 'Part-Time JS/React')) }
+
+      it '#fulltime_courses' do
+        expect(Course.fulltime_courses).to eq [ft_course]
+      end
+
+      it '#parttime_intro_courses' do
+        expect(Course.parttime_intro_courses).to eq [pt_intro_course]
+      end
+
+      it '#parttime_full_stack_courses' do
+        expect(Course.parttime_full_stack_courses).to eq [pt_full_stack_course]
+      end
+
+      it '#parttime_intro_courses' do
+        expect(Course.parttime_js_react_courses).to eq [pt_js_react_course]
+      end
+
+      it '#cirr_parttime_courses' do
+        expect(Course.cirr_parttime_courses).to eq [pt_intro_course, pt_js_react_course]
+      end
+
+      it '#cirr_fulltime_courses' do
+        expect(Course.cirr_fulltime_courses).to eq [ft_course, pt_full_stack_course]
+      end
+    end
+
+    describe '#internship_courses' do
+      it 'returns all courses that are internship courses' do
+        internship_course = FactoryBot.create(:internship_course)
+        FactoryBot.create(:course)
+        expect(Course.internship_courses).to eq [internship_course]
+      end
+    end
+
+    describe '#non_internship_courses' do
+      it 'returns all courses that are not internship courses' do
+        FactoryBot.create(:internship_course)
+        course = FactoryBot.create(:course)
+        expect(Course.non_internship_courses).to eq [course]
+      end
+    end
+
+    describe '#active_internship_courses' do
+      it 'returns all courses that are internship courses and active' do
+        internship_course = FactoryBot.create(:internship_course, active: true)
+        FactoryBot.create(:course)
+        expect(Course.active_internship_courses).to eq [internship_course]
+      end
+    end
+
+    describe '#inactive_internship_courses' do
+      it 'returns all courses that are internship courses and inactive' do
+        internship_course = FactoryBot.create(:internship_course, active: false)
+        FactoryBot.create(:course)
+        expect(Course.inactive_internship_courses).to eq [internship_course]
+      end
+    end
+
+    describe '#active_courses' do
+      it 'returns all courses that are active' do
+        active_course = FactoryBot.create(:course, active: true)
+        FactoryBot.create(:course, active: false)
+        expect(Course.active_courses).to eq [active_course]
+      end
+    end
+
+    describe '#inactive_courses' do
+      it 'returns all courses that are inactive' do
+        inactive_course = FactoryBot.create(:course, active: false)
+        FactoryBot.create(:course, active: true)
+        expect(Course.inactive_courses).to eq [inactive_course]
+      end
+    end
+
+    describe '#full_internship_courses' do
+      it 'returns all courses that are full' do
+        full_course = FactoryBot.create(:course, full: true)
+        FactoryBot.create(:course, full: false)
+        expect(Course.full_internship_courses).to eq [full_course]
+      end
+    end
+
+    describe '#available_internship_courses' do
+      it 'returns all courses that are not full' do
+        available_course = FactoryBot.create(:course, full: false)
+        FactoryBot.create(:course, full: true)
+        expect(Course.available_internship_courses).to eq [available_course]
+      end
+    end
+
+    describe '.level' do
+      it 'returns all courses with given language level' do
+        intro_course = FactoryBot.create(:course)
+        rails_course = FactoryBot.create(:level_3_just_finished_course)
+        expect(Course.level(3)).to eq [rails_course]
+      end
+    end
+  end
+
+  describe '#current_and_previous_courses' do
+    it 'returns all current and previous courses' do
+      previous_course = FactoryBot.create(:past_course)
+      current_course = FactoryBot.create(:course)
       future_course = FactoryBot.create(:future_course)
+      expect(Course.current_and_previous_courses).to eq [previous_course, current_course]
+    end
+  end
+
+  describe '#current_and_future_courses' do
+    it 'returns all current and future courses' do
+      FactoryBot.create(:past_course)
+      current_course = FactoryBot.create(:course)
+      future_course = FactoryBot.create(:future_course)
+      expect(Course.current_and_future_courses).to eq [current_course, future_course]
+    end
+  end
+
+  describe '#future_courses' do
+    it 'returns all future courses' do
+      FactoryBot.create(:past_course)
+      FactoryBot.create(:course)
+      future_course = FactoryBot.create(:future_course)
+      expect(Course.future_courses).to eq [future_course]
+    end
+  end
+
+  describe '#previous_courses' do
+    it 'returns all current and future courses' do
       past_course = FactoryBot.create(:past_course)
-      expect(Course.all).to eq [past_course, future_course]
+      FactoryBot.create(:course)
+      expect(Course.previous_courses).to eq [past_course]
+    end
+  end
+
+  describe '#courses_for' do
+    it 'returns all courses for a certain office' do
+      portland_course = FactoryBot.create(:portland_course)
+      FactoryBot.create(:course)
+      expect(Course.courses_for(portland_course.office)).to eq [portland_course]
     end
   end
 
@@ -158,46 +298,6 @@ describe Course do
     end
   end
 
-  describe "calculates class days automatically if not provided" do
-    let(:office) { FactoryBot.create(:portland_office) }
-    let(:full_time_track) { FactoryBot.create(:track) }
-    let(:part_time_track) { FactoryBot.create(:part_time_track) }
-    let(:admin) { FactoryBot.create(:admin) }
-
-    it 'calculates class days for a regular full-time class' do
-      course = Course.create({ language: full_time_track.languages.first, start_date: Date.parse('2017-03-13'), office: office, track: full_time_track, start_time: '8:00 AM', end_time: '5:00 PM' })
-      expect(course.start_date).to eq(Date.parse('2017-03-13'))
-      expect(course.end_date).to eq(Date.parse('2017-04-13'))
-      expect(course.class_days.count).to eq(24)
-    end
-
-    it 'calculates class days for an internship class' do
-      course = Course.create({ language: full_time_track.languages.last, start_date: Date.parse('2017-03-13'), office: office, track: full_time_track, start_time: '8:00 AM', end_time: '5:00 PM' })
-      expect(course.start_date).to eq(Date.parse('2017-03-13'))
-      expect(course.end_date).to eq(Date.parse('2017-04-28'))
-      expect(course.class_days.count).to eq(35)
-    end
-
-    it 'calculates class days for a part-time class' do
-      course = Course.create({ language: part_time_track.languages.first, start_date: Date.parse('2017-03-13'), office: office, track: part_time_track, start_time: '6:00 PM', end_time: '9:00 PM' })
-      expect(course.start_date).to eq(Date.parse('2017-03-14'))
-      expect(course.end_date).to eq(Date.parse('2017-06-22'))
-      expect(course.class_days.count).to eq(30)
-    end
-  end
-
-  describe "sets start and end dates from class_days" do
-    let(:course) { FactoryBot.create(:course) }
-
-    it "returns a valid start date when set_start_and_end_dates is successful" do
-      expect(course.start_date).to eq course.class_days.first
-    end
-
-    it "returns a valid end date when set_start_and_end_dates is successful" do
-      expect(course.end_date).to eq course.class_days.last
-    end
-  end
-
   describe '#number_of_days_since_start' do
     let(:course) { FactoryBot.create(:course) }
 
@@ -252,6 +352,19 @@ describe Course do
     end
   end
 
+  describe '#total_class_days_until' do
+    it 'returns the total number of students requested for an internship course' do
+      monday = Time.zone.now.to_date.beginning_of_week
+      tuesday = Time.zone.now.to_date.beginning_of_week + 1.day
+      wednesday = Time.zone.now.to_date.beginning_of_week + 2.day
+      course_1 = FactoryBot.create(:past_course, class_days: [monday])
+      course_2 = FactoryBot.create(:course, class_days: [tuesday])
+      course_3 = FactoryBot.create(:future_course, class_days: [wednesday])
+      student = FactoryBot.create(:student, courses: [course_1, course_2, course_3])
+      expect(student.courses.total_class_days_until(Time.zone.now.to_date.end_of_week)).to eq [wednesday, tuesday, monday]
+    end
+  end
+
   describe '#progress_percent' do
     it 'returns the percent of how many days have passed' do
       monday = Time.zone.now.to_date.beginning_of_week
@@ -262,157 +375,6 @@ describe Course do
       travel_to friday do
         expect(course.progress_percent).to eq 50.0
       end
-    end
-  end
-
-  context 'after_destroy' do
-    let(:course) { FactoryBot.create(:course) }
-
-    it 'reassigns all admins that have this as their current course to a different course' do
-      another_course = FactoryBot.create(:course)
-      admin = FactoryBot.create(:admin, current_course: course)
-      course.destroy
-      admin.reload
-      expect(admin.current_course).to eq another_course
-    end
-  end
-
-  describe '#current_and_previous_courses' do
-    it 'returns all current and previous courses' do
-      previous_course = FactoryBot.create(:past_course)
-      current_course = FactoryBot.create(:course)
-      future_course = FactoryBot.create(:future_course)
-      expect(Course.current_and_previous_courses).to eq [previous_course, current_course]
-    end
-  end
-
-  describe '#current_and_future_courses' do
-    it 'returns all current and future courses' do
-      FactoryBot.create(:past_course)
-      current_course = FactoryBot.create(:course)
-      future_course = FactoryBot.create(:future_course)
-      expect(Course.current_and_future_courses).to eq [current_course, future_course]
-    end
-  end
-
-  describe '#future_courses' do
-    it 'returns all future courses' do
-      FactoryBot.create(:past_course)
-      FactoryBot.create(:course)
-      future_course = FactoryBot.create(:future_course)
-      expect(Course.future_courses).to eq [future_course]
-    end
-  end
-
-  describe '#previous_courses' do
-    it 'returns all current and future courses' do
-      past_course = FactoryBot.create(:past_course)
-      FactoryBot.create(:course)
-      expect(Course.previous_courses).to eq [past_course]
-    end
-  end
-
-  describe '#fulltime_courses' do
-    it 'returns all courses that are full-time courses' do
-      ft_course = FactoryBot.create(:course)
-      pt_course = FactoryBot.create(:part_time_course)
-      expect(Course.fulltime_courses).to eq [ft_course]
-    end
-  end
-
-  describe '#parttime_courses' do
-    it 'returns all courses that are part-time courses' do
-      ft_course = FactoryBot.create(:course)
-      pt_course = FactoryBot.create(:part_time_course)
-      expect(Course.parttime_courses).to eq [pt_course]
-    end
-  end
-
-  describe '#internship_courses' do
-    it 'returns all courses that are internship courses' do
-      internship_course = FactoryBot.create(:internship_course)
-      FactoryBot.create(:course)
-      expect(Course.internship_courses).to eq [internship_course]
-    end
-  end
-
-  describe '#non_internship_courses' do
-    it 'returns all courses that are not internship courses' do
-      FactoryBot.create(:internship_course)
-      course = FactoryBot.create(:course)
-      expect(Course.non_internship_courses).to eq [course]
-    end
-  end
-
-  describe '#non_online_courses' do
-    it 'returns all courses that are not online courses' do
-      FactoryBot.create(:part_time_course, description: '2019-04 Evening ONLINE')
-      course = FactoryBot.create(:course)
-      expect(Course.non_online_courses).to eq [course]
-    end
-  end
-
-  describe '#active_internship_courses' do
-    it 'returns all courses that are internship courses and active' do
-      internship_course = FactoryBot.create(:internship_course, active: true)
-      FactoryBot.create(:course)
-      expect(Course.active_internship_courses).to eq [internship_course]
-    end
-  end
-
-  describe '#inactive_internship_courses' do
-    it 'returns all courses that are internship courses and inactive' do
-      internship_course = FactoryBot.create(:internship_course, active: false)
-      FactoryBot.create(:course)
-      expect(Course.inactive_internship_courses).to eq [internship_course]
-    end
-  end
-
-  describe '#active_courses' do
-    it 'returns all courses that are active' do
-      active_course = FactoryBot.create(:course, active: true)
-      FactoryBot.create(:course, active: false)
-      expect(Course.active_courses).to eq [active_course]
-    end
-  end
-
-  describe '#inactive_courses' do
-    it 'returns all courses that are inactive' do
-      inactive_course = FactoryBot.create(:course, active: false)
-      FactoryBot.create(:course, active: true)
-      expect(Course.inactive_courses).to eq [inactive_course]
-    end
-  end
-
-  describe '#full_internship_courses' do
-    it 'returns all courses that are full' do
-      full_course = FactoryBot.create(:course, full: true)
-      FactoryBot.create(:course, full: false)
-      expect(Course.full_internship_courses).to eq [full_course]
-    end
-  end
-
-  describe '#available_internship_courses' do
-    it 'returns all courses that are not full' do
-      available_course = FactoryBot.create(:course, full: false)
-      FactoryBot.create(:course, full: true)
-      expect(Course.available_internship_courses).to eq [available_course]
-    end
-  end
-
-  describe '#courses_for' do
-    it 'returns all courses for a certain office' do
-      portland_course = FactoryBot.create(:portland_course)
-      FactoryBot.create(:course)
-      expect(Course.courses_for(portland_course.office)).to eq [portland_course]
-    end
-  end
-
-  describe '.level' do
-    it 'returns all courses with given language level' do
-      intro_course = FactoryBot.create(:course)
-      rails_course = FactoryBot.create(:level_3_just_finished_course)
-      expect(Course.level(3)).to eq [rails_course]
     end
   end
 
@@ -427,19 +389,6 @@ describe Course do
     end
   end
 
-  describe '#total_class_days_until' do
-    it 'returns the total number of students requested for an internship course' do
-      monday = Time.zone.now.to_date.beginning_of_week
-      tuesday = Time.zone.now.to_date.beginning_of_week + 1.day
-      wednesday = Time.zone.now.to_date.beginning_of_week + 2.day
-      course_1 = FactoryBot.create(:past_course, class_days: [monday])
-      course_2 = FactoryBot.create(:course, class_days: [tuesday])
-      course_3 = FactoryBot.create(:future_course, class_days: [wednesday])
-      student = FactoryBot.create(:student, courses: [course_1, course_2, course_3])
-      expect(student.courses.total_class_days_until(Time.zone.now.to_date.end_of_week)).to eq [wednesday, tuesday, monday]
-    end
-  end
-
   describe '#export_students_emails' do
     it 'exports to students.txt file names & email addresses for students in course' do
       student = FactoryBot.create(:student)
@@ -449,34 +398,246 @@ describe Course do
     end
   end
 
-  describe '#set_parttime' do
-    it 'sets parttime flag for evening course' do
-      course = FactoryBot.create(:part_time_course)
-      expect(course.parttime).to eq true
+  context 'building course' do
+
+    context 'from layout file' do
+
+      describe 'sets parttime flag' do
+        it 'true for pt course' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(part_time: true)
+          course = FactoryBot.create(:part_time_course, start_date: Date.parse('2021-01-04'), layout_file_path: 'example_course_layout_path')
+          expect(course.parttime).to eq true
+        end
+
+        it 'false for ft course' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(part_time: false)
+          course = FactoryBot.create(:course, start_date: Date.parse('2021-01-04'), layout_file_path: 'example_course_layout_path')
+          expect(course.parttime).to eq false
+        end
+      end
+
+      describe 'sets internship_course flag' do
+        it 'true for internship course' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(internship: true)
+          course = FactoryBot.create(:internship_course, start_date: Date.parse('2021-01-04'), layout_file_path: 'example_course_layout_path')
+          expect(course.internship_course).to eq true
+        end
+
+        it 'false for non-internship course' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(internship: false)
+          course = FactoryBot.create(:course, start_date: Date.parse('2021-01-04'), layout_file_path: 'example_course_layout_path')
+          expect(course.internship_course).to_not eq true
+        end
+      end
+
+      describe 'sets class times', :dont_stub_class_times do
+        it 'for ft course' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(part_time: false)
+          course = FactoryBot.create(:course, start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+          expect(course.class_times.count).to eq 5
+          expect(course.class_times.first.wday).to eq 1
+          expect(course.class_times.first.start_time).to eq '8:00'
+          expect(course.class_times.first.end_time).to eq '17:00'
+          expect(course.class_times.last.wday).to eq 5
+          expect(course.class_times.last.start_time).to eq '8:00'
+          expect(course.class_times.last.end_time).to eq '17:00'
+        end
+
+        it 'for pt course' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(part_time: true)
+          course = FactoryBot.create(:course, start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+          expect(course.class_times.count).to eq 4
+          expect(course.class_times.first.wday).to eq 0
+          expect(course.class_times.first.start_time).to eq '9:00'
+          expect(course.class_times.first.end_time).to eq '17:00'
+          expect(course.class_times.last.wday).to eq 3
+          expect(course.class_times.last.start_time).to eq '18:00'
+          expect(course.class_times.last.end_time).to eq '21:00'
+        end
+      end
+
+      describe 'calculates course start and end times today', :dont_stub_class_times do
+        it '#start_time_today' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(part_time: false)
+          course = FactoryBot.create(:course, start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+          travel_to course.start_date do
+            expect(course.start_time_today).to eq Time.zone.now.in_time_zone(course.office.time_zone).beginning_of_day + 8.hours
+          end
+        end
+
+        it '#end_time_today' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(part_time: false)
+          course = FactoryBot.create(:course, start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+          travel_to course.start_date do
+            expect(course.end_time_today).to eq Time.zone.now.in_time_zone(course.office.time_zone).beginning_of_day + 17.hours
+          end
+        end
+      end
+
+      describe "calculates class days, start_date, end_date" do
+        it 'for course during period without any holidays' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_days: 15)
+          course = FactoryBot.create(:course, start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+          expect(course.start_date).to eq Date.parse('2017-03-13')
+          expect(course.end_date).to eq Date.parse('2017-03-31')
+          expect(course.class_days.count).to eq 15
+        end
+
+        it 'for course during period with holidays' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_days: 15)
+          course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-05-22'), layout_file_path: 'example_course_layout_path')
+          expect(course.start_date).to eq Date.parse('2017-05-22')
+          expect(course.end_date).to eq Date.parse('2017-06-09')
+          expect(course.class_days.count).to eq 14
+        end
+
+        it 'for course during period with holiday week' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_days: 15)
+          course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-11-13'), layout_file_path: 'example_course_layout_path')
+          expect(course.start_date).to eq Date.parse('2017-11-13')
+          expect(course.end_date).to eq Date.parse('2017-12-08')
+          expect(course.class_days.count).to eq 15
+        end
+
+        it 'for internship course during period without holidays' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_days: 35, internship: true)
+          course = FactoryBot.create(:internship_course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+          expect(course.start_date).to eq Date.parse('2017-03-13')
+          expect(course.end_date).to eq Date.parse('2017-04-28')
+          expect(course.class_days.count).to eq 35
+        end
+
+        it 'for internship course during period with holiday weeks' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_days: 35, internship: true)
+          course = FactoryBot.create(:internship_course, class_days: [], start_date: Date.parse('2017-11-13'), layout_file_path: 'example_course_layout_path')
+          expect(course.start_date).to eq Date.parse('2017-11-13')
+          expect(course.end_date).to eq Date.parse('2017-12-29')
+          expect(course.class_days.count).to eq 35
+        end
+
+        it 'for part-time full-track course with holiday' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_days: 23, part_time: true)
+          course = FactoryBot.create(:intro_part_time_c_react_course, class_days: [], start_date: Date.parse('2021-01-04'), layout_file_path: 'example_course_layout_path')
+          expect(course.start_date).to eq Date.parse('2021-01-04')
+          expect(course.end_date).to eq Date.parse('2021-02-10')
+          expect(course.class_days.count).to eq 22 # 22 due to time period including 1 holiday
+          expect(course.class_days.last.wednesday?).to eq true
+        end
+      end
+
+      describe 'sets description' do
+        it 'sets description for course to date and language' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper
+          course = FactoryBot.create(:course, start_date: Date.parse('2021-01-04'), layout_file_path: 'example_course_layout_path')
+          expect(course.description).to eq "#{course.start_date.strftime('%Y-%m')} #{course.language.name}"
+        end
+
+        it 'sets description for internship course to date and language and track' do
+          track = FactoryBot.create(:track)
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(internship: true)
+          course = FactoryBot.create(:course, track: track, start_date: Date.parse('2021-01-04'), layout_file_path: 'example_course_layout_path')
+          expect(course.description).to eq "#{course.start_date.strftime('%Y-%m')} #{course.language.name} (#{track.description})"
+        end
+      end
+
+      describe 'builds code reviews' do
+        it 'when no code reviews' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_code_reviews: 0)
+          course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+          expect(course.code_reviews.count).to eq 0
+        end
+
+        it 'for full-time course with 1 code review with 1 objective' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_code_reviews: 1)
+          allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+          course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+          expect(course.code_reviews.count).to eq 1
+          expect(course.code_reviews.first.objectives.count).to eq 1
+          expect(course.code_reviews.first.visible_date).to eq Date.parse('2017-03-17').beginning_of_day + 8.hours
+          expect(course.code_reviews.first.due_date).to eq Date.parse('2017-03-17').beginning_of_day + 17.hours
+        end
+
+        it 'for full-time course with 2 code reviews with 1 and 2 objectives' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_code_reviews: 2)
+          allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+          course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+          expect(course.code_reviews.count).to eq 2
+          expect(course.code_reviews.first.objectives.count).to eq 1
+          expect(course.code_reviews.last.objectives.count).to eq 2
+          expect(course.code_reviews.first.visible_date).to eq Date.parse('2017-03-17').beginning_of_day + 8.hours
+          expect(course.code_reviews.first.due_date).to eq Date.parse('2017-03-17').beginning_of_day + 17.hours
+          expect(course.code_reviews.last.visible_date).to eq Date.parse('2017-03-24').beginning_of_day + 8.hours
+          expect(course.code_reviews.last.due_date).to eq Date.parse('2017-03-24').beginning_of_day + 17.hours
+        end
+
+        it 'for part-time course' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(part_time: true, number_of_code_reviews: 1)
+          allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+          course = FactoryBot.create(:part_time_course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+          expect(course.code_reviews.count).to eq 1
+          expect(course.code_reviews.first.objectives.count).to eq 1
+          expect(course.code_reviews.first.visible_date).to eq Date.parse('2017-03-15').beginning_of_day + 17.hours
+          expect(course.code_reviews.first.due_date).to eq Date.parse('2017-03-22').beginning_of_day + 17.hours
+        end
+
+        it 'for code review where submissions not required' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_code_reviews: 1, submissions_not_required: true)
+          allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+          course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+          expect(course.code_reviews.first.submissions_not_required).to eq true
+        end
+
+        it 'for code review that should always be visible to students' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_code_reviews: 1, always_visible: true)
+          allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+          course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+          expect(course.code_reviews.first.visible_date).to eq nil
+          expect(course.code_reviews.first.due_date).to eq nil
+        end
+
+        it 'adding code reviews to existing course' do
+          course = FactoryBot.create(:course)
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_code_reviews: 1)
+          allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+          course.update(layout_file_path: 'example_course_layout_path')
+          expect(course.code_reviews.count).to eq 1
+        end
+
+        it 'adding only additional code reviews to existing course' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_code_reviews: 1)
+          allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+          course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+          expect(course.code_reviews.count).to eq 1
+          course.update(layout_file_path: nil)
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_code_reviews: 2)
+          course.update(layout_file_path: 'example_course_layout_path')
+          expect(course.code_reviews.count).to eq 2
+        end
+
+        it 'does not add code reviews if layout file path not changed' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_code_reviews: 1)
+          allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+          course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+          expect(course.code_reviews.count).to eq 1
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_code_reviews: 2)
+          course.update(layout_file_path: 'example_course_layout_path')
+          expect(course.code_reviews.count).to eq 1
+        end
+      end
     end
 
-    it 'does not set parttime flag for intro course' do
-      course = FactoryBot.create(:course)
-      expect(course.parttime).to eq false
-    end
-  end
+    context 'manually without layout file' do
+      describe "sets start and end dates from class_days" do
+        let(:course) { FactoryBot.create(:course) }
 
-  describe '#set_internship_course' do
-    it 'sets internship_course flag for internship course' do
-      course = FactoryBot.create(:internship_course)
-      expect(course.internship_course).to eq true
-    end
+        it "returns a valid start date when set_start_and_end_dates is successful" do
+          expect(course.start_date).to eq course.class_days.first
+        end
 
-    it 'does not set internship_course flag for intro course' do
-      course = FactoryBot.create(:course)
-      expect(course.internship_course).to eq false
-    end
-  end
-
-  describe '#set_description' do
-    it 'sets description for course to date and language' do
-      course = FactoryBot.create(:portland_ruby_course)
-      expect(course.description).to eq "#{course.start_date.strftime('%Y-%m')} #{course.language.name}"
+        it "returns a valid end date when set_start_and_end_dates is successful" do
+          expect(course.end_date).to eq course.class_days.last
+        end
+      end
     end
 
     it 'allows manual setting of description on creation' do
@@ -486,164 +647,35 @@ describe Course do
       expect(course.description).to eq 'an awesome course'
     end
   end
+end
 
-  describe 'create course class_days automatically based on start_date' do
-    it 'creates course days for non-internship course during period without any holidays' do
-      course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'))
-      expect(course.start_date).to eq Date.parse('2017-03-13')
-      expect(course.end_date).to eq Date.parse('2017-04-13')
-      expect(course.class_days.count).to eq 24
-    end
+# helpers
 
-    it 'creates course days for non-internship course during period with holidays' do
-      course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-05-22'))
-      expect(course.start_date).to eq Date.parse('2017-05-22')
-      expect(course.end_date).to eq Date.parse('2017-06-22')
-      expect(course.class_days.count).to eq 23
-    end
+def course_layout_params_helper(attributes = {})
+  part_time = attributes[:part_time] || false
+  internship = attributes[:internship] || false
+  number_of_days = attributes[:number_of_days] || 15
+  class_times = part_time ? class_times_pt : class_times_ft
+  code_reviews = code_review_params_helper(number_of_code_reviews: attributes[:number_of_code_reviews] || 0, submissions_not_required: attributes[:submissions_not_required], always_visible: attributes[:always_visible])
+  { part_time: part_time, internship: internship, number_of_days: number_of_days, class_times: class_times, code_reviews: code_reviews }
+end
 
-    it 'creates course days for non-internship course during period with holiday week' do
-      course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-11-13'))
-      expect(course.start_date).to eq Date.parse('2017-11-13')
-      expect(course.end_date).to eq Date.parse('2017-12-21')
-      expect(course.class_days.count).to eq 24
+def code_review_params_helper(attributes)
+  code_review_params = []
+  attributes[:number_of_code_reviews].times do |cr_num|
+    objectives = []
+    (cr_num+1).times do |obj_num|
+      objectives << "Test objective #{obj_num+1}"
     end
-
-    it 'creates course days for internship course during period without holidays' do
-      course = FactoryBot.create(:internship_course, class_days: [], start_date: Date.parse('2017-03-13'))
-      expect(course.start_date).to eq Date.parse('2017-03-13')
-      expect(course.end_date).to eq Date.parse('2017-04-28')
-      expect(course.class_days.count).to eq 35
-    end
-
-    it 'creates course days for internship course during period with holiday weeks' do
-      course = FactoryBot.create(:internship_course, class_days: [], start_date: Date.parse('2017-11-13'))
-      expect(course.start_date).to eq Date.parse('2017-11-13')
-      expect(course.end_date).to eq Date.parse('2017-12-29')
-      expect(course.class_days.count).to eq 35
-    end
-
-    it 'creates course days for part-time js/react course including sundays' do
-      course = FactoryBot.create(:js_part_time_js_react_course, class_days: [], start_date: Date.parse('2020-01-07'))
-      expect(course.start_date).to eq Date.parse('2020-01-07')
-      expect(course.end_date).to eq Date.parse('2020-03-01')
-      expect(course.class_days.count).to eq 24
-      expect(course.class_days.last.sunday?).to eq true
-    end
+    code_review_params << { title: "Code Review #{cr_num+1}", week: cr_num+1, filename: "example_code_review", submissions_not_required: attributes[:submissions_not_required], always_visible: attributes[:always_visible], objectives: objectives }
   end
+  code_review_params
+end
 
-  describe 'calculates course start and end times today' do
-    it '#start_time_today' do
-      course = FactoryBot.create(:portland_course, start_time: '8:00 AM')
-      travel_to course.start_date do
-        expect(course.start_time_today).to eq Time.zone.now.beginning_of_day + 8.hours
-      end
-    end
+def class_times_pt
+  { 'Sunday' => '9:00-17:00', 'Monday' => '18:00-21:00', 'Tuesday' => '18:00-21:00', 'Wednesday' => '18:00-21:00' }
+end
 
-    it '#start_time_today with leeway' do
-      course = FactoryBot.create(:portland_course, start_time: '8:00 AM')
-      travel_to course.start_date do
-        expect(course.start_time_today(15)).to eq Time.zone.now.beginning_of_day + 8.hours - 15.minutes
-      end
-    end
-
-    it '#end_time_today' do
-      course = FactoryBot.create(:portland_course, end_time: '5:00 PM')
-      travel_to course.start_date do
-        expect(course.end_time_today).to eq Time.zone.now.beginning_of_day + 17.hours
-      end
-    end
-
-    it '#end_time_today with leeway' do
-      course = FactoryBot.create(:portland_course, end_time: '5:00 PM')
-      travel_to course.start_date do
-        expect(course.end_time_today(30)).to eq Time.zone.now.beginning_of_day + 17.hours + 30.minutes
-      end
-    end
-  end
-
-  describe 'auto-add code reviews based on layout file' do
-    it 'when no code reviews' do
-      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n"})
-      course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
-      expect(course.code_reviews.count).to eq 0
-    end
-
-    it 'for full-time course with 1 code review with 1 objective' do
-      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1\n"})
-      allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
-      course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
-      expect(course.code_reviews.count).to eq 1
-      expect(course.code_reviews.first.objectives.count).to eq 1
-      expect(course.code_reviews.first.visible_date).to eq Date.parse('2017-03-31').beginning_of_day + 8.hours
-      expect(course.code_reviews.first.due_date).to eq Date.parse('2017-03-31').beginning_of_day + 17.hours
-    end
-
-    it 'for full-time course with 2 code reviews with 1 and 2 objectives' do
-      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1\n- :title: Second CR\n  :week: 4\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1 for second cr\n  - Test objective 2 for second cr\n"})
-      allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
-      course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
-      expect(course.code_reviews.count).to eq 2
-      expect(course.code_reviews.first.objectives.count).to eq 1
-      expect(course.code_reviews.last.objectives.count).to eq 2
-      expect(course.code_reviews.first.visible_date).to eq Date.parse('2017-03-31').beginning_of_day + 8.hours
-      expect(course.code_reviews.first.due_date).to eq Date.parse('2017-03-31').beginning_of_day + 17.hours
-      expect(course.code_reviews.last.visible_date).to eq Date.parse('2017-04-07').beginning_of_day + 8.hours
-      expect(course.code_reviews.last.due_date).to eq Date.parse('2017-04-07').beginning_of_day + 17.hours
-    end
-
-    it 'for part-time course' do
-      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1\n"})
-      allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
-      course = FactoryBot.create(:part_time_course, class_days: [], start_date: Date.parse('2017-03-14'), layout_file_path: 'example_course_layout_path')
-      expect(course.code_reviews.count).to eq 1
-      expect(course.code_reviews.first.objectives.count).to eq 1
-      expect(course.code_reviews.first.visible_date).to eq Date.parse('2017-03-30').beginning_of_day + 17.hours
-      expect(course.code_reviews.first.due_date).to eq Date.parse('2017-04-06').beginning_of_day + 17.hours
-    end
-
-    it 'for code review where submissions not required' do
-      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: true\n  :always_visible: false\n  :objectives:\n  - Test objective 1\n"})
-      allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
-      course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
-      expect(course.code_reviews.first.submissions_not_required).to eq true
-    end
-
-    it 'for code review that should always be visible to students' do
-      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: true\n  :objectives:\n  - Test objective 1\n"})
-      allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
-      course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
-      expect(course.code_reviews.first.visible_date).to eq nil
-      expect(course.code_reviews.first.due_date).to eq nil
-    end
-
-    it 'adding code reviews to existing course' do
-      course = FactoryBot.create(:course)
-      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: true\n  :objectives:\n  - Test objective 1\n"})
-      allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
-      course.update(layout_file_path: 'example_course_layout_path')
-      expect(course.code_reviews.count).to eq 1
-    end
-
-    it 'adding only additional code reviews to existing course' do
-      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: true\n  :objectives:\n  - Test objective 1\n"})
-      allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
-      course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
-      expect(course.code_reviews.count).to eq 1
-      course.update(layout_file_path: nil)
-      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1\n- :title: Second CR\n  :week: 4\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1 for second cr\n  - Test objective 2 for second cr\n"})
-      course.update(layout_file_path: 'example_course_layout_path')
-      expect(course.code_reviews.count).to eq 2
-    end
-
-    it 'does not add code reviews if layout file path not changed' do
-      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: true\n  :objectives:\n  - Test objective 1\n"})
-      allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
-      course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
-      expect(course.code_reviews.count).to eq 1
-      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n- :title: First CR\n  :week: 3\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1\n- :title: Second CR\n  :week: 4\n  :filename: example_code_review\n  :submissions_not_required: false\n  :always_visible: false\n  :objectives:\n  - Test objective 1 for second cr\n  - Test objective 2 for second cr\n"})
-      course.update(layout_file_path: 'example_course_layout_path')
-      expect(course.code_reviews.count).to eq 1
-    end
-  end
+def class_times_ft
+  { 'Monday' => '8:00-17:00', 'Tuesday' => '8:00-17:00', 'Wednesday' => '8:00-17:00', 'Thursday' => '8:00-17:00', 'Friday' => '8:00-17:00' }
 end

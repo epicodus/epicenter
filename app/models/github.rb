@@ -11,6 +11,15 @@ class Github
     end
   end
 
+  def self.get_layout_params(layout_file_path)
+    response = get_content(layout_file_path)
+    if response[:error]
+      throw(:abort)
+    else
+      YAML.load(response[:content])
+    end
+  end
+
   def self.update_code_reviews(params)
     update_modified_code_reviews(params[:repo], params[:modified]) if params[:modified].try(:any?)
     update_removed_code_reviews(params[:repo], params[:removed]) if params[:removed].try(:any?)

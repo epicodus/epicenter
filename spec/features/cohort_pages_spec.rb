@@ -87,8 +87,8 @@ feature 'creating a cohort' do
     end
 
     scenario 'from layout file' do
-      allow(Github).to receive(:get_content).with('example_cohort_layout_path').and_return({:content=>"---\n:track: Part-Time Intro to Programming\n:start_time: 5:30 PM\n:end_time: 8:30 PM\n:course_layout_files:\n- example_course_layout_path\n"})
-      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n"})
+      allow(Github).to receive(:get_layout_params).with('example_cohort_layout_path').and_return({ track: 'Part-Time Intro to Programming', course_layout_files: ['example_course_layout_path'] })
+      allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return({ part_time: true, number_of_days: 23, class_times: { 'Sunday' => '9:00-17:00', 'Monday' => '18:00-21:00', 'Tuesday' => '18:00-21:00', 'Wednesday' => '18:00-21:00' }, code_reviews: [] })
       visit new_cohort_path
       select office.name, from: 'Office'
       select track.description, from: 'Track'

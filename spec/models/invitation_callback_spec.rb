@@ -32,7 +32,7 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
     end
 
     it 'raises error if cohort not found in Epicenter' do
-      FactoryBot.create(:track)
+      FactoryBot.create(:track, description: 'Ruby/Rails')
       expect { InvitationCallback.new(email: 'example-invalid-cohort@example.com') }.to raise_error(CrmError, "Cohort not found in Epicenter")
     end
   end
@@ -135,6 +135,52 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
     end
   end
 
+  context 'for part-time full-stack students' do
+    let!(:cohort) { FactoryBot.create(:part_time_c_react_cohort, start_date: Date.parse('2000-01-03')) }
+
+    describe 'creates epicenter account' do
+      before do
+        InvitationCallback.new(email: 'example-part-time-full-stack@example.com')
+      end
+
+      it 'sets student name' do
+        student = Student.find_by(email: 'example-part-time-full-stack@example.com')
+        expect(student.name).to eq 'THIS LEAD IS USED FOR TESTING PURPOSES. PLEASE DO NOT DELETE.'
+      end
+
+      it 'sets ending cohort' do
+        student = Student.find_by(email: 'example-part-time-full-stack@example.com')
+        expect(student.ending_cohort).to eq cohort
+      end
+
+      it 'sets cohort' do
+        student = Student.find_by(email: 'example-part-time-full-stack@example.com')
+        expect(student.cohort).to eq cohort
+      end
+
+      it 'sets starting cohort' do
+        student = Student.find_by(email: 'example-part-time-full-stack@example.com')
+        expect(student.starting_cohort).to eq cohort
+      end
+
+      it 'assigns correct courses' do
+        student = Student.find_by(email: 'example-part-time-full-stack@example.com')
+        expect(student.courses.count).to eq 4
+        expect(student.courses.first).to eq cohort.courses.first
+      end
+
+      it 'assigns office' do
+        student = Student.find_by(email: 'example-part-time-full-stack@example.com')
+        expect(student.office).to eq cohort.courses.first.office
+      end
+
+      it 'does not assign payment plan' do
+        student = Student.find_by(email: 'example-part-time-full-stack@example.com')
+        expect(student.plan).to eq nil
+      end
+    end
+  end
+
   context 'creates Epicenter account for Fidgetech students' do
     let!(:fidgetech_cohort) { FactoryBot.create(:fidgetech_cohort) }
     let!(:special_plan) {FactoryBot.create(:special_plan) }
@@ -161,7 +207,7 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
 
       it 'sets starting cohort' do
         student = Student.find_by(email: 'example-fidgetech@example.com')
-        expect(student.starting_cohort).to eq fidgetech_cohort
+        expect(student.parttime_cohort).to eq fidgetech_cohort
       end
 
       it 'assigns correct course' do

@@ -96,15 +96,7 @@ private
   end
 
   def track
-    if cohort_applied.include? 'Part-Time JS/React'
-      Track.find_by(description: 'Part-Time JS/React')
-    elsif cohort_applied.include? 'Part-Time Intro to Programming'
-      Track.find_by(description: 'Part-Time Intro to Programming')
-    elsif cohort_applied.include? 'Special'
-      Track.find_by(description: 'C#/React')
-    else
-      Track.find_by(description: cohort_applied.split[4]) || CrmLead.raise_error("Track not found in Epicenter")
-    end
+    Track.find_by(description: cohort_applied.split(/PDX|SEA|WEB/).last.strip) || CrmLead.raise_error("Track not found in Epicenter")
   end
 
   def parttime?

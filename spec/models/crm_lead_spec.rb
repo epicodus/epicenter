@@ -109,7 +109,7 @@ describe CrmLead, :dont_stub_crm, :vcr do
     end
   end
 
-  describe '#update_internship_class' do
+  describe '#update_internship_class', :dont_stub_update_internship_class do
     let!(:student) { FactoryBot.create(:student, email: "example@example.com", courses: []) }
 
     it 'updates internship class field in CRM' do

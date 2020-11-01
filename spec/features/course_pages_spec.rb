@@ -35,8 +35,6 @@ feature 'creating a course' do
         select admin.current_course.language.name, from: 'Language'
         select admin.current_course.office.name, from: 'Office'
         select admin.name, from: 'Teacher'
-        fill_in 'Start time', with: '8:00 AM'
-        fill_in 'End time', with: '5:00 PM'
         find('td', text: 16).click
         find('td', text: 19).click
         click_on 'Create Course'
@@ -97,19 +95,10 @@ feature 'editing a course' do
       expect(page).to have_content "Edit #{course.description}"
     end
 
-    scenario 'with invalid input' do
-      visit edit_course_path(course)
-      fill_in 'Start time', with: ''
-      click_on 'Update Course'
-      expect(page).to have_content "can't be blank"
-    end
-
     scenario 'with valid input' do
       visit edit_course_path(course)
       select admin.current_course.language.name, from: 'Language'
       select admin.current_course.office.name, from: 'Office'
-      fill_in 'Start time', with: '8:00 AM'
-      fill_in 'End time', with: '5:00 PM'
       find('#course_class_days', visible: false).set "2015-09-06,2015-09-07,2015-09-08"
       click_on 'Update Course'
       expect(page).to have_content "has been updated"

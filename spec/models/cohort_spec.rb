@@ -45,43 +45,39 @@ describe Cohort do
     let(:admin) { FactoryBot.create(:admin) }
     let(:track) { FactoryBot.create(:part_time_track) }
 
-    it 'returns an error when unable to retrieve layout file from Github' do
-      allow(Github).to receive(:get_content).and_return({error: true})
-      office = admin.current_course.office
-      cohort = Cohort.new(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-14'), layout_file_path: 'example_cohort_layout_path')
-      expect { cohort.save }.to raise_error UncaughtThrowError
-    end
-
     it 'creates a part-time intro cohort and course from layout file' do
-      allow(Github).to receive(:get_content).with('example_cohort_layout_path').and_return({:content=>"---\n:track: Part-Time Intro to Programming\n:start_time: 5:30 PM\n:end_time: 8:30 PM\n:course_layout_files:\n- example_course_layout_path\n"})
-      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n"})
+      allow(Github).to receive(:get_layout_params).with('example_cohort_layout_path').and_return cohort_layout_params_helper(track: 'Part-Time Intro to Programming', number_of_courses: 1)
+      allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(part_time: true, number_of_days: 23)
       office = admin.current_course.office
-      cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-14'), layout_file_path: 'example_cohort_layout_path')
-      expect(cohort.description).to eq "2017-03-14 to 2017-06-22 #{office.short_name} Part-Time Intro to Programming"
+      cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2021-01-04'), layout_file_path: 'example_cohort_layout_path')
+      expect(cohort.description).to eq "2021-01-04 to 2021-02-10 #{office.short_name} Part-Time Intro to Programming"
       expect(cohort.office).to eq office
       expect(cohort.track).to eq track
       expect(cohort.admin).to eq admin
-      expect(cohort.start_date).to eq Date.parse('2017-03-14')
+      expect(cohort.start_date).to eq Date.parse('2021-01-04')
       expect(cohort.courses.count).to eq 1
       expect(cohort.courses.first.language).to eq track.languages.first
     end
   end
 
-  describe 'creating a part-time js/react cohort from layout file' do
+  describe 'creating a part-time full-stack cohort from layout file' do
     let(:admin) { FactoryBot.create(:admin) }
-    let(:track) { FactoryBot.create(:part_time_js_react_track) }
+    let(:track) { FactoryBot.create(:part_time_c_react_track) }
 
-    it 'creates a part-time js/react cohort and courses' do
-      allow(Github).to receive(:get_content).with('example_cohort_layout_path').and_return({:content=>"---\n:track: Part-Time Intro to Programming\n:start_time: 5:30 PM\n:end_time: 8:30 PM\n:course_layout_files:\n- example_course_layout_path\n- example_course_layout_path\n- example_course_layout_path\n"})
-      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n"})
+    it 'creates a part-time c/react cohort and courses' do
+      allow(Github).to receive(:get_layout_params).with('example_cohort_layout_path').and_return cohort_layout_params_helper(track: 'Part-Time C#/React', number_of_courses: 4)
+      allow(Github).to receive(:get_layout_params).with('example_course_layout_path_1').and_return course_layout_params_helper(part_time: true, number_of_days: 23)
+      allow(Github).to receive(:get_layout_params).with('example_course_layout_path_2').and_return course_layout_params_helper(part_time: true, number_of_days: 32)
+      allow(Github).to receive(:get_layout_params).with('example_course_layout_path_3').and_return course_layout_params_helper(part_time: true, number_of_days: 52)
+      allow(Github).to receive(:get_layout_params).with('example_course_layout_path_4').and_return course_layout_params_helper(part_time: true, number_of_days: 53)
       office = admin.current_course.office
-      cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2020-01-07'), layout_file_path: 'example_cohort_layout_path')
-      expect(cohort.description).to eq "2020-01-07 to 2020-06-14 #{office.short_name} Part-Time JS/React"
+      cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2021-01-04'), layout_file_path: 'example_cohort_layout_path')
+      expect(cohort.description).to eq "2021-01-04 to 2021-10-10 #{office.short_name} Part-Time C#/React"
       expect(cohort.office).to eq office
       expect(cohort.track).to eq track
       expect(cohort.admin).to eq admin
-      expect(cohort.start_date).to eq Date.parse('2020-01-07')
-      expect(cohort.courses.count).to eq 3
+      expect(cohort.start_date).to eq Date.parse('2021-01-04')
+      expect(cohort.courses.count).to eq 4
       expect(cohort.courses.first.language).to eq track.languages.first
     end
   end
@@ -90,39 +86,27 @@ describe Cohort do
     let(:admin) { FactoryBot.create(:admin) }
     let(:track) { FactoryBot.create(:track) }
 
-    before do
-      allow(Github).to receive(:get_content).with('example_cohort_layout_path').and_return({:content=>"---\n:track: Part-Time Intro to Programming\n:start_time: 5:30 PM\n:end_time: 8:30 PM\n:course_layout_files:\n- example_course_layout_path\n- example_course_layout_path\n- example_course_layout_path\n- example_course_layout_path\n- example_internship_layout_path\n"})
-      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n"})
-      allow(Github).to receive(:get_content).with('example_internship_layout_path').and_return({:content=>"---\n"})
-    end
-
     it 'creates a cohort with classes' do
+      allow(Github).to receive(:get_layout_params).with('example_cohort_layout_path').and_return cohort_layout_params_helper(track: 'C#/React', number_of_courses: 5)
+      allow(Github).to receive(:get_layout_params).with('example_course_layout_path_1').and_return course_layout_params_helper(number_of_days: 15)
+      allow(Github).to receive(:get_layout_params).with('example_course_layout_path_2').and_return course_layout_params_helper(number_of_days: 20)
+      allow(Github).to receive(:get_layout_params).with('example_course_layout_path_3').and_return course_layout_params_helper(number_of_days: 35)
+      allow(Github).to receive(:get_layout_params).with('example_course_layout_path_4').and_return course_layout_params_helper(number_of_days: 30)
+      allow(Github).to receive(:get_layout_params).with('example_course_layout_path_5').and_return course_layout_params_helper(number_of_days: 35, internship: true)
       office = admin.current_course.office
-      cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-13'), layout_file_path: 'example_cohort_layout_path')
-      expect(cohort.description).to eq "2017-03-13 to 2017-09-15 #{office.short_name} #{track.description}"
+      cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2021-01-04'), layout_file_path: 'example_cohort_layout_path')
+      expect(cohort.description).to eq "2021-01-04 to 2021-07-09 #{office.short_name} #{track.description}"
       expect(cohort.office).to eq office
       expect(cohort.track).to eq track
       expect(cohort.admin).to eq admin
-      expect(cohort.start_date).to eq Date.parse('2017-03-13')
+      expect(cohort.start_date).to eq Date.parse('2021-01-04')
       expect(cohort.courses.count).to eq 5
-      expect(cohort.courses[0].start_date).to eq Date.parse('2017-03-13')
-      expect(cohort.courses[1].start_date).to eq Date.parse('2017-04-17')
-      expect(cohort.courses[2].start_date).to eq Date.parse('2017-05-22')
-      expect(cohort.courses[3].start_date).to eq Date.parse('2017-06-26')
-      expect(cohort.courses[4].start_date).to eq Date.parse('2017-07-31')
-      expect(cohort.courses[4].track).to eq nil
-    end
-
-    it 'uses existing internship course when creating second cohort for same office & dates' do
-      office = admin.current_course.office
-      admin2 = FactoryBot.create(:admin, current_course: admin.current_course)
-      track2 = FactoryBot.create(:track)
-      cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2017-03-13'), layout_file_path: 'example_cohort_layout_path')
-      cohort2 = Cohort.create(track: track2, admin: admin2, office: office, start_date: Date.parse('2017-03-13'), layout_file_path: 'example_cohort_layout_path')
-      expect(cohort.courses.count).to eq 5
-      expect(cohort2.courses.count).to eq 5
-      expect(cohort.courses.last).to eq cohort2.courses.last
-      expect(cohort.courses.last.track).to eq nil
+      expect(cohort.courses[0].start_date).to eq Date.parse('2021-01-04')
+      expect(cohort.courses[1].start_date).to eq Date.parse('2021-01-25')
+      expect(cohort.courses[2].start_date).to eq Date.parse('2021-02-22')
+      expect(cohort.courses[3].start_date).to eq Date.parse('2021-04-12')
+      expect(cohort.courses[4].start_date).to eq Date.parse('2021-05-24')
+      expect(cohort.courses[4].track).to eq track
     end
   end
 
@@ -132,9 +116,8 @@ describe Cohort do
     let(:admin) { FactoryBot.create(:admin) }
 
     before do
-      allow(Github).to receive(:get_content).with('example_cohort_layout_path').and_return({:content=>"---\n:track: Part-Time Intro to Programming\n:start_time: 5:30 PM\n:end_time: 8:30 PM\n:course_layout_files:\n- example_course_layout_path\n"})
-      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n"})
-      allow(Github).to receive(:get_content).with('example_internship_layout_path').and_return({:content=>"---\n"})
+      allow(Github).to receive(:get_layout_params).with('example_cohort_layout_path').and_return cohort_layout_params_helper(track: 'Part-Time Intro to Programming', number_of_courses: 1)
+      allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(part_time: true, number_of_days: 23)
     end
 
     it 'sets cohort end date when adding courses at same time as cohort creation' do
@@ -156,22 +139,36 @@ describe Cohort do
       expect(cohort.end_date).to eq cohort.courses.order(:end_date).last.end_date
     end
   end
+end
 
-  describe 'get_nth_week_of_cohort' do
-    let(:cohort) { FactoryBot.create(:cohort, start_date: Date.parse('2018-07-30')) }
+# helpers
 
-    before do
-      allow(Github).to receive(:get_content).with('example_cohort_layout_path').and_return({:content=>"---\n:track: Part-Time Intro to Programming\n:start_time: 5:30 PM\n:end_time: 8:30 PM\n:course_layout_files:\n- example_course_layout_path\n"})
-      allow(Github).to receive(:get_content).with('example_course_layout_path').and_return({:content=>"---\n"})
-      allow(Github).to receive(:get_content).with('example_internship_layout_path').and_return({:content=>"---\n"})
-    end
-
-    it 'ignores single day holidays' do
-      expect(cohort.get_nth_week_of_cohort(5)).to eq Date.parse('2018-09-03')
-    end
-
-    it 'skips holiday weeks' do
-      expect(cohort.get_nth_week_of_cohort(16)).to eq Date.parse('2018-11-26')
+def cohort_layout_params_helper(attributes = {})
+  track = attributes[:track] || 'Part-Time Intro to Programming'
+  number_of_courses = attributes[:number_of_courses] || 1
+  course_layout_files = []
+  number_of_courses.times do |i|
+    if number_of_courses == 1
+      course_layout_files << 'example_course_layout_path'
+    else
+      course_layout_files << "example_course_layout_path_#{i+1}"
     end
   end
+  { track: track, course_layout_files: course_layout_files }
+end
+
+def course_layout_params_helper(attributes = {})
+  part_time = attributes[:part_time] || false
+  internship = attributes[:internship] || false
+  number_of_days = attributes[:number_of_days] || 15
+  class_times = part_time ? class_times_pt : class_times_ft
+  { part_time: part_time, internship: internship, number_of_days: number_of_days, class_times: class_times, code_reviews: [] }
+end
+
+def class_times_pt
+  { 'Sunday' => '9:00-17:00', 'Monday' => '18:00-21:00', 'Tuesday' => '18:00-21:00', 'Wednesday' => '18:00-21:00' }
+end
+
+def class_times_ft
+  { 'Monday' => '8:00-17:00', 'Tuesday' => '8:00-17:00', 'Wednesday' => '8:00-17:00', 'Thursday' => '8:00-17:00', 'Friday' => '8:00-17:00' }
 end

@@ -75,8 +75,7 @@ feature "viewing transcript & certificate" do
     end
 
     it "allows student to view their certificate if passed all code reviews", :stub_mailgun do
-      internship_language = FactoryBot.create(:internship_language)
-      course = FactoryBot.create(:past_course, language: internship_language)
+      course = FactoryBot.create(:past_course, internship_course: true)
       student = FactoryBot.create(:student, course: course)
       code_review = FactoryBot.create(:code_review, course: course)
       submission = FactoryBot.create(:submission, code_review: code_review, student: student)

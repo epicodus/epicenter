@@ -67,9 +67,8 @@ FactoryBot.define do
   end
 
   factory :course do
+    description { 'example course' }
     class_days { (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 4.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? } }
-    start_time { '8:00 AM' }
-    end_time { '5:00 PM' }
     association :office, factory: :philadelphia_office
     association :language, factory: :intro_language
 
@@ -99,45 +98,39 @@ FactoryBot.define do
     end
 
     factory :part_time_course do
-      start_time { '6:00 PM' }
-      end_time { '9:00 PM' }
-      association :language, factory: :evening_language
+      parttime { true }
+      association :language, factory: :intro_part_time_c_react_language
     end
 
-    factory :intro_part_time_js_react_course do
-      start_time { '6:00 PM' }
-      end_time { '9:00 PM' }
-      association :language, factory: :intro_part_time_js_react_language
+    factory :intro_part_time_c_react_course do
+      association :language, factory: :intro_part_time_c_react_language
     end
 
-    factory :js_part_time_js_react_course do
-      start_time { '6:00 PM' }
-      end_time { '9:00 PM' }
-      association :language, factory: :js_part_time_js_react_language
+    factory :js_part_time_c_react_course do
+      association :language, factory: :js_part_time_c_react_language
     end
 
-    factory :react_part_time_js_react_course do
-      start_time { '6:00 PM' }
-      end_time { '9:00 PM' }
-      association :language, factory: :react_part_time_js_react_language
+    factory :c_part_time_c_react_course do
+      association :language, factory: :c_part_time_c_react_language
+    end
+
+    factory :react_part_time_c_react_course do
+      association :language, factory: :react_part_time_c_react_language
     end
 
     factory :seattle_part_time_course do
-      start_time { '6:00 PM' }
-      end_time { '9:00 PM' }
-      association :language, factory: :evening_language
+      association :language, factory: :intro_part_time_c_react_language
       association :office, factory: :seattle_office
     end
 
     factory :portland_part_time_course do
-      start_time { '6:00 PM' }
-      end_time { '9:00 PM' }
-      association :language, factory: :evening_language
+      association :language, factory: :intro_part_time_c_react_language
       association :office, factory: :portland_office
     end
 
     factory :internship_course do
       description { 'internship course' }
+      internship_course { true }
       active { true }
       association :language, factory: :internship_language
     end
@@ -191,6 +184,7 @@ FactoryBot.define do
 
     factory :level4_course do
       office { nil }
+      internship_course { true }
       association :admin, factory: :admin_without_course
       association :language, factory: :internship_language
       class_days { (Date.parse('2017-07-31')..Date.parse('2017-09-15')).select { |day| day if !day.saturday? && !day.sunday? } }
@@ -230,18 +224,29 @@ FactoryBot.define do
     end
 
     factory :part_time_cohort do
-      description { '2000-01-03 to 2000-04-12 PDX Part-Time Intro to Programming' }
+      description { '2021-01-04 to 2021-02-14 PDX Part-Time Intro to Programming' }
       association :track, factory: :part_time_track
       before(:create) do |cohort|
         cohort.courses << build(:part_time_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 14.weeks + 2.days])
       end
     end
 
+    factory :part_time_c_react_cohort do
+      description { '2021-01-04 to 2021-10-10 PDX Part-Time C/React' }
+      association :track, factory: :part_time_c_react_track
+      before(:create) do |cohort|
+        cohort.courses << build(:intro_part_time_c_react_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
+        cohort.courses << build(:js_part_time_c_react_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
+        cohort.courses << build(:c_part_time_c_react_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
+        cohort.courses << build(:react_part_time_c_react_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
+      end
+    end
+
     factory :part_time_js_react_cohort do
-      description { '2020-01-07 to 2000-04-12 PDX Part-Time JS/React' }
+      description { '2021-01-04 to 2021-10-10 PDX Part-Time JS/React' }
       association :track, factory: :part_time_js_react_track
       before(:create) do |cohort|
-        cohort.courses << build(:js_part_time_js_react_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 2.days])
+        cohort.courses << build(:intro_part_time_c_react_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
       end
     end
 
@@ -298,65 +303,46 @@ FactoryBot.define do
     factory :intro_language do
       name { 'Intro' }
       level { 0 }
-      number_of_days { 24 }
-      skip_holiday_weeks { true }
-    end
-
-    factory :evening_language do
-      name { 'Evening' }
-      level { 0 }
-      number_of_days { 30 }
-      skip_holiday_weeks { true }
-      parttime { true }
     end
 
     factory :ruby_language do
       name { 'Ruby' }
       level { 1 }
-      number_of_days { 24 }
-      skip_holiday_weeks { true }
     end
 
     factory :js_language do
       name { 'JavaScript' }
       level { 2 }
-      number_of_days { 24 }
-      skip_holiday_weeks { true }
     end
 
     factory :rails_language do
       name { 'Rails' }
       level { 3 }
-      number_of_days { 24 }
-      skip_holiday_weeks { true }
     end
 
     factory :internship_language do
       name { 'Internship' }
       level { 4 }
-      number_of_days { 35 }
-      skip_holiday_weeks { false }
     end
 
-    factory :intro_part_time_js_react_language do
+    factory :intro_part_time_c_react_language do
       name { 'Intro (part-time track)' }
       level { 0 }
-      number_of_days { 9 }
-      skip_holiday_weeks { true }
     end
 
-    factory :js_part_time_js_react_language do
+    factory :js_part_time_c_react_language do
       name { 'JavaScript (part-time track)' }
       level { 1 }
-      number_of_days { 24 }
-      skip_holiday_weeks { true }
     end
 
-    factory :react_part_time_js_react_language do
-      name { 'React (part-time track)' }
+    factory :c_part_time_c_react_language do
+      name { 'Intro (part-time track)' }
       level { 2 }
-      number_of_days { 36 }
-      skip_holiday_weeks { true }
+    end
+
+    factory :react_part_time_c_react_language do
+      name { 'React (part-time track)' }
+      level { 3 }
     end
   end
 
@@ -416,11 +402,11 @@ FactoryBot.define do
 
     factory :upfront_plan do
       short_name { 'fulltime-upfront' }
-      name { 'Up-front Discount ($6,900 up-front)' }
-      close_io_description { '2018 - Up-front Discount ($6,900 up-front)' }
+      name { 'Up-front Discount ($7,800 up-front)' }
+      close_io_description { '2018 - Up-front Discount ($7,800 up-front)' }
       upfront { true }
-      upfront_amount { 6900_00 }
-      student_portion { 6900_00 }
+      upfront_amount { 7800_00 }
+      student_portion { 7800_00 }
     end
 
     factory :standard_plan_legacy do
@@ -457,16 +443,6 @@ FactoryBot.define do
       parttime { true }
       upfront_amount { 100_00 }
       student_portion { 100_00 }
-    end
-
-    factory :parttime_track_plan do
-      short_name { 'parttime-track' }
-      name { 'Part-Time Track Plan ($5400)' }
-      close_io_description { 'Part-Time Track Plan ($5400)' }
-      parttime { true }
-      upfront { true }
-      upfront_amount { 5400_00 }
-      student_portion { 5400_00 }
     end
 
     factory :special_plan do
@@ -689,9 +665,9 @@ FactoryBot.define do
     end
 
     factory :part_time_track_student_with_cohort do
-      association :plan, factory: :parttime_track_plan
+      association :plan, factory: :standard_plan
       before(:create) do |student|
-        cohort = create(:part_time_js_react_cohort)
+        cohort = create(:part_time_c_react_cohort)
         student.ending_cohort = cohort
         student.office = cohort.office
         student.course = cohort.courses.first
@@ -903,7 +879,18 @@ FactoryBot.define do
       description { 'Part-Time Intro to Programming' }
       before(:create) do |track|
         track.languages = []
-        track.languages << build(:evening_language)
+        track.languages << build(:intro_part_time_c_react_language)
+      end
+    end
+
+    factory :part_time_c_react_track do
+      description { 'Part-Time C#/React' }
+      before(:create) do |track|
+        track.languages = []
+        track.languages << build(:intro_part_time_c_react_language)
+        track.languages << build(:js_part_time_c_react_language)
+        track.languages << build(:c_part_time_c_react_language)
+        track.languages << build(:react_part_time_c_react_language)
       end
     end
 
@@ -911,9 +898,9 @@ FactoryBot.define do
       description { 'Part-Time JS/React' }
       before(:create) do |track|
         track.languages = []
-        track.languages << build(:intro_part_time_js_react_language)
-        track.languages << build(:js_part_time_js_react_language)
-        track.languages << build(:react_part_time_js_react_language)
+        track.languages << build(:intro_part_time_c_react_language)
+        track.languages << build(:js_part_time_c_react_language)
+        track.languages << build(:react_part_time_c_react_language)
       end
     end
   end

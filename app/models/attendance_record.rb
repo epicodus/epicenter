@@ -47,24 +47,14 @@ private
   def sign_in
     current_time = Time.zone.now.in_time_zone(student.course.office.time_zone)
     if self.tardy.nil?
-      if current_time.sunday?
-        class_late_time = "9:00 AM".in_time_zone(student.course.office.time_zone) + 16.minutes
-      else
-        class_late_time = student.course.start_time.in_time_zone(student.course.office.time_zone) + 16.minutes
-      end
-      self.tardy = current_time >= class_late_time
+      self.tardy = current_time >= student.course.start_time_today + 16.minutes
       self.left_early = true
     end
   end
 
   def sign_out
     current_time = Time.zone.now.in_time_zone(student.course.office.time_zone)
-    if current_time.sunday?
-      class_end_time = "3:00 PM".in_time_zone(student.course.office.time_zone)
-    else
-      class_end_time = student.course.end_time.in_time_zone(student.course.office.time_zone)
-    end
-    self.left_early = current_time < (class_end_time - 15.minutes) || current_time > (class_end_time + 31.minutes)
+    self.left_early = current_time < (student.course.end_time_today - 15.minutes) || current_time > (student.course.end_time_today + 31.minutes)
     self.signed_out_time = current_time
   end
 
