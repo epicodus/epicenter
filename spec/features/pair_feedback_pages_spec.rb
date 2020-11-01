@@ -145,13 +145,11 @@ feature 'Visiting the pair feedback index page' do
           expect(pair1_feedback.q1_response).to eq 1
           expect(pair1_feedback.q2_response).to eq 2
           expect(pair1_feedback.q3_response).to eq 3
-          expect(pair1_feedback.comments).to eq "#{pair.name} feedback"
           expect(pair2_feedback.student).to eq student
           expect(pair2_feedback.pair).to eq pair2
           expect(pair2_feedback.q1_response).to eq 1
           expect(pair2_feedback.q2_response).to eq 2
           expect(pair2_feedback.q3_response).to eq 3
-          expect(pair2_feedback.comments).to eq "#{pair2.name} feedback"
         end
       end
     end

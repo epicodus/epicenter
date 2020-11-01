@@ -314,10 +314,8 @@ class Student < User
       filtered_results = results.where("date between ? and ?", start_course.try(:start_date), start_course.try(:end_date))
     end
     if start_course && end_course && status == :absent
-      filtered_results = results.where("date between ? and ?", start_course.try(:start_date), end_course.try(:end_date))
       [0, total_number_of_course_days(start_course, end_course) - filtered_results.count].max
     elsif start_course && status == :absent
-      filtered_results = results.where("date between ? and ?", start_course.try(:start_date), start_course.try(:end_date))
       [0, start_course.number_of_days_since_start - filtered_results.count].max
     elsif start_course
       filtered_results.count
@@ -369,22 +367,30 @@ class Student < User
   end
 
   def calculate_starting_cohort
-    # 1st FT cohort ever enrolled in if exists
-    courses_with_withdrawn.fulltime_courses.first.try(:cohorts).try(:first)
+    # cohorts to include: FT,  PT full-stack
+    # cohorts to ignore: PT intro, PT JS/React
+    # include withdrawn courses
+    # 1st FT cohort or PT full-stack cohort ever enrolled in
+    courses_with_withdrawn.cirr_fulltime_courses.first.try(:cohorts).try(:first)
   end
 
   def calculate_current_cohort
-    # current or completed FT cohort if student enrolled in internship course
-    # always ignores withdrawn courses, cuz we're interested in *current* cohort
-    if courses.internship_courses.any?
-      fulltime_courses = courses.fulltime_courses.where.not(description: 'Internship Exempt')
-      last_unique_course = fulltime_courses.select { |course| course.cohorts.count == 1 }.last
-      last_unique_course.try(:cohorts).try(:first)
+    # cohorts to include: FT, PT full-stack
+    # cohorts to ignore: PT intro, PT JS/React
+    # ignore withdrawn courses
+    # current or last completed FT *or* PT full-stack cohort
+    # if FT student enrolled in internship course *or* PT full-stack student
+    if courses.internship_courses.any? || courses.parttime_full_stack_courses.any?
+      courses.cirr_fulltime_courses.select { |course| course.cohorts.count == 1 }.last.try(:cohorts).try(:first)
     end
   end
 
   def calculate_parttime_cohort
-    (courses.parttime_courses + courses.where(description: 'Fidgetech')).last.try(:cohorts).try(:first)
+    # cohorts to include: PT intro, PT JS/React
+    # cohorts to ignore: FT, PT full-stack
+    # ignore withdrawn courses
+    # current or last completed PT intro or PT JS/React cohort
+    courses.cirr_parttime_courses.last.try(:cohorts).try(:first)
   end
 
   def really_destroy
@@ -395,12 +401,8 @@ class Student < User
 private
 
   def total_number_of_course_days(start_course=nil, end_course=nil)
-    if start_course
-      filtered_courses = courses.where('start_date >= ? AND end_date <= ?', start_course.start_date, end_course.end_date)
-      filtered_courses.non_internship_courses.where.not(description: "* Placement Test").map(&:class_days).flatten.count
-    else
-      courses.non_internship_courses.map(&:class_days).flatten.count
-    end
+    filtered_courses = start_course.nil? ? courses : courses.where('start_date >= ? AND end_date <= ?', start_course.start_date, end_course.end_date)
+    filtered_courses.non_internship_courses.map(&:class_days).flatten.count
   end
 
   def days_since_start_of_program
@@ -460,7 +462,7 @@ private
   def assign_payment_plan
     if course.try(:description) == 'Fidgetech'
       self.plan = Plan.active.find_by(short_name: 'special-other')
-    elsif course.try(:parttime?) && !course.try(:language).try(:name).try(:downcase).try('include?', 'part-time track')
+    elsif course.try(:track).try(:description) == 'Part-Time Intro to Programming'
       self.plan = Plan.active.find_by(short_name: 'parttime-intro')
     end
   end

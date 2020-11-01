@@ -12,9 +12,8 @@ feature 'requesting a meeting' do
       expect(page).to have_content("I'd like to request a meeting with a teacher this week.")
     end
 
-    it 'sends email when explanation >= 50 characters', :js do
+    it 'sends email when explanation >= 50 characters' do
       allow(EmailJob).to receive(:perform_later).and_return({})
-      find('#teacher-meeting').set true
       fill_in 'teacher-meeting-explanation', with: '12345678901234567890123456789012345678901234567890'
       click_on 'Submit'
       expect(EmailJob).to have_received(:perform_later).with(
@@ -24,16 +23,6 @@ feature 'requesting a meeting' do
           :text => "12345678901234567890123456789012345678901234567890" }
       )
       expect(page).to have_content("Attendance")
-    end
-
-    it 'does not send email if explanation < 50 characters', :js do
-      find('#teacher-meeting').set true
-      fill_in 'teacher-meeting-explanation', with: 'short explanation'
-      click_on 'Submit'
-      wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoSuchAlertError
-      alert = wait.until { page.driver.browser.switch_to.alert }
-      alert.accept
-      expect(page).to_not have_content("Attendance")
     end
 
     it 'does not send email when not requested' do

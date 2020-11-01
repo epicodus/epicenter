@@ -14,9 +14,9 @@
             <strong class='text-primary'>You are signed in without a pair!</strong> Click <%= link_to 'here', sign_in_path, remote: true, id: 'attendance-change-pair-link' %> to log your pair.
           <% end %>
         <% end %>
-      <% elsif Time.zone.now < current_student.try(:course).try(:start_time_today, 30) %>
-        Sign in will be available at <%= current_student.try(:course).try(:start_time_today, 30).strftime('%l:%M %p') %>
-      <% elsif Time.zone.now > current_student.try(:course).try(:end_time_today) %>
+      <% elsif Time.zone.now < current_student.course.start_time_today - 30.minutes %>
+        Sign in will be available at <%= (current_student.course.start_time_today - 30.minutes).strftime('%l:%M %p') %>
+      <% elsif Time.zone.now > current_student.course.end_time_today %>
         Sign in is not available after class end time.
       <% else %>
         <%= link_to 'Sign in', sign_in_path, remote: true, id: 'attendance-sign-in-link' %>

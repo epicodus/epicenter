@@ -66,19 +66,17 @@ describe Enrollment do
   end
 
   describe 'updates cohorts only when changes' do
-    let(:track) { FactoryBot.create(:track) }
     let(:office) { FactoryBot.create(:portland_office) }
     let(:admin) { FactoryBot.create(:admin_without_course) }
-    let(:past_cohort) { FactoryBot.create(:full_cohort, start_date: (Date.today - 1.year).beginning_of_week, office: office, admin: admin, track: track) }
-    let(:current_cohort) { FactoryBot.create(:full_cohort, start_date: Date.today.beginning_of_week - 1.week, office: office, admin: admin, track: track) }
-    let(:future_cohort) { FactoryBot.create(:full_cohort, start_date: (Date.today + 1.year).beginning_of_week, office: office, admin: admin, track: track) }
-    let(:part_time_cohort) { FactoryBot.create(:part_time_cohort, start_date: Date.today.beginning_of_week - 1.week, office: office, admin: admin, track: track) }
+    let(:past_cohort) { FactoryBot.create(:full_cohort, start_date: (Date.today - 1.year).beginning_of_week, office: office, admin: admin, track: FactoryBot.create(:track)) }
+    let(:current_cohort) { FactoryBot.create(:full_cohort, start_date: Date.today.beginning_of_week - 1.week, office: office, admin: admin, track: FactoryBot.create(:track)) }
+    let(:future_cohort) { FactoryBot.create(:full_cohort, start_date: (Date.today + 1.year).beginning_of_week, office: office, admin: admin, track: FactoryBot.create(:track)) }
+    let(:part_time_cohort) { FactoryBot.create(:part_time_cohort, start_date: Date.today.beginning_of_week - 1.week, office: office, admin: admin, track: FactoryBot.create(:track, description: 'Part-Time Intro to Programming')) }
     let(:non_internship_course) { FactoryBot.create(:course, office: office) }
     let!(:student) { FactoryBot.create(:student_without_courses, office: office) }
 
     context 'adding new enrollments' do
       it 'updates starting & current cohort when adding full-time course' do
-        allow_any_instance_of(CrmLead).to receive(:update_internship_class)
         expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['COHORT_STARTING'] => current_cohort.description, Rails.application.config.x.crm_fields['COHORT_CURRENT'] => current_cohort.description, Rails.application.config.x.crm_fields['COHORT_PARTTIME'] => nil })
         student.course = current_cohort.courses.last
         expect(student.starting_cohort).to eq current_cohort
@@ -87,7 +85,7 @@ describe Enrollment do
         expect(student.ending_cohort).to eq current_cohort
       end
 
-      it 'updates parttime cohort when adding part-time course' do
+      it 'updates parttime cohort when adding part-time intro course' do
         expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['COHORT_STARTING'] => nil, Rails.application.config.x.crm_fields['COHORT_CURRENT'] => nil, Rails.application.config.x.crm_fields['COHORT_PARTTIME'] => part_time_cohort.description })
         student.course = part_time_cohort.courses.first
         expect(student.starting_cohort).to eq nil
@@ -97,7 +95,6 @@ describe Enrollment do
       end
 
       it 'updates starting & current cohort when adding full-time course after part-time course' do
-        allow_any_instance_of(CrmLead).to receive(:update_internship_class)
         student.course = part_time_cohort.courses.first
         expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['COHORT_STARTING'] => current_cohort.description, Rails.application.config.x.crm_fields['COHORT_CURRENT'] => current_cohort.description, Rails.application.config.x.crm_fields['COHORT_PARTTIME'] => part_time_cohort.description })
         student.course = current_cohort.courses.last
@@ -108,7 +105,6 @@ describe Enrollment do
       end
 
       it 'updates only current cohort and parttime cohort when adding part-time course after withdrawn full-time course' do
-        allow_any_instance_of(CrmLead).to receive(:update_internship_class)
         student.courses = current_cohort.courses
         student.attendance_records.create(date: student.course.start_date)
         student.enrollments.destroy_all
@@ -123,7 +119,6 @@ describe Enrollment do
 
       it 'updates only starting cohort when adding second full-time course from earlier cohort' do
         student.courses = current_cohort.courses
-        allow_any_instance_of(CrmLead).to receive(:update_internship_class)
         expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['COHORT_STARTING'] => past_cohort.description, Rails.application.config.x.crm_fields['COHORT_CURRENT'] => current_cohort.description, Rails.application.config.x.crm_fields['COHORT_PARTTIME'] => nil })
         student.course = past_cohort.courses.first
         expect(student.starting_cohort).to eq past_cohort
@@ -134,7 +129,6 @@ describe Enrollment do
 
       it 'updates only current cohort when adding second full-time course with later start date' do
         student.courses = current_cohort.courses
-        allow_any_instance_of(CrmLead).to receive(:update_internship_class)
         expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['COHORT_STARTING'] => current_cohort.description, Rails.application.config.x.crm_fields['COHORT_CURRENT'] => future_cohort.description, Rails.application.config.x.crm_fields['COHORT_PARTTIME'] => nil })
         student.course = future_cohort.courses.last
         expect(student.starting_cohort).to eq current_cohort
@@ -194,7 +188,6 @@ describe Enrollment do
 
       it 'updates current cohort only when just archiving enrollment' do
         student.courses = [past_cohort.courses.last]
-        allow_any_instance_of(CrmLead).to receive(:update_internship_class)
         expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['COHORT_STARTING'] => past_cohort.description, Rails.application.config.x.crm_fields['COHORT_CURRENT'] => nil, Rails.application.config.x.crm_fields['COHORT_PARTTIME'] => nil })
         student.enrollments.destroy_all
         expect(student.starting_cohort).to eq past_cohort
@@ -252,7 +245,7 @@ describe Enrollment do
     end
   end
 
-  describe 'internship class in CRM' do
+  describe 'internship class in CRM', :dont_stub_update_internship_class do
     let(:student) { FactoryBot.create(:student, courses: []) }
     let(:course) { FactoryBot.create(:course) }
     let(:internship_course) { FactoryBot.create(:internship_course) }

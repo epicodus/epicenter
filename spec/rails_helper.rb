@@ -48,9 +48,12 @@ RSpec.configure do |config|
       allow(Mailgun::Client).to receive(:new) { mailgun_client }
     end
     StripeMock.start if example.metadata[:stripe_mock]
+    allow(Webhook).to receive(:send) unless example.metadata[:dont_stub_webhook]
     allow_any_instance_of(CrmLead).to receive(:lead) unless example.metadata[:dont_stub_crm]
     allow_any_instance_of(CrmLead).to receive(:update) unless example.metadata[:dont_stub_crm]
-    allow(Webhook).to receive(:send) unless example.metadata[:dont_stub_webhook]
+    allow_any_instance_of(CrmLead).to receive(:update_internship_class) unless example.metadata[:dont_stub_update_internship_class]
+    allow_any_instance_of(Course).to receive(:the_start_time).and_return('8:00') unless example.metadata[:dont_stub_class_times]
+    allow_any_instance_of(Course).to receive(:the_end_time).and_return('17:00') unless example.metadata[:dont_stub_class_times]
   end
   config.after(:each) do |example|
     StripeMock.stop if example.metadata[:stripe_mock]

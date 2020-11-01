@@ -1,4 +1,6 @@
 class Language < ApplicationRecord
+  default_scope { order(:level) }
+
   validates :name, presence: true
   validates :level, presence: true
 
