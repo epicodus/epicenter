@@ -154,7 +154,7 @@ def cohort_layout_params_helper(attributes = {})
       course_layout_files << "example_course_layout_path_#{i+1}"
     end
   end
-  { track: track, course_layout_files: course_layout_files }
+  { 'track' => track, 'course_layout_files' => course_layout_files }
 end
 
 def course_layout_params_helper(attributes = {})
@@ -162,7 +162,7 @@ def course_layout_params_helper(attributes = {})
   internship = attributes[:internship] || false
   number_of_days = attributes[:number_of_days] || 15
   class_times = part_time ? class_times_pt : class_times_ft
-  { part_time: part_time, internship: internship, number_of_days: number_of_days, class_times: class_times, code_reviews: [] }
+  { 'part_time' => part_time, 'internship' => internship, 'number_of_days' => number_of_days, 'class_times' => class_times, 'code_reviews' => [] }
 end
 
 def class_times_pt

@@ -205,7 +205,7 @@ describe CodeReview do
     end
 
     it 'returns true if on code review date at class start time for full-time course' do
-      travel_to code_review.visible_date.in_time_zone(student.course.office.time_zone).beginning_of_day + 8.hours do
+      travel_to code_review.visible_date.beginning_of_day + 8.hours do
         expect(code_review.visible?(student)).to eq true
       end
     end

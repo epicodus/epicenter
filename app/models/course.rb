@@ -110,20 +110,20 @@ class Course < ApplicationRecord
     "#{description} (#{office.name})"
   end
 
-  def the_start_time(day = Time.zone.now.in_time_zone(office.time_zone).to_date)
+  def start_time(day = Time.zone.now.in_time_zone(office.time_zone).to_date)
     class_times.find_by(wday: day.wday).start_time
   end
 
-  def the_end_time(day = Time.zone.now.in_time_zone(office.time_zone).to_date)
+  def end_time(day = Time.zone.now.in_time_zone(office.time_zone).to_date)
     class_times.find_by(wday: day.wday).end_time
   end
 
   def start_time_today
-    the_start_time.in_time_zone(office.time_zone)
+    start_time.in_time_zone(office.time_zone)
   end
 
   def end_time_today
-    the_end_time.in_time_zone(office.time_zone)
+    end_time.in_time_zone(office.time_zone)
   end
 
   def in_session?
@@ -183,10 +183,10 @@ private
 
   def build_course
     course_params = Github.get_layout_params(layout_file_path)
-    self.parttime = course_params[:part_time]
-    self.internship_course = course_params[:internship]
-    set_class_times(class_times: course_params[:class_times])
-    set_class_days(number_of_days: course_params[:number_of_days], days_of_week: course_params[:class_times].keys)
+    self.parttime = course_params['part_time']
+    self.internship_course = course_params['internship']
+    set_class_times(class_times: course_params['class_times'])
+    set_class_days(number_of_days: course_params['number_of_days'], days_of_week: course_params['class_times'].keys)
     self.description = "#{start_date.try('strftime', '%Y-%m')} #{language.try(:name)}"
     self.description += " (#{track.try(:description)})" if internship_course?
   end
@@ -223,15 +223,15 @@ private
   end
 
   def build_code_reviews
-    code_review_params = Github.get_layout_params(layout_file_path)[:code_reviews] || []
+    code_review_params = Github.get_layout_params(layout_file_path)['code_reviews'] || []
     code_review_params.each do |params|
-      unless code_reviews.where(title: params[:title]).any?
-        title = params[:title]
-        filename = params[:filename]
-        submissions_not_required = params[:submissions_not_required]
-        always_visible = params[:always_visible]
-        objectives = params[:objectives]
-        week = params[:week]
+      unless code_reviews.where(title: params['title']).any?
+        title = params['title']
+        filename = params['filename']
+        submissions_not_required = params['submissions_not_required']
+        always_visible = params['always_visible']
+        objectives = params['objectives']
+        week = params['week']
         day = class_weeks[week-1].last
         if always_visible
           visible_date = nil

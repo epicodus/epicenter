@@ -657,7 +657,7 @@ def course_layout_params_helper(attributes = {})
   number_of_days = attributes[:number_of_days] || 15
   class_times = part_time ? class_times_pt : class_times_ft
   code_reviews = code_review_params_helper(number_of_code_reviews: attributes[:number_of_code_reviews] || 0, submissions_not_required: attributes[:submissions_not_required], always_visible: attributes[:always_visible])
-  { part_time: part_time, internship: internship, number_of_days: number_of_days, class_times: class_times, code_reviews: code_reviews }
+  { 'part_time' => part_time, 'internship' => internship, 'number_of_days' => number_of_days, 'class_times' => class_times, 'code_reviews' => code_reviews }
 end
 
 def code_review_params_helper(attributes)
@@ -667,7 +667,7 @@ def code_review_params_helper(attributes)
     (cr_num+1).times do |obj_num|
       objectives << "Test objective #{obj_num+1}"
     end
-    code_review_params << { title: "Code Review #{cr_num+1}", week: cr_num+1, filename: "example_code_review", submissions_not_required: attributes[:submissions_not_required], always_visible: attributes[:always_visible], objectives: objectives }
+    code_review_params << { 'title' => "Code Review #{cr_num+1}", 'week' => cr_num+1, 'filename' => "example_code_review", 'submissions_not_required' => attributes[:submissions_not_required], 'always_visible' => attributes[:always_visible], 'objectives' => objectives }
   end
   code_review_params
 end

@@ -58,11 +58,29 @@ FactoryBot.define do
     sequence(:title) { |n| "code_review #{n}" }
     course
     content { "test content" }
-    visible_date { DateTime.new(Date.today.year, Date.today.month, Date.today.day, 8, 0, 0) }
-    due_date { DateTime.new(Date.today.year, Date.today.month, Date.today.day, 17, 0, 0) }
+    visible_date { Time.zone.now.beginning_of_day + 8.hours }
+    due_date { Time.zone.now.beginning_of_day + 17.hours }
 
     before(:create) do |code_review|
       code_review.objectives << build(:objective)
+    end
+  end
+
+  factory :class_time do
+    wday { 1 }
+    start_time { '8:00' }
+    end_time { '17:00' }
+
+    factory :class_time_evening do
+      wday { 1 }
+      start_time { '18:00' }
+      end_time { '21:00' }
+    end
+
+    factory :class_time_sunday do
+      wday { 0 }
+      start_time { '9:00' }
+      end_time { '17:00' }
     end
   end
 
@@ -71,6 +89,24 @@ FactoryBot.define do
     class_days { (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 4.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? } }
     association :office, factory: :philadelphia_office
     association :language, factory: :intro_language
+
+    factory :course_with_class_times do
+      association :office, factory: :portland_office
+      before(:create) do |course|
+        5.times { |i| course.class_times << build(:class_time, wday: i+1) }
+      end
+    end
+
+    factory :pt_course_with_class_times do
+      parttime { true }
+      class_days { (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 5.weeks).end_of_week-4.days).select { |day| day if day.sunday? || day.monday? || day.tuesday? || day.wednesday? } }
+      association :office, factory: :portland_office
+      association :language, factory: :intro_part_time_c_react_language
+      before(:create) do |course|
+        course.class_times << build(:class_time_sunday)
+        3.times { |i| course.class_times << build(:class_time_evening, wday: i+1) }
+      end
+    end
 
     factory :portland_course do
       association :office, factory: :portland_office
