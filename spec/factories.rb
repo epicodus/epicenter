@@ -438,8 +438,8 @@ FactoryBot.define do
 
     factory :upfront_plan do
       short_name { 'fulltime-upfront' }
-      name { 'Up-front Discount ($7,800 up-front)' }
-      close_io_description { '2018 - Up-front Discount ($7,800 up-front)' }
+      name { 'Up-Front Discount ($7,800 up-front)' }
+      close_io_description { '2018 - Up-Front Discount ($7,800 up-front)' }
       upfront { true }
       upfront_amount { 7800_00 }
       student_portion { 7800_00 }
@@ -456,11 +456,11 @@ FactoryBot.define do
 
     factory :standard_plan do
       short_name { 'standard' }
-      name { 'Standard Plan ($100 then $8400)' }
-      close_io_description { '2018 - Standard Plan ($100 then $8400)' }
+      name { 'Standard Tuition ($100 then $8800)' }
+      close_io_description { '2018 - Standard Plan ($100 then $8800)' }
       standard { true }
       upfront_amount { 100_00 }
-      student_portion { 8500_00 }
+      student_portion { 8800_00 }
     end
 
     factory :loan_plan do
