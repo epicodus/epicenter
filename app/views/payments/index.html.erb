@@ -6,7 +6,9 @@
   <%= render 'students/student_nav' %>
 <% end %>
 
-<p class="text-primary">* Payments made with a credit or debit card will be charged a nonrefundable 3% processing fee.</p>
+<% unless @student.plan.nil? %>
+  <p class="text-primary">* Payments made with a credit or debit card will be charged a nonrefundable 3% processing fee.</p>
+<% end %>
 
 <%= render 'layouts/errors', object: @payment %>
 <% if @student.payments.present? %>
@@ -83,9 +85,9 @@
       <h1>Choose your payment plan:</h1>
       <br>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="panel panel-default">
-            <div class="panel-body">
+            <div class="panel-body payment-plan-details">
               <%= form_for @student do |f| %>
                 <%= f.hidden_field :plan_id, value: Plan.active.upfront.fulltime.first.id %>
                 <%= f.submit 'Up-Front Discount', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the up-front discount?" } %>
@@ -94,9 +96,9 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="panel panel-default">
-            <div class="panel-body">
+            <div class="panel-body payment-plan-details">
               <%= form_for @student do |f| %>
                 <%= f.hidden_field :plan_id, value: Plan.active.standard.first.id %>
                 <%= f.submit 'Standard Tuition', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the standard plan? This cannot be changed later, and you will not be able to receive the up-front discount." } %>
@@ -105,14 +107,13 @@
             </div>
           </div>
         </div>
-      <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <div class="panel panel-default">
-            <div class="panel-body">
+            <div class="panel-body payment-plan-details">
               <%= form_for @student do |f| %>
                 <%= f.hidden_field :plan_id, value: Plan.active.loan.first.id %>
                 <%= f.submit 'Loan/Payment Plan', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the loan plan? You need to be approved for your loan within one week of paying your deposit to fully reserve your seat." } %>
-                <p><br><strong>Loan/Payment Plan: $176.33/month (depending on terms)</strong><br>Pay $100 to reserve your seat in class. Before class starts, get approved with one of our financing partners, <a href="http://epicodus.skills.fund/" target=_blank>Skills Fund</a> and <a href="https://www.climbcredit.com/apply/epicodus" target=_blank>Climb</a>. See our <a href="https://www.epicodus.com/financial-aid/" target=_blank>financial aid</a> information for details.</p>
+                <p><br><strong>Loan/Payment Plan:</strong><br>Pay $100 to reserve your seat in class. Before class starts, get approved with one of our financing partners, <a href="http://epicodus.skills.fund/" target=_blank>Skills Fund</a> and <a href="https://www.climbcredit.com/apply/epicodus" target=_blank>Climb</a>. Pay as little as $0/month during class and as little as $176.33/month after graduating. See our <a href="https://www.epicodus.com/financial-aid/" target=_blank>financial aid</a> information for details.</p>
               <% end %>
             </div>
           </div>
@@ -122,10 +123,8 @@
     <br>
   <% elsif @student.upfront_payment_due? %>
     <%= render 'payments/upfront_payment_button' %>
-    <br>
+    <p>All payments will be made using your primary payment method.</p>
   <% end %>
-
-  <p>All payments will be made using your primary payment method.</p>
   <p>If you need help or have any questions regarding your payments, contact us.</p>
 <% elsif can?(:manage, Payment) && params[:action] != 'update' %>
 
