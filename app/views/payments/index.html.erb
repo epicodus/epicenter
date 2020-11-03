@@ -88,8 +88,8 @@
             <div class="panel-body">
               <%= form_for @student do |f| %>
                 <%= f.hidden_field :plan_id, value: Plan.active.upfront.fulltime.first.id %>
-                <%= f.submit 'Up-front discount', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the up-front discount?" } %>
-                <p><br>Pay a $7,800 deposit to reserve your seat in class. Pay $0 (zero dollars) after you are invited to continue in your fourth week of classes.</p>
+                <%= f.submit 'Up-Front Discount', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the up-front discount?" } %>
+                <p><br><strong>Up-Front Discount: $7,800</strong><br>Pay $7,800 to reserve your seat in class.</p>
               <% end %>
             </div>
           </div>
@@ -99,8 +99,8 @@
             <div class="panel-body">
               <%= form_for @student do |f| %>
                 <%= f.hidden_field :plan_id, value: Plan.active.standard.first.id %>
-                <%= f.submit 'Standard plan', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the standard plan? This cannot be changed later, and you will not be able to receive the up-front discount." } %>
-                <p><br>Pay a $100 deposit to reserve your seat in class. Pay $8,800 after you are invited to continue in your fourth week of classes, and before the end of your fifth week of classes.</p>
+                <%= f.submit 'Standard Tuition', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the standard plan? This cannot be changed later, and you will not be able to receive the up-front discount." } %>
+                <p><br><strong>Standard Tuition: $8,900</strong><br>Pay $100 to reserve your seat in class. Pay the remaining $8,800 before class starts.</p>
               <% end %>
             </div>
           </div>
@@ -111,19 +111,8 @@
             <div class="panel-body">
               <%= form_for @student do |f| %>
                 <%= f.hidden_field :plan_id, value: Plan.active.loan.first.id %>
-                <%= f.submit 'Loan', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the loan plan? You need to be approved for your loan within one week of paying your deposit to fully reserve your seat." } %>
-                <p><br>Pay a $100 deposit and take out a loan with one of our lending partners, <a href="http://epicodus.skills.fund/" target=_blank>Skills Fund</a> and <a href="https://www.climbcredit.com/apply/epicodus" target=_blank>Climb</a>. You need to be approved for your loan within one week of paying your deposit to fully reserve your seat. If you are approved before class starts, your loan is for the discounted rate of $7,700; if your loan is approved after, it is for the standard rate of $8,800. Be sure to read our <a href="https://www.epicodus.com/financial-aid/" target=_blank>information on financial aid</a>.</p>
-              <% end %>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <%= form_for @student do |f| %>
-                <%= f.hidden_field :plan_id, value: Plan.find_by(short_name: 'special-grant').id %>
-                <%= f.submit '3rd-party grant', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the 3rd-party grant plan? Your seat will not be fully reserved until we have documentation of your grant approval." } %>
-                <p><br>Pay a $100 deposit and pay some or all of your tuition balance with a third-party grant, such as unemployment retraining or veterans' VR&E. Your seat will not be fully reserved until you submit documentation of your grant approval to <a href="mailto:hi@epicodus.com">hi@epicodus.com</a>. If you are approved and submit all appropriate paperwork to Epicodus before class starts, your tuition balance is the discounted rate of $7,700; if you submit any necessary paperwork after class starts, your tuition balance is $8,800. Be sure to read our <a href="https://www.epicodus.com/financial-aid/" target=_blank>information on financial aid</a>.</p>
+                <%= f.submit 'Loan/Payment Plan', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the loan plan? You need to be approved for your loan within one week of paying your deposit to fully reserve your seat." } %>
+                <p><br><strong>Loan/Payment Plan: $176.33/month (depending on terms)</strong><br>Pay $100 to reserve your seat in class. Before class starts, get approved with one of our financing partners, <a href="http://epicodus.skills.fund/" target=_blank>Skills Fund</a> and <a href="https://www.climbcredit.com/apply/epicodus" target=_blank>Climb</a>. See our <a href="https://www.epicodus.com/financial-aid/" target=_blank>financial aid</a> information for details.</p>
               <% end %>
             </div>
           </div>

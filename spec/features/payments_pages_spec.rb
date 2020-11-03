@@ -79,7 +79,6 @@ feature 'Viewing payment index page' do
         let!(:upfront_plan) { FactoryBot.create(:upfront_plan) }
         let!(:standard_plan) { FactoryBot.create(:standard_plan) }
         let!(:loan_plan) { FactoryBot.create(:loan_plan) }
-        let!(:grant_plan) { FactoryBot.create(:grant_plan) }
         let(:student) { FactoryBot.create(:student_with_verified_bank_account, plan: nil) }
 
         before do
@@ -88,20 +87,19 @@ feature 'Viewing payment index page' do
         end
 
         it 'shows payment plan selection options' do
-          expect(page).to have_button 'Up-front discount'
-          expect(page).to have_button 'Standard plan'
+          expect(page).to have_button 'Up-Front Discount'
+          expect(page).to have_button 'Standard Tuition'
           expect(page).to have_button 'Loan'
-          expect(page).to have_button '3rd-party grant'
         end
 
         it 'shows correct payment button when upfront payment plan selected', :stripe_mock, :stub_mailgun do
-          click_on 'Up-front discount'
+          click_on 'Up-Front Discount'
           expect(page).to have_content 'Payment plan selected. Please make payment below.'
           expect(page).to have_button 'Charge $7,800.00'
         end
 
         it 'shows correct payment button when standard payment plan selected', :stripe_mock, :stub_mailgun do
-          click_on 'Standard plan'
+          click_on 'Standard Tuition'
           expect(page).to have_content 'Payment plan selected. Please make payment below.'
           expect(page).to have_button 'Charge $100.00'
         end
@@ -111,19 +109,12 @@ feature 'Viewing payment index page' do
           expect(page).to have_content 'Payment plan selected. Please make payment below.'
           expect(page).to have_button 'Charge $100.00'
         end
-
-        it 'shows correct payment button when 3rd-party grant payment plan selected', :stripe_mock, :stub_mailgun do
-          click_on '3rd-party grant'
-          expect(page).to have_content 'Payment plan selected. Please make payment below.'
-          expect(page).to have_button 'Charge $100.00'
-        end
       end
 
       context 'for part-time track student' do
         let!(:upfront_plan) { FactoryBot.create(:upfront_plan) }
         let!(:standard_plan) { FactoryBot.create(:standard_plan) }
         let!(:loan_plan) { FactoryBot.create(:loan_plan) }
-        let!(:grant_plan) { FactoryBot.create(:grant_plan) }
         let(:cohort) { FactoryBot.create(:part_time_c_react_cohort) }
         let(:student) { FactoryBot.create(:student_with_verified_bank_account, plan: nil, courses: []) }
 
@@ -134,14 +125,13 @@ feature 'Viewing payment index page' do
         end
 
         it 'shows payment plan selection options' do
-          expect(page).to have_button 'Up-front discount'
-          expect(page).to have_button 'Standard plan'
+          expect(page).to have_button 'Up-Front Discount'
+          expect(page).to have_button 'Standard Tuition'
           expect(page).to have_button 'Loan'
-          expect(page).to have_button '3rd-party grant'
         end
 
         it 'shows correct payment button when upfront payment plan selected', :stripe_mock, :stub_mailgun do
-          click_on 'Up-front discount'
+          click_on 'Up-Front Discount'
           expect(page).to have_content 'Payment plan selected. Please make payment below.'
           expect(page).to have_button 'Charge $7,800.00'
         end
