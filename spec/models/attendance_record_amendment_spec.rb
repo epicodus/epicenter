@@ -78,7 +78,7 @@ describe AttendanceRecordAmendment do
         FactoryBot.create(:attendance_record, student: student, date: Time.zone.now.to_date, tardy: true)
         attendance_record_amendment = AttendanceRecordAmendment.new(student_id: student.id, date: Time.zone.now.to_date, status: 'On time', pair_ids: [])
         attendance_record_amendment.save
-        expect(AttendanceRecord.last.pairings.pluck(:pair_id)).to eq []
+        expect(AttendanceRecord.last.pair_ids).to eq []
       end
     end
 
@@ -88,7 +88,7 @@ describe AttendanceRecordAmendment do
         FactoryBot.create(:attendance_record, student: student, date: Time.zone.now.to_date, tardy: true)
         attendance_record_amendment = AttendanceRecordAmendment.new(student_id: student.id, date: Time.zone.now.to_date, status: 'On time', pair_ids: [pair.id])
         attendance_record_amendment.save
-        expect(AttendanceRecord.last.pairings.pluck(:pair_id)).to eq [pair.id]
+        expect(AttendanceRecord.last.pair_ids).to eq [pair.id]
       end
     end
 

@@ -5,17 +5,6 @@ describe PairFeedback do
   it { should validate_presence_of :q2_response }
   it { should validate_presence_of :q3_response }
 
-  describe '.today' do
-    it 'returns all the pair feedback created today' do
-      student = FactoryBot.create(:student)
-      travel_to Date.today - 1.week do
-        FactoryBot.create(:pair_feedback, student: student)
-      end
-      pair_feedback_today = FactoryBot.create(:pair_feedback, student: student)
-      expect(PairFeedback.today).to eq [pair_feedback_today]
-    end
-  end
-
   it 'returns total score' do
     pair_feedback = FactoryBot.create(:pair_feedback)
     expect(pair_feedback.score).to eq pair_feedback.q1_response + pair_feedback.q2_response + pair_feedback.q3_response

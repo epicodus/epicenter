@@ -1,20 +1,16 @@
 class AttendanceRecord < ApplicationRecord
-  attr_accessor :signing_out, :pair_ids
+  attr_accessor :signing_out
   scope :today, -> { where(date: Time.zone.now.to_date) }
 
   validates :student_id, presence: true, uniqueness: { scope: :date }
   validates :date, presence: true
   validate :course_in_session?
 
-  before_validation :set_date, if: ->(record) { record.date.nil? }
-  before_validation :sign_in, if: ->(record) { record.tardy.nil? }
+  before_validation :set_date
+  before_validation :sign_in
   before_update :sign_out, if: :signing_out
-  before_save :update_pairings, if: :pair_ids
 
   belongs_to :student
-  has_many :pairings, dependent: :destroy
-
-  accepts_nested_attributes_for :pairings, allow_destroy: true
 
   def self.todays_totals_for(course, status)
     student_ids = course.students(&:id)
@@ -48,14 +44,12 @@ private
     errors.add(:attendance_record, "sign in not required.") unless student.is_class_day?(date)
   end
 
-  def set_date
-    self.date = Time.zone.now.to_date
-  end
-
   def sign_in
     current_time = Time.zone.now.in_time_zone(student.course.office.time_zone)
-    self.tardy = current_time >= student.course.start_time_today + 16.minutes
-    self.left_early = true
+    if self.tardy.nil?
+      self.tardy = current_time >= student.course.start_time_today + 16.minutes
+      self.left_early = true
+    end
   end
 
   def sign_out
@@ -64,10 +58,7 @@ private
     self.signed_out_time = current_time
   end
 
-  def update_pairings
-    pairings.delete_all
-    Student.where(id: pair_ids).each do |pair|
-      pairings << Pairing.new(pair: pair)
-    end
+  def set_date
+    self.date = Time.zone.now.to_date if self.date.nil?
   end
 end

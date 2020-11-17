@@ -9,8 +9,11 @@ class PairFeedbacksController < ApplicationController
   def new
     @student = current_student
     authorize! :read, @student
-    if @student.attendance_records.today.any?
-      @pairs_without_feedback = @student.pairs_without_feedback_today
+    today = Time.zone.now.to_date
+    attendance_record = AttendanceRecord.find_by(date: today, student: @student)
+    if attendance_record
+      pairs = @student.pairs_on_day(today)
+      @pairs_without_feedback = pairs.select { |pair| !PairFeedback.where(created_at: today.all_day).find_by(student: @student, pair: pair)}
       @pair_feedback = PairFeedback.new
     else
       redirect_back(fallback_location: root_path, alert: "You haven't signed in yet today.")
@@ -19,16 +22,19 @@ class PairFeedbacksController < ApplicationController
 
   def create
     @student = current_student
-    if @student.pairs_without_feedback_today.any?
+    today = Time.zone.now.to_date
+    if @student.pairs_on_day(today).any?
       @pair_feedback = PairFeedback.new(pair_feedback_params)
+      pairs = @student.pairs_on_day(today)
       if @pair_feedback.save
-        if @student.pairs_without_feedback_today.any?
+        @pairs_without_feedback = pairs.select { |pair| !PairFeedback.where(created_at: today.all_day).find_by(student: @student, pair: pair)}
+        if @pairs_without_feedback.any?
           redirect_to sign_out_path
         else
           sign_out_student
         end
       else
-        @pairs_without_feedback = @student.pairs_without_feedback_today
+        @pairs_without_feedback = pairs.select { |pair| !PairFeedback.where(created_at: today.all_day).find_by(student: @student, pair: pair)}
         render :new
       end
     else

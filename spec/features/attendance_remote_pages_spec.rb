@@ -10,7 +10,7 @@ feature "remote attendance" do
       travel_to student.course.start_date.beginning_of_day + 8.hours do
         visit root_path
         click_link 'attendance-sign-in-link'
-        select '-', from: 'pair-select-1'
+        select 'Solo', from: 'pair-select-1'
         click_button 'Sign in'
         expect(page).to have_content 'You are signed in without a pair'
       end
@@ -93,7 +93,7 @@ feature "remote attendance" do
       travel_to student.course.start_date.beginning_of_day + 8.hours do
         visit root_path
         click_link 'attendance-sign-in-link'
-        select '-', from: 'pair-select-1'
+        select 'Solo', from: 'pair-select-1'
         select pair.name, from: 'pair-select-2'
         click_button 'Sign in'
         expect(page).to have_content "You are signed in with #{pair.name}"
@@ -104,11 +104,11 @@ feature "remote attendance" do
       travel_to student.course.start_date.beginning_of_day + 8.hours do
         visit root_path
         click_link 'attendance-sign-in-link'
-        select '-', from: 'pair-select-1'
+        select 'Solo', from: 'pair-select-1'
         click_button 'Sign in'
         expect(page).to have_content 'You are signed in without a pair'
         expect(student.attendance_records.any?).to eq true
-        expect(student.attendance_records.today.first.pairings.pluck(:pair_id)).to eq []
+        expect(student.attendance_records.today.first.pair_ids).to eq []
       end
     end
 
@@ -120,7 +120,7 @@ feature "remote attendance" do
         click_button 'Sign in'
         expect(page).to have_content 'You are signed in with ' + pair.name
         expect(student.attendance_records.any?).to eq true
-        expect(student.attendance_records.today.first.pairings.pluck(:pair_id)).to eq [pair.id]
+        expect(student.attendance_records.today.first.pair_ids).to eq [pair.id]
       end
     end
 
@@ -136,8 +136,7 @@ feature "remote attendance" do
         expect(page).to have_content pair.name
         expect(page).to have_content pair2.name
         expect(student.attendance_records.any?).to eq true
-        expect(student.attendance_records.today.first.pairings.pluck(:pair_id)).to include pair.id
-        expect(student.attendance_records.today.first.pairings.pluck(:pair_id)).to include pair2.id
+        expect(student.attendance_records.today.first.pair_ids).to eq [pair.id, pair2.id]
       end
     end
 
@@ -170,7 +169,7 @@ feature "remote attendance" do
 
     it 'allows changing from one pair to another' do
       travel_to student.course.start_date.beginning_of_day + 8.hours do
-        attendance_record = FactoryBot.create(:attendance_record, student: student, pairings_attributes: [pair_id: FactoryBot.create(:student).id])
+        FactoryBot.create(:attendance_record, student: student, pair_ids: [FactoryBot.create(:student).id])
         visit root_path
         click_link 'attendance-change-pair-link'
         select pair.name, from: 'pair-select-1'
@@ -182,7 +181,7 @@ feature "remote attendance" do
     it 'allows changing from one pair to group of 3' do
       pair2 = FactoryBot.create(:student)
       travel_to student.course.start_date.beginning_of_day + 8.hours do
-        attendance_record = FactoryBot.create(:attendance_record, student: student, pairings_attributes: [pair_id: FactoryBot.create(:student).id])
+        FactoryBot.create(:attendance_record, student: student, pair_ids: [FactoryBot.create(:student).id])
         visit root_path
         click_link 'attendance-change-pair-link'
         select pair.name, from: 'pair-select-1'
@@ -200,35 +199,6 @@ feature "remote attendance" do
         visit root_path
         expect(page).to_not have_content 'Sign in'
         expect(page).to have_content 'Signed in:'
-      end
-    end
-  end
-
-  describe 'shows list of nonreciprocated pairs' do
-    let(:other_student) { FactoryBot.create(:student) }
-
-    it 'does not show when not signed in' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
-        FactoryBot.create(:attendance_record, student: other_student, pairings_attributes: [pair_id: student.id])
-        visit root_path
-        expect(page).to_not have_content "Additional students have marked you as a pair today"
-      end
-    end
-
-    it 'shows when signed in' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
-        FactoryBot.create(:attendance_record, student: other_student, pairings_attributes: [pair_id: student.id])
-        FactoryBot.create(:attendance_record, student: student)
-        visit root_path
-        expect(page).to have_content "Additional students have marked you as a pair today: #{other_student.name}"
-      end
-    end
-
-    it 'does not show when no nonreciprocated pairs' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
-        FactoryBot.create(:attendance_record, student: student)
-        visit root_path
-        expect(page).to_not have_content "Additional students have marked you as a pair today"
       end
     end
   end

@@ -86,15 +86,13 @@ feature 'searching for a student' do
     scenario 'when a query is made for an existing student with a payment made', :vcr, :stripe_mock, :stub_mailgun do
       in_class_student = FactoryBot.create(:student_with_all_documents_signed_and_credit_card, email: 'example@example.com')
       FactoryBot.create(:payment_with_credit_card, student: in_class_student)
-      travel_to in_class_student.course.start_date do
-        visit root_path
-        within '#navbar-search' do
-          fill_in 'search', with: in_class_student.name
-          click_on 'student-search'
-        end
-        expect(page).to have_content in_class_student.name
-        expect(page).to have_content 'Current student'
+      visit root_path
+      within '#navbar-search' do
+        fill_in 'search', with: in_class_student.name
+        click_on 'student-search'
       end
+      expect(page).to have_content in_class_student.name
+      expect(page).to have_content 'Current student'
     end
 
     scenario 'when a query is made for a student who withdrew' do

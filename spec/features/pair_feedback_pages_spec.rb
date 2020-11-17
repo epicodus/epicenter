@@ -49,7 +49,7 @@ feature 'Visiting the pair feedback index page' do
     end
 
     context 'submitting pair feedback' do
-      let!(:attendance_record) { FactoryBot.create(:attendance_record, student: student, date: student.course.start_date, pairings_attributes: [pair_id: pair.id]) }
+      let!(:attendance_record) { FactoryBot.create(:attendance_record, student: student, date: student.course.start_date, pair_ids: [pair.id]) }
 
       scenario 'you can navigate to the new feedback form' do
         travel_to student.course.start_date do
@@ -121,7 +121,7 @@ feature 'Visiting the pair feedback index page' do
 
     context 'submitting pair feedback for group of 3' do
       let!(:pair2) { FactoryBot.create(:student) }
-      let!(:attendance_record) { FactoryBot.create(:attendance_record, student: student, date: student.course.start_date, pairings_attributes: [{pair_id: pair.id}, {pair_id: pair2.id}]) }
+      let!(:attendance_record) { FactoryBot.create(:attendance_record, student: student, date: student.course.start_date, pair_ids: [pair.id, pair2.id]) }
 
       scenario 'you can submit feedback for both partners' do
         travel_to student.course.start_date do

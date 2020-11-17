@@ -9,7 +9,7 @@ class AttendanceRecordAmendment
     @student_id = attributes[:student_id]
     @date = attributes[:date] unless attributes[:date].blank?
     @status = attributes[:status]
-    @pair_ids = attributes[:pair_ids]
+    @pair_ids = attributes[:pair_ids] ? attributes[:pair_ids].uniq.reject {|p| p.blank?} : []
   end
 
   def save
