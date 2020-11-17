@@ -56,9 +56,17 @@
                 <% if @day.friday? || student.attendance_record_on_day(@day) == nil %>
                   -
                 <% elsif student.pairs_on_day(@day).any? %>
-                  <%= student.pairs_on_day(@day).map {|s| s.name}.join(', ') %>
+                  <ul class='list-unstyled'>
+                    <% student.pairs_on_day(@day).each do |pair| %>
+                      <% if student.orphan_pairs_on_day(@day).include?(pair) %>
+                        <li id='pair-name' class='text-danger'><strong><%= pair.name %></strong></li>
+                      <% else %>
+                        <li id='pair-name'><%= pair.name %></li>
+                      <% end %>
+                    <% end %>
+                  </ul>
                 <% else %>
-                  Solo
+                  <span class='text-danger'><strong>Solo</strong></span>
                 <% end %>
               </td>
               <td>
