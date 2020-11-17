@@ -242,7 +242,7 @@ describe Student do
     let(:student_2) { FactoryBot.create(:student, course: course) }
 
     it "returns the pair partner" do
-      attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair_ids: [student_2.id], date: student_1.course.start_date)
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date, pairings_attributes: [pair_id: student_2.id])
       expect(student_1.pairs_on_day(attendance_record.date)).to eq [student_2]
     end
 
@@ -252,10 +252,170 @@ describe Student do
     end
 
     it "returns two pairs if present" do
-      attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair_ids: [student_1.id, student_2.id], date: student_1.course.start_date)
-      expect(student_1.pairs_on_day(attendance_record.date)).to eq [student_1, student_2]
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date, pairings_attributes: [{pair_id: student_1.id}, {pair_id: student_2.id}])
+      expect(student_1.pairs_on_day(attendance_record.date)).to include student_1
+      expect(student_1.pairs_on_day(attendance_record.date)).to include student_2
+    end
+  end
+
+  describe "#pairs_today" do
+    it 'calls pairs_on_day with today date' do
+      student = FactoryBot.create(:student)
+      expect(student).to receive(:pairs_on_day).with(Time.zone.now.to_date)
+      student.pairs_today
+    end
+  end
+
+  describe "#inverse_pairs_on_day" do
+    let(:course) { FactoryBot.create(:course) }
+    let(:student_1) { FactoryBot.create(:student, course: course) }
+    let(:student_2) { FactoryBot.create(:student, course: course) }
+
+    it "returns student who marked them as a partner" do
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date, pairings_attributes: [pair_id: student_2.id])
+      expect(student_2.inverse_pairs_on_day(attendance_record.date)).to eq [student_1]
     end
 
+    it "returns empty array if no student marked them as a partner" do
+      attendance_record_1 = FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date)
+      expect(student_2.inverse_pairs_on_day(attendance_record_1.date)).to eq []
+    end
+
+    it "returns two students that marked them as a partner" do
+      student_3 = FactoryBot.create(:student, course: course)
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date, pairings_attributes: [pair_id: student_3.id])
+      attendance_record = FactoryBot.create(:attendance_record, student: student_2, date: student_1.course.start_date, pairings_attributes: [pair_id: student_3.id])
+      expect(student_3.inverse_pairs_on_day(attendance_record.date)).to include student_1
+      expect(student_3.inverse_pairs_on_day(attendance_record.date)).to include student_2
+    end
+  end
+
+  describe "#inverse_pairs_today" do
+    it 'calls invesre_pairs_on_day with today date' do
+      student = FactoryBot.create(:student)
+      expect(student).to receive(:inverse_pairs_on_day).with(Time.zone.now.to_date)
+      student.inverse_pairs_today
+    end
+  end
+
+  describe "#orphan_pairs_on_day" do
+    let(:course) { FactoryBot.create(:course) }
+    let(:student_1) { FactoryBot.create(:student, course: course) }
+    let(:student_2) { FactoryBot.create(:student, course: course) }
+
+    it "returns students claimed as extra pairs" do
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date, pairings_attributes: [pair_id: student_2.id])
+      expect(student_1.orphan_pairs_on_day(attendance_record.date)).to eq [student_2]
+    end
+
+    it "returns empty array if reciprocated pairing" do
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date, pairings_attributes: [pair_id: student_2.id])
+      FactoryBot.create(:attendance_record, student: student_2, date: student_1.course.start_date, pairings_attributes: [pair_id: student_1.id])
+      expect(student_2.orphan_pairs_on_day(attendance_record.date)).to eq []
+    end
+
+    it "actually checks they're claimed by the same person they claimed" do
+      student_3 = FactoryBot.create(:student, course: course)
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date, pairings_attributes: [pair_id: student_2.id])
+      attendance_record = FactoryBot.create(:attendance_record, student: student_3, date: student_1.course.start_date, pairings_attributes: [pair_id: student_1.id])
+      expect(student_1.orphan_pairs_on_day(attendance_record.date)).to eq [student_2]
+    end
+  end
+
+  describe "#orphan_pairs_today" do
+    it 'calls orphan_pairs_on_day with today date' do
+      student = FactoryBot.create(:student)
+      expect(student).to receive(:orphan_pairs_on_day).with(Time.zone.now.to_date)
+      student.orphan_pairs_today
+    end
+  end
+
+  describe "#inverse_orphan_pairs_on_day" do
+    let(:course) { FactoryBot.create(:course) }
+    let(:student_1) { FactoryBot.create(:student, course: course) }
+    let(:student_2) { FactoryBot.create(:student, course: course) }
+
+    it "returns student who marked them as a partner nonreciprocated" do
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date, pairings_attributes: [pair_id: student_2.id])
+      expect(student_2.inverse_orphan_pairs_on_day(attendance_record.date)).to eq [student_1]
+    end
+
+    it "returns empty array if reciprocated pairing" do
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date, pairings_attributes: [pair_id: student_2.id])
+      FactoryBot.create(:attendance_record, student: student_2, date: student_1.course.start_date, pairings_attributes: [pair_id: student_1.id])
+      expect(student_2.inverse_orphan_pairs_on_day(attendance_record.date)).to eq []
+    end
+  end
+
+  describe "#inverse_orphan_pairs_today" do
+    it 'calls inverse_orphan_pairs_on_day with today date' do
+      student = FactoryBot.create(:student)
+      expect(student).to receive(:inverse_orphan_pairs_on_day).with(Time.zone.now.to_date)
+      student.inverse_orphan_pairs_today
+    end
+  end
+
+  describe "#pairs_without_feedback_today" do
+    let(:course) { FactoryBot.create(:course) }
+    let(:student_1) { FactoryBot.create(:student, course: course) }
+    let(:student_2) { FactoryBot.create(:student, course: course) }
+
+    it "when no feedback done" do
+      travel_to course.start_date do
+        FactoryBot.create(:attendance_record, student: student_1, date: Time.zone.now.to_date, pairings_attributes: [pair_id: student_2.id])
+        expect(student_1.pairs_without_feedback_today).to eq [student_2]
+      end
+    end
+
+    it "when all feedback done" do
+      travel_to course.start_date do
+        FactoryBot.create(:attendance_record, student: student_1, date: Time.zone.now.to_date, pairings_attributes: [pair_id: student_2.id])
+        FactoryBot.create(:pair_feedback, student: student_1, pair: student_2)
+        expect(student_1.pairs_without_feedback_today).to eq []
+      end
+    end
+
+    it "ignores feedback from a previous day" do
+      travel_to course.start_date do
+        FactoryBot.create(:pair_feedback, student: student_1, pair: student_2)
+      end
+      travel_to course.end_date do
+        FactoryBot.create(:attendance_record, student: student_1, date: Time.zone.now.to_date, pairings_attributes: [pair_id: student_2.id])
+        expect(student_1.pairs_without_feedback_today).to eq [student_2]
+      end
+    end
+
+    it "ignores feedback from a different student" do
+      travel_to course.start_date do
+        FactoryBot.create(:attendance_record, student: student_1, date: Time.zone.now.to_date, pairings_attributes: [pair_id: student_2.id])
+        FactoryBot.create(:pair_feedback, pair: student_2)
+        expect(student_1.pairs_without_feedback_today).to eq [student_2]
+      end
+    end
+
+    it "ignores feedback for a different pair" do
+      travel_to course.start_date do
+        FactoryBot.create(:attendance_record, student: student_1, date: Time.zone.now.to_date, pairings_attributes: [pair_id: student_2.id])
+        FactoryBot.create(:pair_feedback, student: student_1)
+        expect(student_1.pairs_without_feedback_today).to eq [student_2]
+      end
+    end
+
+    it "when multiple pairs without feedback remaining" do
+      student_3 = FactoryBot.create(:student)
+      travel_to course.start_date do
+        FactoryBot.create(:attendance_record, student: student_1, date: Time.zone.now.to_date, pairings_attributes: [{pair_id: student_2.id}, {pair_id: student_3.id}])
+        expect(student_1.pairs_without_feedback_today).to include student_2
+        expect(student_1.pairs_without_feedback_today).to include student_3
+      end
+    end
+
+    it "does not include nonreciprocated pair" do
+      travel_to course.start_date do
+        FactoryBot.create(:attendance_record, student: student_1, date: Time.zone.now.to_date, pairings_attributes: [pair_id: student_2.id])
+        expect(student_2.pairs_without_feedback_today).to eq []
+      end
+    end
   end
 
   describe "#attendance_record_on_day" do
@@ -298,7 +458,7 @@ describe Student do
       expect(current_student.random_pairs).to eq [student_7_after_starting_point, student_2, student_3, student_4, student_5]
     end
 
-    it "returns random pairs when the student total grade score is nil and distance_until_end is less than the number of pairs", :stub_mailgun do
+    xit "returns random pairs when the student total grade score is nil and distance_until_end is less than the number of pairs", :stub_mailgun do
       allow(current_student).to receive(:random_starting_point).and_return(8)
       expect(current_student.random_pairs).to eq [student_10_after_starting_point, student_11_after_starting_point, student_12_after_starting_point, student_2, student_3]
     end
@@ -309,19 +469,31 @@ describe Student do
     end
   end
 
-  describe "#pairs" do
+  describe "#pair_ids" do
     let(:course) { FactoryBot.create(:course) }
-    let(:student_1) { FactoryBot.create(:student, course: course) }
-    let(:student_2) { FactoryBot.create(:student, course: course) }
+    let!(:student_1) { FactoryBot.create(:student, course: course) }
+    let!(:student_2) { FactoryBot.create(:student, course: course) }
 
     it "returns list of all pair ids" do
-      attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair_ids: [student_2.id], date: student_1.course.start_date)
-      expect(student_1.pairs).to eq [student_2.id]
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date, pairings_attributes: [pair_id: student_2.id])
+      expect(student_1.pair_ids).to eq [student_2.id]
+    end
+
+    it "includes pair ids from multiple attendance records without duplicates" do
+      student_3 = FactoryBot.create(:student, course: course)
+      student_4 = FactoryBot.create(:student, course: course)
+      FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date, pairings_attributes: [pair_id: student_2.id])
+      FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date + 1.day, pairings_attributes: [pair_id: student_3.id])
+      FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date + 2.days, pairings_attributes: [{pair_id: student_3.id}, {pair_id: student_4.id}])
+      expect(student_1.pair_ids.count).to eq 3
+      expect(student_1.pair_ids).to include student_2.id
+      expect(student_1.pair_ids).to include student_3.id
+      expect(student_1.pair_ids).to include student_4.id
     end
 
     it "returns list of all pair ids for a given course time period" do
-      attendance_record = FactoryBot.create(:attendance_record, student: student_1, pair_ids: [student_2.id], date: student_1.course.start_date)
-      expect(student_1.pairs(student_1.course)).to eq [student_2.id]
+      attendance_record = FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date, pairings_attributes: [pair_id: student_2.id])
+      expect(student_1.pair_ids(student_1.course)).to eq [student_2.id]
     end
   end
 
@@ -957,17 +1129,7 @@ end
 
     it "calculates the number of solos when some" do
       travel_to course.start_date do
-        FactoryBot.create(:attendance_record, student: student, pair_ids: [1])
-      end
-      travel_to course.start_date + 2.days do
-        FactoryBot.create(:attendance_record, student: student)
-      end
-      expect(student.solos(course)).to eq 1
-    end
-
-    it "ignores solos when attendance record is marked ignore" do
-      travel_to course.start_date do
-        FactoryBot.create(:attendance_record, student: student, ignore: true)
+        attendance_record = FactoryBot.create(:attendance_record, student: student, pairings_attributes: [pair_id: FactoryBot.create(:student).id])
       end
       travel_to course.start_date + 2.days do
         FactoryBot.create(:attendance_record, student: student)

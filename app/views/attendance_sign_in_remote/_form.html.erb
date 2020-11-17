@@ -1,20 +1,22 @@
+<p>Please select your pair(s) for today:</p>
+
 <%= form_tag sign_in_path do %>
   <%= hidden_field_tag :signing_in, value: true %>
 
   <div class="form-group">
-    <%= select_tag 'pair_ids[]', options_for_select(current_student.course.students_all_locations.where.not(id: current_student.id).order(:name).map {|s| [s.name, s.id]}.prepend(['-Solo-', '']), selected: current_student.pairs_on_day(Time.zone.now.to_date).try(:first).try(:id)), { class: 'form-control', id: 'pair-select-1' } %>
+    <%= select_tag 'pair_ids[]', options_for_select(current_student.course.students_all_locations.where.not(id: current_student.id).order(:name).map {|s| [s.name, s.id]}.prepend(['-', '']), selected: current_student.pairs_today.try(:first).try(:id)), { class: 'form-control', id: 'pair-select-1' } %>
   </div>
 
   <div class="form-group">
-    <%= select_tag 'pair_ids[]', options_for_select(current_student.course.students_all_locations.where.not(id: current_student.id).order(:name).map {|s| [s.name, s.id]}.prepend(['-', '']).prepend(['[Please select 3rd group member, if applicable]', '']), selected: current_student.pairs_on_day(Time.zone.now.to_date).try(:second).try(:id)), { class: 'form-control', id: 'pair-select-2' } %>
+    <%= select_tag 'pair_ids[]', options_for_select(current_student.course.students_all_locations.where.not(id: current_student.id).order(:name).map {|s| [s.name, s.id]}.prepend(['-', '']), selected: current_student.pairs_today.try(:second).try(:id)), { class: 'form-control', id: 'pair-select-2' } %>
   </div>
 
   <div class="form-group">
-    <%= select_tag 'pair_ids[]', options_for_select(current_student.course.students_all_locations.where.not(id: current_student.id).order(:name).map {|s| [s.name, s.id]}.prepend(['-', '']), selected: current_student.pairs_on_day(Time.zone.now.to_date).try(:third).try(:id)), { class: 'form-control', id: 'pair-select-3' } %>
+    <%= select_tag 'pair_ids[]', options_for_select(current_student.course.students_all_locations.where.not(id: current_student.id).order(:name).map {|s| [s.name, s.id]}.prepend(['-', '']), selected: current_student.pairs_today.try(:third).try(:id)), { class: 'form-control', id: 'pair-select-3' } %>
   </div>
 
   <div class="form-group">
-    <%= select_tag 'pair_ids[]', options_for_select(current_student.course.students_all_locations.where.not(id: current_student.id).order(:name).map {|s| [s.name, s.id]}.prepend(['-', '']), selected: current_student.pairs_on_day(Time.zone.now.to_date).try(:fourth).try(:id)), { class: 'form-control', id: 'pair-select-4' } %>
+    <%= select_tag 'pair_ids[]', options_for_select(current_student.course.students_all_locations.where.not(id: current_student.id).order(:name).map {|s| [s.name, s.id]}.prepend(['-', '']), selected: current_student.pairs_today.try(:fourth).try(:id)), { class: 'form-control', id: 'pair-select-4' } %>
   </div>
 
   <%= submit_tag button_text, class: "btn btn-epicodus btn-block" %>

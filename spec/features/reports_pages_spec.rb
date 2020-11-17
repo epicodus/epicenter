@@ -25,10 +25,12 @@ feature 'teacher code_review report' do
     end
 
     it 'shows review just created' do
-      review = FactoryBot.create(:review, submission: submission, admin: admin)
-      visit reports_teachers_path
-      expect(page).to have_content admin.name
-      expect(page).to have_content 1
+      travel_to student.course.start_date do
+        review = FactoryBot.create(:review, submission: submission, admin: admin)
+        visit reports_teachers_path
+        expect(page).to have_content admin.name
+        expect(page).to have_content 1
+      end
     end
 
     it 'does not show review created previous week' do
@@ -50,11 +52,13 @@ feature 'teacher code_review report' do
     end
 
     it 'shows review created the next week when navigate to next week' do
-      review = FactoryBot.create(:review, submission: submission, admin: admin)
-      visit reports_teachers_path(week: Date.today - 1.week)
-      click_link 'next-week'
-      expect(page).to have_content admin.name
-      expect(page).to have_content 1
+      travel_to student.course.start_date do
+        review = FactoryBot.create(:review, submission: submission, admin: admin)
+        visit reports_teachers_path(week: Date.today - 1.week)
+        click_link 'next-week'
+        expect(page).to have_content admin.name
+        expect(page).to have_content 1
+      end
     end
   end
 
