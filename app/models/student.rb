@@ -99,11 +99,13 @@ class Student < User
   end
 
   def solos(filtered_course = nil)
+    solo_records = attendance_records.includes(:pairings).where(pairings: {id: nil})
     if filtered_course
-      attendance_records.where(pair_ids: [], ignore: nil).where("date between ? and ?", filtered_course.try(:start_date), filtered_course.try(:end_date)).select { |ar| !ar.date.friday? }.count
+      filtered_records = solo_records.where("date between ? and ?", filtered_course.start_date, filtered_course.end_date)
     else
-      attendance_records.where(pair_ids: [], ignore: nil).select { |ar| !ar.date.friday? }.count
+      filtered_records = solo_records
     end
+    filtered_records.reject {|ar| ar.date.friday?}.count
   end
 
   def internship_course
@@ -156,8 +158,45 @@ class Student < User
     submissions.find { |submission| submission.code_review_id == code_review.id }
   end
 
+  def pair_ids(course=nil)
+    selected_attendance_records = course ? attendance_records.where("date between ? and ?", course.start_date, course.end_date) : attendance_records
+    selected_attendance_records.joins(:pairings).pluck(:pair_id).uniq.sort
+  end
+
   def pairs_on_day(day)
-    Student.where(id: attendance_record_on_day(day).try(:pair_ids))
+    Student.where(id: attendance_record_on_day(day).try(:pairings).try('pluck', 'pair_id'))
+  end
+
+  def pairs_today
+    pairs_on_day(Time.zone.now.to_date)
+  end
+
+  def inverse_pairs_on_day(day)
+    Student.where(id: AttendanceRecord.where(date: day).joins(:pairings).where(pairings: { pair_id: id }).pluck(:student_id))
+  end
+
+  def inverse_pairs_today
+    inverse_pairs_on_day(Time.zone.now.to_date)
+  end
+
+  def orphan_pairs_on_day(day) # extra pairs this student nonreciprocally claimed
+    pairs_on_day(day).where.not(id: inverse_pairs_on_day(day))
+  end
+
+  def orphan_pairs_today
+    orphan_pairs_on_day(Time.zone.now.to_date)
+  end
+
+  def inverse_orphan_pairs_on_day(day) # students who nonreciprocally claimed this student as a pair
+    inverse_pairs_on_day(day).where.not(id: pairs_on_day(day))
+  end
+
+  def inverse_orphan_pairs_today
+    inverse_orphan_pairs_on_day(Time.zone.now.to_date)
+  end
+
+  def pairs_without_feedback_today
+    pairs_on_day(Time.zone.now.to_date).where.not(id: evaluations_of_pairs.today.pluck(:pair_id))
   end
 
   def attendance_record_on_day(day)
@@ -171,11 +210,6 @@ class Student < User
     else
       (similar_grade_students[random_starting_point, NUMBER_OF_RANDOM_PAIRS] + similar_grade_students[0, NUMBER_OF_RANDOM_PAIRS - distance_until_end]).uniq
     end
-  end
-
-  def pairs(course=nil)
-    selected_attendance_records = course ? attendance_records.where("date between ? and ?", course.try(:start_date), course.try(:end_date)) : attendance_records
-    (selected_attendance_records.map {|s| s.pair_ids}.flatten).compact.sort
   end
 
   def latest_total_grade_score
