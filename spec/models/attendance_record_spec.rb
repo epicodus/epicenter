@@ -174,8 +174,10 @@ describe AttendanceRecord do
       let(:end_time) { course.start_date.in_time_zone(course.office.time_zone) + course.end_time(course.start_date).split(':').first.to_i.hours }
 
       it 'is true by default' do
-        attendance_record = FactoryBot.create(:attendance_record, student: student, date: student.course.start_date)
-        expect(attendance_record.left_early).to eq true
+        travel_to end_time do
+          attendance_record = FactoryBot.create(:attendance_record, student: student, date: student.course.start_date)
+          expect(attendance_record.left_early).to eq true
+        end
       end
 
       it 'is true when a student leaves early mon-thu' do

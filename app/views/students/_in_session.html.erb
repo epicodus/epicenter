@@ -8,10 +8,16 @@
           Signed out: <%= current_student.attendance_records.today.first.signed_out_time.strftime('%l:%M %p') %><br>
         <% else %>
           <%= link_to 'Sign out', sign_out_path, id: 'attendance-sign-out-link' %><br>
-          <% if current_student.pairs_on_day(Time.zone.now.to_date).any? %>
-            You are signed in with <%= current_student.pairs_on_day(Time.zone.now.to_date).map {|s| s.name}.join(' & ') %>. [<%= link_to 'change pair', sign_in_path, remote: true, id: 'attendance-change-pair-link' %>]
+          <% if current_student.pairs_today.any? %>
+            <span id='signed-in-with'>You are signed in with <%= current_student.pairs_today.map {|s| s.name}.join(' & ') %>. [<%= link_to 'change pair', sign_in_path, remote: true, id: 'attendance-change-pair-link' %>]</p>
           <% else %>
             <strong class='text-primary'>You are signed in without a pair!</strong> Click <%= link_to 'here', sign_in_path, remote: true, id: 'attendance-change-pair-link' %> to log your pair.
+          <% end %>
+          <% if current_student.inverse_orphan_pairs_today.any? %>
+            <p class='alert alert-danger'>
+              <strong>Additional students have marked you as a pair today: <%= current_student.inverse_orphan_pairs_today.order(:name).pluck(:name).join(' & ') %></strong><br>
+              Make sure to add them to your pairs if that's right! If not, please ask them or your teacher to fix it.
+            </p>
           <% end %>
         <% end %>
       <% elsif Time.zone.now < current_student.course.start_time_today - 30.minutes %>

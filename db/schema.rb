@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_30_030912) do
+ActiveRecord::Schema.define(version: 2020_11_09_215934) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 2020_10_30_030912) do
     t.datetime "signed_out_time"
     t.string "station"
     t.boolean "ignore"
-    t.integer "pair_ids", default: [], array: true
+    t.integer "old_pair_ids", default: [], array: true
     t.index ["created_at"], name: "index_attendance_records_on_created_at"
     t.index ["student_id"], name: "index_attendance_records_on_student_id"
     t.index ["tardy"], name: "index_attendance_records_on_tardy"
@@ -224,6 +224,13 @@ ActiveRecord::Schema.define(version: 2020_10_30_030912) do
     t.index ["student_id"], name: "index_pair_feedback_on_student_id"
   end
 
+  create_table "pairings", force: :cascade do |t|
+    t.bigint "attendance_record_id"
+    t.bigint "pair_id"
+    t.index ["attendance_record_id"], name: "index_pairings_on_attendance_record_id"
+    t.index ["pair_id"], name: "index_pairings_on_pair_id"
+  end
+
   create_table "payment_methods", id: :serial, force: :cascade do |t|
     t.string "account_uri", limit: 255
     t.string "verification_uri", limit: 255
@@ -419,6 +426,7 @@ ActiveRecord::Schema.define(version: 2020_10_30_030912) do
   add_foreign_key "notes", "submissions"
   add_foreign_key "pair_feedback", "users", column: "pair_id"
   add_foreign_key "pair_feedback", "users", column: "student_id"
+  add_foreign_key "pairings", "users", column: "pair_id"
   add_foreign_key "peer_evaluations", "users", column: "evaluatee_id"
   add_foreign_key "peer_evaluations", "users", column: "evaluator_id"
   add_foreign_key "users", "offices"
