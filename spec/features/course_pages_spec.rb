@@ -158,7 +158,7 @@ feature "shows warning if on probation" do
       login_as(student, scope: :student)
       visit root_path
       click_on 'Courses'
-      expect(page).to_not have_content "Academic probation"
+      expect(page).to_not have_content "Unmet requirements"
     end
   end
 
@@ -168,7 +168,7 @@ feature "shows warning if on probation" do
       login_as(student, scope: :student)
       visit root_path
       click_on 'Courses'
-      expect(page).to have_content "Academic probation"
+      expect(page).to have_content "Unmet requirements"
     end
   end
 
@@ -178,7 +178,7 @@ feature "shows warning if on probation" do
       login_as(student, scope: :student)
       visit root_path
       click_on 'Courses'
-      expect(page).to have_content "Academic probation"
+      expect(page).to have_content "Unmet requirements"
     end
   end
 end

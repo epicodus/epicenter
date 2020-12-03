@@ -294,7 +294,7 @@ feature "shows warning if on probation" do
       student = FactoryBot.create(:user_with_all_documents_signed)
       login_as(student, scope: :student)
       visit course_student_path(student.course, student)
-      expect(page).to_not have_content "Academic probation"
+      expect(page).to_not have_content "Unmet requirements"
     end
   end
 
@@ -303,7 +303,7 @@ feature "shows warning if on probation" do
       student = FactoryBot.create(:user_with_all_documents_signed, probation_teacher: true)
       login_as(student, scope: :student)
       visit course_student_path(student.course, student)
-      expect(page).to have_content "Academic probation"
+      expect(page).to have_content "Unmet requirements"
     end
   end
 
@@ -312,7 +312,7 @@ feature "shows warning if on probation" do
       student = FactoryBot.create(:user_with_all_documents_signed, probation_advisor: true)
       login_as(student, scope: :student)
       visit course_student_path(student.course, student)
-      expect(page).to have_content "Academic probation"
+      expect(page).to have_content "Unmet requirements"
     end
   end
 end
