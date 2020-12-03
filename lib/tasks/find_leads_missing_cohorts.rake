@@ -14,7 +14,7 @@ task :find_leads_missing_cohorts => [:environment] do
       calculated_starting_cohort = student.calculate_starting_cohort
 
       # compare calculated starting cohort to existing student.starting_cohort
-      if calculated_starting_cohort.nil?
+      if calculated_starting_cohort.nil? && s.courses.first.start_date > Date.parse('2018-01-01')
         counter += 1
         file.puts "#{student.email}: Unable to calculate starting cohort"
         # log(student, file)
