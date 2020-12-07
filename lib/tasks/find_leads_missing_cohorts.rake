@@ -18,7 +18,7 @@ task :find_leads_missing_cohorts => [:environment] do
         counter += 1
         file.puts "#{student.email}: Unable to calculate starting cohort"
         # log(student, file)
-      elsif student.starting_cohort.nil?
+      elsif student.starting_cohort.nil? && student.courses.first.start_date > Date.parse('2018-01-01')
         counter += 1
         file.puts "#{student.email}: Missing starting cohort in Epicenter"
         # log(student, file) if student.courses_with_withdrawn.fulltime_courses.any?
