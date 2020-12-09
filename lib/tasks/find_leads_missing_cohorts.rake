@@ -22,7 +22,7 @@ task :find_leads_missing_cohorts => [:environment] do
         counter += 1
         file.puts "#{student.email}: Missing starting cohort in Epicenter"
         # log(student, file) if student.courses_with_withdrawn.fulltime_courses.any?
-      elsif student.starting_cohort.description != calculated_starting_cohort.description
+      elsif student.starting_cohort.try(:description) != calculated_starting_cohort.try(:description)
         counter += 1
         file.puts "#{student.email}: Starting cohort should be updated: #{student.starting_cohort.description} ==> #{calculated_starting_cohort.description}"
         # log(student, file)
