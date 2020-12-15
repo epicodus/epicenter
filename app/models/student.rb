@@ -77,6 +77,14 @@ class Student < User
     ending_cohort && !parttime? && !fidgetech?
   end
 
+  def total_attendance_score
+    absences_penalty = attendance_records_for(:absent, courses.previous_courses.non_internship_courses.first, courses.previous_courses.non_internship_courses.last)
+    tardies_penalty = attendance_records_for(:tardy, courses.previous_courses.non_internship_courses.first, courses.previous_courses.non_internship_courses.last) * TARDY_WEIGHT
+    left_earlies_penalty = attendance_records_for(:left_early, courses.previous_courses.non_internship_courses.first, courses.previous_courses.non_internship_courses.last) * TARDY_WEIGHT
+    number_of_days = courses.previous_courses.non_internship_courses.map(&:class_days).flatten.count
+    100 - (((absences_penalty + tardies_penalty + left_earlies_penalty) / number_of_days) * 100)
+  end
+
   def attendance_score(filtered_course)
     absences_penalty = attendance_records_for(:absent, filtered_course)
     tardies_penalty = attendance_records_for(:tardy, filtered_course) * TARDY_WEIGHT

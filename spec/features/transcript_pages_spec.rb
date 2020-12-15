@@ -113,12 +113,40 @@ feature "viewing transcript & certificate" do
       expect(page).to have_content code_review.title
     end
 
-    it 'shows a summary of their attendance record' do
+    it 'shows meets attendance requirement message when over 90%' do
+      course = FactoryBot.create(:past_course)
+      student = FactoryBot.create(:student, course: course)
+      course.class_days.each do |day|
+        FactoryBot.create(:attendance_record, student: student, date: day, left_early: false, tardy: false)
+      end
+      login_as(student, scope: :student)
+      visit transcript_path
+      expect(page).to have_content "Epicodus requires students to attend class at least 90% of the time. This student met that requirement."
+    end
+
+    it 'does not show meets attendance requirement message when under 90%' do
       course = FactoryBot.create(:past_course)
       student = FactoryBot.create(:student, course: course)
       login_as(student, scope: :student)
       visit transcript_path
-      expect(page).to have_content "Present 0 days"
+      expect(page).to_not have_content "Epicodus requires students to attend class at least 90% of the time. This student met that requirement."
+    end
+
+    it 'shows attendance details to staff' do
+      course = FactoryBot.create(:past_course)
+      student = FactoryBot.create(:student, course: course)
+      admin = FactoryBot.create(:admin)
+      login_as(admin, scope: :admin)
+      visit student_transcript_path(student)
+      expect(page).to have_content "Attendance details"
+    end
+
+    it 'does not show attendance details to staff' do
+      course = FactoryBot.create(:past_course)
+      student = FactoryBot.create(:student, course: course)
+      login_as(student, scope: :student)
+      visit transcript_path
+      expect(page).to_not have_content "Attendance details"
     end
 
     it 'does not show attendance for students enrolled in only online course' do
