@@ -995,6 +995,30 @@ end
     end
   end
 
+  describe '#total_attendance_score' do
+    let(:course_1) { FactoryBot.create(:past_course) }
+    let(:course_2) { FactoryBot.create(:course) }
+    let(:student) { FactoryBot.create(:student, courses: [course_1, course_2]) }
+
+    it "calculates the student's attendance score when half absences" do
+      course_1.class_days.each do |day|
+        FactoryBot.create(:attendance_record, student: student, date: day, left_early: false, tardy: false)
+      end
+      travel_to course_2.end_date + 1.day do
+        expect(student.total_attendance_score).to eq 50
+      end
+    end
+
+    it "calculates the student's attendance score with left earlies and tardies" do
+      course_1.class_days.each do |day|
+        FactoryBot.create(:attendance_record, student: student, date: day, left_early: true, tardy: true)
+      end
+      travel_to course_2.end_date + 1.day do
+        expect(student.total_attendance_score).to eq 0
+      end
+    end
+  end
+
   describe '#attendance_score' do
     let(:course) { FactoryBot.create(:course) }
     let(:student) { FactoryBot.create(:student, course: course) }
