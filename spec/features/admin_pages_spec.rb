@@ -277,7 +277,7 @@ feature 'student roster page' do
     expect(page).to have_content '0'
     expect(page).to have_content 'Attendance'
     expect(page).to have_content 'Course absences'
-    expect(page).to have_content 'Overall absences'
+    expect(page).to have_content 'Cohort absences'
   end
 
   scenario 'allows viewing payment plans' do

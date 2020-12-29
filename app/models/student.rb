@@ -99,10 +99,11 @@ class Student < User
     absences_penalty + tardies_penalty + left_earlies_penalty
   end
 
-  def absences_overall
-    absences_penalty = attendance_records_for(:absent)
-    tardies_penalty = attendance_records_for(:tardy) * TARDY_WEIGHT
-    left_earlies_penalty = attendance_records_for(:left_early) * TARDY_WEIGHT
+  def absences_cohort
+    cohort_courses = course.cohorts.first.courses
+    absences_penalty = attendance_records_for(:absent, cohort_courses.first, cohort_courses.last)
+    tardies_penalty = attendance_records_for(:tardy, cohort_courses.first, cohort_courses.last) * TARDY_WEIGHT
+    left_earlies_penalty = attendance_records_for(:left_early, cohort_courses.first, cohort_courses.last) * TARDY_WEIGHT
     absences_penalty + tardies_penalty + left_earlies_penalty
   end
 
@@ -356,7 +357,7 @@ class Student < User
       filtered_results = results.where("date between ? and ?", start_course.try(:start_date), start_course.try(:end_date))
     end
     if start_course && end_course && status == :absent
-      [0, total_number_of_course_days(start_course, end_course) - filtered_results.count].max
+      [0, days_so_far(start_course, end_course) - filtered_results.count].max
     elsif start_course && status == :absent
       [0, start_course.number_of_days_since_start - filtered_results.count].max
     elsif start_course
@@ -442,9 +443,9 @@ class Student < User
 
 private
 
-  def total_number_of_course_days(start_course=nil, end_course=nil)
+  def days_so_far(start_course=nil, end_course=nil)
     filtered_courses = start_course.nil? ? courses : courses.where('start_date >= ? AND end_date <= ?', start_course.start_date, end_course.end_date)
-    filtered_courses.non_internship_courses.map(&:class_days).flatten.count
+    filtered_courses.non_internship_courses.map(&:class_days).flatten.select {|day| day <= Date.today}.count
   end
 
   def days_since_start_of_program
