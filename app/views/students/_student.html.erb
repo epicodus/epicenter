@@ -34,10 +34,10 @@
           <% else %>
             <p>
         <% end %>
-        <% if student.attendance_score(@course).nan? %>
+        <% if student.course.try(:cohorts).try(:empty?) %>
           No records yet
         <% else %>
-          <%= student.absences_overall %>
+          <%= student.absences_cohort %>
         <% end %>
         </p>
       </td>

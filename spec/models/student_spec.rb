@@ -1096,44 +1096,124 @@ end
         expect(student.absences(course)).to eq 0
       end
     end
+  end
 
-    it "calculates the number of absences overall with more than one course and perfect attendance" do
-      student.course.update(class_days: [course.start_date])
-      course_2 = FactoryBot.create(:future_course)
-      course_2.update(class_days: [course_2.start_date])
-      student.courses << course_2
-      FactoryBot.create(:attendance_record, student: student, date: course.start_date, tardy: false, left_early: false)
-      FactoryBot.create(:attendance_record, student: student, date: course_2.start_date, tardy: false, left_early: false)
-      expect(student.absences_overall).to eq 0
+  describe '#absences_cohort' do
+    context 'ft cohort' do
+      let(:ft_cohort) { FactoryBot.create(:intro_only_cohort) }
+      let(:ft_student) { FactoryBot.create(:student, courses: ft_cohort.courses) }
+      before do
+        ft_cohort.courses << FactoryBot.create(:course)
+        ft_cohort.courses << FactoryBot.create(:internship_course)
+        ft_cohort.courses.first.update(start_date: Date.today - 2.weeks, class_days: [Date.today - 2.weeks])
+        ft_cohort.courses.second.update(start_date: Date.today - 1.week, class_days: [Date.today - 1.week])
+      end
+
+      it "with more than one course and perfect attendance" do
+        FactoryBot.create(:attendance_record, student: ft_student, date: ft_cohort.courses.first.start_date, tardy: false, left_early: false)
+        FactoryBot.create(:attendance_record, student: ft_student, date: ft_cohort.courses.second.start_date, tardy: false, left_early: false)
+        expect(ft_student.absences_cohort).to eq 0
+      end
+
+      it "with more than one course and tardy" do
+        FactoryBot.create(:attendance_record, student: ft_student, date: ft_cohort.courses.first.start_date, tardy: true, left_early: false)
+        FactoryBot.create(:attendance_record, student: ft_student, date: ft_cohort.courses.second.start_date, tardy: true, left_early: false)
+        expect(ft_student.absences_cohort).to eq 1
+      end
+
+      it "with more than one course and left early" do
+        FactoryBot.create(:attendance_record, student: ft_student, date: ft_cohort.courses.first.start_date, tardy: false, left_early: true)
+        FactoryBot.create(:attendance_record, student: ft_student, date: ft_cohort.courses.second.start_date, tardy: false, left_early: true)
+        expect(ft_student.absences_cohort).to eq 1
+      end
+
+      it "with more than one course and 1 absence" do
+        FactoryBot.create(:attendance_record, student: ft_student, date: ft_cohort.courses.first.start_date, tardy: false, left_early: false)
+        expect(ft_student.absences_cohort).to eq 1
+      end
+
+      it 'does not include course from another cohort' do
+        extraneous_course = FactoryBot.create(:past_course)
+        ft_student.courses << extraneous_course
+        FactoryBot.create(:attendance_record, student: ft_student, date: ft_cohort.courses.first.start_date, tardy: false, left_early: false)
+        FactoryBot.create(:attendance_record, student: ft_student, date: ft_cohort.courses.second.start_date, tardy: false, left_early: false)
+        expect(ft_student.absences_cohort).to eq 0
+      end
     end
 
-    it "calculates the number of absences overall with more than one course and tardy" do
-      student.course.update(class_days: [course.start_date])
-      course_2 = FactoryBot.create(:future_course)
-      course_2.update(class_days: [course_2.start_date])
-      student.courses << course_2
-      FactoryBot.create(:attendance_record, student: student, date: course.start_date, tardy: true, left_early: false)
-      FactoryBot.create(:attendance_record, student: student, date: course_2.start_date, tardy: true, left_early: false)
-      expect(student.absences_overall).to eq 1
+    context 'pt full stack cohort' do
+      let(:pt_full_stack_cohort) { FactoryBot.create(:part_time_c_react_cohort) }
+      let(:pt_full_stack_student) { FactoryBot.create(:student, courses: pt_full_stack_cohort.courses) }
+      before do
+        pt_full_stack_cohort.courses = [pt_full_stack_cohort.courses.first, pt_full_stack_cohort.courses.second]
+        pt_full_stack_cohort.courses.first.update(start_date: Date.today - 2.weeks, class_days: [Date.today - 2.weeks])
+        pt_full_stack_cohort.courses.second.update(start_date: Date.today - 1.week, class_days: [Date.today - 1.week])
+      end
+
+      it "with more than one course and perfect attendance" do
+        FactoryBot.create(:attendance_record, student: pt_full_stack_student, date: pt_full_stack_cohort.courses.first.start_date, tardy: false, left_early: false)
+        FactoryBot.create(:attendance_record, student: pt_full_stack_student, date: pt_full_stack_cohort.courses.second.start_date, tardy: false, left_early: false)
+        expect(pt_full_stack_student.absences_cohort).to eq 0
+      end
+
+      it "with more than one course and tardy" do
+        FactoryBot.create(:attendance_record, student: pt_full_stack_student, date: pt_full_stack_cohort.courses.first.start_date, tardy: true, left_early: false)
+        FactoryBot.create(:attendance_record, student: pt_full_stack_student, date: pt_full_stack_cohort.courses.second.start_date, tardy: true, left_early: false)
+        expect(pt_full_stack_student.absences_cohort).to eq 1
+      end
+
+      it "with more than one course and left early" do
+        FactoryBot.create(:attendance_record, student: pt_full_stack_student, date: pt_full_stack_cohort.courses.first.start_date, tardy: false, left_early: true)
+        FactoryBot.create(:attendance_record, student: pt_full_stack_student, date: pt_full_stack_cohort.courses.second.start_date, tardy: false, left_early: true)
+        expect(pt_full_stack_student.absences_cohort).to eq 1
+      end
+
+      it "with more than one course and 1 absence" do
+        FactoryBot.create(:attendance_record, student: pt_full_stack_student, date: pt_full_stack_cohort.courses.first.start_date, tardy: false, left_early: false)
+        expect(pt_full_stack_student.absences_cohort).to eq 1
+      end
+
+      it 'does not include course from another cohort' do
+        extraneous_course = FactoryBot.create(:past_course)
+        pt_full_stack_student.courses << extraneous_course
+        FactoryBot.create(:attendance_record, student: pt_full_stack_student, date: pt_full_stack_cohort.courses.first.start_date, tardy: false, left_early: false)
+        FactoryBot.create(:attendance_record, student: pt_full_stack_student, date: pt_full_stack_cohort.courses.second.start_date, tardy: false, left_early: false)
+        expect(pt_full_stack_student.absences_cohort).to eq 0
+      end
     end
 
-    it "calculates the number of absences overall with more than one course and left early" do
-      student.course.update(class_days: [course.start_date])
-      course_2 = FactoryBot.create(:future_course)
-      course_2.update(class_days: [course_2.start_date])
-      student.courses << course_2
-      FactoryBot.create(:attendance_record, student: student, date: course.start_date, tardy: false, left_early: true)
-      FactoryBot.create(:attendance_record, student: student, date: course_2.start_date, tardy: false, left_early: true)
-      expect(student.absences_overall).to eq 1
-    end
+    context 'pt intro cohort' do
+      let(:pt_intro_cohort) { FactoryBot.create(:part_time_cohort) }
+      let(:pt_intro_student) { FactoryBot.create(:student, courses: pt_intro_cohort.courses) }
+      before do
+        pt_intro_cohort.courses.first.update(start_date: Date.today - 1.week, class_days: [Date.today - 1.week])
+      end
 
-    it "calculates the number of absences overall with more than one course and 1 absence" do
-      student.course.update(class_days: [course.start_date])
-      course_2 = FactoryBot.create(:past_course)
-      course_2.update(class_days: [course_2.start_date])
-      student.courses << course_2
-      FactoryBot.create(:attendance_record, student: student, date: course.start_date, tardy: false, left_early: false)
-      expect(student.absences_overall).to eq 1
+      it "with perfect attendance" do
+        FactoryBot.create(:attendance_record, student: pt_intro_student, date: pt_intro_cohort.courses.first.start_date, tardy: false, left_early: false)
+        expect(pt_intro_student.absences_cohort).to eq 0
+      end
+
+      it "with tardy" do
+        FactoryBot.create(:attendance_record, student: pt_intro_student, date: pt_intro_cohort.courses.first.start_date, tardy: true, left_early: false)
+        expect(pt_intro_student.absences_cohort).to eq 0.5
+      end
+
+      it "with left early" do
+        FactoryBot.create(:attendance_record, student: pt_intro_student, date: pt_intro_cohort.courses.first.start_date, tardy: false, left_early: true)
+        expect(pt_intro_student.absences_cohort).to eq 0.5
+      end
+
+      it "with 1 absence" do
+        expect(pt_intro_student.absences_cohort).to eq 1
+      end
+
+      it 'does not include course from another cohort' do
+        extraneous_course = FactoryBot.create(:past_course)
+        pt_intro_student.courses << extraneous_course
+        FactoryBot.create(:attendance_record, student: pt_intro_student, date: pt_intro_cohort.courses.first.start_date, tardy: false, left_early: false)
+        expect(pt_intro_student.absences_cohort).to eq 0
+      end
     end
   end
 
