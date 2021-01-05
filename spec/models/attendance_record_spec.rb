@@ -66,6 +66,32 @@ describe AttendanceRecord do
     end
   end
 
+  describe '.paired_only' do
+    it 'returns only attendance records with any pairings' do
+      student = FactoryBot.create(:student)
+      pair = FactoryBot.create(:student)
+      FactoryBot.create(:attendance_record, student: student, date: student.course.start_date, pairings_attributes: [pair_id: pair.id])
+      FactoryBot.create(:attendance_record, student: student, date: student.course.end_date)
+      expect(student.attendance_records.count).to eq 2
+      expect(student.attendance_records.paired_only.count).to eq 1
+    end
+  end
+
+  describe '.all_before_2021_and_paired_only_starting_2021' do
+    it 'returns all records from before 2021 but only records with pairings starting 2021' do
+      old_course = FactoryBot.create(:course, class_days: [Date.parse('2020-01-06'), Date.parse('2020-01-07')])
+      new_course = FactoryBot.create(:course, class_days: [Date.parse('2021-01-04'), Date.parse('2021-01-05')])
+      student = FactoryBot.create(:student, courses: [old_course, new_course])
+      pair = FactoryBot.create(:student, courses: [old_course, new_course])
+      FactoryBot.create(:attendance_record, student: student, date: old_course.class_days.first, pairings_attributes: [pair_id: pair.id])
+      FactoryBot.create(:attendance_record, student: student, date: old_course.class_days.last)
+      FactoryBot.create(:attendance_record, student: student, date: new_course.class_days.first, pairings_attributes: [pair_id: pair.id])
+      FactoryBot.create(:attendance_record, student: student, date: new_course.class_days.last)
+      expect(student.attendance_records.count).to eq 4
+      expect(student.attendance_records.all_before_2021_and_paired_only_starting_2021.count).to eq 3
+    end
+  end
+
   describe '#todays_totals_for' do
     let(:course) { FactoryBot.create(:course) }
     let(:student) { FactoryBot.create(:student, course: course) }

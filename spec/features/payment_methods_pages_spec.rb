@@ -47,7 +47,7 @@ feature 'Student views payment methods page' do
     end
   end
 
-  context 'after an additional payment method has been added', :vcr do
+  context 'after an additional payment method has been added', :vcr, :stripe_mock do
     it "shows additional payment method with option to 'Make Primary'" do
       student = FactoryBot.create(:user_with_all_documents_signed_and_credit_card)
       bank_account = FactoryBot.create(:verified_bank_account, student: student)
@@ -68,7 +68,7 @@ feature 'Guest views payments methods page' do
   end
 end
 
-describe 'change primary payment method', :vcr do
+describe 'change primary payment method', :vcr, :stripe_mock do
   it "displays the new primary payment method and shows confirmation message" do
     student = FactoryBot.create(:user_with_all_documents_signed_and_credit_card)
     bank_account = FactoryBot.create(:verified_bank_account, student: student)
