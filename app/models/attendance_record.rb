@@ -16,6 +16,14 @@ class AttendanceRecord < ApplicationRecord
 
   accepts_nested_attributes_for :pairings, allow_destroy: true
 
+  def self.paired_only
+    includes(:pairings).where.not(pairings: {id: nil})
+  end
+
+  def self.all_before_2021_and_paired_only_starting_2021
+    includes(:pairings).where('date < ?', Date.parse('2021-01-01')).or(includes(:pairings).where('date > ?', Date.parse('2021-01-01')).where.not(pairings: {id: nil}))
+  end
+
   def self.todays_totals_for(course, status)
     student_ids = course.students(&:id)
     attributes = { tardy: { student_id: student_ids, tardy: true },

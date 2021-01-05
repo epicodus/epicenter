@@ -350,7 +350,7 @@ class Student < User
                    on_time: { tardy: false, left_early: false },
                    all: {}
                  }[status]
-    results = attendance_records.where(attributes)
+    results = attendance_records.all_before_2021_and_paired_only_starting_2021.where(attributes)
     if start_course && end_course
       filtered_results = results.where("date between ? and ?", start_course.try(:start_date), end_course.try(:end_date))
     else
@@ -363,7 +363,7 @@ class Student < User
     elsif start_course
       filtered_results.count
     elsif status == :absent
-      [0, days_since_start_of_program - attendance_records.count].max
+      [0, days_since_start_of_program - results.count].max
     else
       results.count
     end

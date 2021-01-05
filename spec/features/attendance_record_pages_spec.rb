@@ -21,7 +21,7 @@ end
 feature 'viewing attendance records index page' do
   let(:admin) { FactoryBot.create(:admin) }
   let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
-  let!(:attendance_record) { FactoryBot.create(:attendance_record, student: student, date: student.course.start_date, tardy: false, left_early: false) }
+  let!(:attendance_record) { FactoryBot.create(:attendance_record, student: student, date: student.course.start_date, tardy: false, left_early: false, pair_ids: [1]) }
 
   scenario 'as an admin shows daily attendance records' do
     login_as(admin, scope: :admin)
