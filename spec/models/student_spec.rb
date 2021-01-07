@@ -498,16 +498,33 @@ describe Student do
   end
 
   describe "#solos" do
-    let(:student) { FactoryBot.create(:student) }
+    let(:cohort) { FactoryBot.create(:part_time_cohort) }
+    let(:past_cohort) { FactoryBot.create(:part_time_cohort, start_date: (cohort.start_date - 1.year).beginning_of_week) }
+    let(:student) { FactoryBot.create(:student_without_courses) }
+    let(:pair) { FactoryBot.create(:student_without_courses) }
 
-    it "returns number of times student signed in without pair" do
-      attendance_record = FactoryBot.create(:attendance_record, student: student, date: Date.today.beginning_of_week)
-      expect(student.solos).to eq 1
+    before { student.courses = [past_cohort.courses.first, cohort.courses.first] }
+
+    it "with pair" do
+      travel_to cohort.start_date.beginning_of_day + 8.hours do
+        FactoryBot.create(:attendance_record, student: student, pair_ids: [pair.id])
+        expect(student.solos).to eq 0
+      end
     end
 
-    it "does not include Fridays in solo count" do
-      attendance_record = FactoryBot.create(:attendance_record, student: student, date: Date.today.beginning_of_week + 4.days)
-      expect(student.solos).to eq 0
+    it "ignores solos outside current cohort" do
+      FactoryBot.create(:attendance_record, student: student, date: past_cohort.start_date, pair_ids: [])
+      travel_to cohort.start_date.beginning_of_day + 8.hours do
+        FactoryBot.create(:attendance_record, student: student, pair_ids: [pair.id])
+        expect(student.solos).to eq 0
+      end
+    end
+
+    it "without pair" do
+      travel_to cohort.start_date.beginning_of_day + 8.hours do
+        FactoryBot.create(:attendance_record, student: student, pair_ids: [])
+        expect(student.solos).to eq 1
+      end
     end
   end
 

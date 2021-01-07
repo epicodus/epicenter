@@ -112,7 +112,8 @@ class Student < User
     if filtered_course
       filtered_records = solo_records.where("date between ? and ?", filtered_course.start_date, filtered_course.end_date)
     else
-      filtered_records = solo_records
+      cohort_courses = course.try(:cohorts).try(:first).try(:courses) || courses
+      filtered_records = solo_records.where("date between ? and ?", cohort_courses.first.start_date, cohort_courses.last.end_date)
     end
     filtered_records.reject {|ar| ar.date.friday?}.count
   end
