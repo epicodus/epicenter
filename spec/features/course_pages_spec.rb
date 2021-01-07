@@ -70,6 +70,24 @@ feature 'viewing courses' do
   end
 end
 
+feature 'viewing cohort on course list page' do
+  scenario 'as a student' do
+    student = FactoryBot.create(:student_with_cohort)
+    login_as(student, scope: :student)
+    visit student_courses_path(student)
+    expect(page).to have_content "Cohort: #{student.cohort.description}"
+  end
+
+  scenario 'as an admin' do
+    student = FactoryBot.create(:student_with_cohort)
+    admin = FactoryBot.create(:admin)
+    login_as(admin, scope: :admin)
+    visit student_courses_path(student)
+    expect(page).to have_content "Cohort: #{student.cohort.description}"
+    expect(page).to_not have_content "Part-Time Cohort"
+  end
+end
+
 feature 'editing a course' do
   let(:course) { FactoryBot.create(:internship_course) }
 
