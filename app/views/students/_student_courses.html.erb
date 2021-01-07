@@ -4,6 +4,7 @@
       <p>Unmet requirements</p>
     </div>
   <% end %>
+  <h4><div class="well">Cohort: <%= @student.course.try(:cohorts).try(:first).try(:description) %></div></h4>
   <h1>Your courses</h1>
 <% else %>
   <%= render 'students/student_header' %>

@@ -28,7 +28,9 @@
     <% elsif !@student.courses.include? @course %>
       <strong>(not enrolled)</strong>
     <% end %>
-    <small>(<%= link_to 'view', course_path(@course) %>)</small>
+    <% if current_admin %>
+      <small>(<%= link_to 'view', course_path(@course) %>)</small>
+    <% end %>
   </h2>
 <% else %>
   <h1><%= @course.description %></h1>
