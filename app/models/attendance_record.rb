@@ -21,7 +21,10 @@ class AttendanceRecord < ApplicationRecord
   end
 
   def self.all_before_2021_and_paired_only_starting_2021
-    includes(:pairings).where('date < ?', Date.parse('2021-01-01')).or(includes(:pairings).where('date > ?', Date.parse('2021-01-01')).where.not(pairings: {id: nil}))
+    records_with_pairings = includes(:pairings).where.not(pairings: {id: nil})
+    friday_records = includes(:pairings).where("extract(dow from date) = ?", 5)
+    legacy_records = includes(:pairings).where('date < ?', Date.parse('2021-01-01'))
+    records_with_pairings.or(friday_records).or(legacy_records)
   end
 
   def self.todays_totals_for(course, status)

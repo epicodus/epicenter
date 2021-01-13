@@ -26,12 +26,13 @@ end
 
 def create_attendance_record_in_course(course, status)
   date = nil
+  pair = FactoryBot.create(:student)
   travel_to course.start_date.in_time_zone(course.office.time_zone) + 8.hours do
     existing_attendance_records = AttendanceRecord.where("date between ? and ?", course.start_date, course.end_date)
     date = existing_attendance_records.any? ? existing_attendance_records.order(:date).last.date + 1.day : Time.now
   end
   travel_to date do
-    course_attendance_record = FactoryBot.create(:attendance_record, student: course.students.first, pair_ids: [1])
+    course_attendance_record = FactoryBot.create(:attendance_record, student: course.students.first, pairings_attributes: [pair_id: pair.id])
     course_attendance_record.update(tardy: true) if status == "tardy"
     course_attendance_record.update(left_early: false) if status != "left_early"
   end

@@ -90,6 +90,14 @@ describe AttendanceRecord do
       expect(student.attendance_records.count).to eq 4
       expect(student.attendance_records.all_before_2021_and_paired_only_starting_2021.count).to eq 3
     end
+
+    it 'includes all friday records regardless of pairing status' do
+      course = FactoryBot.create(:course, class_days: [Date.parse('2021-01-04'), Date.parse('2021-01-08')])
+      student = FactoryBot.create(:student, courses: [course])
+      FactoryBot.create(:attendance_record, student: student, date: course.class_days.last)
+      expect(student.attendance_records.count).to eq 1
+      expect(student.attendance_records.all_before_2021_and_paired_only_starting_2021.count).to eq 1
+    end
   end
 
   describe '#todays_totals_for' do
