@@ -76,7 +76,7 @@
       <% if @student.course.try(:cohorts) %>
         <div class="panel panel-default">
           <div class="panel-body">
-            <p class="alert" id="pairing-roster-row" data-content="<%= @student.solos(@course) %>">Number of times signed in solo in this course: &nbsp;<%= @student.solos(@course) %></p>
+            <p class="alert">Number of times signed in solo in this course: &nbsp;<%= @student.solos(@course) %></p>
             <table class="table table-hover">
               <thead>
                 <th>Name</th>

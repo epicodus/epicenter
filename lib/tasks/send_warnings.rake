@@ -1,10 +1,9 @@
-desc "send attendance and solo warnings"
+desc "send attendance warnings"
 task :send_warnings => [:environment] do
   Course.current_courses.non_internship_courses.each do |course|
     if course.number_of_days_since_start == 1
       p "first day of course - reset attendance & solo warnings sent counters for all students in #{course.description}"
       course.students.update_all(attendance_warnings_sent: nil)
-      course.students.update_all(solo_warnings_sent: nil)
     else
       course.students.each do |student|
 
@@ -42,21 +41,6 @@ task :send_warnings => [:environment] do
           end
           student.update(attendance_warnings_sent: 1)
         end
-
-        # send solo warnings (fulltime courses only)
-        if !student.solo_warnings_sent && student.solos(course) >= 2 && !course.parttime?
-          if Rails.env.production?
-            Mailgun::Client.new(ENV['MAILGUN_API_KEY']).send_message("epicodus.com",
-              { :from => "no-reply@epicodus.com",
-                :to => "#{course.admin.email}",
-                :subject => "#{student.name} has #{student.solos(course)} solos",
-                :text => "Notification to teacher: #{student.name} has #{student.solos(course)} solos this unit. The student has NOT been notified." })
-          else
-            p "#{student.name} has #{student.solos(course)} SOLOS. Email teacher."
-          end
-          student.update(solo_warnings_sent: 1)
-        end
-
       end
     end
   end
