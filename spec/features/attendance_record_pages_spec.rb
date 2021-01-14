@@ -1,3 +1,5 @@
+include ActionView::Helpers::NumberHelper
+
 feature "admin viewing an individual student's attendance" do
   let(:admin) { FactoryBot.create(:admin) }
   let(:student) { FactoryBot.create(:student) }
@@ -20,9 +22,11 @@ end
 
 feature 'viewing attendance records index page' do
   let(:admin) { FactoryBot.create(:admin) }
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
-  let(:pair) { FactoryBot.create(:user_with_all_documents_signed) }
-  let!(:attendance_record) { FactoryBot.create(:attendance_record, student: student, date: student.course.start_date, tardy: false, left_early: false, pairings_attributes: [pair_id: pair.id]) }
+  let(:course) { FactoryBot.create(:course) }
+  let(:cohort) { FactoryBot.create(:cohort, courses: [course]) }
+  let(:student) { FactoryBot.create(:user_with_all_documents_signed, courses: [course]) }
+  let(:pair) { FactoryBot.create(:user_with_all_documents_signed, courses: [course]) }
+  let!(:attendance_record) { FactoryBot.create(:attendance_record, student: student, date: course.start_date, tardy: false, left_early: false, pairings_attributes: [pair_id: pair.id]) }
 
   scenario 'as an admin shows daily attendance records' do
     login_as(admin, scope: :admin)
@@ -35,16 +39,28 @@ feature 'viewing attendance records index page' do
     visit student_attendance_records_path(student)
     class_days = student.course.number_of_days_since_start
     expect(page).to have_content "Absent #{class_days - 1} of #{class_days} days from this course."
+    expect(page).to_not have_content "days since the start of the cohort"
   end
 
-  scenario 'as an admin shows absences for all courses' do
-    previous_course = FactoryBot.create(:past_course, students: [student])
+  scenario 'as an admin shows absences for all courses in current cohort' do
+    past_course = FactoryBot.create(:past_course)
+    cohort.courses << past_course
+    student.courses << past_course
     login_as(admin, scope: :admin)
     visit student_attendance_records_path(student)
-    class_days = student.course.number_of_days_since_start
-    total_class_days = previous_course.class_days.count + class_days
-    expect(page).to have_content "Absent #{class_days - 1} of #{class_days} days from this course."
-    expect(page).to have_content "Absent #{total_class_days - 1} of #{total_class_days} days since the start of the program."
+    expect(page).to have_content "Absent #{course.number_of_days_since_start - 1} of #{course.number_of_days_since_start} days from this course."
+    expect(page).to have_content "Absent #{number_with_precision(student.absences_cohort, precision: 1, strip_insignificant_zeros: true)} days since the start of the cohort."
+  end
+
+  scenario 'as an admin shows absences for all courses ever at Epicodus' do
+    non_cohort_course = FactoryBot.create(:past_course)
+    student.courses << non_cohort_course
+    course.cohorts << cohort
+    login_as(admin, scope: :admin)
+    visit student_attendance_records_path(student)
+    expect(page).to have_content "Absent #{course.number_of_days_since_start - 1} of #{course.number_of_days_since_start} days from this course."
+    expect(page).to have_content "Absent #{number_with_precision(student.absences_cohort, precision: 1, strip_insignificant_zeros: true)} days since the start of the cohort."
+    expect(page).to have_content "Absent #{non_cohort_course.class_days.count + course.number_of_days_since_start - 1} of #{non_cohort_course.class_days.count + course.number_of_days_since_start} days ever at Epicodus."
   end
 
   scenario 'as a student' do
