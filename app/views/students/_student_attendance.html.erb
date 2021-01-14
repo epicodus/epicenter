@@ -4,7 +4,7 @@
     <p class="alert alert-info" id="absence-summary-row" data-content="<%= @student.courses.current_and_previous_courses.non_internship_courses.map {|c| @student.absences(c)}.sum.floor %>">
       Absent <%= number_with_precision(@student.absences(course), precision: 1, strip_insignificant_zeros: true) %> of <%= course.number_of_days_since_start %> days from this course.<br>
       <% if @student.course.try(:cohorts).try(:any?) %>
-        Absent <%= number_with_precision(@student.absences_cohort, precision: 1, strip_insignificant_zeros: true) %> days since the start of the cohort.
+        Absent <%= number_with_precision(@student.absences_cohort, precision: 1, strip_insignificant_zeros: true) %> days since the start of the cohort.<br>
       <% end %>
       Absent <%= number_with_precision(@student.courses.current_and_previous_courses.non_internship_courses.map {|c| @student.absences(c)}.sum, precision: 1, strip_insignificant_zeros: true) %> of <%= @student.courses.current_and_previous_courses.non_internship_courses.total_class_days_until(Time.zone.now.to_date).count %> days ever at Epicodus.
     </p>
