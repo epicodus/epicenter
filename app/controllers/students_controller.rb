@@ -63,12 +63,16 @@ private
       end
       if student_params[:probation_teacher]
         if @student.probation_teacher
+          @student.probation_teacher_count = (@student.probation_teacher_count || 0) + 1
+          @student.save
           redirect_back(fallback_location: student_courses_path(@student), alert: "#{@student.name} has been placed on teacher probation!")
         else
           redirect_back(fallback_location: student_courses_path(@student), notice: "#{@student.name} has been removed from teacher probation! :)")
         end
       elsif student_params[:probation_advisor]
         if @student.probation_advisor
+          @student.probation_advisor_count = (@student.probation_advisor_count || 0) + 1
+          @student.save
           redirect_back(fallback_location: student_courses_path(@student), alert: "#{@student.name} has been placed on student services probation!")
         else
           redirect_back(fallback_location: student_courses_path(@student), notice: "#{@student.name} has been removed from student services probation! :)")

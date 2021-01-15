@@ -249,6 +249,22 @@ feature 'setting academic probation', :js do
     student.reload
     expect(student.probation_advisor).to eq false
   end
+
+  it 'shows number of times student has been on teacher probation' do
+    visit student_courses_path(student)
+    expect(page).to have_content 'Teacher probation: (0)'
+    student.update_columns(probation_teacher_count: 1)
+    visit student_courses_path(student)
+    expect(page).to have_content 'Teacher probation: (1)'
+  end
+
+  it 'shows number of times student has been on advisor probation' do
+    visit student_courses_path(student)
+    expect(page).to have_content 'Student services probation: (0)'
+    student.update_columns(probation_advisor_count: 1)
+    visit student_courses_path(student)
+    expect(page).to have_content 'Student services probation: (1)'
+  end
 end
 
 feature 'student roster page' do
