@@ -26,7 +26,7 @@ gem 'bootstrap-sass'
 gem 'sass-rails'
 gem 'jquery-datatables-rails'
 gem 'textacular'
-gem 'omniauth-github'
+gem 'omniauth-github', "~> 1.0" # temp until issue fixed
 gem 'font-awesome-rails'
 gem 'bootstrap-multiselect-rails'
 gem 'kaminari'
