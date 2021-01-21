@@ -1,5 +1,6 @@
 <%= form_for code_review, url: code_review_copy_path, html: { method: :post } do |f| %>
   <div class="input-group">
+    <%= f.hidden_field :course_id, value: @course.id %>
     <%= grouped_collection_select(:code_review, :id, Course.with_code_reviews.order(:description).reverse, :code_reviews, :teacher_and_description, :id, :title, {}, { class: "form-control" }) %>
     <span class="input-group-btn">
       <%= f.submit 'Copy', class: 'btn btn-info submit' %>

@@ -488,6 +488,17 @@ feature 'copying an existing code review' do
     click_button 'Copy'
     expect(page).to have_content 'Code review successfully copied.'
   end
+
+  scenario 'successful copy of code review to course that is not admin current_course' do
+    other_course = FactoryBot.create(:course)
+    code_review = FactoryBot.create(:code_review, course: admin.current_course)
+    visit new_course_code_review_path(other_course)
+    select code_review.title, from: 'code_review_id'
+    click_button 'Copy'
+    expect(page).to have_content 'Code review successfully copied.'
+    expect(admin.current_course.code_reviews.count).to eq 1
+    expect(other_course.code_reviews.count).to eq 1
+  end
 end
 
 feature 'view the code reviews tab on the student show page' do
