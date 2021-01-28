@@ -35,6 +35,14 @@ describe Plan do
     end
   end
 
+  describe 'isa scope' do
+    it 'returns all isa plans' do
+      isa_plan = FactoryBot.create(:isa_plan)
+      standard_plan = FactoryBot.create(:standard_plan)
+      expect(Plan.isa).to eq [isa_plan]
+    end
+  end
+
   describe 'parttime scope' do
     it 'returns all part-time plans' do
       parttime_plan = FactoryBot.create(:parttime_plan)

@@ -472,6 +472,15 @@ FactoryBot.define do
       student_portion { 100_00 }
     end
 
+    factory :isa_plan do
+      short_name { 'isa' }
+      name { 'Income Share Agreement' }
+      close_io_description { 'Income Share Agreement ($11,700)' }
+      isa { true }
+      upfront_amount { 0 }
+      student_portion { 0 }
+    end
+
     factory :parttime_plan do
       short_name { 'parttime-intro' }
       name { 'Evening intro class ($100)' }

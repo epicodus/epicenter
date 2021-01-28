@@ -79,6 +79,7 @@ feature 'Viewing payment index page' do
         let!(:upfront_plan) { FactoryBot.create(:upfront_plan) }
         let!(:standard_plan) { FactoryBot.create(:standard_plan) }
         let!(:loan_plan) { FactoryBot.create(:loan_plan) }
+        let!(:isa_plan) { FactoryBot.create(:isa_plan) }
         let(:student) { FactoryBot.create(:student_with_verified_bank_account, plan: nil) }
 
         before do
@@ -90,6 +91,7 @@ feature 'Viewing payment index page' do
           expect(page).to have_button 'Up-Front Discount'
           expect(page).to have_button 'Standard Tuition'
           expect(page).to have_button 'Loan'
+          expect(page).to have_button 'Income Share Agreement'
         end
 
         it 'shows correct payment button when upfront payment plan selected', :stripe_mock, :stub_mailgun do
@@ -108,6 +110,12 @@ feature 'Viewing payment index page' do
           click_on 'Loan'
           expect(page).to have_content 'Payment plan selected. Please make payment below.'
           expect(page).to have_button 'Charge $100.00'
+        end
+
+        it 'shows correct payment button when isa payment plan selected', :stripe_mock, :stub_mailgun do
+          click_on 'Income Share Agreement'
+          expect(page).to have_content 'Payment plan selected. Please make payment directly to Mia-Share.'
+          expect(page).to_not have_button 'Charge $100.00'
         end
       end
 

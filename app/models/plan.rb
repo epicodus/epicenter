@@ -3,6 +3,7 @@ class Plan < ApplicationRecord
   scope :standard, -> { where(standard: true) }
   scope :upfront, -> { where(upfront: true) }
   scope :loan, -> { where(loan: true) }
+  scope :isa, -> { where(isa: true) }
   scope :parttime, -> { where(parttime: true) }
   scope :fulltime, -> { where(parttime: nil) }
   scope :intro, -> { where(short_name: 'intro') }
