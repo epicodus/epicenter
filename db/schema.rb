@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_15_010922) do
+ActiveRecord::Schema.define(version: 2021_01_27_213616) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -303,6 +303,7 @@ ActiveRecord::Schema.define(version: 2021_01_15_010922) do
     t.string "short_name"
     t.integer "order"
     t.integer "student_portion"
+    t.boolean "isa"
   end
 
   create_table "ratings", id: :serial, force: :cascade do |t|
@@ -403,8 +404,8 @@ ActiveRecord::Schema.define(version: 2021_01_15_010922) do
     t.bigint "office_id"
     t.integer "ending_cohort_id"
     t.boolean "super_admin"
-    t.integer "parttime_cohort_id"
     t.boolean "probation_teacher"
+    t.integer "parttime_cohort_id"
     t.boolean "probation_advisor"
     t.integer "probation_teacher_count"
     t.integer "probation_advisor_count"

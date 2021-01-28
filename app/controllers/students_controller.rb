@@ -90,7 +90,11 @@ private
 
   def redirect_appropriately
     if student_params[:plan_id]
-      redirect_to student_payments_path(current_student), notice: 'Payment plan selected. Please make payment below.'
+      if current_student.plan.try(:short_name) == 'isa'
+        redirect_to student_payments_path(current_student), notice: 'Payment plan selected. Please make payment directly to Mia-Share.'
+      else
+        redirect_to student_payments_path(current_student), notice: 'Payment plan selected. Please make payment below.'
+      end
     elsif request.referer.include?('payment_methods')
       redirect_to payment_methods_path, notice: 'Primary payment method has been updated.'
     else
