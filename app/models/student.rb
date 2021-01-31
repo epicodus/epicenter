@@ -100,7 +100,7 @@ class Student < User
   end
 
   def absences_cohort
-    cohort_courses = course.cohorts.first.courses
+    cohort_courses = Course.where(id: course.cohorts.first.courses & courses).order(:start_date)
     absences_penalty = attendance_records_for(:absent, cohort_courses.first, cohort_courses.last)
     tardies_penalty = attendance_records_for(:tardy, cohort_courses.first, cohort_courses.last) * TARDY_WEIGHT
     left_earlies_penalty = attendance_records_for(:left_early, cohort_courses.first, cohort_courses.last) * TARDY_WEIGHT
