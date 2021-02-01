@@ -1125,8 +1125,8 @@ end
       before do
         ft_cohort.courses << FactoryBot.create(:course)
         ft_cohort.courses << FactoryBot.create(:internship_course)
-        ft_cohort.courses.first.update(start_date: Date.today - 2.weeks, class_days: [Date.today - 2.weeks])
-        ft_cohort.courses.second.update(start_date: Date.today - 1.week, class_days: [Date.today - 1.week])
+        ft_cohort.courses.first.update(start_date: Date.today.beginning_of_week - 2.weeks, class_days: [Date.today.beginning_of_week - 2.weeks])
+        ft_cohort.courses.second.update(start_date: Date.today.beginning_of_week - 1.week, class_days: [Date.today.beginning_of_week - 1.week])
       end
 
       it "with more than one course and perfect attendance" do
@@ -1152,6 +1152,13 @@ end
         expect(ft_student.absences_cohort).to eq 1
       end
 
+      it "with more than one course and 1 absence on a Sunday" do
+        ft_cohort.courses.first.update_columns(start_date: Date.today.end_of_week - 2.weeks, class_days: [Date.today.end_of_week - 2.weeks])
+        ft_cohort.courses.second.update_columns(start_date: Date.today.end_of_week - 1.week, class_days: [Date.today.end_of_week - 1.week])
+        FactoryBot.create(:attendance_record, student: ft_student, date: ft_cohort.courses.first.start_date, tardy: false, left_early: false, pairings_attributes: [pair_id: pair.id])
+        expect(ft_student.absences_cohort).to eq 2
+      end
+
       it 'does not include course from another cohort' do
         extraneous_course = FactoryBot.create(:past_course)
         ft_student.courses << extraneous_course
@@ -1167,8 +1174,8 @@ end
       let(:pair) { FactoryBot.create(:student, courses: pt_full_stack_cohort.courses) }
       before do
         pt_full_stack_cohort.courses = [pt_full_stack_cohort.courses.first, pt_full_stack_cohort.courses.second]
-        pt_full_stack_cohort.courses.first.update(start_date: Date.today - 2.weeks, class_days: [Date.today - 2.weeks])
-        pt_full_stack_cohort.courses.second.update(start_date: Date.today - 1.week, class_days: [Date.today - 1.week])
+        pt_full_stack_cohort.courses.first.update(start_date: Date.today.beginning_of_week - 2.weeks, class_days: [Date.today.beginning_of_week - 2.weeks])
+        pt_full_stack_cohort.courses.second.update(start_date: Date.today.beginning_of_week - 1.week, class_days: [Date.today.beginning_of_week - 1.week])
       end
 
       it "with more than one course and perfect attendance" do
@@ -1208,7 +1215,7 @@ end
       let(:pt_intro_student) { FactoryBot.create(:student, courses: pt_intro_cohort.courses) }
       let(:pair) { FactoryBot.create(:student, courses: pt_intro_cohort.courses) }
       before do
-        pt_intro_cohort.courses.first.update(start_date: Date.today - 1.week, class_days: [Date.today - 1.week])
+        pt_intro_cohort.courses.first.update(start_date: Date.today.beginning_of_week - 1.week, class_days: [Date.today.beginning_of_week - 1.week])
       end
 
       it "with perfect attendance" do
@@ -1345,6 +1352,12 @@ end
       expect(student.attendance_records_for(:absent)).to eq 0
     end
 
+    it 'counts absences double on Sundays' do
+      course.class_days = [Date.parse('2020-01-05')]
+      course.save
+      expect(student.attendance_records_for(:absent)).to eq 2
+    end
+
     it 'includes 2021 solos in number of days the student has been absent' do
       course.class_days = [Date.parse('2021-01-04')]
       course.save
@@ -1386,9 +1399,16 @@ end
       end
 
       it 'counts the number of days the student has been absent' do
+        student.courses << past_course
         student.courses << future_course
         FactoryBot.create(:attendance_record, student: student, date: future_course.start_date, pairings_attributes: [pair_id: pair.id])
         expect(student.attendance_records_for(:absent, past_course)).to eq past_course.class_days.count
+      end
+
+      it 'counts absences double on Sundays' do
+        course.class_days = [Date.parse('2020-01-05')]
+        course.save
+        expect(student.attendance_records_for(:absent, course)).to eq 2
       end
     end
 
@@ -1418,6 +1438,14 @@ end
         attended = past_course.total_class_days + course.total_class_days + future_course.total_class_days - AttendanceRecord.count
         travel_to future_course.end_date do
           expect(student.attendance_records_for(:absent, past_course, future_course)).to eq attended
+        end
+      end
+
+      it 'counts absences double on Sundays' do
+        past_course.update_columns(start_date: Date.parse('2020-01-05'), class_days: [Date.parse('2020-01-05')] + past_course.class_days)
+        attended = past_course.total_class_days + course.total_class_days + future_course.total_class_days - AttendanceRecord.count
+        travel_to future_course.end_date do
+          expect(student.attendance_records_for(:absent, past_course, future_course)).to eq attended + 1
         end
       end
     end
@@ -1691,12 +1719,12 @@ end
   end
 
   describe 'calculate cohorts' do
-    let!(:cohort) { FactoryBot.create(:full_cohort, start_date: Date.today) }
-    let!(:past_cohort) { FactoryBot.create(:full_cohort, start_date: Date.today - 1.year) }
-    let!(:future_cohort) { FactoryBot.create(:full_cohort, start_date: Date.today + 1.year) }
-    let!(:part_time_cohort) { FactoryBot.create(:part_time_cohort, start_date: Date.today) }
-    let!(:part_time_full_stack_cohort) { FactoryBot.create(:part_time_c_react_cohort, start_date: Date.today) }
-    let!(:part_time_js_react_cohort) { FactoryBot.create(:part_time_js_react_cohort, start_date: Date.today) }
+    let!(:cohort) { FactoryBot.create(:full_cohort, start_date: Date.today.beginning_of_week) }
+    let!(:past_cohort) { FactoryBot.create(:full_cohort, start_date: Date.today.beginning_of_week - 1.year) }
+    let!(:future_cohort) { FactoryBot.create(:full_cohort, start_date: Date.today.beginning_of_week + 1.year) }
+    let!(:part_time_cohort) { FactoryBot.create(:part_time_cohort, start_date: Date.today.beginning_of_week) }
+    let!(:part_time_full_stack_cohort) { FactoryBot.create(:part_time_c_react_cohort, start_date: Date.today.beginning_of_week) }
+    let!(:part_time_js_react_cohort) { FactoryBot.create(:part_time_js_react_cohort, start_date: Date.today.beginning_of_week) }
 
     describe '#calculate_parttime_cohort' do
       it 'returns part-time cohort when only part-time intro courses' do

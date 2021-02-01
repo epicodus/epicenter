@@ -356,19 +356,19 @@ class Student < User
     else
       results = attendance_records.all_before_2021_and_paired_only_starting_2021.where(attributes)
     end
-    if start_course && end_course
-      filtered_results = results.where("date between ? and ?", start_course.try(:start_date), end_course.try(:end_date))
-    else
-      filtered_results = results.where("date between ? and ?", start_course.try(:start_date), start_course.try(:end_date))
-    end
-    if start_course && end_course && status == :absent
-      [0, days_so_far(start_course, end_course) - filtered_results.count].max
-    elsif start_course && status == :absent
-      [0, start_course.number_of_days_since_start - filtered_results.count].max
-    elsif start_course
-      filtered_results.count
+    if start_course
+      filtered_results = results.where("date between ? and ?", start_course.start_date, end_course.try(:end_date) || start_course.end_date)
+      if status == :absent
+        absences = days_so_far(start_course, end_course || start_course) - filtered_results.map {|ar| ar.date}
+        absences_count = absences.count + absences.select {|date| date.sunday?}.count
+        [0, absences_count].max
+      else
+        filtered_results.count
+      end
     elsif status == :absent
-      [0, days_since_start_of_program - results.count].max
+      absences = days_since_start_of_program - results.map {|ar| ar.date}
+      absences_count = absences.count + absences.select {|date| date.sunday?}.count
+      [0, absences_count].max
     else
       results.count
     end
@@ -450,11 +450,11 @@ private
 
   def days_so_far(start_course=nil, end_course=nil)
     filtered_courses = start_course.nil? ? courses : courses.where('start_date >= ? AND end_date <= ?', start_course.start_date, end_course.end_date)
-    filtered_courses.non_internship_courses.map(&:class_days).flatten.select {|day| day <= Date.today}.count
+    filtered_courses.non_internship_courses.map(&:class_days).flatten.select {|day| day <= Date.today}
   end
 
   def days_since_start_of_program
-    courses.non_internship_courses.map(&:class_days).flatten.select {|day| day <= Date.today}.count
+    courses.non_internship_courses.map(&:class_days).flatten.select {|day| day <= Date.today}
   end
 
   def next_course
