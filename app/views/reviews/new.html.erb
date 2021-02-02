@@ -16,17 +16,7 @@
       <% end %>
     </h3>
 
-    <%= form_for @submission.student do |f| %>
-      <div class="<%= @submission.student.probation_teacher ? 'alert alert-danger' : '' %>">
-        <p>Teacher probation: (<%= @submission.student.probation_teacher_count || 0 %>) &nbsp;<%= f.check_box :probation_teacher %></p>
-      </div>
-    <% end %>
-
-    <%= form_for @submission.student do |f| %>
-      <div class="<%= @submission.student.probation_advisor ? 'alert alert-danger' : '' %>">
-        <p>Student services probation: (<%= @submission.student.probation_advisor_count || 0 %>) &nbsp;<%= f.check_box :probation_advisor %></p>
-      </div>
-    <% end %>
+    <%= render 'students/probation', student: @submission.student %>
 
     <h4>Submitted <%= time_ago_in_words(@submission.updated_at) %> ago</h4>
 
