@@ -296,6 +296,13 @@ feature 'student roster page' do
     expect(page).to have_content 'Cohort absences'
   end
 
+  scenario 'allows viewing probation count' do
+    student = FactoryBot.create(:student, course: course, probation_advisor_count: nil, probation_teacher_count: 123)
+    visit course_path(course)
+    click_link 'View probation'
+    expect(page).to have_content 123
+  end
+
   scenario 'allows viewing payment plans' do
     student = FactoryBot.create(:student, course: course)
     visit course_path(course)

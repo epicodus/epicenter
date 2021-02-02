@@ -33,7 +33,6 @@
       <p>Teacher probation: (<%= @student.probation_teacher_count || 0 %>) &nbsp;<%= f.check_box :probation_teacher %></p>
     </div>
   <% end %>
-
   <%= form_for @student do |f| %>
     <div class="<%= @student.probation_advisor ? 'alert alert-danger' : '' %>">
       <p>Student services probation: (<%= @student.probation_advisor_count || 0 %>) &nbsp;<%= f.check_box :probation_advisor %></p>
