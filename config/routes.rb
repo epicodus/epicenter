@@ -24,6 +24,7 @@ Rails.application.routes.draw do
     resources :daily_submissions, only: [:index, :create]
     resources :peer_evaluations, only: [:index, :new, :create, :show]
     resources :pair_feedbacks, only: [:index]
+    resource :probation, only: [:edit, :update]
   end
   resources :admins, only: [:update]
   resources :payment_methods, only: [:index, :new]

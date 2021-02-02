@@ -252,18 +252,30 @@ feature 'setting academic probation', :js do
 
   it 'shows number of times student has been on teacher probation' do
     visit student_courses_path(student)
-    expect(page).to have_content 'Teacher probation: (0)'
+    expect(page).to have_content 'Teacher probation: (0 times)'
     student.update_columns(probation_teacher_count: 1)
     visit student_courses_path(student)
-    expect(page).to have_content 'Teacher probation: (1)'
+    expect(page).to have_content 'Teacher probation: (1 time)'
   end
 
   it 'shows number of times student has been on advisor probation' do
     visit student_courses_path(student)
-    expect(page).to have_content 'Student services probation: (0)'
+    expect(page).to have_content 'Student services probation: (0 times)'
     student.update_columns(probation_advisor_count: 1)
     visit student_courses_path(student)
-    expect(page).to have_content 'Student services probation: (1)'
+    expect(page).to have_content 'Student services probation: (1 time)'
+  end
+
+  it 'allows editing of probation counts' do
+    visit student_courses_path(student)
+    expect(page).to have_content 'Teacher probation: (0 times)'
+    expect(page).to have_content 'Student services probation: (0 times)'
+    click_link 'edit count'
+    fill_in 'probation-teacher-count-input', with: '3'
+    fill_in 'probation-advisor-count-input', with: '1'
+    click_button 'Update'
+    expect(page).to have_content 'Teacher probation: (3 times)'
+    expect(page).to have_content 'Student services probation: (1 time)'
   end
 end
 
