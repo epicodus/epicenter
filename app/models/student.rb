@@ -357,16 +357,11 @@ class Student < User
       results = attendance_records.all_before_2021_and_paired_only_starting_2021.where(attributes)
     end
     if start_course
-      filtered_results = results.where("date between ? and ?", start_course.start_date, end_course.try(:end_date) || start_course.end_date)
-      if status == :absent
-        absences = days_so_far(start_course, end_course || start_course) - filtered_results.map {|ar| ar.date}
-        absences_count = absences.count + absences.select {|date| date.sunday?}.count
-        [0, absences_count].max
-      else
-        filtered_results.count
-      end
-    elsif status == :absent
-      absences = days_since_start_of_program - results.map {|ar| ar.date}
+      results = results.where("date between ? and ?", start_course.start_date, end_course.try(:end_date) || start_course.end_date)
+    end
+    if status == :absent
+      past_class_days = start_course ? days_so_far(start_course, end_course || start_course) : days_since_start_of_program
+      absences = past_class_days - results.map {|ar| ar.date}
       absences_count = absences.count + absences.select {|date| date.sunday?}.count
       [0, absences_count].max
     else
