@@ -114,7 +114,7 @@ feature 'Viewing payment index page' do
 
         it 'shows correct payment button when isa payment plan selected', :stripe_mock, :stub_mailgun do
           click_on 'Income Share Agreement'
-          expect(page).to have_content 'Payment plan selected. Please make payment directly to Mia-Share.'
+          expect(page).to have_content 'selected the ISA payment plan'
           expect(page).to_not have_button 'Charge $100.00'
         end
       end
