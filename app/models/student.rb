@@ -445,11 +445,11 @@ private
 
   def days_so_far(start_course=nil, end_course=nil)
     filtered_courses = start_course.nil? ? courses : courses.where('start_date >= ? AND end_date <= ?', start_course.start_date, end_course.end_date)
-    filtered_courses.non_internship_courses.map(&:class_days).flatten.select {|day| day <= Date.today}
+    filtered_courses.non_internship_courses.map(&:class_days).flatten.select {|day| day <= Time.zone.now.to_date}
   end
 
   def days_since_start_of_program
-    courses.non_internship_courses.map(&:class_days).flatten.select {|day| day <= Date.today}
+    courses.non_internship_courses.map(&:class_days).flatten.select {|day| day <= Time.zone.now.to_date}
   end
 
   def next_course
