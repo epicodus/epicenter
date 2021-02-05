@@ -18,21 +18,16 @@ WebMock.enable!
 
 include ActiveSupport::Testing::TimeHelpers
 
+chrome_bin = ENV.fetch('GOOGLE_CHROME_SHIM', nil)
+chrome_opts = chrome_bin ? { "chromeOptions" => { "binary" => chrome_bin } } : { "goog:chromeOptions": { args: ['headless'] } }
 Capybara.register_driver :chrome do |app|
-  Capybara::Selenium::Driver.new(app, browser: :chrome)
-end
-
-Capybara.register_driver :headless_chrome do |app|
-  capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-    "goog:chromeOptions": { args: ['headless'] }
+  Capybara::Selenium::Driver.new(
+     app,
+     browser: :chrome,
+     desired_capabilities: Selenium::WebDriver::Remote::Capabilities.chrome(chrome_opts)
   )
-
-  Capybara::Selenium::Driver.new app,
-    browser: :chrome,
-    desired_capabilities: capabilities
 end
-
-Capybara.javascript_driver = :headless_chrome
+Capybara.javascript_driver = :chrome
 
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
@@ -89,7 +84,6 @@ VCR.configure do |config|
   config.filter_sensitive_data('<PLAID_TEST_BANK_ACCOUNT_TOKEN>') { ENV['PLAID_TEST_BANK_ACCOUNT_TOKEN'] }
   config.filter_sensitive_data('<PLAID_TEST_ACCESS_TOKEN>') { ENV['PLAID_TEST_ACCESS_TOKEN'] }
   config.filter_sensitive_data('<EXAMPLE_CRM_LEAD_ID>') { ENV['EXAMPLE_CRM_LEAD_ID'] }
-  config.filter_sensitive_data('<FORUM_API_KEY>') { ENV['FORUM_API_KEY'] }
   config.filter_sensitive_data('<GITHUB_APP_PEM>') { ENV['GITHUB_APP_PEM'] }
   config.filter_sensitive_data('<GITHUB_APP_ID>') { ENV['GITHUB_APP_ID'] }
   config.filter_sensitive_data('<GITHUB_INSTALLATION_ID>') { ENV['GITHUB_INSTALLATION_ID'] }
