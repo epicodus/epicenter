@@ -1,86 +1,16 @@
 {
-  "name": "epicenter-review-app",
-  "scripts": {
-    "postdeploy": "bundle exec rake db:setup"
-  },
-  "env": {
-    "BALANCED_API_KEY": {
-      "required": false
-    },
-    "CLASS_START_TIME": {
-      "required": false
-    },
-    "CLOSE_IO_API_KEY": {
-      "required": false
-    },
-    "CODE_OF_CONDUCT_DOCUMENT_URL": {
-      "required": true
-    },
-    "ENROLLMENT_AGREEMENT_DOCUMENT_URL": {
-      "required": true
-    },
-    "FROM_EMAIL_PAYMENT": {
-      "required": true
-    },
-    "FROM_EMAIL_REVIEW": {
-      "required": true
-    },
-    "HELLO_SIGN_API_KEY": {
-      "required": false
-    },
-    "HELLO_SIGN_CLIENT_ID": {
-      "required": false
-    },
-    "HELLO_SIGN_TEST_MODE": {
-      "required": false
-    },
-    "LANG": {
-      "required": true
-    },
-    "LOG_LEVEL": {
-      "required": true
-    },
-    "MAX_THREADS": {
-      "required": true
-    },
-    "MIN_THREADS": {
-      "required": true
-    },
-    "RACK_ENV": {
-      "required": true
-    },
-    "RAILS_ENV": {
-      "required": true
-    },
-    "REFUND_POLICY_DOCUMENT_URL": {
-      "required": true
-    },
-    "SCHOOL_IP_ADDRESS": {
-      "required": true
-    },
-    "SCHOOL_WIFI_IP_ADDRESS": {
-      "required": true
-    },
-    "SECRET_KEY_BASE": {
-      "required": true
-    },
-    "STRIPE_API_KEY": {
-      "required": false
-    },
-    "STRIPE_API_VERSION": {
-      "required": false
-    },
-    "STRIPE_PUBLIC_KEY": {
-      "required": false
+  "environments": {
+    "test": {
+      "buildpacks": [
+        { "url": "heroku/ruby" },
+        { "url": "https://github.com/heroku/heroku-buildpack-chromedriver" },
+        { "url": "heroku/google-chrome" }
+      ],
+      "addons":[
+        "logentries",
+        "heroku-postgresql:in-dyno",
+        "heroku-redis:in-dyno"
+      ]
     }
-  },
-  "addons": [
-    "logentries",
-    "heroku-postgresql"
-  ],
-  "buildpacks": [
-    {
-      "url": "urn:buildpack:heroku/ruby"
-    }
-  ]
+  }
 }
