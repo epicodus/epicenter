@@ -1,0 +1,14 @@
+<h1>Edit probation counts for <%= @student.name %></h1>
+<%= form_with url: student_probation_path(@student), method: :patch do |f| %>
+  <br>
+  <div class="form-group">
+    <%= f.label :probation_teacher_count, 'Teacher probation count: ' %>
+    <%= f.number_field :probation_teacher_count, value: @student.probation_teacher_count.to_i, class: 'probation_count_field', id: 'probation-teacher-count-input' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :probation_advisor_count, 'Advisor probation count: ' %>
+    <%= f.number_field :probation_advisor_count, value: @student.probation_advisor_count.to_i, class: 'probation_count_field', id: 'probation-advisor-count-input' %>
+  </div>
+  <br>
+  <%= f.submit "Update", class: 'btn btn-success' %>
+<% end %>

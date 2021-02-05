@@ -28,17 +28,7 @@
     <p><%= link_to 'Archive student', student_path(id: @student.id), data: { method: :delete, confirm: 'Are you sure you want to archive this student and all enrollments?' }, class: 'btn btn-primary btn-sm' %></p>
   <% end %>
 
-  <%= form_for @student do |f| %>
-    <div class="<%= @student.probation_teacher ? 'alert alert-danger' : '' %>">
-      <p>Teacher probation: (<%= @student.probation_teacher_count || 0 %>) &nbsp;<%= f.check_box :probation_teacher %></p>
-    </div>
-  <% end %>
-
-  <%= form_for @student do |f| %>
-    <div class="<%= @student.probation_advisor ? 'alert alert-danger' : '' %>">
-      <p>Student services probation: (<%= @student.probation_advisor_count || 0 %>) &nbsp;<%= f.check_box :probation_advisor %></p>
-    </div>
-  <% end %>
+  <%= render 'students/probation', student: @student %>
 
   <% if @student.starting_cohort && @student.cohort && @student.starting_cohort == @student.cohort %>
     <p>Cohort: <%= link_to @student.cohort.description, cohort_path(@student.cohort) %></p>

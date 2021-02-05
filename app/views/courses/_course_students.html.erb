@@ -3,9 +3,10 @@
   <div class="panel-body">
     <p>
       <% unless @course.internship_course? %>
-        <%= link_to 'View attendance', course_path(@course, attendance: true, payment_plans: params[:payment_plans], feedback: params[:feedback]), class: 'btn btn-default' unless params[:attendance] %>
-        <%= link_to 'View payment plans', course_path(@course, payment_plans: true, attendance: params[:attendance], feedback: params[:feedback]), class: 'btn btn-default' unless params[:payment_plans] %>
-        <%= link_to 'View feedback', course_path(@course, feedback: true, attendance: params[:attendance], payment_plans: params[:payment_plans]), class: 'btn btn-default' unless params[:feedback] %>
+        <%= link_to 'View attendance', course_path(@course, attendance: true, probation: params[:probation], payment_plans: params[:payment_plans], feedback: params[:feedback]), class: 'btn btn-default' unless params[:attendance] %>
+        <%= link_to 'View probation', course_path(@course, probation: true, attendance: params[:attendance], payment_plans: params[:payment_plans], feedback: params[:feedback]), class: 'btn btn-default' unless params[:probation] %>
+        <%= link_to 'View payment plans', course_path(@course, payment_plans: true, attendance: params[:attendance], probation: params[:probation], feedback: params[:feedback]), class: 'btn btn-default' unless params[:payment_plans] %>
+        <%= link_to 'View feedback', course_path(@course, feedback: true, attendance: params[:attendance], probation: params[:probation], payment_plans: params[:payment_plans]), class: 'btn btn-default' unless params[:feedback] %>
         <%= link_to 'Export', course_export_path(@course), id: "export-btn", :class => "btn btn-default" %>
       <% end %>
     </p>
@@ -19,6 +20,9 @@
                 <th>Attendance</th>
                 <th>Course absences</th>
                 <th>Cohort absences</th>
+              <% end %>
+              <% if params[:probation] == "true" %>
+                <th>Probations</th>
               <% end %>
               <% if params[:payment_plans] == "true" %>
                 <th>Payment plan</th>

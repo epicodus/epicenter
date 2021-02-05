@@ -179,6 +179,27 @@ feature "Student visits homepage after logged in" do
     expect(current_path).to eq student_courses_path(student)
     expect(page).to have_content "Your courses"
   end
+
+  it "does not show cohort name or cohort absences if not cohort" do
+    student = FactoryBot.create(:user_with_all_documents_signed, plan: FactoryBot.create(:special_plan))
+    sign_in_as(student)
+    visit root_path
+    expect(current_path).to eq student_courses_path(student)
+    expect(page).to_not have_content "Cohort:"
+    expect(page).to_not have_content "Absences since the start of the current cohort"
+    expect(page).to have_content "Absences ever at Epicodus"
+    expect(page).to have_content "Number of times with unmet requirements"
+  end
+
+  it "show cohort name and cohort absences when cohort listed" do
+    student = FactoryBot.create(:student_with_cohort)
+    sign_in_as(student)
+    visit student_courses_path(student)
+    expect(page).to have_content "Cohort:"
+    expect(page).to have_content "Absences since the start of the current cohort"
+    expect(page).to have_content "Absences ever at Epicodus"
+    expect(page).to have_content "Number of times with unmet requirements"
+  end
 end
 
 feature "Unenrolled student signs in" do

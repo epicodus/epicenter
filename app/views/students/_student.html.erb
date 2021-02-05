@@ -42,6 +42,13 @@
         </p>
       </td>
     <% end %>
+
+    <% if params[:probation] == "true" %>
+      <td>
+        <%= student.probation_advisor_count.to_i + student.probation_teacher_count.to_i %>
+      </td>
+    <% end %>
+
     <% if params[:payment_plans] == "true" %>
       <td>
         <%= student.plan.try(:name) %>
