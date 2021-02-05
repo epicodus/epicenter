@@ -91,7 +91,7 @@ private
   def redirect_appropriately
     if student_params[:plan_id]
       if current_student.plan.try(:short_name) == 'isa'
-        redirect_to student_payments_path(current_student), notice: 'Payment plan selected. Please make payment directly to Mia-Share.'
+        redirect_to student_payments_path(current_student), notice: "You've selected the ISA payment plan. Please pay your deposit to our ISA Partner Mia Share. Click <a href='https://epicodus.mia-share.com/' target='_blank'>here</a> to apply and pay with Mia Share."
       else
         redirect_to student_payments_path(current_student), notice: 'Payment plan selected. Please make payment below.'
       end
