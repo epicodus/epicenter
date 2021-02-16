@@ -18,7 +18,8 @@
       "addons":[
         "heroku-postgresql:in-dyno",
         "heroku-redis:in-dyno"
-      ]
+      ],
+      "scripts": { "postdeploy": "bundle exec rake db:schema:load" }
     }
   }
 }
