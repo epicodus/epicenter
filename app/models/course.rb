@@ -126,6 +126,14 @@ class Course < ApplicationRecord
     end_time.in_time_zone(office.time_zone)
   end
 
+  def start_time_on_day(day)
+    ActiveSupport::TimeZone[office.time_zone].parse(day.to_s + ' ' + start_time(day))
+  end
+
+  def end_time_on_day(day)
+    ActiveSupport::TimeZone[office.time_zone].parse(day.to_s + ' '  + end_time(day))
+  end
+
   def in_session?
     start_date <= Time.zone.now.to_date && end_date >= Time.zone.now.to_date
   end

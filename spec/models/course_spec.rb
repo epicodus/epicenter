@@ -456,7 +456,7 @@ describe Course do
         end
       end
 
-      describe 'calculates course start and end times today', :dont_stub_class_times do
+      describe 'calculates course start and end times', :dont_stub_class_times do
         it '#start_time_today' do
           allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(part_time: false)
           course = FactoryBot.create(:course, start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
@@ -470,6 +470,22 @@ describe Course do
           course = FactoryBot.create(:course, start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
           travel_to course.start_date do
             expect(course.end_time_today).to eq Time.zone.now.in_time_zone(course.office.time_zone).beginning_of_day + 17.hours
+          end
+        end
+
+        it '#start_time_on_day' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(part_time: false)
+          course = FactoryBot.create(:course, start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+          travel_to course.start_date + 5.days do
+            expect(course.start_time_on_day(course.start_date)).to eq DateTime.parse('2017-03-13 08:00 EDT')
+          end
+        end
+
+        it '#end_time_on_day' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(part_time: false)
+          course = FactoryBot.create(:course, start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+          travel_to course.start_date + 5.days do
+            expect(course.end_time_on_day(course.start_date)).to eq DateTime.parse('2017-03-13 17:00 EDT')
           end
         end
       end
