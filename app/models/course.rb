@@ -234,25 +234,17 @@ private
     code_review_params = Github.get_layout_params(layout_file_path)['code_reviews'] || []
     code_review_params.each do |params|
       unless code_reviews.where(title: params['title']).any?
-        title = params['title']
-        filename = params['filename']
-        submissions_not_required = params['submissions_not_required']
-        always_visible = params['always_visible']
-        objectives = params['objectives']
-        week = params['week']
-        day = class_weeks[week-1].last
-        if always_visible
-          visible_date = nil
-          due_date = nil
-        elsif parttime?
-          visible_date = day.beginning_of_day + 17.hours
-          due_date = visible_date + 1.week
+        if params['always_visible']
+          visible_datetime = nil
+          due_datetime = nil
         else
-          visible_date = day.beginning_of_day + 8.hours
-          due_date = visible_date + 9.hours
+          visible_date = date_of_weekday_on_class_week(class_week: params['visible_class_week'], day_of_week: params['visible_day_of_week'])
+          visible_datetime = time_on_date(date: visible_date, time: params['visible_time'])
+          due_date = visible_date + params['due_days_later'].days
+          due_datetime = time_on_date(date: due_date, time: params['due_time'])
         end
-        cr = code_reviews.new(title: title, github_path: filename, submissions_not_required: submissions_not_required, visible_date: visible_date, due_date: due_date)
-        cr.objectives = objectives.map.with_index(1) {|obj, i| Objective.new(content: obj, number: i)}
+        cr = code_reviews.new(title: params['title'], github_path: params['filename'], submissions_not_required: params['submissions_not_required'], visible_date: visible_datetime, due_date: due_datetime)
+        cr.objectives = params['objectives'].map.with_index(1) {|obj, i| Objective.new(content: obj, number: i)}
       end
     end
   end
@@ -261,15 +253,24 @@ private
     Rails.configuration.holiday_weeks.include?(day.strftime('%Y-%m-%d')) && language.name != 'Internship'
   end
 
-  def class_weeks
-    class_days.group_by { |day| day - day.wday }.values
-  end
-
   def reassign_admin_current_courses
     Admin.where(current_course_id: self.id).update_all(current_course_id: Course.last.id)
   end
 
   def update_cohort_end_date(cohort)
     cohort.update(end_date: end_date) if cohort.end_date.nil? || self.end_date > cohort.end_date
+  end
+
+  def date_of_weekday_on_class_week(class_week:, day_of_week:)
+    class_days_in_week(class_week).last.beginning_of_week(:sunday) + Date::DAYNAMES.index(day_of_week.humanize)
+  end
+
+  def class_days_in_week(class_week)
+    class_days.group_by { |day| day - day.wday }.values[class_week - 1]
+  end
+
+  def time_on_date(date:, time:)
+    hour,min = time.split(':')
+    date.in_time_zone(office.time_zone).change(hour: hour, min: min)
   end
 end
