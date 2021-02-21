@@ -569,8 +569,8 @@ describe Course do
           course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
           expect(course.code_reviews.count).to eq 1
           expect(course.code_reviews.first.objectives.count).to eq 1
-          expect(course.code_reviews.first.visible_date).to eq Date.parse('2017-03-17').beginning_of_day + 8.hours
-          expect(course.code_reviews.first.due_date).to eq Date.parse('2017-03-17').beginning_of_day + 17.hours
+          expect(course.code_reviews.first.visible_date).to eq Date.parse('2017-03-17').in_time_zone(course.office.time_zone) + 8.hours
+          expect(course.code_reviews.first.due_date).to eq Date.parse('2017-03-17').in_time_zone(course.office.time_zone) + 17.hours
         end
 
         it 'for full-time course with 2 code reviews with 1 and 2 objectives' do
@@ -580,10 +580,10 @@ describe Course do
           expect(course.code_reviews.count).to eq 2
           expect(course.code_reviews.first.objectives.count).to eq 1
           expect(course.code_reviews.last.objectives.count).to eq 2
-          expect(course.code_reviews.first.visible_date).to eq Date.parse('2017-03-17').beginning_of_day + 8.hours
-          expect(course.code_reviews.first.due_date).to eq Date.parse('2017-03-17').beginning_of_day + 17.hours
-          expect(course.code_reviews.last.visible_date).to eq Date.parse('2017-03-24').beginning_of_day + 8.hours
-          expect(course.code_reviews.last.due_date).to eq Date.parse('2017-03-24').beginning_of_day + 17.hours
+          expect(course.code_reviews.first.visible_date).to eq Date.parse('2017-03-17').in_time_zone(course.office.time_zone).beginning_of_day + 8.hours
+          expect(course.code_reviews.first.due_date).to eq Date.parse('2017-03-17').in_time_zone(course.office.time_zone).beginning_of_day + 17.hours
+          expect(course.code_reviews.last.visible_date).to eq Date.parse('2017-03-24').in_time_zone(course.office.time_zone).beginning_of_day + 8.hours
+          expect(course.code_reviews.last.due_date).to eq Date.parse('2017-03-24').in_time_zone(course.office.time_zone).beginning_of_day + 17.hours
         end
 
         it 'for part-time course' do
@@ -592,8 +592,8 @@ describe Course do
           course = FactoryBot.create(:part_time_course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
           expect(course.code_reviews.count).to eq 1
           expect(course.code_reviews.first.objectives.count).to eq 1
-          expect(course.code_reviews.first.visible_date).to eq Date.parse('2017-03-15').beginning_of_day + 17.hours
-          expect(course.code_reviews.first.due_date).to eq Date.parse('2017-03-22').beginning_of_day + 17.hours
+          expect(course.code_reviews.first.visible_date).to eq Date.parse('2017-03-16').in_time_zone(course.office.time_zone).beginning_of_day + 8.hours
+          expect(course.code_reviews.first.due_date).to eq Date.parse('2017-03-19').in_time_zone(course.office.time_zone).beginning_of_day + 8.hours
         end
 
         it 'for code review where submissions not required' do
@@ -671,8 +671,13 @@ def course_layout_params_helper(attributes = {})
   part_time = attributes[:part_time] || false
   internship = attributes[:internship] || false
   number_of_days = attributes[:number_of_days] || 15
-  class_times = part_time ? class_times_pt : class_times_ft
-  code_reviews = code_review_params_helper(number_of_code_reviews: attributes[:number_of_code_reviews] || 0, submissions_not_required: attributes[:submissions_not_required], always_visible: attributes[:always_visible])
+  if part_time
+    class_times = class_times_pt
+    code_reviews = code_review_params_helper(number_of_code_reviews: attributes[:number_of_code_reviews] || 0, visible_day_of_week: 'thursday', due_days_later: 3, due_time: '8:00', submissions_not_required: attributes[:submissions_not_required], always_visible: attributes[:always_visible])
+  else
+    class_times = class_times_ft
+    code_reviews = code_review_params_helper(number_of_code_reviews: attributes[:number_of_code_reviews] || 0, visible_day_of_week: 'friday', due_days_later: 0, due_time: '17:00', submissions_not_required: attributes[:submissions_not_required], always_visible: attributes[:always_visible])
+  end
   { 'part_time' => part_time, 'internship' => internship, 'number_of_days' => number_of_days, 'class_times' => class_times, 'code_reviews' => code_reviews }
 end
 
@@ -683,7 +688,7 @@ def code_review_params_helper(attributes)
     (cr_num+1).times do |obj_num|
       objectives << "Test objective #{obj_num+1}"
     end
-    code_review_params << { 'title' => "Code Review #{cr_num+1}", 'week' => cr_num+1, 'filename' => "example_code_review", 'submissions_not_required' => attributes[:submissions_not_required], 'always_visible' => attributes[:always_visible], 'objectives' => objectives }
+    code_review_params << { 'title' => "Code Review #{cr_num+1}", 'visible_class_week' => cr_num+1, 'visible_day_of_week' => attributes[:visible_day_of_week], 'visible_time' => '8:00', 'due_days_later' => attributes[:due_days_later], 'due_time' => attributes[:due_time], 'filename' => "example_code_review", 'submissions_not_required' => attributes[:submissions_not_required], 'always_visible' => attributes[:always_visible], 'objectives' => objectives }
   end
   code_review_params
 end
