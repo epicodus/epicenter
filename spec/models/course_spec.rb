@@ -611,6 +611,33 @@ describe Course do
           expect(course.code_reviews.first.due_date).to eq nil
         end
 
+        it 'overriding general course visible and due date settings' do
+          code_review_params = course_layout_params_helper(part_time: true, number_of_code_reviews: 1)
+          code_review_params['code_reviews']['details'].first['visible_day_of_week'] = 'friday'
+          code_review_params['code_reviews']['details'].first['visible_time'] = '9:00'
+          code_review_params['code_reviews']['details'].first['due_days_later'] = 0
+          code_review_params['code_reviews']['details'].first['due_time'] = '17:00'
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return code_review_params
+          allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+          course = FactoryBot.create(:part_time_course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+          expect(course.code_reviews.count).to eq 1
+          expect(course.code_reviews.first.objectives.count).to eq 1
+          expect(course.code_reviews.first.visible_date).to eq Date.parse('2017-03-17').in_time_zone(course.office.time_zone).beginning_of_day + 9.hours
+          expect(course.code_reviews.first.due_date).to eq Date.parse('2017-03-17').in_time_zone(course.office.time_zone).beginning_of_day + 17.hours
+        end
+
+        it 'overriding general course submissions_not_required and always_visible settings' do
+          code_review_params = course_layout_params_helper(number_of_code_reviews: 1, submissions_not_required: false)
+          code_review_params['code_reviews']['details'].first['submissions_not_required'] = true
+          code_review_params['code_reviews']['details'].first['always_visible'] = true
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return code_review_params
+          allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+          course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+          expect(course.code_reviews.first.submissions_not_required).to eq true
+          expect(course.code_reviews.first.visible_date).to eq nil
+          expect(course.code_reviews.first.due_date).to eq nil
+        end
+
         it 'adding code reviews to existing course' do
           course = FactoryBot.create(:course)
           allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_code_reviews: 1)
@@ -682,13 +709,19 @@ def course_layout_params_helper(attributes = {})
 end
 
 def code_review_params_helper(attributes)
-  code_review_params = []
+  code_review_params = { 'settings' => {}, 'details' => [] }
+  code_review_params['settings']['visible_day_of_week'] = attributes[:visible_day_of_week]
+  code_review_params['settings']['visible_time'] = '8:00'
+  code_review_params['settings']['due_days_later'] = attributes[:due_days_later]
+  code_review_params['settings']['due_time'] = attributes[:due_time]
+  code_review_params['settings']['submissions_not_required'] = attributes[:submissions_not_required]
+  code_review_params['settings']['always_visible'] = attributes[:always_visible]
   attributes[:number_of_code_reviews].times do |cr_num|
     objectives = []
     (cr_num+1).times do |obj_num|
       objectives << "Test objective #{obj_num+1}"
     end
-    code_review_params << { 'title' => "Code Review #{cr_num+1}", 'visible_class_week' => cr_num+1, 'visible_day_of_week' => attributes[:visible_day_of_week], 'visible_time' => '8:00', 'due_days_later' => attributes[:due_days_later], 'due_time' => attributes[:due_time], 'filename' => "example_code_review", 'submissions_not_required' => attributes[:submissions_not_required], 'always_visible' => attributes[:always_visible], 'objectives' => objectives }
+    code_review_params['details'] << { 'title' => "Code Review #{cr_num+1}", 'visible_class_week' => cr_num+1, 'filename' => "example_code_review", 'objectives' => objectives }
   end
   code_review_params
 end

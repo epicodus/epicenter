@@ -49,25 +49,27 @@ describe Github, :vcr do
     expect(params['class_times']['Monday']).to eq '18:00-21:00'
     expect(params['class_times']['Tuesday']).to eq '18:00-21:00'
     expect(params['class_times']['Wednesday']).to eq '18:00-21:00'
-    expect(params['code_reviews'].count).to eq 3
+    expect(params['code_reviews']['details'].count).to eq 3
   end
 
   it 'gets course code review layout params based on layout file path' do
     layout_file_path = "https://github.com/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/testing/blob/master/pt_intro_layout.yaml"
     code_review_params = Github.get_layout_params(layout_file_path)['code_reviews']
-    expect(code_review_params.count).to eq 3
-    expect(code_review_params.first['title']).to eq 'First PT Intro Code Review'
-    expect(code_review_params.first['week']).to eq 2
-    expect(code_review_params.first['filename']).to eq "https://github.com/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/testing/blob/master/test_week/code_review.md"
-    expect(code_review_params.first['submissions_not_required']).to eq false
-    expect(code_review_params.first['always_visible']).to eq false
-    expect(code_review_params.first['objectives']).to eq ['Test objective 1']
-    expect(code_review_params.last['title']).to eq 'Third PT Intro Code Review'
-    expect(code_review_params.last['week']).to eq 6
-    expect(code_review_params.last['filename']).to eq "https://github.com/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/testing/blob/master/test_week/code_review.md"
-    expect(code_review_params.last['submissions_not_required']).to eq false
-    expect(code_review_params.last['always_visible']).to eq false
-    expect(code_review_params.last['objectives']).to eq ['Test objective 1 for third cr', 'Test objective 2 for third cr', 'Test objective 3 for third cr']
+    expect(code_review_params['settings']['visible_day_of_week']).to eq 'thursday'
+    expect(code_review_params['settings']['visible_time']).to eq '8:00'
+    expect(code_review_params['settings']['due_days_later']).to eq 3
+    expect(code_review_params['settings']['due_time']).to eq '8:00'
+    expect(code_review_params['settings']['submissions_not_required']).to eq false
+    expect(code_review_params['settings']['always_visible']).to eq false
+    expect(code_review_params['details'].count).to eq 3
+    expect(code_review_params['details'].first['title']).to eq 'First PT Intro Code Review'
+    expect(code_review_params['details'].first['visible_class_week']).to eq 2
+    expect(code_review_params['details'].first['filename']).to eq "https://github.com/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/testing/blob/master/test_week/code_review.md"
+    expect(code_review_params['details'].first['objectives']).to eq ['Test objective 1']
+    expect(code_review_params['details'].last['title']).to eq 'Third PT Intro Code Review'
+    expect(code_review_params['details'].last['visible_class_week']).to eq 6
+    expect(code_review_params['details'].last['filename']).to eq "https://github.com/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/testing/blob/master/test_week/code_review.md"
+    expect(code_review_params['details'].last['objectives']).to eq ['Test objective 1 for third cr', 'Test objective 2 for third cr', 'Test objective 3 for third cr']
   end
 
   it 'returns an error when unable to retrieve layout file from Github' do
