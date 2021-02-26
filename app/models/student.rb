@@ -6,8 +6,8 @@ class Student < User
   before_create :assign_payment_plan
   after_create :update_plan_in_crm, if: ->(student) { student.plan.present? }
   after_update :update_plan_in_crm, if: :saved_change_to_plan_id
-  after_update :update_probation_teacher_in_crm, if: :saved_change_to_probation_teacher
-  after_update :update_probation_advisor_in_crm, if: :saved_change_to_probation_advisor
+  after_update :update_probation_in_crm, if: :probation_updated?
+  after_update :notify_staff_on_probation_count, if: :probation_count_updated_3_or_more?
   after_update :update_cohorts_in_crm, if: :cohorts_updated?
   before_destroy :archive_enrollments
 
@@ -514,12 +514,35 @@ private
     crm_lead.update({ Rails.application.config.x.crm_fields['PAYMENT_PLAN'] => plan.try(:close_io_description) })
   end
 
-  def update_probation_teacher_in_crm
-    crm_lead.update({ Rails.application.config.x.crm_fields['PROBATION_TEACHER'] => probation_teacher ? 'Yes' : nil })
+  def update_probation_in_crm
+    crm_update = {}
+    crm_update = crm_update.merge({ Rails.application.config.x.crm_fields['PROBATION_TEACHER'] => probation_teacher ? 'Yes' : nil })
+    crm_update = crm_update.merge({ Rails.application.config.x.crm_fields['PROBATION_ADVISOR'] => probation_advisor ? 'Yes' : nil })
+    crm_lead.update(crm_update)
   end
 
-  def update_probation_advisor_in_crm
-    crm_lead.update({ Rails.application.config.x.crm_fields['PROBATION_ADVISOR'] => probation_advisor ? 'Yes' : nil })
+  def notify_staff_on_probation_count
+    probation_count_total = probation_advisor_count.to_i + probation_teacher_count.to_i
+    # notify teacher via email
+    EmailJob.perform_later(
+      { :from => ENV['FROM_EMAIL_REVIEW'],
+        :to => course.admin.email,
+        :subject => "#{name} unmet requirements count total: #{probation_count_total}",
+        :text => "#{name} unmet requirements counts: #{probation_advisor_count.to_i} (advisor), #{probation_teacher_count.to_i} (teacher)"
+      }
+    )
+    # notify advisor via CRM task
+    crm_lead.create_task("Unmet requirements count: #{probation_count_total}")
+  end
+
+  def probation_updated?
+    saved_change_to_probation_advisor? || saved_change_to_probation_teacher?
+  end
+
+  def probation_count_updated_3_or_more?
+    saved_change_to_probation_count = saved_change_to_probation_advisor_count? || saved_change_to_probation_teacher_count?
+    probation_count_total = probation_advisor_count.to_i + probation_teacher_count.to_i
+    saved_change_to_probation_count && probation_count_total >= 3
   end
 
   def cohorts_updated?
