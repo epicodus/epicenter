@@ -58,8 +58,8 @@ class CrmLead
     CrmLead.raise_error(errors) if errors.present?
   end
 
-  def forum_id
-    lead.try('dig', Rails.application.config.x.crm_fields['FORUM_ID']).try(:to_int)
+  def career_services_contact
+    lead.try('dig', Rails.application.config.x.crm_fields['CAREER_SERVICES_CONTACT'])
   end
 
   def contact_id
@@ -67,7 +67,7 @@ class CrmLead
   end
 
   def create_task(text)
-    close_io_client.create_task(lead_id: lead.try('dig', 'id'), text: text, date: Time.zone.now.to_date.to_s)
+    close_io_client.create_task(lead_id: lead.try('dig', 'id'), text: text, assigned_to: career_services_contact, date: Time.zone.now.to_date.to_s)
   end
 
 private

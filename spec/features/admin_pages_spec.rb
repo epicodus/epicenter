@@ -196,7 +196,7 @@ feature 'viewing the student courses list' do
   end
 end
 
-feature 'setting academic probation', :js do
+feature 'setting academic probation', :js, :stub_mailgun do
   let(:admin) { FactoryBot.create(:admin) }
   let(:student) { FactoryBot.create(:student) }
 
@@ -271,10 +271,10 @@ feature 'setting academic probation', :js do
     expect(page).to have_content 'Teacher probation: (0 times)'
     expect(page).to have_content 'Student services probation: (0 times)'
     click_link 'edit count'
-    fill_in 'probation-teacher-count-input', with: '3'
+    fill_in 'probation-teacher-count-input', with: '1'
     fill_in 'probation-advisor-count-input', with: '1'
     click_button 'Update'
-    expect(page).to have_content 'Teacher probation: (3 times)'
+    expect(page).to have_content 'Teacher probation: (1 time)'
     expect(page).to have_content 'Student services probation: (1 time)'
   end
 end

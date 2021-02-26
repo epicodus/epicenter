@@ -1,15 +1,9 @@
-<p>
-  <div class='panel panel-body panel-default'>
-    <%= form_for student do |f| %>
-      <span class="<%= student.probation_teacher ? 'alert alert-danger' : '' %>">
-        Teacher probation: (<%= pluralize(student.probation_teacher_count || 0, 'time') %>) &nbsp;<%= f.check_box :probation_teacher %><br>
-      </span>
-    <% end %>
-    <%= form_for student do |f| %>
-      <span class="<%= student.probation_advisor ? 'alert alert-danger' : '' %>">
-        Student services probation: (<%= pluralize(student.probation_advisor_count || 0, 'time') %>) &nbsp;<%= f.check_box :probation_advisor %><br>
-      </span>
-    <% end %>
-    <small><em><%= link_to 'edit count', edit_student_probation_path(student) %></em></small>
-  </div>
-</p>
+<div class="<%= student.probation_teacher || student.probation_advisor ? 'alert alert-danger' : 'panel panel-body panel-default' %>">
+  <%= form_for student do |f| %>
+    Teacher probation: (<%= pluralize(student.probation_teacher_count || 0, 'time') %>) &nbsp;<%= f.check_box :probation_teacher %><br>
+  <% end %>
+  <%= form_for student do |f| %>
+    Student services probation: (<%= pluralize(student.probation_advisor_count || 0, 'time') %>) &nbsp;<%= f.check_box :probation_advisor %><br>
+  <% end %>
+  <small><em><%= link_to 'edit count', edit_student_probation_path(student) %></em></small>
+</div>

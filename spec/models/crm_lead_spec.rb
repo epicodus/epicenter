@@ -66,13 +66,9 @@ describe CrmLead, :dont_stub_crm, :vcr do
     end
   end
 
-  describe '#forum_id' do
-    it 'returns forum id as integer if present in CRM' do
-      expect(CrmLead.new('example@example.com').forum_id).to eq 9999
-    end
-
-    it 'returns nil if forum id not present in CRM' do
-      expect(CrmLead.new('example-part-time@example.com').forum_id).to eq nil
+  describe '#career_services_contact' do
+    it 'returns career serices contact user id' do
+      expect(CrmLead.new('example@example.com').career_services_contact).to eq ENV['EXAMPLE_CRM_CAREER_SERVICES_CONTACT_ID']
     end
   end
 
