@@ -99,6 +99,11 @@ feature 'visiting the internships show page' do
       expect(page).to_not have_content 'Edit'
     end
 
+    scenario 'students can not see hiring intentions' do
+      visit course_internship_path(student.course, internship)
+      expect(page).to_not have_content 'maybe'
+    end
+
     scenario 'students can not see rankings' do
       visit course_internship_path(student.course, internship)
       expect(page).to_not have_content 'Rankings'
@@ -155,6 +160,12 @@ feature 'visiting the internships show page' do
       visit course_internship_path(internship.courses.first, internship)
       expect(page).to have_content 'Internship periods'
       expect(page).to have_content internship.courses.first.description
+    end
+
+    scenario 'admin can see hiring intentions' do
+      internship = FactoryBot.create(:internship)
+      visit course_internship_path(internship.courses.first, internship)
+      expect(page).to have_content 'maybe'
     end
   end
 end

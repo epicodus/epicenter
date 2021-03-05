@@ -45,13 +45,32 @@
     <%= ff.label :remote, "* Will the students be working on-site or remotely?" %>
     <div class="radio">
       <%= ff.label :remote do %>
-        <%= ff.radio_button :remote, false, checked: true %> on-site
+        <%= ff.radio_button :remote, false %> on-site
       <% end %>
     </div>
 
     <div class="radio">
       <%= ff.label :remote do %>
         <%= ff.radio_button :remote, true %> remote
+      <% end %>
+    </div>
+  </div>
+
+  <div class='form-group'>
+    <%= ff.label :hiring, "* Do you intend to hire after the internship ends?" %>
+    <div class="radio">
+      <%= ff.label :hiring do %>
+        <%= ff.radio_button :hiring, 'yes' %> yes
+      <% end %>
+    </div>
+    <div class="radio">
+      <%= ff.label :hiring do %>
+        <%= ff.radio_button :hiring, 'no' %> no
+      <% end %>
+    </div>
+    <div class="radio">
+      <%= ff.label :hiring do %>
+        <%= ff.radio_button :hiring, 'maybe' %> maybe
       <% end %>
     </div>
   </div>

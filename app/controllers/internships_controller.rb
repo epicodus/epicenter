@@ -40,7 +40,7 @@ private
   def internship_params
     params.require(:internship).permit(:name, :website, :address, :interview_location, :description,
                                        :ideal_intern, :clearance_required,
-                                       :clearance_description, :number_of_students, :remote,
+                                       :clearance_description, :number_of_students, :remote, :hiring,
                                        track_ids: [], course_ids: [])
   end
 end

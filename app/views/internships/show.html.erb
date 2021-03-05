@@ -84,6 +84,11 @@
         <hr>
         <p><strong>On-Site / Remote</strong></p>
         <p>Internship is <%= @internship.remote ? "remote" : "on-site" %></p>
+        <% if can?(:manage, @internship) %>
+          <hr>
+          <p><strong>Hiring?</strong></p>
+          <p><%= @internship.hiring %></p>
+        <% end %>
         <% if @internship.clearance_required %>
           <hr>
           <p><strong>Clearance description</strong></p>
