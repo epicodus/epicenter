@@ -898,6 +898,7 @@ FactoryBot.define do
     clearance_required { true }
     clearance_description { "You need to have an awesome attitude!" }
     number_of_students { 2 }
+    hiring { 'maybe' }
     before(:create) do |internship|
       internship.courses << create(:internship_course)
       internship.tracks << create(:track)

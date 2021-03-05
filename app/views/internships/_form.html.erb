@@ -61,6 +61,25 @@
       </div>
 
       <div class='form-group'>
+        <%= f.label :hiring, "* Do you intend to hire after the internship ends?" %>
+        <div class="radio">
+          <%= f.label :hiring do %>
+            <%= f.radio_button :hiring, 'yes' %> yes
+          <% end %>
+        </div>
+        <div class="radio">
+          <%= f.label :hiring do %>
+            <%= f.radio_button :hiring, 'no' %> no
+          <% end %>
+        </div>
+        <div class="radio">
+          <%= f.label :hiring do %>
+            <%= f.radio_button :hiring, 'maybe' %> maybe
+          <% end %>
+        </div>
+      </div>
+
+      <div class='form-group'>
         <%= f.label :ideal_intern, 'Describe your ideal intern.' %>
         <%= f.text_area :ideal_intern, rows: 8, required: true, class: 'form-control' %>
       </div>

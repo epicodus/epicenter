@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_27_213616) do
+ActiveRecord::Schema.define(version: 2021_03_04_212513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -162,6 +162,7 @@ ActiveRecord::Schema.define(version: 2021_01_27_213616) do
     t.integer "number_of_students"
     t.string "interview_location"
     t.boolean "remote"
+    t.string "hiring"
   end
 
   create_table "interview_assignments", id: :serial, force: :cascade do |t|
