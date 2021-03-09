@@ -39,6 +39,22 @@ feature 'updating an internship' do
       expect(page).to have_content 'Describe your company and internship. Get students excited about what you do!'
     end
 
+    scenario 'an internship edit page shows all current and future internship courses regardless of active' do
+      course = internship.courses.first
+      other_internship_course = FactoryBot.create(:internship_course, description: 'other internship course', internships: [internship], active: false)
+      visit edit_internship_path(internship)
+      expect(page).to have_content course.description
+      expect(page).to have_content other_internship_course.description
+    end
+
+    scenario 'an internship edit page shows all current and future internship courses regardless of full' do
+      course = internship.courses.first
+      other_internship_course = FactoryBot.create(:internship_course, description: 'other internship course', internships: [internship], full: true)
+      visit edit_internship_path(internship)
+      expect(page).to have_content course.description
+      expect(page).to have_content other_internship_course.description
+    end
+
     scenario 'an internship can be updated with valid input' do
       visit edit_internship_path(internship)
       fill_in 'Describe your company and internship. Get students excited about what you do!', with: new_information.description
@@ -63,6 +79,22 @@ feature 'updating an internship' do
       fill_in 'Describe your company and internship. Get students excited about what you do!', with: new_information.description
       click_on 'Update internship'
       expect(page).to have_content 'Internship has been updated'
+    end
+
+    scenario 'an internship edit page shows only current and future active internship courses with space' do
+      course = internship.courses.first
+      other_internship_course = FactoryBot.create(:internship_course, description: 'other internship course', internships: [internship], active: false)
+      visit edit_internship_path(internship)
+      expect(page).to have_content course.description
+      expect(page).to_not have_content other_internship_course.description
+    end
+
+    scenario 'an internship edit page shows only current and future active internship courses with space' do
+      course = internship.courses.first
+      other_internship_course = FactoryBot.create(:internship_course, description: 'other internship course', internships: [internship], full: true)
+      visit edit_internship_path(internship)
+      expect(page).to have_content course.description
+      expect(page).to_not have_content other_internship_course.description
     end
   end
 end

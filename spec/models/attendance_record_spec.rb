@@ -182,8 +182,7 @@ describe AttendanceRecord do
       context 'on a sunday' do
         let(:course) { FactoryBot.create(:pt_course_with_class_times) }
         let(:student) { FactoryBot.create(:student, courses: [course]) }
-        let(:start_time) { course.start_date.end_of_week.in_time_zone(course.office.time_zone) + course.start_time(course.start_date.end_of_week).split(':').first.to_i.hours }
-
+        let(:start_time) { ActiveSupport::TimeZone[course.office.time_zone].parse(course.start_date.end_of_week.to_s + ' ' + course.start_time(course.start_date.end_of_week)) }
         it 'is true if checks in after the start of class' do
           travel_to start_time + 30.minute do
             tardy_attendance_record = FactoryBot.create(:attendance_record, student: student)
@@ -280,7 +279,7 @@ describe AttendanceRecord do
       context 'on a sunday' do
         let(:course) { FactoryBot.create(:pt_course_with_class_times) }
         let(:student) { FactoryBot.create(:student, courses: [course]) }
-        let(:end_time) { course.start_date.end_of_week.in_time_zone(course.office.time_zone) + course.end_time(course.start_date.end_of_week).split(':').first.to_i.hours }
+        let(:end_time) { ActiveSupport::TimeZone[course.office.time_zone].parse(course.start_date.end_of_week.to_s + ' ' + course.end_time(course.start_date.end_of_week)) }
 
         it 'is true when a part-time student leaves early' do
           travel_to end_time - 21.minute do

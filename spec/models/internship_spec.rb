@@ -85,4 +85,32 @@ describe Internship do
       expect(internship.tracks_ordered_by_description).to eq 'PHP/Drupal, Ruby/Rails'
     end
   end
+
+  describe  '#formatted_number_of_students' do
+    it 'returns formatted display for number of students' do
+      internship = FactoryBot.create(:internship, number_of_students: 2)
+      expect(internship.formatted_number_of_students).to eq '2-3'
+      internship = FactoryBot.create(:internship, number_of_students: 4)
+      expect(internship.formatted_number_of_students).to eq '4-5'
+      internship = FactoryBot.create(:internship, number_of_students: 6)
+      expect(internship.formatted_number_of_students).to eq '6+'
+    end
+  end
+
+  describe 'emails company internship update' do
+    it 'on internship create' do
+      allow(EmailJob).to receive(:perform_later).and_return({})
+      internship = FactoryBot.create(:internship)
+      email_body = "Hi #{internship.company.name}. This is confirmation that you have requested #{internship.formatted_number_of_students} interns from the following internship period(s): " + internship.courses.map {|c| c.description_and_office}.join(', ')
+      expect(EmailJob).to have_received(:perform_later).with({ :from => ENV['FROM_EMAIL_REVIEW'], :to => internship.company.email, :subject => "Epicodus internship sign-up updated", :text => email_body })
+    end
+
+    it 'on internship update' do
+      allow(EmailJob).to receive(:perform_later).and_return({})
+      internship = FactoryBot.create(:internship)
+      internship.update(number_of_students: 6)
+      email_body = "Hi #{internship.company.name}. This is confirmation that you have requested 6+ interns from the following internship period(s): " + internship.courses.map {|c| c.description_and_office}.join(', ')
+      expect(EmailJob).to have_received(:perform_later).with({ :from => ENV['FROM_EMAIL_REVIEW'], :to => internship.company.email, :subject => "Epicodus internship sign-up updated", :text => email_body })
+    end
+  end
 end
