@@ -36,11 +36,7 @@
             <% course.internships.order(:name).includes(:company).each do |internship| %>
               <tr id="internship-<%= internship.id %>">
                 <td><%= link_to internship.name, course_internship_path(course, internship) %></td>
-                <td>
-                  <%= '2-3' if internship.number_of_students == 2 %>
-                  <%= '4-5' if internship.number_of_students == 4 %>
-                  <%= '6+' if internship.number_of_students == 6 %>
-                </td>
+                <td><%= internship.formatted_number_of_students %></td>
                 <td><%= internship.tracks_ordered_by_description %></td>
                 <td><%= internship.try(:company).try(:name) %></td>
                 <td><%= mail_to internship.try(:company).try(:email) %></td>
