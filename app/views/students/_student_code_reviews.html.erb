@@ -8,7 +8,6 @@
             <th>Title</th>
             <th>Expectations met?</th>
             <th>Times submitted</th>
-            <th>Teacher notes</th>
             <th>Submission link</th>
             <th>Status</th>
           </thead>
@@ -25,7 +24,6 @@
               </td>
               <td><%= @student.submission_for(code_review).try(:times_submitted) %></td>
               <% if @student.submission_for(code_review) %>
-                <td><%= link_to "Notes", "##{@student.submission_for(code_review).id}", data: { toggle: "modal" } %></td>
                 <td><%= link_to "Submission", @student.submission_for(code_review).link, target: '_blank' if @student.submission_for(code_review).link %></td>
                 <td>
                   <% if @student.submission_for(code_review).has_been_reviewed? %>
@@ -43,7 +41,6 @@
                   <% end %>
                 </td>
               <% else %>
-                <td></td>
                 <td></td>
                 <td>
                   <% if can? :manage, CodeReview %>

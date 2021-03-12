@@ -515,12 +515,6 @@ feature 'view the code reviews tab on the student show page' do
     visit course_student_path(student.course, student)
     expect(page).to have_css '.submission-success'
   end
-
-  scenario 'a user clicks on notes and a modal opens', :stub_mailgun do
-    visit course_student_path(student.course, student)
-    click_link 'Notes'
-    expect(page).to have_content("Great job!")
-  end
 end
 
 feature 'deleting a code review' do
