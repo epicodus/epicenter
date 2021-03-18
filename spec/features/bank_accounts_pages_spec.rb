@@ -26,7 +26,7 @@ feature 'Creating a bank account manually' do
       fill_in 'Bank account number', with: ' '
       click_on 'Verify bank account'
       within '.alert-danger' do
-        expect(page).to have_content 'Invalid bank account number.'
+        expect(page).to have_content 'Please correct these problems'
       end
     end
 
