@@ -415,10 +415,10 @@ feature 'make a manual stripe payment', :stripe_mock, :stub_mailgun do
   scenario 'with an invalid amount (too high)' do
     visit student_payments_path(student)
     within '#stripe-payment-form' do
-      fill_in 'payment_amount', with: 9100
+      fill_in 'payment_amount', with: 21100
     end
     click_on 'Stripe payment'
-    expect(page).to have_content 'Amount cannot be negative or greater than $9,000.'
+    expect(page).to have_content 'Amount is invalid.'
   end
 
   scenario 'with an invalid amount (negative)' do
@@ -427,7 +427,7 @@ feature 'make a manual stripe payment', :stripe_mock, :stub_mailgun do
       fill_in 'payment_amount', with: -100
     end
     click_on 'Stripe payment'
-    expect(page).to have_content 'Amount cannot be negative or greater than $9,000.'
+    expect(page).to have_content 'Amount is invalid.'
   end
 
   scenario 'with no primary payment method selected' do

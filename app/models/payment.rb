@@ -88,8 +88,8 @@ private
   end
 
   def check_amount
-    if amount < 0 || amount > 9000_00
-      errors.add(:amount, 'cannot be negative or greater than $9,000.')
+    if amount < 0 || amount > ENV['MAX_PAYMENT_AMOUNT'].to_i
+      errors.add(:amount, 'is invalid.')
       throw :abort
     end
   end
