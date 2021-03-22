@@ -7,7 +7,7 @@ class TranscriptsController < ApplicationController
     elsif current_admin
       @student = Student.find(params[:student_id])
     end
-    @completed_courses = @student.courses.previous_courses.where.not(description: "* Placement Test").order(:start_date)
+    @completed_courses = @student.courses.previous_courses.order(:start_date)
     unless @completed_courses.any?
       if current_student
         redirect_to edit_student_registration_path, alert: "Transcript not yet available."
