@@ -1000,7 +1000,7 @@ end
     end
   end
 
-  describe '#passed_all_code_reviews?', :stub_mailgun do
+  describe '#passed_all_fulltime_code_reviews?', :stub_mailgun do
     let(:student) { FactoryBot.create(:student) }
     let(:code_review) { FactoryBot.create(:code_review, course: student.course) }
     let(:code_review_2) { FactoryBot.create(:code_review, course: student.course) }
@@ -1010,26 +1010,37 @@ end
     it 'true if all code reviews are passing' do
       FactoryBot.create(:passing_review, submission: submission)
       FactoryBot.create(:passing_review, submission: submission_2)
-      expect(student.passed_all_code_reviews?).to eq(true)
+      expect(student.passed_all_fulltime_code_reviews?).to eq(true)
     end
 
     it 'false if all code reviews are failing' do
       FactoryBot.create(:failing_review, submission: submission)
       FactoryBot.create(:failing_review, submission: submission_2)
-      expect(student.passed_all_code_reviews?).to eq(false)
+      expect(student.passed_all_fulltime_code_reviews?).to eq(false)
     end
 
     it 'false if any code reviews are failing' do
       FactoryBot.create(:passing_review, submission: submission)
       FactoryBot.create(:failing_review, submission: submission_2)
-      expect(student.passed_all_code_reviews?).to eq(false)
+      expect(student.passed_all_fulltime_code_reviews?).to eq(false)
     end
 
     it 'false if any code reviews are missing' do
       code_review_3 = FactoryBot.create(:code_review, course: student.course)
       FactoryBot.create(:passing_review, submission: submission)
       FactoryBot.create(:passing_review, submission: submission_2)
-      expect(student.passed_all_code_reviews?).to eq(false)
+      expect(student.passed_all_fulltime_code_reviews?).to eq(false)
+    end
+
+    it 'true if fulltime code reviews passing but parttime code reviews failing' do
+      pt_intro_course = FactoryBot.create(:part_time_course, track: FactoryBot.create(:part_time_track))
+      student.courses << pt_intro_course
+      pt_code_review = FactoryBot.create(:code_review, course: pt_intro_course)
+      pt_submission = FactoryBot.create(:submission, code_review: pt_code_review, student: student)
+      FactoryBot.create(:failing_review, submission: pt_submission)
+      FactoryBot.create(:passing_review, submission: submission)
+      FactoryBot.create(:passing_review, submission: submission_2)
+      expect(student.passed_all_fulltime_code_reviews?).to eq(true)
     end
   end
 

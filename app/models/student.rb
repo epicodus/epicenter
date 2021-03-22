@@ -333,9 +333,9 @@ class Student < User
     internship_course && Time.zone.now.to_date > internship_course.end_date ? true : false
   end
 
-  def passed_all_code_reviews?
+  def passed_all_fulltime_code_reviews?
     passed = true
-    courses.each do |course|
+    courses.cirr_fulltime_courses.each do |course|
       course.code_reviews.each do |cr|
         if cr.status(self) != 'Met requirements'
           passed = false
