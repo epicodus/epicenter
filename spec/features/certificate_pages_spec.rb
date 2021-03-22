@@ -86,25 +86,15 @@ feature "print completion certificate" do
   end
 
   context "logged in as admin" do
-    it "allows super admin to generate certificate" do
+    it "allows admin to generate certificate" do
       student = FactoryBot.create(:student)
-      admin = FactoryBot.create(:admin, super_admin: true)
+      admin = FactoryBot.create(:admin)
       travel_to student.course.end_date + 1.day do
         login_as(admin, scope: :admin)
         visit student_courses_path(student)
         click_on 'Manually generate certificate'
         expect(page).to have_content "Epicodus Certificate of Completion"
         expect(page).to have_content student.name
-      end
-    end
-
-    it "does not allow regular admins to generate certificate" do
-      student = FactoryBot.create(:student)
-      admin = FactoryBot.create(:admin)
-      travel_to student.course.end_date + 1.day do
-        login_as(admin, scope: :admin)
-        visit student_courses_path(student)
-        expect(page).to_not have_content 'Manually generate certificate'
       end
     end
   end

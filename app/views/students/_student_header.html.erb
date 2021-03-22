@@ -53,9 +53,7 @@
 
   <% if @student.courses.previous_courses.any? %>
     <p><%= link_to 'View transcript', student_transcript_path(@student) %></p>
-    <% if current_admin.super_admin %>
-      <p><%= link_to 'Manually generate certificate', student_certificate_path(@student) %></p>
-    <% end %>
+    <p><%= link_to 'Manually generate certificate', student_certificate_path(@student) %></p>
   <% else %>
     <p>Transcript not yet available.</p>
   <% end %>

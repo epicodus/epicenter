@@ -132,23 +132,6 @@ feature "viewing transcript & certificate" do
       expect(page).to_not have_content "Epicodus requires students to attend class at least 90% of the time. This student met that requirement."
     end
 
-    it 'shows attendance details to staff' do
-      course = FactoryBot.create(:past_course)
-      student = FactoryBot.create(:student, course: course)
-      admin = FactoryBot.create(:admin)
-      login_as(admin, scope: :admin)
-      visit student_transcript_path(student)
-      expect(page).to have_content "Attendance details"
-    end
-
-    it 'does not show attendance details to staff' do
-      course = FactoryBot.create(:past_course)
-      student = FactoryBot.create(:student, course: course)
-      login_as(student, scope: :student)
-      visit transcript_path
-      expect(page).to_not have_content "Attendance details"
-    end
-
     it 'does not show attendance for students enrolled in only online course' do
       course = FactoryBot.create(:past_course, office: FactoryBot.create(:online_office))
       student = FactoryBot.create(:student, course: course)

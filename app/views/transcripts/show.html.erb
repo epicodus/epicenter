@@ -27,23 +27,6 @@
       <% if @student.total_attendance_score >= 90.0 %>
         <p>Epicodus requires students to attend class at least 90% of the time. This student met that requirement.</p>
       <% end %>
-
-      <% if current_admin %>
-        <div class='alert alert-warning'>
-          <p>Attendance details (visible only to staff):</p>
-          <p><strong>INCLUDES COMPLETED COURSES ONLY</strong></p>
-          <ul>
-            <li>Number of class days: <%= @completed_courses.map(&:class_days).flatten.count %></li>
-            <li>Total attendance score: <%= @student.total_attendance_score.round(2) %>%</li>
-            <li>Present <%= pluralize(@student.attendance_records_for(:all, @completed_courses.non_internship_courses.first, @completed_courses.non_internship_courses.last), 'day') %></li>
-            <ul>
-              <li>Tardy <%= pluralize(@student.attendance_records_for(:tardy, @completed_courses.non_internship_courses.first, @completed_courses.non_internship_courses.last), 'day') %></li>
-              <li>Left early <%= pluralize(@student.attendance_records_for(:left_early, @completed_courses.non_internship_courses.first, @completed_courses.non_internship_courses.last), 'day') %></li>
-            </ul>
-            <li>Absent <%= pluralize(@student.attendance_records_for(:absent, @completed_courses.non_internship_courses.first, @completed_courses.non_internship_courses.last), 'day') %></li>
-          </ul>
-        </div>
-      <% end %>
     <% end %>
 
     <p><%= image_tag "signature.png" %></p>
