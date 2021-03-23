@@ -153,7 +153,7 @@ describe Payment do
 
     it 'unsuccessfully with an amount that is too high' do
       student = FactoryBot.create :student_with_credit_card, email: 'example@example.com'
-      payment = FactoryBot.build(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first, amount: 9250_00)
+      payment = FactoryBot.build(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first, amount: 21000_00)
       expect(payment.save).to be false
     end
 
