@@ -1,5 +1,5 @@
-var positiveCurrencyRegex = /^\d{1,4}(\.\d{2})?$/;
-var negativeOrPositiveCurrencyRegex = /^-?\d{1,4}(\.\d{2})?$/;
+var positiveCurrencyRegex = /^\d{1,5}(\.\d{2})?$/;
+var negativeOrPositiveCurrencyRegex = /^-?\d{1,5}(\.\d{2})?$/;
 
 $(function() {
   $('.payment-refund-button').click(function() {
