@@ -955,8 +955,8 @@ describe Student do
       expect(student.is_class_day?(course_2.end_date)).to eq true
     end
 
-    it 'returns false if not during either course' do
-      expect(student.is_class_day?(course_2.end_date + 1.week)).to eq false
+    it 'returns falsy if not during either course' do
+      expect(student.is_class_day?(course_2.end_date + 1.week)).to eq nil
     end
 
     it 'defaults to today if date not passed' do
@@ -1098,12 +1098,12 @@ end
     end
 
     it "calculates the student attendance score with perfect attendance records" do
-      day_one = student.course.start_date.in_time_zone(student.course.office.time_zone)
+      day_one = student.course.start_date.in_time_zone(student.course.office.time_zone).to_date
       student.course.update(class_days: [day_one])
-      travel_to day_one.beginning_of_day + 8.hours do
+      travel_to day_one.in_time_zone(student.course.office.time_zone) + 8.hours do
         FactoryBot.create(:attendance_record, student: student, pairings_attributes: [pair_id: pair.id])
       end
-      travel_to day_one.beginning_of_day + 17.hours do
+      travel_to day_one.in_time_zone(student.course.office.time_zone) + 17.hours do
         student.attendance_records.last.update({signing_out: true})
         expect(student.attendance_score(course)).to eq 100
       end
@@ -1147,13 +1147,12 @@ end
     end
 
     it "calculates the number of absences with perfect attendance records" do
-      day_one = student.course.start_date.in_time_zone(student.course.office.time_zone)
+      day_one = student.course.start_date.in_time_zone(student.course.office.time_zone).to_date
       student.course.update(class_days: [day_one])
-
-      travel_to day_one.beginning_of_day + 8.hours do
+      travel_to day_one.in_time_zone(student.course.office.time_zone) + 8.hours do
         FactoryBot.create(:attendance_record, student: student, pairings_attributes: [pair_id: pair.id])
       end
-      travel_to day_one.beginning_of_day + 17.hours do
+      travel_to day_one.in_time_zone(student.course.office.time_zone) + 17.hours do
         student.attendance_records.last.update({signing_out: true})
         expect(student.absences(course)).to eq 0
       end

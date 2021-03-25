@@ -321,7 +321,7 @@ class Student < User
   end
 
   def is_class_day?(date = Time.zone.now.to_date)
-    courses.map { |course| course.class_days }.flatten.include? date
+    courses.find_by('class_days LIKE ?', "%#{date}%").try(:class_days).try('include?', date)
   end
 
   def is_classroom_day?(date = Time.zone.now.to_date)
