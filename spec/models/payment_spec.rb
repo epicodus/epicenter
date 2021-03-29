@@ -205,8 +205,8 @@ describe Payment do
       part_time_cohort = student.course.cohorts.first
       part_time_course = student.course
       first_payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 100_00, category: 'part-time')
-      full_time_cohort = FactoryBot.create(:internship_only_cohort, start_date: student.course.end_date.next_week)
-      student.courses << full_time_cohort.courses.first
+      full_time_cohort = FactoryBot.create(:cohort_with_internship, start_date: student.course.end_date.next_week)
+      student.courses << full_time_cohort.courses
       second_payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 2000_00, category: 'upfront')
       expect(first_payment.description).to eq "#{part_time_course.start_date.to_s}-#{part_time_course.end_date.to_s} | #{part_time_cohort.description}"
       expect(second_payment.description).to eq "#{full_time_cohort.courses.first.start_date.to_s}-#{full_time_cohort.courses.last.end_date.to_s} | #{full_time_cohort.description}"

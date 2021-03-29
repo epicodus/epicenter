@@ -38,17 +38,6 @@
             <% end %>
 
             <p><%= render 'courses/toggle_rankings_form', course: @course %></p>
-
-            <%= form_for @enrollment do |f| %>
-              <%= render 'layouts/errors', object: @enrollment %>
-              <%= f.hidden_field :course_id, value: @course.id %>
-              <div class="input-group">
-                <%= f.collection_select :student_id, @course.other_students.with_activated_accounts, :id, :name, { include_blank: 'Add a student to this course' }, { class: 'form-control', required: true } %>
-                <span class="input-group-btn">
-                  <%= f.submit 'Add student', class: 'btn btn-info' %>
-                </span>
-              </div>
-            <% end %>
           </div>
         </div>
       </div>

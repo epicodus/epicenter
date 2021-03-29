@@ -27,13 +27,6 @@ feature 'adding another course for a student' do
     find('select#enrollment_course_id_previous')
     expect(page.all('select#enrollment_course_id_previous').first.text.include? other_course.office.name).to eq false
   end
-
-  scenario 'as an admin on the student roster page' do
-    visit course_path(student.course)
-    select other_student.name, from: 'enrollment_student_id'
-    click_on 'Add student'
-    expect(page).to have_content "#{other_student.name} enrolled in #{student.course.description}"
-  end
 end
 
 feature 'adding full cohort for a student' do

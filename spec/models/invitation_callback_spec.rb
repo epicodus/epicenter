@@ -165,7 +165,7 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
 
       it 'assigns correct courses' do
         student = Student.find_by(email: 'example-part-time-full-stack@example.com')
-        expect(student.courses.count).to eq 4
+        expect(student.courses.count).to eq 5
         expect(student.courses.order(:id)).to eq cohort.courses.order(:id)
       end
 

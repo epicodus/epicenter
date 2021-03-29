@@ -246,9 +246,10 @@ FactoryBot.define do
       end
     end
 
-    factory :internship_only_cohort do
+    factory :cohort_with_internship do
       before(:create) do |cohort|
-        cohort.courses << build(:level4_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days])
+        cohort.courses << build(:level0_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days])
+        cohort.courses << build(:level4_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week + 5.weeks, cohort.start_date.beginning_of_week + 8.weeks + 3.days])
       end
     end
 
@@ -275,6 +276,7 @@ FactoryBot.define do
         cohort.courses << build(:js_part_time_c_react_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
         cohort.courses << build(:c_part_time_c_react_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
         cohort.courses << build(:react_part_time_c_react_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
+        cohort.courses << build(:internship_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
       end
     end
 
@@ -597,11 +599,11 @@ FactoryBot.define do
     factory :student_with_cohort do
       association :plan, factory: :upfront_plan
       before(:create) do |student|
-        create(:internship_only_cohort, students: [student])
+        create(:cohort_with_internship, students: [student])
         student.starting_cohort = student.cohort
         student.ending_cohort = student.cohort
         student.office = student.cohort.office
-        student.course = student.cohort.courses.first
+        student.courses = student.cohort.courses
       end
 
       factory :student_with_credit_card do

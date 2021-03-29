@@ -422,9 +422,10 @@ class Student < User
     # cohorts to ignore: PT intro, PT JS/React
     # ignore withdrawn courses
     # current or last completed FT *or* PT full-stack cohort
-    # if FT student enrolled in internship course *or* PT full-stack student
-    if courses.internship_courses.any? || courses.parttime_full_stack_courses.any?
-      courses.cirr_fulltime_courses.select { |course| course.cohorts.count == 1 }.last.try(:cohorts).try(:first)
+    # student must be enrolled in internship course
+    # ignore _which_ internship course for determining current cohort
+    if courses.internship_courses.any?
+      courses.cirr_fulltime_courses.non_internship_courses.select { |course| course.cohorts.count == 1 }.last.try(:cohorts).try(:first)
     end
   end
 
