@@ -8,8 +8,8 @@ describe PaymentSerializer, :stripe_mock, :stub_mailgun, :vcr do
     expect(serialized_payment[:refund_amount]).to eq nil
     expect(serialized_payment[:email]).to eq student.email
     expect(serialized_payment[:office]).to eq student.office.short_name
-    expect(serialized_payment[:start_date]).to eq student.course.start_date.to_s
-    expect(serialized_payment[:end_date]).to eq student.course.end_date.to_s
+    expect(serialized_payment[:start_date]).to eq student.courses.first.start_date.to_s
+    expect(serialized_payment[:end_date]).to eq student.courses.last.end_date.to_s
   end
 
   it 'includes the expected attributes for a refund' do
@@ -20,7 +20,7 @@ describe PaymentSerializer, :stripe_mock, :stub_mailgun, :vcr do
     expect(serialized_payment[:refund_amount]).to eq 10000
     expect(serialized_payment[:email]).to eq student.email
     expect(serialized_payment[:office]).to eq student.office.short_name
-    expect(serialized_payment[:start_date]).to eq student.course.start_date.to_s
-    expect(serialized_payment[:end_date]).to eq student.course.end_date.to_s
+    expect(serialized_payment[:start_date]).to eq student.courses.first.start_date.to_s
+    expect(serialized_payment[:end_date]).to eq student.courses.last.end_date.to_s
   end
 end

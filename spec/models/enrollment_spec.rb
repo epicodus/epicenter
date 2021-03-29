@@ -77,8 +77,9 @@ describe Enrollment do
 
     context 'adding new enrollments' do
       it 'updates starting & current cohort when adding full-time course' do
+        student.courses = [current_cohort.courses.first]
         expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['COHORT_STARTING'] => current_cohort.description, Rails.application.config.x.crm_fields['COHORT_CURRENT'] => current_cohort.description, Rails.application.config.x.crm_fields['COHORT_PARTTIME'] => nil })
-        student.course = current_cohort.courses.last
+        student.courses << current_cohort.courses.last
         expect(student.starting_cohort).to eq current_cohort
         expect(student.cohort).to eq current_cohort
         expect(student.parttime_cohort).to eq nil
@@ -87,7 +88,7 @@ describe Enrollment do
 
       it 'updates parttime cohort when adding part-time intro course' do
         expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['COHORT_STARTING'] => nil, Rails.application.config.x.crm_fields['COHORT_CURRENT'] => nil, Rails.application.config.x.crm_fields['COHORT_PARTTIME'] => part_time_cohort.description })
-        student.course = part_time_cohort.courses.first
+        student.courses = part_time_cohort.courses
         expect(student.starting_cohort).to eq nil
         expect(student.cohort).to eq nil
         expect(student.parttime_cohort).to eq part_time_cohort
@@ -95,9 +96,9 @@ describe Enrollment do
       end
 
       it 'updates starting & current cohort when adding full-time course after part-time course' do
-        student.course = part_time_cohort.courses.first
+        student.courses = [part_time_cohort.courses.first, current_cohort.courses.first]
         expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['COHORT_STARTING'] => current_cohort.description, Rails.application.config.x.crm_fields['COHORT_CURRENT'] => current_cohort.description, Rails.application.config.x.crm_fields['COHORT_PARTTIME'] => part_time_cohort.description })
-        student.course = current_cohort.courses.last
+        student.courses << current_cohort.courses.last
         expect(student.starting_cohort).to eq current_cohort
         expect(student.cohort).to eq current_cohort
         expect(student.parttime_cohort).to eq part_time_cohort
@@ -110,7 +111,7 @@ describe Enrollment do
         student.enrollments.destroy_all
         student.reload
         expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['COHORT_PARTTIME'] => part_time_cohort.description, Rails.application.config.x.crm_fields['COHORT_STARTING'] => current_cohort.description, Rails.application.config.x.crm_fields['COHORT_CURRENT'] => nil })
-        student.course = part_time_cohort.courses.last
+        student.courses = part_time_cohort.courses
         expect(student.starting_cohort).to eq current_cohort
         expect(student.cohort).to eq nil
         expect(student.parttime_cohort).to eq part_time_cohort
@@ -130,7 +131,7 @@ describe Enrollment do
       it 'updates only current cohort when adding second full-time course with later start date' do
         student.courses = current_cohort.courses
         expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['COHORT_STARTING'] => current_cohort.description, Rails.application.config.x.crm_fields['COHORT_CURRENT'] => future_cohort.description, Rails.application.config.x.crm_fields['COHORT_PARTTIME'] => nil })
-        student.course = future_cohort.courses.last
+        student.courses << future_cohort.courses
         expect(student.starting_cohort).to eq current_cohort
         expect(student.cohort).to eq future_cohort
         expect(student.parttime_cohort).to eq nil
@@ -156,7 +157,7 @@ describe Enrollment do
       end
 
       it 'updates ending cohort when adding full-time course' do
-        student.course = current_cohort.courses.last
+        student.courses = current_cohort.courses
         expect(student.ending_cohort).to eq current_cohort
       end
 
@@ -177,17 +178,26 @@ describe Enrollment do
         expect(student).to_not receive(:update)
         student.course = seattle_course
       end
+
+      it 'does not assign current cohort when no internship course present' do
+        student.course = current_cohort.courses.first
+        expect(student.cohort).to eq nil
+      end
+
+      it 'does not assign current cohort when only internship course present' do
+        student.course = current_cohort.courses.last
+        expect(student.cohort).to eq nil
+      end
+
+      it 'assigns current cohort when both internship course and another course present' do
+        student.courses = current_cohort.courses
+        expect(student.cohort).to eq current_cohort
+      end
     end
 
     context 'removing enrollments' do
-      before do
-        course = current_cohort.courses.last
-        student.course = course
-        FactoryBot.create(:attendance_record, student: student, date: course.start_date)
-      end
-
       it 'updates current cohort only when just archiving enrollment' do
-        student.courses = [past_cohort.courses.last]
+        student.courses = past_cohort.courses
         expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['COHORT_STARTING'] => past_cohort.description, Rails.application.config.x.crm_fields['COHORT_CURRENT'] => nil, Rails.application.config.x.crm_fields['COHORT_PARTTIME'] => nil })
         student.enrollments.destroy_all
         expect(student.starting_cohort).to eq past_cohort
@@ -197,8 +207,10 @@ describe Enrollment do
       end
 
       it 'clears starting & current cohort when permanently removing the only enrollment' do
+        student.courses = current_cohort.courses
+        student.courses = [current_cohort.courses.last]
         expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['COHORT_STARTING'] => nil, Rails.application.config.x.crm_fields['COHORT_CURRENT'] => nil, Rails.application.config.x.crm_fields['COHORT_PARTTIME'] => nil })
-        student.enrollments.first.really_destroy!
+        student.enrollments.destroy_all
         expect(student.starting_cohort).to eq nil
         expect(student.cohort).to eq nil
         expect(student.parttime_cohort).to eq nil
@@ -206,8 +218,10 @@ describe Enrollment do
       end
 
       it 'updates only starting cohort when removing course from earlier cohort' do
+        student.courses = current_cohort.courses
         past_course = past_cohort.courses.first
         student.course = past_course
+        expect(student.starting_cohort).to eq past_cohort
         expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['COHORT_STARTING'] => current_cohort.description, Rails.application.config.x.crm_fields['COHORT_CURRENT'] => current_cohort.description, Rails.application.config.x.crm_fields['COHORT_PARTTIME'] => nil })
         student.enrollments.find_by(course: past_course).really_destroy!
         expect(student.starting_cohort).to eq current_cohort
@@ -217,10 +231,9 @@ describe Enrollment do
       end
 
       it 'updates only current cohort when removing course from later cohort' do
-        future_course = future_cohort.courses.first
-        student.course = future_course
+        student.courses << [current_cohort.courses.first, current_cohort.courses.last, future_cohort.courses.first, future_cohort.courses.last]
         expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['COHORT_CURRENT'] => current_cohort.description, Rails.application.config.x.crm_fields['COHORT_STARTING'] => current_cohort.description, Rails.application.config.x.crm_fields['COHORT_PARTTIME'] => nil })
-        student.enrollments.find_by(course: future_course).really_destroy!
+        student.enrollments.find_by(course: future_cohort.courses.first).really_destroy!
         expect(student.starting_cohort).to eq current_cohort
         expect(student.cohort).to eq current_cohort
         expect(student.parttime_cohort).to eq nil

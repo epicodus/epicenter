@@ -1673,7 +1673,7 @@ end
 
   describe 'enrolled?' do
     it 'reports enrolled with full-time cohort' do
-      cohort = FactoryBot.create(:cohort, courses: [FactoryBot.create(:internship_course)])
+      cohort = FactoryBot.create(:cohort_with_internship)
       student = FactoryBot.create(:student, courses: cohort.courses)
       expect(student.enrolled?).to eq true
     end
@@ -1830,8 +1830,8 @@ end
         expect(student.calculate_current_cohort).to eq future_cohort
       end
 
-      it 'returns part-time full-stack cohort when course from that cohort is present' do
-        student = FactoryBot.create(:student, courses: [part_time_cohort.courses.first, cohort.courses.first, part_time_full_stack_cohort.courses.first])
+      it 'returns part-time full-stack cohort when internship & non-internship course from that cohort is present' do
+        student = FactoryBot.create(:student, courses: [part_time_cohort.courses.first, cohort.courses.first, part_time_full_stack_cohort.courses.first, part_time_full_stack_cohort.courses.last])
         expect(student.calculate_current_cohort).to eq part_time_full_stack_cohort
       end
 
