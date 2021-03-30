@@ -115,7 +115,7 @@
               <%= form_for @student do |f| %>
                 <%= f.hidden_field :plan_id, value: Plan.active.loan.first.try(:id) %>
                 <%= f.submit 'Loan/Payment Plan', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the loan plan? You need to be approved for your loan within one week of paying your deposit to fully reserve your seat." } %>
-                <p><br><strong>Loan/Payment Plan:</strong><br>Pay $100 to reserve your seat in class. Before class starts, get approved with one of our financing partners, <a href="http://epicodus.skills.fund/" target=_blank>Skills Fund</a> and <a href="https://www.climbcredit.com/apply/epicodus" target=_blank>Climb</a>. Pay as little as $0/month during class and as little as $176.33/month after graduating. See our <a href='https://www.epicodus.com/financial-aid' target='_blank'>financial aid</a> information for details.</p>
+                <p><br><strong>Loan/Payment Plan:</strong><br>Pay $100 to reserve your seat in class. Before class starts, get approved with one of our financing partners, <a href="https://partner.ascentfunding.com/epicodus" target=_blank>Ascent</a> and <a href="https://www.climbcredit.com/apply/epicodus" target=_blank>Climb</a>. Pay as little as $0/month during class and as little as $176.33/month after graduating. See our <a href='https://www.epicodus.com/financial-aid' target='_blank'>financial aid</a> information for details.</p>
               <% end %>
             </div>
           </div>
