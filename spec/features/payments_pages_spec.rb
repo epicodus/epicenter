@@ -470,9 +470,7 @@ feature 'make an offline payment', :js, :vcr do
       fill_in 'payment_amount', with: 60.18
     end
     click_on 'Offline payment'
-    wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoSuchAlertError
-    alert = wait.until { page.driver.browser.switch_to.alert }
-    alert.accept
+    accept_js_alert
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Offline'
     expect(page).to have_content '$60.18'
@@ -582,9 +580,7 @@ feature 'make a cost adjustment' do
       visit student_payments_path(student)
       click_on 'Tuition Adjustments'
       find("#remove-cost-adjustment-#{cost_adjustment.id}").click
-      wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoSuchAlertError
-      alert = wait.until { page.driver.browser.switch_to.alert }
-      alert.accept
+      accept_js_alert
       expect(page).to have_content 'Deleted cost adjustment'
       expect(page).to_not have_content 'Tuition adjustments'
       expect(page).to_not have_content 'test adjustment'

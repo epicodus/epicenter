@@ -219,6 +219,7 @@ FactoryBot.define do
     end
 
     factory :level4_course do
+      description { "internship course" }
       office { nil }
       internship_course { true }
       association :admin, factory: :admin_without_course

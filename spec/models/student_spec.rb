@@ -179,7 +179,16 @@ describe Student do
       student.update(probation_teacher_count: 2, probation_advisor_count: 0)
       expect(EmailJob).to_not have_received(:perform_later)
     end
+  end
 
+  describe 'updates ending_cohort' do
+    let(:student) { FactoryBot.create(:student, courses: []) }
+    let(:cohort)  { FactoryBot.create(:cohort_with_internship) }
+
+    it 'when current cohort changed' do
+      student.update(cohort: cohort)
+      expect(student.ending_cohort).to eq cohort
+    end
   end
 
   describe '#with_activated_accounts' do

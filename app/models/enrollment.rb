@@ -29,7 +29,6 @@ private
     student.parttime_cohort = student.calculate_parttime_cohort
     student.starting_cohort = student.calculate_starting_cohort
     student.cohort = student.calculate_current_cohort
-    student.ending_cohort = [student.parttime_cohort, student.cohort].compact.sort_by(&:end_date).last || student.ending_cohort
     student.save if student.changed?
   end
 
