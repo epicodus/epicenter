@@ -1,7 +1,6 @@
-feature 'adding another course for a student' do
+feature 'adding another course for a student', :js do
   let(:student) { FactoryBot.create(:student) }
-  let!(:other_course) { FactoryBot.create(:portland_ruby_course) }
-  let!(:other_student) { FactoryBot.create(:student, sign_in_count: 1) }
+  let!(:other_course) { FactoryBot.create(:portland_ruby_course, description: 'other course') }
   let(:admin) { FactoryBot.create(:admin) }
 
   before { login_as(admin, scope: :admin) }
@@ -10,7 +9,7 @@ feature 'adding another course for a student' do
     visit student_courses_path(student)
     select other_course.description, from: 'enrollment_course_id_' + other_course.office.short_name
     click_on 'Add course'
-    expect(page).to have_content "#{student.name} enrolled in #{other_course.description}."
+    expect(page).to have_content "#{student.name} enrolled in #{other_course.description_and_office}"
   end
 
   scenario 'as an admin on the individual student page', js: true do
@@ -27,17 +26,43 @@ feature 'adding another course for a student' do
     find('select#enrollment_course_id_previous')
     expect(page.all('select#enrollment_course_id_previous').first.text.include? other_course.office.name).to eq false
   end
+
+  scenario 'shows current cohort selection modal when adding course from different FT cohort' do
+    cohort = FactoryBot.create(:cohort_with_internship, description: "existing cohort")
+    student.courses = cohort.courses
+    new_cohort = FactoryBot.create(:intro_only_cohort, description: "new cohort")
+    visit student_courses_path(student)
+    select new_cohort.courses.first.description, from: 'enrollment_course_id_' + new_cohort.office.short_name
+    click_on 'Add course'
+    expect(page).to have_content "#{student.name} enrolled in #{new_cohort.courses.first.description_and_office}"
+    expect(page).to have_content "Confirm updated current cohort for #{student.name}"
+    expect(page).to have_content "Previous current cohort: #{cohort.description}"
+    cohort_select_box = find(:css, '#current_cohort_id') 
+    expect(cohort_select_box).to have_content cohort.description
+    expect(cohort_select_box).to have_content new_cohort.description
+  end
+
+  scenario 'does not show current cohort selection modal when adding PT course' do
+    cohort = FactoryBot.create(:cohort_with_internship, description: "existing cohort")
+    student.courses = cohort.courses
+    pt_cohort = FactoryBot.create(:part_time_cohort, description: 'PT cohort')
+    visit student_courses_path(student)
+    select pt_cohort.courses.first.description, from: 'enrollment_course_id_' + pt_cohort.office.short_name
+    click_on 'Add course'
+    expect(page).to have_content "#{student.name} enrolled in #{pt_cohort.courses.first.description_and_office}"
+    expect(page).to_not have_content "Confirm updated current cohort for #{student.name}"
+  end
 end
 
-feature 'adding full cohort for a student' do
-  let!(:cohort) { FactoryBot.create(:full_cohort) }
+feature 'adding full cohort for a student', :js do
+  let!(:cohort) { FactoryBot.create(:cohort_with_internship) }
   let(:office) { cohort.office }
   let(:admin) { cohort.admin }
   let(:student) { FactoryBot.create(:student_without_courses, office: cohort.office) }
 
   before { login_as(admin, scope: :admin) }
 
-  scenario 'as an admin on the individual student page', js: true do
+  scenario 'as an admin on the individual student page' do
     travel_to cohort.start_date do
       visit student_courses_path(student)
       click_on office.short_name
@@ -46,9 +71,33 @@ feature 'adding full cohort for a student' do
       expect(page).to have_content "#{student.name} enrolled in all current and future courses in #{cohort.description}."
     end
   end
+
+  scenario 'shows current cohort selection modal when adding different FT cohort' do
+    existing_cohort = FactoryBot.create(:cohort_with_internship, description: "existing cohort")
+    student.courses = existing_cohort.courses
+    visit student_courses_path(student)
+    select cohort.description, from: 'enrollment_cohort_id_' + office.short_name
+    click_on 'Add cohort'
+    expect(page).to have_content "#{student.name} enrolled in all current and future courses in #{cohort.description}."
+    expect(page).to have_content "Confirm updated current cohort for #{student.name}"
+    expect(page).to have_content "Previous current cohort: #{existing_cohort.description}"
+    cohort_select_box = find(:css, '#current_cohort_id') 
+    expect(cohort_select_box).to have_content existing_cohort.description
+    expect(cohort_select_box).to have_content cohort.description
+  end
+
+  scenario 'does not show current cohort selection modal when adding PT cohort' do
+    student.courses = cohort.courses
+    pt_cohort = FactoryBot.create(:part_time_cohort, description: "PT cohort", office: office)
+    visit student_courses_path(student)
+    select pt_cohort.description, from: 'enrollment_cohort_id_' + office.short_name
+    click_on 'Add cohort'
+    expect(page).to have_content "#{student.name} enrolled in all current and future courses in #{pt_cohort.description}."
+    expect(page).to_not have_content "Confirm updated current cohort for #{student.name}"
+  end
 end
 
-feature 'withdrawing a student from all courses' do
+feature 'withdrawing a student from all courses', :js do
   let(:course1) { FactoryBot.create(:course) }
   let(:course2) { FactoryBot.create(:internship_course) }
   let(:admin) { FactoryBot.create(:admin) }
@@ -59,6 +108,7 @@ feature 'withdrawing a student from all courses' do
     student = FactoryBot.create(:student_with_upfront_payment)
     visit student_courses_path(student)
     click_on 'Drop All'
+    accept_js_alert
     expect(page).to have_content "#{student.email} has been withdrawn from all courses."
   end
 
@@ -67,6 +117,7 @@ feature 'withdrawing a student from all courses' do
     FactoryBot.create(:attendance_record, student: student, date: student.course.start_date)
     visit student_courses_path(student)
     click_on 'Drop All'
+    accept_js_alert
     expect(page).to have_content "#{student.email} has been withdrawn from all courses."
   end
 
@@ -74,11 +125,12 @@ feature 'withdrawing a student from all courses' do
     student = FactoryBot.create(:student)
     visit student_courses_path(student)
     click_on 'Drop All'
+    accept_js_alert
     expect(page).to have_content "#{student.email} has been withdrawn from all courses."
   end
 end
 
-feature 'deleting a course for a student' do
+feature 'deleting a course for a student', :js do
   let(:course1) { FactoryBot.create(:course) }
   let(:course2) { FactoryBot.create(:midway_internship_course) }
   let(:admin) { FactoryBot.create(:admin) }
@@ -91,7 +143,8 @@ feature 'deleting a course for a student' do
     within "#student-course-#{course2.id}" do
       click_on 'Withdraw'
     end
-    expect(page).to have_content "#{course2.description} has been removed"
+    accept_js_alert
+    expect(page).to have_content "#{student.name} has been withdrawn from #{course2.description}"
     expect(page).to have_content "#{course1.description}"
   end
 
@@ -101,7 +154,8 @@ feature 'deleting a course for a student' do
     within "#student-course-#{course1.id}" do
       click_on 'Withdraw'
     end
-    expect(page).to have_content "#{course1.description} has been removed"
+    accept_js_alert
+    expect(page).to have_content "#{student.name} has been withdrawn from #{course1.description}"
     expect(page).to_not have_content "archived"
     expect(page).to_not have_content "expunged"
   end
@@ -113,7 +167,8 @@ feature 'deleting a course for a student' do
     within "#student-course-#{course.id}" do
       click_on 'Withdraw'
     end
-    expect(page).to have_content "#{course.description} has been removed"
+    accept_js_alert
+    expect(page).to have_content "#{student.name} has been withdrawn from #{course.description}"
     expect(page).to_not have_content "archived"
     expect(page).to_not have_content "expunged"
   end
@@ -125,7 +180,8 @@ feature 'deleting a course for a student' do
     within "#student-course-#{course1.id}" do
       click_on 'Withdraw'
     end
-    expect(page).to have_content "#{course1.description} has been removed"
+    accept_js_alert
+    expect(page).to have_content "#{student.name} has been withdrawn from #{course1.description}"
     expect(page).to_not have_content "archived"
     expect(page).to_not have_content "expunged"
   end
@@ -135,6 +191,37 @@ feature 'deleting a course for a student' do
     student.enrollments.find_by(course: course2).destroy
     visit student_courses_path(student)
     click_on 'destroy'
+    accept_js_alert
     expect(page).to have_content "Enrollment permanently removed"
+  end
+
+  scenario 'shows current cohort selection modal when removing FT course' do
+    cohort_1 = FactoryBot.create(:cohort_with_internship, description: "cohort 1")
+    cohort_2 = FactoryBot.create(:cohort_with_internship, description: "cohort 2")
+    student = FactoryBot.create(:student, courses: cohort_1.courses + cohort_2.courses)
+    visit student_courses_path(student)
+    within "#student-course-#{cohort_1.courses.first.id}" do
+      click_on 'Withdraw'
+    end
+    accept_js_alert
+    expect(page).to have_content "#{student.name} has been withdrawn from #{cohort_1.courses.first.description_and_office}"
+    expect(page).to have_content "Confirm updated current cohort for #{student.name}"
+    cohort_select_box = find(:css, '#current_cohort_id') 
+    expect(cohort_select_box).to have_content cohort_1.description
+    expect(cohort_select_box).to have_content cohort_2.description
+  end
+  
+  scenario 'does not show current cohort selection modal when removing PT course' do
+    cohort_1 = FactoryBot.create(:cohort_with_internship, description: "cohort 1")
+    cohort_2 = FactoryBot.create(:cohort_with_internship, description: "cohort 2")
+    pt_cohort = FactoryBot.create(:part_time_cohort, description: "PT cohort")
+    student = FactoryBot.create(:student, courses: cohort_1.courses + cohort_2.courses + pt_cohort.courses)
+    visit student_courses_path(student)
+    within "#student-course-#{pt_cohort.courses.first.id}" do
+      click_on 'Withdraw'
+    end
+    accept_js_alert
+    expect(page).to have_content "#{student.name} has been withdrawn from #{pt_cohort.courses.first.description_and_office}"
+    expect(page).to_not have_content "Confirm updated current cohort for #{student.name}"
   end
 end

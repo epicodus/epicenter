@@ -207,9 +207,7 @@ feature 'setting academic probation', :js, :stub_mailgun do
   it 'sets teacher academic probation' do
     visit student_courses_path(student)
     find(:css, "#student_probation_teacher").set(true)
-    wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoSuchAlertError
-    alert = wait.until { page.driver.browser.switch_to.alert }
-    alert.accept
+    accept_js_alert
     expect(page).to have_content "#{student.name} has been placed on teacher probation!"
     student.reload
     expect(student.probation_teacher).to eq true
@@ -218,9 +216,7 @@ feature 'setting academic probation', :js, :stub_mailgun do
   it 'sets advisor academic probation' do
     visit student_courses_path(student)
     find(:css, "#student_probation_advisor").set(true)
-    wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoSuchAlertError
-    alert = wait.until { page.driver.browser.switch_to.alert }
-    alert.accept
+    accept_js_alert
     expect(page).to have_content "#{student.name} has been placed on student services probation!"
     student.reload
     expect(student.probation_advisor).to eq true
@@ -230,9 +226,7 @@ feature 'setting academic probation', :js, :stub_mailgun do
     student.update_columns(probation_teacher: true)
     visit student_courses_path(student)
     find(:css, "#student_probation_teacher").set(false)
-    wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoSuchAlertError
-    alert = wait.until { page.driver.browser.switch_to.alert }
-    alert.accept
+    accept_js_alert
     expect(page).to have_content "#{student.name} has been removed from teacher probation! :)"
     student.reload
     expect(student.probation_teacher).to eq false
@@ -242,9 +236,7 @@ feature 'setting academic probation', :js, :stub_mailgun do
     student.update_columns(probation_advisor: true)
     visit student_courses_path(student)
     find(:css, "#student_probation_advisor").set(false)
-    wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoSuchAlertError
-    alert = wait.until { page.driver.browser.switch_to.alert }
-    alert.accept
+    accept_js_alert
     expect(page).to have_content "#{student.name} has been removed from student services probation! :)"
     student.reload
     expect(student.probation_advisor).to eq false

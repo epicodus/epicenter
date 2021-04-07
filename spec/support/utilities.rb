@@ -43,3 +43,9 @@ def get_lead_id(email)
     return lead['id'] if lead['contacts'][0]['emails'][0]['email'] == email
   end
 end
+
+def accept_js_alert
+  wait = Selenium::WebDriver::Wait.new ignore: Selenium::WebDriver::Error::NoSuchAlertError
+  alert = wait.until { page.driver.browser.switch_to.alert }
+  alert.accept
+end

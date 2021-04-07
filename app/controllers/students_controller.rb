@@ -51,14 +51,16 @@ class StudentsController < ApplicationController
 
 private
   def student_params
-    params.require(:student).permit(:primary_payment_method_id, :course_id, :plan_id, :probation_teacher, :probation_advisor,
+    params.require(:student).permit(:primary_payment_method_id, :course_id, :cohort_id, :plan_id, :probation_teacher, :probation_advisor,
                                     ratings_attributes: [:id, :internship_id, :number])
   end
 
   def update_student_as_admin
     @student = Student.find(params[:id])
     if @student.update(student_params)
-      if student_params[:plan_id]
+      if student_params[:cohort_id]
+        redirect_to student_courses_path(@student), notice: "Current cohort for #{@student.name} has been set to #{@student.cohort.try(:description) || 'blank'}."
+      elsif student_params[:plan_id]
         redirect_to student_payments_path(@student), notice: "Payment plan for #{@student.name} has been updated."
       end
       if student_params[:probation_teacher]
@@ -79,7 +81,9 @@ private
         end
       end
     else
-      if student_params[:plan_id]
+      if student_params[:cohort_id]
+        redirect_back(fallback_location: student_courses_path(@student), alert: "Cohort update failed.")
+      elsif student_params[:plan_id]
         redirect_to student_payments_path(@student), alert: "Payment plan update failed."
       end
       if student_params[:probation_teacher] || student_params[:probation_advisor]

@@ -8,6 +8,7 @@ class Student < User
   after_update :update_plan_in_crm, if: :saved_change_to_plan_id
   after_update :update_probation_in_crm, if: :probation_updated?
   after_update :notify_staff_on_probation_count, if: :probation_count_updated_3_or_more?
+  before_update :update_ending_cohort, if: :cohorts_updated?
   after_update :update_cohorts_in_crm, if: :cohorts_updated?
   before_destroy :archive_enrollments
 
@@ -547,7 +548,11 @@ private
   end
 
   def cohorts_updated?
-    saved_change_to_cohort_id? || saved_change_to_starting_cohort_id? || saved_change_to_parttime_cohort_id?
+    saved_change_to_cohort_id? || saved_change_to_starting_cohort_id? || saved_change_to_parttime_cohort_id? || will_save_change_to_cohort_id? || will_save_change_to_parttime_cohort_id?
+  end
+
+  def update_ending_cohort
+    self.ending_cohort = [parttime_cohort, cohort].compact.sort_by(&:end_date).last || ending_cohort
   end
 
   def update_cohorts_in_crm
