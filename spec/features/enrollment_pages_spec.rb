@@ -12,7 +12,7 @@ feature 'adding another course for a student', :js do
     expect(page).to have_content "#{student.name} enrolled in #{other_course.description_and_office}"
   end
 
-  scenario 'as an admin on the individual student page', js: true do
+  scenario 'as an admin on the individual student page' do
     another_office = FactoryBot.create(:seattle_course).office
     visit student_courses_path(student)
     click_on another_office.short_name
@@ -20,7 +20,7 @@ feature 'adding another course for a student', :js do
     expect(page.all('select#enrollment_course_id_' + another_office.short_name).first.text.include? other_course.office.name).to eq false
   end
 
-  scenario 'as an admin on the individual student page', js: true do
+  scenario 'as an admin on the individual student page' do
     visit student_courses_path(student)
     click_on 'PREVIOUS'
     find('select#enrollment_course_id_previous')
@@ -40,6 +40,18 @@ feature 'adding another course for a student', :js do
     cohort_select_box = find(:css, '#current_cohort_id') 
     expect(cohort_select_box).to have_content cohort.description
     expect(cohort_select_box).to have_content new_cohort.description
+  end
+
+  scenario 'updates course list before showing modal' do
+    cohort = FactoryBot.create(:cohort_with_internship, description: "existing cohort")
+    student.courses = cohort.courses
+    new_cohort = FactoryBot.create(:intro_only_cohort, description: "new cohort")
+    new_cohort.courses.first.update(description: 'this is the new course')
+    visit student_courses_path(student)
+    select new_cohort.courses.first.description, from: 'enrollment_course_id_' + new_cohort.office.short_name
+    click_on 'Add course'
+    section = find(:css, '#courses-list')
+    expect(section).to have_content 'this is the new course'
   end
 
   scenario 'does not show current cohort selection modal when adding PT course' do
