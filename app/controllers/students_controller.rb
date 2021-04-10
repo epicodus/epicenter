@@ -25,6 +25,18 @@ class StudentsController < ApplicationController
     authorize! :read, @student
   end
 
+  def edit
+    # show current cohort select modal
+    authorize! :manage, Course
+    @student = Student.find(params[:id])
+    @confirmation_message = 'Edit current cohort'
+    @previous_current_cohort = @student.cohort
+    @possible_cohorts = @student.courses.cirr_fulltime_courses.map {|c| c.cohorts}.flatten.uniq
+    respond_to do |format|
+      format.js { render 'cohorts/cohort_select_modal' }
+    end
+  end
+
   def update
     if current_admin
       update_student_as_admin

@@ -438,6 +438,10 @@ class Student < User
     courses.cirr_parttime_courses.last.try(:cohorts).try(:first)
   end
 
+  def possible_cirr_cohorts
+    courses.cirr_fulltime_courses.map {|c| c.cohorts}.flatten.uniq
+  end
+
   def really_destroy
     crm_lead.update({ Rails.application.config.x.crm_fields['EPICENTER_ID'] => nil, Rails.application.config.x.crm_fields['INVITATION_TOKEN'] => nil })
     really_destroy!

@@ -18,7 +18,7 @@ class EnrollmentsController < ApplicationController
         render 'courses/index'
       end
     end
-    @possible_cohorts = @student.courses.cirr_fulltime_courses.map {|c| c.cohorts}.flatten.uniq
+    @possible_cohorts = @student.possible_cirr_cohorts
     respond_to do |format|
       format.js {
         if @possible_cohorts.count > 1 && (Course.cirr_fulltime_courses.include?(@course) || Course.cirr_fulltime_courses.include?(@cohort.try(:courses).try(:first)))
@@ -44,7 +44,7 @@ class EnrollmentsController < ApplicationController
       enrollment = Enrollment.find_by(course_id: course.id, student_id: @student.id)
       enrollment.destroy
       @confirmation_message = "#{@student.name} has been withdrawn from #{course.description_and_office}."
-      @possible_cohorts = @student.courses.cirr_fulltime_courses.map {|c| c.cohorts}.flatten.uniq
+      @possible_cohorts = @student.possible_cirr_cohorts
       respond_to do |format|
         format.js {
           if Course.cirr_fulltime_courses.include?(course) && @possible_cohorts.count > 1

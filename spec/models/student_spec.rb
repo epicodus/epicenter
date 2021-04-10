@@ -1850,6 +1850,13 @@ end
         expect(student.calculate_current_cohort).to eq nil
       end
     end
+
+    describe '#possible_cirr_cohorts' do
+      it 'returns possible ft or pt-full-stack cohorts based on courses' do
+        student = FactoryBot.create(:student, courses: future_cohort.courses + cohort.courses)
+        expect(student.possible_cirr_cohorts).to eq [cohort, future_cohort]
+      end
+    end
   end
 
   describe '.invite', :dont_stub_crm do

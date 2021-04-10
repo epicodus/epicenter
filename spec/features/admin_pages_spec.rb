@@ -196,6 +196,49 @@ feature 'viewing the student courses list' do
   end
 end
 
+feature 'manually changing current cohort' do
+  context 'as an admin' do
+    let(:admin) { FactoryBot.create(:admin) }
+    before { login_as(admin, scope: :admin) }
+
+    it 'does not show link to change current cohort when only one possible cirr cohort' do
+      cohort_1 = FactoryBot.create(:cohort_with_internship)
+      cohort_2 = FactoryBot.create(:part_time_cohort)
+      student = FactoryBot.create(:student, courses: cohort_1.courses + cohort_2.courses)
+      visit student_courses_path(student)
+      expect(page).to_not have_content 'edit current cohort'
+    end
+
+    it 'shows link to change current cohort when multiple possible cirr cohorts' do
+      cohort_1 = FactoryBot.create(:cohort_with_internship)
+      cohort_2 = FactoryBot.create(:cohort_with_internship)
+      student = FactoryBot.create(:student, courses: cohort_1.courses + cohort_2.courses)
+      visit student_courses_path(student)
+      expect(page).to have_content 'edit current cohort'
+    end
+
+    it 'shows modal to change current cohort when click edit current cohort link', :js do
+      cohort_1 = FactoryBot.create(:cohort_with_internship)
+      cohort_2 = FactoryBot.create(:cohort_with_internship)
+      student = FactoryBot.create(:student, courses: cohort_1.courses + cohort_2.courses)
+      visit student_courses_path(student)
+      click_on 'edit current cohort'
+      expect(page).to have_content "Confirm updated current cohort for #{student.name}"
+    end
+  end
+
+  context 'as a student' do
+    it 'does not show link to change current cohort' do
+      cohort_1 = FactoryBot.create(:cohort_with_internship)
+      cohort_2 = FactoryBot.create(:cohort_with_internship)
+      student = FactoryBot.create(:student, courses: cohort_1.courses + cohort_2.courses)
+      login_as(student, scope: :student)
+      visit student_courses_path(student)
+      expect(page).to_not have_content 'edit current cohort'
+    end
+  end
+end
+
 feature 'setting academic probation', :js, :stub_mailgun do
   let(:admin) { FactoryBot.create(:admin) }
   let(:student) { FactoryBot.create(:student) }
