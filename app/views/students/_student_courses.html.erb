@@ -20,56 +20,9 @@
   <%= render 'students/student_nav' %>
 <% end %>
 
-<% if @student.courses.any? %>
-  <div class="table-responsive">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Description</th>
-          <th></th>
-          <% if current_admin %>
-            <th>Office</th>
-          <% end %>
-          <th>Teacher</th>
-          <th>Attendance</th>
-          <th>Code reviews</th>
-          <% if can? :manage, Enrollment %>
-            <th class="text-center"><%= link_to 'Drop All', student_path(id: @student.id, drop_all: true), data: { method: :delete, confirm: 'Are you sure you want to withdraw from all courses?' }, class: 'btn btn-primary' %></th>
-          <% end %>
-        </tr>
-      </thead>
-      <tbody>
-        <% @student.courses.order(:description).each do |course| %>
-          <tr id="student-course-<%= course.id %>">
-            <td><%= link_to course.description, course_student_path(course, @student) %></td>
-            <td>
-              <% if course.in_session? %>
-                <span class="label label-info">Current course</span>
-              <% end %>
-            </td>
-            <% if current_admin %>
-              <td><%= course.office.name %></td>
-            <% end %>
-            <td><%= course.teacher %></td>
-            <td><%= number_to_percentage(@student.attendance_score(course), precision: 0) unless course.internship_course? %></td>
-            <td>
-              <% if @student.submissions.for_course(course).empty? %>
-                No submissions made yet
-              <% elsif @student.submissions.for_course(course).needing_review.count == 0 %>
-                All submissions have been reviewed
-              <% else %>
-                <%= @student.submissions.for_course(course).needing_review.count %> pending review
-              <% end %>
-            </td>
-            <% if can? :manage, Enrollment %>
-              <td><%= link_to 'Withdraw', enrollment_path(id: @student.id, course_id: course.id), data: { remote: true, method: :delete, confirm: 'Are you sure?' }, class: 'unstyled-link col-md-6' %></td>
-            <% end %>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </div>
-<% end %>
+<div id='courses-list'>
+  <%= render 'students/student_courses_list' %>
+</div>
 
 <% if can? :manage, Enrollment %>
   <% if @student.courses_withdrawn.any? %>
