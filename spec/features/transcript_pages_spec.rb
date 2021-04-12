@@ -117,7 +117,7 @@ feature "viewing transcript & certificate" do
       course = FactoryBot.create(:past_course)
       student = FactoryBot.create(:student, course: course)
       course.class_days.each do |day|
-        FactoryBot.create(:attendance_record, student: student, date: day, left_early: false, tardy: false)
+        FactoryBot.create(:attendance_record, student: student, date: day, left_early: false, tardy: false, pair_ids: [1])
       end
       login_as(student, scope: :student)
       visit transcript_path

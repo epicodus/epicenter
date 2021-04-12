@@ -1069,9 +1069,11 @@ end
     let(:course_2) { FactoryBot.create(:course) }
     let(:student) { FactoryBot.create(:student, courses: [course_1, course_2]) }
 
+    # before { allow_any_instance_of(AttendanceRecord).to receive(:pairings).and_return({ id: 1 }) }
+
     it "calculates the student's attendance score when half absences" do
       course_1.class_days.each do |day|
-        FactoryBot.create(:attendance_record, student: student, date: day, left_early: false, tardy: false)
+        FactoryBot.create(:attendance_record, student: student, date: day, left_early: false, tardy: false, pair_ids: [1])
       end
       travel_to course_2.end_date + 1.day do
         expect(student.total_attendance_score).to eq 50
