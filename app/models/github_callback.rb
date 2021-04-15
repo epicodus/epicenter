@@ -11,8 +11,8 @@ class GithubCallback
     Github.update_code_reviews({ repo: repo, modified: files_modified, removed: files_removed })
   end
 
-  def push_to_master?
-    branch == 'refs/heads/master'
+  def push_to_main?
+    branch == 'refs/heads/main'
   end
 
 private

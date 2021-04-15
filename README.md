@@ -1,6 +1,6 @@
-[![Build status](https://travis-ci.org/epicodus/epicenter.svg?branch=master)](https://travis-ci.org/epicodus/epicenter)
+[![Build status](https://travis-ci.org/epicodus/epicenter.svg?branch=main)](https://travis-ci.org/epicodus/epicenter)
 [![Code climate](https://codeclimate.com/github/epicodus/epicenter/badges/gpa.svg)](https://codeclimate.com/github/epicodus/epicenter)
-[![Coverage status](https://coveralls.io/repos/github/epicodus/epicenter/badge.svg?branch=master)](https://coveralls.io/github/epicodus/epicenter?branch=master)
+[![Coverage status](https://coveralls.io/repos/github/epicodus/epicenter/badge.svg?branch=main)](https://coveralls.io/github/epicodus/epicenter?branch=main)
 # Epicenter
 
 This app handles a few different things for Epicodus students, staff, and partner internship companies, including:
