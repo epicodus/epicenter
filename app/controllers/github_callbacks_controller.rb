@@ -3,7 +3,7 @@ class GithubCallbacksController < ApplicationController
 
   def create
     github_callback = GithubCallback.new(params)
-    github_callback.update_code_reviews if github_callback.push_to_master?
+    github_callback.update_code_reviews if github_callback.push_to_main?
     head :ok
   end
 end

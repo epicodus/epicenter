@@ -452,13 +452,13 @@ feature 'editing a code review' do
     end
 
     scenario 'adding Github URL', vcr: true do
-      fill_in 'Github URL', with: "https://github.com/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/testing/blob/master/README.md"
+      fill_in 'Github URL', with: "https://github.com/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/testing/blob/main/README.md"
       click_button 'Update Code review'
       expect(page).to have_content 'testing'
     end
 
     scenario 'adding invalid Github URL', vcr: true do
-      fill_in 'Github URL', with: "https://github.com/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/testing/blob/master/does_not_exist.md"
+      fill_in 'Github URL', with: "https://github.com/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/testing/blob/main/does_not_exist.md"
       click_button 'Update Code review'
       expect(page).to have_content 'Unable to pull code review from Github'
       expect(code_review.content).to eq 'test content'

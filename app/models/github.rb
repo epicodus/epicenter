@@ -1,7 +1,7 @@
 class Github
   def self.get_content(github_path)
-    repo = github_path.match(/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}\/(.*)\/blob\/master/).try(:values_at, 1).try(:first)
-    file = github_path.match(/\/blob\/master\/(.*)/).try(:values_at, 1).try(:first)
+    repo = github_path.match(/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}\/(.*)\/blob\/main/).try(:values_at, 1).try(:first)
+    file = github_path.match(/\/blob\/main\/(.*)/).try(:values_at, 1).try(:first)
     begin
       { content: client.contents("#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/#{repo}", path: "/#{file}", accept: 'application/vnd.github.3.raw') }
     rescue Faraday::Error => e
@@ -27,7 +27,7 @@ class Github
 
   private_class_method def self.update_modified_code_reviews(repo, files)
     files.each do |file|
-      code_reviews = CodeReview.where(github_path: "https://github.com/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/#{repo}/blob/master/#{file}")
+      code_reviews = CodeReview.where(github_path: "https://github.com/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/#{repo}/blob/main/#{file}")
       code_reviews.each do |code_review|
         updated_content = client.contents("#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/#{repo}", path: "/#{file}", accept: 'application/vnd.github.3.raw')
         code_review.update_columns(content: updated_content)
@@ -37,7 +37,7 @@ class Github
 
   private_class_method def self.update_removed_code_reviews(repo, files)
     files.each do |file|
-      code_reviews = CodeReview.where(github_path: "https://github.com/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/#{repo}/blob/master/#{file}")
+      code_reviews = CodeReview.where(github_path: "https://github.com/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/#{repo}/blob/main/#{file}")
       code_reviews.each do |code_review|
         code_review.update_columns(content: '')
       end
