@@ -398,6 +398,32 @@ describe Course do
     end
   end
 
+  describe '.move_submissions' do
+    it 'moves submissions for a student from one course to another' do
+      course_1 = FactoryBot.create(:course)
+      course_2 = FactoryBot.create(:course)
+      student = FactoryBot.create(:student, courses: [course_1])
+      cr_1 = FactoryBot.create(:code_review, course: course_1, title: "same title")
+      cr_2 = FactoryBot.create(:code_review, course: course_2, title: "same title")
+      submission = FactoryBot.create(:submission, student: student, code_review: cr_1)
+      Course.move_submissions(student: student, source_course: course_1, destination_course: course_2)
+      expect(cr_1.submission_for(student)).to eq nil
+      expect(cr_2.submission_for(student)).to eq submission
+    end
+
+    it 'does not move submission if no code review with that title found' do
+      course_1 = FactoryBot.create(:course)
+      course_2 = FactoryBot.create(:course)
+      student = FactoryBot.create(:student, courses: [course_1])
+      cr_1 = FactoryBot.create(:code_review, course: course_1, title: "same title")
+      cr_2 = FactoryBot.create(:code_review, course: course_2, title: "different title")
+      submission = FactoryBot.create(:submission, student: student, code_review: cr_1)
+      Course.move_submissions(student: student, source_course: course_1, destination_course: course_2)
+      expect(cr_1.submission_for(student)).to eq submission
+      expect(cr_2.submission_for(student)).to eq nil
+    end
+  end
+
   context 'building course' do
 
     context 'from layout file' do

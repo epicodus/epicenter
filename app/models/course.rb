@@ -187,6 +187,16 @@ class Course < ApplicationRecord
     end
   end
 
+  def self.move_submissions(student:, source_course:, destination_course:)
+    source_course.code_reviews.each do |source_cr|
+      submission = source_cr.submission_for(student)
+      destination_cr = destination_course.code_reviews.find_by(title: source_cr.title)
+      if destination_cr
+        submission.update_columns(code_review_id: destination_cr.id)
+      end
+    end
+  end
+
 private
 
   def build_course

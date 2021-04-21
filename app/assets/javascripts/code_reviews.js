@@ -1,3 +1,10 @@
+document.addEventListener('DOMContentLoaded', (event) => {
+  document.getElementById('move-submissions-button').onclick = function() {
+    this.classList.add('hide');
+    document.getElementById('move-submissions-list').classList.remove('hide');
+  }
+});
+
 $(function() {
   $('.sortable-list').sortable({
   });

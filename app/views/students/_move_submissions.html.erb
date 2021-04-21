@@ -1,0 +1,41 @@
+<div class="well hide" id="move-submissions-list">
+  <p><strong>Move submissions <em>from</em> <span class='text-primary'><%= course.description_and_office %></span> <em>to</em> <span class='text-success'><%= other_course.description_and_office %></span>:</strong></p>
+
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <th>Title</th>
+          <th>Ready to be moved?</th>
+        </thead>
+        <tbody>
+          <% course.code_reviews.each do |code_review| %>
+            <tr>
+              <td><%= code_review.title %></td>
+              <td>
+                <% if code_review.submission_for(student) && other_course.code_reviews.pluck(:title).include?(code_review.title) %>
+                  <span class='text-success'>ready to be moved</span>
+                <% elsif !code_review.submission_for(student) %>
+                  <span class='text-warning'>no submission</span>
+                <% elsif !other_course.code_reviews.pluck(:title).include?(code_review.title) %>
+                  <span class='text-primary'>matching career review not found in destination course</span>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <br>
+
+    <%= form_with url: submissions_path, method: :patch do |f| %>
+      <%= render 'layouts/errors', object: course %>
+      <%= f.hidden_field :student_id, value: student.id %>
+      <%= f.hidden_field :source_course_id, value: course.id %>
+      <%= f.hidden_field :destination_course_id, value: other_course.id %>
+      <div class="form-group">
+        <%= f.submit "Move 'ready to be moved' submissions to #{other_course.description_and_office}", data: { confirm: "Are you sure you want to move all eligible submissions *FROM* #{course.description_and_office} *TO* #{other_course.description_and_office}?" }, class: "btn btn-md btn-primary", id: 'submit-move-submissions-button' %>
+      </div>
+    <% end %>
+
+</div>

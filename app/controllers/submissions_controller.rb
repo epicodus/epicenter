@@ -23,7 +23,9 @@ class SubmissionsController < ApplicationController
   end
 
   def update
-    if submission_params['times_submitted']
+    if params[:source_course_id]
+      move_submissions
+    elsif submission_params['times_submitted']
       @submission = Submission.find(params[:id])
       @submission.update_columns(times_submitted: submission_params[:times_submitted])
       render 'update_submission_times'
@@ -47,5 +49,13 @@ private
 
   def submission_params
     params.require(:submission).permit(:link, :needs_review, :student_id, :times_submitted, :admin_id, notes_attributes: [:id, :content]).merge(review_status: 'pending')
+  end
+
+  def move_submissions
+    student = Student.find(params[:student_id])
+    source_course = Course.find(params[:source_course_id])
+    destination_course = Course.find(params[:destination_course_id])
+    Course.move_submissions(student: student, source_course: source_course, destination_course: destination_course)
+    redirect_to course_student_path(destination_course, student), notice: "Eligible submissions for #{student.name} moved to this course."
   end
 end
