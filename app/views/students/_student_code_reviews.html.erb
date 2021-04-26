@@ -1,4 +1,5 @@
 <h3><%= @course.internship_course? ? 'Career reviews' : 'Code reviews' %></h3>
+
 <div class="panel panel-default">
   <div class="panel-body">
     <div class="student-div student-code-reviews">
@@ -58,6 +59,11 @@
         </table>
       </div>
     </div>
+    <% if current_admin && @student.courses.internship_courses.count == 2 && @student.submissions.for_course(@course).any? %>
+      <hr>
+      <btn class="btn btn-sm btn-danger" id="move-submissions-button">Move submissions to new internship course...</btn>
+      <%= render 'move_submissions', student: @student, course: @course, other_course: @student.courses.internship_courses.where.not(id: @course.id).first %>
+    <% end %>
   </div>
 </div>
 

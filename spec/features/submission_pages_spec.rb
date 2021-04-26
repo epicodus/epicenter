@@ -192,3 +192,109 @@ feature 'Creating a student submission for an internship course code review' do
     expect(page).to have_content 'Submitted less than a minute ago'
   end
 end
+
+feature 'Moving submissions between internship courses' do
+  let(:admin) { FactoryBot.create(:admin) }
+
+  context 'as an admin' do
+    before { login_as(admin, scope: :admin) }
+
+    context 'move submission button' do
+      scenario 'is displayed for admins when multiple internship courses and at least one submissions' do
+        course_1 = FactoryBot.create(:internship_course)
+        course_2 = FactoryBot.create(:internship_course)
+        student = FactoryBot.create(:user_with_all_documents_signed, courses: [course_1, course_2])
+        cr_1 = FactoryBot.create(:code_review, course: course_1, title: "same title")
+        cr_2 = FactoryBot.create(:code_review, course: course_2, title: "same title")
+        submission = FactoryBot.create(:submission, student: student, code_review: cr_1)
+        visit course_student_path(course_1, student)
+        expect(page).to have_content 'Move submissions to new internship course...'
+      end
+
+      scenario 'is not displayed when no submission in source career review' do
+        course_1 = FactoryBot.create(:internship_course)
+        course_2 = FactoryBot.create(:internship_course)
+        student = FactoryBot.create(:user_with_all_documents_signed, courses: [course_1, course_2])
+        cr_1 = FactoryBot.create(:code_review, course: course_1, title: "same title")
+        cr_2 = FactoryBot.create(:code_review, course: course_2, title: "same title")
+        submission = FactoryBot.create(:submission, student: student, code_review: cr_2)
+        visit course_student_path(course_1, student)
+        expect(page).to_not have_content 'Move submissions to new internship course...'
+      end
+
+      scenario 'is not displayed when only one internship course' do
+        course_1 = FactoryBot.create(:internship_course)
+        course_2 = FactoryBot.create(:course)
+        student = FactoryBot.create(:user_with_all_documents_signed, courses: [course_1, course_2])
+        cr_1 = FactoryBot.create(:code_review, course: course_1, title: "same title")
+        cr_2 = FactoryBot.create(:code_review, course: course_2, title: "same title")
+        submission = FactoryBot.create(:submission, student: student, code_review: cr_1)
+        visit course_student_path(course_1, student)
+        expect(page).to_not have_content 'Move submissions to new internship course...'
+      end
+    end
+
+    context 'lists submissions ready to be moved' do
+      let(:course_1) { FactoryBot.create(:internship_course) }
+      let(:course_2) { FactoryBot.create(:internship_course) }
+      let(:student) { FactoryBot.create(:user_with_all_documents_signed, courses: [course_1, course_2]) }
+      let!(:cr_1) { FactoryBot.create(:code_review, course: course_1, title: "same title") }
+      let!(:submission) { FactoryBot.create(:submission, student: student, code_review: cr_1) }
+
+      scenario 'with matching code review in other internship course' do
+        cr_2 = FactoryBot.create(:code_review, course: course_2, title: "same title")
+        visit course_student_path(course_1, student)
+        expect(page).to have_content 'ready to be moved'
+      end
+
+      scenario 'without matching code review in other internship course' do
+        cr_2 = FactoryBot.create(:code_review, course: course_2, title: "different title")
+        visit course_student_path(course_1, student)
+        expect(page).to have_content 'matching career review not found in destination course'
+      end
+
+      scenario 'without submission' do
+        cr_2 = FactoryBot.create(:code_review, course: course_1, title: "second code review")
+        visit course_student_path(course_1, student)
+        expect(page).to have_content 'no submission'
+      end
+    end
+
+    context 'moving submissions' do
+      let(:course_1) { FactoryBot.create(:internship_course) }
+      let(:course_2) { FactoryBot.create(:internship_course) }
+      let(:student) { FactoryBot.create(:user_with_all_documents_signed, courses: [course_1, course_2]) }
+      let!(:cr_1) { FactoryBot.create(:code_review, course: course_1, title: "first code review") }
+      let!(:cr_2) { FactoryBot.create(:code_review, course: course_1, title: "second code review") }
+      let!(:cr_3) { FactoryBot.create(:code_review, course: course_1, title: "third code review") }
+      let!(:cr_4) { FactoryBot.create(:code_review, course: course_2, title: "first code review") }
+      let!(:submission_1) { FactoryBot.create(:submission, student: student, code_review: cr_1) }
+      let!(:submission_2) { FactoryBot.create(:submission, student: student, code_review: cr_2) }
+
+      before do
+        login_as(admin, scope: :admin)
+        visit course_student_path(course_1, student)
+      end
+
+      scenario 'with one matching code review with submission' do
+        click_on 'submit-move-submissions-button'
+        expect(submission_1.reload.code_review).to eq cr_4
+        expect(submission_2.reload.code_review).to eq cr_2
+      end
+    end
+  end
+
+  context 'as a student' do
+    scenario 'move submissions button is not displayed' do
+      course_1 = FactoryBot.create(:internship_course)
+      course_2 = FactoryBot.create(:internship_course)
+      student = FactoryBot.create(:user_with_all_documents_signed, courses: [course_1, course_2])
+      cr_1 = FactoryBot.create(:code_review, course: course_1, title: "same title")
+      cr_2 = FactoryBot.create(:code_review, course: course_2, title: "same title")
+      submission = FactoryBot.create(:submission, student: student, code_review: cr_1)
+      login_as(student, scope: :student)
+      visit course_student_path(course_1, student)
+      expect(page).to_not have_content 'Move submissions to new internship course...'
+    end
+  end
+end
