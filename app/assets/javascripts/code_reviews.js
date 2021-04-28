@@ -1,10 +1,3 @@
-document.addEventListener('DOMContentLoaded', (event) => {
-  document.getElementById('move-submissions-button').onclick = function() {
-    this.classList.add('hide');
-    document.getElementById('move-submissions-list').classList.remove('hide');
-  }
-});
-
 $(function() {
   $('.sortable-list').sortable({
   });
@@ -30,6 +23,11 @@ $(function() {
 
   $('.objectives-scores').change(function() {
     colorObjectiveScores($(this));
+  });
+
+  $('#move-submissions-button').click(function() {
+    $(this).addClass('hide');
+    $('#move-submissions-list').removeClass('hide');
   });
 });
 
