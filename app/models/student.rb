@@ -171,7 +171,7 @@ class Student < User
 
   def pair_ids(course=nil)
     selected_attendance_records = course ? attendance_records.where("date between ? and ?", course.start_date, course.end_date) : attendance_records
-    selected_attendance_records.joins(:pairings).pluck(:pair_id).uniq.sort
+    selected_attendance_records.joins(:pairings).pluck(:pair_id).sort
   end
 
   def pairs_on_day(day)

@@ -520,13 +520,13 @@ describe Student do
       expect(student_1.pair_ids).to eq [student_2.id]
     end
 
-    it "includes pair ids from multiple attendance records without duplicates" do
+    it "includes pair ids from multiple attendance records, counting duplicates" do
       student_3 = FactoryBot.create(:student, course: course)
       student_4 = FactoryBot.create(:student, course: course)
       FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date, pairings_attributes: [pair_id: student_2.id])
       FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date + 1.day, pairings_attributes: [pair_id: student_3.id])
       FactoryBot.create(:attendance_record, student: student_1, date: student_1.course.start_date + 2.days, pairings_attributes: [{pair_id: student_3.id}, {pair_id: student_4.id}])
-      expect(student_1.pair_ids.count).to eq 3
+      expect(student_1.pair_ids.count).to eq 4
       expect(student_1.pair_ids).to include student_2.id
       expect(student_1.pair_ids).to include student_3.id
       expect(student_1.pair_ids).to include student_4.id
