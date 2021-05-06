@@ -245,25 +245,16 @@ private
     if code_review_params.try(:any?)
       visible_day_of_week, visible_time, due_days_later, due_time, submissions_not_required, always_visible = code_review_params['settings'].values_at 'visible_day_of_week', 'visible_time', 'due_days_later', 'due_time', 'submissions_not_required', 'always_visible'
       code_review_params['details'].each do |params|
-
-        # override course code review settings if specified here in details section
-        visible_day_of_week = params['visible_day_of_week'] || visible_day_of_week
-        visible_time = params['visible_time'] || visible_time
-        due_days_later = params['due_days_later'] || due_days_later
-        due_time = params['due_time'] || due_time
-        submissions_not_required = params['submissions_not_required'] || submissions_not_required
-        always_visible = params['always_visible'] || always_visible
-
         unless code_reviews.where(title: params['title']).any?
-          if always_visible
+          if params['always_visible'] || always_visible
             visible_datetime, due_datetime = nil
           else
-            visible_date = date_of_weekday_on_class_week(class_week: params['visible_class_week'], day_of_week: visible_day_of_week)
-            visible_datetime = time_on_date(date: visible_date, time: visible_time)
-            due_date = visible_date + due_days_later.days
-            due_datetime = time_on_date(date: due_date, time: due_time)
+            visible_date = date_of_weekday_on_class_week(class_week: params['visible_class_week'], day_of_week: params['visible_day_of_week'] || visible_day_of_week)
+            visible_datetime = time_on_date(date: visible_date, time: params['visible_time'] || visible_time)
+            due_date = visible_date + (params['due_days_later'] || due_days_later).days
+            due_datetime = time_on_date(date: due_date, time: params['due_time'] || due_time)
           end
-          cr = code_reviews.new(title: params['title'], github_path: params['filename'], submissions_not_required: submissions_not_required, visible_date: visible_datetime, due_date: due_datetime)
+          cr = code_reviews.new(title: params['title'], github_path: params['filename'], submissions_not_required: params['submissions_not_required'] || submissions_not_required, visible_date: visible_datetime, due_date: due_datetime)
           cr.objectives = params['objectives'].map.with_index(1) {|obj, i| Objective.new(content: obj, number: i)}
         end
       end
