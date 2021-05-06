@@ -422,6 +422,18 @@ describe Course do
       expect(cr_1.submission_for(student)).to eq submission
       expect(cr_2.submission_for(student)).to eq nil
     end
+
+    it 'does not try to move submission if no submission found' do
+      course_1 = FactoryBot.create(:course)
+      course_2 = FactoryBot.create(:course)
+      student = FactoryBot.create(:student, courses: [course_1])
+      cr_1 = FactoryBot.create(:code_review, course: course_1, title: "same title")
+      cr_2 = FactoryBot.create(:code_review, course: course_1, title: "other code review")
+      cr_3 = FactoryBot.create(:code_review, course: course_2, title: "same title")
+      submission = FactoryBot.create(:submission, student: student, code_review: cr_2)
+      Course.move_submissions(student: student, source_course: course_1, destination_course: course_2)
+      expect(submission.reload.code_review).to eq cr_2
+    end
   end
 
   context 'building course' do

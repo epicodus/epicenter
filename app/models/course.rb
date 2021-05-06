@@ -191,7 +191,7 @@ class Course < ApplicationRecord
     source_course.code_reviews.each do |source_cr|
       submission = source_cr.submission_for(student)
       destination_cr = destination_course.code_reviews.find_by(title: source_cr.title)
-      if destination_cr
+      if submission && destination_cr
         submission.update_columns(code_review_id: destination_cr.id)
       end
     end
