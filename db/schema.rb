@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_22_172014) do
+ActiveRecord::Schema.define(version: 2021_05_07_192412) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -106,6 +106,8 @@ ActiveRecord::Schema.define(version: 2021_03_22_172014) do
     t.boolean "full"
     t.boolean "internship_assignments_visible"
     t.string "layout_file_path"
+    t.bigint "cohort_id"
+    t.index ["cohort_id"], name: "index_courses_on_cohort_id"
     t.index ["start_date"], name: "index_courses_on_start_date"
     t.index ["track_id"], name: "index_courses_on_track_id"
   end
@@ -424,6 +426,7 @@ ActiveRecord::Schema.define(version: 2021_03_22_172014) do
   add_foreign_key "cohorts", "offices"
   add_foreign_key "cohorts", "tracks"
   add_foreign_key "cost_adjustments", "users", column: "student_id"
+  add_foreign_key "courses", "cohorts"
   add_foreign_key "courses", "tracks"
   add_foreign_key "daily_submissions", "users", column: "student_id"
   add_foreign_key "notes", "submissions"
