@@ -38,7 +38,7 @@ Rails.application.routes.draw do
   resources :attendance_record_amendments, only: [:new, :create]
   resources :internships, only: [:index, :edit, :update]
   resources :cohorts, except: [:destroy]
-  resources :courses, except: [:destroy] do
+  resources :courses, only: [:index, :show, :update] do
     resource :export, only: [:show], to: 'course_export#show'
     resources :code_reviews, except: [:destroy] do
       resource :report, only: [:show], to: 'code_review_reports#show'

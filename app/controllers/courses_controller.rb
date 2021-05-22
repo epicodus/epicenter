@@ -31,35 +31,11 @@ class CoursesController < ApplicationController
     authorize! :manage, @course
   end
 
-  def new
-    @course = Course.new
-  end
-
-  def create
-    @course = Course.new(course_params)
-    if @course.save
-      current_admin.update(current_course: @course)
-      redirect_to course_path(@course), notice: 'Course has been created.'
-    else
-      render :new
-    end
-  end
-
-  def edit
-    @course = Course.find(params[:id])
-  end
-
   def update
     @course = Course.find(params[:id])
     if @course.update(course_params)
       flash[:notice] = "#{@course.description} has been updated."
-      if request.referer.include?('internships')
-        redirect_to internships_path(active: true)
-      else
-        redirect_to course_path(@course)
-      end
-    else
-      render :edit
+      redirect_to internships_path(active: true)
     end
   end
 
