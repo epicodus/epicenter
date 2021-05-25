@@ -6,8 +6,8 @@ feature 'Guest attempts to sign up' do
 end
 
 feature 'Visiting students index page' do
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
-  let(:admin) { FactoryBot.create(:admin) }
+  let(:student) { FactoryBot.create(:student, :with_course, :with_all_documents_signed) }
+  let(:admin) { student.course.admin }
 
   scenario 'as a student' do
     login_as(student, scope: :student)
@@ -31,7 +31,7 @@ end
 feature 'Student signs up via invitation', :vcr do
   let(:course) { FactoryBot.create(:course, class_days: [Date.today.beginning_of_week + 5.weeks]) }
   let(:plan) { FactoryBot.create(:upfront_plan) }
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com', courses: [course], plan: plan) }
+  let(:student) { FactoryBot.create(:student, :with_all_documents_signed, email: 'example@example.com', courses: [course], plan: plan) }
 
   scenario 'with valid information' do
     student.invite!
@@ -62,7 +62,7 @@ feature 'Student cannot invite other students' do
 end
 
 feature 'Student signs in with GitHub' do
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+  let(:student) { FactoryBot.create(:student, :with_all_documents_signed) }
 
   after { OmniAuth.config.mock_auth[:github] = nil }
 
@@ -74,7 +74,7 @@ feature 'Student signs in with GitHub' do
   end
 
   scenario 'with valid credentials on subsequent logins' do
-    student = FactoryBot.create(:user_with_all_documents_signed, github_uid: '12345')
+    student = FactoryBot.create(:student, :with_all_documents_signed, github_uid: '12345')
     OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: student.email }})
     visit root_path
     click_on 'Sign in with GitHub'
@@ -100,7 +100,7 @@ end
 feature "Student signs in while class is not in session" do
 
   let(:future_course) { FactoryBot.create(:future_course) }
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed, course: future_course) }
+  let(:student) { FactoryBot.create(:student, :with_all_documents_signed, course: future_course) }
 
   context "before adding a payment method" do
     it "takes them to the page to choose payment method" do
@@ -109,7 +109,7 @@ feature "Student signs in while class is not in session" do
     end
 
     it "takes them to courses page if no payment due" do
-      special_plan_student = FactoryBot.create(:user_with_all_documents_signed, plan: FactoryBot.create(:special_plan), course: future_course)
+      special_plan_student = FactoryBot.create(:student, :with_all_documents_signed, plan: FactoryBot.create(:special_plan), course: future_course)
       sign_in_as(special_plan_student)
       expect(page).to have_content "Your courses"
     end
@@ -146,7 +146,7 @@ end
 
 feature "Student visits homepage after logged in" do
   it "takes student with payment due to the correct path" do
-    student = FactoryBot.create(:user_with_all_documents_signed, plan: FactoryBot.create(:upfront_plan))
+    student = FactoryBot.create(:student, :with_course, :with_all_documents_signed, plan: FactoryBot.create(:upfront_plan))
     sign_in_as(student)
     visit root_path
     expect(current_path).to eq new_payment_method_path
@@ -155,7 +155,7 @@ feature "Student visits homepage after logged in" do
   end
 
   it "shows alert if payment due and last week of intro" do
-    student = FactoryBot.create(:user_with_all_documents_signed, plan: FactoryBot.create(:upfront_plan))
+    student = FactoryBot.create(:student, :with_course, :with_all_documents_signed, plan: FactoryBot.create(:upfront_plan))
     sign_in_as(student)
     travel_to student.course.end_date.beginning_of_week do
       visit root_path
@@ -164,7 +164,7 @@ feature "Student visits homepage after logged in" do
   end
 
   it "does not show alert if not intro course" do
-    student = FactoryBot.create(:student_with_cohort, plan: FactoryBot.create(:upfront_plan))
+    student = FactoryBot.create(:student, :with_ft_cohort, plan: FactoryBot.create(:upfront_plan))
     sign_in_as(student)
     travel_to student.course.end_date.beginning_of_week do
       visit root_path
@@ -173,7 +173,7 @@ feature "Student visits homepage after logged in" do
   end
 
   it "takes student with no payment due to the correct path" do
-    student = FactoryBot.create(:user_with_all_documents_signed, plan: FactoryBot.create(:special_plan))
+    student = FactoryBot.create(:student, :with_course, :with_all_documents_signed, plan: FactoryBot.create(:special_plan))
     sign_in_as(student)
     visit root_path
     expect(current_path).to eq student_courses_path(student)
@@ -181,7 +181,7 @@ feature "Student visits homepage after logged in" do
   end
 
   it "does not show cohort name or cohort absences if not cohort" do
-    student = FactoryBot.create(:user_with_all_documents_signed, plan: FactoryBot.create(:special_plan))
+    student = FactoryBot.create(:student, :with_all_documents_signed, plan: FactoryBot.create(:special_plan))
     sign_in_as(student)
     visit root_path
     expect(current_path).to eq student_courses_path(student)
@@ -192,7 +192,7 @@ feature "Student visits homepage after logged in" do
   end
 
   it "show cohort name and cohort absences when cohort listed" do
-    student = FactoryBot.create(:student_with_cohort)
+    student = FactoryBot.create(:student, :with_pt_intro_cohort)
     sign_in_as(student)
     visit student_courses_path(student)
     expect(page).to have_content "Cohort:"
@@ -203,7 +203,7 @@ feature "Student visits homepage after logged in" do
 end
 
 feature "Unenrolled student signs in" do
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+  let(:student) { FactoryBot.create(:student, :with_course, :with_all_documents_signed) }
 
   it "successfully and is redirected" do
     Enrollment.find_by(student_id: student.id, course_id: student.course.id).destroy
@@ -214,7 +214,7 @@ feature "Unenrolled student signs in" do
 end
 
 feature "Portland student signs in while class is in session" do
-  let(:student) { FactoryBot.create(:portland_student_with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
+  let(:student) { FactoryBot.create(:portland_student, :with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
 
   context "not at school" do
     it "takes them to the new payment method page" do
@@ -230,7 +230,7 @@ feature "Portland student signs in while class is in session" do
 end
 
 feature "Philadelphia student signs in while class is in session" do
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
+  let(:student) { FactoryBot.create(:student, :with_all_documents_signed, password: 'password1', password_confirmation: 'password1') }
 
   context "not at school" do
     it "takes them to the new payment method page" do
@@ -266,7 +266,7 @@ feature 'Guest not signed in' do
 end
 
 feature 'unenrolled student signs in' do
-  let(:student) { FactoryBot.create(:unenrolled_student) }
+  let(:student) { FactoryBot.create(:student, courses: []) }
 
   before { login_as(student, scope: :student) }
 
@@ -287,7 +287,7 @@ feature 'unenrolled student signs in' do
 end
 
 feature 'viewing the student show page' do
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+  let(:student) { FactoryBot.create(:student, :with_course, :with_all_documents_signed) }
 
   before { login_as(student, scope: :student) }
 
@@ -297,13 +297,13 @@ feature 'viewing the student show page' do
   end
 
   scenario 'as a student viewing another student page in different course' do
-    other_student = FactoryBot.create(:user_with_all_documents_signed)
+    other_student = FactoryBot.create(:student, :with_course, :with_all_documents_signed)
     visit course_student_path(other_student.course, other_student)
     expect(page).to have_content 'You are not authorized to access this page.'
   end
 
   scenario 'as a student viewing another student page in same course' do
-    other_student = FactoryBot.create(:user_with_all_documents_signed, course: student.course)
+    other_student = FactoryBot.create(:student, :with_all_documents_signed, course: student.course)
     visit course_student_path(student.course, other_student)
     expect(page).to have_content 'You are not authorized to access this page.'
   end
@@ -312,7 +312,7 @@ end
 feature "shows warning if on probation" do
   context "when not on probation" do
     it "as a student viewing their own page" do
-      student = FactoryBot.create(:user_with_all_documents_signed)
+      student = FactoryBot.create(:student, :with_course, :with_all_documents_signed)
       login_as(student, scope: :student)
       visit course_student_path(student.course, student)
       expect(page).to_not have_content "Unmet requirements"
@@ -321,7 +321,7 @@ feature "shows warning if on probation" do
 
   context "when on teacher probation" do
     it "as a student viewing their own page" do
-      student = FactoryBot.create(:user_with_all_documents_signed, probation_teacher: true)
+      student = FactoryBot.create(:student, :with_course, :with_all_documents_signed, probation_teacher: true)
       login_as(student, scope: :student)
       visit course_student_path(student.course, student)
       expect(page).to have_content "Unmet requirements"
@@ -330,7 +330,7 @@ feature "shows warning if on probation" do
 
   context "when on advisor probation" do
     it "as a student viewing their own page" do
-      student = FactoryBot.create(:user_with_all_documents_signed, probation_advisor: true)
+      student = FactoryBot.create(:student, :with_course, :with_all_documents_signed, probation_advisor: true)
       login_as(student, scope: :student)
       visit course_student_path(student.course, student)
       expect(page).to have_content "Unmet requirements"

@@ -4,7 +4,7 @@ describe AttendanceRecordAmendment do
   it { should validate_presence_of :status }
 
   describe '#save' do
-    let(:student) { FactoryBot.create(:student) }
+    let(:student) { FactoryBot.create(:student, :with_course) }
 
     it 'creates a new attendance record for the student if they did not have one for the given date' do
       travel_to student.course.start_date do

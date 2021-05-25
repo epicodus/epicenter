@@ -22,7 +22,7 @@ describe Payment do
   end
 
   describe 'checks refund date' do
-    let(:student) { FactoryBot.create(:student_with_credit_card) }
+    let(:student) { FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card) }
 
     it 'should not check refund date on stripe payment', :stripe_mock do
       payment = FactoryBot.build(:payment, student: student, payment_method: student.payment_methods.first)
@@ -78,7 +78,7 @@ describe Payment do
 
   describe 'offline payment status', :vcr do
     it 'sets it successfully' do
-      student = FactoryBot.create(:student_with_credit_card)
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card)
       payment = FactoryBot.create(:payment, student: student, offline: true, payment_method: student.payment_methods.first)
       expect(payment.status).to eq 'offline'
     end
@@ -86,7 +86,7 @@ describe Payment do
 
   describe '.order_by_latest scope' do
     it 'orders by created_at, descending', :vcr, :stripe_mock, :stub_mailgun do
-      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com')
       payment_one = FactoryBot.create(:payment_with_credit_card, student: student)
       payment_two = FactoryBot.create(:payment_with_credit_card, student: student)
       expect(Payment.order_by_latest).to eq [payment_two, payment_one]
@@ -94,7 +94,7 @@ describe Payment do
   end
 
   describe 'scopes', :vcr, :stripe_mock, :stub_mailgun do
-    let(:student) { FactoryBot.create(:student_with_credit_card, email: 'example@example.com') }
+    let(:student) { FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com') }
     let(:stripe_payment) { FactoryBot.create(:payment_with_credit_card, student: student) }
     let(:offline_payment) { FactoryBot.create(:payment, offline: true, student: student) }
 
@@ -120,19 +120,19 @@ describe Payment do
 
   describe "make a payment with a bank account", :vcr, :stub_mailgun do
     it "makes a successful payment" do
-      student = FactoryBot.create :student_with_verified_bank_account, email: 'example@example.com'
+      student = FactoryBot.create :student, :with_pt_intro_cohort, :with_verified_bank_account, email: 'example@example.com'
       FactoryBot.create(:payment_with_bank_account, student: student)
       expect(student.reload.payments).to_not eq []
     end
 
     it "sets the fee for the payment type" do
-      student = FactoryBot.create :student_with_verified_bank_account, email: 'example@example.com'
+      student = FactoryBot.create :student, :with_pt_intro_cohort, :with_verified_bank_account, email: 'example@example.com'
       payment = FactoryBot.create(:payment_with_bank_account, student: student)
       expect(payment.fee).to eq 0
     end
 
     it "sets the status for the payment type" do
-      student = FactoryBot.create :student_with_verified_bank_account, email: 'example@example.com'
+      student = FactoryBot.create :student, :with_pt_intro_cohort, :with_verified_bank_account, email: 'example@example.com'
       payment = FactoryBot.create(:payment_with_bank_account, student: student)
       expect(payment.status).to eq "pending"
     end
@@ -140,25 +140,25 @@ describe Payment do
 
   describe "make a payment with a credit card", :vcr, :stripe_mock, :stub_mailgun do
     it "makes a successful payment" do
-      student = FactoryBot.create :student_with_credit_card, email: 'example@example.com'
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com')
       FactoryBot.create(:payment_with_credit_card, student: student)
       expect(student.reload.payments).to_not eq []
     end
 
     it "sets the fee for the payment type" do
-      student = FactoryBot.create :student_with_credit_card, email: 'example@example.com'
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student)
       expect(payment.fee).to eq 3
     end
 
     it 'unsuccessfully with an amount that is too high' do
-      student = FactoryBot.create :student_with_credit_card, email: 'example@example.com'
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com')
       payment = FactoryBot.build(:payment_with_credit_card, student: student, payment_method: student.payment_methods.first, amount: 21000_00)
       expect(payment.save).to be false
     end
 
     it "sets the status for the payment type" do
-      student = FactoryBot.create :student_with_credit_card, email: 'example@example.com'
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student)
       expect(payment.status).to eq "succeeded"
     end
@@ -166,7 +166,7 @@ describe Payment do
 
   describe '#total_amount' do
     it 'returns payment amount plus fees', :vcr, :stripe_mock, :stub_mailgun do
-      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com')
       FactoryBot.create(:payment_with_credit_card, student: student)
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
       expect(payment.total_amount).to be 618_00
@@ -174,7 +174,7 @@ describe Payment do
   end
 
   describe 'sets payment category', :stub_mailgun do
-    let(:student) { FactoryBot.create :student_with_credit_card, email: 'example@example.com' }
+    let(:student) { FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com') }
 
     it 'calculates category on payment' do
       payment = Payment.create(student: student, category: 'tuition', offline: true, amount: 50_00)
@@ -189,23 +189,23 @@ describe Payment do
 
   describe '#set_description', :stripe_mock, :stub_mailgun do
     it 'sets stripe charge description for regular full-time' do
-      student = FactoryBot.create(:student_with_credit_card)
+      student = FactoryBot.create(:student, :with_ft_cohort, :with_credit_card)
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 6900_00, category: 'upfront')
       expect(payment.description).to eq "#{student.courses.first.start_date.to_s}-#{student.courses.last.end_date.to_s} | #{student.cohort.description}"
     end
 
     it 'sets stripe charge description for regular part-time' do
-      student = FactoryBot.create(:part_time_student_with_credit_card)
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card)
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 100_00, category: 'part-time')
-      expect(payment.description).to eq "#{student.course.start_date.to_s}-#{student.course.end_date.to_s} | #{student.course.cohorts.last.description}"
+      expect(payment.description).to eq "#{student.course.start_date.to_s}-#{student.course.end_date.to_s} | #{student.course.cohort.description}"
     end
 
     it 'sets stripe charge descriptions for full-time payment after part-time payment' do
-      student = FactoryBot.create(:part_time_student_with_credit_card)
-      part_time_cohort = student.course.cohorts.first
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card)
+      part_time_cohort = student.course.cohort
       part_time_course = student.course
       first_payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 100_00, category: 'part-time')
-      full_time_cohort = FactoryBot.create(:cohort_with_internship, start_date: student.course.end_date.next_week)
+      full_time_cohort = FactoryBot.create(:ft_cohort, start_date: student.course.end_date.next_week)
       student.courses << full_time_cohort.courses
       second_payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 2000_00, category: 'upfront')
       expect(first_payment.description).to eq "#{part_time_course.start_date.to_s}-#{part_time_course.end_date.to_s} | #{part_time_cohort.description}"
@@ -213,19 +213,19 @@ describe Payment do
     end
 
     it 'sets payment description to keycard when category set that way', :vcr, :stripe_mock, :stub_mailgun do
-      student = FactoryBot.create(:student_with_credit_card)
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card)
       FactoryBot.create(:payment_with_credit_card, student: student, amount: 25_00, category: 'keycard')
       expect(student.payments.first.description).to eq "keycard"
     end
 
     it 'sets payment description for offline refund' do
-      student = FactoryBot.create(:student_with_cohort)
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_pt_intro_cohort)
       payment = FactoryBot.create(:payment, student: student, amount: 0, refund_amount: 100_00, offline: true)
       expect(payment.description).to eq "#{student.courses.first.start_date.to_s}-#{student.courses.last.end_date.to_s} | #{student.ending_cohort.description}"
     end
 
     it 'sets payment description for offline refund when no courses' do
-      student = FactoryBot.create(:student_with_cohort)
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_pt_intro_cohort)
       student.courses = []
       payment = FactoryBot.create(:payment, student: student, amount: 0, refund_amount: 100_00, offline: true)
       expect(student.payments.first.description).to eq "-#{student.ending_cohort.end_date.to_s} | #{student.ending_cohort.description}"
@@ -233,7 +233,7 @@ describe Payment do
   end
 
   describe 'updating Close.io when a payment is made', :stub_mailgun, :dont_stub_crm, :vcr do
-    let(:student) { FactoryBot.create :student_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com' }
+    let(:student) { FactoryBot.create :student, :with_pt_intro_cohort, :with_all_documents_signed, :with_verified_bank_account, email: 'example@example.com' }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
     let(:lead_id) { get_lead_id(student.email) }
 
@@ -254,7 +254,7 @@ describe Payment do
       end
 
       it 'updates status for part-time students and amount paid' do
-        part_time_student = FactoryBot.create(:part_time_student_with_credit_card, email: 'example-part-time@example.com')
+        part_time_student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example-part-time@example.com')
         part_time_lead_id = close_io_client.list_leads('email: "' + part_time_student.email + '"')['data'].first['id']
         allow_any_instance_of(CrmLead).to receive(:status).and_return("Applicant - Accepted")
         payment = Payment.new(student: part_time_student, amount: 270_00, payment_method: part_time_student.primary_payment_method, category: 'upfront')
@@ -322,7 +322,7 @@ describe Payment do
 
   describe 'issuing a refund', :vcr, :stub_mailgun do
     it 'refunds an offline payment without talking to Stripe or Mailgun', :stripe_mock do
-      student = FactoryBot.create(:student_with_all_documents_signed_and_credit_card)
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_all_documents_signed, :with_credit_card)
       payment = FactoryBot.create(:payment_with_credit_card, student: student, offline: true)
       payment.update(refund_amount: 51)
       expect(payment.refund_amount).to eq 51
@@ -330,52 +330,52 @@ describe Payment do
     end
 
     it 'refunds a credit card payment' do
-      student = FactoryBot.create(:student_with_all_documents_signed_and_credit_card, email: 'example@example.com')
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_all_documents_signed, :with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student)
       payment.update(refund_amount: 51, refund_date: Date.today)
       expect(payment.refund_amount).to eq 51
     end
 
     it 'fails to refund a credit card payment when the refund amount is more than the payment amount' do
-      student = FactoryBot.create(:student_with_all_documents_signed_and_credit_card, email: 'example@example.com')
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_all_documents_signed, :with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student)
       expect(payment.update(refund_amount: 200, refund_date: Date.today)).to eq false
     end
 
     it 'fails to refund a credit card payment when the refund amount is negative' do
-      student = FactoryBot.create(:student_with_all_documents_signed_and_credit_card, email: 'example@example.com')
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_all_documents_signed, :with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student)
       expect(payment.update(refund_amount: -37, refund_date: Date.today)).to eq false
     end
 
     it 'refunds a bank account payment' do
-      student = FactoryBot.create(:student_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_all_documents_signed, :with_verified_bank_account, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_bank_account, student: student)
       payment.update(refund_amount: 75, refund_date: Date.today)
       expect(payment.refund_amount).to eq 75
     end
 
     it 'fails to refund a bank account payment when the refund amount is more than the payment amount' do
-      student = FactoryBot.create(:student_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_all_documents_signed, :with_verified_bank_account, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_bank_account, student: student)
       expect(payment.update(refund_amount: 200, refund_date: Date.today)).to eq false
     end
 
     it 'fails to refund a bank account payment when the refund amount is negative' do
-      student = FactoryBot.create(:student_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_all_documents_signed, :with_verified_bank_account, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_bank_account, student: student)
       expect(payment.update(refund_amount: -40, refund_date: Date.today)).to eq false
     end
 
     it 'issues refund' do
-      student = FactoryBot.create(:student_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_all_documents_signed, :with_verified_bank_account, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_bank_account, student: student)
       expect(payment).to receive(:issue_refund)
       payment.update(refund_amount: 50, refund_date: Date.today)
     end
 
     it 'does not issue refund if already issued' do
-      student = FactoryBot.create(:student_with_all_documents_signed_and_verified_bank_account, email: 'example@example.com')
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_all_documents_signed, :with_verified_bank_account, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_bank_account, student: student)
       payment.update(refund_amount: 50, refund_date: Date.today)
       expect(payment).to_not receive(:issue_refund)
@@ -387,32 +387,32 @@ describe Payment do
     before { allow(WebhookJob).to receive(:perform_later).and_return({}) }
 
     it 'does not post webhook for keycard payment', :stripe_mock, :stub_mailgun do
-      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 25_00, category: 'keycard')
       expect(WebhookJob).not_to have_received(:perform_later)
     end
 
     it 'posts webhook for a successful stripe payment', :stripe_mock, :stub_mailgun do
-      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
       expect(WebhookJob).to have_received(:perform_later).with({ method: nil, endpoint: ENV['ZAPIER_PAYMENT_WEBHOOK_URL'], payload: PaymentSerializer.new(payment).as_json.merge({ event_name: 'payment' }) })
     end
 
     it 'posts webhook after refund issued', :stub_mailgun do
-      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
       expect(WebhookJob).to receive(:perform_later).with({ method: nil, endpoint: ENV['ZAPIER_PAYMENT_WEBHOOK_URL'], payload: PaymentSerializer.new(payment).as_json.merge({ event_name: 'refund', refund_amount: 500, start_date: student.course.start_date.to_s, created_at: payment.created_at.to_date.to_s, updated_at: payment.updated_at.to_date.to_s }) })
       payment.update(refund_amount: 500, refund_date: student.course.start_date)
     end
 
     it 'posts webhook for an offline payment', :vcr do
-      student = FactoryBot.create(:student_with_cohort, email: 'example@example.com')
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, email: 'example@example.com')
       payment = FactoryBot.create(:payment, student: student, amount: 600_00, offline: true)
       expect(WebhookJob).to have_received(:perform_later).with({ method: nil, endpoint: ENV['ZAPIER_PAYMENT_WEBHOOK_URL'], payload: PaymentSerializer.new(payment).as_json.merge({ event_name: 'payment_offline' }) })
     end
 
     it 'posts webhook for an offline refund', :vcr do
-      student = FactoryBot.create(:student_with_cohort, email: 'example@example.com')
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, email: 'example@example.com')
       payment = FactoryBot.create(:payment, student: student, amount: 0, refund_amount: 600_00, offline: true)
       expect(WebhookJob).to have_received(:perform_later).with({ method: nil, endpoint: ENV['ZAPIER_PAYMENT_WEBHOOK_URL'], payload: PaymentSerializer.new(payment).as_json.merge({ event_name: 'refund_offline' }) })
     end

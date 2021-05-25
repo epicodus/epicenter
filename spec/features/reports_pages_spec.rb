@@ -1,7 +1,7 @@
 feature 'teacher code_review report' do
   describe 'reports index page' do
     it 'links to teacher code review page' do
-      admin = FactoryBot.create(:admin, teacher: true)
+      admin = FactoryBot.create(:admin, :with_course, teacher: true)
       login_as(admin, scope: :admin)
       visit reports_path
       click_on 'Reviews sorted by teacher'
@@ -10,8 +10,8 @@ feature 'teacher code_review report' do
   end
 
   describe 'list of teachers with num of reviews' do
-    let(:admin) { FactoryBot.create(:admin, teacher: true) }
-    let(:student) { FactoryBot.create(:student) }
+    let(:student) { FactoryBot.create(:student, :with_course) }
+    let(:admin) { FactoryBot.create(:admin, current_course: student.course, teacher: true) }
     let(:code_review) { FactoryBot.create(:code_review, course: student.course) }
     let(:submission) { FactoryBot.create(:submission, code_review: code_review, student: student) }
 
@@ -63,8 +63,8 @@ feature 'teacher code_review report' do
   end
 
   describe 'individual teacher page' do
-    let(:admin) { FactoryBot.create(:admin, teacher: true) }
-    let(:student) { FactoryBot.create(:student) }
+    let(:student) { FactoryBot.create(:student, :with_course) }
+    let(:admin) { FactoryBot.create(:admin, current_course: student.course, teacher: true) }
     let(:code_review) { FactoryBot.create(:code_review, course: student.course) }
     let(:submission) { FactoryBot.create(:submission, code_review: code_review, student: student) }
     let!(:review) { FactoryBot.create(:review, submission: submission, admin: admin) }

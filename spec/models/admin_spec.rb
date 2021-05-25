@@ -1,5 +1,5 @@
 describe Admin do
-  # it { should belong_to :current_course }
+  it { should belong_to(:current_course).optional }
   it { should have_many :courses }
   it { should have_many :cohorts }
   it { should have_many :submissions }
@@ -14,7 +14,7 @@ describe Admin do
 
   describe '#teachers' do
     it 'returns all admins with teacher flag' do
-      admin = FactoryBot.create(:admin)
+      FactoryBot.create(:admin)
       teacher = FactoryBot.create(:admin, teacher: true)
       expect(Admin.teachers).to eq [teacher]
     end
@@ -82,9 +82,16 @@ describe Admin do
   end
 
   it 'is assigned a default current_course before creation' do
-    FactoryBot.create(:course)
-    admin = FactoryBot.build(:admin, current_course: nil)
-    admin.save
+    FactoryBot.create(:pt_intro_cohort)
+    admin = FactoryBot.create(:admin)
     expect(admin.current_course).to be_a Course
+  end
+
+  it 'defaults to last course if no current_course_id saved' do
+    admin = FactoryBot.create(:admin)
+    course = FactoryBot.create(:course)
+    admin.courses << course
+    expect(admin.current_course_id).to eq nil
+    expect(admin.current_course).to eq course
   end
 end

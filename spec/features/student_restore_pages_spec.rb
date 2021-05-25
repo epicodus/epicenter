@@ -1,7 +1,7 @@
 feature 'restoring a student' do
   context 'as a student' do
-    let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
-    let(:archived_student) { FactoryBot.create(:user_with_all_documents_signed) }
+    let(:student) { FactoryBot.create(:student, :with_all_documents_signed) }
+    let(:archived_student) { FactoryBot.create(:student, :with_all_documents_signed) }
     before do
       archived_student.destroy
       login_as(student, scope: :student)
@@ -14,8 +14,8 @@ feature 'restoring a student' do
   end
 
   context 'as an admin' do
-    let(:admin) { FactoryBot.create(:admin) }
-    let(:archived_student) { FactoryBot.create(:user_with_all_documents_signed) }
+    let(:archived_student) { FactoryBot.create(:student, :with_course, :with_all_documents_signed) }
+    let(:admin) { archived_student.course.admin }
     before do
       FactoryBot.create(:attendance_record, student: archived_student, date: archived_student.course.start_date)
       archived_student.destroy

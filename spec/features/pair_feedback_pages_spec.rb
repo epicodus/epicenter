@@ -1,9 +1,9 @@
 feature 'Visiting the pair feedback index page' do
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
-  let!(:pair) { FactoryBot.create(:user_with_all_documents_signed, courses: [student.course]) }
+  let(:student) { FactoryBot.create(:student, :with_course, :with_all_documents_signed) }
+  let!(:pair) { FactoryBot.create(:student, :with_all_documents_signed, courses: [student.course]) }
 
   context 'as an admin' do
-    let(:admin) { FactoryBot.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin, current_course: student.course) }
     before { login_as(admin, scope: :admin) }
 
     scenario 'you can navigate to view pair feedback' do

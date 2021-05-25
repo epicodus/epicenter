@@ -1,7 +1,7 @@
 describe WithdrawCallback do
   context 'valid email' do
     it 'archives enrollments' do
-      student = FactoryBot.create(:student)
+      student = FactoryBot.create(:student, :with_course)
       WithdrawCallback.new(email: student.email)
       expect(Student.first.enrollments.empty?).to eq true
     end

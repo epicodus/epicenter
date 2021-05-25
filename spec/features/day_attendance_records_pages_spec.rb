@@ -18,7 +18,7 @@ feature 'visiting the day attendance records index page' do
   end
 
   context 'as an admin' do
-    let(:admin) { FactoryBot.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin, current_course: course) }
     before { login_as(admin, scope: :admin) }
 
     scenario 'can visit the page' do

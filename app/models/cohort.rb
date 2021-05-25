@@ -15,8 +15,8 @@ class Cohort < ApplicationRecord
   belongs_to :track
   belongs_to :admin
 
-  after_create :build_courses_from_layout_file, if: ->(cohort) { cohort.courses.empty? }
-  after_create :set_description, if: ->(cohort) { cohort.description.blank? }
+  after_create :build_courses_from_layout_file, if: :layout_file_path
+  after_create :set_description, unless: :description
 
   attr_accessor :layout_file_path
 

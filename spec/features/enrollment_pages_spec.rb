@@ -1,7 +1,7 @@
 feature 'adding another course for a student', :js do
-  let(:student) { FactoryBot.create(:student) }
+  let(:student) { FactoryBot.create(:student, :with_course) }
   let!(:other_course) { FactoryBot.create(:portland_ruby_course, description: 'other course') }
-  let(:admin) { FactoryBot.create(:admin) }
+  let(:admin) { student.course.admin }
 
   before { login_as(admin, scope: :admin) }
 
@@ -28,9 +28,9 @@ feature 'adding another course for a student', :js do
   end
 
   scenario 'shows current cohort selection modal when adding course from different FT cohort' do
-    cohort = FactoryBot.create(:cohort_with_internship, description: "existing cohort")
+    cohort = FactoryBot.create(:ft_cohort, description: "existing cohort")
     student.courses = cohort.courses
-    new_cohort = FactoryBot.create(:intro_only_cohort, description: "new cohort")
+    new_cohort = FactoryBot.create(:ft_cohort, description: "new cohort")
     visit student_courses_path(student)
     select new_cohort.courses.first.description, from: 'enrollment_course_id_' + new_cohort.office.short_name
     click_on 'Add course'
@@ -43,9 +43,9 @@ feature 'adding another course for a student', :js do
   end
 
   scenario 'updates course list before showing modal' do
-    cohort = FactoryBot.create(:cohort_with_internship, description: "existing cohort")
+    cohort = FactoryBot.create(:ft_cohort, description: "existing cohort")
     student.courses = cohort.courses
-    new_cohort = FactoryBot.create(:intro_only_cohort, description: "new cohort")
+    new_cohort = FactoryBot.create(:ft_cohort, description: "new cohort")
     new_cohort.courses.first.update(description: 'this is the new course')
     visit student_courses_path(student)
     select new_cohort.courses.first.description, from: 'enrollment_course_id_' + new_cohort.office.short_name
@@ -55,9 +55,9 @@ feature 'adding another course for a student', :js do
   end
 
   scenario 'does not show current cohort selection modal when adding PT course' do
-    cohort = FactoryBot.create(:cohort_with_internship, description: "existing cohort")
+    cohort = FactoryBot.create(:ft_cohort, description: "existing cohort")
     student.courses = cohort.courses
-    pt_cohort = FactoryBot.create(:part_time_cohort, description: 'PT cohort')
+    pt_cohort = FactoryBot.create(:pt_intro_cohort, description: 'PT cohort')
     visit student_courses_path(student)
     select pt_cohort.courses.first.description, from: 'enrollment_course_id_' + pt_cohort.office.short_name
     click_on 'Add course'
@@ -67,10 +67,10 @@ feature 'adding another course for a student', :js do
 end
 
 feature 'adding full cohort for a student', :js do
-  let!(:cohort) { FactoryBot.create(:cohort_with_internship) }
+  let!(:cohort) { FactoryBot.create(:ft_cohort) }
   let(:office) { cohort.office }
   let(:admin) { cohort.admin }
-  let(:student) { FactoryBot.create(:student_without_courses, office: cohort.office) }
+  let(:student) { FactoryBot.create(:student, office: cohort.office, courses: []) }
 
   before { login_as(admin, scope: :admin) }
 
@@ -85,7 +85,7 @@ feature 'adding full cohort for a student', :js do
   end
 
   scenario 'shows current cohort selection modal when adding different FT cohort' do
-    existing_cohort = FactoryBot.create(:cohort_with_internship, description: "existing cohort")
+    existing_cohort = FactoryBot.create(:ft_cohort, description: "existing cohort")
     student.courses = existing_cohort.courses
     visit student_courses_path(student)
     select cohort.description, from: 'enrollment_cohort_id_' + office.short_name
@@ -100,7 +100,7 @@ feature 'adding full cohort for a student', :js do
 
   scenario 'does not show current cohort selection modal when adding PT cohort' do
     student.courses = cohort.courses
-    pt_cohort = FactoryBot.create(:part_time_cohort, description: "PT cohort", office: office)
+    pt_cohort = FactoryBot.create(:pt_intro_cohort, description: "PT cohort", office: office)
     visit student_courses_path(student)
     select pt_cohort.description, from: 'enrollment_cohort_id_' + office.short_name
     click_on 'Add cohort'
@@ -110,14 +110,12 @@ feature 'adding full cohort for a student', :js do
 end
 
 feature 'withdrawing a student from all courses', :js do
-  let(:course1) { FactoryBot.create(:course) }
-  let(:course2) { FactoryBot.create(:internship_course) }
-  let(:admin) { FactoryBot.create(:admin) }
+  let(:admin) { FactoryBot.create(:admin, :with_course) }
 
   before { login_as(admin, scope: :admin) }
 
   scenario 'as an admin drop all for a student with payments and no attendance records' do
-    student = FactoryBot.create(:student_with_upfront_payment)
+    student = FactoryBot.create(:student, :with_upfront_payment, courses: [admin.courses.first])
     visit student_courses_path(student)
     click_on 'Drop All'
     accept_js_alert
@@ -125,7 +123,7 @@ feature 'withdrawing a student from all courses', :js do
   end
 
   scenario 'as an admin drop all for a student with attendance records and no payments' do
-    student = FactoryBot.create(:student_with_upfront_payment)
+    student = FactoryBot.create(:student, :with_upfront_payment, courses: [admin.courses.first])
     FactoryBot.create(:attendance_record, student: student, date: student.course.start_date)
     visit student_courses_path(student)
     click_on 'Drop All'
@@ -134,7 +132,7 @@ feature 'withdrawing a student from all courses', :js do
   end
 
   scenario 'as an admin drop all for a student with enrollments but no payments and no attendance records' do
-    student = FactoryBot.create(:student)
+    student = FactoryBot.create(:student, courses: [admin.courses.first])
     visit student_courses_path(student)
     click_on 'Drop All'
     accept_js_alert
@@ -145,7 +143,7 @@ end
 feature 'deleting a course for a student', :js do
   let(:course1) { FactoryBot.create(:course) }
   let(:course2) { FactoryBot.create(:midway_internship_course) }
-  let(:admin) { FactoryBot.create(:admin) }
+  let(:admin) { course1.admin }
 
   before { login_as(admin, scope: :admin) }
 
@@ -173,7 +171,7 @@ feature 'deleting a course for a student', :js do
   end
 
   scenario 'as an admin deleting the last course for student with payments' do
-    student = FactoryBot.create(:student_with_upfront_payment)
+    student = FactoryBot.create(:student, :with_course, :with_upfront_payment)
     course = student.course
     visit student_courses_path(student)
     within "#student-course-#{course.id}" do
@@ -208,8 +206,8 @@ feature 'deleting a course for a student', :js do
   end
 
   scenario 'shows current cohort selection modal when removing FT course' do
-    cohort_1 = FactoryBot.create(:cohort_with_internship, description: "cohort 1")
-    cohort_2 = FactoryBot.create(:cohort_with_internship, description: "cohort 2")
+    cohort_1 = FactoryBot.create(:ft_cohort, description: "cohort 1")
+    cohort_2 = FactoryBot.create(:ft_cohort, description: "cohort 2")
     student = FactoryBot.create(:student, courses: cohort_1.courses + cohort_2.courses)
     visit student_courses_path(student)
     within "#student-course-#{cohort_1.courses.first.id}" do
@@ -224,9 +222,9 @@ feature 'deleting a course for a student', :js do
   end
   
   scenario 'does not show current cohort selection modal when removing PT course' do
-    cohort_1 = FactoryBot.create(:cohort_with_internship, description: "cohort 1")
-    cohort_2 = FactoryBot.create(:cohort_with_internship, description: "cohort 2")
-    pt_cohort = FactoryBot.create(:part_time_cohort, description: "PT cohort")
+    cohort_1 = FactoryBot.create(:ft_cohort, description: "cohort 1")
+    cohort_2 = FactoryBot.create(:ft_cohort, description: "cohort 2")
+    pt_cohort = FactoryBot.create(:pt_intro_cohort, description: "PT cohort")
     student = FactoryBot.create(:student, courses: cohort_1.courses + cohort_2.courses + pt_cohort.courses)
     visit student_courses_path(student)
     within "#student-course-#{pt_cohort.courses.first.id}" do

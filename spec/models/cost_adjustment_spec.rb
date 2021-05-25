@@ -5,7 +5,7 @@ describe CostAdjustment do
 
   describe 'default scope', :stripe_mock do
     it 'orders by created_at ascending' do
-      student = FactoryBot.create(:user_with_credit_card)
+      student = FactoryBot.create(:student, :with_credit_card)
       first_adjustment = FactoryBot.create(:cost_adjustment, student: student)
       second_adjustment = FactoryBot.create(:cost_adjustment, student: student)
       expect(CostAdjustment.all).to eq [first_adjustment, second_adjustment]

@@ -2,9 +2,9 @@ describe Course do
   it { should belong_to(:admin).optional }
   it { should belong_to :office }
   it { should belong_to :language }
+  it { should belong_to(:cohort).optional }
   it { should belong_to(:track).optional }
   it { should have_many :students }
-  it { should have_and_belong_to_many(:cohorts) }
   it { should have_many(:attendance_records).through(:students) }
   it { should have_many :code_reviews }
   it { should have_many(:internships).through(:course_internships) }
@@ -177,7 +177,7 @@ describe Course do
   describe '#courses_for' do
     it 'returns all courses for a certain office' do
       portland_course = FactoryBot.create(:portland_course)
-      FactoryBot.create(:course)
+      FactoryBot.create(:seattle_course)
       expect(Course.courses_for(portland_course.office)).to eq [portland_course]
     end
   end
@@ -191,22 +191,17 @@ describe Course do
 
     it "does not return the teacher name if the course doesn't have an assigned teacher" do
       course = FactoryBot.create(:course)
-      expect(course.teacher).to eq 'Unknown teacher'
+      course.admin.destroy
+      expect(course.reload.teacher).to eq 'Unknown teacher'
     end
   end
 
   describe '#teacher_and_description' do
-    it 'returns the teacher name and course description and track if exists' do
+    it 'returns the teacher name and course description and track' do
       admin = FactoryBot.create(:admin)
       track = FactoryBot.create(:track)
       course = FactoryBot.create(:course, admin: admin, track: track)
       expect(course.teacher_and_description).to eq "#{course.office.name} - #{course.description} (#{course.teacher}) [#{track.description} track]"
-    end
-
-    it 'does not include track if does not exist' do
-      admin = FactoryBot.create(:admin)
-      course = FactoryBot.create(:course, admin: admin)
-      expect(course.teacher_and_description).to eq "#{course.office.name} - #{course.description} (#{course.teacher})"
     end
 
     it 'does not include track if internship course' do
@@ -391,7 +386,7 @@ describe Course do
 
   describe '#export_students_emails' do
     it 'exports to students.txt file names & email addresses for students in course' do
-      student = FactoryBot.create(:student)
+      student = FactoryBot.create(:student, :with_course)
       filename = Rails.root.join('tmp','students.txt')
       student.course.export_students_emails(filename)
       expect(File.read(filename)).to include student.email

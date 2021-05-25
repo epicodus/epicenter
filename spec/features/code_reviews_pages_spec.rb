@@ -7,7 +7,7 @@ feature 'viewing the code review index page' do
   end
 
   context 'as a student' do
-    let(:student) { FactoryBot.create(:user_with_all_documents_signed, course: code_review.course) }
+    let(:student) { FactoryBot.create(:student, :with_all_documents_signed, course: code_review.course) }
     before { login_as(student, scope: :student) }
 
     scenario 'redirects the student to the root path' do
@@ -64,7 +64,7 @@ feature 'visiting the code review show page' do
   end
 
   context 'as an admin' do
-    let(:admin) { FactoryBot.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin, courses: [code_review.course]) }
     before do
       login_as(admin, scope: :admin)
       visit course_code_review_path(code_review.course, code_review)
@@ -97,7 +97,7 @@ feature 'visiting the code review show page' do
   end
 
   context 'as a student' do
-    let(:student) { FactoryBot.create(:user_with_all_documents_signed, course: code_review.course) }
+    let(:student) { FactoryBot.create(:student, :with_all_documents_signed, course: code_review.course) }
     before { login_as(student, scope: :student) }
     subject { page }
 
@@ -262,7 +262,7 @@ feature 'creating a code review' do
 
   context 'as an admin' do
     let(:code_review) { FactoryBot.build(:code_review) }
-    let(:admin) { FactoryBot.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin, current_course: code_review.course) }
 
     before do
       login_as(admin, scope: :admin)
@@ -333,7 +333,7 @@ feature 'creating a code review' do
   end
 
   context 'as a student' do
-    let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+    let(:student) { FactoryBot.create(:student, :with_course, :with_all_documents_signed) }
 
     scenario 'you are not authorized' do
       login_as(student, scope: :student)
@@ -352,14 +352,14 @@ feature 'editing a code review' do
   end
 
   scenario 'as a student' do
-    student = FactoryBot.create(:student)
+    student = FactoryBot.create(:student, courses: [code_review.course])
     login_as(student, scope: :student)
     visit edit_course_code_review_path(code_review.course, code_review)
     expect(page).to have_content 'You are not authorized to access this page.'
   end
 
   context 'as an admin' do
-    let(:admin) { FactoryBot.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin, current_course: code_review.course) }
 
     before do
       login_as(admin, scope: :admin)
@@ -466,7 +466,7 @@ feature 'editing a code review' do
   end
 
   context 'as a student' do
-    let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+    let(:student) { FactoryBot.create(:student, :with_all_documents_signed) }
 
     scenario 'you are not authorized' do
       login_as(student, scope: :student)
@@ -477,7 +477,7 @@ feature 'editing a code review' do
 end
 
 feature 'copying an existing code review' do
-  let(:admin) { FactoryBot.create(:admin) }
+  let(:admin) { FactoryBot.create(:admin, :with_course) }
 
   before { login_as(admin, scope: :admin) }
 
@@ -504,7 +504,7 @@ end
 feature 'view the code reviews tab on the student show page' do
   let(:course) { FactoryBot.create(:course) }
   let(:admin) { FactoryBot.create(:admin, current_course: course) }
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed, course: course) }
+  let(:student) { FactoryBot.create(:student, :with_all_documents_signed, course: course) }
   let!(:code_review) { FactoryBot.create(:code_review, course: course) }
   let!(:submission) { FactoryBot.create(:submission, code_review: code_review, student: student) }
   let!(:review) { FactoryBot.create(:review, submission: submission) }
@@ -518,7 +518,7 @@ feature 'view the code reviews tab on the student show page' do
 end
 
 feature 'deleting a code review' do
-  let(:admin) { FactoryBot.create(:admin) }
+  let(:admin) { FactoryBot.create(:admin, :with_course) }
   let(:code_review) { FactoryBot.create(:code_review) }
 
   before { login_as(admin, scope: :admin) }
@@ -541,7 +541,7 @@ feature 'exporting code review submissions info to a file' do
   let(:code_review) { FactoryBot.create(:code_review) }
 
   context 'as an admin' do
-    let(:admin) { FactoryBot.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin, :with_course) }
     before { login_as(admin, scope: :admin) }
 
     scenario 'exports all submissions needing review from code review submissions needing review list' do
@@ -562,7 +562,7 @@ feature 'exporting code review submissions info to a file' do
   end
 
   context 'as a student' do
-    let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+    let(:student) { FactoryBot.create(:student, :with_all_documents_signed) }
     before { login_as(student, scope: :student) }
     scenario 'without permission to export code review submissions' do
       FactoryBot.create(:submission, code_review: code_review)

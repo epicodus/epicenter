@@ -2,7 +2,7 @@ feature 'viewing the ratings index page' do
   context 'as an admin' do
     let(:internship) { FactoryBot.create(:internship) }
     let(:student) { FactoryBot.create(:student, courses: [internship.courses.first]) }
-    let(:admin) { FactoryBot.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin, current_course: student.course) }
     before { login_as(admin, scope: :admin) }
 
     scenario 'shows student ratings of companies pre-interviews' do
@@ -24,7 +24,7 @@ feature 'viewing the ratings index page' do
 
   context 'as a student' do
     let(:internship_course) { FactoryBot.create(:internship_course) }
-    let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+    let(:student) { FactoryBot.create(:student, :with_all_documents_signed) }
     before { login_as(student, scope: :student) }
 
     scenario 'without permission' do

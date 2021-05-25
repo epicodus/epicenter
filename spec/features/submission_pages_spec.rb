@@ -1,5 +1,5 @@
 feature 'Visiting the submissions index page' do
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+  let(:student) { FactoryBot.create(:student, :with_course, :with_all_documents_signed) }
   let(:code_review) { FactoryBot.create(:code_review, course: student.course) }
 
   context 'as a student' do
@@ -12,7 +12,7 @@ feature 'Visiting the submissions index page' do
   end
 
   context 'as an admin' do
-    let(:admin) { FactoryBot.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin, current_course: student.course) }
     before { login_as(admin, scope: :admin) }
 
     scenario 'lists submissions' do
@@ -77,7 +77,7 @@ feature 'Visiting the submissions index page' do
       end
 
       context 'creating a review' do
-        let(:admin) { FactoryBot.create(:admin) }
+        let(:admin) { FactoryBot.create(:admin, current_course: student.course) }
         let!(:submission) { FactoryBot.create(:submission, code_review: code_review, student: student) }
         let!(:score) { FactoryBot.create(:passing_score) }
 
@@ -172,8 +172,8 @@ feature 'Visiting the submissions index page' do
 end
 
 feature 'Creating a student submission for an internship course code review' do
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
-  let(:admin) { FactoryBot.create(:admin) }
+  let(:student) { FactoryBot.create(:student, :with_course, :with_all_documents_signed) }
+  let(:admin) { FactoryBot.create(:admin, current_course: student.course) }
 
   before { login_as(admin, scope: :admin) }
 
@@ -194,7 +194,7 @@ feature 'Creating a student submission for an internship course code review' do
 end
 
 feature 'Moving submissions between internship courses' do
-  let(:admin) { FactoryBot.create(:admin) }
+  let(:admin) { FactoryBot.create(:admin, :with_course) }
 
   context 'as an admin' do
     before { login_as(admin, scope: :admin) }
@@ -203,7 +203,7 @@ feature 'Moving submissions between internship courses' do
       scenario 'is displayed for admins when multiple internship courses and at least one submissions' do
         course_1 = FactoryBot.create(:internship_course)
         course_2 = FactoryBot.create(:internship_course)
-        student = FactoryBot.create(:user_with_all_documents_signed, courses: [course_1, course_2])
+        student = FactoryBot.create(:student, :with_all_documents_signed, courses: [course_1, course_2])
         cr_1 = FactoryBot.create(:code_review, course: course_1, title: "same title")
         cr_2 = FactoryBot.create(:code_review, course: course_2, title: "same title")
         submission = FactoryBot.create(:submission, student: student, code_review: cr_1)
@@ -214,7 +214,7 @@ feature 'Moving submissions between internship courses' do
       scenario 'is not displayed when no submission in source career review' do
         course_1 = FactoryBot.create(:internship_course)
         course_2 = FactoryBot.create(:internship_course)
-        student = FactoryBot.create(:user_with_all_documents_signed, courses: [course_1, course_2])
+        student = FactoryBot.create(:student, :with_all_documents_signed, courses: [course_1, course_2])
         cr_1 = FactoryBot.create(:code_review, course: course_1, title: "same title")
         cr_2 = FactoryBot.create(:code_review, course: course_2, title: "same title")
         submission = FactoryBot.create(:submission, student: student, code_review: cr_2)
@@ -225,7 +225,7 @@ feature 'Moving submissions between internship courses' do
       scenario 'is not displayed when only one internship course' do
         course_1 = FactoryBot.create(:internship_course)
         course_2 = FactoryBot.create(:course)
-        student = FactoryBot.create(:user_with_all_documents_signed, courses: [course_1, course_2])
+        student = FactoryBot.create(:student, :with_all_documents_signed, courses: [course_1, course_2])
         cr_1 = FactoryBot.create(:code_review, course: course_1, title: "same title")
         cr_2 = FactoryBot.create(:code_review, course: course_2, title: "same title")
         submission = FactoryBot.create(:submission, student: student, code_review: cr_1)
@@ -237,7 +237,7 @@ feature 'Moving submissions between internship courses' do
     context 'lists submissions ready to be moved' do
       let(:course_1) { FactoryBot.create(:internship_course) }
       let(:course_2) { FactoryBot.create(:internship_course) }
-      let(:student) { FactoryBot.create(:user_with_all_documents_signed, courses: [course_1, course_2]) }
+      let(:student) { FactoryBot.create(:student, :with_all_documents_signed, courses: [course_1, course_2]) }
       let!(:cr_1) { FactoryBot.create(:code_review, course: course_1, title: "same title") }
       let!(:submission) { FactoryBot.create(:submission, student: student, code_review: cr_1) }
 
@@ -263,7 +263,7 @@ feature 'Moving submissions between internship courses' do
     context 'moving submissions' do
       let(:course_1) { FactoryBot.create(:internship_course) }
       let(:course_2) { FactoryBot.create(:internship_course) }
-      let(:student) { FactoryBot.create(:user_with_all_documents_signed, courses: [course_1, course_2]) }
+      let(:student) { FactoryBot.create(:student, :with_all_documents_signed, courses: [course_1, course_2]) }
       let!(:cr_1) { FactoryBot.create(:code_review, course: course_1, title: "first code review") }
       let!(:cr_2) { FactoryBot.create(:code_review, course: course_1, title: "second code review") }
       let!(:cr_3) { FactoryBot.create(:code_review, course: course_1, title: "third code review") }
@@ -288,7 +288,7 @@ feature 'Moving submissions between internship courses' do
     scenario 'move submissions button is not displayed' do
       course_1 = FactoryBot.create(:internship_course)
       course_2 = FactoryBot.create(:internship_course)
-      student = FactoryBot.create(:user_with_all_documents_signed, courses: [course_1, course_2])
+      student = FactoryBot.create(:student, :with_all_documents_signed, courses: [course_1, course_2])
       cr_1 = FactoryBot.create(:code_review, course: course_1, title: "same title")
       cr_2 = FactoryBot.create(:code_review, course: course_2, title: "same title")
       submission = FactoryBot.create(:submission, student: student, code_review: cr_1)

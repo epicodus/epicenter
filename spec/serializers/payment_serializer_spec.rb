@@ -1,7 +1,7 @@
 describe PaymentSerializer, :stripe_mock, :stub_mailgun, :vcr do
 
   it 'includes the expected attributes for a payment' do
-    student = FactoryBot.create(:student_with_credit_card)
+    student = FactoryBot.create(:student, :with_ft_cohort, :with_plan, :with_credit_card)
     payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
     serialized_payment = PaymentSerializer.new(payment).as_json
     expect(serialized_payment[:amount]).to eq 60000
@@ -13,7 +13,7 @@ describe PaymentSerializer, :stripe_mock, :stub_mailgun, :vcr do
   end
 
   it 'includes the expected attributes for a refund' do
-    student = FactoryBot.create(:student_with_credit_card)
+    student = FactoryBot.create(:student, :with_ft_cohort, :with_plan, :with_credit_card)
     payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00, refund_amount: 100_00, refund_date: student.course.start_date)
     serialized_payment = PaymentSerializer.new(payment).as_json
     expect(serialized_payment[:amount]).to eq 60000

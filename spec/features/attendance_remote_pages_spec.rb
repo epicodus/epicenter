@@ -1,10 +1,10 @@
 feature "remote attendance" do
-  let(:student) { FactoryBot.create(:portland_student_with_all_documents_signed) }
+  let(:student) { FactoryBot.create(:portland_student, :with_all_documents_signed) }
 
   before { login_as(student, scope: :student) }
 
   describe 'sign in', :js do
-    let!(:pair) { FactoryBot.create(:portland_student_with_all_documents_signed, courses: [student.course]) }
+    let!(:pair) { FactoryBot.create(:portland_student, :with_all_documents_signed, courses: [student.course]) }
 
     it 'allows sign in solo' do
       travel_to student.course.start_date.beginning_of_day + 8.hours do
@@ -27,7 +27,7 @@ feature "remote attendance" do
     end
 
     it 'allows sign in with group of 3' do
-      pair2 = FactoryBot.create(:student)
+      pair2 = FactoryBot.create(:student, courses: [student.course])
       travel_to student.course.start_date.beginning_of_day + 8.hours do
         visit root_path
         click_link 'attendance-sign-in-link'
@@ -41,8 +41,8 @@ feature "remote attendance" do
     end
 
     it 'allows sign in with group of 4' do
-      pair2 = FactoryBot.create(:student)
-      pair3 = FactoryBot.create(:student)
+      pair2 = FactoryBot.create(:student, courses: [student.course])
+      pair3 = FactoryBot.create(:student, courses: [student.course])
       travel_to student.course.start_date.beginning_of_day + 8.hours do
         visit root_path
         click_link 'attendance-sign-in-link'
@@ -58,9 +58,9 @@ feature "remote attendance" do
     end
 
     it 'allows sign in with group of 5' do
-      pair2 = FactoryBot.create(:student)
-      pair3 = FactoryBot.create(:student)
-      pair4 = FactoryBot.create(:student)
+      pair2 = FactoryBot.create(:student, courses: [student.course])
+      pair3 = FactoryBot.create(:student, courses: [student.course])
+      pair4 = FactoryBot.create(:student, courses: [student.course])
       travel_to student.course.start_date.beginning_of_day + 8.hours do
         visit root_path
         click_link 'attendance-sign-in-link'
@@ -125,7 +125,7 @@ feature "remote attendance" do
     end
 
     it 'creates an attendance record with both pair ids when signing in as group of 3' do
-      pair2 = FactoryBot.create(:student)
+      pair2 = FactoryBot.create(:student, courses: [student.course])
       travel_to student.course.start_date.beginning_of_day + 8.hours do
         visit root_path
         click_link 'attendance-sign-in-link'
@@ -155,7 +155,7 @@ feature "remote attendance" do
   end
 
   describe 'changing pair', :js do
-    let!(:pair) { FactoryBot.create(:portland_student_with_all_documents_signed, courses: [student.course], password: 'password2', password_confirmation: 'password2') }
+    let!(:pair) { FactoryBot.create(:portland_student, :with_all_documents_signed, courses: [student.course], password: 'password2', password_confirmation: 'password2') }
 
     it 'allows changing from solo to a pair' do
       travel_to student.course.start_date.beginning_of_day + 8.hours do
@@ -180,7 +180,7 @@ feature "remote attendance" do
     end
 
     it 'allows changing from one pair to group of 3' do
-      pair2 = FactoryBot.create(:student)
+      pair2 = FactoryBot.create(:student, courses: [student.course])
       travel_to student.course.start_date.beginning_of_day + 8.hours do
         attendance_record = FactoryBot.create(:attendance_record, student: student, pairings_attributes: [pair_id: FactoryBot.create(:student).id])
         visit root_path
@@ -205,7 +205,7 @@ feature "remote attendance" do
   end
 
   describe 'shows list of nonreciprocated pairs' do
-    let(:other_student) { FactoryBot.create(:student) }
+    let(:other_student) { FactoryBot.create(:student, :with_course) }
 
     it 'does not show when not signed in' do
       travel_to student.course.start_date.beginning_of_day + 8.hours do

@@ -63,7 +63,7 @@ describe PaymentMethod do
   end
 
   describe '#description', :stripe_mock do
-    let(:student) { FactoryBot.create(:user_with_credit_card) }
+    let(:student) { FactoryBot.create(:student, :with_credit_card) }
 
     it 'returns the description for a primary payment method' do
       primary_payment_method = student.primary_payment_method

@@ -1,8 +1,8 @@
 feature 'adding an interview assignment' do
-  let(:admin) { FactoryBot.create(:admin) }
   let(:internship) { FactoryBot.create(:internship) }
   let!(:internship_2) { FactoryBot.create(:internship, courses: [internship.courses.first]) }
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed, course: internship.courses.first) }
+  let(:student) { FactoryBot.create(:student, :with_all_documents_signed, course: internship.courses.first) }
+  let(:admin) { FactoryBot.create(:admin, current_course: student.course) }
 
   scenario 'as a guest' do
     visit course_student_path(internship.courses.first, student)
@@ -42,9 +42,9 @@ feature 'adding an interview assignment' do
 end
 
 feature 'removing an interview assignment' do
-  let(:admin) { FactoryBot.create(:admin) }
   let(:internship) { FactoryBot.create(:internship) }
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed, course: internship.courses.first) }
+  let(:student) { FactoryBot.create(:student, :with_all_documents_signed, course: internship.courses.first) }
+  let(:admin) { FactoryBot.create(:admin, current_course: student.course) }
 
   context 'as an admin' do
     scenario 'removing it successfully' do
@@ -58,9 +58,9 @@ feature 'removing an interview assignment' do
 end
 
 feature 'navigating to the internship page from the interview assignments list' do
-  let(:admin) { FactoryBot.create(:admin) }
   let(:internship) { FactoryBot.create(:internship) }
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed, course: internship.courses.first) }
+  let(:student) { FactoryBot.create(:student, :with_all_documents_signed, course: internship.courses.first) }
+  let(:admin) { FactoryBot.create(:admin, current_course: student.course) }
 
   scenario 'as an admin' do
     FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
@@ -75,7 +75,7 @@ end
 
 feature 'shows internship details modal from the interview assignments list' do
   let(:internship) { FactoryBot.create(:internship) }
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed, course: internship.courses.first) }
+  let(:student) { FactoryBot.create(:student, :with_all_documents_signed, course: internship.courses.first) }
 
   scenario 'as a student' do
     FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
@@ -90,9 +90,9 @@ end
 
 feature 'interview rankings' do
   let(:internship) { FactoryBot.create(:internship) }
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed, course: internship.courses.first) }
+  let(:student) { FactoryBot.create(:student, :with_all_documents_signed, course: internship.courses.first) }
   let(:company) { FactoryBot.create(:company, internships: [internship]) }
-  let(:admin) { FactoryBot.create(:admin) }
+  let(:admin) { FactoryBot.create(:admin, current_course: student.course) }
 
   scenario 'as a student ranking companies' do
     FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
@@ -127,26 +127,6 @@ feature 'interview rankings' do
     visit company_path(company)
     expect(page).to_not have_content "Great company!"
   end
-
-  # scenario 'as a student can not view company feedback or ranking until 1 week after internship start date' do
-  #   FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 9999, feedback_from_company: 'Great fit!')
-  #   login_as(student, scope: :student)
-  #   travel_to student.course.start_date + 1.day do
-  #     visit course_student_path(internship.courses.first, student)
-  #     expect(page).to have_content "Not yet available."
-  #     expect(page).to_not have_content "9999"
-  #   end
-  # end
-
-  # scenario 'as a student can view company feedback and ranking 1 week after internship start date' do
-  #   FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 5, feedback_from_company: 'Great fit!')
-  #   login_as(student, scope: :student)
-  #   travel_to student.course.start_date + 1.week do
-  #     visit course_student_path(internship.courses.first, student)
-  #     expect(page).to have_content "Great fit!"
-  #     expect(page).to have_content "5"
-  #   end
-  # end
 
   scenario 'as admin can view company feedback immediately' do
     FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 1, feedback_from_company: 'Great fit!')
