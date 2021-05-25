@@ -2,7 +2,7 @@
 <h1>
   <%= @course.description_and_office %>
   <% unless current_admin.current_course == @course %>
-    <%= link_to 'Select', admin_path(current_admin, admin: { current_course_id: @course.id }), method: :patch %> |
+    <%= link_to 'Select', admin_path(current_admin, admin: { current_course_id: @course.id }), method: :patch %>
   <% end %>
 </h1>
 

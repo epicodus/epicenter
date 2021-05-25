@@ -7,9 +7,9 @@ describe Cohort do
   it { should validate_presence_of(:office) }
 
   describe 'past, current, future cohorts' do
-    let(:current_cohort) { FactoryBot.create(:intro_only_cohort, start_date: Time.zone.now.to_date) }
-    let(:past_cohort) { FactoryBot.create(:intro_only_cohort, start_date: Time.zone.now.to_date - 1.year) }
-    let(:future_cohort) { FactoryBot.create(:intro_only_cohort, start_date: Time.zone.now.to_date + 1.year) }
+    let(:current_cohort) { FactoryBot.create(:pt_intro_cohort, start_date: Time.zone.now.to_date) }
+    let(:past_cohort) { FactoryBot.create(:pt_intro_cohort, start_date: Time.zone.now.to_date - 1.year) }
+    let(:future_cohort) { FactoryBot.create(:pt_intro_cohort, start_date: Time.zone.now.to_date + 1.year) }
 
     it 'returns all current cohorts' do
       expect(Cohort.current_cohorts).to eq [current_cohort]
@@ -29,8 +29,8 @@ describe Cohort do
   end
 
   describe 'parttime and fulltime scopes' do
-    let!(:fulltime_cohort) { FactoryBot.create(:intro_only_cohort) }
-    let!(:parttime_cohort) { FactoryBot.create(:part_time_cohort) }
+    let!(:fulltime_cohort) { FactoryBot.create(:ft_cohort) }
+    let!(:parttime_cohort) { FactoryBot.create(:pt_intro_cohort) }
 
     it 'returns all fulltime cohorts' do
       expect(Cohort.fulltime_cohorts).to eq [fulltime_cohort]
@@ -42,7 +42,7 @@ describe Cohort do
   end
 
   describe 'creating a part-time intro cohort from layout file' do
-    let(:admin) { FactoryBot.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin, :with_course) }
     let(:track) { FactoryBot.create(:part_time_track) }
 
     it 'creates a part-time intro cohort and course from layout file' do
@@ -61,7 +61,7 @@ describe Cohort do
   end
 
   describe 'creating a part-time full-stack cohort from layout file' do
-    let(:admin) { FactoryBot.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin, :with_course) }
     let(:track) { FactoryBot.create(:part_time_c_react_track) }
 
     it 'creates a part-time c/react cohort and courses' do
@@ -83,7 +83,7 @@ describe Cohort do
   end
 
   describe 'creating a full-time cohort from layout file' do
-    let(:admin) { FactoryBot.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin, :with_course) }
     let(:track) { FactoryBot.create(:track) }
 
     it 'creates a cohort with classes' do

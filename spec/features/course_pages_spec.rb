@@ -1,5 +1,5 @@
 feature 'viewing courses' do
-  let(:student) { FactoryBot.create(:student) }
+  let(:student) { FactoryBot.create(:student, :with_course) }
 
   scenario 'as a student logged in' do
     login_as(student, scope: :student)
@@ -25,19 +25,18 @@ end
 
 feature 'viewing cohort on course list page' do
   scenario 'as a student' do
-    student = FactoryBot.create(:student_with_cohort)
+    student = FactoryBot.create(:student, :with_pt_intro_cohort)
     login_as(student, scope: :student)
     visit student_courses_path(student)
-    expect(page).to have_content "Cohort: #{student.cohort.description}"
+    expect(page).to have_content "Cohort: #{student.parttime_cohort.description}"
   end
 
   scenario 'as an admin' do
-    student = FactoryBot.create(:student_with_cohort)
+    student = FactoryBot.create(:student, :with_pt_intro_cohort)
     admin = FactoryBot.create(:admin)
     login_as(admin, scope: :admin)
     visit student_courses_path(student)
-    expect(page).to have_content "Cohort: #{student.cohort.description}"
-    expect(page).to_not have_content "Part-Time Cohort"
+    expect(page).to have_content "Cohort: #{student.parttime_cohort.description}"
   end
 end
 
@@ -63,8 +62,8 @@ feature 'editing a course' do
 end
 
 feature 'visiting the course index page' do
-  let(:admin) { FactoryBot.create(:admin) }
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+  let(:admin) { FactoryBot.create(:admin, :with_course) }
+  let(:student) { FactoryBot.create(:student, :with_all_documents_signed) }
 
   scenario 'as an admin' do
     login_as(admin, scope: :admin)
@@ -81,7 +80,7 @@ feature 'visiting the course index page' do
 end
 
 feature 'selecting a new course manually' do
-  let!(:admin) { FactoryBot.create(:admin) }
+  let!(:admin) { FactoryBot.create(:admin, :with_course) }
 
   scenario 'as an admin' do
     course2 = FactoryBot.create(:internship_course)
@@ -97,7 +96,7 @@ end
 feature "shows warning if on probation" do
   context "when not on probation" do
     it "as a student viewing their own page" do
-      student = FactoryBot.create(:user_with_all_documents_signed)
+      student = FactoryBot.create(:student, :with_course, :with_all_documents_signed)
       login_as(student, scope: :student)
       visit root_path
       click_on 'Courses'
@@ -107,7 +106,7 @@ feature "shows warning if on probation" do
 
   context "when on teacher probation" do
     it "as a student viewing their own page" do
-      student = FactoryBot.create(:user_with_all_documents_signed, probation_teacher: true)
+      student = FactoryBot.create(:student, :with_course, :with_all_documents_signed, probation_teacher: true)
       login_as(student, scope: :student)
       visit root_path
       click_on 'Courses'
@@ -117,7 +116,7 @@ feature "shows warning if on probation" do
 
   context "when on advisor probation" do
     it "as a student viewing their own page" do
-      student = FactoryBot.create(:user_with_all_documents_signed, probation_advisor: true)
+      student = FactoryBot.create(:student, :with_course, :with_all_documents_signed, probation_advisor: true)
       login_as(student, scope: :student)
       visit root_path
       click_on 'Courses'

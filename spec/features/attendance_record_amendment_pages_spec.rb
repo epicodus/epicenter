@@ -1,5 +1,5 @@
 feature "creating an attendance record amendment" do
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+  let(:student) { FactoryBot.create(:student, :with_course, :with_all_documents_signed) }
 
   context "as an admin" do
     let(:admin) { FactoryBot.create(:admin, current_course: student.course) }
@@ -124,7 +124,7 @@ feature "creating an attendance record amendment" do
 end
 
 feature "creating an attendance record amendment from the day attendance page", :js do
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+  let(:student) { FactoryBot.create(:student, :with_course, :with_all_documents_signed) }
 
   context "as an admin" do
     let(:admin) { FactoryBot.create(:admin, current_course: student.course) }

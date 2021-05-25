@@ -24,7 +24,7 @@ describe Enrollment do
 
     context 'within first week of course' do
       it 'permanently destroys enrollment' do
-        student = FactoryBot.create(:student)
+        student = FactoryBot.create(:student, :with_course)
         travel_to student.course.start_date.in_time_zone(student.course.office.time_zone) + 8.hours do
           FactoryBot.create(:attendance_record, student: student, date: student.course.start_date)
           enrollment = student.enrollments.first
@@ -67,13 +67,13 @@ describe Enrollment do
 
   describe 'updates cohorts only when changes' do
     let(:office) { FactoryBot.create(:portland_office) }
-    let(:admin) { FactoryBot.create(:admin_without_course) }
-    let(:past_cohort) { FactoryBot.create(:full_cohort, start_date: (Date.today - 1.year).beginning_of_week, office: office, admin: admin, track: FactoryBot.create(:track)) }
-    let(:current_cohort) { FactoryBot.create(:full_cohort, start_date: Date.today.beginning_of_week - 1.week, office: office, admin: admin, track: FactoryBot.create(:track)) }
-    let(:future_cohort) { FactoryBot.create(:full_cohort, start_date: (Date.today + 1.year).beginning_of_week, office: office, admin: admin, track: FactoryBot.create(:track)) }
-    let(:part_time_cohort) { FactoryBot.create(:part_time_cohort, start_date: Date.today.beginning_of_week - 1.week, office: office, admin: admin, track: FactoryBot.create(:track, description: 'Part-Time Intro to Programming')) }
+    let(:admin) { FactoryBot.create(:admin) }
+    let(:past_cohort) { FactoryBot.create(:ft_cohort, start_date: (Date.today - 1.year).beginning_of_week, office: office, admin: admin, track: FactoryBot.create(:track)) }
+    let(:current_cohort) { FactoryBot.create(:ft_cohort, start_date: Date.today.beginning_of_week - 1.week, office: office, admin: admin, track: FactoryBot.create(:track)) }
+    let(:future_cohort) { FactoryBot.create(:ft_cohort, start_date: (Date.today + 1.year).beginning_of_week, office: office, admin: admin, track: FactoryBot.create(:track)) }
+    let(:part_time_cohort) { FactoryBot.create(:pt_intro_cohort, start_date: Date.today.beginning_of_week - 1.week, office: office, admin: admin, track: FactoryBot.create(:part_time_track)) }
     let(:non_internship_course) { FactoryBot.create(:course, office: office) }
-    let!(:student) { FactoryBot.create(:student_without_courses, office: office) }
+    let!(:student) { FactoryBot.create(:student, office: office, courses: []) }
 
     context 'adding new enrollments' do
       it 'updates starting & current cohort when adding full-time course' do
@@ -96,13 +96,13 @@ describe Enrollment do
       end
 
       it 'updates starting & current cohort when adding full-time course after part-time course' do
-        student.courses = [part_time_cohort.courses.first, current_cohort.courses.first]
-        expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['COHORT_STARTING'] => current_cohort.description, Rails.application.config.x.crm_fields['COHORT_CURRENT'] => current_cohort.description, Rails.application.config.x.crm_fields['COHORT_PARTTIME'] => part_time_cohort.description })
-        student.courses << current_cohort.courses.last
-        expect(student.starting_cohort).to eq current_cohort
-        expect(student.cohort).to eq current_cohort
+        student.courses = [part_time_cohort.courses.first, future_cohort.courses.first]
+        expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['COHORT_STARTING'] => future_cohort.description, Rails.application.config.x.crm_fields['COHORT_CURRENT'] => future_cohort.description, Rails.application.config.x.crm_fields['COHORT_PARTTIME'] => part_time_cohort.description })
+        student.courses << future_cohort.courses.last
+        expect(student.starting_cohort).to eq future_cohort
+        expect(student.cohort).to eq future_cohort
         expect(student.parttime_cohort).to eq part_time_cohort
-        expect(student.ending_cohort).to eq current_cohort
+        expect(student.ending_cohort).to eq future_cohort
       end
 
       it 'updates only current cohort and parttime cohort when adding part-time course after withdrawn full-time course' do
@@ -138,10 +138,8 @@ describe Enrollment do
         expect(student.ending_cohort).to eq future_cohort
       end
 
-      it 'does not update starting or current cohort when adding full-time non-internship course' do
-        expect_any_instance_of(CrmLead).to_not receive(:update)
+      it 'does not update current cohort when adding full-time non-internship course' do
         student.course = non_internship_course
-        expect(student.starting_cohort).to eq nil
         expect(student.cohort).to eq nil
         expect(student.parttime_cohort).to eq nil
         expect(student.ending_cohort).to eq nil
@@ -295,7 +293,7 @@ describe Enrollment do
 
   describe '#clear_submissions' do
     it 'clears submissions for withdrawn course' do
-      student = FactoryBot.create(:student)
+      student = FactoryBot.create(:student, :with_course)
       code_review = FactoryBot.create(:code_review, course: student.course)
       submission = FactoryBot.create(:submission, student: student, code_review: code_review)
       student.enrollments.first.destroy
@@ -303,7 +301,7 @@ describe Enrollment do
     end
 
     it 'does not clear submissions for a different course' do
-      student = FactoryBot.create(:student)
+      student = FactoryBot.create(:student, :with_course)
       other_course = FactoryBot.create(:course)
       code_review = FactoryBot.create(:code_review, course: other_course)
       submission = FactoryBot.create(:submission, student: student, code_review: code_review)

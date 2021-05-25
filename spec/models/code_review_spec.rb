@@ -55,7 +55,7 @@ describe CodeReview do
 
   describe '#submission_for' do
     it 'returns submission of given user for this code_review' do
-      student = FactoryBot.create(:student)
+      student = FactoryBot.create(:student, :with_course)
       code_review = FactoryBot.create(:code_review)
       submission = FactoryBot.create(:submission, student: student, code_review: code_review)
       expect(code_review.submission_for(student)).to eq submission
@@ -64,7 +64,7 @@ describe CodeReview do
 
   describe '#exepectations_met_by?' do
     let(:code_review) { FactoryBot.create(:code_review) }
-    let(:student) { FactoryBot.create(:student) }
+    let(:student) { FactoryBot.create(:student, :with_course) }
 
     it "is true if the student's submission has met expectations", :stub_mailgun do
       submission = FactoryBot.create(:submission, student: student, code_review: code_review)
@@ -81,7 +81,7 @@ describe CodeReview do
 
   describe '#latest_total_score_for' do
     let(:code_review) { FactoryBot.create(:code_review) }
-    let(:student) { FactoryBot.create(:student) }
+    let(:student) { FactoryBot.create(:student, :with_course) }
 
     it 'gives the latest total score the student received for this code_review', :stub_mailgun do
       submission = FactoryBot.create(:submission, code_review: code_review, student: student)
@@ -106,7 +106,7 @@ describe CodeReview do
   end
 
   describe '#status' do
-    let(:student) { FactoryBot.create(:student) }
+    let(:student) { FactoryBot.create(:student, :with_course) }
     let(:code_review) { FactoryBot.create(:code_review, course: student.course) }
     let(:submission) { FactoryBot.create(:submission, code_review: code_review, student: student) }
 
@@ -183,7 +183,7 @@ describe CodeReview do
   end
 
   describe '#visible?' do
-    let(:student) { FactoryBot.create(:student) }
+    let(:student) { FactoryBot.create(:student, :with_course) }
     let(:code_review) { FactoryBot.create(:code_review, course: student.course) }
 
     it 'returns true if code review has no visible_date', :stub_mailgun do

@@ -1,13 +1,10 @@
 <tr class="<%= 'alert alert-danger' if student.probation_teacher || student.probation_advisor %>">
   <td><%= link_to student.name, course_student_path(@course, student), class: "unstyled-link" %></td>
+
   <% unless @course.internship_course? %>
     <% if params[:attendance] == "true" %>
       <td>
-        <% if student.attendance_score(@course) <= 92 %>
-            <p class="text-danger">
-          <% else %>
-            <p>
-        <% end %>
+        <p class=<%= student.attendance_score(@course) <= 92 ? "text-danger" : "" %>>
         <% if student.attendance_score(@course).nan? %>
           No records yet
         <% else %>
@@ -16,11 +13,7 @@
         </p>
       </td>
       <td>
-        <% if student.attendance_score(@course) <= 92 %>
-            <p class="text-danger">
-          <% else %>
-            <p>
-        <% end %>
+        <p class=<%= student.attendance_score(@course) <= 92 ? "text-danger" : "" %>>
         <% if student.attendance_score(@course).nan? %>
           No records yet
         <% else %>
@@ -29,15 +22,11 @@
         </p>
       </td>
       <td>
-        <% if student.attendance_score(@course) <= 92 %>
-            <p class="text-danger">
-          <% else %>
-            <p>
-        <% end %>
-        <% if student.course.try(:cohorts).try(:empty?) %>
-          No records yet
-        <% else %>
+        <p class=<%= student.attendance_score(@course) <= 92 ? "text-danger" : "" %>>
+        <% if student.course.try(:cohorts).try(:any?) %>
           <%= student.absences_cohort %>
+        <% else %>
+          No records yet
         <% end %>
         </p>
       </td>
@@ -55,6 +44,7 @@
       </td>
     <% end %>
   <% end %>
+
   <% @course.code_reviews.each do |code_review| %>
     <td>
       <% if student.submission_for(code_review).nil? %>

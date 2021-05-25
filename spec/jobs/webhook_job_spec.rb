@@ -11,7 +11,7 @@ RSpec.describe WebhookJob, type: :job do
   end
 
   it 'sends webhook via ActiveJob', :stripe_mock, :stub_mailgun, :vcr do
-    student = FactoryBot.create(:student_with_credit_card)
+    student = FactoryBot.create(:student, :with_ft_cohort, :with_plan, :with_credit_card)
     payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
     webhook = WebhookPayment.new({ payment: payment })
     allow(Webhook).to receive(:send).and_return({})

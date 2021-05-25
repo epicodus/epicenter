@@ -1,5 +1,5 @@
 describe WebhookPayment do
-  let(:student) { FactoryBot.create(:student_with_cohort) }
+  let(:student) { FactoryBot.create(:student, :with_pt_intro_cohort) }
   let(:payment) { FactoryBot.create(:payment, student: student, offline: true, amount: 600_00) }
 
   it 'creates webhook with endpoint' do

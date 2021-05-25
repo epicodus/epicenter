@@ -9,7 +9,7 @@ describe Rating do
   end
 
   describe 'for' do
-    let(:student) { FactoryBot.create(:student) }
+    let(:student) { FactoryBot.create(:student, :with_course) }
     let(:internship) { FactoryBot.create(:internship, courses: [student.course]) }
 
     it "returns the student's rating of the internship if it exists" do

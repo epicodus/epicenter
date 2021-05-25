@@ -16,6 +16,10 @@ class Admin < User
     Course.where.not(id: courses.map(&:id)).includes(:admin).includes(:office)
   end
 
+  def current_course
+    super || courses.last
+  end
+
 private
 
   def assign_current_course

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe CrmUpdateJob, :vcr, type: :job do
   include ActiveJob::TestHelper
 
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com') }
+  let(:student) { FactoryBot.create(:student, :with_all_documents_signed, email: 'example@example.com') }
   let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
   let(:lead_id) { get_lead_id(student.email) }
   let(:contact_id) { close_io_client.find_lead(lead_id)['contacts'].first['id'] }

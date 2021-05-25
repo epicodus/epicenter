@@ -4,14 +4,16 @@ FactoryBot.define do
     sequence(:email) { |n| "admin#{n}@example.com" }
     password { "password" }
     password_confirmation { "password" }
-    association :current_course, factory: :course
 
     factory :teacher do
       teacher { true }
     end
 
-    factory :admin_without_course do
-      current_course { nil }
+    trait :with_course do
+      before(:create) do |admin|
+        create_list(:course, 1, admin: admin)
+        admin.current_course = admin.courses.first
+      end
     end
   end
 
@@ -85,10 +87,13 @@ FactoryBot.define do
   end
 
   factory :course do
-    description { 'example course' }
+    sequence(:description) { |n| "example course #{n}" }
     class_days { (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 4.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? } }
-    association :office, factory: :philadelphia_office
     association :language, factory: :intro_language
+    association :office, factory: :philadelphia_office
+    track
+    admin
+    cohort { association :cohort, office: office, track: track, admin: admin }
 
     factory :course_with_class_times do
       association :office, factory: :portland_office
@@ -136,6 +141,7 @@ FactoryBot.define do
     factory :part_time_course do
       parttime { true }
       association :language, factory: :intro_part_time_c_react_language
+      association :track, factory: :part_time_track
     end
 
     factory :intro_part_time_c_react_course do
@@ -192,7 +198,6 @@ FactoryBot.define do
     end
 
     factory :level0_course do
-      office { nil }
       association :language, factory: :intro_language
       class_days { (Date.parse('2017-03-13')..Date.parse('2017-04-13')).select { |day| day if !day.saturday? && !day.sunday? } }
     end
@@ -229,73 +234,68 @@ FactoryBot.define do
   end
 
   factory :cohort do
-    description { '2000-01-03 to 2000-07-07 PDX Ruby/Rails' }
-    start_date { Date.today.beginning_of_week }
-    layout_file_path { 'example_cohort_layout_path' }
-    association :office, factory: :portland_office
-    association :track, factory: :track
-    association :admin, factory: :admin_without_course
+    start_date { Time.zone.now.to_date.beginning_of_week }
+    office
+    track
+    admin
     after(:create) do |cohort|
-      cohort.admin.current_course = cohort.courses.first
-      cohort.end_date = cohort.courses.last.end_date
-      cohort.save
-    end
-
-    factory :intro_only_cohort do
-      before(:create) do |cohort|
-        cohort.courses << build(:level0_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days])
+      if cohort.courses.any?
+        cohort.update(end_date: cohort.courses.last.end_date)
+        cohort.update(description: "#{cohort.start_date.to_s} to #{cohort.end_date.to_s} #{cohort.office.short_name} #{cohort.track.description}")
       end
     end
 
-    factory :cohort_with_internship do
+    factory :ft_cohort do
       before(:create) do |cohort|
-        cohort.courses << build(:level0_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days])
-        cohort.courses << build(:level4_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week + 5.weeks, cohort.start_date.beginning_of_week + 8.weeks + 3.days])
+        cohort.courses << build(:level0_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages.first, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days])
+        cohort.courses << build(:level4_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages.last, class_days: [cohort.start_date.beginning_of_week + 5.weeks, cohort.start_date.beginning_of_week + 8.weeks + 3.days])
+      end
+    end
+
+    factory :ft_full_cohort do
+      before(:create) do |cohort|
+        cohort.courses << build(:level0_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages[0], class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days])
+        cohort.courses << build(:level1_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages[1], class_days: [cohort.start_date.beginning_of_week + 5.weeks, cohort.start_date.beginning_of_week + 9.weeks + 3.days])
+        cohort.courses << build(:level2_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages[2], class_days: [cohort.start_date.beginning_of_week + 10.weeks, cohort.start_date.beginning_of_week + 14.weeks + 3.days])
+        cohort.courses << build(:level3_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages[3], class_days: [cohort.start_date.beginning_of_week + 15.weeks, cohort.start_date.beginning_of_week + 19.weeks + 3.days])
+        cohort.courses << build(:level4_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages[4], class_days: [cohort.start_date.beginning_of_week + 20.weeks, cohort.start_date.beginning_of_week + 26.weeks + 4.days])
+      end
+    end
+
+    factory :pt_intro_cohort do
+      association :track, factory: :part_time_track
+      before(:create) do |cohort|
+        cohort.courses << build(:part_time_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages.first, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 14.weeks + 2.days])
+      end
+    end
+
+    factory :pt_c_react_cohort do
+      description { '2021-01-04 to 2021-10-10 PDX Part-Time C/React' }
+      association :track, factory: :part_time_c_react_track
+      before(:create) do |cohort|
+        cohort.courses << build(:intro_part_time_c_react_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages[0], class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
+        cohort.courses << build(:js_part_time_c_react_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages[1], class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
+        cohort.courses << build(:c_part_time_c_react_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages[2], class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
+        cohort.courses << build(:react_part_time_c_react_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages[3], class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
+        cohort.courses << build(:internship_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages[4], class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
+      end
+    end
+
+    factory :pt_js_react_cohort do
+      description { '2021-01-04 to 2021-10-10 PDX Part-Time JS/React' }
+      association :track, factory: :part_time_js_react_track
+      before(:create) do |cohort|
+        cohort.courses << build(:intro_part_time_c_react_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages.first, class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
       end
     end
 
     factory :fidgetech_cohort do
       description { 'Fidgetech' }
       before(:create) do |cohort|
-        cohort.courses << build(:level0_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days], description: 'Fidgetech')
+        cohort.courses << build(:level0_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages.first, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days], description: 'Fidgetech')
       end
-    end
-
-    factory :part_time_cohort do
-      description { '2021-01-04 to 2021-02-14 PDX Part-Time Intro to Programming' }
-      association :track, factory: :part_time_track
-      before(:create) do |cohort|
-        cohort.courses << build(:part_time_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 14.weeks + 2.days])
-      end
-    end
-
-    factory :part_time_c_react_cohort do
-      description { '2021-01-04 to 2021-10-10 PDX Part-Time C/React' }
-      association :track, factory: :part_time_c_react_track
-      before(:create) do |cohort|
-        cohort.courses << build(:intro_part_time_c_react_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
-        cohort.courses << build(:js_part_time_c_react_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
-        cohort.courses << build(:c_part_time_c_react_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
-        cohort.courses << build(:react_part_time_c_react_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
-        cohort.courses << build(:internship_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
-      end
-    end
-
-    factory :part_time_js_react_cohort do
-      description { '2021-01-04 to 2021-10-10 PDX Part-Time JS/React' }
-      association :track, factory: :part_time_js_react_track
-      before(:create) do |cohort|
-        cohort.courses << build(:intro_part_time_c_react_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
-      end
-    end
-
-    factory :full_cohort do
-      before(:create) do |cohort|
-        cohort.courses << build(:level0_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days])
-        cohort.courses << build(:level1_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week + 5.weeks, cohort.start_date.beginning_of_week + 9.weeks + 3.days])
-        cohort.courses << build(:level2_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week + 10.weeks, cohort.start_date.beginning_of_week + 14.weeks + 3.days])
-        cohort.courses << build(:level3_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week + 15.weeks, cohort.start_date.beginning_of_week + 19.weeks + 3.days])
-        cohort.courses << build(:level4_course, office: cohort.office, admin: cohort.admin, track: cohort.track, class_days: [cohort.start_date.beginning_of_week + 20.weeks, cohort.start_date.beginning_of_week + 26.weeks + 4.days])
+      after(:create) do |cohort|
+        cohort.update(description: 'Fidgetech')
       end
     end
   end
@@ -313,6 +313,10 @@ FactoryBot.define do
   end
 
   factory :office do
+    name { 'Portland' }
+    short_name { 'PDX' }
+    time_zone { 'Pacific Time (US & Canada)' }
+
     factory :portland_office do
       name { 'Portland' }
       short_name { 'PDX' }
@@ -591,257 +595,115 @@ FactoryBot.define do
     end
   end
 
-  factory :student_without_courses, class: Student do
+  factory :student do
     sequence(:name) { |n| "Example Brown #{n}" }
     sequence(:email) { |n| "student#{n}@example.com" }
     password { "password" }
     password_confirmation { "password" }
 
-    factory :student_with_cohort do
-      association :plan, factory: :upfront_plan
+    trait :with_course do
+      course
+    end
+
+    trait :with_ft_cohort do
+      association :cohort, factory: :ft_cohort
       before(:create) do |student|
-        create(:cohort_with_internship, students: [student])
-        student.starting_cohort = student.cohort
-        student.ending_cohort = student.cohort
-        student.office = student.cohort.office
-        student.courses = student.cohort.courses
-      end
-
-      factory :student_with_credit_card do
-        after(:create) do |student|
-          create(:credit_card, student: student)
-        end
-      end
-
-      factory :student_with_invalid_credit_card do
-        after(:create) do |student|
-          create(:invalid_credit_card, student: student)
-        end
-      end
-
-      factory :student_with_unverified_bank_account do
-        after(:create) do |student|
-          create(:bank_account, student: student)
-        end
-      end
-
-      factory :student_with_verified_bank_account do
-        after(:create) do |student|
-          create(:verified_bank_account, student: student)
-        end
-
-        factory :student_with_upfront_payment do
-          after(:create) do |student|
-            student.make_upfront_payment
-          end
-        end
-      end
-
-      factory :student_waiting_on_demographics do
-        after(:create) do |student|
-          create(:completed_code_of_conduct, student: student)
-          create(:completed_refund_policy, student: student)
-          create(:completed_enrollment_agreement, student: student)
-        end
-      end
-
-      factory :student_with_all_documents_signed do
-        demographics { true }
-        after(:create) do |student|
-          create(:completed_code_of_conduct, student: student)
-          create(:completed_refund_policy, student: student)
-          create(:completed_enrollment_agreement, student: student)
-        end
-      end
-
-      factory :student_with_all_documents_signed_and_verified_bank_account do
-        demographics { true }
-        after(:create) do |student|
-          create(:completed_code_of_conduct, student: student)
-          create(:completed_refund_policy, student: student)
-          create(:completed_enrollment_agreement, student: student)
-          create(:verified_bank_account, student: student)
-        end
-      end
-
-      factory :student_with_all_documents_signed_and_unverified_bank_account do
-        demographics { true }
-        after(:create) do |student|
-          create(:completed_code_of_conduct, student: student)
-          create(:completed_refund_policy, student: student)
-          create(:completed_enrollment_agreement, student: student)
-          create(:bank_account, student: student)
-        end
-      end
-
-      factory :student_with_all_documents_signed_and_credit_card do
-        demographics { true }
-        after(:create) do |student|
-          create(:completed_code_of_conduct, student: student)
-          create(:completed_refund_policy, student: student)
-          create(:completed_enrollment_agreement, student: student)
-          create(:credit_card, student: student)
-        end
+        student.courses << student.cohort.courses
       end
     end
 
-    factory :part_time_student_with_cohort do
-      association :plan, factory: :parttime_plan
+    trait :with_pt_c_react_cohort do
+      association :cohort, factory: :part_time_c_react_cohort
       before(:create) do |student|
-        create(:part_time_cohort, students: [student])
-        student.starting_cohort = student.cohort
-        student.ending_cohort = student.cohort
-        student.office = student.cohort.office
-        student.course = student.cohort.courses.first
+        student.courses << student.cohort.courses
       end
+    end
 
-      factory :part_time_student_with_credit_card do
-        after(:create) do |student|
-          create(:credit_card, student: student)
-        end
+    trait :with_pt_intro_cohort do
+      association :parttime_cohort, factory: :pt_intro_cohort
+      before(:create) do |student|
+        student.courses << student.parttime_cohort.courses
       end
+    end
+
+    trait :with_fidgetech_cohort do
+      association :parttime_cohort, factory: :fidgetech_cohort
+      before(:create) do |student|
+        student.courses << student.parttime_cohort.courses
+      end
+    end
+
+    factory :pt_intro_student_with_cohort do
+      association :plan, factory: :parttime_plan
+      with_pt_intro_cohort
     end
 
     factory :fidgetech_student_with_cohort do
       association :plan, factory: :parttime_plan
-      before(:create) do |student|
-        cohort = create(:fidgetech_cohort)
-        student.ending_cohort = cohort
-        student.office = cohort.office
-        student.course = cohort.courses.first
-      end
+      with_fidgetech_cohort
     end
 
-    factory :part_time_track_student_with_cohort do
+    factory :pt_c_react_student_with_cohort do
       association :plan, factory: :standard_plan
-      before(:create) do |student|
-        cohort = create(:part_time_c_react_cohort)
-        student.ending_cohort = cohort
-        student.office = cohort.office
-        student.course = cohort.courses.first
+      with_pt_c_react_cohort
+    end
+
+    trait :with_plan do
+      association :plan, factory: :upfront_plan
+    end
+
+    trait :with_credit_card do
+      after(:create) do |student|
+        create(:credit_card, student: student)
       end
     end
-  end
 
-  factory :student do
-    course
-    association :plan, factory: :upfront_plan
-    sequence(:name) { |n| "Example Brown #{n}" }
-    sequence(:email) { |n| "student#{n}@example.com" }
-    password { "password" }
-    password_confirmation { "password" }
+    trait :with_invalid_credit_card do
+      after(:create) do |student|
+        create(:invalid_credit_card, student: student)
+      end
+    end
+
+    trait :with_unverified_bank_account do
+      after(:create) do |student|
+        create(:bank_account, student: student)
+      end
+    end
+
+    trait :with_verified_bank_account do
+      after(:create) do |student|
+        create(:verified_bank_account, student: student)
+      end
+    end
+
+    trait :with_upfront_payment do
+      with_verified_bank_account
+      cohort
+      association :plan, factory: :upfront_plan
+      after(:create) do |student|
+        student.make_upfront_payment
+      end
+    end
+
+    trait :with_all_documents_signed do
+      demographics { true }
+      after(:create) do |student|
+        create(:completed_code_of_conduct, student: student)
+        create(:completed_refund_policy, student: student)
+        create(:completed_enrollment_agreement, student: student)
+      end
+    end
+
+    # BELOW PREVIOUSLY HAD ASSOCIATED COURSES AND PLAN ASSOCIATED
 
     factory :seattle_student do
       association :course, factory: :seattle_course
       association :office, factory: :seattle_office
     end
 
-    factory :portland_student_with_all_documents_signed do
-      demographics { true }
+    factory :portland_student do
       association :course, factory: :portland_course
-      after(:create) do |student|
-        create(:completed_code_of_conduct, student: student)
-        create(:completed_refund_policy, student: student)
-        create(:completed_enrollment_agreement, student: student)
-      end
-    end
-
-    factory :unenrolled_student do
-      after(:create) do |student|
-        create(:completed_code_of_conduct, student: student)
-        create(:completed_refund_policy, student: student)
-        create(:completed_enrollment_agreement, student: student)
-        enrollment = Enrollment.find_by(student_id: student.id)
-        enrollment.destroy
-      end
-    end
-
-    factory :part_time_student do
-      association :course, factory: :part_time_course
-    end
-
-    factory :part_time_student_with_payment_method do
-      association :course, factory: :part_time_course
-      after(:create) do |student|
-        create(:credit_card, student: student)
-      end
-    end
-
-    factory :user_with_unverified_bank_account do
-      after(:create) do |student|
-        create(:bank_account, student: student)
-      end
-    end
-
-    factory :user_with_credit_card do
-      after(:create) do |student|
-        create(:credit_card, student: student)
-      end
-    end
-
-    factory :user_with_invalid_credit_card do
-      after(:create) do |student|
-        create(:invalid_credit_card, student: student)
-      end
-    end
-
-    factory :user_with_verified_bank_account do
-      after(:create) do |student|
-        create(:verified_bank_account, student: student)
-      end
-
-      factory :user_with_upfront_payment do
-        after(:create) do |student|
-          student.make_upfront_payment
-        end
-      end
-    end
-
-    factory :user_waiting_on_demographics do
-      after(:create) do |student|
-        create(:completed_code_of_conduct, student: student)
-        create(:completed_refund_policy, student: student)
-        create(:completed_enrollment_agreement, student: student)
-      end
-    end
-
-    factory :user_with_all_documents_signed do
-      demographics { true }
-      after(:create) do |student|
-        create(:completed_code_of_conduct, student: student)
-        create(:completed_refund_policy, student: student)
-        create(:completed_enrollment_agreement, student: student)
-      end
-    end
-
-    factory :user_with_all_documents_signed_and_verified_bank_account do
-      demographics { true }
-      after(:create) do |student|
-        create(:completed_code_of_conduct, student: student)
-        create(:completed_refund_policy, student: student)
-        create(:completed_enrollment_agreement, student: student)
-        create(:verified_bank_account, student: student)
-      end
-    end
-
-    factory :user_with_all_documents_signed_and_unverified_bank_account do
-      demographics { true }
-      after(:create) do |student|
-        create(:completed_code_of_conduct, student: student)
-        create(:completed_refund_policy, student: student)
-        create(:completed_enrollment_agreement, student: student)
-        create(:bank_account, student: student)
-      end
-    end
-
-    factory :user_with_all_documents_signed_and_credit_card do
-      demographics { true }
-      after(:create) do |student|
-        create(:completed_code_of_conduct, student: student)
-        create(:completed_refund_policy, student: student)
-        create(:completed_enrollment_agreement, student: student)
-        create(:credit_card, student: student)
-      end
+      association :office, factory: :portland_office
     end
 
     factory :user_with_score_of_10 do
@@ -940,6 +802,7 @@ FactoryBot.define do
         track.languages << build(:js_part_time_c_react_language)
         track.languages << build(:c_part_time_c_react_language)
         track.languages << build(:react_part_time_c_react_language)
+        track.languages << build(:internship_language)
       end
     end
 
@@ -987,8 +850,8 @@ FactoryBot.define do
   end
 
   factory :peer_evaluation do
-    association :evaluator, factory: :user_with_all_documents_signed
-    association :evaluatee, factory: :user_with_all_documents_signed
+    association :evaluator, factory: :student
+    association :evaluatee, factory: :student
   end
 
   factory :peer_question do

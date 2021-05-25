@@ -1,5 +1,5 @@
 feature 'Admin signs in' do
-  let(:admin) { FactoryBot.create(:admin) }
+  let(:admin) { FactoryBot.create(:admin, :with_course) }
 
   after { OmniAuth.config.mock_auth[:github] = nil }
 
@@ -27,7 +27,8 @@ feature 'Admin signs in' do
   end
 
   scenario 'with valid GitHub credentials on subsequent logins' do
-    admin = FactoryBot.create(:admin, github_uid: '12345')
+    admin.github_uid = '12345'
+    admin.save
     OmniAuth.config.add_mock(:github, { uid: '12345', info: { email: admin.email }})
     visit root_path
     click_on 'Sign in with GitHub'
@@ -57,7 +58,7 @@ feature 'Admin signs in' do
 end
 
 feature 'Inviting new students', :vcr, :stub_mailgun, :dont_stub_crm do
-  let(:cohort) { FactoryBot.create(:intro_only_cohort, start_date: Date.parse('2000-01-03')) }
+  let(:cohort) { FactoryBot.create(:pt_intro_cohort, start_date: Date.parse('2000-01-03')) }
 
   before do
     admin = cohort.admin
@@ -67,6 +68,7 @@ feature 'Inviting new students', :vcr, :stub_mailgun, :dont_stub_crm do
 
   scenario 'admin invites student' do
     allow_any_instance_of(Closeio::Client).to receive(:create_task).and_return({})
+    allow_any_instance_of(CrmLead).to receive(:cohort_applied).and_return(cohort.description)
     visit new_student_invitation_path
     fill_in 'Email', with: 'example@example.com'
     click_on 'Invite student'
@@ -90,7 +92,7 @@ feature 'Inviting new students', :vcr, :stub_mailgun, :dont_stub_crm do
 end
 
 feature 'Admin signs up via invitation' do
-  let(:admin) { FactoryBot.create(:admin) }
+  let(:admin) { FactoryBot.create(:admin, :with_course) }
 
   scenario 'with valid information' do
     admin.invite!
@@ -111,10 +113,10 @@ feature 'Admin signs up via invitation' do
 end
 
 feature 'viewing the student page' do
-  let(:admin) { FactoryBot.create(:admin) }
   let(:course) { FactoryBot.create(:midway_course) }
   let(:student) { FactoryBot.create(:student, course: course) }
-  let(:unenrolled_student) { FactoryBot.create(:unenrolled_student) }
+  let(:admin) { course.admin }
+  let(:unenrolled_student) { FactoryBot.create(:student) }
   let(:internship_student) { FactoryBot.create(:student, courses: [FactoryBot.create(:internship_course)]) }
 
   before { login_as(admin, scope: :admin) }
@@ -129,7 +131,7 @@ feature 'viewing the student page' do
   end
 
   scenario 'when a student is enrolled in a course with internships' do
-    FactoryBot.create(:internship, courses: [internship_student.course])
+    FactoryBot.create(:internship, courses: [internship_student.courses.internship_courses.first])
     visit course_student_path(internship_student.course, internship_student)
     expect(page).to have_content 'Career reviews'
     expect(page).to have_content 'Internships'
@@ -141,7 +143,7 @@ feature 'viewing the student page' do
   end
 
   scenario 'when a student has withdrawn from a course' do
-    FactoryBot.create(:attendance_record, student: student, date: student.course.start_date)
+    FactoryBot.create(:attendance_record, student: student, date: student.course.start_date + 1.week)
     Enrollment.find_by(student: student, course: student.course).destroy
     visit course_student_path(student.course, student)
     expect(page).to have_content 'withdrawn'
@@ -162,8 +164,8 @@ end
 
 feature 'viewing the student courses list' do
   let(:admin) { FactoryBot.create(:admin) }
-  let(:course1) { FactoryBot.create(:midway_course) }
-  let(:course2) { FactoryBot.create(:internship_course) }
+  let(:course1) { FactoryBot.create(:midway_course, admin: admin) }
+  let(:course2) { FactoryBot.create(:internship_course, admin: admin) }
   let(:student) { FactoryBot.create(:student, courses: [course1, course2]) }
 
   before do
@@ -199,28 +201,26 @@ end
 feature 'manually changing current cohort' do
   context 'as an admin' do
     let(:admin) { FactoryBot.create(:admin) }
+    let(:ft_cohort) { FactoryBot.create(:ft_cohort, admin: admin) }
+    let(:ft_cohort_2) { FactoryBot.create(:ft_cohort, admin: admin) }
+    let(:pt_intro_cohort) { FactoryBot.create(:pt_intro_cohort, admin: admin) }
+
     before { login_as(admin, scope: :admin) }
 
     it 'does not show link to change current cohort when only one possible cirr cohort' do
-      cohort_1 = FactoryBot.create(:cohort_with_internship)
-      cohort_2 = FactoryBot.create(:part_time_cohort)
-      student = FactoryBot.create(:student, courses: cohort_1.courses + cohort_2.courses)
+      student = FactoryBot.create(:student, courses: ft_cohort.courses + pt_intro_cohort.courses)
       visit student_courses_path(student)
       expect(page).to_not have_content 'edit current cohort'
     end
 
     it 'shows link to change current cohort when multiple possible cirr cohorts' do
-      cohort_1 = FactoryBot.create(:cohort_with_internship)
-      cohort_2 = FactoryBot.create(:cohort_with_internship)
-      student = FactoryBot.create(:student, courses: cohort_1.courses + cohort_2.courses)
+      student = FactoryBot.create(:student, courses: ft_cohort.courses + ft_cohort_2.courses)
       visit student_courses_path(student)
       expect(page).to have_content 'edit current cohort'
     end
 
     it 'shows modal to change current cohort when click edit current cohort link', :js do
-      cohort_1 = FactoryBot.create(:cohort_with_internship)
-      cohort_2 = FactoryBot.create(:cohort_with_internship)
-      student = FactoryBot.create(:student, courses: cohort_1.courses + cohort_2.courses)
+      student = FactoryBot.create(:student, courses: ft_cohort.courses + ft_cohort_2.courses)
       visit student_courses_path(student)
       click_on 'edit current cohort'
       expect(page).to have_content "Confirm updated current cohort for #{student.name}"
@@ -229,9 +229,9 @@ feature 'manually changing current cohort' do
 
   context 'as a student' do
     it 'does not show link to change current cohort' do
-      cohort_1 = FactoryBot.create(:cohort_with_internship)
-      cohort_2 = FactoryBot.create(:cohort_with_internship)
-      student = FactoryBot.create(:student, courses: cohort_1.courses + cohort_2.courses)
+      ft_cohort = FactoryBot.create(:ft_cohort)
+      ft_cohort_2 = FactoryBot.create(:ft_cohort)
+      student = FactoryBot.create(:student, courses: ft_cohort.courses + ft_cohort_2.courses)
       login_as(student, scope: :student)
       visit student_courses_path(student)
       expect(page).to_not have_content 'edit current cohort'
@@ -240,8 +240,8 @@ feature 'manually changing current cohort' do
 end
 
 feature 'setting academic probation', :js, :stub_mailgun do
-  let(:admin) { FactoryBot.create(:admin) }
-  let(:student) { FactoryBot.create(:student) }
+  let(:student) { FactoryBot.create(:student, :with_course) }
+  let(:admin) { student.course.admin }
 
   before do
     login_as(admin, scope: :admin)
@@ -315,8 +315,8 @@ feature 'setting academic probation', :js, :stub_mailgun do
 end
 
 feature 'student roster page' do
-  let(:admin) { FactoryBot.create(:admin) }
   let!(:course) { FactoryBot.create(:course) }
+  let(:admin) { course.admin }
 
   before { login_as(admin, scope: :admin) }
 
@@ -351,7 +351,7 @@ feature 'student roster page' do
   end
 
   scenario 'allows viewing payment plans' do
-    student = FactoryBot.create(:student, course: course)
+    student = FactoryBot.create(:student, :with_plan, course: course)
     visit course_path(course)
     click_link 'View payment plans'
     expect(page).to have_content student.plan.name
@@ -366,7 +366,7 @@ feature 'student roster page' do
   end
 
   scenario 'allows viewing both attendance and payment plans' do
-    student = FactoryBot.create(:student, course: course)
+    student = FactoryBot.create(:student, :with_plan, course: course)
     visit course_path(course)
     click_link 'View attendance'
     click_link 'View payment plans'
@@ -375,7 +375,7 @@ feature 'student roster page' do
   end
 
   scenario 'allows viewing both attendance and payment plans (other order)' do
-    student = FactoryBot.create(:student, course: course)
+    student = FactoryBot.create(:student, :with_plan, course: course)
     visit course_path(course)
     click_link 'View payment plans'
     click_link 'View attendance'
@@ -404,7 +404,7 @@ feature 'student roster page' do
   end
 
   scenario 'allows viewing both feedback and payment plans' do
-    student = FactoryBot.create(:student, course: course)
+    student = FactoryBot.create(:student, :with_plan, course: course)
     FactoryBot.create(:pair_feedback, pair: student)
     visit course_path(course)
     click_link 'View feedback'
@@ -414,7 +414,7 @@ feature 'student roster page' do
   end
 
   scenario 'allows viewing both feedback and payment plans (other order)' do
-    student = FactoryBot.create(:student, course: course)
+    student = FactoryBot.create(:student, :with_plan, course: course)
     FactoryBot.create(:pair_feedback, pair: student)
     visit course_path(course)
     click_link 'View payment plans'
@@ -425,8 +425,8 @@ feature 'student roster page' do
 end
 
 feature 'exporting course students emails to a file' do
-  let(:admin) { FactoryBot.create(:admin) }
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+  let(:student) { FactoryBot.create(:student, :with_course) }
+  let(:admin) { student.course.admin }
 
   context 'as an admin' do
     before { login_as(admin, scope: :admin) }
@@ -448,11 +448,10 @@ feature 'exporting course students emails to a file' do
 end
 
 feature 'archiving student' do
-  let(:admin) { FactoryBot.create(:admin) }
-  before { login_as(admin, scope: :admin) }
-
   scenario 'archiving a student with courses' do
-    student = FactoryBot.create(:student)
+    student = FactoryBot.create(:student, :with_course)
+    admin = student.course.admin
+    login_as(admin, scope: :admin)
     visit student_courses_path(student)
     click_on 'Drop All'
     click_on 'Archive student'
@@ -460,7 +459,10 @@ feature 'archiving student' do
   end
 
   scenario 'archiving a student without courses' do
-    student = FactoryBot.create(:student_without_courses)
+    other_course = FactoryBot.create(:course)
+    admin = other_course.admin
+    student = FactoryBot.create(:student, courses: [])
+    login_as(admin, scope: :admin)
     visit student_courses_path(student)
     click_on 'Archive student'
     expect(page).to have_content "#{student.name} has been archived!"

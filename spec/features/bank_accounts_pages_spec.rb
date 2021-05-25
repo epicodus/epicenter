@@ -44,7 +44,7 @@ end
 feature 'Verifying a bank account' do
   context 'as a student' do
     context 'with correct deposit amounts' do
-      let(:student) { FactoryBot.create :user_with_unverified_bank_account, plan: plan }
+      let(:student) { FactoryBot.create :student, :with_unverified_bank_account, plan: plan }
       let(:plan) { FactoryBot.create :upfront_plan }
 
       before do
@@ -64,7 +64,7 @@ feature 'Verifying a bank account' do
 
     context 'with incorrect deposit amounts' do
       it 'gives an error notice', :vcr, js: true do
-        student = FactoryBot.create :user_with_unverified_bank_account
+        student = FactoryBot.create :student, :with_unverified_bank_account
         login_as(student, scope: :student)
         visit payment_methods_path
         click_on 'Verify Account'

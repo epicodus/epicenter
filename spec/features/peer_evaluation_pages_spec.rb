@@ -1,9 +1,9 @@
 feature 'Visiting the peer evaluations index page' do
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
-  let(:other_student) { FactoryBot.create(:user_with_all_documents_signed) }
+  let(:student) { FactoryBot.create(:student, :with_course, :with_all_documents_signed) }
+  let(:other_student) { FactoryBot.create(:student, :with_all_documents_signed) }
 
   context 'as an admin' do
-    let(:admin) { FactoryBot.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin, current_course: student.course) }
     before { login_as(admin, scope: :admin) }
 
     context 'you can view the peer evaluations list' do

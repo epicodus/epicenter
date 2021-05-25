@@ -1,5 +1,5 @@
 feature 'Student edits their profile' do
-  let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: "example@example.com") }
+  let(:student) { FactoryBot.create(:student, :with_all_documents_signed, email: "example@example.com") }
 
   before do
     login_as(student, scope: :student)

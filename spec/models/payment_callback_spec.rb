@@ -1,5 +1,5 @@
 describe PaymentCallback do
-  let(:student) { FactoryBot.create(:student_with_credit_card) }
+  let(:student) { FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card) }
   let(:payment) { FactoryBot.create(:payment_with_credit_card, student: student) }
 
   it 'adds journal entry id to payment', :stripe_mock do

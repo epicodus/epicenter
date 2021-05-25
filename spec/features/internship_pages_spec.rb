@@ -1,6 +1,6 @@
 feature 'viewing the internships index page' do
   context 'as a student' do
-    let(:student) { FactoryBot.create(:user_with_all_documents_signed) }
+    let(:student) { FactoryBot.create(:student, :with_course, :with_all_documents_signed) }
     let!(:internship) { FactoryBot.create(:internship, courses: [student.course]) }
     before { login_as(student, scope: :student) }
 
@@ -114,7 +114,7 @@ end
 feature 'visiting the internships show page' do
   context 'as a student' do
     let(:internship_course) { FactoryBot.create(:internship_course) }
-    let(:student) { FactoryBot.create(:user_with_all_documents_signed, courses: [internship_course]) }
+    let(:student) { FactoryBot.create(:student, :with_all_documents_signed, courses: [internship_course]) }
     let(:internship) { FactoryBot.create(:internship, courses: [internship_course]) }
     before { login_as(student, scope: :student) }
 
@@ -148,7 +148,7 @@ feature 'visiting the internships show page' do
   end
 
   context 'as an admin' do
-    let(:admin) { FactoryBot.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin, :with_course) }
 
     before { login_as(admin, scope: :admin) }
 
@@ -229,8 +229,8 @@ feature 'rating an internship' do
 end
 
 feature 'admin viewing students interested in an internship' do
-  let(:admin) { FactoryBot.create(:admin) }
   let(:course) { FactoryBot.create(:internship_course) }
+  let(:admin) { FactoryBot.create(:admin, current_course: course) }
   let(:student) { FactoryBot.create(:student, course: course) }
   let(:internship) { FactoryBot.create(:internship, courses: [student.course]) }
   before { login_as(admin, scope: :admin) }
@@ -266,8 +266,8 @@ feature 'admin viewing students interested in an internship' do
 end
 
 feature "admin viewing a student's internship page" do
-  let(:admin) { FactoryBot.create(:admin) }
   let(:course) { FactoryBot.create(:internship_course) }
+  let(:admin) { FactoryBot.create(:admin, current_course: course) }
   let(:student) { FactoryBot.create(:student, course: course) }
   let!(:internship) { FactoryBot.create(:internship, courses: [student.course]) }
   before { login_as(admin, scope: :admin) }
@@ -285,9 +285,9 @@ feature "admin viewing a student's internship page" do
 end
 
 feature "viewing a student's internship page after internship assignment" do
-  let(:admin) { FactoryBot.create(:admin) }
   let(:course) { FactoryBot.create(:internship_course) }
   let(:student) { FactoryBot.create(:student, course: course) }
+  let(:admin) { FactoryBot.create(:admin, current_course: course) }
   let(:internship) { FactoryBot.create(:internship, courses: [student.course]) }
   let!(:interview_assignment) { FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_student: 1, feedback_from_student: 'Great interview!') }
   let!(:internship_assignment) { FactoryBot.create(:internship_assignment, student: student, internship: internship, course: course) }

@@ -1,5 +1,5 @@
 feature 'Submitting demographics info' do
-  let(:student) { FactoryBot.create(:user_waiting_on_demographics, email: 'example@example.com') }
+  let(:student) { FactoryBot.create(:student, :with_all_documents_signed, demographics: nil, email: 'example@example.com') }
 
   scenario 'as a guest cannot view form' do
     visit new_demographic_path
@@ -84,7 +84,7 @@ feature 'Submitting demographics info' do
 
   context 'as a student with no payment due' do
     scenario "redirects to courses page if no payment due", vcr: true do
-      special_plan_student = FactoryBot.create(:user_waiting_on_demographics, plan: FactoryBot.create(:special_plan))
+      special_plan_student = FactoryBot.create(:student, :with_all_documents_signed, demographics: nil, plan: FactoryBot.create(:special_plan))
       login_as(special_plan_student, scope: :student)
       visit root_path
       fill_in 'demographic_info_address', with: '400 SW 6th Ave'

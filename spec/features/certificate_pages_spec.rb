@@ -1,23 +1,21 @@
 feature "print completion certificate" do
   context "before class is over" do
+    let(:student) { FactoryBot.create(:student, :with_course) }
+
+    before { login_as(student, scope: :student) }
+
     it "doesn't show link to print certificate" do
-      student = FactoryBot.create(:student)
-      login_as(student, scope: :student)
       visit edit_student_registration_path
       expect(page).to_not have_link "View certificate of completion"
       expect(page).to have_content "Certificate will be available"
     end
 
     it "doesn't show certificate even if student directly enters URL" do
-      student = FactoryBot.create(:student)
-      login_as(student, scope: :student)
       visit certificate_path
       expect(page).to_not have_content "Epicodus Certificate of Completion"
     end
 
     it "doesn't show certificate even if student directly enters URL" do
-      student = FactoryBot.create(:student)
-      login_as(student, scope: :student)
       visit student_certificate_path(student)
       expect(page).to_not have_content "Epicodus Certificate of Completion"
     end
@@ -87,7 +85,7 @@ feature "print completion certificate" do
 
   context "logged in as admin" do
     it "allows admin to generate certificate" do
-      student = FactoryBot.create(:student)
+      student = FactoryBot.create(:student, :with_course)
       admin = FactoryBot.create(:admin)
       travel_to student.course.end_date + 1.day do
         login_as(admin, scope: :admin)

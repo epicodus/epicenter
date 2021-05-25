@@ -1,8 +1,8 @@
 feature "viewing transcript & certificate" do
   context "before first class is over" do
     it "doesn't show transcript to admin" do
-      admin = FactoryBot.create(:admin)
-      student = FactoryBot.create(:student)
+      student = FactoryBot.create(:student, :with_course)
+      admin = FactoryBot.create(:admin, current_course: student.course)
       login_as(admin, scope: :admin)
       visit student_courses_path(student)
       expect(page).to have_content "Transcript not yet available."
@@ -11,7 +11,7 @@ feature "viewing transcript & certificate" do
     end
 
     it "doesn't show transcript to student" do
-      student = FactoryBot.create(:student)
+      student = FactoryBot.create(:student, :with_course)
       login_as(student, scope: :student)
       visit edit_student_registration_path
       expect(page).to_not have_link "View transcript"
@@ -20,7 +20,7 @@ feature "viewing transcript & certificate" do
     end
 
     it "doesn't show certificate" do
-      student = FactoryBot.create(:student)
+      student = FactoryBot.create(:student, :with_course)
       login_as(student, scope: :student)
       visit edit_student_registration_path
       expect(page).to_not have_link "View certificate of completion"
@@ -31,9 +31,9 @@ feature "viewing transcript & certificate" do
 
   context "after completed 1 class" do
     it "allows admin to view student transcript" do
-      admin = FactoryBot.create(:admin)
       course = FactoryBot.create(:past_course)
       student = FactoryBot.create(:student, course: course)
+      admin = FactoryBot.create(:admin, current_course: course)
       login_as(admin, scope: :admin)
       visit student_courses_path(student)
       click_link "View transcript"
@@ -116,8 +116,9 @@ feature "viewing transcript & certificate" do
     it 'shows meets attendance requirement message when over 90%' do
       course = FactoryBot.create(:past_course)
       student = FactoryBot.create(:student, course: course)
+      pair = FactoryBot.create(:student, course: course)
       course.class_days.each do |day|
-        FactoryBot.create(:attendance_record, student: student, date: day, left_early: false, tardy: false, pair_ids: [1])
+        FactoryBot.create(:attendance_record, student: student, date: day, left_early: false, tardy: false, pair_ids: [pair.id])
       end
       login_as(student, scope: :student)
       visit transcript_path

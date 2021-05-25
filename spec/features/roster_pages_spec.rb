@@ -12,7 +12,7 @@ feature "Viewing roster page" do
   end
 
   context "as an admin" do
-    let(:student) { FactoryBot.create(:seattle_student) }
+    let(:student) { FactoryBot.create(:seattle_student, :with_course) }
     let(:admin) { FactoryBot.create(:admin, current_course: student.course) }
 
     before { login_as(admin, scope: :admin) }
@@ -27,7 +27,8 @@ feature "Viewing roster page" do
     end
 
     scenario "can see students in different office" do
-      other_student = FactoryBot.create(:portland_student_with_all_documents_signed)
+    other_office = FactoryBot.create(:portland_office)
+    other_student = FactoryBot.create(:portland_student, :with_all_documents_signed, course: FactoryBot.create(:course, office: other_office))
       travel_to other_student.course.start_date do
         FactoryBot.create(:attendance_record, student: other_student, date: Time.zone.now.to_date)
         visit roster_path

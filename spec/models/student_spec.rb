@@ -51,7 +51,7 @@ describe Student do
 
     it 'does not set payment plan for part-time full-stack students' do
       parttime_plan = FactoryBot.create(:parttime_plan)
-      cohort = FactoryBot.create(:part_time_c_react_cohort)
+      cohort = FactoryBot.create(:pt_c_react_cohort)
       student = FactoryBot.build(:student, plan_id: nil, courses: cohort.courses)
       student.save
       expect(student.plan).to eq nil
@@ -76,7 +76,7 @@ describe Student do
       plan = FactoryBot.create(:upfront_plan)
       course = FactoryBot.create(:course)
       student = FactoryBot.build(:student, email: 'example@example.com', plan: nil, courses: [course])
-      expect(CrmUpdateJob).to_not receive(:perform_later)
+      expect(CrmUpdateJob).to_not receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PAYMENT_PLAN'] => plan.close_io_description })
       student.save
     end
 
@@ -183,7 +183,7 @@ describe Student do
 
   describe 'updates ending_cohort' do
     let(:student) { FactoryBot.create(:student, courses: []) }
-    let(:cohort)  { FactoryBot.create(:cohort_with_internship) }
+    let(:cohort)  { FactoryBot.create(:ft_cohort) }
 
     it 'when current cohort changed' do
       student.update(cohort: cohort)
@@ -460,7 +460,7 @@ describe Student do
   end
 
   describe "#attendance_record_on_day" do
-    let(:student) { FactoryBot.create(:student) }
+    let(:student) { FactoryBot.create(:student, :with_course) }
     let(:attendance_record) { FactoryBot.create(:attendance_record, student: student, date: student.course.start_date) }
 
     it "returns the student's attendance record for the specified day" do
@@ -469,7 +469,7 @@ describe Student do
   end
 
   describe "#random_pairs" do
-    let!(:current_student) { FactoryBot.create(:student) }
+    let!(:current_student) { FactoryBot.create(:student, :with_course) }
     let!(:student_2) { FactoryBot.create(:user_with_score_of_9, course: current_student.course) }
     let!(:student_3) { FactoryBot.create(:user_with_score_of_10, course: current_student.course) }
     let!(:student_4) { FactoryBot.create(:user_with_score_of_10, course: current_student.course) }
@@ -483,7 +483,7 @@ describe Student do
     let!(:student_12_after_starting_point) { FactoryBot.create(:user_with_score_of_6, course: current_student.course) }
 
     it "returns an empty array when there are no other students in a course", :stub_mailgun do
-      student_without_classmates = FactoryBot.create(:student)
+      student_without_classmates = FactoryBot.create(:student, :with_course)
       expect(student_without_classmates.random_pairs).to eq []
     end
 
@@ -539,10 +539,10 @@ describe Student do
   end
 
   describe "#solos" do
-    let(:cohort) { FactoryBot.create(:part_time_cohort) }
-    let(:past_cohort) { FactoryBot.create(:part_time_cohort, start_date: (cohort.start_date - 1.year).beginning_of_week) }
-    let(:student) { FactoryBot.create(:student_without_courses) }
-    let(:pair) { FactoryBot.create(:student_without_courses) }
+    let(:cohort) { FactoryBot.create(:pt_intro_cohort) }
+    let(:past_cohort) { FactoryBot.create(:pt_intro_cohort, start_date: (cohort.start_date - 1.year).beginning_of_week) }
+    let(:student) { FactoryBot.create(:student, courses: []) }
+    let(:pair) { FactoryBot.create(:student, courses: []) }
 
     before { student.courses = [past_cohort.courses.first, cohort.courses.first] }
 
@@ -736,7 +736,7 @@ describe Student do
   end
 
   describe '#total_owed', :stripe_mock do
-    let(:student) { FactoryBot.create :user_with_credit_card }
+    let(:student) { FactoryBot.create(:student, :with_plan, :with_credit_card) }
 
     before { allow(student).to receive(:total_paid).and_return(50_00) }
 
@@ -762,7 +762,7 @@ describe Student do
   end
 
   describe '#total_remaining_owed', :stripe_mock do
-    let(:student) { FactoryBot.create :user_with_verified_bank_account }
+    let(:student) { FactoryBot.create(:student, :with_plan, :with_verified_bank_account) }
 
     before { allow(student).to receive(:total_paid).and_return(50_00) }
 
@@ -773,21 +773,21 @@ describe Student do
 
   describe '#upfront_amount_owed', :stripe_mock do
     it "calculates the upfront amount owed with upfront payment plan" do
-      student = FactoryBot.create(:user_with_credit_card)
+      student = FactoryBot.create(:student, :with_plan, :with_credit_card)
       allow(student).to receive(:total_paid).and_return(50_00)
       expect(student.upfront_amount_owed).to eq student.plan.student_portion - 50_00
       expect(student.upfront_amount_owed).to eq student.plan.upfront_amount - 50_00
     end
 
     it "calculates the upfront amount owed with standard payment plan" do
-      student = FactoryBot.create(:user_with_credit_card, plan: FactoryBot.create(:standard_plan))
+      student = FactoryBot.create(:student, :with_credit_card, plan: FactoryBot.create(:standard_plan))
       allow(student).to receive(:total_paid).and_return(50_00)
       expect(student.upfront_amount_owed).to eq student.plan.upfront_amount - 50_00
       expect(student.upfront_amount_owed).to_not eq student.plan.student_portion - 50_00
     end
 
     it "calculates the upfront amount owed with standard payment plan with cost adjustment" do
-      student = FactoryBot.create(:user_with_credit_card, plan: FactoryBot.create(:standard_plan))
+      student = FactoryBot.create(:student, :with_credit_card, plan: FactoryBot.create(:standard_plan))
       allow(student).to receive(:total_paid).and_return(50_00)
       student.cost_adjustments.create(amount: 25_00, reason: 'test')
       expect(student.upfront_amount_owed).to eq student.plan.upfront_amount - 25_00
@@ -798,20 +798,20 @@ describe Student do
   describe "#upfront_amount_with_fees", :stripe_mock do
     it "calculates the total upfront amount including fees" do
       plan = FactoryBot.create(:upfront_plan, upfront_amount: 200_00, student_portion: 200_00)
-      student = FactoryBot.create(:student_with_credit_card, plan: plan)
+      student = FactoryBot.create(:student, :with_credit_card, plan: plan)
       expect(student.upfront_amount_with_fees).to eq 206_00
     end
 
     it "calculates the total upfront amount on second payment including fees" do
       plan = FactoryBot.create(:upfront_plan, upfront_amount: 200_00, student_portion: 200_00)
-      student = FactoryBot.create(:student_with_credit_card, plan: plan)
+      student = FactoryBot.create(:student, :with_ft_cohort, :with_credit_card, plan: plan)
       FactoryBot.create(:payment_with_credit_card, student: student, amount: student.plan.upfront_amount - 100_00)
       expect(student.upfront_amount_with_fees).to eq 103_00
     end
   end
 
   describe "#upfront_payment_due?", :stripe_mock do
-    let(:student) { FactoryBot.create :student_with_credit_card }
+    let(:student) { FactoryBot.create(:student, :with_plan, :with_ft_cohort, :with_credit_card) }
 
     it "is true if upfront_amount_owed is greater than 0" do
       expect(student.upfront_payment_due?).to eq true
@@ -839,7 +839,7 @@ describe Student do
   end
 
   describe "#make_upfront_payment", :vcr, :stripe_mock, :stub_mailgun do
-    let(:student) { FactoryBot.create :student_with_credit_card }
+    let(:student) { FactoryBot.create(:student, :with_plan, :with_ft_cohort, :with_credit_card) }
 
     it "makes a payment for the upfront amount of the student's plan if first payment" do
       student.make_upfront_payment
@@ -866,7 +866,7 @@ describe Student do
   end
 
   describe '#signed_in_today?' do
-    let(:student) { FactoryBot.create(:student) }
+    let(:student) { FactoryBot.create(:student, :with_course) }
 
     it 'is false if the student has not signed in today' do
       expect(student.signed_in_today?).to eq false
@@ -881,7 +881,7 @@ describe Student do
   end
 
   describe '#signed_out_today?' do
-    let(:student) { FactoryBot.create(:student) }
+    let(:student) { FactoryBot.create(:student, :with_course) }
 
     it 'is false if the student has not signed out today' do
       travel_to student.course.start_date do
@@ -976,7 +976,7 @@ describe Student do
   end
 
   describe '#is_classroom_day?' do
-  let(:student) { FactoryBot.create(:student) }
+  let(:student) { FactoryBot.create(:student, :with_course) }
 
   it 'returns true if today is monday class day for this course' do
     travel_to student.course.start_date.beginning_of_week do
@@ -1010,7 +1010,7 @@ end
   end
 
   describe '#passed_all_fulltime_code_reviews?', :stub_mailgun do
-    let(:student) { FactoryBot.create(:student) }
+    let(:student) { FactoryBot.create(:student, :with_course) }
     let(:code_review) { FactoryBot.create(:code_review, course: student.course) }
     let(:code_review_2) { FactoryBot.create(:code_review, course: student.course) }
     let(:submission) { FactoryBot.create(:submission, code_review: code_review, student: student) }
@@ -1054,7 +1054,7 @@ end
   end
 
   describe '#submission_for' do
-    let(:student) { FactoryBot.create(:student) }
+    let(:student) { FactoryBot.create(:student, :with_course) }
     let(:code_review_1) { FactoryBot.create(:code_review, course: student.course) }
     let(:code_review_2) { FactoryBot.create(:code_review, course: student.course) }
     let!(:submission_1) { FactoryBot.create(:submission, student: student, code_review: code_review_1) }
@@ -1068,12 +1068,11 @@ end
     let(:course_1) { FactoryBot.create(:past_course) }
     let(:course_2) { FactoryBot.create(:course) }
     let(:student) { FactoryBot.create(:student, courses: [course_1, course_2]) }
-
-    # before { allow_any_instance_of(AttendanceRecord).to receive(:pairings).and_return({ id: 1 }) }
+    let(:pair) { FactoryBot.create(:student, courses: [course_1, course_2]) }
 
     it "calculates the student's attendance score when half absences" do
       course_1.class_days.each do |day|
-        FactoryBot.create(:attendance_record, student: student, date: day, left_early: false, tardy: false, pair_ids: [1])
+        FactoryBot.create(:attendance_record, student: student, date: day, left_early: false, tardy: false, pair_ids: [pair.id])
       end
       travel_to course_2.end_date + 1.day do
         expect(student.total_attendance_score).to eq 50
@@ -1172,14 +1171,12 @@ end
 
   describe '#absences_cohort' do
     context 'ft cohort' do
-      let(:ft_cohort) { FactoryBot.create(:intro_only_cohort) }
+      let(:ft_cohort) { FactoryBot.create(:ft_cohort) }
       let(:ft_student) { FactoryBot.create(:student, courses: ft_cohort.courses) }
       let(:pair) { FactoryBot.create(:student, courses: ft_cohort.courses) }
       before do
-        ft_cohort.courses << FactoryBot.create(:course)
-        ft_cohort.courses << FactoryBot.create(:internship_course)
-        ft_cohort.courses.first.update(start_date: Date.today.beginning_of_week - 2.weeks, class_days: [Date.today.beginning_of_week - 2.weeks])
-        ft_cohort.courses.second.update(start_date: Date.today.beginning_of_week - 1.week, class_days: [Date.today.beginning_of_week - 1.week])
+        ft_cohort.courses.first.update(internship_course: false, description: 'non-internship course 1', start_date: Date.today.beginning_of_week - 2.weeks, class_days: [Date.today.beginning_of_week - 2.weeks])
+        ft_cohort.courses.second.update(internship_course: false, description: 'non-internship course 2', start_date: Date.today.beginning_of_week - 1.week, class_days: [Date.today.beginning_of_week - 1.week])
       end
 
       it "with more than one course and perfect attendance" do
@@ -1219,10 +1216,15 @@ end
         FactoryBot.create(:attendance_record, student: ft_student, date: ft_cohort.courses.second.start_date, tardy: false, left_early: false, pairings_attributes: [pair_id: pair.id])
         expect(ft_student.absences_cohort).to eq 0
       end
+
+      it 'does not include internship course' do
+        ft_cohort.courses << FactoryBot.create(:past_course, internship_course: true, description: 'internship course')
+        expect(ft_student.absences_cohort).to eq 2
+      end
     end
 
     context 'pt full stack cohort' do
-      let(:pt_full_stack_cohort) { FactoryBot.create(:part_time_c_react_cohort) }
+      let(:pt_full_stack_cohort) { FactoryBot.create(:pt_c_react_cohort) }
       let(:pt_full_stack_student) { FactoryBot.create(:student, courses: pt_full_stack_cohort.courses) }
       let(:pair) { FactoryBot.create(:student, courses: pt_full_stack_cohort.courses) }
       before do
@@ -1264,7 +1266,7 @@ end
     end
 
     context 'pt intro cohort' do
-      let(:pt_intro_cohort) { FactoryBot.create(:part_time_cohort) }
+      let(:pt_intro_cohort) { FactoryBot.create(:pt_intro_cohort) }
       let(:pt_intro_student) { FactoryBot.create(:student, courses: pt_intro_cohort.courses) }
       let(:pair) { FactoryBot.create(:student, courses: pt_intro_cohort.courses) }
       before do
@@ -1505,15 +1507,15 @@ end
   end
 
   describe '#total_paid', :vcr, :stripe_mock, :stub_mailgun do
+  let(:student) { FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com') }
+
     it 'sums all of the students payments' do
-      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
       FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00)
       FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00)
       expect(student.total_paid).to eq 400_00
     end
 
     it 'does not include failed payments' do
-      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
       FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00)
       failed_payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00)
       failed_payment.update(status: 'failed')
@@ -1521,21 +1523,19 @@ end
     end
 
     it 'subtracts refunds' do
-      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00, offline: true)
       payment.update(refund_amount: 5000)
       expect(student.total_paid).to eq 150_00
     end
 
     it 'includes negative offline transactions' do
-      student = FactoryBot.create(:student_with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 0, refund_amount: 200_00, offline: true)
       expect(student.total_paid).to eq -200_00
     end
   end
 
   describe '#total_paid_online', :vcr, :stripe_mock, :stub_mailgun do
-    let(:student) { FactoryBot.create(:student_with_credit_card, email: 'example@example.com') }
+    let(:student) { FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com') }
 
     it 'sums all of the stripe payments only' do
       FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00)
@@ -1551,7 +1551,7 @@ end
   end
 
   describe '#total_paid_offline', :vcr, :stripe_mock, :stub_mailgun do
-    let(:student) { FactoryBot.create(:student_with_credit_card, email: 'example@example.com') }
+    let(:student) { FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com') }
 
     it 'sums all of the offline payments only' do
       FactoryBot.create(:payment_with_credit_card, student: student, amount: 200_00)
@@ -1576,7 +1576,7 @@ end
   end
 
   describe "abilities" do
-    let(:student) { FactoryBot.create(:student) }
+    let(:student) { FactoryBot.create(:student, :with_course) }
     subject { Ability.new(student, "::1") }
 
     context 'for code reviews' do
@@ -1660,7 +1660,7 @@ end
   end
 
   describe 'paranoia' do
-    let(:student) { FactoryBot.create(:student) }
+    let(:student) { FactoryBot.create(:student, :with_course) }
     let!(:ar) { FactoryBot.create(:attendance_record, student: student, date: student.course.start_date) }
 
     it 'archives destroyed user' do
@@ -1677,6 +1677,7 @@ end
 
     it 'clears CRM student id & invitation token when student expunged' do
       allow_any_instance_of(CrmLead).to receive(:update).and_return({})
+      student.destroy
       expect_any_instance_of(CrmLead).to receive(:update).with({Rails.application.config.x.crm_fields['EPICENTER_ID'] => nil, Rails.application.config.x.crm_fields['INVITATION_TOKEN'] => nil })
       student.really_destroy
     end
@@ -1684,25 +1685,25 @@ end
 
   describe 'enrolled?' do
     it 'reports enrolled with full-time cohort' do
-      cohort = FactoryBot.create(:cohort_with_internship)
+      cohort = FactoryBot.create(:ft_cohort)
       student = FactoryBot.create(:student, courses: cohort.courses)
       expect(student.enrolled?).to eq true
     end
 
     it 'reports enrolled with part-time cohort' do
-      cohort = FactoryBot.create(:part_time_cohort, courses: [FactoryBot.create(:part_time_course)])
+      cohort = FactoryBot.create(:pt_intro_cohort, courses: [FactoryBot.create(:part_time_course)])
       student = FactoryBot.create(:student, courses: cohort.courses)
       expect(student.enrolled?).to eq true
     end
 
     it 'reports not enrolled with no cohort' do
-      student = FactoryBot.create(:student_without_courses)
+      student = FactoryBot.create(:student, courses: [])
       expect(student.enrolled?).to eq false
     end
   end
 
   describe 'get_status' do
-    let(:student) { FactoryBot.create(:student) }
+    let(:student) { FactoryBot.create(:student, :with_course) }
 
     it 'reports status when student is archived' do
       FactoryBot.create(:attendance_record, student: student, date: student.course.start_date)
@@ -1764,7 +1765,7 @@ end
 
   describe '#archive_enrollments' do
     it 'archives all enrollments when student destroyed' do
-      student = FactoryBot.create(:student)
+      student = FactoryBot.create(:student, :with_course)
       enrollment_id = student.enrollments.first.id
       student.destroy
       expect(Enrollment.find_by_id(enrollment_id)).to eq nil
@@ -1772,12 +1773,12 @@ end
   end
 
   describe 'calculate cohorts' do
-    let!(:cohort) { FactoryBot.create(:full_cohort, start_date: Date.today.beginning_of_week) }
-    let!(:past_cohort) { FactoryBot.create(:full_cohort, start_date: Date.today.beginning_of_week - 1.year) }
-    let!(:future_cohort) { FactoryBot.create(:full_cohort, start_date: Date.today.beginning_of_week + 1.year) }
-    let!(:part_time_cohort) { FactoryBot.create(:part_time_cohort, start_date: Date.today.beginning_of_week) }
-    let!(:part_time_full_stack_cohort) { FactoryBot.create(:part_time_c_react_cohort, start_date: Date.today.beginning_of_week) }
-    let!(:part_time_js_react_cohort) { FactoryBot.create(:part_time_js_react_cohort, start_date: Date.today.beginning_of_week) }
+    let!(:cohort) { FactoryBot.create(:ft_cohort, start_date: Date.today.beginning_of_week) }
+    let!(:past_cohort) { FactoryBot.create(:ft_cohort, start_date: Date.today.beginning_of_week - 1.year) }
+    let!(:future_cohort) { FactoryBot.create(:ft_cohort, start_date: Date.today.beginning_of_week + 1.year) }
+    let!(:part_time_cohort) { FactoryBot.create(:pt_intro_cohort, start_date: Date.today.beginning_of_week) }
+    let!(:part_time_full_stack_cohort) { FactoryBot.create(:pt_c_react_cohort, start_date: Date.today.beginning_of_week) }
+    let!(:part_time_js_react_cohort) { FactoryBot.create(:pt_js_react_cohort, start_date: Date.today.beginning_of_week) }
 
     describe '#calculate_parttime_cohort' do
       it 'returns part-time cohort when only part-time intro courses' do
@@ -1835,13 +1836,8 @@ end
         expect(student.calculate_current_cohort).to eq future_cohort
       end
 
-      it 'returns correct cohort when internship course belongs to multiple cohorts' do
-        cohort.courses.last.cohorts << future_cohort
-        student = FactoryBot.create(:student, courses: future_cohort.courses)
-        expect(student.calculate_current_cohort).to eq future_cohort
-      end
-
       it 'returns part-time full-stack cohort when internship & non-internship course from that cohort is present' do
+        cohort.courses.first.update(start_date: Date.today - 1.year)
         student = FactoryBot.create(:student, courses: [part_time_cohort.courses.first, cohort.courses.first, part_time_full_stack_cohort.courses.first, part_time_full_stack_cohort.courses.last])
         expect(student.calculate_current_cohort).to eq part_time_full_stack_cohort
       end
@@ -1862,7 +1858,7 @@ end
   end
 
   describe '.invite', :dont_stub_crm do
-    let(:cohort) { FactoryBot.create(:full_cohort) }
+    let(:cohort) { FactoryBot.create(:ft_full_cohort) }
 
     before { allow_any_instance_of(CrmLead).to receive(:cohort).and_return(cohort) }
 
@@ -1881,21 +1877,21 @@ end
 
   describe '#fulltime?, #parttime?, #fidgetech?' do
     it 'returns true if student ending_cohort is a fulltime cohort' do
-      student = FactoryBot.create(:student_with_cohort)
+      student = FactoryBot.create(:student, :with_ft_cohort)
       expect(student.fulltime?).to eq true
       expect(student.parttime?).to eq false
       expect(student.fidgetech?).to eq false
     end
 
     it 'returns true if student ending_cohort is a parttime cohort' do
-      student = FactoryBot.create(:part_time_student_with_cohort)
+      student = FactoryBot.create(:student, :with_pt_intro_cohort)
       expect(student.fulltime?).to eq false
       expect(student.parttime?).to eq true
       expect(student.fidgetech?).to eq false
     end
 
     it 'returns true if student ending_cohort is Fidgetech' do
-      student = FactoryBot.create(:fidgetech_student_with_cohort)
+      student = FactoryBot.create(:student, :with_fidgetech_cohort)
       expect(student.fulltime?).to eq false
       expect(student.parttime?).to eq false
       expect(student.fidgetech?).to eq true

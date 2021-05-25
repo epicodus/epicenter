@@ -79,7 +79,7 @@ describe DemographicInfo do
   end
 
   describe 'updating close.io with demographics info', :vcr, :dont_stub_crm do
-    let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com') }
+    let(:student) { FactoryBot.create(:student, :with_course, :with_all_documents_signed, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
     let(:lead_id) { get_lead_id(student.email) }
 

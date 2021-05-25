@@ -1,6 +1,6 @@
 feature 'code_review report' do
   it 'shows a table with all of the students and their grades', :stub_mailgun do
-    student = FactoryBot.create(:student)
+    student = FactoryBot.create(:student, :with_course)
     code_review = FactoryBot.create(:code_review, course: student.course)
     submission = FactoryBot.create(:submission, code_review: code_review, student: student)
     review = FactoryBot.create(:review, submission: submission)
@@ -13,7 +13,7 @@ feature 'code_review report' do
   end
 
   it "sorts the table by the student's total score for that code_review", :stub_mailgun do
-    student = FactoryBot.create(:student)
+    student = FactoryBot.create(:student, :with_course)
     better_student = FactoryBot.create(:student, course: student.course)
     code_review = FactoryBot.create(:code_review, course: student.course)
     submission = FactoryBot.create(:submission, code_review: code_review, student: student)
@@ -36,7 +36,7 @@ feature 'code_review report' do
 
   context 'visiting as a student' do
     it 'is not authorized' do
-      student = FactoryBot.create(:user_with_all_documents_signed)
+      student = FactoryBot.create(:student, :with_course, :with_all_documents_signed)
       code_review = FactoryBot.create(:code_review)
       login_as(student, scope: :student)
       visit course_code_review_report_path(student.course, code_review)

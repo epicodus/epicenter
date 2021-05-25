@@ -36,17 +36,17 @@ describe CrmLead, :dont_stub_crm, :vcr do
 
   describe '#cohort' do
     it 'returns cohort for full-time student' do
-      cohort = FactoryBot.create(:intro_only_cohort, start_date: Date.parse('2000-01-03'))
+      cohort = FactoryBot.create(:ft_cohort, start_date: Date.parse('2000-01-03'))
       expect(CrmLead.new('example@example.com').cohort).to eq cohort
     end
 
     it 'returns cohort for part-time student' do
-      cohort = FactoryBot.create(:part_time_cohort, start_date: Date.parse('2000-01-03'))
+      cohort = FactoryBot.create(:pt_intro_cohort, start_date: Date.parse('2000-01-03'))
       expect(CrmLead.new('example-part-time@example.com').cohort).to eq cohort
     end
 
     it 'returns Fidgetech cohort' do
-      cohort = FactoryBot.create(:intro_only_cohort, description: 'Fidgetech')
+      cohort = FactoryBot.create(:fidgetech_cohort)
       expect(CrmLead.new('example-fidgetech@example.com').cohort).to eq cohort
     end
 
@@ -122,7 +122,7 @@ describe CrmLead, :dont_stub_crm, :vcr do
   end
 
   describe 'updating close.io when student email is updated' do
-    let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com') }
+    let(:student) { FactoryBot.create(:student, :with_all_documents_signed, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
 
     before { allow(CrmUpdateJob).to receive(:perform_later).and_return({}) }
@@ -133,14 +133,14 @@ describe CrmLead, :dont_stub_crm, :vcr do
     end
 
     it 'does not update the record when the email is not found' do
-      student = FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com')
+      student = FactoryBot.create(:student, :with_all_documents_signed, email: 'example@example.com')
       student.update(email: "no_close_entry@example.com")
       expect { student.crm_lead.update(email: "second-email@example.com") }.to raise_error(CrmError, "The Close.io lead for #{student.email} was not found.")
     end
   end
 
   describe 'adding note to close.io' do
-    let(:student) { FactoryBot.create(:user_with_all_documents_signed, email: 'example@example.com') }
+    let(:student) { FactoryBot.create(:student, :with_all_documents_signed, email: 'example@example.com') }
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
     let(:lead_id) { get_lead_id(student.email) }
 

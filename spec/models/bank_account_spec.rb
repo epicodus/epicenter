@@ -4,7 +4,7 @@ describe BankAccount do
   it { should have_many :payments }
 
   describe "verify Stripe account", :vcr, js: true do
-    let(:student) { FactoryBot.create :user_with_verified_bank_account }
+    let(:student) { FactoryBot.create :student, :with_verified_bank_account }
 
     it "verifies a Stripe account before_update", :vcr, js: true do
       bank_account = FactoryBot.create(:bank_account)
@@ -16,12 +16,12 @@ describe BankAccount do
 
   describe "#verify_account", :vcr, js: true do
     it "sets the student's bank_account verified status to true", :vcr, js: true do
-      student = FactoryBot.create(:user_with_verified_bank_account)
+      student = FactoryBot.create(:student, :with_verified_bank_account)
       expect(student.bank_accounts.first.verified).to be true
     end
 
     it "sets the confirmed bank account as the primary payment method if student does not have one", :vcr, js: true do
-      student = FactoryBot.create(:user_with_verified_bank_account)
+      student = FactoryBot.create(:student, :with_verified_bank_account)
       expect(student.primary_payment_method).to be_an_instance_of(BankAccount)
     end
   end

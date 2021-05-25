@@ -5,14 +5,15 @@ feature 'visiting the cohort index page' do
   end
 
   scenario 'as as a student' do
-    student = FactoryBot.create(:user_with_all_documents_signed)
+    student = FactoryBot.create(:student, :with_all_documents_signed)
     login_as(student, scope: :student)
     visit cohorts_path
     expect(page).to have_content 'not authorized'
   end
 
   scenario 'as an admin' do
-    admin = FactoryBot.create(:admin)
+    admin = FactoryBot.create(:admin, :with_course)
+    admin.current_course.cohort.update(end_date: admin.current_course.end_date)
     login_as(admin, scope: :admin)
     visit cohorts_path
     expect(page).to have_content 'Cohorts'
@@ -20,7 +21,8 @@ feature 'visiting the cohort index page' do
 end
 
 feature 'viewing cohort' do
-  let(:cohort) { FactoryBot.create(:intro_only_cohort) }
+  let(:cohort) { FactoryBot.create(:pt_intro_cohort) }
+  let(:admin) { cohort.admin }
 
   scenario 'not logged in' do
     visit cohort_path(cohort)
@@ -28,15 +30,13 @@ feature 'viewing cohort' do
   end
 
   scenario 'as as a student' do
-    student = FactoryBot.create(:user_with_all_documents_signed)
+    student = FactoryBot.create(:student, :with_all_documents_signed)
     login_as(student, scope: :student)
     visit cohort_path(cohort)
     expect(page).to have_content 'not authorized'
   end
 
   scenario 'as an admin' do
-    admin = FactoryBot.create(:admin)
-    cohort = FactoryBot.create(:intro_only_cohort)
     login_as(admin, scope: :admin)
     visit cohort_path(cohort)
     expect(page).to have_content 'Courses'
@@ -44,7 +44,6 @@ feature 'viewing cohort' do
   end
 
   scenario 'as an admin linking from course cohort link' do
-    admin = FactoryBot.create(:admin)
     login_as(admin, scope: :admin)
     visit course_path(cohort.courses.first)
     click_link cohort.description
@@ -60,16 +59,16 @@ feature 'creating a cohort' do
   end
 
   scenario 'as as a student' do
-    student = FactoryBot.create(:user_with_all_documents_signed)
+    student = FactoryBot.create(:student, :with_all_documents_signed)
     login_as(student, scope: :student)
     visit new_cohort_path
     expect(page).to have_content 'not authorized'
   end
 
   context 'as an admin' do
-    let(:admin) { FactoryBot.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin, :with_course) }
     let!(:office) { FactoryBot.create(:portland_office) }
-    let!(:track) { FactoryBot.create(:track) }
+    let!(:track) { admin.current_course.track }
 
     before { login_as(admin, scope: :admin) }
 
@@ -103,7 +102,7 @@ feature 'creating a cohort' do
 end
 
 feature 'editing a cohort' do
-  let!(:cohort) { FactoryBot.create(:intro_only_cohort) }
+  let!(:cohort) { FactoryBot.create(:pt_intro_cohort) }
 
   scenario 'not logged in' do
     visit edit_cohort_path(cohort)
@@ -111,17 +110,18 @@ feature 'editing a cohort' do
   end
 
   scenario 'as a student' do
-    student = FactoryBot.create(:user_with_all_documents_signed)
+    student = FactoryBot.create(:student, :with_all_documents_signed)
     login_as(student, scope: :student)
     visit edit_cohort_path(cohort)
     expect(page).to have_content 'not authorized'
   end
 
   context 'as an admin' do
-    let(:admin) { FactoryBot.create(:admin) }
+    let(:admin) { FactoryBot.create(:admin, courses: cohort.courses) }
     before { login_as(admin, scope: :admin) }
 
     scenario 'navigation to cohort#edit page' do
+      admin.current_course.cohort.update(end_date: admin.current_course.end_date)
       visit cohorts_path
       click_on 'Edit'
       expect(page).to have_content "Edit #{cohort.description}"
