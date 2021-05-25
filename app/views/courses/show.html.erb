@@ -30,10 +30,8 @@
             <% if current_admin || !@course.internship_course? %>
               <h4><%= @course.start_date.strftime('%B %d') %> to <%= @course.end_date.strftime('%B %d') %></h4>
             <% end %>
-            <% if current_admin && @course.cohorts.any? %>
-              <% @course.cohorts.each do |cohort| %>
-                <h4>Cohort: <%= link_to cohort.description, cohort_path(cohort) %></h4>
-              <% end %>
+            <% if current_admin %>
+              <h4>Cohort: <%= link_to @course.cohort.description, cohort_path(@course.cohort) %></h4>
             <% end %>
 
             <p><%= render 'courses/toggle_rankings_form', course: @course %></p>

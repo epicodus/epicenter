@@ -27,8 +27,7 @@ class Course < ApplicationRecord
   belongs_to :office
   belongs_to :language
   belongs_to :track, optional: true
-  belongs_to :cohort, optional: true
-  has_and_belongs_to_many :cohorts, after_add: :update_cohort_end_date
+  belongs_to :cohort
   has_many :enrollments
   has_many :students, through: :enrollments
   has_many :attendance_records, through: :students

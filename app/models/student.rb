@@ -101,7 +101,7 @@ class Student < User
   end
 
   def absences_cohort
-    cohort_courses = Course.where(id: course.cohorts.first.courses & courses).order(:start_date)
+    cohort_courses = Course.where(id: course.cohort.courses & courses).order(:start_date)
     absences_penalty = attendance_records_for(:absent, cohort_courses.first, cohort_courses.last)
     tardies_penalty = attendance_records_for(:tardy, cohort_courses.first, cohort_courses.last) * TARDY_WEIGHT
     left_earlies_penalty = attendance_records_for(:left_early, cohort_courses.first, cohort_courses.last) * TARDY_WEIGHT
@@ -113,7 +113,7 @@ class Student < User
     if filtered_course
       filtered_records = solo_records.where("date between ? and ?", filtered_course.start_date, filtered_course.end_date)
     else
-      cohort_courses = course.try(:cohorts).try(:first).try(:courses) || courses
+      cohort_courses = course.cohort.courses
       filtered_records = solo_records.where("date between ? and ?", cohort_courses.first.start_date, cohort_courses.last.end_date)
     end
     filtered_records.reject {|ar| ar.date.friday?}.count
@@ -415,7 +415,7 @@ class Student < User
     # cohorts to ignore: PT intro, PT JS/React
     # include withdrawn courses
     # 1st FT cohort or PT full-stack cohort ever enrolled in
-    courses_with_withdrawn.cirr_fulltime_courses.first.try(:cohorts).try(:first)
+    courses_with_withdrawn.cirr_fulltime_courses.first.try(:cohort)
   end
 
   def calculate_current_cohort
@@ -426,7 +426,7 @@ class Student < User
     # student must be enrolled in internship course
     # ignore _which_ internship course for determining current cohort
     if courses.internship_courses.any?
-      courses.cirr_fulltime_courses.non_internship_courses.select { |course| course.cohorts.count == 1 }.last.try(:cohorts).try(:first)
+      courses.cirr_fulltime_courses.non_internship_courses.last.try(:cohort)
     end
   end
 
@@ -435,11 +435,11 @@ class Student < User
     # cohorts to ignore: FT, PT full-stack
     # ignore withdrawn courses
     # current or last completed PT intro or PT JS/React cohort
-    courses.cirr_parttime_courses.last.try(:cohorts).try(:first)
+    courses.cirr_parttime_courses.last.try(:cohort)
   end
 
   def possible_cirr_cohorts
-    courses.cirr_fulltime_courses.map {|c| c.cohorts}.flatten.uniq
+    Cohort.where(id: courses.cirr_fulltime_courses.pluck(:cohort_id))
   end
 
   def really_destroy

@@ -2,7 +2,7 @@ describe Course do
   it { should belong_to(:admin).optional }
   it { should belong_to :office }
   it { should belong_to :language }
-  it { should belong_to(:cohort).optional }
+  it { should belong_to(:cohort) }
   it { should belong_to(:track).optional }
   it { should have_many :students }
   it { should have_many(:attendance_records).through(:students) }
