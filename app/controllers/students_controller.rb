@@ -31,7 +31,7 @@ class StudentsController < ApplicationController
     @student = Student.find(params[:id])
     @confirmation_message = 'Edit current cohort'
     @previous_current_cohort = @student.cohort
-    @possible_cohorts = @student.courses.cirr_fulltime_courses.map {|c| c.cohorts}.flatten.uniq
+    @possible_cohorts = Cohort.where(id: @student.courses.cirr_fulltime_courses.pluck(:cohort_id))
     respond_to do |format|
       format.js { render 'cohorts/cohort_select_modal' }
     end

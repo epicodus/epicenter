@@ -6,7 +6,7 @@ class Cohort < ApplicationRecord
   scope :parttime_cohorts, -> { joins(:track).where("tracks.description = 'Part-Time Intro to Programming' OR tracks.description = 'Online'") }
   scope :fulltime_cohorts, -> { joins(:track).where("tracks.description != 'Part-Time Intro to Programming' AND tracks.description != 'Online'") }
 
-  has_and_belongs_to_many :courses, -> { order(:end_date) }, after_add: :update_end_date
+  has_many :courses, after_add: :update_end_date
   has_many :parttime_cohort_students, class_name: :User, foreign_key: :parttime_cohort_id
   has_many :starting_cohort_students, class_name: :User, foreign_key: :starting_cohort_id
   has_many :ending_cohort_students, class_name: :User, foreign_key: :ending_cohort_id
@@ -15,6 +15,7 @@ class Cohort < ApplicationRecord
   belongs_to :track
   belongs_to :admin
 
+  before_save -> { update_end_date(courses.last) if courses.any? }
   after_create :build_courses_from_layout_file, if: :layout_file_path
   after_create :set_description, unless: :description
 
