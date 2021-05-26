@@ -1,0 +1,36 @@
+<%= form_for course do |f| %>
+  <%= render 'layouts/errors', object: course %>
+
+  <div class="form-group">
+    <%= f.label :language_id, 'Language' %>
+    <%= f.select :language_id, Language.all.order(:id).collect {|c| [ c.name, c.id ] }, {include_blank: true}, { class: 'form-control' } %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :office_id, 'Office' %>
+    <%= f.select :office_id, Office.all.order(:name).collect {|c| [ c.name, c.id ] }, {include_blank: true}, { class: 'form-control' } %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :admin_id, 'Teacher' %>
+    <%= f.select :admin_id, Admin.all.collect {|c| [ c.name, c.id ] }, {include_blank: true}, { class: 'form-control' } %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :layout_file_path %>
+    <%= f.text_field :layout_file_path, class: 'form-control' %>
+  </div>
+
+  <%= f.hidden_field :active %>
+
+  <div class="form-group">
+    <%= f.label :class_days %>
+    <div class="custom-datepicker">
+      <%= f.hidden_field :class_days, value: @course.class_days.join(','), required: true %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <%= f.submit nil, class: "btn btn-info" %>
+  </div>
+<% end %>

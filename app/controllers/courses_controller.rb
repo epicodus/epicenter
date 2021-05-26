@@ -31,11 +31,21 @@ class CoursesController < ApplicationController
     authorize! :manage, @course
   end
 
+  def edit
+    @course = Course.find(params[:id])
+  end
+
   def update
     @course = Course.find(params[:id])
     if @course.update(course_params)
       flash[:notice] = "#{@course.description} has been updated."
-      redirect_to internships_path(active: true)
+      if request.referer.include?('internships')
+        redirect_to internships_path(active: true)
+      else
+        redirect_to course_path(@course)
+      end
+    else
+      render :edit
     end
   end
 
