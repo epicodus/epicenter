@@ -41,11 +41,39 @@ feature 'viewing cohort on course list page' do
 end
 
 feature 'editing a course' do
-  let(:course) { FactoryBot.create(:internship_course) }
+  let(:course) { FactoryBot.create(:internship_course, track: FactoryBot.create(:part_time_track)) }
+
+  scenario 'not logged in' do
+    visit edit_course_path(course)
+    expect(page).to have_content 'need to sign in'
+  end
+
+  scenario 'as a student' do
+    student = FactoryBot.create(:student, :with_all_documents_signed)
+    login_as(student, scope: :student)
+    visit edit_course_path(course)
+    expect(page).to have_content 'not authorized'
+  end
 
   context 'as an admin' do
-    let(:admin) { FactoryBot.create(:admin, current_course: course) }
+    let(:admin) { course.admin }
     before { login_as(admin, scope: :admin) }
+
+    scenario 'navigation to course#edit page' do
+    visit root_path
+    click_on 'Edit'
+    expect(page).to have_content "Edit #{course.description}"
+    end
+
+    scenario 'with valid input' do
+      visit edit_course_path(course)
+      select admin.current_course.language.name, from: 'Language'
+      select admin.current_course.office.name, from: 'Office'
+      find('#course_class_days', visible: false).set "2015-09-06,2015-09-07,2015-09-08"
+      click_on 'Update Course'
+      expect(page).to have_content "has been updated"
+      expect(page).to have_content 'Career reviews'
+    end
 
     scenario 'from the internships index page' do
       visit internships_path(active: true)

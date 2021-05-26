@@ -20,6 +20,7 @@
                 <td><%= course.students.count %></td>
                 <td><%= course.start_date.strftime("%B %d") %></td>
                 <td><%= course.end_date.strftime("%B %d") %></td>
+                <td><%= link_to 'Edit', edit_course_path(course) %></td>
               </tr>
             <% end %>
           </tbody>
