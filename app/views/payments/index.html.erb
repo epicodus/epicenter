@@ -34,7 +34,7 @@
         <% @student.payments.order_by_latest.each do |payment| %>
           <tr>
             <td><%= payment.try(:status).try(:capitalize) %></td>
-            <td><%= payment.try(:created_at).try(:strftime, "%b %d %Y") unless payment.amount == 0 %></td>
+            <td><%= payment.try(:created_at).try(:strftime, "%b %-d %Y") %></td>
             <% if payment.amount < 0 %>
               <td>offline refund</td>
             <% else %>
