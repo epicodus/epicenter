@@ -32,7 +32,7 @@ class Payment < ApplicationRecord
   end
 
   def full_description
-    [created_at.try(:strftime, "%a %b %d %Y"), number_to_currency(total_amount / 100.00), status.try(:capitalize), payment_method.try(:description), category, notes].compact.join(' - ')
+    [created_at.try(:strftime, "%b %-d %Y"), number_to_currency(total_amount / 100.00), status.try(:capitalize), payment_method.try(:description), category, notes].compact.join(' - ')
   end
 
 private

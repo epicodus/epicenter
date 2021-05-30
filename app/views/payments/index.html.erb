@@ -23,6 +23,7 @@
           <% if can?(:manage, Payment) %>
             <th>Category</th>
             <th>Notes</th>
+            <th>Cohort</th>
           <% end %>
           <% if can?(:manage, Payment) || @student.payments.pluck(:refund_amount).any? %>
             <th>Refund amount</th>
@@ -33,7 +34,7 @@
         <% @student.payments.order_by_latest.each do |payment| %>
           <tr>
             <td><%= payment.try(:status).try(:capitalize) %></td>
-            <td><%= payment.try(:refund_date).try(:strftime, "%A, %B %d, %Y") || payment.try(:created_at).try(:strftime, "%A, %B %d, %Y") %></td>
+            <td><%= payment.try(:created_at).try(:strftime, "%b %d %Y") unless payment.amount == 0 %></td>
             <% if payment.amount < 0 %>
               <td>offline refund</td>
             <% else %>
@@ -43,32 +44,36 @@
             <% if can? :manage, Payment %>
               <td><%= payment.category %></td>
               <td><%= payment.notes %></td>
+              <td><%= payment.cohort.try(:description) %></td>
             <% end %>
-              <% if payment.refund_amount? %>
-                <td class="col-md-3">
-                  <%= number_to_currency(payment.refund_amount / 100.00) %><br>
-                  <%= payment.refund_notes %>
-                </td>
-              <% elsif payment.amount < 0 %>
+            <% if payment.refund_amount? %>
               <td class="col-md-3">
-                <%= number_to_currency(payment.amount / -100.00) %>
-              </td>
-              <% else %>
+                <%= number_to_currency(payment.refund_amount / 100.00) %><br>
                 <% if can? :manage, Payment %>
-                  <td class="col-md-3" id="refund-<%= payment.id %>">
-                    <% if payment.offline? %>
-                      <p>n/a</p>
-                    <% else %>
-                      <div class="refund-section" id="refund-section-<%= payment.id %>">
-                        <btn class='show-refund-form-button btn btn-warning' id='show-refund-form-button'>Refund...</btn>
-                        <div class="refund-form hidden">
-                          <%= render 'payments/refund_form', payment: payment %>
-                        </div>
-                      </div>
-                    <% end %>
-                  </td>
+                  <%= payment.refund_date.try(:strftime, "%b %-d %Y") %><br>
+                  <%= payment.refund_notes %>
                 <% end %>
+              </td>
+            <% elsif payment.amount < 0 %>
+            <td class="col-md-3">
+              <%= number_to_currency(payment.amount / -100.00) %>
+            </td>
+            <% else %>
+              <% if can? :manage, Payment %>
+                <td class="col-md-3" id="refund-<%= payment.id %>">
+                  <% if payment.offline? %>
+                    <p>n/a</p>
+                  <% else %>
+                    <div class="refund-section" id="refund-section-<%= payment.id %>">
+                      <btn class='show-refund-form-button btn btn-warning' id='show-refund-form-button'>Refund...</btn>
+                      <div class="refund-form hidden">
+                        <%= render 'payments/refund_form', payment: payment %>
+                      </div>
+                    </div>
+                  <% end %>
+                </td>
               <% end %>
+            <% end %>
           </tr>
         <% end %>
       </tbody>
@@ -214,7 +219,7 @@
         <div id="collapse3" class="panel-collapse collapse">
           <div class="panel-body refund-form well">
             <div class="row">
-              <div class="col-md-5">
+              <div class="col-md-6">
                 <%= render 'offline_refund_form' %>
               </div>
             </div>
