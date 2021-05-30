@@ -173,7 +173,7 @@ describe Payment do
     it 'returns payment details' do
       student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student)
-      expect(payment.full_description).to eq "#{payment.created_at.try(:strftime, "%a %b %d %Y")} - #{number_to_currency(payment.total_amount / 100.00)} - #{payment.status.capitalize} - #{payment.payment_method.description} - #{payment.category}"
+      expect(payment.full_description).to eq "#{payment.created_at.try(:strftime, "%b %-d %Y")} - #{number_to_currency(payment.total_amount / 100.00)} - #{payment.status.capitalize} - #{payment.payment_method.description} - #{payment.category}"
     end
   end
 
