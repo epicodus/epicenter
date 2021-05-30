@@ -38,7 +38,7 @@ class PaymentsController < ApplicationController
 private
   def payment_params
     modify_amounts(params[:payment][:refund_amount], params[:payment][:amount])
-    params.require(:payment).permit(:amount, :student_id, :payment_method_id, :offline, :notes, :category, :refund_amount, :refund_date, :refund_notes)
+    params.require(:payment).permit(:amount, :student_id, :payment_method_id, :cohort_id, :linked_payment_id, :offline, :notes, :category, :refund_amount, :refund_date, :refund_notes)
   end
 
   def modify_amounts(refund_amount, payment_amount)

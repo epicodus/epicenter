@@ -115,7 +115,7 @@ feature 'withdrawing a student from all courses', :js do
   before { login_as(admin, scope: :admin) }
 
   scenario 'as an admin drop all for a student with payments and no attendance records' do
-    student = FactoryBot.create(:student, :with_upfront_payment, courses: [admin.courses.first])
+    student = FactoryBot.create(:student, :with_ft_cohort, :with_upfront_payment, courses: [admin.courses.first])
     visit student_courses_path(student)
     click_on 'Drop All'
     accept_js_alert
@@ -123,7 +123,7 @@ feature 'withdrawing a student from all courses', :js do
   end
 
   scenario 'as an admin drop all for a student with attendance records and no payments' do
-    student = FactoryBot.create(:student, :with_upfront_payment, courses: [admin.courses.first])
+    student = FactoryBot.create(:student, :with_ft_cohort, :with_upfront_payment, courses: [admin.courses.first])
     FactoryBot.create(:attendance_record, student: student, date: student.course.start_date)
     visit student_courses_path(student)
     click_on 'Drop All'
@@ -171,7 +171,8 @@ feature 'deleting a course for a student', :js do
   end
 
   scenario 'as an admin deleting the last course for student with payments' do
-    student = FactoryBot.create(:student, :with_course, :with_upfront_payment)
+    student = FactoryBot.create(:student, :with_ft_cohort, :with_upfront_payment)
+    student.courses.last.destroy
     course = student.course
     visit student_courses_path(student)
     within "#student-course-#{course.id}" do

@@ -2,6 +2,8 @@ describe Payment do
   include ActionView::Helpers::NumberHelper  #for number_to_currency
 
   it { should belong_to :student }
+  it { should belong_to(:cohort).optional }
+  it { should belong_to(:linked_payment).class_name('Payment').optional }
   it { should validate_presence_of :amount }
   it { should validate_presence_of :category }
 
@@ -34,12 +36,6 @@ describe Payment do
       expect(payment.save).to eq true
     end
 
-    it 'should not check refund date if no course', :stripe_mock do
-      student.courses = []
-      payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first)
-      expect(payment.update(refund_amount: 50, refund_date: Date.today)).to eq true
-    end
-
     it 'should modify refund date if it predates course start', :stripe_mock do
       payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first)
       payment.update(refund_amount: 50, refund_date: student.course.start_date - 1.day)
@@ -57,22 +53,22 @@ describe Payment do
       expect(payment.refund_date).to eq student.course.start_date
     end
 
-    it 'should modify refund date if within first 5 weeks of courses' do
+    it 'should modify refund date if before start of cohort' do
       payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first)
-      payment.update(refund_amount: 50, refund_date: student.course.start_date + 4.weeks)
+      payment.update(refund_amount: 50, refund_date: student.course.start_date - 1.week)
       expect(payment.refund_date).to eq student.course.start_date
     end
 
-    it 'should not modify refund date after first 5 weeks of courses', :stripe_mock do
+    it 'should not modify refund date after course starts', :stripe_mock do
       payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first)
-      payment.update(refund_amount: 50, refund_date: student.course.start_date + 5.weeks)
+      payment.update(refund_amount: 50, refund_date: student.course.start_date + 2.weeks)
       expect(payment.refund_date).to_not eq student.course.start_date
     end
 
     it 'should throw error if refund date after end of last course' do
       payment = FactoryBot.create(:payment, student: student, payment_method: student.payment_methods.first)
       payment.update(refund_amount: 50, refund_date: student.course.end_date + 1.year)
-      expect(payment.errors.full_messages.first).to eq 'Refund date cannot be later than end date of last course.'
+      expect(payment.errors.full_messages.first).to eq "Refund date cannot be later than #{student.latest_cohort.description} cohort end date."
     end
   end
 
@@ -173,17 +169,39 @@ describe Payment do
     end
   end
 
+  describe '#full_description', :vcr, :stripe_mock, :stub_mailgun do
+    it 'returns payment details' do
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com')
+      payment = FactoryBot.create(:payment_with_credit_card, student: student)
+      expect(payment.full_description).to eq "#{payment.created_at.try(:strftime, "%a %b %d %Y")} - #{number_to_currency(payment.total_amount / 100.00)} - #{payment.status.capitalize} - #{payment.payment_method.description} - #{payment.category}"
+    end
+  end
+
   describe 'sets payment category', :stub_mailgun do
     let(:student) { FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com') }
 
     it 'calculates category on payment' do
-      payment = Payment.create(student: student, category: 'tuition', offline: true, amount: 50_00)
+      payment = Payment.create(student: student, category: 'tuition', offline: true, amount: 50_00, cohort: student.latest_cohort)
       expect(payment.category).to eq 'upfront'
     end
 
     it 'calculates category when refund' do
-      payment = Payment.create(student: student, category: 'tuition', offline: true, amount: 0, refund_amount: 50_00)
+      payment = Payment.create(student: student, category: 'tuition', offline: true, amount: 0, refund_amount: 50_00, cohort: student.latest_cohort)
       expect(payment.category).to eq 'refund'
+    end
+  end
+
+  describe '#set_cohort', :stripe_mock, :stub_mailgun do
+    it 'does not run set_cohort callback if not a refund' do
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, courses: [])
+      expect(student).to_not receive(:set_cohort)
+      FactoryBot.create(:payment, student: student, offline: true)
+    end
+
+    it 'sets offline refund cohort equal to linked payment cohort' do
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, courses: [])
+      payment = FactoryBot.create(:offline_refund, student: student, refund_date: student.latest_cohort.start_date)
+      expect(payment.cohort).to eq student.latest_cohort
     end
   end
 
@@ -218,17 +236,16 @@ describe Payment do
       expect(student.payments.first.description).to eq "keycard"
     end
 
-    it 'sets payment description for offline refund' do
-      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_pt_intro_cohort)
-      payment = FactoryBot.create(:payment, student: student, amount: 0, refund_amount: 100_00, offline: true)
-      expect(payment.description).to eq "#{student.courses.first.start_date.to_s}-#{student.courses.last.end_date.to_s} | #{student.ending_cohort.description}"
+    it 'sets payment description for refund with cohort' do
+      student = FactoryBot.create(:student, :with_pt_intro_cohort)
+      payment = FactoryBot.create(:refund, student: student, refund_date: student.latest_cohort.start_date, offline: true)
+      expect(payment.description).to eq "#{student.courses.first.start_date.to_s}-#{student.courses.last.end_date.to_s} | #{student.latest_cohort.description}"
     end
 
-    it 'sets payment description for offline refund when no courses' do
-      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_pt_intro_cohort)
-      student.courses = []
-      payment = FactoryBot.create(:payment, student: student, amount: 0, refund_amount: 100_00, offline: true)
-      expect(student.payments.first.description).to eq "-#{student.ending_cohort.end_date.to_s} | #{student.ending_cohort.description}"
+    it 'sets payment description for offline refund linked to a payment' do
+      student = FactoryBot.create(:student, :with_pt_intro_cohort, courses: [])
+      payment = FactoryBot.create(:offline_refund, student: student, refund_date: student.latest_cohort.start_date)
+      expect(payment.description).to eq "#{student.latest_cohort.start_date.to_s}-#{student.latest_cohort.end_date.to_s} | #{student.latest_cohort.description}"
     end
   end
 
@@ -247,7 +264,7 @@ describe Payment do
       end
 
       it 'updates status and amount paid' do
-        payment = Payment.new(student: student, amount: 270_00, payment_method: student.primary_payment_method, category: 'standard')
+        payment = Payment.new(student: student, amount: 270_00, payment_method: student.primary_payment_method, category: 'standard', cohort: student.latest_cohort)
         expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { status: "Enrolled" })
         expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['AMOUNT_PAID'] => payment.amount / 100 })
         payment.save
@@ -257,7 +274,7 @@ describe Payment do
         part_time_student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example-part-time@example.com')
         part_time_lead_id = close_io_client.list_leads('email: "' + part_time_student.email + '"')['data'].first['id']
         allow_any_instance_of(CrmLead).to receive(:status).and_return("Applicant - Accepted")
-        payment = Payment.new(student: part_time_student, amount: 270_00, payment_method: part_time_student.primary_payment_method, category: 'upfront')
+        payment = Payment.new(student: part_time_student, amount: 270_00, payment_method: part_time_student.primary_payment_method, category: 'upfront', cohort: part_time_student.latest_cohort)
         expect(CrmUpdateJob).to receive(:perform_later).with(part_time_lead_id, { status: "Enrolled" })
         expect(CrmUpdateJob).to receive(:perform_later).with(part_time_lead_id, { Rails.application.config.x.crm_fields['AMOUNT_PAID'] => payment.amount / 100 })
         payment.save
@@ -270,35 +287,35 @@ describe Payment do
       end
 
       it 'only updates amount paid' do
-        payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
-        payment_2 = Payment.new(student: student, amount: 50_00, payment_method: student.primary_payment_method, category: 'standard')
+        payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard', cohort: student.latest_cohort)
+        payment_2 = Payment.new(student: student, amount: 50_00, payment_method: student.primary_payment_method, category: 'standard', cohort: student.latest_cohort)
         expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['AMOUNT_PAID'] => (payment.amount + payment_2.amount) / 100 })
         payment_2.save
       end
 
       it 'updates amount paid for offline payments' do
-        payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
-        payment_2 = Payment.new(student: student, amount: 50_00, category: 'standard', offline: true)
+        payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard', cohort: student.latest_cohort)
+        payment_2 = Payment.new(student: student, amount: 50_00, category: 'standard', offline: true, cohort: student.latest_cohort)
         expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['AMOUNT_PAID'] => (payment.amount + payment_2.amount) / 100 })
         payment_2.save
       end
 
       it 'updates amount paid for refunds' do
-        payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
-        payment_2 = Payment.new(student: student, amount: 50_00, category: 'standard', offline: true)
+        payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard', cohort: student.latest_cohort)
+        payment_2 = Payment.new(student: student, amount: 50_00, category: 'standard', offline: true, cohort: student.latest_cohort)
         payment_2.update(refund_amount: 5000, refund_date: Date.today)
         expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['AMOUNT_PAID'] => (payment.amount + payment_2.amount - payment_2.refund_amount) / 100 })
         payment_2.save
       end
 
       it 'adds note to CRM' do
-        payment = Payment.new(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
+        payment = Payment.new(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard', cohort: student.latest_cohort)
         expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { note: "PAYMENT #{number_to_currency(payment.amount / 100.00)}: " })
         payment.save
       end
 
       it 'adds note to CRM including notes when present' do
-        payment = Payment.new(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard', notes: 'test payment note from api')
+        payment = Payment.new(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard', notes: 'test payment note from api', cohort: student.latest_cohort)
         expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { note: "PAYMENT #{number_to_currency(payment.amount / 100.00)}: #{payment.notes}" })
         payment.save
       end
@@ -312,7 +329,7 @@ describe Payment do
       end
 
       it 'does not add note to CRM on payment update unless refund' do
-        payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard')
+        payment = Payment.create(student: student, amount: 100_00, payment_method: student.primary_payment_method, category: 'standard', cohort: student.latest_cohort)
         payment.status = "changed"
         expect(CrmUpdateJob).to_not receive(:perform_later).with(lead_id, { note: "PAYMENT #{number_to_currency(payment.amount / 100.00)}: " })
         payment.save

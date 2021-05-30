@@ -18,6 +18,11 @@
     <%= f.text_area :notes, class: 'form-control' %>
   </div>
 
+  <div class="form-group">
+    <%= f.label 'Which cohort should this payment apply to?' %>
+    <%= f.collection_select :cohort_id, @student.all_cohorts, :id, :description, {selected: @student.latest_cohort.try(:id)}, { class: "form-control" } %>
+  </div>
+
   <div class="input-group">
     <span class="input-group-addon">$</span>
     <%= f.number_field :amount, { value: nil, class: 'form-control payment-input', required: true, step: 0.01 } %>
@@ -29,7 +34,6 @@
 
   <div id="payment-warning">
     <p class="alert alert-warning">
-      Payment for: <strong><%= @student.ending_cohort.try(:description) %></strong><br>
       Payment plan: <strong><%= @student.plan.try(:name) %></strong>
     </p>
   </div>

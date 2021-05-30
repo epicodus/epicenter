@@ -1,5 +1,6 @@
 describe Cohort do
   it { should have_and_belong_to_many :courses }
+  it { should have_many :payments }
   it { should belong_to :office }
   it { should belong_to :track }
   it { should belong_to :admin }

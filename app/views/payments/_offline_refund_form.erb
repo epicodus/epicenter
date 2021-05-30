@@ -9,6 +9,11 @@
       <%= f.text_area :refund_notes, class: 'form-control' %>
     </div>
 
+    <div class="form-group">
+      <%= f.label 'Which payment should this refund apply to?' %>
+      <%= f.collection_select :linked_payment_id, @student.payments.where.not(amount: 0), :id, :full_description, {}, { class: "form-control" } %>
+    </div>
+
     <div class="input-group refund-input-group">
       <%= f.label :refund_amount, 'Offline refund amount' %>
       <%= f.number_field :refund_amount, { value: nil, class: 'form-control payment-refund-input', id: "refund-offline-input", placeholder: 'refund amount', required: true, step: 0.01 } %>
