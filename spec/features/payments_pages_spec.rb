@@ -169,6 +169,16 @@ feature 'Viewing payment index page' do
         expect(student.payments.first.category).to eq 'upfront'
       end
     end
+
+    describe 'sets cohort', :stripe_mock, :stub_mailgun do
+      it 'for student upfront payment' do
+        student = FactoryBot.create(:student, :with_ft_cohort, :with_credit_card, email: 'example@example.com', plan: FactoryBot.create(:free_intro_plan))
+        login_as(student, scope: :student)
+        visit student_payments_path(student)
+        click_on 'Charge $103.00'
+        expect(student.payments.first.cohort).to eq student.cohort
+      end
+    end
   end
 
   context 'as an admin' do
@@ -270,11 +280,23 @@ feature 'issuing an offline refund as an admin', :vcr do
   end
 
   it 'sets category to refund for offline refunds' do
+    payment = FactoryBot.create(:payment, student: student, offline: true)
     visit student_payments_path(student)
     fill_in 'refund-offline-input', with: '600'
     fill_in 'refund-date-offline-input', with: Date.today
+    select payment.full_description, from: "payment_linked_payment_id"
     click_on 'Offline refund'
-    expect(student.payments.first.category).to eq 'refund'
+    expect(student.payments.find_by(amount: 0).category).to eq 'refund'
+  end
+
+  it 'sets cohort to cohort of linked payment' do
+    payment = FactoryBot.create(:payment, student: student, offline: true)
+    visit student_payments_path(student)
+    fill_in 'refund-offline-input', with: '600'
+    fill_in 'refund-date-offline-input', with: Date.today
+    select payment.full_description, from: "payment_linked_payment_id"
+    click_on 'Offline refund'
+    expect(student.payments.find_by(amount: 0).cohort).to eq payment.cohort
   end
 
   it 'shows warning if starting cohort does not match current cohort' do
@@ -284,6 +306,25 @@ feature 'issuing an offline refund as an admin', :vcr do
     expect(page).to have_content 'Starting Cohort does not match Current Cohort'
   end
 
+  scenario 'unsuccessfully with refund date after cohort end' do
+    payment = FactoryBot.create(:payment, student: student, offline: true)
+    visit student_payments_path(student)
+    fill_in 'refund-offline-input', with: '600'
+    fill_in 'refund-date-offline-input', with: student.cohort.end_date + 1.week
+    select payment.full_description, from: "payment_linked_payment_id"
+    click_on 'Offline refund'
+    expect(page).to have_content 'Please correct these problems'
+  end
+
+  scenario 'updates refund date if before cohort start' do
+    payment = FactoryBot.create(:payment, student: student, offline: true)
+    visit student_payments_path(student)
+    fill_in 'refund-offline-input', with: '600'
+    fill_in 'refund-date-offline-input', with: student.cohort.start_date - 1.week
+    select payment.full_description, from: "payment_linked_payment_id"
+    click_on 'Offline refund'
+    expect(student.payments.last.refund_date).to eq student.cohort.start_date
+  end
 end
 
 feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
@@ -317,6 +358,14 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
     expect(page).to have_content '$60.18'
   end
 
+  scenario 'does not change cohort' do
+    visit student_payments_path(student)
+    fill_in "refund-#{payment.id}-input", with: 60.18
+    fill_in "refund-date-#{payment.id}-input", with: Date.today
+    click_on 'Refund'
+    expect(payment.reload.cohort).to eq payment.cohort
+  end
+
   scenario 'unsuccessfully with an improperly formatted amount', :js do
     visit student_payments_path(student)
     page.find_by_id('show-refund-form-button').click
@@ -342,6 +391,22 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
     fill_in "refund-date-#{payment.id}-input", with: Date.today
     click_on 'Refund'
     expect(page).to have_content 'Please correct these problems'
+  end
+
+  scenario 'unsuccessfully with refund date after cohort end' do
+    visit student_payments_path(student)
+    fill_in "refund-#{payment.id}-input", with: 100
+    fill_in "refund-date-#{payment.id}-input", with: student.cohort.end_date + 1.week
+    click_on 'Refund'
+    expect(page).to have_content 'Please correct these problems'
+  end
+
+  scenario 'updates refund date if before cohort start' do
+    visit student_payments_path(student)
+    fill_in "refund-#{payment.id}-input", with: 100
+    fill_in "refund-date-#{payment.id}-input", with: student.cohort.start_date - 1.week
+    click_on 'Refund'
+    expect(student.payments.last.refund_date).to eq student.cohort.start_date
   end
 
   scenario 'shows warning if starting cohort does not match current cohort' do
@@ -398,6 +463,16 @@ feature 'make a manual stripe payment', :stripe_mock, :stub_mailgun do
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Succeeded'
     expect(page).to have_content '$1,817.95'
+  end
+
+  scenario 'sets selected cohort', :vcr do
+    visit student_payments_path(student)
+    within '#stripe-payment-form' do
+      fill_in 'payment_amount', with: 1765
+      select student.cohort.description, from: 'payment_cohort_id'
+    end
+    click_on 'Stripe payment'
+    expect(student.payments.last.cohort).to eq student.cohort
   end
 
   scenario 'unsuccessfully with an improperly formatted amount', :js do
@@ -474,6 +549,20 @@ feature 'make an offline payment', :js, :vcr do
     expect(page).to have_content "Manual payment successfully made for #{student.name}."
     expect(page).to have_content 'Offline'
     expect(page).to have_content '$60.18'
+  end
+
+  scenario 'sets selected cohort' do
+    visit student_payments_path(student)
+    click_on 'Offline Payment'
+    fill_in 'Notes', with: 'Test offline payment'
+    within '#offline-payment-form' do
+      fill_in 'payment_amount', with: 60.18
+      select student.cohort.description, from: 'payment_cohort_id'
+    end
+    click_on 'Offline payment'
+    accept_js_alert
+    sleep 1
+    expect(student.payments.last.cohort).to eq student.cohort
   end
 end
 

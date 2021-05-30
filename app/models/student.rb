@@ -66,18 +66,6 @@ class Student < User
     student
   end
 
-  def parttime?
-    ending_cohort.try(:description).try('include?', 'Part-')
-  end
-
-  def fidgetech?
-    ending_cohort.try(:description) == 'Fidgetech'
-  end
-
-  def fulltime?
-    ending_cohort && !parttime? && !fidgetech?
-  end
-
   def total_attendance_score
     absences_penalty = attendance_records_for(:absent, courses.previous_courses.non_internship_courses.first, courses.previous_courses.non_internship_courses.last)
     tardies_penalty = attendance_records_for(:tardy, courses.previous_courses.non_internship_courses.first, courses.previous_courses.non_internship_courses.last) * TARDY_WEIGHT
@@ -284,7 +272,7 @@ class Student < User
   end
 
   def make_upfront_payment
-    payments.create(amount: upfront_amount_owed, payment_method: primary_payment_method, category: 'upfront')
+    payments.create(amount: upfront_amount_owed, payment_method: primary_payment_method, category: 'upfront', cohort: latest_cohort)
   end
 
   def total_paid
@@ -440,6 +428,14 @@ class Student < User
 
   def possible_cirr_cohorts
     Cohort.where(id: courses.cirr_fulltime_courses.pluck(:cohort_id))
+  end
+
+  def all_cohorts
+    Cohort.where(id: courses.pluck(:cohort_id))
+  end
+
+  def latest_cohort
+    Cohort.where(id: [cohort, parttime_cohort]).last
   end
 
   def really_destroy

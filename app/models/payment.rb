@@ -3,17 +3,20 @@ class Payment < ApplicationRecord
 
   belongs_to :student
   belongs_to :payment_method, optional: true
+  belongs_to :cohort, optional: true
+  belongs_to :linked_payment, class_name: :Payment, optional: true
 
   validates :amount, presence: true
   validates :payment_method, presence: true, unless: ->(payment) { payment.offline? }
   validates :category, presence: true, on: :create
 
+  before_save :set_cohort, if: ->(payment) { payment.refund_amount? }
+  before_save :check_refund_date, if: ->(payment) { payment.refund_date? && payment.cohort_id? }
   before_create :check_amount
   before_create :set_category, if: ->(payment) { payment.category == 'tuition' }
   before_create :set_description
   before_create :make_payment, unless: ->(payment) { payment.offline? }
   before_create :set_offline_status, if: ->(payment) { payment.offline? }
-  before_save :check_refund_date, if: ->(payment) { payment.refund_date.present? && payment.student.courses_with_withdrawn.any? }
   before_update :issue_refund, if: ->(payment) { payment.refund_amount? && !payment.offline? && !payment.refund_issued? }
 
   after_save :update_crm
@@ -26,6 +29,10 @@ class Payment < ApplicationRecord
 
   def total_amount
     amount + fee
+  end
+
+  def full_description
+    [created_at.try(:strftime, "%a %b %d %Y"), number_to_currency(total_amount / 100.00), status.try(:capitalize), payment_method.try(:description), category, notes].compact.join(' - ')
   end
 
 private
@@ -63,14 +70,16 @@ private
     self.category = refund_amount.present? ? 'refund' : 'upfront'
   end
 
+  def set_cohort
+    self.cohort = cohort || linked_payment.cohort
+  end
+
   def set_description
     if category == 'keycard'
       self.description = 'keycard'
     else
-      enrolled_courses_in_cohort = student.courses & student.ending_cohort.courses
-      start_date = enrolled_courses_in_cohort.first.try(:start_date)
-      end_date = student.ending_cohort.try(:end_date)
-      self.description = "#{start_date.to_s}-#{end_date.to_s} | #{student.ending_cohort.try(:description)}"
+      start_date = refund_date || (student.courses & cohort.courses).first.start_date
+      self.description = "#{start_date.to_s}-#{cohort.end_date.to_s} | #{cohort.description}"
     end
   end
 
@@ -95,10 +104,10 @@ private
   end
 
   def check_refund_date
-    if refund_date < student.courses_with_withdrawn.first.start_date + 5.weeks
-      self.refund_date = student.courses_with_withdrawn.first.start_date
-    elsif refund_date > student.courses_with_withdrawn.last.end_date
-      errors.add(:refund_date, 'cannot be later than end date of last course.')
+    if refund_date < cohort.start_date
+      self.refund_date = cohort.start_date
+    elsif refund_date > cohort.end_date
+      errors.add(:refund_date, "cannot be later than #{cohort.description} cohort end date.")
       throw :abort
     end
   end

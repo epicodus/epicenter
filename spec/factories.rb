@@ -417,6 +417,9 @@ FactoryBot.define do
   factory :payment do
     amount { 100 }
     category { 'upfront' }
+    after(:build) do |payment|
+      payment.cohort = payment.student.latest_cohort
+    end
 
     factory :payment_with_bank_account do
       association :student, factory: :user_with_verified_bank_account
@@ -429,6 +432,25 @@ FactoryBot.define do
       association :student, factory: :user_with_credit_card
       before(:create) do |payment|
         payment.payment_method = payment.student.payment_methods.first
+      end
+    end
+
+    factory :refund do
+      amount { 0 }
+      refund_amount { 100 }
+      category { 'refund' }
+      refund_date { Time.zone.now.to_date }
+    end
+
+    factory :offline_refund do
+      amount { 0 }
+      refund_amount { 100 }
+      category { 'refund' }
+      offline { true }
+      refund_date { Time.zone.now.to_date }
+      after(:build) do |payment|
+        payment.cohort = nil
+        payment.linked_payment = build(:payment, student: payment.student)
       end
     end
   end
@@ -678,7 +700,6 @@ FactoryBot.define do
 
     trait :with_upfront_payment do
       with_verified_bank_account
-      cohort
       association :plan, factory: :upfront_plan
       after(:create) do |student|
         student.make_upfront_payment

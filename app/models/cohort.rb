@@ -10,6 +10,7 @@ class Cohort < ApplicationRecord
   has_many :parttime_cohort_students, class_name: :User, foreign_key: :parttime_cohort_id
   has_many :starting_cohort_students, class_name: :User, foreign_key: :starting_cohort_id
   has_many :ending_cohort_students, class_name: :User, foreign_key: :ending_cohort_id
+  has_many :payments
   has_many :students
   belongs_to :office
   belongs_to :track

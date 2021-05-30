@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_07_192412) do
+ActiveRecord::Schema.define(version: 2021_05_28_212209) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -266,6 +266,10 @@ ActiveRecord::Schema.define(version: 2021_05_07_192412) do
     t.date "refund_date"
     t.string "refund_notes"
     t.string "qbo_journal_entry_ids", default: [], array: true
+    t.bigint "cohort_id"
+    t.bigint "linked_payment_id"
+    t.index ["cohort_id"], name: "index_payments_on_cohort_id"
+    t.index ["linked_payment_id"], name: "index_payments_on_linked_payment_id"
     t.index ["student_id"], name: "index_payments_on_student_id"
   end
 
@@ -433,6 +437,8 @@ ActiveRecord::Schema.define(version: 2021_05_07_192412) do
   add_foreign_key "pair_feedback", "users", column: "pair_id"
   add_foreign_key "pair_feedback", "users", column: "student_id"
   add_foreign_key "pairings", "users", column: "pair_id"
+  add_foreign_key "payments", "cohorts"
+  add_foreign_key "payments", "payments", column: "linked_payment_id"
   add_foreign_key "peer_evaluations", "users", column: "evaluatee_id"
   add_foreign_key "peer_evaluations", "users", column: "evaluator_id"
   add_foreign_key "users", "offices"

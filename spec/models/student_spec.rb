@@ -863,6 +863,11 @@ describe Student do
       student.make_upfront_payment
       expect(student.payments.first.category).to eq 'upfront'
     end
+
+    it "sets cohort of payment" do
+      student.make_upfront_payment
+      expect(student.payments.first.cohort).to eq student.cohort
+    end
   end
 
   describe '#signed_in_today?' do
@@ -1855,6 +1860,20 @@ end
         expect(student.possible_cirr_cohorts).to eq [cohort, future_cohort]
       end
     end
+
+    describe '#all_cohorts' do
+      it 'returns all cohorts of a student courses' do
+        student = FactoryBot.create(:student, courses: future_cohort.courses + cohort.courses)
+        expect(student.all_cohorts).to eq [cohort, future_cohort]
+      end
+    end
+
+    describe '#latest_cohort' do
+      it 'returns latest of cohort or parttime_cohort' do
+        student = FactoryBot.create(:student, courses: cohort.courses + future_cohort.courses)
+        expect(student.latest_cohort).to eq future_cohort
+      end
+    end
   end
 
   describe '.invite', :dont_stub_crm do
@@ -1872,29 +1891,6 @@ end
       expect(student.cohort.description).to eq cohort.description
       expect(student.office).to eq cohort.office
       expect(Devise.mailer.deliveries.count).to eq(emails_sent)
-    end
-  end
-
-  describe '#fulltime?, #parttime?, #fidgetech?' do
-    it 'returns true if student ending_cohort is a fulltime cohort' do
-      student = FactoryBot.create(:student, :with_ft_cohort)
-      expect(student.fulltime?).to eq true
-      expect(student.parttime?).to eq false
-      expect(student.fidgetech?).to eq false
-    end
-
-    it 'returns true if student ending_cohort is a parttime cohort' do
-      student = FactoryBot.create(:student, :with_pt_intro_cohort)
-      expect(student.fulltime?).to eq false
-      expect(student.parttime?).to eq true
-      expect(student.fidgetech?).to eq false
-    end
-
-    it 'returns true if student ending_cohort is Fidgetech' do
-      student = FactoryBot.create(:student, :with_fidgetech_cohort)
-      expect(student.fulltime?).to eq false
-      expect(student.parttime?).to eq false
-      expect(student.fidgetech?).to eq true
     end
   end
 end

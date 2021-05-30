@@ -8,9 +8,10 @@ class PaymentSerializer < ActiveModel::Serializer
     hash[:created_at] = payment.created_at.to_date.to_s
     hash[:updated_at] = payment.updated_at.to_date.to_s unless payment.updated_at == payment.created_at
     hash[:email] = student.email
-    hash[:office] = student.office.short_name
+    hash[:office] = payment.cohort.office.short_name
     hash[:start_date] = payment.refund_date.try(:to_s) || payment.description[0..9]
-    hash[:end_date] = student.ending_cohort.end_date.to_s
+    hash[:end_date] = payment.cohort.end_date.to_s
+    hash[:cohort] = payment.cohort.description
     hash
   end
 end

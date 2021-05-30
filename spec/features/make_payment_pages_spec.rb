@@ -5,6 +5,7 @@ feature 'Student makes an upfront payment' do
       login_as(student, scope: :student)
       visit student_payments_path(student)
       click_on "Charge $8,034.00 to my credit card ending in 4242"
+      expect(student.payments.last.cohort).to eq student.cohort
       expect(page).to have_content "Thank You! Your payment has been made."
     end
   end

@@ -11,9 +11,9 @@ task :warn_teachers_late_code_reviews => [:environment] do
               { :from => "no-reply@epicodus.com",
                 :to => "#{course.teacher} <#{course.admin.email}>",
                 :subject => "#{student.name} not passing #{code_review.title}",
-                :text => "#{student.name} not passing #{code_review.title} (#{course.description} #{student.office.short_name}) after 17 days." })
+                :text => "#{student.name} not passing #{code_review.title} (#{course.description} #{course.office.short_name}) after 17 days." })
           else
-            p "#{student.name} not passing #{code_review.title} (#{course.description} #{student.office.short_name}) after 17 days."
+            p "#{student.name} not passing #{code_review.title} (#{course.description} #{course.office.short_name}) after 17 days."
           end
         end
       end

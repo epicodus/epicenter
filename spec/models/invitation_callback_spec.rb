@@ -26,7 +26,7 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
     end
 
     it 'creates task on CRM lead if email already found in Epicenter and student has payment' do
-      student = FactoryBot.create(:student, :with_upfront_payment, email: 'example@example.com')
+      student = FactoryBot.create(:student, :with_ft_cohort, :with_upfront_payment, email: 'example@example.com')
       expect_any_instance_of(CrmLead).to receive(:create_task).with('Unable to invite due to existing Epicenter account')
       InvitationCallback.new(email: 'example@example.com')
     end
