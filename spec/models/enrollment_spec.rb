@@ -73,7 +73,7 @@ describe Enrollment do
     let(:future_cohort) { FactoryBot.create(:ft_cohort, start_date: (Date.today + 1.year).beginning_of_week, office: office, admin: admin, track: FactoryBot.create(:track)) }
     let(:part_time_cohort) { FactoryBot.create(:pt_intro_cohort, start_date: Date.today.beginning_of_week - 1.week, office: office, admin: admin, track: FactoryBot.create(:part_time_track)) }
     let(:non_internship_course) { FactoryBot.create(:course, office: office) }
-    let!(:student) { FactoryBot.create(:student, office: office, courses: []) }
+    let!(:student) { FactoryBot.create(:student, courses: []) }
 
     context 'adding new enrollments' do
       it 'updates starting & current cohort when adding full-time course' do
@@ -83,7 +83,6 @@ describe Enrollment do
         expect(student.starting_cohort).to eq current_cohort
         expect(student.cohort).to eq current_cohort
         expect(student.parttime_cohort).to eq nil
-        expect(student.ending_cohort).to eq current_cohort
       end
 
       it 'updates parttime cohort when adding part-time intro course' do
@@ -92,7 +91,6 @@ describe Enrollment do
         expect(student.starting_cohort).to eq nil
         expect(student.cohort).to eq nil
         expect(student.parttime_cohort).to eq part_time_cohort
-        expect(student.ending_cohort).to eq part_time_cohort
       end
 
       it 'updates starting & current cohort when adding full-time course after part-time course' do
@@ -102,7 +100,6 @@ describe Enrollment do
         expect(student.starting_cohort).to eq future_cohort
         expect(student.cohort).to eq future_cohort
         expect(student.parttime_cohort).to eq part_time_cohort
-        expect(student.ending_cohort).to eq future_cohort
       end
 
       it 'updates only current cohort and parttime cohort when adding part-time course after withdrawn full-time course' do
@@ -115,7 +112,6 @@ describe Enrollment do
         expect(student.starting_cohort).to eq current_cohort
         expect(student.cohort).to eq nil
         expect(student.parttime_cohort).to eq part_time_cohort
-        expect(student.ending_cohort).to eq part_time_cohort
       end
 
       it 'updates only starting cohort when adding second full-time course from earlier cohort' do
@@ -125,7 +121,6 @@ describe Enrollment do
         expect(student.starting_cohort).to eq past_cohort
         expect(student.cohort).to eq current_cohort
         expect(student.parttime_cohort).to eq nil
-        expect(student.ending_cohort).to eq current_cohort
       end
 
       it 'updates only current cohort when adding second full-time course with later start date' do
@@ -135,14 +130,12 @@ describe Enrollment do
         expect(student.starting_cohort).to eq current_cohort
         expect(student.cohort).to eq future_cohort
         expect(student.parttime_cohort).to eq nil
-        expect(student.ending_cohort).to eq future_cohort
       end
 
       it 'does not update current cohort when adding full-time non-internship course' do
         student.course = non_internship_course
         expect(student.cohort).to eq nil
         expect(student.parttime_cohort).to eq nil
-        expect(student.ending_cohort).to eq nil
       end
 
       it 'updates current cohort correctly when enrolling in internship course belonging to multiple cohorts' do
@@ -151,30 +144,6 @@ describe Enrollment do
         expect(student.starting_cohort).to eq future_cohort
         expect(student.cohort).to eq future_cohort
         expect(student.parttime_cohort).to eq nil
-        expect(student.ending_cohort).to eq future_cohort
-      end
-
-      it 'updates ending cohort when adding full-time course' do
-        student.courses = current_cohort.courses
-        expect(student.ending_cohort).to eq current_cohort
-      end
-
-      it 'updates ending cohort when adding part-time course' do
-        student.course = part_time_cohort.courses.first
-        expect(student.ending_cohort).to eq part_time_cohort
-      end
-
-      it 'updates office when adding course in different office' do
-        seattle_course = FactoryBot.create(:seattle_course)
-        student.course = seattle_course
-        expect(student.office).to eq seattle_course.office
-      end
-
-      it 'does not update office when adding course in same office' do
-        office = student.office
-        seattle_course = FactoryBot.create(:course, office: office)
-        expect(student).to_not receive(:update)
-        student.course = seattle_course
       end
 
       it 'does not assign current cohort when no internship course present' do
@@ -201,7 +170,6 @@ describe Enrollment do
         expect(student.starting_cohort).to eq past_cohort
         expect(student.cohort).to eq nil
         expect(student.parttime_cohort).to eq nil
-        expect(student.ending_cohort).to eq past_cohort
       end
 
       it 'clears starting & current cohort when permanently removing the only enrollment' do
@@ -212,7 +180,6 @@ describe Enrollment do
         expect(student.starting_cohort).to eq nil
         expect(student.cohort).to eq nil
         expect(student.parttime_cohort).to eq nil
-        expect(student.ending_cohort).to eq current_cohort
       end
 
       it 'updates only starting cohort when removing course from earlier cohort' do
@@ -225,7 +192,6 @@ describe Enrollment do
         expect(student.starting_cohort).to eq current_cohort
         expect(student.cohort).to eq current_cohort
         expect(student.parttime_cohort).to eq nil
-        expect(student.ending_cohort).to eq current_cohort
       end
 
       it 'updates only current cohort when removing course from later cohort' do
@@ -235,7 +201,6 @@ describe Enrollment do
         expect(student.starting_cohort).to eq current_cohort
         expect(student.cohort).to eq current_cohort
         expect(student.parttime_cohort).to eq nil
-        expect(student.ending_cohort).to eq current_cohort
       end
 
       it 'clears only current cohort when removing last internship course' do
@@ -245,13 +210,6 @@ describe Enrollment do
         expect(student.starting_cohort).to eq current_cohort
         expect(student.cohort).to eq nil
         expect(student.parttime_cohort).to eq nil
-        expect(student.ending_cohort).to eq current_cohort
-      end
-
-      it 'does not clear ending cohort when removing course' do
-        student.course = part_time_cohort.courses.first
-        student.enrollments.first.destroy
-        expect(student.ending_cohort).to eq part_time_cohort
       end
     end
   end

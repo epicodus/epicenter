@@ -8,16 +8,13 @@ class Student < User
   after_update :update_plan_in_crm, if: :saved_change_to_plan_id
   after_update :update_probation_in_crm, if: :probation_updated?
   after_update :notify_staff_on_probation_count, if: :probation_count_updated_3_or_more?
-  before_update :update_ending_cohort, if: :cohorts_updated?
   after_update :update_cohorts_in_crm, if: :cohorts_updated?
   before_destroy :archive_enrollments
 
   belongs_to :plan, optional: true
   belongs_to :parttime_cohort, class_name: :Cohort, optional: true
   belongs_to :starting_cohort, class_name: :Cohort, optional: true
-  belongs_to :ending_cohort, class_name: :Cohort, optional: true
   belongs_to :cohort, optional: true
-  belongs_to :office, optional: true
   has_many :enrollments
   has_many :courses, through: :enrollments
   has_many :bank_accounts
@@ -61,7 +58,10 @@ class Student < User
         student.courses << course unless student.courses.include?(course)
       end
     end
-    student.update(office: student.course.office, ending_cohort: cohort)
+    student.parttime_cohort = student.calculate_parttime_cohort
+    student.starting_cohort = student.calculate_starting_cohort
+    student.cohort = student.calculate_current_cohort
+    student.save if student.changed?
     crm_lead.update_now({ Rails.application.config.x.crm_fields['INVITATION_TOKEN'] => student.raw_invitation_token, Rails.application.config.x.crm_fields['EPICENTER_ID'] => student.id })
     student
   end
@@ -233,7 +233,7 @@ class Student < User
     else
       documents = [CodeOfConduct, RefundPolicy, EnrollmentAgreement]
     end
-    documents << ComplaintDisclosure if office.try(:name) == 'Seattle'
+    documents << ComplaintDisclosure if course.try(:office).try(:name) == 'Seattle'
     documents
   end
 
@@ -549,10 +549,6 @@ private
 
   def cohorts_updated?
     saved_change_to_cohort_id? || saved_change_to_starting_cohort_id? || saved_change_to_parttime_cohort_id? || will_save_change_to_cohort_id? || will_save_change_to_parttime_cohort_id?
-  end
-
-  def update_ending_cohort
-    self.ending_cohort = [parttime_cohort, cohort].compact.sort_by(&:end_date).last || ending_cohort
   end
 
   def update_cohorts_in_crm

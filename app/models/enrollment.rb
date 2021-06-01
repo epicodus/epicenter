@@ -12,18 +12,12 @@ class Enrollment < ApplicationRecord
   before_destroy :clear_submissions
   before_destroy :remove_internship_class_in_crm, if: ->(enrollment) { enrollment.course.internship_course? && !enrollment.deleted? }
   after_destroy :really_destroy_if_withdrawn_before_attending, if: ->(enrollment) { Enrollment.with_deleted.exists?(enrollment.id) }
-  after_create :update_office
   after_create :update_cohort
   after_destroy :update_cohort
 
   attr_reader :cohort_id
 
 private
-
-  def update_office
-    student.office = course.office
-    student.save if student.changed?
-  end
 
   def update_cohort
     student.parttime_cohort = student.calculate_parttime_cohort

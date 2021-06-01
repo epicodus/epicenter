@@ -66,20 +66,10 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
         expect(student.parttime_cohort).to eq part_time_cohort
       end
 
-      it 'sets ending cohort' do
-        student = Student.find_by(email: 'example-part-time@example.com')
-        expect(student.ending_cohort).to eq part_time_cohort
-      end
-
       it 'assigns correct course' do
         student = Student.find_by(email: 'example-part-time@example.com')
         expect(student.courses.count).to eq 1
         expect(student.course).to eq part_time_cohort.courses.first
-      end
-
-      it 'assigns office' do
-        student = Student.find_by(email: 'example-part-time@example.com')
-        expect(student.office).to eq part_time_cohort.courses.first.office
       end
 
       it 'assigns part-time payment plan' do
@@ -102,11 +92,6 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
         expect(student.name).to eq 'THIS LEAD IS USED FOR TESTING PURPOSES. PLEASE DO NOT DELETE.'
       end
 
-      it 'sets ending cohort' do
-        student = Student.find_by(email: 'example@example.com')
-        expect(student.ending_cohort).to eq cohort
-      end
-
       it 'sets cohort' do
         student = Student.find_by(email: 'example@example.com')
         expect(student.cohort).to eq cohort
@@ -121,11 +106,6 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
         student = Student.find_by(email: 'example@example.com')
         expect(student.courses.count).to eq 5
         expect(student.courses.first).to eq cohort.courses.first
-      end
-
-      it 'assigns office' do
-        student = Student.find_by(email: 'example@example.com')
-        expect(student.office).to eq cohort.courses.first.office
       end
 
       it 'does not assign payment plan' do
@@ -148,11 +128,6 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
         expect(student.name).to eq 'THIS LEAD IS USED FOR TESTING PURPOSES. PLEASE DO NOT DELETE.'
       end
 
-      it 'sets ending cohort' do
-        student = Student.find_by(email: 'example-part-time-full-stack@example.com')
-        expect(student.ending_cohort).to eq cohort
-      end
-
       it 'sets cohort' do
         student = Student.find_by(email: 'example-part-time-full-stack@example.com')
         expect(student.cohort).to eq cohort
@@ -167,11 +142,6 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
         student = Student.find_by(email: 'example-part-time-full-stack@example.com')
         expect(student.courses.count).to eq 5
         expect(student.courses.order(:id)).to eq cohort.courses.order(:id)
-      end
-
-      it 'assigns office' do
-        student = Student.find_by(email: 'example-part-time-full-stack@example.com')
-        expect(student.office).to eq cohort.courses.first.office
       end
 
       it 'does not assign payment plan' do
@@ -195,11 +165,6 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
         expect(student.name).to eq 'THIS LEAD IS USED FOR TESTING PURPOSES. PLEASE DO NOT DELETE.'
       end
 
-      it 'sets ending cohort' do
-        student = Student.find_by(email: 'example-fidgetech@example.com')
-        expect(student.ending_cohort).to eq fidgetech_cohort
-      end
-
       it 'sets cohort' do
         student = Student.find_by(email: 'example-fidgetech@example.com')
         expect(student.parttime_cohort).to eq fidgetech_cohort
@@ -214,11 +179,6 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
         student = Student.find_by(email: 'example-fidgetech@example.com')
         expect(student.courses.count).to eq 1
         expect(student.course).to eq fidgetech_cohort.courses.first
-      end
-
-      it 'assigns office' do
-        student = Student.find_by(email: 'example-fidgetech@example.com')
-        expect(student.office).to eq fidgetech_cohort.courses.first.office
       end
 
       it 'assign special payment plan' do
