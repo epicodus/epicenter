@@ -622,6 +622,12 @@ FactoryBot.define do
     sequence(:email) { |n| "student#{n}@example.com" }
     password { "password" }
     password_confirmation { "password" }
+    after(:create) do |student|
+      student.parttime_cohort = student.calculate_parttime_cohort
+      student.cohort = student.calculate_current_cohort
+      student.starting_cohort = student.calculate_starting_cohort
+      student.save if student.changed?
+    end
 
     trait :with_course do
       course
@@ -719,12 +725,10 @@ FactoryBot.define do
 
     factory :seattle_student do
       association :course, factory: :seattle_course
-      association :office, factory: :seattle_office
     end
 
     factory :portland_student do
       association :course, factory: :portland_course
-      association :office, factory: :portland_office
     end
 
     factory :user_with_score_of_10 do

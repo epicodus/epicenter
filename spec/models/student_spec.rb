@@ -181,16 +181,6 @@ describe Student do
     end
   end
 
-  describe 'updates ending_cohort' do
-    let(:student) { FactoryBot.create(:student, courses: []) }
-    let(:cohort)  { FactoryBot.create(:ft_cohort) }
-
-    it 'when current cohort changed' do
-      student.update(cohort: cohort)
-      expect(student.ending_cohort).to eq cohort
-    end
-  end
-
   describe '#with_activated_accounts' do
     it 'returns all students who have activated their accounts' do
       inactive_student = FactoryBot.create(:student, sign_in_count: 0)
@@ -1889,7 +1879,6 @@ end
       expect(student.courses.count).to eq 5
       expect(student.courses.last.description).to_not eq 'Internship Exempt'
       expect(student.cohort.description).to eq cohort.description
-      expect(student.office).to eq cohort.office
       expect(Devise.mailer.deliveries.count).to eq(emails_sent)
     end
   end

@@ -70,7 +70,7 @@ feature 'adding full cohort for a student', :js do
   let!(:cohort) { FactoryBot.create(:ft_cohort) }
   let(:office) { cohort.office }
   let(:admin) { cohort.admin }
-  let(:student) { FactoryBot.create(:student, office: cohort.office, courses: []) }
+  let(:student) { FactoryBot.create(:student, courses: []) }
 
   before { login_as(admin, scope: :admin) }
 
