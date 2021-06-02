@@ -79,17 +79,17 @@ private
         if @student.probation_teacher
           @student.probation_teacher_count = (@student.probation_teacher_count || 0) + 1
           @student.save
-          redirect_back(fallback_location: student_courses_path(@student), alert: "#{@student.name} has been placed on teacher probation!")
+          redirect_back(fallback_location: student_courses_path(@student), alert: "#{@student.name} has been placed on teacher warning!")
         else
-          redirect_back(fallback_location: student_courses_path(@student), notice: "#{@student.name} has been removed from teacher probation! :)")
+          redirect_back(fallback_location: student_courses_path(@student), notice: "#{@student.name} has been removed from teacher warning! :)")
         end
       elsif student_params[:probation_advisor]
         if @student.probation_advisor
           @student.probation_advisor_count = (@student.probation_advisor_count || 0) + 1
           @student.save
-          redirect_back(fallback_location: student_courses_path(@student), alert: "#{@student.name} has been placed on student services probation!")
+          redirect_back(fallback_location: student_courses_path(@student), alert: "#{@student.name} has been placed on advisor warning!")
         else
-          redirect_back(fallback_location: student_courses_path(@student), notice: "#{@student.name} has been removed from student services probation! :)")
+          redirect_back(fallback_location: student_courses_path(@student), notice: "#{@student.name} has been removed from advisor warning! :)")
         end
       end
     else
@@ -99,7 +99,7 @@ private
         redirect_to student_payments_path(@student), alert: "Payment plan update failed."
       end
       if student_params[:probation_teacher] || student_params[:probation_advisor]
-        redirect_back(fallback_location: student_courses_path(@student), alert: "Probation status update failed.")
+        redirect_back(fallback_location: student_courses_path(@student), alert: "Academic Warning status update failed.")
       end
     end
   end

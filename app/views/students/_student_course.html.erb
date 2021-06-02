@@ -8,7 +8,7 @@
     <%= render 'students/probation', student: @student %>
   <% elsif @student.probation_teacher || @student.probation_advisor %>
     <div class="alert alert-danger">
-      <p>Unmet requirements</p>
+      <p>Academic Warning</p>
     </div>
   <% end %>
   <h2>

@@ -11,7 +11,7 @@ class ProbationsController < ApplicationController
     @student.probation_teacher_count = params[:probation_teacher_count]
     @student.probation_advisor_count = params[:probation_advisor_count]
     if @student.save
-      redirect_to student_courses_path(@student), notice: 'Probation counts updated'
+      redirect_to student_courses_path(@student), notice: 'Academic Warning counts updated'
     else
       render :edit
     end

@@ -188,7 +188,7 @@ feature "Student visits homepage after logged in" do
     expect(page).to_not have_content "Cohort:"
     expect(page).to_not have_content "Absences since the start of the current cohort"
     expect(page).to have_content "Absences ever at Epicodus"
-    expect(page).to have_content "Number of times with unmet requirements"
+    expect(page).to have_content "Number of Academic Warnings"
   end
 
   it "show cohort name and cohort absences when cohort listed" do
@@ -198,7 +198,7 @@ feature "Student visits homepage after logged in" do
     expect(page).to have_content "Cohort:"
     expect(page).to have_content "Absences since the start of the current cohort"
     expect(page).to have_content "Absences ever at Epicodus"
-    expect(page).to have_content "Number of times with unmet requirements"
+    expect(page).to have_content "Number of Academic Warnings"
   end
 end
 
@@ -315,7 +315,7 @@ feature "shows warning if on probation" do
       student = FactoryBot.create(:student, :with_course, :with_all_documents_signed)
       login_as(student, scope: :student)
       visit course_student_path(student.course, student)
-      expect(page).to_not have_content "Unmet requirements"
+      expect(page).to_not have_content "Academic Warning"
     end
   end
 
@@ -324,7 +324,7 @@ feature "shows warning if on probation" do
       student = FactoryBot.create(:student, :with_course, :with_all_documents_signed, probation_teacher: true)
       login_as(student, scope: :student)
       visit course_student_path(student.course, student)
-      expect(page).to have_content "Unmet requirements"
+      expect(page).to have_content "Academic Warning"
     end
   end
 
@@ -333,7 +333,7 @@ feature "shows warning if on probation" do
       student = FactoryBot.create(:student, :with_course, :with_all_documents_signed, probation_advisor: true)
       login_as(student, scope: :student)
       visit course_student_path(student.course, student)
-      expect(page).to have_content "Unmet requirements"
+      expect(page).to have_content "Academic Warning"
     end
   end
 end

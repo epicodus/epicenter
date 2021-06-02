@@ -128,17 +128,18 @@ feature "shows warning if on probation" do
       login_as(student, scope: :student)
       visit root_path
       click_on 'Courses'
-      expect(page).to_not have_content "Unmet requirements"
+      expect(page).to_not have_css ".alert"
     end
   end
-
+  
   context "when on teacher probation" do
     it "as a student viewing their own page" do
       student = FactoryBot.create(:student, :with_course, :with_all_documents_signed, probation_teacher: true)
       login_as(student, scope: :student)
       visit root_path
       click_on 'Courses'
-      expect(page).to have_content "Unmet requirements"
+      section = find(:css, '.alert')
+      expect(section).to have_content "Academic Warning"
     end
   end
 
@@ -148,7 +149,8 @@ feature "shows warning if on probation" do
       login_as(student, scope: :student)
       visit root_path
       click_on 'Courses'
-      expect(page).to have_content "Unmet requirements"
+      section = find(:css, '.alert')
+      expect(section).to have_content "Academic Warning"
     end
   end
 end
