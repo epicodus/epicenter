@@ -10,12 +10,14 @@ FactoryBot.create(:failing_score)
 
 # Students
 Student.skip_callback(:create, :after, :update_plan_in_crm)
+Student.skip_callback(:update, :after, :update_cohorts_in_crm)
 15.times do
   FactoryBot.create(:student, :with_all_documents_signed, course: course)
   FactoryBot.create(:student, :with_all_documents_signed, course: past_course)
   FactoryBot.create(:student, :with_all_documents_signed, course: part_time_course)
 end
 Student.set_callback(:create, :after, :update_plan_in_crm)
+Student.set_callback(:update, :after, :update_cohorts_in_crm)
 
 # Code reviews
 5.times do
@@ -25,6 +27,7 @@ Student.set_callback(:create, :after, :update_plan_in_crm)
 end
 
 # Code review submissions
+Student.skip_callback(:update, :after, :update_cohorts_in_crm)
 Student.all.each do |student|
   student.update(sign_in_count: 1)
   code_reviews = CodeReview.where(course_id: student.courses.pluck(:id))
@@ -32,6 +35,7 @@ Student.all.each do |student|
     FactoryBot.create(:submission, code_review: code_review, student: student)
   end
 end
+Student.set_callback(:update, :after, :update_cohorts_in_crm)
 
 # Tracks
 Track.create(description: 'Ruby/Rails')
