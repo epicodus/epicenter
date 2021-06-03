@@ -529,12 +529,12 @@ private
     EmailJob.perform_later(
       { :from => ENV['FROM_EMAIL_REVIEW'],
         :to => course.admin.email,
-        :subject => "#{name} unmet requirements count total: #{probation_count_total}",
-        :text => "#{name} unmet requirements counts: #{probation_advisor_count.to_i} (advisor), #{probation_teacher_count.to_i} (teacher)"
+        :subject => "#{name} Academic Warning count total: #{probation_count_total}",
+        :text => "#{name} Academic Warning counts: #{probation_advisor_count.to_i} (advisor), #{probation_teacher_count.to_i} (teacher)"
       }
     )
     # notify advisor via CRM task
-    crm_lead.create_task("Unmet requirements count: #{probation_count_total}")
+    crm_lead.create_task("Academic Warning count: #{probation_count_total}")
   end
 
   def probation_updated?

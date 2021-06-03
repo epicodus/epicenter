@@ -251,7 +251,7 @@ feature 'setting academic probation', :js, :stub_mailgun do
     visit student_courses_path(student)
     find(:css, "#student_probation_teacher").set(true)
     accept_js_alert
-    expect(page).to have_content "#{student.name} has been placed on teacher probation!"
+    expect(page).to have_content "#{student.name} has been placed on teacher warning!"
     student.reload
     expect(student.probation_teacher).to eq true
   end
@@ -260,7 +260,7 @@ feature 'setting academic probation', :js, :stub_mailgun do
     visit student_courses_path(student)
     find(:css, "#student_probation_advisor").set(true)
     accept_js_alert
-    expect(page).to have_content "#{student.name} has been placed on student services probation!"
+    expect(page).to have_content "#{student.name} has been placed on advisor warning!"
     student.reload
     expect(student.probation_advisor).to eq true
   end
@@ -270,7 +270,7 @@ feature 'setting academic probation', :js, :stub_mailgun do
     visit student_courses_path(student)
     find(:css, "#student_probation_teacher").set(false)
     accept_js_alert
-    expect(page).to have_content "#{student.name} has been removed from teacher probation! :)"
+    expect(page).to have_content "#{student.name} has been removed from teacher warning! :)"
     student.reload
     expect(student.probation_teacher).to eq false
   end
@@ -280,37 +280,37 @@ feature 'setting academic probation', :js, :stub_mailgun do
     visit student_courses_path(student)
     find(:css, "#student_probation_advisor").set(false)
     accept_js_alert
-    expect(page).to have_content "#{student.name} has been removed from student services probation! :)"
+    expect(page).to have_content "#{student.name} has been removed from advisor warning! :)"
     student.reload
     expect(student.probation_advisor).to eq false
   end
 
   it 'shows number of times student has been on teacher probation' do
     visit student_courses_path(student)
-    expect(page).to have_content 'Teacher probation: (0 times)'
+    expect(page).to have_content 'Teacher warnings: (0 times)'
     student.update_columns(probation_teacher_count: 1)
     visit student_courses_path(student)
-    expect(page).to have_content 'Teacher probation: (1 time)'
+    expect(page).to have_content 'Teacher warnings: (1 time)'
   end
 
   it 'shows number of times student has been on advisor probation' do
     visit student_courses_path(student)
-    expect(page).to have_content 'Student services probation: (0 times)'
+    expect(page).to have_content 'Advisor warnings: (0 times)'
     student.update_columns(probation_advisor_count: 1)
     visit student_courses_path(student)
-    expect(page).to have_content 'Student services probation: (1 time)'
+    expect(page).to have_content 'Advisor warnings: (1 time)'
   end
 
   it 'allows editing of probation counts' do
     visit student_courses_path(student)
-    expect(page).to have_content 'Teacher probation: (0 times)'
-    expect(page).to have_content 'Student services probation: (0 times)'
+    expect(page).to have_content 'Teacher warnings: (0 times)'
+    expect(page).to have_content 'Advisor warnings: (0 times)'
     click_link 'edit count'
     fill_in 'probation-teacher-count-input', with: '1'
     fill_in 'probation-advisor-count-input', with: '1'
     click_button 'Update'
-    expect(page).to have_content 'Teacher probation: (1 time)'
-    expect(page).to have_content 'Student services probation: (1 time)'
+    expect(page).to have_content 'Teacher warnings: (1 time)'
+    expect(page).to have_content 'Advisor warnings: (1 time)'
   end
 end
 
@@ -346,7 +346,7 @@ feature 'student roster page' do
   scenario 'allows viewing probation count' do
     student = FactoryBot.create(:student, course: course, probation_advisor_count: nil, probation_teacher_count: 123)
     visit course_path(course)
-    click_link 'View probation'
+    click_link 'View academic warnings'
     expect(page).to have_content 123
   end
 

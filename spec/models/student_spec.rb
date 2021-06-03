@@ -164,8 +164,8 @@ describe Student do
       expect(EmailJob).to have_received(:perform_later).with(
         { :from => ENV['FROM_EMAIL_REVIEW'],
           :to => student.course.admin.email,
-          :subject => "#{student.name} unmet requirements count total: 4",
-          :text => "#{student.name} unmet requirements counts: 1 (advisor), 3 (teacher)"
+          :subject => "#{student.name} Academic Warning count total: 4",
+          :text => "#{student.name} Academic Warning counts: 1 (advisor), 3 (teacher)"
         })
     end
 
