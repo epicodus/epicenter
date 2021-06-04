@@ -121,6 +121,35 @@ feature 'interview rankings' do
     expect(page).to have_content "Student rankings have been saved for #{internship.courses.first.description}."
   end
 
+  scenario 'as a company ranking students but not all at once' do
+    student_2 = FactoryBot.create(:student, :with_all_documents_signed, course: internship.courses.first)
+    FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first)
+    FactoryBot.create(:interview_assignment, student: student_2, internship: internship, course: internship.courses.first)
+    login_as(company, scope: :company)
+    visit company_path(company)
+    el1 = page.all(:css, '#company-interview-feedback')[0]
+    el2 = page.all(:css, '#company-interview-ranking')[0]
+    el1.fill_in with: 'Great interviewer!'
+    el2.fill_in with: 1
+    click_on 'Save rankings'
+    expect(page).to have_content "Student rankings have been saved for #{internship.courses.first.description}."
+    expect(Student.first.interview_assignments.first.feedback_from_company).to eq 'Great interviewer!'
+    expect(Student.first.interview_assignments.first.ranking_from_company).to eq 1
+    expect(Student.last.interview_assignments.first.feedback_from_company).to eq ''
+    expect(Student.last.interview_assignments.first.ranking_from_company).to eq nil
+    visit company_path(company)
+    el3 = page.all(:css, '#company-interview-feedback')[1]
+    el4 = page.all(:css, '#company-interview-ranking')[1]
+    el3.fill_in with: 'Ok'
+    el4.fill_in with: 2
+    click_on 'Save rankings'
+    expect(page).to have_content "Student rankings have been saved for #{internship.courses.first.description}."
+    expect(Student.first.interview_assignments.first.feedback_from_company).to eq 'Great interviewer!'
+    expect(Student.first.interview_assignments.first.ranking_from_company).to eq 1
+    expect(Student.last.interview_assignments.first.feedback_from_company).to eq 'Ok'
+    expect(Student.last.interview_assignments.first.ranking_from_company).to eq 2
+  end
+
   scenario 'as a company can not view student feedback' do
     FactoryBot.create(:interview_assignment, student: student, internship: internship, course: internship.courses.first, ranking_from_company: 1, feedback_from_student: 'Great company!')
     login_as(company, scope: :company)

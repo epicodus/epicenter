@@ -24,11 +24,11 @@
               </td>
               <td class="col-md-8">
                 <div class="form-group">
-                  <%= f.text_area :feedback_from_company, required: true, rows: 4, class: 'form-control', id: 'company-interview-feedback' %>
+                  <%= f.text_area :feedback_from_company, rows: 4, class: 'form-control', id: 'company-interview-feedback' %>
                 </div>
               </td>
               <td class="col-md-2">
-                <%= f.number_field :ranking_from_company, required: true, min: 1, max: 6, class: 'form-control', id: 'company-interview-ranking' %>
+                <%= f.number_field :ranking_from_company, min: 1, max: 6, class: 'form-control', id: 'company-interview-ranking' %>
               </td>
             <% end %>
           </tr>
