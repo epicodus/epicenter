@@ -36,10 +36,12 @@ feature 'Student signs up via invitation', :vcr do
   scenario 'with valid information' do
     student.invite!
     visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
+    fill_in 'Legal name', with: 'test legal name'
     fill_in 'Password', with: 'password'
     fill_in 'Password confirmation', with: 'password'
     click_on 'Submit'
     expect(page).to have_content 'Your password was set successfully. You are now signed in.'
+    expect(Student.first.legal_name).to eq 'test legal name'
   end
 
   scenario 'with missing information' do

@@ -25,11 +25,11 @@ private
       subject: @subject,
       signers: [{
         email_address: student.email,
-        name: student.name,
+        name: student.legal_name || student.name,
         role: 'Student'
       }],
       custom_fields: {
-        student_name: student.name,
+        student_name: student.legal_name || student.name,
         sign_date: Time.zone.now.to_date.strftime("%A, %B %d, %Y"),
         program_start_date: student.course.start_date.strftime("%A, %B %d, %Y")
       }
@@ -44,11 +44,11 @@ private
       subject: @subject,
       signers: [{
         email_address: student.email,
-        name: student.name,
+        name: student.legal_name || student.name,
         role: 'Student'
       }],
       custom_fields: {
-        student_name: student.name,
+        student_name: student.legal_name || student.name,
         sign_date: Time.zone.now.to_date.strftime("%A, %B %d, %Y"),
       }
     )
@@ -61,7 +61,7 @@ private
       subject: @subject,
       signers: [{
         email_address: student.email,
-        name: student.name
+        name: student.legal_name || student.name
       }],
       file_url: [@file]
     )
