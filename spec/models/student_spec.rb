@@ -110,6 +110,28 @@ describe Student do
     end
   end
 
+  describe 'updates legal name in Close', :dont_stub_crm, :vcr do
+
+    let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
+    let(:lead_id) { ENV['EXAMPLE_CRM_LEAD_ID'] }
+
+    before { allow(CrmUpdateJob).to receive(:perform_later).and_return({}) }
+
+    it 'updates in Close when legal name changed' do
+      student = FactoryBot.create(:student, email: 'example@example.com')
+      student.legal_name = 'test'
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['LEGAL_NAME'] => 'test' })
+      student.save
+    end
+
+    it 'does not update in Close when legal name not changed' do
+      student = FactoryBot.create(:student, email: 'example@example.com')
+      student.name = 'test'
+      expect(CrmUpdateJob).to_not receive(:perform_later)
+      student.save
+    end
+  end
+
   describe 'updates probation in Close', :dont_stub_crm, :vcr do
 
     let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
