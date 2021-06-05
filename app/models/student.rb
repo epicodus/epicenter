@@ -6,6 +6,7 @@ class Student < User
   before_create :assign_payment_plan
   after_create :update_plan_in_crm, if: ->(student) { student.plan.present? }
   after_update :update_plan_in_crm, if: :saved_change_to_plan_id
+  after_update :update_legal_name_in_crm, if: :saved_change_to_legal_name
   after_update :update_probation_in_crm, if: :probation_updated?
   after_update :notify_staff_on_probation_count, if: :probation_count_updated_3_or_more?
   after_update :update_cohorts_in_crm, if: :cohorts_updated?
@@ -514,6 +515,10 @@ private
 
   def update_plan_in_crm
     crm_lead.update({ Rails.application.config.x.crm_fields['PAYMENT_PLAN'] => plan.try(:close_io_description) })
+  end
+
+  def update_legal_name_in_crm
+    crm_lead.update({ Rails.application.config.x.crm_fields['LEGAL_NAME'] => legal_name })
   end
 
   def update_probation_in_crm

@@ -44,6 +44,20 @@ feature 'Student signs up via invitation', :vcr do
     expect(Student.first.legal_name).to eq 'test legal name'
   end
 
+  scenario 'saves legal name in Epicenter and CRM', :dont_stub_crm do
+    close_io_client = Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false)
+    lead_id = ENV['EXAMPLE_CRM_LEAD_ID']
+    allow(CrmUpdateJob).to receive(:perform_later).and_return({})
+    student.invite!
+    visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
+    fill_in 'Legal name', with: 'test legal name'
+    fill_in 'Password', with: 'password'
+    fill_in 'Password confirmation', with: 'password'
+    expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['LEGAL_NAME'] => 'test legal name' })
+    click_on 'Submit'
+    expect(Student.first.legal_name).to eq 'test legal name'
+  end
+
   scenario 'with missing information' do
     student.invite!
     visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
