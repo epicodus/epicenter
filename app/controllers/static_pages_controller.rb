@@ -11,4 +11,11 @@ class StaticPagesController < ApplicationController
       @queue_url = 'https://help.epicodus.com'
     end
   end
+
+  def standup
+    redirect_to root_path unless current_admin
+    exclude = ENV['STANDUP_RANDOMIZER_EXCLUDE'].split('|')
+    @admins_randomized = Admin.where.not(name: exclude).pluck(:name).shuffle
+    @admins_randomized << ENV['STANDUP_RANDOMIZER_LAST']
+  end
 end
