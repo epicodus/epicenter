@@ -1,5 +1,12 @@
 <%= form_for payment, method: :patch do |f| %>
   <div class="form-group well">
+    <div class='refund-form-info text-warning'>
+      <small>
+        <p>Cohort of current course: <br><%= @student.course.try(:cohort).try(:description) || 'no course' %></p>
+        <p>Date of last sign in: <%= @student.attendance_records.last.try(:date).try(:to_s) || 'no attendance records' %></p>
+      </small>
+    </div>
+    </small></p>
     <div class="form-group">
       <%= f.label :refund_notes %>
       <%= f.text_area :refund_notes, class: 'form-control' %>

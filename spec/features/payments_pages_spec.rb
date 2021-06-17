@@ -279,6 +279,34 @@ feature 'issuing an offline refund as an admin', :vcr do
     expect(page).to have_content 'Payments and refunds can not be made when cohort is blank.'
   end
 
+  it 'displays cohort in offline refund section if present' do
+    visit student_payments_path(student)
+    section = all(:css, '.offline-refund-form-info').first
+    expect(section).to have_content student.course.cohort.description
+  end
+
+  it 'displays last day attended in offline refund section if present' do
+    travel_to student.course.start_date do
+      attendance_record = FactoryBot.create(:attendance_record, student: student, date: student.course.start_date)
+    end
+    visit student_payments_path(student)
+    section = all(:css, '.offline-refund-form-info').first
+    expect(section).to have_content "Date of last sign in: #{student.course.start_date.to_s}"
+  end
+
+  it 'displays no course in offline refund section if not course present' do
+    student.enrollments.delete_all
+    visit student_payments_path(student)
+    section = all(:css, '.offline-refund-form-info').first
+    expect(section).to have_content 'no course'
+  end
+
+  it 'displays no attendance records in offline refund section if none present' do
+    visit student_payments_path(student)
+    section = all(:css, '.offline-refund-form-info').first
+    expect(section).to have_content 'Date of last sign in: no attendance records'
+  end
+
   it 'sets category to refund for offline refunds' do
     payment = FactoryBot.create(:payment, student: student, offline: true)
     visit student_payments_path(student)
@@ -333,6 +361,34 @@ feature 'issuing a refund as an admin', :vcr, :stub_mailgun do
   let!(:payment) { FactoryBot.create(:payment_with_credit_card, amount: 100_00, student: student) }
 
   before { login_as(admin, scope: :admin) }
+
+  it 'displays cohort in refund section if present' do
+    visit student_payments_path(student)
+    section = all(:css, '.refund-form-info').first
+    expect(section).to have_content student.course.cohort.description
+  end
+
+  it 'displays last day attended in refund section if present' do
+    travel_to student.course.start_date do
+      attendance_record = FactoryBot.create(:attendance_record, student: student, date: student.course.start_date)
+    end
+    visit student_payments_path(student)
+    section = all(:css, '.refund-form-info').first
+    expect(section).to have_content "Date of last sign in: #{student.course.start_date.to_s}"
+  end
+
+  it 'displays no course in refund section if not course present' do
+    student.enrollments.delete_all
+    visit student_payments_path(student)
+    section = all(:css, '.refund-form-info').first
+    expect(section).to have_content 'no course'
+  end
+
+  it 'displays no attendance records in refund section if none present' do
+    visit student_payments_path(student)
+    section = all(:css, '.refund-form-info').first
+    expect(section).to have_content 'Date of last sign in: no attendance records'
+  end
 
   it 'is unavailable with no cohort or pt cohort' do
     unenrolled_student = FactoryBot.create(:student)

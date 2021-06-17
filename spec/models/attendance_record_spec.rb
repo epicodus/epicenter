@@ -1,4 +1,14 @@
 describe AttendanceRecord do
+
+  describe 'default scope' do
+    it 'orders by date ascending' do
+      student = FactoryBot.create(:student, :with_course)
+      ar_2 = FactoryBot.create(:attendance_record, student: student, date: student.course.end_date)
+      ar_1 = FactoryBot.create(:attendance_record, student: student, date: student.course.start_date)
+      expect(student.attendance_records).to eq [ar_1, ar_2]
+    end
+  end
+
   describe 'validates uniqueness of student_id per day' do
     it do
       student = FactoryBot.create(:student, :with_course)
