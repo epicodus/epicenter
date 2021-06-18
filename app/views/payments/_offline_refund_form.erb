@@ -1,37 +1,39 @@
-  <%= form_for [@student, @payment], html: { id: 'offline-refund-form' } do |f| %>
-    <%= f.hidden_field :offline, value: true %>
-    <%= f.hidden_field :category, value: 'refund' %>
-    <%= f.hidden_field :amount, value: 0 %>
-    <%= f.hidden_field :student_id, value: @student.id %>
+<p class='offline-refund-form-info text-warning'><small>
+  Cohort of current course: <%= @student.course.try(:cohort).try(:description) || 'no course' %><br>
+  Date of last sign in: <%= @student.attendance_records.last.try(:date).try(:to_s) || 'no attendance records' %>
+</small></p>
 
-    <div class="form-group">
-      <%= f.label :refund_notes, 'Offline refund notes' %>
-      <%= f.text_area :refund_notes, class: 'form-control' %>
-    </div>
-
-    <div class="form-group">
-      <%= f.label 'Which payment should this refund apply to?' %>
-      <%= f.collection_select :linked_payment_id, @student.payments.where.not(amount: 0), :id, :full_description, {}, { class: "form-control" } %>
-    </div>
-
-    <div class="input-group refund-input-group">
-      <%= f.label :refund_amount, 'Offline refund amount' %>
-      <%= f.number_field :refund_amount, { value: nil, class: 'form-control payment-refund-input', id: "refund-offline-input", placeholder: 'refund amount', required: true, step: 0.01 } %>
-    </div>
-    <div class="input-group refund-input-group">
-      <%= f.label :refund_date, 'Effective refund date' %>
-      <%= f.date_field :refund_date, { class: 'form-control payment-refund-date-input', id: "refund-date-offline-input", required: true } %>
-    </div>
-    <div>
-      <% if @student.starting_cohort == @student.cohort %>
-        <span class="input-group-btn">
-          <%= f.submit 'Offline refund', class: 'btn btn-primary payment-refund-button', id: "refund-offline-button", data: { confirm: 'Confirm offline refund?' } %>
-        </span>
-      <% else %>
-        <p class="text-primary"><strong>NOTE: Starting Cohort does not match Current Cohort</strong></p>
-        <span class="input-group-btn">
-          <%= f.submit 'Offline refund', class: 'btn btn-primary payment-refund-button', id: "refund-offline-button", data: { confirm: 'WARNING: COHORT HAS CHANGED! Confirm offline refund?' } %>
-        </span>
-      <% end %>
-    </div>
-  <% end %>
+<%= form_for [@student, @payment], html: { id: 'offline-refund-form' } do |f| %>
+  <%= f.hidden_field :offline, value: true %>
+  <%= f.hidden_field :category, value: 'refund' %>
+  <%= f.hidden_field :amount, value: 0 %>
+  <%= f.hidden_field :student_id, value: @student.id %>
+  <div class="form-group">
+    <%= f.label :refund_notes, 'Offline refund notes' %>
+    <%= f.text_area :refund_notes, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label 'Which payment should this refund apply to?' %>
+    <%= f.collection_select :linked_payment_id, @student.payments.where.not(amount: 0), :id, :full_description, {}, { class: "form-control" } %>
+  </div>
+  <div class="input-group refund-input-group">
+    <%= f.label :refund_amount, 'Offline refund amount' %>
+    <%= f.number_field :refund_amount, { value: nil, class: 'form-control payment-refund-input', id: "refund-offline-input", placeholder: 'refund amount', required: true, step: 0.01 } %>
+  </div>
+  <div class="input-group refund-input-group">
+    <%= f.label :refund_date, 'Effective refund date' %>
+    <%= f.date_field :refund_date, { class: 'form-control payment-refund-date-input', id: "refund-date-offline-input", required: true } %>
+  </div>
+  <div>
+    <% if @student.starting_cohort == @student.cohort %>
+      <span class="input-group-btn">
+        <%= f.submit 'Offline refund', class: 'btn btn-primary payment-refund-button', id: "refund-offline-button", data: { confirm: 'Confirm offline refund?' } %>
+      </span>
+    <% else %>
+      <p class="text-primary"><strong>NOTE: Starting Cohort does not match Current Cohort</strong></p>
+      <span class="input-group-btn">
+        <%= f.submit 'Offline refund', class: 'btn btn-primary payment-refund-button', id: "refund-offline-button", data: { confirm: 'WARNING: COHORT HAS CHANGED! Confirm offline refund?' } %>
+      </span>
+    <% end %>
+  </div>
+<% end %>

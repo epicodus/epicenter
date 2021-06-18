@@ -1,5 +1,6 @@
 class AttendanceRecord < ApplicationRecord
   attr_accessor :signing_out, :pair_ids
+  default_scope { order(:date) }
   scope :today, -> { where(date: Time.zone.now.to_date) }
 
   validates :student_id, presence: true, uniqueness: { scope: :date }
