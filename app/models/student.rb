@@ -4,6 +4,7 @@ class Student < User
   validate :primary_payment_method_belongs_to_student
 
   before_create :assign_payment_plan
+  before_update :reset_upfront_amount_on_plan_change, if: :will_save_change_to_plan_id?
   after_create :update_plan_in_crm, if: ->(student) { student.plan.present? }
   after_update :update_plan_in_crm, if: :saved_change_to_plan_id
   after_update :update_legal_name_in_crm, if: :saved_change_to_legal_name
@@ -30,12 +31,12 @@ class Student < User
   belongs_to :primary_payment_method, class_name: 'PaymentMethod', optional: true
   has_many :signatures
   has_one :internship_assignment
-  has_many :cost_adjustments
   has_many :daily_submissions
   has_many :evaluations_of_peers, class_name: :PeerEvaluation, foreign_key: :evaluator
   has_many :evaluations_by_peers, class_name: :PeerEvaluation, foreign_key: :evaluatee
   has_many :evaluations_of_pairs, class_name: :PairFeedback, foreign_key: :student
   has_many :evaluations_by_pairs, class_name: :PairFeedback, foreign_key: :pair
+  has_many :cost_adjustments # REMOVE THIS AFTER MIGRATE COST ADJUSTMENTS
 
   acts_as_paranoid
 
@@ -252,16 +253,12 @@ class Student < User
     (payment_methods.not_verified_first - [primary_payment_method]).unshift(primary_payment_method).compact
   end
 
-  def total_owed
-    plan.student_portion + cost_adjustments.sum(:amount)
-  end
-
-  def total_remaining_owed
-    total_owed - total_paid
+  def upfront_amount
+    super || plan.upfront_amount
   end
 
   def upfront_amount_owed
-    plan.standard? ? plan.upfront_amount + cost_adjustments.sum(:amount) - total_paid : total_owed - total_paid
+    upfront_amount - total_paid
   end
 
   def upfront_amount_with_fees
@@ -511,6 +508,10 @@ private
     elsif course.try(:track).try(:description) == 'Part-Time Intro to Programming'
       self.plan = Plan.active.find_by(short_name: 'parttime-intro')
     end
+  end
+
+  def reset_upfront_amount_on_plan_change
+    self.upfront_amount = nil
   end
 
   def update_plan_in_crm

@@ -24,7 +24,7 @@ private
   def set_admin_permissions
     can :manage, [AttendanceRecord, CodeReview, Company, Course, Enrollment,
                   Internship, InternshipAssignment, InterviewAssignment,
-                  Payment, Student, Submission, Cohort, CostAdjustment, DailySubmission]
+                  Payment, Student, Submission, Cohort, DailySubmission]
     can :manage, [AttendanceRecordAmendment, Review]
     can :read, [Transcript, PeerEvaluation, PairFeedback]
     can :read, :certificate

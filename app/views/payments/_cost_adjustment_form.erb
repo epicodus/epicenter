@@ -1,17 +1,18 @@
-<%= form_for [@student, @cost_adjustment] do |f| %>
+<%= form_for @student do |f| %>
   <div class="input-group refund-input-group">
-    <%= f.label :amount %>
-    <%= f.number_field :amount, { class: 'form-control', required: true, step: 0.01 } %>
+    <%= f.label :upfront_amount, 'Change upfront amount total:' %>
+    <%= f.number_field :upfront_amount, { class: 'form-control', id: 'cost_adjustment_amount', required: true, value: @student.upfront_amount / 100 } %>
   </div>
 
-  <div class="input-group refund-input-group">
-    <%= f.label :reason %>
-    <%= f.text_field :reason, { class: 'form-control', required: true } %>
+  <div class='alert alert-warning'>This changes the total Upfront Amount (deposit), not the remaning amount the student needs to pay.  
+    <% if @student.plan.standard? %>
+      <p class='text-danger'><strong>Also, for the standard payment plan, this is different from the total tuition owed by the student.</strong></p>
+    <% end %>
   </div>
 
   <div class="input-group">
     <span class="input-group-btn">
-      <%= f.submit 'Adjust student cost', class: 'btn btn-primary', id: 'adjust-student-cost-button' %>
+      <%= f.submit 'Update upfront tuition total', class: 'btn btn-primary', id: 'adjust-student-cost-button', data: { confirm: "Update upfront amount total? (This is not necessarily the same as the remaining amount the student owes.)" } %>
     </span>
   </div>
 <% end %>

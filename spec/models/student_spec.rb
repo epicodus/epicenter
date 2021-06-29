@@ -12,7 +12,6 @@ describe Student do
   it { should have_many :signatures }
   it { should have_many :interview_assignments }
   it { should have_one :internship_assignment }
-  it { should have_many :cost_adjustments }
   it { should have_many :daily_submissions }
   it { should have_many(:evaluations_of_peers).class_name('PeerEvaluation').with_foreign_key(:evaluator) }
   it { should have_many(:evaluations_by_peers).class_name('PeerEvaluation').with_foreign_key(:evaluatee) }
@@ -62,6 +61,15 @@ describe Student do
       student = FactoryBot.build(:student, plan: standard_plan)
       student.save
       expect(student.plan).to eq standard_plan
+    end
+  end
+
+  describe 'reset upfront_amount on payment plan change' do
+    it 'resets on change' do
+      student = FactoryBot.create(:student, :with_plan, upfront_amount: 200_00)
+      other_plan = FactoryBot.create(:standard_plan)
+      student.update(plan: other_plan)
+      expect(student.reload.upfront_amount).to eq other_plan.upfront_amount
     end
   end
 
@@ -747,39 +755,15 @@ describe Student do
     end
   end
 
-  describe '#total_owed', :stripe_mock do
-    let(:student) { FactoryBot.create(:student, :with_plan, :with_credit_card) }
-
-    before { allow(student).to receive(:total_paid).and_return(50_00) }
-
-    it "calculates the total amount owed when no cost adjustments" do
-      expect(student.total_owed).to eq student.plan.student_portion
+  describe '#upfront_amount' do
+    it 'reports plan upfront amount if no custom student upfront amount set' do
+      student = FactoryBot.create(:student, :with_plan)
+      expect(student.upfront_amount).to eq student.plan.upfront_amount
     end
 
-    it "calculates the total amount owed when positive cost adjustments" do
-      student.cost_adjustments.create(amount: 50_00, reason: "test")
-      expect(student.total_owed).to eq student.plan.student_portion + 50_00
-    end
-
-    it "calculates the total amount owed when positive and negative cost adjustments" do
-      student.cost_adjustments.create(amount: 50_00, reason: "test")
-      student.cost_adjustments.create(amount: -25_00, reason: "test")
-      expect(student.total_owed).to eq student.plan.student_portion + 25_00
-    end
-
-    it "calculates the total amount owed on standard payment plan" do
-      student.plan = FactoryBot.create(:standard_plan)
-      expect(student.total_owed).to eq student.plan.student_portion
-    end
-  end
-
-  describe '#total_remaining_owed', :stripe_mock do
-    let(:student) { FactoryBot.create(:student, :with_plan, :with_verified_bank_account) }
-
-    before { allow(student).to receive(:total_paid).and_return(50_00) }
-
-    it "calculated the total remaining amount owed" do
-      expect(student.total_remaining_owed).to eq student.total_owed - student.total_paid
+    it 'reports custom upfront amount if set' do
+      student = FactoryBot.create(:student, :with_plan, upfront_amount: 5000_00)
+      expect(student.upfront_amount).to eq 5000_00
     end
   end
 
@@ -787,7 +771,6 @@ describe Student do
     it "calculates the upfront amount owed with upfront payment plan" do
       student = FactoryBot.create(:student, :with_plan, :with_credit_card)
       allow(student).to receive(:total_paid).and_return(50_00)
-      expect(student.upfront_amount_owed).to eq student.plan.student_portion - 50_00
       expect(student.upfront_amount_owed).to eq student.plan.upfront_amount - 50_00
     end
 
@@ -795,15 +778,12 @@ describe Student do
       student = FactoryBot.create(:student, :with_credit_card, plan: FactoryBot.create(:standard_plan))
       allow(student).to receive(:total_paid).and_return(50_00)
       expect(student.upfront_amount_owed).to eq student.plan.upfront_amount - 50_00
-      expect(student.upfront_amount_owed).to_not eq student.plan.student_portion - 50_00
     end
 
-    it "calculates the upfront amount owed with standard payment plan with cost adjustment" do
-      student = FactoryBot.create(:student, :with_credit_card, plan: FactoryBot.create(:standard_plan))
-      allow(student).to receive(:total_paid).and_return(50_00)
-      student.cost_adjustments.create(amount: 25_00, reason: 'test')
-      expect(student.upfront_amount_owed).to eq student.plan.upfront_amount - 25_00
-      expect(student.upfront_amount_owed).to_not eq student.plan.student_portion - 25_00
+    it "calculates the upfront amount owed with standard payment plan with custom upfront amount for student" do
+      student = FactoryBot.create(:student, :with_credit_card, plan: FactoryBot.create(:standard_plan), upfront_amount: 4000_00)
+      allow(student).to receive(:total_paid).and_return(500_00)
+      expect(student.upfront_amount_owed).to eq 3500_00
     end
   end
 
@@ -1669,10 +1649,6 @@ end
 
     context 'for transcripts' do
       it { is_expected.to have_abilities(:read, Transcript) }
-    end
-
-    context 'for cost adjustments' do
-      it { is_expected.to not_have_abilities([:create, :read, :update, :destroy], CostAdjustment.new)}
     end
   end
 

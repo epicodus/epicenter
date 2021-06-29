@@ -21,7 +21,7 @@ $(function() {
 
   $('#adjust-student-cost-button').click(function() {
     var inputAmount = $("#cost_adjustment_amount").val();
-    if (!negativeOrPositiveCurrencyRegex.test(inputAmount)) {
+    if (!positiveCurrencyRegex.test(inputAmount)) {
       alert('Please enter a valid amount.');
       return false;
     }

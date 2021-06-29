@@ -151,14 +151,19 @@
       <p>Payment plan: <%= @student.plan.name %></p>
       <hr>
       <p class='text-primary small'>The numbers below are for student portion of tuition only.</p>
-      <p>Overall <em>student portion</em> of tuition <span class='small'>(adjustable via tuition adjustments)</span>: <%= number_to_currency(@student.total_owed / 100.00) %></p>
-      <p>Total paid by <em>student</em> (stripe): <%= number_to_currency(@student.total_paid_online / 100.00) %></p>
-      <p>Remaining amount <em>student</em> owes: <%= number_to_currency((@student.total_owed - @student.total_paid_online) / 100.00) %></p>
+      <p>Total paid by <em>student</em> (bank/debit/credit): <%= number_to_currency(@student.total_paid_online / 100.00) %></p>
+      <% if @student.plan.standard? %>
+        <p>Overall tuition for standard plan: <%= number_to_currency(@student.plan.student_portion / 100.00) %></p>
+        <p>Remaining amount <em>student</em> owes: <%= number_to_currency((@student.plan.student_portion - @student.total_paid) / 100.00) %></p>
+      <% else %>
+        <p>Overall <em>student portion</em> of tuition <span class='small'>(adjustable via tuition adjustments)</span>: <%= number_to_currency(@student.upfront_amount / 100.00) %></p>
+        <p>Remaining amount <em>student</em> owes: <%= number_to_currency((@student.upfront_amount - @student.total_paid) / 100.00) %></p>
+      <% end %>
       <p>Upfront payment due? <%= @student.upfront_payment_due? ? number_to_currency(@student.upfront_amount_owed / 100.00) : 'None' %></p>
       <% if @student.payments.offline.any? %>
         <hr>
         <p>Total paid by third parties (offline): <%= number_to_currency(@student.total_paid_offline / 100.00) %></p>
-        <p class='text-primary small'>Totals may be incorrect in case of offline refunds for student payments.</p>
+        <p class='text-primary small'>Numbers may be incorrect when student payments or refunds are made by check.</p>
       <% end %>
     <% else %>
       <p><strong>No payment plan selected!</strong></p>
@@ -231,56 +236,40 @@
       <p class='alert alert-warning'>Payments and refunds can not be made when cohort is blank. Please enroll the student in the cohort to which the payment or refund should be applied.</p>
     <% end %>
 
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse4" class="payment-accordion-label">
-          Tuition Adjustments</a>
-        </h4>
-      </div>
-      <div id="collapse4" class="panel-collapse collapse">
-        <div class="panel-body cost-adjustment well">
-          <% if @student.cost_adjustments.any? %>
-            <h4><strong>Tuition adjustments:</strong></h4>
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th class="col-md-2">Date</th>
-                    <th class="col-md-2">Adjustment</th>
-                    <th class="col-md-7">Reason</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% @student.cost_adjustments.reverse.each do |adjustment| %>
-                    <tr>
-                      <td class="col-md-2"><%= adjustment.created_at.strftime("%a %b %d, %Y") %></td>
-                      <td class="col-md-2"><%= number_to_currency(adjustment.amount / 100.00) %></td>
-                      <td class="col-md-7"><%= adjustment.reason %></td>
-                      <td>
-                        <%= link_to student_cost_adjustment_path(@student, adjustment), data: { method: :delete, confirm: 'Are you sure?' } do %>
-                          <i class="glyphicon glyphicon-remove" id="remove-cost-adjustment-<%= adjustment.id %>"></i>
-                        <% end %>
-                      </td>
-                    </tr>
-                  <% end %>
-                </tbody>
-              </table>
+    <% if @student.plan %>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapse4" class="payment-accordion-label">
+            Tuition Adjustment</a>
+          </h4>
+        </div>
+        <div id="collapse4" class="panel-collapse collapse">
+          <div class="panel-body cost-adjustment well">
+            <div class='' id='show-student-tuition-adjustment'>
+              <p>
+                Default upfront amount (based on plan): <%= number_to_currency(@student.plan.upfront_amount / 100.00) %><br>
+                <% if @student.upfront_amount != @student.plan.upfront_amount %>
+                  Current upfront amount (as adjusted): <%= number_to_currency(@student.upfront_amount / 100.00) %>
+                <% else %>
+                  No adjustments made to upfront amount.
+                <% end %>
+                <br>Total paid by student (bank/debit/credit): <%= number_to_currency(@student.total_paid_online / 100.00) %>
+                <br>Total paid by third parties (offline): <%= number_to_currency(@student.total_paid_offline / 100.00) %>
+                <br>Remaining upfront payment owed by student: <%= number_to_currency(@student.upfront_amount_owed / 100.00) %>
+              </p>
             </div>
-            <hr>
-          <% end %>
-          <h4 id='show-student-tuition-adjustment'><strong>New adjustment to amount student owes:</strong></h4>
-          <div id="cost-adjustment-form">
-            <div class="row">
-              <div class="col-md-5">
-                <%= render 'cost_adjustment_form' %>
+            <div id="cost-adjustment-form">
+              <div class="row">
+                <div class="col-md-12">
+                  <%= render 'cost_adjustment_form' %>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    <% end %>
 
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -295,7 +284,7 @@
           <%= form_for @student do |f| %>
             <%= f.label :plan_id, "Change plan to:" %>
             <%= f.select :plan_id, Plan.active.collect {|p| [ p.name, p.id ] }, {include_blank: true} %>
-            <%= f.submit 'Change Plan', class: 'btn-sm btn-primary', data: { confirm: "Change payment plan?" } %>
+            <%= f.submit 'Change Plan', class: 'btn-sm btn-primary', data: { confirm: "Change payment plan? This will also reset upfront amount owed." } %>
           <% end %>
         </div>
       </div>
