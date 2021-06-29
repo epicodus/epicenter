@@ -1,3 +1,4 @@
+# REMOVE THIS FILE AFTER MIGRATE COST ADJUSTMENTS
 class CostAdjustment < ApplicationRecord
   belongs_to :student
   validates :amount, presence: true

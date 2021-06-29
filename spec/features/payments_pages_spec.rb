@@ -641,94 +641,130 @@ feature 'make a cost adjustment' do
   context 'as a student' do
     before { login_as(student, scope: :student) }
 
-    it 'does not allow student to view or make tuition adjustments' do
+    it 'does not allow student to view or set tuition adjustment' do
       visit student_payments_path(student)
       expect(page).to_not have_content 'Tuition adjustments'
       expect(page).to_not have_content 'Adjust student tuition'
-      expect(page).to_not have_content 'Adjust student cost'
+      expect(page).to_not have_content 'Update upfront tuition total'
     end
   end
 
   context 'as an admin' do
     before { login_as(admin, scope: :admin) }
 
-    it 'allows admin to make tuition adjustment without cents', :js do
+    it 'shows correct info in tuition adjustment info area with no tuition adjustment or payment' do
+      student.plan.update(upfront_amount: 7800_00)
+      student.update(upfront_amount: nil)
       visit student_payments_path(student)
-      click_on 'Tuition Adjustments'
-      find('#show-student-tuition-adjustment').click
-      fill_in 'cost_adjustment_amount', with: 100
-      fill_in 'cost_adjustment_reason', with: 'test adjustment'
-      click_button 'Adjust student cost'
-      sleep 1
-      expect(student.cost_adjustments.first.amount).to eq 100_00
-      expect(student.cost_adjustments.first.reason).to eq 'test adjustment'
+      click_on 'Tuition Adjustment'
+      expect(page).to have_content "Default upfront amount (based on plan): $7,800.00"
+      expect(page).to have_content "No adjustments made to upfront amount."
+      expect(page).to have_content "Total paid by student (bank/debit/credit): $0.00"
+      expect(page).to have_content "Total paid by third parties (offline): $0.00"
+      expect(page).to have_content "Remaining upfront payment owed by student: $7,800.00"
     end
 
-    it 'allows admin to make tuition adjustment with cents', :js do
+    it 'shows correct info in tuition adjustment info area with adjusted upfront amount and partial payment' do
+      student.plan.update(upfront_amount: 7800_00)
+      student.update(upfront_amount: 5000_00)
+      FactoryBot.create(:payment_with_credit_card, amount: 1000_00, student: student)
       visit student_payments_path(student)
-      click_on 'Tuition Adjustments'
-      find('#show-student-tuition-adjustment').click
-      fill_in 'cost_adjustment_amount', with: '100.50'
-      fill_in 'cost_adjustment_reason', with: 'test adjustment'
-      click_button 'Adjust student cost'
-      sleep 1
-      expect(student.cost_adjustments.first.amount).to eq 100_50
-      expect(student.cost_adjustments.first.reason).to eq 'test adjustment'
+      click_on 'Tuition Adjustment'
+      expect(page).to have_content "Default upfront amount (based on plan): $7,800.00"
+      expect(page).to have_content "Current upfront amount (as adjusted): $5,000.00"
+      expect(page).to have_content "Total paid by student (bank/debit/credit): $1,000.00"
+      expect(page).to have_content "Total paid by third parties (offline): $0.00"
+      expect(page).to have_content "Remaining upfront payment owed by student: $4,000.00"
     end
 
-    it 'allows admin to make tuition adjustment with negative amount without cents', :js do
+    it 'shows correct info in tuition adjustment info area for standard plan' do
+      student.update(plan: FactoryBot.create(:standard_plan))
+      FactoryBot.create(:payment, amount: 50_00, student: student, offline: true)
       visit student_payments_path(student)
-      click_on 'Tuition Adjustments'
-      find('#show-student-tuition-adjustment').click
+      click_on 'Tuition Adjustment'
+      expect(page).to have_content "Default upfront amount (based on plan): $100.00"
+      expect(page).to have_content "No adjustments made to upfront amount."
+      expect(page).to have_content "Total paid by student (bank/debit/credit): $0.00"
+      expect(page).to have_content "Total paid by third parties (offline): $50.00"
+      expect(page).to have_content "Remaining upfront payment owed by student: $50.00"
+    end
+
+    it 'shows current upfront amount in adjustment field' do
+      visit student_payments_path(student)
+      click_on 'Tuition Adjustment'
+      expect(page).to have_field('cost_adjustment_amount', with: student.plan.upfront_amount/100)
+      student.update(upfront_amount: 5000_00)
+      visit student_payments_path(student)
+      click_on 'Tuition Adjustment'
+      expect(page).to have_field('cost_adjustment_amount', with: 5000)
+    end
+
+    it 'allows admin to set upfront amount without cents', :js do
+      visit student_payments_path(student)
+      click_on 'Tuition Adjustment'
+      fill_in 'cost_adjustment_amount', with: 5000
+      click_button 'Update upfront tuition total'
+      accept_js_alert
+      expect(page).to have_content "Upfront tuition total for #{student.name} has been updated to $5000. Remaining upfront amount owed is $5000."
+      expect(student.reload.upfront_amount).to eq 5000_00
+    end
+
+    it 'does not allow admin to set upfront amount with cents', :js do
+      visit student_payments_path(student)
+      click_on 'Tuition Adjustment'
+      fill_in 'cost_adjustment_amount', with: '5000.50'
+      click_button 'Update upfront tuition total'
+      accept_js_alert
+      expect(page).to_not have_content "Upfront tuition total for #{student.name} has been updated to $5000. Remaining upfront amount owed is $5000."
+      expect(student.reload.upfront_amount).to eq student.plan.upfront_amount
+    end
+
+    it 'does not allow admin to set upfront amount with negative amount', :js do
+      visit student_payments_path(student)
+      click_on 'Tuition Adjustment'
       fill_in 'cost_adjustment_amount', with: '-100'
-      fill_in 'cost_adjustment_reason', with: 'test adjustment'
-      click_button 'Adjust student cost'
-      sleep 1
-      expect(student.cost_adjustments.first.amount).to eq -100_00
-      expect(student.cost_adjustments.first.reason).to eq 'test adjustment'
-    end
-
-    it 'allows admin to make tuition adjustment with negative amount with cents', :js do
-      visit student_payments_path(student)
-      click_on 'Tuition Adjustments'
-      find('#show-student-tuition-adjustment').click
-      fill_in 'cost_adjustment_amount', with: '-100.50'
-      fill_in 'cost_adjustment_reason', with: 'test adjustment'
-      click_button 'Adjust student cost'
-      sleep 1
-      expect(student.cost_adjustments.first.amount).to eq -100_50
-      expect(student.cost_adjustments.first.reason).to eq 'test adjustment'
+      click_button 'Update upfront tuition total'
+      accept_js_alert
+      expect(page).to_not have_content "Upfront tuition total for #{student.name} has been updated to $5000. Remaining upfront amount owed is $5000."
+      expect(student.reload.upfront_amount).to eq student.plan.upfront_amount
     end
 
     it 'does not allow tuition adjustment with invalid amount', :js do
       visit student_payments_path(student)
-      click_on 'Tuition Adjustments'
-      find('#show-student-tuition-adjustment').click
+      click_on 'Tuition Adjustment'
       fill_in 'cost_adjustment_amount', with: '100.5'
-      fill_in 'cost_adjustment_reason', with: 'test adjustment'
-      click_button 'Adjust student cost'
-      sleep 1
-      expect(student.cost_adjustments.any?).to eq false
-    end
-
-    it 'allows admin to view tuition adjustments' do
-      cost_adjustment = FactoryBot.create(:cost_adjustment, student: student)
-      visit student_payments_path(student)
-      click_on 'Tuition Adjustments'
-      expect(page).to have_content 'Tuition adjustments'
-      expect(page).to have_content '$100'
-      expect(page).to have_content 'test adjustment'
-    end
-
-    it 'allows admin to delete tuition adjustment', :js do
-      cost_adjustment = FactoryBot.create(:cost_adjustment, student: student)
-      visit student_payments_path(student)
-      click_on 'Tuition Adjustments'
-      find("#remove-cost-adjustment-#{cost_adjustment.id}").click
+      click_button 'Update upfront tuition total'
       accept_js_alert
-      expect(page).to have_content 'Deleted cost adjustment'
-      expect(page).to_not have_content 'Tuition adjustments'
-      expect(page).to_not have_content 'test adjustment'
+      expect(page).to_not have_content "Upfront tuition total for #{student.name} has been updated to $5000. Remaining upfront amount owed is $5000."
+      expect(student.reload.upfront_amount).to eq student.plan.upfront_amount
+    end
+  end
+
+  feature 'change payment plan', :js do
+    let(:admin) { FactoryBot.create(:admin, :with_course) }
+    let(:student) { FactoryBot.create(:student, :with_ft_cohort, :with_plan, :with_all_documents_signed, :with_credit_card) }
+
+    context 'as a student' do
+      before { login_as(student, scope: :student) }
+
+      it 'does not allow student to change payment plan' do
+        visit student_payments_path(student)
+        expect(page).to_not have_content 'Change Payment Plan'
+      end
+    end
+
+    context 'as an admin' do
+      before { login_as(admin, scope: :admin) }
+
+      it 'allows changing payment plan' do
+        other_plan = FactoryBot.create(:standard_plan, name: 'other plan')
+        visit student_payments_path(student)
+        click_on 'Change Payment Plan'
+        select other_plan.name, from: "student_plan_id"
+        click_on 'Change Plan'
+        accept_js_alert
+        expect(page).to have_content "Payment plan for #{student.name} has been updated. Upfront amount total has been reset."
+      end
     end
   end
 end

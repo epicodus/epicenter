@@ -63,7 +63,8 @@ class StudentsController < ApplicationController
 
 private
   def student_params
-    params.require(:student).permit(:primary_payment_method_id, :course_id, :cohort_id, :plan_id, :probation_teacher, :probation_advisor,
+    params[:student][:upfront_amount] = params[:student][:upfront_amount].to_i * 100 if params[:student][:upfront_amount]
+    params.require(:student).permit(:primary_payment_method_id, :course_id, :cohort_id, :plan_id, :probation_teacher, :probation_advisor, :upfront_amount,
                                     ratings_attributes: [:id, :internship_id, :number])
   end
 
@@ -73,7 +74,9 @@ private
       if student_params[:cohort_id]
         redirect_to student_courses_path(@student), notice: "Current cohort for #{@student.name} has been set to #{@student.cohort.try(:description) || 'blank'}."
       elsif student_params[:plan_id]
-        redirect_to student_payments_path(@student), notice: "Payment plan for #{@student.name} has been updated."
+        redirect_to student_payments_path(@student), notice: "Payment plan for #{@student.name} has been updated. Upfront amount total has been reset."
+      elsif student_params[:upfront_amount]
+        redirect_to student_payments_path(@student), notice: "Upfront tuition total for #{@student.name} has been updated to $#{@student.upfront_amount / 100}. Remaining upfront amount owed is $#{@student.upfront_amount_owed / 100}."
       end
       if student_params[:probation_teacher]
         if @student.probation_teacher
@@ -97,6 +100,8 @@ private
         redirect_back(fallback_location: student_courses_path(@student), alert: "Cohort update failed.")
       elsif student_params[:plan_id]
         redirect_to student_payments_path(@student), alert: "Payment plan update failed."
+      elsif student_params[:upfront_amount]
+        redirect_to student_payments_path(@student), alert: "Upfront tuition update failed."
       end
       if student_params[:probation_teacher] || student_params[:probation_advisor]
         redirect_back(fallback_location: student_courses_path(@student), alert: "Academic Warning status update failed.")
