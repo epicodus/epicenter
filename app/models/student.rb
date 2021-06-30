@@ -36,7 +36,6 @@ class Student < User
   has_many :evaluations_by_peers, class_name: :PeerEvaluation, foreign_key: :evaluatee
   has_many :evaluations_of_pairs, class_name: :PairFeedback, foreign_key: :student
   has_many :evaluations_by_pairs, class_name: :PairFeedback, foreign_key: :pair
-  has_many :cost_adjustments # REMOVE THIS AFTER MIGRATE COST ADJUSTMENTS
 
   acts_as_paranoid
 
