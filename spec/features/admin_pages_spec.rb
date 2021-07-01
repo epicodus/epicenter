@@ -205,7 +205,10 @@ feature 'manually changing current cohort' do
     let(:ft_cohort_2) { FactoryBot.create(:ft_cohort, admin: admin) }
     let(:pt_intro_cohort) { FactoryBot.create(:pt_intro_cohort, admin: admin) }
 
-    before { login_as(admin, scope: :admin) }
+    before do
+      ft_cohort_2.update(description: 'ft cohort 2')
+      login_as(admin, scope: :admin)
+    end
 
     it 'does not show link to change current cohort when only one possible cirr cohort' do
       student = FactoryBot.create(:student, courses: ft_cohort.courses + pt_intro_cohort.courses)
@@ -225,6 +228,15 @@ feature 'manually changing current cohort' do
       click_on 'edit current cohort'
       expect(page).to have_content "Confirm updated current cohort for #{student.name}"
     end
+
+    it 'allow changing current cohort', :js do
+      student = FactoryBot.create(:student, courses: ft_cohort.courses + ft_cohort_2.courses)
+      visit student_courses_path(student)
+      click_on 'edit current cohort'
+      select ft_cohort_2.description, from: 'current_cohort_id'
+      click_on 'Confirm current cohort'
+      expect(student.reload.cohort).to eq ft_cohort_2
+    end
   end
 
   context 'as a student' do
@@ -235,6 +247,48 @@ feature 'manually changing current cohort' do
       login_as(student, scope: :student)
       visit student_courses_path(student)
       expect(page).to_not have_content 'edit current cohort'
+    end
+  end
+end
+
+feature 'manually changing starting cohort' do
+  context 'as an admin' do
+    let(:admin) { FactoryBot.create(:admin) }
+    let!(:ft_cohort) { FactoryBot.create(:ft_cohort, admin: admin) }
+    let(:ft_cohort_2) { FactoryBot.create(:ft_cohort, admin: admin) }
+    let(:pt_intro_cohort) { FactoryBot.create(:pt_intro_cohort, admin: admin) }
+
+    before { login_as(admin, scope: :admin) }
+
+    it 'shows link to change starting cohort regardeless of enrollment' do
+      student = FactoryBot.create(:student)
+      visit student_courses_path(student)
+      expect(page).to have_content 'edit starting cohort'
+    end
+
+    it 'shows modal to change starting cohort when click edit starting cohort link', :js do
+      student = FactoryBot.create(:student)
+      visit student_courses_path(student)
+      click_on 'edit starting cohort'
+      expect(page).to have_content "Confirm updated starting cohort for #{student.name}"
+    end
+
+    it 'allow changing starting cohort', :js do
+      student = FactoryBot.create(:student)
+      visit student_courses_path(student)
+      click_on 'edit starting cohort'
+      select ft_cohort.description, from: 'starting_cohort_id'
+      click_on 'Confirm starting cohort'
+      expect(student.reload.starting_cohort).to eq ft_cohort
+    end
+  end
+
+  context 'as a student' do
+    it 'does not show link to change starting cohort' do
+      student = FactoryBot.create(:student)
+      login_as(student, scope: :student)
+      visit student_courses_path(student)
+      expect(page).to_not have_content 'edit starting cohort'
     end
   end
 end

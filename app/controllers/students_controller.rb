@@ -26,14 +26,20 @@ class StudentsController < ApplicationController
   end
 
   def edit
-    # show current cohort select modal
+    # show cohort select modal
     authorize! :manage, Course
     @student = Student.find(params[:id])
-    @confirmation_message = 'Edit current cohort'
-    @previous_current_cohort = @student.cohort
-    @possible_cohorts = Cohort.where(id: @student.courses.cirr_fulltime_courses.pluck(:cohort_id))
-    respond_to do |format|
-      format.js { render 'cohorts/cohort_select_modal' }
+    if params[:starting] == 'true'
+      respond_to do |format|
+        format.js { render 'cohorts/starting_cohort_select_modal' }
+      end
+    else
+      @confirmation_message = 'Edit current cohort'
+      @previous_current_cohort = @student.cohort
+      @possible_cohorts = Cohort.where(id: @student.courses.cirr_fulltime_courses.pluck(:cohort_id))
+      respond_to do |format|
+        format.js { render 'cohorts/cohort_select_modal' }
+      end
     end
   end
 
@@ -64,8 +70,8 @@ class StudentsController < ApplicationController
 private
   def student_params
     params[:student][:upfront_amount] = params[:student][:upfront_amount].to_i * 100 if params[:student][:upfront_amount]
-    params.require(:student).permit(:primary_payment_method_id, :course_id, :cohort_id, :plan_id, :probation_teacher, :probation_advisor, :upfront_amount,
-                                    ratings_attributes: [:id, :internship_id, :number])
+    params.require(:student).permit(:primary_payment_method_id, :course_id, :cohort_id, :starting_cohort_id, :plan_id, :probation_teacher,
+                                    :probation_advisor, :upfront_amount, ratings_attributes: [:id, :internship_id, :number])
   end
 
   def update_student_as_admin
@@ -73,6 +79,8 @@ private
     if @student.update(student_params)
       if student_params[:cohort_id]
         redirect_to student_courses_path(@student), notice: "Current cohort for #{@student.name} has been set to #{@student.cohort.try(:description) || 'blank'}."
+      elsif student_params[:starting_cohort_id]
+        redirect_to student_courses_path(@student), notice: "Starting cohort for #{@student.name} has been set to #{@student.starting_cohort.try(:description) || 'blank'}."
       elsif student_params[:plan_id]
         redirect_to student_payments_path(@student), notice: "Payment plan for #{@student.name} has been updated. Upfront amount total has been reset."
       elsif student_params[:upfront_amount]
@@ -98,6 +106,8 @@ private
     else
       if student_params[:cohort_id]
         redirect_back(fallback_location: student_courses_path(@student), alert: "Cohort update failed.")
+      elsif student_params[:starting_cohort_id]
+        redirect_back(fallback_location: student_courses_path(@student), alert: "Starting cohort update failed.")
       elsif student_params[:plan_id]
         redirect_to student_payments_path(@student), alert: "Payment plan update failed."
       elsif student_params[:upfront_amount]
