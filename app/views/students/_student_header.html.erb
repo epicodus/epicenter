@@ -47,9 +47,13 @@
       <% end %>
     </p>
   <% end %>
-  <% if @student.possible_cirr_cohorts.count > 1 %>
-    <p>(<%= link_to 'edit current cohort', edit_student_path(@student), remote: true %>)</p>
-  <% end %>
+  <p>
+    (<%= link_to 'edit starting cohort', edit_student_path(@student, starting: true), remote: true %>)
+    <% if @student.possible_cirr_cohorts.count > 1 %>
+      <br>(<%= link_to 'edit current cohort', edit_student_path(@student), remote: true %>)
+    <% end %>
+  </p>
+
   <% if @student.parttime_cohort %>
     <p>Part-Time Cohort: <%= link_to @student.parttime_cohort.description, cohort_path(@student.parttime_cohort) %></p>
   <% end %>

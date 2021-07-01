@@ -1,0 +1,26 @@
+<div class="modal" role="dialog" data-backdrop="static" id="starting-cohort-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header alert alert-success">
+        <p><strong>Edit starting cohort</strong></p>
+      </div>
+      <div class="modal-body">
+        <p>
+          <strong>Confirm updated starting cohort for <%= @student.name %>:</strong><br>
+          <span class='text-muted'>[Previous starting cohort: <%= @student.starting_cohort.try(:description) || 'blank' %>]</span>
+        </p>
+        <br>
+        <%= form_for @student do |f| %>
+          <%= render 'layouts/errors', object: @student %>
+          <div class="form-group panel">
+            <p><strong><%= f.collection_select :starting_cohort_id, Cohort.all, :id, :description, { selected: @student.starting_cohort.try(:id) }, { class: 'col-md-4 form-control', id: "starting_cohort_id" } %></strong></p>
+          </div>
+          <hr>
+          <div class="form-group">
+            <p><%= f.submit 'Confirm starting cohort', class: 'btn btn-success'%></p>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
