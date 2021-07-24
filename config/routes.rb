@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'sign_in', to: 'attendance_sign_in_remote#new'
   get 'sign_out', to: 'pair_feedbacks#new'
   get 'standup', to: 'static_pages#standup'
+  get 'attendance', to: redirect('/')
 
   get 'auth/:provider/callback', to: 'omniauth_callbacks#create'
 
