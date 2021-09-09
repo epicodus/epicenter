@@ -629,6 +629,13 @@ describe Course do
           expect(course.code_reviews.first.due_date).to eq Date.parse('2017-03-19').in_time_zone(course.office.time_zone).beginning_of_day + 8.hours
         end
 
+        it 'for journal entry' do
+          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_code_reviews: 1, journal: true)
+          allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
+          course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')
+          expect(course.code_reviews.first.journal).to eq true
+        end
+
         it 'for code review where submissions not required' do
           allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_code_reviews: 1, submissions_not_required: true)
           allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
@@ -736,7 +743,7 @@ def course_layout_params_helper(attributes = {})
     code_reviews = code_review_params_helper(number_of_code_reviews: attributes[:number_of_code_reviews] || 0, visible_day_of_week: 'thursday', due_days_later: 3, due_time: '8:00', submissions_not_required: attributes[:submissions_not_required], always_visible: attributes[:always_visible])
   else
     class_times = class_times_ft
-    code_reviews = code_review_params_helper(number_of_code_reviews: attributes[:number_of_code_reviews] || 0, visible_day_of_week: 'friday', due_days_later: 0, due_time: '17:00', submissions_not_required: attributes[:submissions_not_required], always_visible: attributes[:always_visible])
+    code_reviews = code_review_params_helper(number_of_code_reviews: attributes[:number_of_code_reviews] || 0, visible_day_of_week: 'friday', due_days_later: 0, due_time: '17:00', submissions_not_required: attributes[:submissions_not_required], always_visible: attributes[:always_visible], journal: attributes[:journal])
   end
   { 'part_time' => part_time, 'internship' => internship, 'number_of_days' => number_of_days, 'class_times' => class_times, 'code_reviews' => code_reviews }
 end
@@ -754,7 +761,7 @@ def code_review_params_helper(attributes)
     (cr_num+1).times do |obj_num|
       objectives << "Test objective #{obj_num+1}"
     end
-    code_review_params['details'] << { 'title' => "Code Review #{cr_num+1}", 'visible_class_week' => cr_num+1, 'filename' => "example_code_review", 'objectives' => objectives }
+    code_review_params['details'] << { 'title' => "Code Review #{cr_num+1}", 'visible_class_week' => cr_num+1, 'filename' => "example_code_review", 'journal' => attributes[:journal], 'objectives' => objectives }
   end
   code_review_params
 end

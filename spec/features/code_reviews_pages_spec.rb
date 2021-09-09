@@ -193,15 +193,53 @@ feature 'visiting the code review show page' do
       end
     end
 
+    context 'when submitting journal entry' do
+      let(:journal) { FactoryBot.create(:code_review, course: student.course, journal: true) }
+      before { visit course_code_review_path(journal.course, journal) }
+
+      it { is_expected.to_not have_content 'Objectives' }
+      it { is_expected.to_not have_content 'Submission link' }
+      it { is_expected.to_not have_content 'Please let your teacher know' }
+      it { is_expected.to_not have_content 'I confirm that I have read and understand' }
+
+      scenario 'with valid input' do
+        fill_in 'submission_journal', with: 'test entry'
+        click_button 'Submit'
+        is_expected.to have_content 'Thank you for submitting your journal entry'
+        is_expected.to_not have_content "I'd like to request a meeting with a teacher this week."
+      end
+
+      scenario 'is automatically marked as passing' do
+        fill_in 'submission_journal', with: 'test entry'
+        click_button 'Submit'
+        expect(student.submissions.last.review_status).to eq "pass"
+      end
+
+      scenario 'with invalid input' do
+        click_button 'Submit'
+        is_expected.to have_content "can't be blank"
+      end
+    end
+
     context 'after having submitted' do
       before do
-        FactoryBot.create(:submission, code_review: code_review, student: student)
+        FactoryBot.create(:submission, code_review: code_review, student: student, times_submitted: 1)
         visit course_code_review_path(code_review.course, code_review)
       end
 
       it { is_expected.to have_button 'Resubmit' }
       it { is_expected.to have_content 'pending review' }
       it { is_expected.to_not have_link 'has been reviewed' }
+      it { is_expected.to have_content 'Submitted 1 time' }
+    end
+
+    context 'after having submitted journal entry' do
+      before do
+        journal = FactoryBot.create(:code_review, journal: true)
+        FactoryBot.create(:submission, code_review: journal, student: student, journal: 'test entry', times_submitted: 1)
+        visit course_code_review_path(code_review.course, code_review)
+      end
+      it { is_expected.to_not have_content 'Submitted 1 time' }
     end
 
     context 'after submission has been reviewed', :stub_mailgun do
@@ -241,6 +279,52 @@ feature 'visiting the code review show page' do
         click_button 'Resubmit'
         expect(page).to have_content "There was a problem submitting."
       end
+    end
+
+    context 'after resubmitting journal entry', :stub_mailgun do
+      let(:journal) { FactoryBot.create(:code_review, course: student.course, journal: true)}
+      let(:submission) { FactoryBot.create(:submission, code_review: journal, student: student, journal: 'test entry', link: nil) }
+
+      before do
+        FactoryBot.create(:passing_review, submission: submission)
+        visit course_code_review_path(journal.course, journal)
+      end
+
+      scenario 'successfully' do
+        fill_in 'submission_journal', with: 'test entry updated'
+        click_button 'Resubmit'
+        expect(page).to have_content 'Journal updated'
+        expect(page).to_not have_content "I'd like to request a meeting with a teacher this week."
+      end
+
+      scenario 'is automatically marked as passing again' do
+        fill_in 'submission_journal', with: 'test entry updated'
+        click_button 'Resubmit'
+        expect(submission.review_status).to eq "pass"
+      end
+
+      scenario 'unsuccessfully' do
+        fill_in 'submission_journal', with: ''
+        click_button 'Resubmit'
+        expect(page).to have_content "There was a problem submitting."
+      end
+    end
+  end
+end
+
+feature 'viewing journal entry submission' do
+  context 'as an admin' do
+    let(:journal) { FactoryBot.create(:code_review, journal: true)}
+    let(:student) { FactoryBot.create(:student, :with_all_documents_signed, course: journal.course) }
+    let(:admin) { FactoryBot.create(:admin, current_course: journal.course) }
+    let(:submission) { FactoryBot.create(:submission, code_review: journal, student: student, journal: 'test entry', link: nil) }
+
+    before { login_as(admin, scope: :admin) }
+
+    scenario 'viewing from review creation page' do
+      visit new_submission_review_path(submission)
+      expect(page).to have_content 'Journal submission:'
+      expect(page).to have_content 'test entry'
     end
   end
 end

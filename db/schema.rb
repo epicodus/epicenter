@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_30_002224) do
+ActiveRecord::Schema.define(version: 2021_09_08_010232) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 2021_06_30_002224) do
     t.string "github_path"
     t.datetime "visible_date"
     t.datetime "due_date"
+    t.boolean "journal"
   end
 
   create_table "cohorts", id: :serial, force: :cascade do |t|
@@ -350,6 +351,7 @@ ActiveRecord::Schema.define(version: 2021_06_30_002224) do
     t.integer "times_submitted"
     t.string "review_status"
     t.integer "admin_id"
+    t.text "journal"
     t.index ["code_review_id"], name: "index_submissions_on_code_review_id"
     t.index ["student_id"], name: "index_submissions_on_student_id"
   end

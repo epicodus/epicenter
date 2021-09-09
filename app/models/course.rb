@@ -254,7 +254,7 @@ private
             due_date = visible_date + (params['due_days_later'] || due_days_later).days
             due_datetime = time_on_date(date: due_date, time: params['due_time'] || due_time)
           end
-          cr = code_reviews.new(title: params['title'], github_path: params['filename'], submissions_not_required: params['submissions_not_required'] || submissions_not_required, visible_date: visible_datetime, due_date: due_datetime)
+          cr = code_reviews.new(title: params['title'], github_path: params['filename'], submissions_not_required: params['submissions_not_required'] || submissions_not_required, visible_date: visible_datetime, due_date: due_datetime, journal: params['journal'])
           cr.objectives = params['objectives'].map.with_index(1) {|obj, i| Objective.new(content: obj, number: i)}
         end
       end

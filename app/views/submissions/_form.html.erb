@@ -3,40 +3,47 @@
   <%= f.hidden_field :needs_review, value: true %>
   <%= f.hidden_field :student_id, value: current_student.id if current_student %>
 
-  <div class="form-group">
-    <%= f.label :link, 'Submission link' %>
-    <%= f.url_field :link, class: 'form-control', placeholder: 'http://github.com/your-username/your-repository', required: true %>
-  </div>
+  <% if @code_review.journal? %>
+    <div class="form-group">
+      <%= f.label :journal, 'Journal' %>
+      <%= f.text_area :journal, rows: 15, class: 'form-control', required: true %>
+    </div>
+  <% else %>
+    <div class="form-group">
+      <%= f.label :link, 'Submission link' %>
+      <%= f.url_field :link, class: 'form-control', placeholder: 'http://github.com/your-username/your-repository', required: true %>
+    </div>
 
-  <% if @code_review.survey? && !@code_review.expectations_met_by?(current_student) %>
-    <%= render 'code_reviews/survey', survey: @code_review.survey %>
-    <p><strong>Please submit the survey above, then submit your <%= @code_review.course.internship_course? ? 'career' : 'code' %> review here:</strong></p>
+    <% if @code_review.survey? && !@code_review.expectations_met_by?(current_student) %>
+      <%= render 'code_reviews/survey', survey: @code_review.survey %>
+      <p><strong>Please submit the survey above, then submit your <%= @code_review.course.internship_course? ? 'career' : 'code' %> review here:</strong></p>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label :notes, "Please let your teacher know anything else that you feel they should know about your work this week, how pairing went, or how you feel about the curriculum or your assignment. This will be shared directly with your teacher when they receive your assignment." %>
+      <%= f.nested_fields_for :notes, @submission.notes.build do |ff| %>
+        <%= ff.text_area :content, rows: 5, maxlength: 2000, class: 'form-control', id: 'submission-student-note', required: true %>
+      <% end %>
+      <% if @submission.notes.where('id IS NOT NULL').any? %>
+        <div class="well">
+          <p class="text-center"><strong>notes previously submitted</strong></p>
+          <ul>
+            <% @submission.notes.where('id IS NOT NULL').each do |note| %>
+              <li><strong><%= note.created_at.strftime('%B %d') %>:</strong> <%= note.content %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="form-group">
+      <p>
+        I confirm that I have read and understand the <a href="https://www.learnhowtoprogram.com/lessons/independent-projects-and-code-reviews" target=_blank>guidelines</a> for Independent Projects.
+        &nbsp;&nbsp;<%= check_box_tag nil, 1, checked = false, { required: true, id: 'understand-guidelines' } %>
+      </p>
+      <p>&nbsp;</p>
+    </div>
   <% end %>
-
-  <div class="form-group">
-    <%= f.label :notes, "Please let your teacher know anything else that you feel they should know about your work this week, how pairing went, or how you feel about the curriculum or your assignment. This will be shared directly with your teacher when they receive your assignment." %>
-    <%= f.nested_fields_for :notes, @submission.notes.build do |ff| %>
-      <%= ff.text_area :content, rows: 5, maxlength: 2000, class: 'form-control', id: 'submission-student-note', required: true %>
-    <% end %>
-    <% if @submission.notes.where('id IS NOT NULL').any? %>
-      <div class="well">
-        <p class="text-center"><strong>notes previously submitted</strong></p>
-        <ul>
-          <% @submission.notes.where('id IS NOT NULL').each do |note| %>
-            <li><strong><%= note.created_at.strftime('%B %d') %>:</strong> <%= note.content %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-  </div>
-
-  <div class="form-group">
-    <p>
-      I confirm that I have read and understand the <a href="https://www.learnhowtoprogram.com/lessons/independent-projects-and-code-reviews" target=_blank>guidelines</a> for Independent Projects.
-      &nbsp;&nbsp;<%= check_box_tag nil, 1, checked = false, { required: true, id: 'understand-guidelines' } %>
-    </p>
-    <p>&nbsp;</p>
-  </div>
 
   <%= f.submit @submission.new_record? ? 'Submit' : 'Resubmit', class: 'btn btn-info' %>
 <% end %>

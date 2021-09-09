@@ -13,6 +13,9 @@ class SubmissionsController < ApplicationController
     if @submission.save
       if @code_review.submissions_not_required? && current_admin
         redirect_to new_submission_review_path(@submission)
+      elsif @code_review.journal?
+        @submission.reviews.create(note: "journal entry submitted", student_signature: "n/a", admin_id: Admin.reorder(:id).first.id)
+        redirect_to course_student_path(@code_review.course, student), notice: "Thank you for submitting your journal entry."
       else
         redirect_to new_course_meeting_path(@code_review.course), notice: "Thank you for submitting."
       end
@@ -37,7 +40,12 @@ class SubmissionsController < ApplicationController
       @code_review = CodeReview.find(params[:code_review_id])
       @submission = @code_review.submission_for(current_student)
       if @submission.update(submission_params)
-        redirect_to new_course_meeting_path(@code_review.course), notice: "Submission updated!"
+        if @code_review.journal?
+          @submission.reviews.create(note: "journal entry submitted", student_signature: "n/a", admin_id: Admin.reorder(:id).first.id)
+          redirect_to course_student_path(@code_review.course, current_student), notice: "Journal updated!"
+        else
+          redirect_to new_course_meeting_path(@code_review.course), notice: "Submission updated!"
+        end
       else
         flash[:alert] = 'There was a problem submitting. Please review the form below.'
         render 'code_reviews/show'
@@ -48,7 +56,7 @@ class SubmissionsController < ApplicationController
 private
 
   def submission_params
-    params.require(:submission).permit(:link, :needs_review, :student_id, :times_submitted, :admin_id, notes_attributes: [:id, :content]).merge(review_status: 'pending')
+    params.require(:submission).permit(:link, :journal, :needs_review, :student_id, :times_submitted, :admin_id, notes_attributes: [:id, :content]).merge(review_status: 'pending')
   end
 
   def move_submissions

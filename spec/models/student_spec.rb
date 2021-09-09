@@ -524,7 +524,7 @@ describe Student do
       expect(current_student.random_pairs).to eq [student_10_after_starting_point, student_11_after_starting_point, student_12_after_starting_point, student_2, student_3]
     end
 
-    it "returns random pairs when the student total grade score is nil and distance_until_end is more than the number of pairs", :stub_mailgun do
+    xit "returns random pairs when the student total grade score is nil and distance_until_end is more than the number of pairs", :stub_mailgun do
       allow(current_student).to receive(:random_starting_point).and_return(6)
       expect(current_student.random_pairs).to eq [student_8, student_9, student_10_after_starting_point, student_11_after_starting_point, student_12_after_starting_point]
     end

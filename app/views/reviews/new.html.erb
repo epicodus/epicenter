@@ -69,7 +69,12 @@
 
     <br>
 
-    <%= render 'form' %>
+    <% if @submission.code_review.journal? %>
+      <h3>Journal submission:</h3>
+      <p class='well'><%= @submission.journal %></p>
+    <% else %>
+      <%= render 'form' %>
+    <% end %>
   </div>
 </div>
 
