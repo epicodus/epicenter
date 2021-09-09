@@ -7,7 +7,7 @@ class StudentInternshipAgreement < Signature
     student = Signature.find_by(signature_id: signature_id).student
     code_review = student.internship_course.code_reviews.find_by(title: "Sign internship agreement") || student.internship_course.code_reviews.find_by(title: "Sign Internship Agreement")
     submission = Submission.find_or_create_by(student: student, code_review: code_review)
-    review = submission.reviews.create(note: "provisionally marked as completed", student_signature: "n/a", admin_id: 198)
+    review = submission.reviews.create(note: "provisionally marked as completed", student_signature: "n/a", admin_id: Admin.reorder(:id).first.id)
     Grade.create(score: Score.find_by(value: 3), objective: code_review.objectives.first, review: review)
     student.crm_lead.update({ Rails.application.config.x.crm_fields['SIGNED_INTERNSHIP_AGREEMENT'] => 'Yes' })
   end

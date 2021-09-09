@@ -323,6 +323,32 @@ feature 'viewing the student show page' do
     visit course_student_path(student.course, other_student)
     expect(page).to have_content 'You are not authorized to access this page.'
   end
+
+  scenario 'when a student is enrolled in a course with code reviews' do
+    code_review = FactoryBot.create(:code_review, course: student.course)
+    visit course_student_path(student.course, student)
+    section = find(:css, '#code-reviews-box')
+    expect(section).to have_content code_review.title
+    expect(section).to have_content 'Title'
+    expect(section).to have_content 'Expectations met?'
+    expect(section).to have_content 'Times submitted'
+    expect(section).to have_content 'Submission link'
+    expect(section).to have_content 'Status'
+    expect(section).to_not have_content 'Complete?'
+  end
+
+  scenario 'when a student is enrolled in a course with journal entries' do
+    journal = FactoryBot.create(:code_review, course: student.course, journal: true)
+    visit course_student_path(student.course, student)
+    section = find(:css, '#journal-entries-box')
+    expect(section).to have_content journal.title
+    expect(section).to have_content 'Title'
+    expect(section).to have_content 'Complete?'
+    expect(section).to have_content 'Status'
+    expect(section).to_not have_content 'Expectations met?'
+    expect(section).to_not have_content 'Times submitted'
+    expect(section).to_not have_content 'Submission link'
+  end
 end
 
 feature "shows warning if on probation" do

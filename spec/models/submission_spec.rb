@@ -30,6 +30,18 @@ describe Submission do
       submission = FactoryBot.build(:submission, link: 'http://github.com', code_review: regular_code_review)
       expect(submission.valid?).to eq true
     end
+
+    it 'is valid with a journal but no link for journal' do
+      journal = FactoryBot.create(:code_review, journal: true)
+      submission = FactoryBot.build(:submission, link: nil, journal: 'journal entry', code_review: journal)
+      expect(submission.valid?).to eq true
+    end
+
+    it 'is invalid with a journal missing journal content' do
+      journal = FactoryBot.create(:code_review, journal: true)
+      submission = FactoryBot.build(:submission, link: nil, journal: nil, code_review: journal)
+      expect(submission.valid?).to eq false
+    end
   end
 
   describe '#previous_submissions_for_course' do

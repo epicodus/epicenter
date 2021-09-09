@@ -1,6 +1,5 @@
 <h3><%= @course.internship_course? ? 'Career reviews' : 'Code reviews' %></h3>
-
-<div class="panel panel-default">
+<div class="panel panel-default" id="code-reviews-box">
   <div class="panel-body">
     <div class="student-div student-code-reviews">
       <div class="table-responsive">
@@ -12,49 +11,8 @@
             <th>Submission link</th>
             <th>Status</th>
           </thead>
-          <% @course.code_reviews.each do |code_review| %>
-          <tbody>
-            <tr>
-              <td><%= link_to code_review.title, course_code_review_path(@course, code_review), class: 'text-info' %></td>
-              <td>
-                <% if code_review.expectations_met_by?(@student) %>
-                  <span class="glyphicon glyphicon-ok submission-success"></span>
-                <% else %>
-                  <span class="glyphicon glyphicon-remove submission-fail"></span>
-                <% end %>
-              </td>
-              <td><%= @student.submission_for(code_review).try(:times_submitted) %></td>
-              <% if @student.submission_for(code_review) %>
-                <td><%= link_to "Submission", @student.submission_for(code_review).link, target: '_blank' if @student.submission_for(code_review).link %></td>
-                <td>
-                  <% if @student.submission_for(code_review).has_been_reviewed? %>
-                    <% if can? :manage, CodeReview %>
-                      <%= link_to 'Reviewed', new_submission_review_path(@student.submission_for(code_review)) %>
-                    <% else %>
-                      <%= link_to 'Reviewed', course_code_review_path(@course, code_review) %>
-                    <% end %>
-                  <% else %>
-                    <% if can? :manage, CodeReview %>
-                      <%= link_to 'Pending', new_submission_review_path(@student.submission_for(code_review)) %>
-                    <% else %>
-                      <%= link_to 'Pending', course_code_review_path(@course, code_review) %>
-                    <% end %>
-                  <% end %>
-                </td>
-              <% else %>
-                <td></td>
-                <td>
-                  <% if can? :manage, CodeReview %>
-                    Not submitted
-                  <% elsif code_review.submissions_not_required? %>
-                    <%= link_to 'Pending', course_code_review_path(@course, code_review) %>
-                  <% else %>
-                    <%= link_to 'Submit', course_code_review_path(@course, code_review, anchor: "submission"), class: 'text-info' %>
-                  <% end %>
-                </td>
-              <% end %>
-            </tr>
-          </tbody>
+          <% @course.code_reviews.where(journal: nil).or(@course.code_reviews.where(journal: false)).each do |code_review| %>
+            <%= render 'student_code_review', code_review: code_review  %>
           <% end %>
         </table>
       </div>
@@ -66,5 +24,29 @@
     <% end %>
   </div>
 </div>
+
+<% if @course.code_reviews.where(journal: true).any? %>
+  <h3>Journal entries</h3>
+  <div class="panel panel-default" id="journal-entries-box">
+    <div class="panel-body">
+      <div class="student-div student-code-reviews">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <th>Title</th>
+              <th>Complete?</th>
+              <th>Status</th>
+            </thead>
+            <% @course.code_reviews.where(journal: true).each do |code_review| %>
+              <%= render 'student_code_review', code_review: code_review  %>
+            <% end %>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+
 
 <%= render "students/notes_modal" %>

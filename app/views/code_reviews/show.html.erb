@@ -14,7 +14,7 @@
   <% end %>
 </h1>
 
-<% unless @submission.times_submitted.nil? %>
+<% unless @submission.times_submitted.nil? || @code_review.journal? %>
   <h4>Submitted <%= pluralize(@submission.times_submitted, 'time') %></h4>
 <% end %>
 
@@ -39,27 +39,29 @@
   </div>
 <% end %>
 
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h4><strong>Objectives</strong></h4>
-  </div>
-  <div class="panel-body">
-    <div class="table-responsive">
-      <table class="table">
-        <thead>
-          <tr><th>Your project will be reviewed on the following objectives:</th></tr>
-        </thead>
-        <tbody>
-          <% if @submission.has_been_reviewed? %>
-            <%= render @submission.latest_review.grades %>
-          <% else %>
-            <%= render @code_review.objectives %>
-          <% end %>
-        </tbody>
-      </table>
+<% unless @code_review.journal? %>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4><strong>Objectives</strong></h4>
+    </div>
+    <div class="panel-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr><th>Your project will be reviewed on the following objectives:</th></tr>
+          </thead>
+          <tbody>
+            <% if @submission.has_been_reviewed? %>
+              <%= render @submission.latest_review.grades %>
+            <% else %>
+              <%= render @code_review.objectives %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
+<% end %>
 
 <% if current_admin %>
   <div class="panel panel-default">

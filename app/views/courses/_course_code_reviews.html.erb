@@ -2,9 +2,9 @@
   <%= @course.internship_course? ? 'Career reviews' : 'Code reviews' %>
   <%= link_to 'New', new_course_code_review_path(@course) %>
 </h3>
-<div class="panel panel-default">
+<div class="panel panel-default" id="code-reviews-box">
   <div class="panel-body">
-    <% if @course.code_reviews.any? %>
+    <% if @course.code_reviews.where(journal: nil).or(@course.code_reviews.where(journal: false)).any? %>
       <%= form_tag update_multiple_code_reviews_path, method: :patch, class: 'update-multiple' do %>
         <div class="table-responsive">
           <table class="table table-hover">
@@ -20,7 +20,7 @@
               </tr>
             </thead>
             <tbody class="sortable-list">
-              <%= render @course.code_reviews %>
+              <%= render @course.code_reviews.where(journal: nil).or(@course.code_reviews.where(journal: false)) %>
             </tbody>
           </table>
         </div>
@@ -31,3 +31,32 @@
     <% end %>
   </div>
 </div>
+
+<% if @course.code_reviews.where(journal: true).any? %>
+  <h3>Journal entries</h3>
+  <div class="panel panel-default" id="journal-entries-box">
+    <div class="panel-body">
+      <%= form_tag update_multiple_code_reviews_path, method: :patch, class: 'update-multiple' do %>
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Number</th>
+                <th>Visible</th>
+                <th>Due</th>
+                <th>Title</th>
+                <th>Report</th>
+                <th>Submissions</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody class="sortable-list">
+              <%= render @course.code_reviews.where(journal: true) %>
+            </tbody>
+          </table>
+        </div>
+        <%= submit_tag 'Save order', class: "btn btn-info" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>

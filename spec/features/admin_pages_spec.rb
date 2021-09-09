@@ -155,6 +155,62 @@ feature 'viewing the student page' do
     expect(page).to have_content 'not enrolled'
   end
 
+  context 'when a student is enrolled in a course with code reviews' do
+    scenario 'on course page' do
+      code_review = FactoryBot.create(:code_review, course: student.course)
+      visit course_path(student.course)
+      section = find(:css, '#code-reviews-box')
+      expect(section).to have_content code_review.title
+      expect(section).to have_content 'Number'
+      expect(section).to have_content 'Visible'
+      expect(section).to have_content 'Due'
+      expect(section).to have_content 'Title'
+      expect(section).to have_content 'Report'
+      expect(section).to have_content 'Submissions'
+    end
+
+    scenario 'on course student page' do
+      code_review = FactoryBot.create(:code_review, course: student.course)
+      visit course_student_path(student.course, student)
+      section = find(:css, '#code-reviews-box')
+      expect(section).to have_content code_review.title
+      expect(section).to have_content 'Title'
+      expect(section).to have_content 'Expectations met?'
+      expect(section).to have_content 'Times submitted'
+      expect(section).to have_content 'Submission link'
+      expect(section).to have_content 'Status'
+      expect(section).to_not have_content 'Complete?'
+    end
+  end
+
+  context 'when a student is enrolled in a course with journal entries' do
+    scenario 'on course page' do
+      journal = FactoryBot.create(:code_review, course: student.course, journal: true)
+      visit course_path(student.course)
+      section = find(:css, '#journal-entries-box')
+      expect(section).to have_content journal.title
+      expect(section).to have_content 'Number'
+      expect(section).to have_content 'Visible'
+      expect(section).to have_content 'Due'
+      expect(section).to have_content 'Title'
+      expect(section).to have_content 'Report'
+      expect(section).to have_content 'Submissions'
+    end
+
+    scenario 'on course student page' do
+      journal = FactoryBot.create(:code_review, course: student.course, journal: true)
+      visit course_student_path(student.course, student)
+      section = find(:css, '#journal-entries-box')
+      expect(section).to have_content journal.title
+      expect(section).to have_content 'Title'
+      expect(section).to have_content 'Complete?'
+      expect(section).to have_content 'Status'
+      expect(section).to_not have_content 'Expectations met?'
+      expect(section).to_not have_content 'Times submitted'
+      expect(section).to_not have_content 'Submission link'
+    end
+  end
+
   scenario 'navigating to view course from student page' do
     visit course_student_path(student.course, student)
     click_link 'view'
