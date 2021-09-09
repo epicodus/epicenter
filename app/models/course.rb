@@ -255,7 +255,7 @@ private
             due_datetime = time_on_date(date: due_date, time: params['due_time'] || due_time)
           end
           cr = code_reviews.new(title: params['title'], github_path: params['filename'], submissions_not_required: params['submissions_not_required'] || submissions_not_required, visible_date: visible_datetime, due_date: due_datetime, journal: params['journal'])
-          cr.objectives = params['objectives'].map.with_index(1) {|obj, i| Objective.new(content: obj, number: i)}
+          cr.objectives = params['objectives'].map.with_index(1) {|obj, i| Objective.new(content: obj, number: i)} if params['objectives']
         end
       end
     end
