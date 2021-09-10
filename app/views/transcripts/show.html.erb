@@ -12,7 +12,7 @@
         <li>
           <%= course.description %>
           <ul>
-            <% course.code_reviews.each do |code_review| %>
+            <% course.code_reviews.where(journal: nil).or(course.code_reviews.where(journal: false)).each do |code_review| %>
             <li>
               <%= code_review.title %>
               <span class="pull-right"><em><%= code_review.status(@student) %></em></span>

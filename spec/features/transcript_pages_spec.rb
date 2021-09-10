@@ -113,6 +113,18 @@ feature "viewing transcript & certificate" do
       expect(page).to have_content code_review.title
     end
 
+    it 'does not list journal CRs', :stub_mailgun do
+      course = FactoryBot.create(:past_course)
+      student = FactoryBot.create(:student, course: course)
+      code_review = FactoryBot.create(:code_review, course: course, journal: true)
+      submission = FactoryBot.create(:submission, code_review: code_review, student: student, journal: 'test entry')
+      FactoryBot.create(:passing_review, submission: submission)
+
+      login_as(student, scope: :student)
+      visit transcript_path
+      expect(page).to_not have_content code_review.title
+    end
+
     it 'shows meets attendance requirement message when over 90%' do
       course = FactoryBot.create(:past_course)
       student = FactoryBot.create(:student, course: course)
