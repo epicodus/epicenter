@@ -18,6 +18,11 @@ describe CodeReview do
     expect(code_review.save).to eq true
   end
 
+  it 'does not validate presence of objectives if journal' do
+    code_review = FactoryBot.build(:code_review, objectives: [], journal: true)
+    expect(code_review.save).to eq true
+  end
+
   it 'normalizes title before saving' do
     code_review = FactoryBot.create(:code_review, title: 'test title ')
     expect(code_review.title).to eq 'test title'

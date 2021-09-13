@@ -3,7 +3,7 @@ class CodeReview < ApplicationRecord
 
   validates :title, presence: true
   validates :course, presence: true
-  validate :presence_of_objectives, unless: ->(cr) { cr.github_path.present? }
+  validate :presence_of_objectives, unless: ->(cr) { cr.github_path.present? || cr.journal? }
 
   has_many :objectives
   has_many :submissions

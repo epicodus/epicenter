@@ -38,7 +38,9 @@ Rails.application.routes.draw do
   resources :upfront_payments, only: [:create]
   resources :attendance_record_amendments, only: [:new, :create]
   resources :internships, only: [:index, :edit, :update]
-  resources :cohorts, except: [:destroy]
+  resources :cohorts, except: [:destroy] do
+    resources :journals, only: [:index]
+  end
   resources :courses, only: [:index, :show, :edit, :update] do
     resource :export, only: [:show], to: 'course_export#show'
     resources :code_reviews, except: [:destroy] do
@@ -67,6 +69,8 @@ Rails.application.routes.draw do
   resources :submissions, only: [] do
     resources :reviews, only: [:new, :create, :update]
   end
+
+  resources :journals, only: [:index]
 
   resources :stripe_callbacks, only: [:create]
   resources :payment_callbacks, only: [:create]

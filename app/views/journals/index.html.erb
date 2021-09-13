@@ -1,0 +1,32 @@
+<% if @title %>
+  <h3>
+    <%= @title %>
+    <% if @cohort %>
+      <br><small><%= @cohort.description %></small>
+    <% end %>
+  </h3>
+  <% @submissions.each do |submission| %>
+    <p class='panel panel-body'>
+      <%= link_to submission.created_at.strftime("%b %-d %Y"), new_submission_review_path(submission) %><br>
+      <%= submission.journal %>
+    </p>
+  <% end %>
+<% else %>
+  <h3>
+    Journals
+    <% if @cohort %>
+      <br><small><%= @cohort.description %></small>
+    <% end %>
+  </h3>
+  <ul>
+    <% @journals.reorder(:number).pluck(:title).uniq.each do |title| %>
+      <% if @cohort %>
+        <li>
+          <%= link_to title, cohort_journals_path(@cohort, title: title) %>
+        </li>
+      <% else %>
+        <li><%= link_to title, journals_path(title: title) %></li>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>
