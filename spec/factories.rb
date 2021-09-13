@@ -64,7 +64,14 @@ FactoryBot.define do
     due_date { Time.zone.now.beginning_of_day + 17.hours }
 
     before(:create) do |code_review|
-      code_review.objectives << build(:objective)
+      code_review.objectives << build(:objective) unless code_review.journal?
+    end
+
+    factory :journal do
+      sequence(:title) { |n| "journal #{n}" }
+      journal { true }
+      visible_date { nil }
+      due_date { nil }
     end
   end
 
@@ -763,6 +770,11 @@ FactoryBot.define do
     link { 'http://github.com' }
     code_review
     student
+
+    factory :journal_submission do
+      link {}
+      sequence(:journal) { |n| "Journal entry content #{n}" }
+    end
   end
 
   factory :daily_submission do
