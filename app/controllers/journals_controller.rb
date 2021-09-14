@@ -12,5 +12,6 @@ class JournalsController < ApplicationController
       @journals = @journals.where(title: @title)
       @submissions = Submission.where(code_review: @journals).reorder(created_at: :desc)
     end
+    redirect_to cohort_path(@cohort) if @cohort.present? && @title.nil?
   end
 end

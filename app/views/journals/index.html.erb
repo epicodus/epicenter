@@ -2,7 +2,13 @@
   <h3>
     <%= @title %>
     <% if @cohort %>
-      <br><small><%= @cohort.description %></small>
+      <br>
+      <small>
+        <%= @cohort.description %>
+        <br><%= link_to '[view submissions for all cohorts]', journals_path(title: @title) %>
+      </small>
+    <% else %>
+      <br><small>submissions for all cohorts</small>
     <% end %>
   </h3>
   <% @submissions.each do |submission| %>
@@ -14,19 +20,7 @@
 <% else %>
   <h3>
     Journals
-    <% if @cohort %>
-      <br><small><%= @cohort.description %></small>
-    <% end %>
+    <br><small>all cohorts</small>
   </h3>
-  <ul>
-    <% @journals.reorder(:number).pluck(:title).uniq.each do |title| %>
-      <% if @cohort %>
-        <li>
-          <%= link_to title, cohort_journals_path(@cohort, title: title) %>
-        </li>
-      <% else %>
-        <li><%= link_to title, journals_path(title: title) %></li>
-      <% end %>
-    <% end %>
-  </ul>
+  <%= render 'list', journals: @journals, cohort: nil %>
 <% end %>

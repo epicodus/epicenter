@@ -1,0 +1,26 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="datatable table table-hover">
+        <thead>
+          <th>Title</th>
+          <th>Submissions count</th>
+        </thead>
+          <tbody>
+            <% journals.reorder(:number).pluck(:title).uniq.each do |title| %>
+              <tr>
+                <td>
+                  <% if cohort %>
+                    <%= link_to title, cohort_journals_path(cohort, title: title) %>
+                  <% else %>
+                    <%= link_to title, journals_path(title: title) %>
+                  <% end %>
+                </td>
+                <td><%= Submission.where(code_review: journals.where(title: title)).count %></td>
+              </tr>
+            <% end %>
+          </tbody>
+      </table>
+    </div>
+  </div>
+</div>
