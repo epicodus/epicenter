@@ -24,7 +24,7 @@ feature "Bulk viewing journal submissions" do
       other_course = FactoryBot.create(:course)
       other_journal = FactoryBot.create(:journal, course: other_course)
       visit journals_path(title: journal.title)
-      expect(page).to have_current_path course_student_path(student.course, student)
+      expect(page).to have_current_path course_code_review_path(student.course, journal)
     end
   end
 
