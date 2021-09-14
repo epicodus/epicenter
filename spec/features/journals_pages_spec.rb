@@ -4,11 +4,28 @@ feature "Bulk viewing journal submissions" do
     expect(page).to have_content 'You are not authorized'
   end
 
-  scenario "as a student" do
-    student = FactoryBot.create(:student)
-    login_as(student, scope: :student)
-    visit journals_path
-    expect(page).to have_content "You are not authorized"
+ context "as a student" do
+    let(:student) { FactoryBot.create(:student, :with_course) }
+
+    before { login_as(student, scope: :student) }
+
+    scenario 'does not allow access if no title provided' do
+      visit journals_path
+      expect(page).to have_content "You are not authorized"
+    end
+
+    scenario 'does not allow access if invalid title provided' do
+      visit journals_path(title: 'invalid title')
+      expect(page).to have_content "You are not authorized"
+    end
+
+    scenario 'redirects to appropriate student course containing that journal topic' do
+      journal = FactoryBot.create(:journal, course: student.course)
+      other_course = FactoryBot.create(:course)
+      other_journal = FactoryBot.create(:journal, course: other_course)
+      visit journals_path(title: journal.title)
+      expect(page).to have_current_path course_student_path(student.course, student)
+    end
   end
 
   context "as an admin" do
