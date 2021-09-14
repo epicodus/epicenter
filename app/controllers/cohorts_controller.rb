@@ -8,6 +8,7 @@ class CohortsController < ApplicationController
   def show
     @cohort = Cohort.find(params[:id])
     @courses = @cohort.courses.includes(:admin).includes(:office)
+    @journals = CodeReview.where(journal: true).where(course: @courses)
   end
 
   def new
