@@ -19,7 +19,7 @@ class JournalsController < ApplicationController
       title = params[:title] if valid_journal_titles.include?(params[:title])
       journal = CodeReview.where(journal: true).where(title: title).where(course: current_student.courses).last
       if journal
-        redirect_to course_student_path(journal.course, current_student)
+        redirect_to course_code_review_path(journal.course, journal)
       else
         redirect_to root_path, alert: 'You are not authorized to access this page.'
       end
