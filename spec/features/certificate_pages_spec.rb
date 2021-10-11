@@ -34,7 +34,7 @@ feature "print completion certificate" do
         travel_to internship_course.end_date + 1.day do
           login_as(student, scope: :student)
           visit edit_student_registration_path
-          expect(page).to_not have_content "View certificate of completion."
+          expect(page).to_not have_content "View certificate of completion"
           expect(page).to have_content "Certificate will be available"
         end
       end
@@ -54,6 +54,17 @@ feature "print completion certificate" do
           login_as(student, scope: :student)
           visit student_certificate_path(student)
           expect(page).to have_content "Certificate not yet available."
+        end
+      end
+
+      it "shows link to print certificate even if failing reflections", :stub_mailgun do
+        reflection_code_review = FactoryBot.create(:code_review, journal: true, course: course)
+        reflection_submission = FactoryBot.create(:submission, code_review: reflection_code_review, student: student, journal: 'test entry')
+        FactoryBot.create(:failing_review, submission: reflection_submission)
+        travel_to internship_course.end_date + 1.day do
+          login_as(student, scope: :student)
+          visit edit_student_registration_path
+          expect(page).to have_content "View certificate of completion"
         end
       end
     end

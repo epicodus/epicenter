@@ -23,15 +23,6 @@
       <% end %>
     </ul>
 
-    <% if @student.submissions.where.not(journal: nil).any? %>
-    <p>Reflections completed:</p>
-      <ul id='transcript-journal'>
-        <% @student.submissions.where.not(journal: nil).each do |submission| %>
-          <li><%= submission.code_review.title %></li>
-        <% end %>
-      </ul>
-    <% end %>
-
     <% if @completed_courses.non_internship_courses.any? %>
       <% if @student.total_attendance_score >= 90.0 %>
         <p>Epicodus requires students to attend class at least 90% of the time. This student met that requirement.</p>
