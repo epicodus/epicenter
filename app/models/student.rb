@@ -322,7 +322,7 @@ class Student < User
   def passed_all_fulltime_code_reviews?
     passed = true
     courses.cirr_fulltime_courses.each do |course|
-      course.code_reviews.each do |cr|
+      course.code_reviews.where(journal: nil).or(course.code_reviews.where(journal: false)).each do |cr|
         if cr.status(self) != 'Met requirements'
           passed = false
         end
