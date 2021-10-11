@@ -113,7 +113,8 @@ feature "viewing transcript & certificate" do
       expect(page).to have_content code_review.title
     end
 
-    it 'Lists completed journal CRs in a separate section', :stub_mailgun do
+    # temporarily disabled until we add that feature back in
+    xit 'lists completed reflections in a separate section', :stub_mailgun do
       course = FactoryBot.create(:past_course)
       student = FactoryBot.create(:student, course: course)
       journal = FactoryBot.create(:code_review, course: course, journal: true)
