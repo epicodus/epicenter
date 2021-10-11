@@ -773,7 +773,7 @@ FactoryBot.define do
 
     factory :journal_submission do
       link {}
-      sequence(:journal) { |n| "Journal entry content #{n}" }
+      sequence(:journal) { |n| "Reflection content #{n}" }
     end
   end
 

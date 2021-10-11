@@ -629,7 +629,7 @@ describe Course do
           expect(course.code_reviews.first.due_date).to eq Date.parse('2017-03-19').in_time_zone(course.office.time_zone).beginning_of_day + 8.hours
         end
 
-        it 'for journal entry' do
+        it 'for reflection' do
           allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_code_reviews: 1, journal: true)
           allow(Github).to receive(:get_content).with('example_code_review').and_return({:content=>"---\n"})
           course = FactoryBot.create(:course, class_days: [], start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path')

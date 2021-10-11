@@ -31,9 +31,9 @@ describe Submission do
       expect(submission.valid?).to eq true
     end
 
-    it 'is valid with a journal but no link for journal' do
-      journal = FactoryBot.create(:code_review, journal: true)
-      submission = FactoryBot.build(:submission, link: nil, journal: 'journal entry', code_review: journal)
+    it 'is valid with a reflection but no link for reflection' do
+      reflection = FactoryBot.create(:code_review, journal: true)
+      submission = FactoryBot.build(:submission, link: nil, journal: 'reflection', code_review: reflection)
       expect(submission.valid?).to eq true
     end
 

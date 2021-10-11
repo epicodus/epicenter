@@ -14,8 +14,8 @@ class SubmissionsController < ApplicationController
       if @code_review.submissions_not_required? && current_admin
         redirect_to new_submission_review_path(@submission)
       elsif @code_review.journal?
-        @submission.reviews.create(note: "journal entry submitted", student_signature: "n/a", admin_id: Admin.reorder(:id).first.id)
-        redirect_to course_student_path(@code_review.course, student), notice: "Thank you for submitting your journal entry."
+        @submission.reviews.create(note: "reflection submitted", student_signature: "n/a", admin_id: Admin.reorder(:id).first.id)
+        redirect_to course_student_path(@code_review.course, student), notice: "Thank you for submitting your reflection."
       else
         redirect_to new_course_meeting_path(@code_review.course), notice: "Thank you for submitting."
       end
@@ -41,8 +41,8 @@ class SubmissionsController < ApplicationController
       @submission = @code_review.submission_for(current_student)
       if @submission.update(submission_params)
         if @code_review.journal?
-          @submission.reviews.create(note: "journal entry submitted", student_signature: "n/a", admin_id: Admin.reorder(:id).first.id)
-          redirect_to course_student_path(@code_review.course, current_student), notice: "Journal updated!"
+          @submission.reviews.create(note: "reflection submitted", student_signature: "n/a", admin_id: Admin.reorder(:id).first.id)
+          redirect_to course_student_path(@code_review.course, current_student), notice: "Reflection updated!"
         else
           redirect_to new_course_meeting_path(@code_review.course), notice: "Submission updated!"
         end

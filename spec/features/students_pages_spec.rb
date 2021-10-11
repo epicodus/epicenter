@@ -337,7 +337,7 @@ feature 'viewing the student show page' do
     expect(section).to_not have_content 'Complete?'
   end
 
-  scenario 'when a student is enrolled in a course with journal entries' do
+  scenario 'when a student is enrolled in a course with reflections' do
     journal = FactoryBot.create(:code_review, course: student.course, journal: true)
     visit course_student_path(student.course, student)
     section = find(:css, '#journal-entries-box')

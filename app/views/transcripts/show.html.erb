@@ -24,7 +24,7 @@
     </ul>
 
     <% if @student.submissions.where.not(journal: nil).any? %>
-    <p>DEI journals completed:</p>
+    <p>Reflections completed:</p>
       <ul id='transcript-journal'>
         <% @student.submissions.where.not(journal: nil).each do |submission| %>
           <li><%= submission.code_review.title %></li>
