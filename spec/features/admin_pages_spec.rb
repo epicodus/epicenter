@@ -183,7 +183,7 @@ feature 'viewing the student page' do
     end
   end
 
-  context 'when a student is enrolled in a course with journal entries' do
+  context 'when a student is enrolled in a course with reflections' do
     scenario 'on course page' do
       journal = FactoryBot.create(:code_review, course: student.course, journal: true)
       visit course_path(student.course)

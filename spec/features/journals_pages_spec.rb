@@ -40,12 +40,12 @@ feature "Bulk viewing journal submissions" do
       expect(page).to have_current_path cohort_path(ft_cohort)
     end
 
-    scenario "can view list of journal topics from all cohorts" do
+    scenario "can view list of reflection topics from all cohorts" do
       journal_1 = FactoryBot.create(:journal, course: ft_cohort.courses.first)
       journal_2 = FactoryBot.create(:journal, course: pt_cohort.courses.first)
       code_review = FactoryBot.create(:code_review, course: ft_cohort.courses.first)
       visit journals_path
-      expect(page).to have_content "Journals"
+      expect(page).to have_content "Reflections"
       expect(page).to have_content "all cohorts"
       expect(page).to_not have_content ft_cohort.description
       expect(page).to_not have_content pt_cohort.description
@@ -54,19 +54,19 @@ feature "Bulk viewing journal submissions" do
       expect(page).to_not have_content code_review.title
     end
 
-    scenario "can view list of journal topics for individual cohort" do
+    scenario "can view list of reflection topics for individual cohort" do
       journal_1 = FactoryBot.create(:journal, course: ft_cohort.courses.first)
       journal_2 = FactoryBot.create(:journal, course: ft_cohort.courses.last)
       journal_3 = FactoryBot.create(:journal, course: pt_cohort.courses.first)
       visit cohort_path(ft_cohort)
-      expect(page).to have_content "Journals"
+      expect(page).to have_content "Reflections"
       expect(page).to have_content ft_cohort.description
       expect(page).to_not have_content pt_cohort.description
       expect(page).to have_content journal_1.title
       expect(page).to have_content journal_2.title
       expect(page).to_not have_content journal_3.title
       visit cohort_path(pt_cohort)
-      expect(page).to have_content "Journals"
+      expect(page).to have_content "Reflections"
       expect(page).to have_content pt_cohort.description
       expect(page).to_not have_content ft_cohort.description
       expect(page).to have_content journal_3.title
@@ -74,16 +74,16 @@ feature "Bulk viewing journal submissions" do
       expect(page).to_not have_content journal_2.title
     end
 
-    scenario 'can view submissions for a particular cohort for a particular journal assignment' do
-      journal_1 = FactoryBot.create(:journal, course: ft_cohort.courses.first, title: 'journal assignment 1')
-      journal_2 = FactoryBot.create(:journal, course: ft_cohort.courses.last, title: 'journal assignment 2')
-      journal_3 = FactoryBot.create(:journal, course: pt_cohort.courses.first, title: 'journal assignment 1')
+    scenario 'can view submissions for a particular cohort for a particular reflection assignment' do
+      journal_1 = FactoryBot.create(:journal, course: ft_cohort.courses.first, title: 'reflection assignment 1')
+      journal_2 = FactoryBot.create(:journal, course: ft_cohort.courses.last, title: 'reflection assignment 2')
+      journal_3 = FactoryBot.create(:journal, course: pt_cohort.courses.first, title: 'reflection assignment 1')
       submission_1 = FactoryBot.create(:journal_submission, code_review: journal_1)
       submission_2 = FactoryBot.create(:journal_submission, code_review: journal_2)
       submission_3 = FactoryBot.create(:journal_submission, code_review: journal_3)
       visit cohort_path(ft_cohort)
-      click_on 'journal assignment 1'
-      expect(page).to have_content 'journal assignment 1'
+      click_on 'reflection assignment 1'
+      expect(page).to have_content 'reflection assignment 1'
       expect(page).to have_content ft_cohort.description
       expect(page).to_not have_content pt_cohort.description
       expect(page).to have_content submission_1.journal
@@ -92,16 +92,16 @@ feature "Bulk viewing journal submissions" do
       expect(page).to have_content submission_1.created_at.strftime("%b %-d %Y")
     end
 
-    scenario 'can view submissions from all cohorts for a particular journal assignment' do
-      journal_1 = FactoryBot.create(:journal, course: ft_cohort.courses.first, title: 'journal assignment 1')
-      journal_2 = FactoryBot.create(:journal, course: ft_cohort.courses.last, title: 'journal assignment 2')
-      journal_3 = FactoryBot.create(:journal, course: pt_cohort.courses.first, title: 'journal assignment 1')
+    scenario 'can view submissions from all cohorts for a particular reflection assignment' do
+      journal_1 = FactoryBot.create(:journal, course: ft_cohort.courses.first, title: 'reflection assignment 1')
+      journal_2 = FactoryBot.create(:journal, course: ft_cohort.courses.last, title: 'reflection assignment 2')
+      journal_3 = FactoryBot.create(:journal, course: pt_cohort.courses.first, title: 'reflection assignment 1')
       submission_1 = FactoryBot.create(:journal_submission, code_review: journal_1)
       submission_2 = FactoryBot.create(:journal_submission, code_review: journal_2)
       submission_3 = FactoryBot.create(:journal_submission, code_review: journal_3)
-      visit cohort_journals_path(ft_cohort, title: 'journal assignment 1')
+      visit cohort_journals_path(ft_cohort, title: 'reflection assignment 1')
       click_on '[view submissions for all cohorts]'
-      expect(page).to have_content 'journal assignment 1'
+      expect(page).to have_content 'reflection assignment 1'
       expect(page).to_not have_content ft_cohort.description
       expect(page).to_not have_content pt_cohort.description
       expect(page).to have_content submission_1.journal

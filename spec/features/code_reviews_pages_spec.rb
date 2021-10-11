@@ -193,7 +193,7 @@ feature 'visiting the code review show page' do
       end
     end
 
-    context 'when submitting journal entry' do
+    context 'when submitting reflection' do
       let(:journal) { FactoryBot.create(:code_review, course: student.course, journal: true) }
       before { visit course_code_review_path(journal.course, journal) }
 
@@ -205,7 +205,7 @@ feature 'visiting the code review show page' do
       scenario 'with valid input' do
         fill_in 'submission_journal', with: 'test entry'
         click_button 'Submit'
-        is_expected.to have_content 'Thank you for submitting your journal entry'
+        is_expected.to have_content 'Thank you for submitting your reflection'
         is_expected.to_not have_content "I'd like to request a meeting with a teacher this week."
       end
 
@@ -233,7 +233,7 @@ feature 'visiting the code review show page' do
       it { is_expected.to have_content 'Submitted 1 time' }
     end
 
-    context 'after having submitted journal entry' do
+    context 'after having submitted reflection' do
       before do
         journal = FactoryBot.create(:code_review, journal: true)
         FactoryBot.create(:submission, code_review: journal, student: student, journal: 'test entry', times_submitted: 1)
@@ -281,7 +281,7 @@ feature 'visiting the code review show page' do
       end
     end
 
-    context 'after resubmitting journal entry', :stub_mailgun do
+    context 'after resubmitting reflection', :stub_mailgun do
       let(:journal) { FactoryBot.create(:code_review, course: student.course, journal: true)}
       let(:submission) { FactoryBot.create(:submission, code_review: journal, student: student, journal: 'test entry', link: nil) }
 
@@ -293,7 +293,7 @@ feature 'visiting the code review show page' do
       scenario 'successfully' do
         fill_in 'submission_journal', with: 'test entry updated'
         click_button 'Resubmit'
-        expect(page).to have_content 'Journal updated'
+        expect(page).to have_content 'Reflection updated'
         expect(page).to_not have_content "I'd like to request a meeting with a teacher this week."
       end
 
@@ -312,7 +312,7 @@ feature 'visiting the code review show page' do
   end
 end
 
-feature 'viewing journal entry submission' do
+feature 'viewing reflection submission' do
   context 'as an admin' do
     let(:journal) { FactoryBot.create(:code_review, journal: true)}
     let(:student) { FactoryBot.create(:student, :with_all_documents_signed, course: journal.course) }
@@ -323,7 +323,7 @@ feature 'viewing journal entry submission' do
 
     scenario 'viewing from review creation page' do
       visit new_submission_review_path(submission)
-      expect(page).to have_content 'Journal submission:'
+      expect(page).to have_content 'Reflection submission:'
       expect(page).to have_content 'test entry'
     end
   end
