@@ -86,7 +86,7 @@
     <% if @code_review.due_date && !@code_review.expectations_met_by?(current_student) %>
       <div class="well">
         <p>Submit your <%= @code_review.course.internship_course? ? 'content' : 'code' %> for review by <%= @code_review.due_date.strftime("%-I:%M %p on %A %B %d") %>.</p>
-        <p>Visit <a href="https://www.learnhowtoprogram.com/lessons/independent-projects-and-code-reviews" target="_blank">Independent Projects and Code Reviews</a> for details on how to submit, how feedback works and course completion requirements.</p>
+        <p>Visit <a href="https://github.com/epicodus-classroom/intro-curriculum/blob/main/0_getting_started_with_epicodus/0j_indepndnt_projects_and_code_reviews.md" target="_blank">Independent Projects and Code Reviews</a> for details on how to submit, how feedback works and course completion requirements.</p>
       </div>
     <% end %>
 
