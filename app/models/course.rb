@@ -243,6 +243,7 @@ private
   def build_code_reviews
     code_review_params = Github.get_layout_params(layout_file_path)['code_reviews']
     if code_review_params.try(:any?)
+      order_number = 0
       visible_day_of_week, visible_time, due_days_later, due_time, submissions_not_required, always_visible = code_review_params['settings'].values_at 'visible_day_of_week', 'visible_time', 'due_days_later', 'due_time', 'submissions_not_required', 'always_visible'
       code_review_params['details'].each do |params|
         unless code_reviews.where(title: params['title']).any?
@@ -254,7 +255,8 @@ private
             due_date = visible_date + (params['due_days_later'] || due_days_later).days
             due_datetime = time_on_date(date: due_date, time: params['due_time'] || due_time)
           end
-          cr = code_reviews.new(title: params['title'], github_path: params['filename'], submissions_not_required: params['submissions_not_required'] || submissions_not_required, visible_date: visible_datetime, due_date: due_datetime, journal: params['journal'])
+          order_number += 1
+          cr = code_reviews.new(title: params['title'], github_path: params['filename'], submissions_not_required: params['submissions_not_required'] || submissions_not_required, visible_date: visible_datetime, due_date: due_datetime, journal: params['journal'], number: order_number)
           cr.objectives = params['objectives'].map.with_index(1) {|obj, i| Objective.new(content: obj, number: i)} if params['objectives']
         end
       end
