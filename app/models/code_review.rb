@@ -13,7 +13,7 @@ class CodeReview < ApplicationRecord
 
   before_validation :update_from_github, if: ->(cr) { cr.github_path.present? }
   before_create :normalize_title
-  before_create :set_number
+  before_create :set_number, if: ->(cr) { cr.number.nil? }
   before_destroy :check_for_submissions
 
   def total_points_available
