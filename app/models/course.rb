@@ -18,6 +18,8 @@ class Course < ApplicationRecord
   validates :language_id, :start_date, :end_date, :office_id, presence: true
 
   before_validation :set_start_and_end_dates, on: :create, if: ->(course) { course.layout_file_path.blank? }
+  before_update :set_start_and_end_dates
+  before_update :set_description
   before_validation :build_course, on: :create, if: ->(course) { course.layout_file_path.present? }
   before_save :build_code_reviews, if: ->(course) { course.layout_file_path.present? && course.will_save_change_to_layout_file_path? } # relies on parttime being set correctly
 
@@ -205,8 +207,7 @@ private
     self.internship_course = course_params['internship']
     set_class_times(class_times: course_params['class_times'])
     set_class_days(number_of_days: course_params['number_of_days'], days_of_week: course_params['class_times'].keys)
-    self.description = "#{start_date.try('strftime', '%Y-%m')} #{language.try(:name)}"
-    self.description += " (#{track.try(:description)})" if internship_course?
+    set_description
   end
 
   def set_class_days(number_of_days:, days_of_week:)
@@ -230,6 +231,11 @@ private
   def set_start_and_end_dates
     self.start_date = class_days.sort.first
     self.end_date = class_days.sort.last
+  end
+
+  def set_description
+    self.description = "#{start_date.try('strftime', '%Y-%m')} #{language.try(:name)}"
+    self.description += " (#{track.try(:description)})" if internship_course?
   end
 
   def set_class_times(class_times:)
@@ -264,7 +270,7 @@ private
   end
 
   def holiday_week?(day)
-    Rails.configuration.holiday_weeks.include?(day.strftime('%Y-%m-%d')) && language.name != 'Internship'
+    Rails.configuration.holiday_weeks.include?(day.strftime('%Y-%m-%d'))
   end
 
   def reassign_admin_current_courses

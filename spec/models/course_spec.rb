@@ -560,8 +560,8 @@ describe Course do
           allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_days: 35, internship: true)
           course = FactoryBot.create(:internship_course, class_days: [], start_date: Date.parse('2017-11-13'), layout_file_path: 'example_course_layout_path')
           expect(course.start_date).to eq Date.parse('2017-11-13')
-          expect(course.end_date).to eq Date.parse('2017-12-29')
-          expect(course.class_days.count).to eq 35
+          expect(course.end_date).to eq Date.parse('2018-01-12')
+          expect(course.class_days.count).to eq 34
         end
 
         it 'for part-time full-track course with holiday' do
@@ -728,6 +728,28 @@ describe Course do
       course.description = 'an awesome course'
       course.save
       expect(course.description).to eq 'an awesome course'
+    end
+  end
+
+  context 'when class days changed' do
+    it 'updates start and end dates' do
+      course = FactoryBot.create(:course)
+      new_start_date = course.class_days.sort.first - 1.week
+      new_end_date = course.class_days.sort.last + 1.week
+      course.class_days << new_start_date
+      course.class_days << new_end_date
+      course.save
+      course.reload
+      expect(course.start_date).to eq new_start_date
+      expect(course.end_date).to eq new_end_date
+    end
+
+    it 'updates description' do
+      course = FactoryBot.create(:course, class_days: [Date.parse('2021-01-03')])
+      course.class_days << Date.parse('2020-12-10')
+      course.save
+      course.reload
+      expect(course.description).to eq '2020-12 Intro'
     end
   end
 end
