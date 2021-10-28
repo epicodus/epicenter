@@ -34,7 +34,8 @@ describe Student do
 
     it 'sets Fidgetech students to special $0 payment plan' do
       special_plan = FactoryBot.create(:special_plan)
-      course = FactoryBot.create(:course, description: 'Fidgetech')
+      course = FactoryBot.create(:course)
+      course.update_columns(description: 'Fidgetech')
       student = FactoryBot.build(:student, plan_id: nil, courses: [course])
       student.save
       expect(student.plan).to eq special_plan
@@ -1172,8 +1173,8 @@ end
       let(:ft_student) { FactoryBot.create(:student, courses: ft_cohort.courses) }
       let(:pair) { FactoryBot.create(:student, courses: ft_cohort.courses) }
       before do
-        ft_cohort.courses.first.update(internship_course: false, description: 'non-internship course 1', start_date: Date.today.beginning_of_week - 2.weeks, class_days: [Date.today.beginning_of_week - 2.weeks])
-        ft_cohort.courses.second.update(internship_course: false, description: 'non-internship course 2', start_date: Date.today.beginning_of_week - 1.week, class_days: [Date.today.beginning_of_week - 1.week])
+        ft_cohort.courses.first.update(internship_course: false, class_days: [Date.today.beginning_of_week - 2.weeks])
+        ft_cohort.courses.second.update(internship_course: false, class_days: [Date.today.beginning_of_week - 1.week])
       end
 
       it "with more than one course and perfect attendance" do
@@ -1830,7 +1831,7 @@ end
       end
 
       it 'returns part-time full-stack cohort when internship & non-internship course from that cohort is present' do
-        cohort.courses.first.update(start_date: Date.today - 1.year)
+        cohort.courses.first.update(class_days: [Date.today - 1.year])
         student = FactoryBot.create(:student, courses: [part_time_cohort.courses.first, cohort.courses.first, part_time_full_stack_cohort.courses.first, part_time_full_stack_cohort.courses.last])
         expect(student.calculate_current_cohort).to eq part_time_full_stack_cohort
       end

@@ -46,12 +46,11 @@ feature 'adding another course for a student', :js do
     cohort = FactoryBot.create(:ft_cohort, description: "existing cohort")
     student.courses = cohort.courses
     new_cohort = FactoryBot.create(:ft_cohort, description: "new cohort")
-    new_cohort.courses.first.update(description: 'this is the new course')
     visit student_courses_path(student)
-    select new_cohort.courses.first.description, from: 'enrollment_course_id_' + new_cohort.office.short_name
+    select new_cohort.courses.first.reload.description, from: 'enrollment_course_id_' + new_cohort.office.short_name
     click_on 'Add course'
     section = find(:css, '#courses-list')
-    expect(section).to have_content 'this is the new course'
+    expect(section).to have_content new_cohort.courses.first.reload.description
   end
 
   scenario 'does not show current cohort selection modal when adding PT course' do
@@ -59,7 +58,7 @@ feature 'adding another course for a student', :js do
     student.courses = cohort.courses
     pt_cohort = FactoryBot.create(:pt_intro_cohort, description: 'PT cohort')
     visit student_courses_path(student)
-    select pt_cohort.courses.first.description, from: 'enrollment_course_id_' + pt_cohort.office.short_name
+    select pt_cohort.courses.first.reload.description, from: 'enrollment_course_id_' + pt_cohort.office.short_name
     click_on 'Add course'
     expect(page).to have_content "#{student.name} enrolled in #{pt_cohort.courses.first.description_and_office}"
     expect(page).to_not have_content "Confirm updated current cohort for #{student.name}"

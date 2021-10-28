@@ -131,7 +131,7 @@ class Student < User
     elsif next_course
       next_course
     else
-      courses.last
+      courses.order(:start_date).last || courses.last
     end
   end
 
