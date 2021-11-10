@@ -45,7 +45,7 @@ feature "Bulk viewing journal submissions" do
       journal_2 = FactoryBot.create(:journal, course: pt_cohort.courses.first)
       code_review = FactoryBot.create(:code_review, course: ft_cohort.courses.first)
       visit journals_path
-      expect(page).to have_content "Reflections"
+      expect(page).to have_content "reflections"
       expect(page).to have_content "all cohorts"
       expect(page).to_not have_content ft_cohort.description
       expect(page).to_not have_content pt_cohort.description
@@ -59,14 +59,14 @@ feature "Bulk viewing journal submissions" do
       journal_2 = FactoryBot.create(:journal, course: ft_cohort.courses.last)
       journal_3 = FactoryBot.create(:journal, course: pt_cohort.courses.first)
       visit cohort_path(ft_cohort)
-      expect(page).to have_content "Reflections"
+      expect(page).to have_content "reflections"
       expect(page).to have_content ft_cohort.description
       expect(page).to_not have_content pt_cohort.description
       expect(page).to have_content journal_1.title
       expect(page).to have_content journal_2.title
       expect(page).to_not have_content journal_3.title
       visit cohort_path(pt_cohort)
-      expect(page).to have_content "Reflections"
+      expect(page).to have_content "reflections"
       expect(page).to have_content pt_cohort.description
       expect(page).to_not have_content ft_cohort.description
       expect(page).to have_content journal_3.title
