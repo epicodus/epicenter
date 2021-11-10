@@ -23,10 +23,6 @@
             <%= link_to 'Payment methods', payment_methods_path %>
           <% end %>
 
-          <%= set_navbar_link_class('random_pairs') do %>
-            <%= link_to 'Pair suggestions', random_pairs_path %>
-          <% end %>
-
           <%= set_navbar_link_class('peer_evaluations') do %>
             <%= link_to 'Peer evaluations', student_peer_evaluations_path(current_student) %>
           <% end %>
