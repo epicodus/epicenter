@@ -97,7 +97,7 @@ feature 'Viewing payment index page' do
         it 'shows correct payment button when upfront payment plan selected', :stripe_mock, :stub_mailgun do
           click_on 'Up-Front Discount'
           expect(page).to have_content 'Payment plan selected. Please make payment below.'
-          expect(page).to have_button 'Charge $7,800.00'
+          expect(page).to have_button 'Charge $8,700.00'
         end
 
         it 'shows correct payment button when standard payment plan selected', :stripe_mock, :stub_mailgun do
@@ -141,7 +141,7 @@ feature 'Viewing payment index page' do
         it 'shows correct payment button when upfront payment plan selected', :stripe_mock, :stub_mailgun do
           click_on 'Up-Front Discount'
           expect(page).to have_content 'Payment plan selected. Please make payment below.'
-          expect(page).to have_button 'Charge $7,800.00'
+          expect(page).to have_button 'Charge $8,700.00'
         end
 
         it 'shows correct payment button when loan payment plan selected', :stripe_mock, :stub_mailgun do
@@ -653,24 +653,24 @@ feature 'make a cost adjustment' do
     before { login_as(admin, scope: :admin) }
 
     it 'shows correct info in tuition adjustment info area with no tuition adjustment or payment' do
-      student.plan.update(upfront_amount: 7800_00)
+      student.plan.update(upfront_amount: 8700_00)
       student.update(upfront_amount: nil)
       visit student_payments_path(student)
       click_on 'Tuition Adjustment'
-      expect(page).to have_content "Default upfront amount (based on plan): $7,800.00"
+      expect(page).to have_content "Default upfront amount (based on plan): $8,700.00"
       expect(page).to have_content "No adjustments made to upfront amount."
       expect(page).to have_content "Total paid by student (bank/debit/credit): $0.00"
       expect(page).to have_content "Total paid by third parties (offline): $0.00"
-      expect(page).to have_content "Remaining upfront payment owed by student: $7,800.00"
+      expect(page).to have_content "Remaining upfront payment owed by student: $8,700.00"
     end
 
     it 'shows correct info in tuition adjustment info area with adjusted upfront amount and partial payment' do
-      student.plan.update(upfront_amount: 7800_00)
+      student.plan.update(upfront_amount: 8700_00)
       student.update(upfront_amount: 5000_00)
       FactoryBot.create(:payment_with_credit_card, amount: 1000_00, student: student)
       visit student_payments_path(student)
       click_on 'Tuition Adjustment'
-      expect(page).to have_content "Default upfront amount (based on plan): $7,800.00"
+      expect(page).to have_content "Default upfront amount (based on plan): $8,700.00"
       expect(page).to have_content "Current upfront amount (as adjusted): $5,000.00"
       expect(page).to have_content "Total paid by student (bank/debit/credit): $1,000.00"
       expect(page).to have_content "Total paid by third parties (offline): $0.00"

@@ -94,9 +94,9 @@
           <div class="panel panel-default">
             <div class="panel-body payment-plan-details">
               <%= form_for @student do |f| %>
-                <%= f.hidden_field :plan_id, value: Plan.active.upfront.fulltime.first.try(:id) %>
+                <%= f.hidden_field :plan_id, value: Plan.active.upfront.where(upfront_amount: 870000).first.try(:id) %>
                 <%= f.submit 'Up-Front Discount', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the up-front discount?" } %>
-                <p><br><strong>Up-Front Discount: $7,800</strong><br>Pay $7,800 to reserve your seat in class.</p>
+                <p><br><strong>Up-Front Discount: $8,700</strong><br>Pay $8,700 to reserve your seat in class.</p>
               <% end %>
             </div>
           </div>
