@@ -173,7 +173,6 @@
   <div class="panel-group" id="accordion">
 
     <% if @student.cohort || @student.parttime_cohort %>
-
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
@@ -195,7 +194,6 @@
           </div>
         </div>
       </div>
-
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
@@ -213,7 +211,11 @@
           </div>
         </div>
       </div>
+    <% else %>
+      <p class='alert alert-warning'>Payments can not be made when cohort is blank. Please enroll the student in the cohort to which the payment or refund should be applied.</p>
+    <% end %>
 
+    <% if @student.payments.any? %>
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
@@ -231,9 +233,6 @@
           </div>
         </div>
       </div>
-
-    <% else %>
-      <p class='alert alert-warning'>Payments and refunds can not be made when cohort is blank. Please enroll the student in the cohort to which the payment or refund should be applied.</p>
     <% end %>
 
     <% if @student.plan %>
