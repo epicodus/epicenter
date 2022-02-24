@@ -1,4 +1,4 @@
-describe Github, :vcr do
+describe Github, vcr: false do
   it 'updates code review content based on Github repo name & list of file paths' do
     code_review = FactoryBot.create(:code_review, github_path: "https://github.com/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/testing/blob/main/README.md")
     Github.update_code_reviews({ repo: 'testing', modified: ['README.md'], removed: [] })
