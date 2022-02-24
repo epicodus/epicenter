@@ -3,7 +3,10 @@ class Github
     repo = github_path.match(/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}\/(.*)\/blob\/main/).try(:values_at, 1).try(:first)
     file = github_path.match(/\/blob\/main\/(.*)/).try(:values_at, 1).try(:first)
     begin
-      { content: client.contents("#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/#{repo}", path: "/#{file}", accept: 'application/vnd.github.3.raw') }
+      url = "https://api.github.com/repos/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/#{repo}/contents/#{file}"
+      headers = { "Authorization": "Bearer #{client.access_token}", "Accept": 'application/vnd.github.machine-man-preview+json' }
+      response = client.get(url, headers: headers)
+      { content: Base64.decode64(response[:content]) }
     rescue Faraday::Error => e
       { error: true }
     rescue Octokit::NotFound => e
@@ -26,11 +29,14 @@ class Github
   end
 
   private_class_method def self.update_modified_code_reviews(repo, files)
+    headers = { "Authorization": "Bearer #{client.access_token}", "Accept": 'application/vnd.github.machine-man-preview+json' }
     files.each do |file|
+      url = "https://api.github.com/repos/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/#{repo}/contents/#{file}"
+      response = client.get(url, headers: headers)
+      content = Base64.decode64(response[:content])
       code_reviews = CodeReview.where(github_path: "https://github.com/#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/#{repo}/blob/main/#{file}")
       code_reviews.each do |code_review|
-        updated_content = client.contents("#{ENV['GITHUB_CURRICULUM_ORGANIZATION']}/#{repo}", path: "/#{file}", accept: 'application/vnd.github.3.raw')
-        code_review.update_columns(content: updated_content)
+        code_review.update_columns(content: content)
       end
     end
   end
@@ -55,7 +61,7 @@ class Github
   private_class_method def self.new_jwt_token
     private_pem = ENV['GITHUB_APP_PEM']
     private_key = OpenSSL::PKey::RSA.new(private_pem)
-    payload = { iat: Time.now.to_i, exp: 9.minutes.from_now.to_i, iss: ENV['GITHUB_APP_ID'] }
+    payload = { iat: Time.now.to_i - 60, exp: 9.minutes.from_now.to_i, iss: ENV['GITHUB_APP_ID'] }
     JWT.encode(payload, private_key, "RS256")
   end
 end
