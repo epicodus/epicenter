@@ -1,5 +1,5 @@
 class Objective < ApplicationRecord
-  validates :content, presence: true, length: { maximum: 255 }
+  validates :content, presence: true
 
   belongs_to :code_review, optional: true
   has_many :grades
