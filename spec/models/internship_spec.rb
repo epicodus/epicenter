@@ -97,6 +97,17 @@ describe Internship do
     end
   end
 
+  describe  '#formatted_location' do
+    it 'returns formatted display for location' do
+      internship = FactoryBot.create(:internship, location: 'onsite')
+      expect(internship.formatted_location).to eq 'on-site'
+      internship = FactoryBot.create(:internship, location: 'remote')
+      expect(internship.formatted_location).to eq 'remote'
+      internship = FactoryBot.create(:internship, location: 'either')
+      expect(internship.formatted_location).to eq 'on-site or remote'
+    end
+  end
+
   describe 'emails company internship update' do
     it 'on internship create' do
       allow(EmailJob).to receive(:perform_later).and_return({})

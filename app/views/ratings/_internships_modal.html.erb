@@ -21,7 +21,7 @@
               <p><%= internship.ideal_intern %></p>
               <hr>
               <p><strong>On-Site / Remote</strong></p>
-              <p>Internship is <%= internship.remote ? "remote" : "on-site" %></p>
+              <p>Internship is <%= internship.formatted_location %></p>
               <% if internship.clearance_required %>
                 <hr>
                 <p><strong>Clearance description</strong></p>

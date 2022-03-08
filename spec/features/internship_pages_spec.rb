@@ -26,7 +26,7 @@ feature 'updating an internship' do
   let(:admin) { FactoryBot.create(:admin) }
   let!(:internship) { FactoryBot.create(:internship) }
   let(:company) { FactoryBot.create(:company, internships: [internship]) }
-  let(:new_information) { FactoryBot.build(:internship) }
+  let(:new_information) { FactoryBot.build(:internship, mentor_name: 'Michelle Obama') }
 
   context 'as an admin' do
     before { login_as(admin, scope: :admin) }
@@ -58,8 +58,10 @@ feature 'updating an internship' do
     scenario 'an internship can be updated with valid input' do
       visit edit_internship_path(internship)
       fill_in 'Describe your company and internship. Get students excited about what you do!', with: new_information.description
+      fill_in 'Mentor name', with: new_information.mentor_name
       click_on 'Update internship'
       expect(page).to have_content 'Internship has been updated'
+      expect(internship.reload.mentor_name).to eq 'Michelle Obama'
     end
 
     scenario 'an internship cannot be updated with invalid input' do
@@ -131,11 +133,6 @@ feature 'visiting the internships show page' do
       expect(page).to_not have_content 'Edit'
     end
 
-    scenario 'students can not see hiring intentions' do
-      visit course_internship_path(student.course, internship)
-      expect(page).to_not have_content 'maybe'
-    end
-
     scenario 'students can not see rankings' do
       visit course_internship_path(student.course, internship)
       expect(page).to_not have_content 'Rankings'
@@ -144,6 +141,16 @@ feature 'visiting the internships show page' do
     scenario 'students can not see list of internship periods' do
       visit course_internship_path(student.course, internship)
       expect(page).to_not have_content 'Internship periods'
+    end
+
+    scenario 'students can not see admin/company only fields' do
+      visit course_internship_path(student.course, internship)
+      expect(page).to_not have_content 'maybe'
+      expect(page).to_not have_content 'Ada Lovelace'
+      expect(page).to_not have_content 'two and a half years'
+      expect(page).to_not have_content 'Mon-Fri 9-5'
+      expect(page).to_not have_content 'really fun projects'
+      expect(page).to_not have_content 'no contract'
     end
   end
 
@@ -194,10 +201,15 @@ feature 'visiting the internships show page' do
       expect(page).to have_content internship.courses.first.description
     end
 
-    scenario 'admin can see hiring intentions' do
+    scenario 'admin can see company/admin only fields' do
       internship = FactoryBot.create(:internship)
       visit course_internship_path(internship.courses.first, internship)
       expect(page).to have_content 'maybe'
+      expect(page).to have_content 'Ada Lovelace'
+      expect(page).to have_content 'two and a half years'
+      expect(page).to have_content 'Mon-Fri 9-5'
+      expect(page).to have_content 'really fun projects'
+      expect(page).to have_content 'no contract'
     end
   end
 end

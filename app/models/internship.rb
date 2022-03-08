@@ -42,6 +42,11 @@ class Internship < ApplicationRecord
     number_of_students_mapping[number_of_students]
   end
 
+  def formatted_location
+    location_mapping = { 'onsite' => 'on-site', 'remote' => 'remote', 'either' => 'on-site or remote' }
+    location_mapping[location]
+  end
+
 private
 
   def fix_url

@@ -83,11 +83,26 @@
         <p><%= @internship.ideal_intern %></p>
         <hr>
         <p><strong>On-Site / Remote</strong></p>
-        <p>Internship is <%= @internship.remote ? "remote" : "on-site" %></p>
+        <p>Internship is <%= @internship.formatted_location %></p>
         <% if can?(:manage, @internship) %>
           <hr>
           <p><strong>Hiring?</strong></p>
           <p><%= @internship.hiring %></p>
+          <hr>
+          <p><strong>Mentor name</strong></p>
+          <p><%= @internship.mentor_name %></p>
+          <hr>
+          <p><strong>Mentor years</strong></p>
+          <p><%= @internship.mentor_years %></p>
+          <hr>
+          <p><strong>Work schedule</strong></p>
+          <p><%= @internship.work_schedule %></p>
+          <hr>
+          <p><strong>Projects</strong></p>
+          <p><%= @internship.projects %></p>
+          <hr>
+          <p><strong>Contract</strong></p>
+          <p><%= @internship.contract %></p>
         <% end %>
         <% if @internship.clearance_required %>
           <hr>
