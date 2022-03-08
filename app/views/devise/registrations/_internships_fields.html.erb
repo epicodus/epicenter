@@ -42,16 +42,22 @@
   </div>
 
   <div class='form-group'>
-    <%= ff.label :remote, "* Will the students be working on-site or remotely?" %>
+    <%= ff.label :location, "* Will the students be working on-site or remotely?" %>
     <div class="radio">
-      <%= ff.label :remote do %>
-        <%= ff.radio_button :remote, false %> on-site
+      <%= ff.label :location do %>
+        <%= ff.radio_button :location, 'onsite' %> on-site
       <% end %>
     </div>
 
     <div class="radio">
-      <%= ff.label :remote do %>
-        <%= ff.radio_button :remote, true %> remote
+      <%= ff.label :location do %>
+        <%= ff.radio_button :location, 'remote' %> remote
+      <% end %>
+    </div>
+
+    <div class="radio">
+      <%= ff.label :location do %>
+        <%= ff.radio_button :location, 'either' %> open to on-site and remote
       <% end %>
     </div>
   </div>
@@ -81,6 +87,26 @@
   </div>
 
   <div class='form-group'>
+    <%= ff.label :mentor_name %>
+    <%= ff.text_field :mentor_name, class: 'form-control' %>
+  </div>
+
+  <div class='form-group'>
+    <%= ff.label :mentor_years, '* How many years has the mentor been a developer? (min: 1 year)' %>
+    <%= ff.text_field :mentor_years, class: 'form-control', required: true %>
+  </div>
+
+  <div class='form-group'>
+    <%= ff.label :work_schedule, '* What is the internship work schedule? Please provide days and hours (e.g. Monday - Thursday, 8am - 5pm)' %>
+    <%= ff.text_field :work_schedule, class: 'form-control', required: true %>
+  </div>
+
+  <div class='form-group'>
+    <%= ff.label :projects, '* Please describe what project(s) students will be working on during their internship.' %>
+    <%= ff.text_area :projects, rows: 8, class: 'form-control', required: true %>
+  </div>
+
+  <div class='form-group'>
     <%= ff.label :address %>
     <%= ff.text_field :address, class: 'form-control' %>
   </div>
@@ -98,5 +124,10 @@
   <div class='form-group'>
     <%= ff.label :clearance_description %>
     <%= ff.text_area :clearance_description, class: 'form-control' %>
+  </div>
+
+  <div class='form-group'>
+    <%= ff.label :contract, 'Do interns need to sign a contract, non-compete, or other documentation? If so, please list the documentation required and share a copy with Epicodus when you sign the internship agreement.' %>
+    <%= ff.text_area :contract, class: 'form-control' %>
   </div>
 <% end %>

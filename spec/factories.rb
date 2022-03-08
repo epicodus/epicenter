@@ -800,7 +800,13 @@ FactoryBot.define do
     clearance_required { true }
     clearance_description { "You need to have an awesome attitude!" }
     number_of_students { 2 }
+    location { 'onsite' }
     hiring { 'maybe' }
+    mentor_name { 'Ada Lovelace' }
+    mentor_years { 'two and a half years' }
+    work_schedule { 'Mon-Fri 9-5' }
+    projects { 'really fun projects' }
+    contract { 'no contract' }
     before(:create) do |internship|
       internship.courses << create(:internship_course)
       internship.tracks << create(:track)
