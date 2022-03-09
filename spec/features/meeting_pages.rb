@@ -3,6 +3,7 @@ feature 'requesting a meeting' do
     let(:admin) { FactoryBot.create(:admin) }
     let(:course) { FactoryBot.create(:course, admin: admin) }
     let(:student) { FactoryBot.create(:student, course: course) }
+    let!(:submission) { FactoryBot.create(:submission, student: student)}
     before do
       login_as(student, scope: :student)
       visit new_course_meeting_path(course)
@@ -23,6 +24,22 @@ feature 'requesting a meeting' do
           :text => "12345678901234567890123456789012345678901234567890" }
       )
       expect(page).to have_content("Attendance")
+    end
+
+    it 'creates meeting_request note' do
+      allow(EmailJob).to receive(:perform_later).and_return({})
+      fill_in 'teacher-meeting-explanation', with: '12345678901234567890123456789012345678901234567890'
+      click_on 'Submit'
+      expect(submission.meeting_request_notes.last.content).to eq '12345678901234567890123456789012345678901234567890'
+    end
+
+    it 'attaches meeting_request note to latest submission only' do
+      allow(EmailJob).to receive(:perform_later).and_return({})
+      new_submission = FactoryBot.create(:submission, student: student)
+      fill_in 'teacher-meeting-explanation', with: '12345678901234567890123456789012345678901234567890'
+      click_on 'Submit'
+      expect(submission.meeting_request_notes.count).to eq 0
+      expect(new_submission.meeting_request_notes.count).to eq 1
     end
 
     it 'does not send email when not requested' do

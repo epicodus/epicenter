@@ -139,8 +139,8 @@ feature 'Visiting the submissions index page' do
 
         describe 'displays submission notes' do
           it 'displays notes if there are any' do
-            submission.notes.create(content: 'first note')
-            submission.notes.create(content: 'second note')
+            submission.submission_notes.create(content: 'first note')
+            submission.submission_notes.create(content: 'second note')
             click_on 'Review'
             expect(page).to have_content('first note')
             expect(page).to have_content('second note')

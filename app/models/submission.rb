@@ -11,8 +11,10 @@ class Submission < ApplicationRecord
   belongs_to :admin, optional: true
   has_many :reviews
   has_many :notes, dependent: :destroy
+  has_many :submission_notes, dependent: :destroy
+  has_many :meeting_request_notes, dependent: :destroy
 
-  accepts_nested_attributes_for :notes
+  accepts_nested_attributes_for :submission_notes
 
   before_create :mark_as_needing_review
   before_save :update_times_submitted

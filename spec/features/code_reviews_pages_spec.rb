@@ -186,6 +186,14 @@ feature 'visiting the code review show page' do
         expect(student.submissions.last.review_status).to eq "pending"
       end
 
+      scenario 'adds student note' do
+        fill_in 'submission_link', with: 'http://github.com'
+        fill_in 'submission-student-note', with: 'student note'
+        check 'understand-guidelines'
+        click_button 'Submit'
+        expect(student.submissions.last.submission_notes.last.content).to eq "student note"
+      end
+
       scenario 'with invalid input' do
         check 'understand-guidelines'
         click_button 'Submit'

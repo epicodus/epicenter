@@ -56,7 +56,7 @@ class SubmissionsController < ApplicationController
 private
 
   def submission_params
-    params.require(:submission).permit(:link, :journal, :needs_review, :student_id, :times_submitted, :admin_id, notes_attributes: [:id, :content]).merge(review_status: 'pending')
+    params.require(:submission).permit(:link, :journal, :needs_review, :student_id, :times_submitted, :admin_id, submission_notes_attributes: [:id, :content]).merge(review_status: 'pending')
   end
 
   def move_submissions
