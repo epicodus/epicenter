@@ -34,11 +34,22 @@
 
     <br>
 
-    <% if @submission.notes.any? %>
+    <% if @submission.meeting_request_notes.any? %>
       <div class="well">
-        <p><strong>Student's notes:</strong></p>
+        <p><strong>Student meeting request notes:</strong></p>
         <ul>
-          <% @submission.notes.reorder('CREATED_AT DESC').each do |note| %>
+          <% @submission.meeting_request_notes.reorder('CREATED_AT DESC').each do |note| %>
+            <li><em><%= note.created_at.strftime('%B %d') %>:</em> <%= note.content %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <% if @submission.submission_notes.any? %>
+      <div class="well">
+        <p><strong>Student submission notes:</strong></p>
+        <ul>
+          <% @submission.submission_notes.reorder('CREATED_AT DESC').each do |note| %>
             <li><em><%= note.created_at.strftime('%B %d') %>:</em> <%= note.content %></li>
           <% end %>
         </ul>

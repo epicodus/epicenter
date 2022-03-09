@@ -1,0 +1,2 @@
+class MeetingRequestNote < Note
+end
