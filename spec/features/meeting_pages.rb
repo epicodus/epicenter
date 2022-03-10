@@ -50,6 +50,28 @@ feature 'requesting a meeting' do
     end
   end
 
+  context 'visiting as an admin' do
+    let(:admin) { FactoryBot.create(:admin) }
+    let(:course) { FactoryBot.create(:course, admin: admin) }
+    let(:student) { FactoryBot.create(:student, course: course) }
+    let(:submission) { FactoryBot.create(:submission, student: student)}
+    let!(:note) { FactoryBot.create(:meeting_request_note, submission: submission)}
+    before do
+      login_as(admin, scope: :admin)
+      visit new_submission_review_path(submission)
+    end
+
+    it 'shows meeting request note on cr review page' do
+      expect(page).to have_content 'Student meeting request notes'
+    end
+
+    it 'clears meeting request notes on meeting fulfilled' do
+      click_on 'meeting fulfilled'
+      expect(page).to have_content 'Meeting marked as fulfilled'
+      expect(page).to_not have_content 'Student meeting request notes'
+    end
+  end
+
   context 'visiting as a company' do
     it 'is not authorized' do
       course = FactoryBot.create(:course)

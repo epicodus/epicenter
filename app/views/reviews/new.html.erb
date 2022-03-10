@@ -36,6 +36,7 @@
 
     <% if @submission.meeting_request_notes.any? %>
       <div class="well">
+        <%= link_to "meeting fulfilled", code_review_submission_path(@submission.code_review, @submission, submission: {meeting_fulfilled: true}), class: 'pull-right btn btn-xs btn-default', method: :patch, data: {confirm: "Mark meeting as fulfilled and clear meeting request notes?"} %>
         <p><strong>Student meeting request notes:</strong></p>
         <ul>
           <% @submission.meeting_request_notes.reorder('CREATED_AT DESC').each do |note| %>

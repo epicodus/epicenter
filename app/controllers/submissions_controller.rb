@@ -36,6 +36,10 @@ class SubmissionsController < ApplicationController
       @submission = Submission.find(params[:id])
       @submission.update_columns(admin_id: submission_params[:admin_id])
       redirect_to code_review_submissions_path(@submission.code_review)
+    elsif submission_params['meeting_fulfilled']
+      @submission = Submission.find(params[:id])
+      @submission.meeting_request_notes.destroy_all
+      redirect_to new_submission_review_path(@submission), notice: 'Meeting marked as fulfilled; meeting request notes cleared.'
     else
       @code_review = CodeReview.find(params[:code_review_id])
       @submission = @code_review.submission_for(current_student)
@@ -56,7 +60,7 @@ class SubmissionsController < ApplicationController
 private
 
   def submission_params
-    params.require(:submission).permit(:link, :journal, :needs_review, :student_id, :times_submitted, :admin_id, submission_notes_attributes: [:id, :content]).merge(review_status: 'pending')
+    params.require(:submission).permit(:link, :journal, :needs_review, :student_id, :times_submitted, :admin_id, :meeting_fulfilled, submission_notes_attributes: [:id, :content]).merge(review_status: 'pending')
   end
 
   def move_submissions
