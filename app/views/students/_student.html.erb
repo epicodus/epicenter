@@ -59,6 +59,9 @@
         <% end %>
       <% else %>
         <%= link_to student.submission_for(code_review).review_status, new_submission_review_path(student.submission_for(code_review)), class: student.submission_for(code_review).review_status %>
+        <% if student.submission_for(code_review).meeting_request_notes.any? %>
+          &nbsp;<span class="glyphicon glyphicon-comment">
+        <% end %>
       <% end %>
     </td>
   <% end %>

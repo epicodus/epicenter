@@ -777,6 +777,19 @@ FactoryBot.define do
     end
   end
 
+  factory :note do
+    content { 'this is a note'}
+    submission
+
+    factory :submission_note do
+      type { SubmissionNote }
+    end
+
+    factory :meeting_request_note do
+      type { MeetingRequestNote }
+    end
+  end
+
   factory :daily_submission do
     link { 'http://github.com' }
     date { Time.zone.now.to_date }

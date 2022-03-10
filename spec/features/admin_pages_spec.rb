@@ -532,6 +532,23 @@ feature 'student roster page' do
     expect(page).to have_content 6
     expect(page).to have_content student.plan.name
   end
+
+  scenario 'shows icon when student has requested a meeting for this submission' do
+    student = FactoryBot.create(:student, :with_plan, course: course)
+    code_review = FactoryBot.create(:code_review, course: course)
+    submission = FactoryBot.create(:submission, code_review: code_review, student: student)
+    meeting_request_note = FactoryBot.create(:meeting_request_note, submission: submission)
+    visit course_path(course)
+    expect(page).to have_css('.glyphicon-comment')
+  end
+
+  scenario 'does not show icon when student has not requested a meeting for this submission' do
+    student = FactoryBot.create(:student, :with_plan, course: course)
+    code_review = FactoryBot.create(:code_review, course: course)
+    submission = FactoryBot.create(:submission, code_review: code_review, student: student)
+    visit course_path(course)
+    expect(page).to_not have_css('.glyphicon-comment')
+  end
 end
 
 feature 'exporting course students emails to a file' do
