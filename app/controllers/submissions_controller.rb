@@ -39,7 +39,7 @@ class SubmissionsController < ApplicationController
     elsif submission_params['meeting_fulfilled']
       @submission = Submission.find(params[:id])
       @submission.meeting_request_notes.destroy_all
-      redirect_to new_submission_review_path(@submission), notice: 'Meeting marked as fulfilled; meeting request notes cleared.'
+      render 'meeting_fulfilled'
     else
       @code_review = CodeReview.find(params[:code_review_id])
       @submission = @code_review.submission_for(current_student)
