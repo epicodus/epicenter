@@ -489,7 +489,7 @@ describe Student do
     end
   end
 
-  describe "#random_pairs" do
+  xdescribe "#random_pairs" do
     let!(:current_student) { FactoryBot.create(:student, :with_course) }
     let!(:student_2) { FactoryBot.create(:user_with_score_of_9, course: current_student.course) }
     let!(:student_3) { FactoryBot.create(:user_with_score_of_10, course: current_student.course) }
@@ -520,12 +520,12 @@ describe Student do
       expect(current_student.random_pairs).to eq [student_7_after_starting_point, student_2, student_3, student_4, student_5]
     end
 
-    xit "returns random pairs when the student total grade score is nil and distance_until_end is less than the number of pairs", :stub_mailgun do
+    it "returns random pairs when the student total grade score is nil and distance_until_end is less than the number of pairs", :stub_mailgun do
       allow(current_student).to receive(:random_starting_point).and_return(8)
       expect(current_student.random_pairs).to eq [student_10_after_starting_point, student_11_after_starting_point, student_12_after_starting_point, student_2, student_3]
     end
 
-    xit "returns random pairs when the student total grade score is nil and distance_until_end is more than the number of pairs", :stub_mailgun do
+    it "returns random pairs when the student total grade score is nil and distance_until_end is more than the number of pairs", :stub_mailgun do
       allow(current_student).to receive(:random_starting_point).and_return(6)
       expect(current_student.random_pairs).to eq [student_8, student_9, student_10_after_starting_point, student_11_after_starting_point, student_12_after_starting_point]
     end

@@ -59,6 +59,16 @@
       </div>
     <% end %>
 
+    <div class='well sticky'>
+      <%= form_for @submission.student, remote: true do |f| %>
+        <div class="form-group">
+          <%= f.label :staff_sticky, "Staff sticky note:" %>
+          <%= f.text_area :staff_sticky, rows: 5, class: 'form-control' %>
+        </div>
+        <%= f.submit 'Update sticky', class: 'btn btn-default btn-sm' %>
+      <% end %>
+    </div>
+
     <% if @submission.reviews.any? %>
       <div class="well">
         <p><strong>Past feedback from instructors:</strong></p>

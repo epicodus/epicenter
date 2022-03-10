@@ -71,7 +71,7 @@ private
   def student_params
     params[:student][:upfront_amount] = params[:student][:upfront_amount].to_i * 100 if params[:student][:upfront_amount]
     params.require(:student).permit(:primary_payment_method_id, :course_id, :cohort_id, :starting_cohort_id, :plan_id, :probation_teacher,
-                                    :probation_advisor, :upfront_amount, ratings_attributes: [:id, :internship_id, :number])
+                                    :probation_advisor, :upfront_amount, :staff_sticky, ratings_attributes: [:id, :internship_id, :number])
   end
 
   def update_student_as_admin
