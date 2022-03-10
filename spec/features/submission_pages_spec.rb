@@ -120,6 +120,32 @@ feature 'Visiting the submissions index page' do
           end
         end
 
+        context 'updating staff sticky note' do
+          let(:admin) { FactoryBot.create(:admin, current_course: student.course) }
+          let(:submission) { FactoryBot.create(:submission, code_review: code_review, student: student) }
+
+          before do
+            login_as(admin, scope: :admin)
+            visit new_submission_review_path(submission)
+          end
+
+          scenario 'updating staff sticky note' do
+            fill_in 'student_staff_sticky', with: 'test staff sticky note'
+            click_on 'Update sticky'
+            visit new_submission_review_path(submission)
+            expect(page).to have_content 'test staff sticky note'
+            expect(student.reload.staff_sticky).to eq 'test staff sticky note'
+          end
+
+          scenario 'staff sticky note viewable from any CR review page' do
+            fill_in 'student_staff_sticky', with: 'test staff sticky note'
+            click_on 'Update sticky'
+            new_submission = FactoryBot.create(:submission, student: student)
+            visit new_submission_review_path(new_submission)
+            expect(page).to have_content 'test staff sticky note'
+          end
+        end
+
         describe 'updating submission times_submitted', js: true do
           before do
             submission.update_columns(times_submitted: 2)
