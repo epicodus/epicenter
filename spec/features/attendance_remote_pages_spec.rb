@@ -168,6 +168,16 @@ feature "remote attendance" do
       end
     end
 
+    it 'does not allow changing from to stub attendance correction account' do
+      stub_account = FactoryBot.create(:student, name: "* ATTENDANCE CORRECTION *")
+      travel_to student.course.start_date.beginning_of_day + 8.hours do
+        FactoryBot.create(:attendance_record, student: student)
+        visit root_path
+        click_link 'attendance-change-pair-link'
+        expect(page).to_not have_content stub_account.name
+      end
+    end
+
     it 'allows changing from one pair to another' do
       travel_to student.course.start_date.beginning_of_day + 8.hours do
         attendance_record = FactoryBot.create(:attendance_record, student: student, pairings_attributes: [pair_id: FactoryBot.create(:student).id])
