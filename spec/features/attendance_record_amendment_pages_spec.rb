@@ -56,6 +56,19 @@ feature "creating an attendance record amendment" do
       expect(page).to have_content pair.name
     end
 
+    scenario "changing pair to stub attendance correction account" do
+      stub_account = FactoryBot.create(:student, name: "* ATTENDANCE CORRECTION *")
+      visit new_attendance_record_amendment_path
+      select student.name, from: "attendance_record_amendment_student_id"
+      fill_in "attendance_record_amendment_date", with: student.course.start_date.strftime("%F")
+      select "On time", from: "attendance_record_amendment_status"
+      select stub_account.name, from: "pair-select-1"
+      click_button "Submit"
+      attendance_record = AttendanceRecord.last
+      expect(page).to have_content "The attendance record for #{student.name} on #{attendance_record.date.to_date.strftime('%A, %B %d, %Y')} has been amended to"
+      expect(page).to have_content stub_account.name
+    end
+
     scenario "changing pair to group of 3" do
       pair = FactoryBot.create(:student, courses: [student.course])
       pair2 = FactoryBot.create(:student, courses: [student.course])

@@ -71,7 +71,7 @@
               <th># of times paired</th>
             </thead>
             <tbody>
-              <% Student.where(id: @student.pair_ids(@course)).sort { |a,b| a.pair_ids(@course).count(@student.id) <=> b.pair_ids(@course).count(@student.id) }.each do |student| %>
+              <% Student.where(id: @student.pair_ids(@course)).where.not(name: '* ATTENDANCE CORRECTION *').sort { |a,b| a.pair_ids(@course).count(@student.id) <=> b.pair_ids(@course).count(@student.id) }.each do |student| %>
                 <tr id="pairing-roster-row" data-content="<%= student.pair_ids(@course).count(@student.id) %>">
                   <td class="col-md-4"><%= student.name %></td>
                   <td class="col-md-2"><%= student.pair_ids(@course).count(@student.id) %></td>
