@@ -61,7 +61,6 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'capybara-selenium'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '4.0.0.rc1'
   gem 'launchy'
