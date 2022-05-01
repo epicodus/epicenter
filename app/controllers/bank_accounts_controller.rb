@@ -40,6 +40,12 @@ class BankAccountsController < ApplicationController
     end
   end
 
+  def create_plaid_link_token
+    bank_account = BankAccount.new(student: current_student)
+    link_token = bank_account.create_plaid_link_token
+    render json: {:status => 200, :link_token => link_token} and return
+  end
+
 private
   def bank_account_params
     params.require(:bank_account).permit(:first_deposit, :second_deposit, :stripe_token, :plaid_account_id, :plaid_public_token)
