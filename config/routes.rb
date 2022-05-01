@@ -117,4 +117,6 @@ Rails.application.routes.draw do
   resource :reports, only: [:index] do
     resources :teachers, only: [:index, :show]
   end
+
+  post :create_plaid_link_token, to: 'bank_accounts#create_plaid_link_token'
 end

@@ -31,7 +31,7 @@ private
   end
 
   def set_enrolled_student_permissions(user, ip)
-    can [:create, :update], BankAccount
+    can [:create, :update, :create_plaid_link_token], BankAccount
     can [:create, :update], Submission, student_id: user.id
     can [:read, :create], DailySubmission, student_id: user.id
     can :manage, AttendanceRecord, student_id: user.id
@@ -52,7 +52,7 @@ private
   end
 
   def set_unenrolled_student_permissions(user)
-    can [:create, :update], BankAccount
+    can [:create, :update, :create_plaid_link_token], BankAccount
     can :create, CreditCard
     can :create, Payment, student_id: user.id, payment_method: { student_id: user.id }
     can :read, Payment, student_id: user.id
