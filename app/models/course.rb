@@ -260,19 +260,14 @@ private
           if params['always_visible'] || always_visible
             visible_datetime, due_datetime = nil
           else
-            Rails.logger.info "COURSE#BUILD_CODE_REVIEWS: params visible_class_week is #{params['visible_class_week']}"
             visible_date = date_of_weekday_on_class_week(class_week: params['visible_class_week'], day_of_week: params['visible_day_of_week'] || visible_day_of_week)
-            Rails.logger.info "COURSE#BUILD_CODE_REVIEWS: Calculated visible_date is #{visible_date.to_s}"
             visible_datetime = time_on_date(date: visible_date, time: params['visible_time'] || visible_time)
-            Rails.logger.info "COURSE#BUILD_CODE_REVIEWS: Calculated visible_datetime is #{visible_datetime.to_s}"
             due_date = visible_date + (params['due_days_later'] || due_days_later).days
             due_datetime = time_on_date(date: due_date, time: params['due_time'] || due_time)
           end
           order_number += 1
           cr = code_reviews.new(title: params['title'], github_path: params['filename'], submissions_not_required: params['submissions_not_required'] || submissions_not_required, visible_date: visible_datetime, due_date: due_datetime, journal: params['journal'], number: order_number)
-          Rails.logger.info "COURSE#BUILD_CODE_REVIEWS: CR built with visible_date #{cr.visible_date.to_s}"
           cr.objectives = params['objectives'].map.with_index(1) {|obj, i| Objective.new(content: obj, number: i)} if params['objectives']
-          Rails.logger.info "COURSE#BUILD_CODE_REVIEWS: CR after objectives with visible_date #{cr.visible_date.to_s}"
         end
       end
     end
@@ -291,6 +286,10 @@ private
   end
 
   def date_of_weekday_on_class_week(class_week:, day_of_week:)
+    Rails.logger.info "*** COURSE#DATE_OF_WEEKDAY_ON_CLASS_WEEK ***"
+    Rails.logger.info "class_days_in_week(#{class_week}): #{class_days_in_week(class_week).to_s}"
+    Rails.logger.info ".last.beginning_of_week(:sunday): #{class_days_in_week(class_week).last.beginning_of_week(:sunday).to_s}"
+    Rails.logger.info "Date::DAYNAMES.index(day_of_week.humanize): #{Date::DAYNAMES.index(day_of_week.humanize.to_s)}"
     class_days_in_week(class_week).last.beginning_of_week(:sunday) + Date::DAYNAMES.index(day_of_week.humanize)
   end
 
