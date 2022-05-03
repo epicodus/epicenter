@@ -228,7 +228,7 @@ private
       class_days << day unless Rails.configuration.holidays.include?(day.strftime('%Y-%m-%d'))
       day = day.next
     end
-    self.class_days = class_days
+    self.class_days = class_days.sort
     set_start_and_end_dates
   end
 
@@ -286,15 +286,11 @@ private
   end
 
   def date_of_weekday_on_class_week(class_week:, day_of_week:)
-    Rails.logger.info "*** COURSE#DATE_OF_WEEKDAY_ON_CLASS_WEEK ***"
-    Rails.logger.info "class_days_in_week(#{class_week}): #{class_days_in_week(class_week).to_s}"
-    Rails.logger.info ".last.beginning_of_week(:sunday): #{class_days_in_week(class_week).last.beginning_of_week(:sunday).to_s}"
-    Rails.logger.info "Date::DAYNAMES.index(day_of_week.humanize): #{Date::DAYNAMES.index(day_of_week.humanize.to_s)}"
     class_days_in_week(class_week).last.beginning_of_week(:sunday) + Date::DAYNAMES.index(day_of_week.humanize)
   end
 
   def class_days_in_week(class_week)
-    class_days.group_by { |day| day - day.wday }.values[class_week - 1]
+    class_days.sort.group_by { |day| day - day.wday }.values[class_week - 1]
   end
 
   def time_on_date(date:, time:)
