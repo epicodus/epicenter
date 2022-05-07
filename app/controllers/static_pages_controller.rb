@@ -1,4 +1,7 @@
 class StaticPagesController < ApplicationController
+  before_action only: [:standup] do
+    redirect_to root_path, alert: 'You are not authorized to access this page.' unless current_admin
+  end
 
   def show
     Rails.logger.info "REQUESTING_IP HTTP_CF_CONNECTING_IP: #{request.env['HTTP_CF_CONNECTING_IP']}"
@@ -13,7 +16,6 @@ class StaticPagesController < ApplicationController
   end
 
   def standup
-    redirect_to root_path unless current_admin
     exclude = ENV['STANDUP_RANDOMIZER_EXCLUDE'].split('|')
     @admins_randomized = Admin.where.not(name: exclude).pluck(:name).shuffle
     @admins_randomized << ENV['STANDUP_RANDOMIZER_LAST']
