@@ -68,7 +68,7 @@ VCR.configure do |config|
   config.filter_sensitive_data('<ZAPIER_INVITE_WEBHOOK_URL>') { ENV['ZAPIER_INVITE_WEBHOOK_URL'] }
   config.filter_sensitive_data('<ZAPIER_CREATE_TASK_WEBHOOK_URL>') { ENV['ZAPIER_CREATE_TASK_WEBHOOK_URL'] }
   config.filter_sensitive_data('<PLAID_PUBLIC_KEY>') { ENV['PLAID_PUBLIC_KEY'] }
-  config.filter_sensitive_data('<PLAID_SECRET_KEY>') { ENV['PLAID_SECRET_KEY'] }
+  config.filter_sensitive_data('<PLAID_SECRET>') { ENV['PLAID_SECRET'] }
   config.filter_sensitive_data('<PLAID_CLIENT_ID>') { ENV['PLAID_CLIENT_ID'] }
   config.filter_sensitive_data('<PLAID_TEST_PUBLIC_TOKEN>') { ENV['PLAID_TEST_PUBLIC_TOKEN'] }
   config.filter_sensitive_data('<PLAID_TEST_ACCOUNT_ID>') { ENV['PLAID_TEST_ACCOUNT_ID'] }
@@ -79,7 +79,12 @@ VCR.configure do |config|
   config.filter_sensitive_data('<GITHUB_APP_ID>') { ENV['GITHUB_APP_ID'] }
   config.filter_sensitive_data('<GITHUB_INSTALLATION_ID>') { ENV['GITHUB_INSTALLATION_ID'] }
   config.filter_sensitive_data('<GITHUB_CURRICULUM_ORGANIZATION>') { ENV['GITHUB_CURRICULUM_ORGANIZATION'] }
+  config.filter_sensitive_data('<GITHUB_CLIENT_ID>') { ENV['GITHUB_CLIENT_ID'] }
+  config.filter_sensitive_data('<GITHUB_CLIENT_SECRET>') { ENV['GITHUB_CLIENT_SECRET'] }
   config.filter_sensitive_data('<REDIS_PASSWORD>') { ENV['REDIS_PASSWORD'] }
+  config.filter_sensitive_data('<PUBLIC_KEY>') { ENV['PUBLIC_KEY'] }
+  config.filter_sensitive_data('<ZAPIER_SECRET_TOKEN>') { ENV['ZAPIER_SECRET_TOKEN'] }
+  config.filter_sensitive_data('<OTP_SECRET_ENCRYPTION_KEY>') { ENV['OTP_SECRET_ENCRYPTION_KEY'] }
 end
 
 Shoulda::Matchers.configure do |config|

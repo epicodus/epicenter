@@ -145,6 +145,8 @@ GEM
     factory_bot_rails (4.11.1)
       factory_bot (~> 4.11.1)
       railties (>= 3.0.0)
+    faker (2.20.0)
+      i18n (>= 1.8.11, < 2)
     faraday (1.10.0)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
@@ -477,6 +479,7 @@ DEPENDENCIES
   devise_invitable
   dotenv-rails
   factory_bot_rails (~> 4.11)
+  faker
   font-awesome-rails
   hellosign-ruby-sdk
   hirb

@@ -1,12 +1,11 @@
 class ProbationsController < ApplicationController
+  before_action { redirect_to root_path, alert: 'You are not authorized to access this page.' unless current_admin }
 
   def edit
-    redirect_to root_path, alert: 'You are not authorized to access this page.' unless current_admin
     @student = Student.find(params[:student_id])
   end
 
   def update
-    redirect_to root_path, alert: 'You are not authorized to access this page.' unless current_admin
     @student = Student.find(params[:student_id])
     @student.probation_teacher_count = params[:probation_teacher_count]
     @student.probation_advisor_count = params[:probation_advisor_count]
