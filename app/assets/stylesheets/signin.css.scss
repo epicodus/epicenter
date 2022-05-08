@@ -1,0 +1,34 @@
+#sign-in-box { 
+  min-height: 570px;
+  border-style: solid;
+  border-radius: 5px 5px 10px 10px;
+}
+
+#sign-in-inner-box {
+  margin: 2rem;
+}
+
+.btn-inverse {
+  color: black;
+}
+
+#sign-in-form {
+  margin-top: 2rem;
+}
+
+#sign-in-page-header {
+  margin: 4rem;
+}
+
+.panel-2fa {
+  margin: 2rem;
+  .form-control {
+    max-width: 208px;
+  }
+}
+
+@media (min-width: 992px) {
+  .panel-2fa {
+    height: 500px;
+  }
+}

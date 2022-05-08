@@ -50,6 +50,8 @@ GEM
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     arel (9.0.0)
+    attr_encrypted (3.1.0)
+      encryptor (~> 3.0.0)
     autoprefixer-rails (10.4.2.0)
       execjs (~> 2)
     awesome_print (1.9.2)
@@ -88,6 +90,7 @@ GEM
     case_transform (0.2)
       activesupport
     childprocess (4.1.0)
+    chunky_png (1.4.0)
     cliver (0.3.2)
     closeio (3.8.0)
       faraday
@@ -127,6 +130,12 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    devise-two-factor (4.0.2)
+      activesupport (< 7.1)
+      attr_encrypted (>= 1.3, < 4, != 2)
+      devise (~> 4.0)
+      railties (< 7.1)
+      rotp (~> 6.0)
     devise_invitable (2.0.6)
       actionmailer (>= 5.0)
       devise (>= 4.6)
@@ -138,6 +147,7 @@ GEM
     dotenv-rails (2.7.6)
       dotenv (= 2.7.6)
       railties (>= 3.2)
+    encryptor (3.0.0)
     erubi (1.10.0)
     execjs (2.8.1)
     factory_bot (4.11.1)
@@ -359,6 +369,13 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rexml (3.2.5)
+    rotp (6.2.0)
+    rqrcode (2.1.1)
+      chunky_png (~> 1.0)
+      rqrcode_core (~> 1.0)
+    rqrcode-rails3 (0.1.7)
+      rqrcode (>= 0.4.2)
+    rqrcode_core (1.2.0)
     rspec-core (3.11.0)
       rspec-support (~> 3.11.0)
     rspec-expectations (3.11.0)
@@ -476,6 +493,7 @@ DEPENDENCIES
   database_cleaner
   deep_cloneable
   devise
+  devise-two-factor
   devise_invitable
   dotenv-rails
   factory_bot_rails (~> 4.11)
@@ -512,6 +530,7 @@ DEPENDENCIES
   redcarpet
   resque
   rest-client
+  rqrcode-rails3
   rspec-rails (~> 4.0.1)
   sass-rails
   selenium-webdriver

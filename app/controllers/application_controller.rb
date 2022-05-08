@@ -16,6 +16,7 @@ protected
                                         :mentor_name, :mentor_years, :work_schedule, :projects, :contract,
                                         track_ids: [], course_ids: []])
     end
+    devise_parameter_sanitizer.permit(:sign_in, keys: [:otp_attempt])
     devise_parameter_sanitizer.permit(:invite) do |u|
       u.permit(:name, :email, :course_id)
     end
@@ -30,7 +31,7 @@ protected
 
   def after_sign_in_path_for(user)
     if user.is_a? Admin
-      course_path(user.current_course)
+      user.otp_required_for_login ? course_path(user.current_course) : new_otp_path
     elsif user.is_a? Company
       company_path(user)
     elsif user.is_a? Student

@@ -4,18 +4,18 @@ feature 'Admin signs in' do
   after { OmniAuth.config.mock_auth[:github] = nil }
 
   scenario 'with valid credentials' do
-    visit new_user_session_path
-    fill_in 'user_email', with: admin.email
-    fill_in 'user_password', with: 'password'
-    click_on 'Sign in'
+    visit new_admin_session_path
+    fill_in 'admin_email', with: admin.email
+    fill_in 'admin_password', with: 'password'
+    click_on 'Staff sign in'
     expect(page).to have_content 'Signed in'
   end
 
   scenario 'with an uppercase email' do
-    visit new_user_session_path
-    fill_in 'user_email', with: admin.email.upcase
-    fill_in 'user_password', with: 'password'
-    click_on 'Sign in'
+    visit new_admin_session_path
+    fill_in 'admin_email', with: admin.email.upcase
+    fill_in 'admin_password', with: 'password'
+    click_on 'Staff sign in'
     expect(page).to have_content 'Signed in'
   end
 
@@ -54,6 +54,52 @@ feature 'Admin signs in' do
     login_as(admin, scope: :admin)
     visit root_path
     expect(page).to have_link 'Invite'
+  end
+
+  scenario 'unsucessfully from root sign-in page' do
+    visit root_path
+    fill_in 'student_email', with: admin.email
+    fill_in 'student_password', with: 'password'
+    click_on 'Student sign in'
+    expect(page).to have_content 'Invalid'
+  end
+
+  scenario 'unsucessfully from student sign-in page' do
+    visit new_student_session_path
+    fill_in 'student_email', with: admin.email
+    fill_in 'student_password', with: 'password'
+    click_on 'Student sign in'
+    expect(page).to have_content 'Invalid'
+  end
+
+  scenario 'unsucessfully from company sign-in page' do
+    visit new_company_session_path
+    fill_in 'company_email', with: admin.email
+    fill_in 'company_password', with: 'password'
+    click_on 'Company sign in'
+    expect(page).to have_content 'Invalid'
+  end
+
+  scenario 'unsucessfully without 2fa code when required' do
+    admin.otp_required_for_login = true
+    admin.save!
+    visit new_admin_session_path
+    fill_in 'admin_email', with: admin.email
+    fill_in 'admin_password', with: 'password'
+    click_on 'Staff sign in'
+    expect(page).to have_content 'Invalid'
+  end
+
+  scenario 'successfully with 2fa code' do
+    admin.otp_required_for_login = true
+    admin.otp_secret = Admin.generate_otp_secret
+    admin.save!
+    visit new_admin_session_path
+    fill_in 'admin_email', with: admin.email
+    fill_in 'admin_password', with: 'password'
+    fill_in 'admin_otp_attempt', with: admin.current_otp
+    click_on 'Staff sign in'
+    expect(page).to_not have_content 'Invalid'
   end
 end
 

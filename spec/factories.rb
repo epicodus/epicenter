@@ -15,6 +15,13 @@ FactoryBot.define do
         admin.current_course = admin.courses.first
       end
     end
+
+    trait :with_2fa do
+      otp_required_for_login { true }
+      after(:build) do |user|
+        user.otp_secret = User.generate_otp_secret
+      end
+    end
   end
 
   factory :attendance_record do

@@ -1,4 +1,8 @@
 describe User do
+  require 'devise_two_factor/spec_helpers'
+
+  it_behaves_like "two_factor_authenticatable"
+
   it { should validate_presence_of :name }
 
   describe '#authenticate_with_github' do

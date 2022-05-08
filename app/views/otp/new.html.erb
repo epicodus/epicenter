@@ -1,0 +1,35 @@
+<h1>Two Factor Authentication Setup</h1>
+<div class='row'>
+  <div class='col-md-5 panel panel-default panel-2fa'>
+    <div class='panel-heading'>
+      1. Scan QR Code
+    </div>
+    <div class='panel-body'>
+      <p class=''>Please scan the below QR code using an OTP compatible app (such as <a href='https://authy.com/download/' target='_blank'>Authy</a> or Google Authenticator).</p>
+      <hr>
+      <div class='text-center'><%= raw @qr.html_safe %></div>
+      <hr>
+      <p>For help with Authy, see <a href='https://support.authy.com/hc/en-us/articles/360006303934-Add-a-New-Two-Factor-Authentication-2FA-Account-Token-in-the-Authy-App#h_fa6d381e-8949-40ca-a53c-0df14b4f10fe' target='_blank'>Android</a> or <a href='https://support.authy.com/hc/en-us/articles/360006303934-Add-a-New-Two-Factor-Authentication-2FA-Account-Token-in-the-Authy-App#h_e733b950-63b9-4bc2-a9c0-4a6ff8cc025d' target='_blank'>iPhone</a> instructions.</p>
+    </div>
+  </div>
+  <div class='col-md-5 panel panel-default panel-2fa'>
+    <div class='panel-heading'>
+      2. Confirm OTP Code
+    </div>
+    <div class='panel-body'>
+      <p class=''>Please confirm that your authentication application is working by entering a generated code below.</p>
+      <br>
+      <%= form_with url: otp_index_path do |f| %>
+        <div class="form-group">
+          <%= f.label 'two_fa[code]', 'Code' %>
+          <%= f.text_field 'two_fa[code]', class: 'form-control', autofocus: true, required: true, autocomplete: 'off', id: 'code_field' %>
+        </div>
+        <div class="form-group">
+          <%= f.label 'two_fa[password]', 'Enter your current password' %>
+          <%= f.password_field 'two_fa[password]', class: 'form-control', required: true, autocomplete: 'off', id: 'password_field' %>
+        </div>
+        <%= f.submit 'Confirm and Enable Two Factor', class: 'btn btn-epicodus' %>
+      <% end %>
+    </div>
+  </div>
+</div>

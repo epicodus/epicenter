@@ -40,6 +40,8 @@ gem 'jwt'
 gem 'octokit'
 gem 'httparty'
 gem "sprockets", "~> 3.7.2" # temp until issue fixed
+gem 'devise-two-factor'
+gem 'rqrcode-rails3'
 
 group :development do
   gem 'spring'

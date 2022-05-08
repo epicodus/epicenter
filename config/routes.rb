@@ -1,18 +1,28 @@
 Rails.application.routes.draw do
-  devise_scope :user do
+  authenticated :admin do
     root 'users/sessions#new'
   end
+  authenticated :company do
+    root 'users/sessions#new'
+  end
+  authenticated :student do
+    root 'users/sessions#new'
+  end
+  devise_scope :student do
+    root 'devise/sessions#new'
+  end
+
   get 'sign_in', to: 'attendance_sign_in_remote#new'
   get 'sign_out', to: 'pair_feedbacks#new'
   get 'standup', to: 'static_pages#standup'
   get 'attendance', to: redirect('/')
+  resources :otp, only: [:new, :create]
 
   get 'auth/:provider/callback', to: 'omniauth_callbacks#create'
 
   devise_for :student, controllers: { invitations: 'invitations', registrations: 'registrations' }
   devise_for :admins, skip: :registrations
   devise_for :companies, controllers: { registrations: 'registrations' }, skip: :invitations
-  devise_for :users, controllers: { sessions: 'users/sessions' }, skip: [:invitations, :registrations]
 
   resources :students, only: [:index, :edit, :update, :destroy] do
     resources :courses, only: [:index]

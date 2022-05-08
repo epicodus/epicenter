@@ -109,10 +109,10 @@ feature 'signing in as a company' do
   let(:company) { FactoryBot.create(:company, internships: [internship]) }
 
   scenario 'successfully' do
-    visit root_path
+    visit new_company_session_path
     fill_in 'Email', with: company.email
     fill_in 'Password', with: company.password
-    click_on 'Sign in'
+    click_on 'Company sign in'
     expect(page).to have_content 'Signed in successfully.'
     expect(page).to have_content 'Internships'
   end
