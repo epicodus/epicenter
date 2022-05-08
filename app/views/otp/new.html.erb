@@ -22,7 +22,7 @@
       <%= form_with url: otp_index_path do |f| %>
         <div class="form-group">
           <%= f.label 'two_fa[code]', 'Code' %>
-          <%= f.text_field 'two_fa[code]', class: 'form-control', autofocus: true, required: true, autocomplete: 'off', id: 'code_field' %>
+          <%= f.text_field 'two_fa[code]', class: 'form-control', autofocus: true, required: true, autocomplete: 'no', id: 'code_field' %>
         </div>
         <div class="form-group">
           <%= f.label 'two_fa[password]', 'Enter your current password' %>
