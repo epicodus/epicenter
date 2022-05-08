@@ -1,16 +1,7 @@
-class Users::SessionsController < Devise::SessionsController
+class Users::SessionsController < ApplicationController
   before_action :redirect_if_logged_in
 
-  def create
-    params[:user][:email] = params[:user][:email].downcase
-    user = User.find_by(email: params[:user][:email])
-    if user.try(:valid_password?, params[:user][:password])
-      request.env["devise.mapping"] = Devise.mappings[user.class.to_s.downcase.to_sym]
-      sign_in user
-      redirect_to root_path, notice: 'Signed in successfully.'
-    else
-      super
-    end
+  def new
   end
 
 private

@@ -60,7 +60,7 @@ feature 'editing a course' do
     before { login_as(admin, scope: :admin) }
 
     scenario 'navigation to course#edit page' do
-    visit root_path
+    visit course_path(course)
     click_on 'Edit'
     expect(page).to have_content "Edit #{course.description}"
     end

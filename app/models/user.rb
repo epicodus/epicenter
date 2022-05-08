@@ -1,6 +1,6 @@
 class User < ApplicationRecord
-  devise :invitable, :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :lockable
+  devise :invitable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :lockable,
+         :two_factor_authenticatable, :otp_secret_encryption_key => ENV['OTP_SECRET_ENCRYPTION_KEY']
 
   validates :name, presence: true
 

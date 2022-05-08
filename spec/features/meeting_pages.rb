@@ -65,9 +65,9 @@ feature 'requesting a meeting' do
       expect(page).to have_content 'Student meeting request notes'
     end
 
-    it 'clears meeting request notes on meeting fulfilled' do
+    it 'clears meeting request notes on meeting fulfilled', :js do
       click_on 'meeting fulfilled'
-      expect(page).to have_content 'Meeting marked as fulfilled'
+      accept_js_alert
       expect(page).to_not have_content 'Student meeting request notes'
     end
   end
