@@ -1,0 +1,17 @@
+<p class='text-center'><%= image_tag "logo.png", id: 'logo' %></p>
+<h1 class='text-center' id='sign-in-page-header'>Welcome to the Epicenter</h1>
+<div class='col-md-8 col-md-offset-2' id='sign-in-box'>
+  <div class='row' id='otp-form'>
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name), method: :post) do |f| %>
+      <div class='col-md-6 col-md-offset-3'>
+        <div class="form-group">
+          <%= f.label :otp_attempt, 'Two-factor auth code' %>
+          <%= f.text_field :otp_attempt, autofocus: true, autocomplete: "off", required: true, class: "form-control" %>
+        </div>
+        <div class="form-group">
+          <%= f.submit "Sign in", class: 'btn btn-epicodus btn-block' %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

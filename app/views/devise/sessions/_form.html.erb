@@ -1,6 +1,6 @@
-<div class="row" id='sign-in-form'>
+<div class="row">
   <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { id: 'sign-in' }) do |f| %>
-    <div class="">
+    <div class="col-md-6 col-md-offset-3">
       <div class="form-group">
         <%= f.label :email %>
         <%= f.email_field :email, autofocus: true, class: "form-control" %>
@@ -11,13 +11,6 @@
         <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
       </div>
 
-      <% if request.path_info.include? 'admin' %>
-        <div class="form-group">
-          <%= f.label :otp_attempt, 'Two-factor auth code' %>
-          <%= f.text_field :otp_attempt, autocomplete: "off", class: "form-control" %>
-        </div>
-      <% end %>
-
       <% if devise_mapping.rememberable? -%>
         <div class="form-group">
           <%= f.check_box :remember_me %> <%= f.label :remember_me %>
@@ -25,13 +18,7 @@
       <% end -%>
 
       <div class="form-group">
-        <% if request.path_info.include? 'admin' %>
-        <%= f.submit "Staff sign in", class: 'btn btn-epicodus btn-block', id: 'solo-sign-in-button' %>
-        <% elsif request.path_info.include? 'companies' %>
-          <%= f.submit "Company sign in", class: 'btn btn-epicodus btn-block', id: 'solo-sign-in-button' %>
-        <% else %>
-          <%= f.submit "Student sign in", class: 'btn btn-epicodus btn-block', id: 'solo-sign-in-button' %>
-        <% end %>
+        <%= f.submit "Sign in", class: 'btn btn-epicodus btn-block', id: 'solo-sign-in-button' %>
       </div>
 
       <div class="form-group">

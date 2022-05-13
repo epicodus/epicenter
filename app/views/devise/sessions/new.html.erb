@@ -1,46 +1,11 @@
 <p class='text-center'><%= image_tag "logo.png", id: 'logo' %></p>
 <h1 class='text-center' id='sign-in-page-header'>Welcome to the Epicenter</h1>
-<% unless request.path_info.include? 'sign_in' %>
-  <div class="row">
-    <div class="alert alert-info col-md-8 col-md-offset-2 text-center">
-      <p>This page now defaults to student sign-in.<br>Others please choose the appropriate tab below.</p>
-    </div>
-  </div>
-<% end %>
-<div class="col-md-8 col-md-offset-2" id="sign-in-box">
-  <div class="row" id="sign-in-tabs">
-    <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
-      <li class="nav-item" role="presentation">
-        <%= link_to 'Student', new_student_session_path, class: 'nav-link active btn ' + (!(request.path.include?('companies') || request.path.include?('admin')) ? 'btn-default' : 'btn-inverse'), id: 'student-tab' %>
-      </li>
-      <li class="nav-item" role="presentation">
-        <%= link_to 'Company', new_company_session_path, class: 'nav-link active btn ' + (request.path.include?('companies') ? 'btn-default' : 'btn-inverse'), id: 'company-tab' %>
-      </li>
-      <li class="nav-item" role="presentation">
-        <%= link_to 'Staff', new_admin_session_path, class: 'nav-link active btn ' + (request.path.include?('admin') ? 'btn-default' : 'btn-inverse'), id: 'staff-tab' %>
-      </li>
-    </ul>
-  </div>
-  <div class="col-md-6 col-md-offset-3">
-    <div class="row" id="sign-in-inner-box">
-      <p class='text-center'><strong>
-        <% if request.path.include? 'admin' %>
-          Staff sign-in
-        <% elsif request.path.include? 'companies' %>
-          Company sign-in
-        <% else %>
-          Student sign-in
-        <% end %>
-      </strong></p>
-      <% unless request.path_info.include? 'admin' %>
-        <p class='text-center'>
-          <%= link_to '/auth/github', class: 'btn btn-default', id: 'github-sign-in-button' do %>
-            <i class="fa fa-github"></i> Sign in with GitHub
-          <% end %>
-          <br>or
-        </p>
-      <% end %>
-      <%= render 'form' %>
-    </div>
-  </div>
+<div class='col-md-8 col-md-offset-2' id='sign-in-box'>
+  <p class='text-center'>
+    <%= link_to '/auth/github', class: 'btn btn-default', id: 'github-sign-in-button' do %>
+      <i class="fa fa-github"></i> Sign in with GitHub
+    <% end %>
+    <br>or
+  </p>
+  <%= render 'form' %>
 </div>

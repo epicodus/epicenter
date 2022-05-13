@@ -10,6 +10,7 @@ module ApplicationHelper
              certificate_path, transcript_path,
              root_path, new_company_registration_path,
              sign_out_path, sign_in_path, new_student_session_path, new_company_session_path,
+             user_session_path, new_user_password_path,
              new_admin_session_path, new_demographic_path]
     true if paths.map { |path| current_page?(path) }.include?(true)
   end
