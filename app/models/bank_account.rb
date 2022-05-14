@@ -53,7 +53,7 @@ private
 
   def plaid_client
     unless @plaid_client
-      environment = Rails.env.production? ? 'production' : 'sandbox'
+      environment = (Rails.env.production? || Rails.env.staging?) ? 'production' : 'sandbox'
       configuration = Plaid::Configuration.new
       configuration.server_index = Plaid::Configuration::Environment[environment]
       configuration.api_key["PLAID-CLIENT-ID"] = ENV['PLAID_CLIENT_ID']

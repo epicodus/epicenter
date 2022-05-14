@@ -82,3 +82,6 @@ production:
   database: payments_production
   username: payments
   password: <%= ENV['PAYMENTS_DATABASE_PASSWORD'] %>
+
+staging:
+  url: <%= ENV[‘DATABASE_URL’] %>
