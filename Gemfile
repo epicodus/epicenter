@@ -1,8 +1,8 @@
-ruby '2.7.4'
+ruby '2.7.6'
 
 source 'https://rubygems.org'
 
-gem 'rails', '~> 5.2.6'
+gem 'rails', '~> 5.2.8'
 gem 'pg'
 gem 'uglifier'
 gem 'jquery-rails'
@@ -10,7 +10,7 @@ gem 'coffee-script'
 gem 'devise'
 gem 'devise_invitable'
 gem 'stripe'
-gem 'mailgun-ruby', require: 'mailgun'
+gem 'mailgun-ruby'
 gem 'nested_form_fields'
 gem 'redcarpet'
 gem 'deep_cloneable'
@@ -39,7 +39,7 @@ gem 'openssl'
 gem 'jwt'
 gem 'octokit'
 gem 'httparty'
-gem "sprockets", "~> 3.7.2" # temp until issue fixed
+gem 'sprockets'
 gem 'devise-two-factor'
 gem 'rqrcode-rails3'
 
@@ -53,7 +53,7 @@ group :development do
 end
 
 group :test, :development do
-  gem 'rspec-rails', '~> 4.0.1'
+  gem 'rspec-rails'
   gem 'awesome_print'
   gem 'dotenv-rails'
   gem 'pry'
