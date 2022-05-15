@@ -974,20 +974,50 @@ describe Student do
   end
 
   describe '#is_classroom_day?' do
-  let(:student) { FactoryBot.create(:student, :with_course) }
+    let(:student) { FactoryBot.create(:student, :with_course) }
 
-  it 'returns true if today is monday class day for this course' do
-    travel_to student.course.start_date.beginning_of_week do
-      expect(student.is_classroom_day?).to eq true
+    it 'returns true if today is monday class day for this course' do
+      travel_to student.course.start_date.beginning_of_week do
+        expect(student.is_classroom_day?).to eq true
+      end
+    end
+
+    it 'returns false if today is class day but friday' do
+      travel_to student.course.start_date.beginning_of_week + 4.days do
+        expect(student.is_classroom_day?).to eq false
+      end
     end
   end
 
-  it 'returns false if today is class day but friday' do
-    travel_to student.course.start_date.beginning_of_week + 4.days do
-      expect(student.is_classroom_day?).to eq false
+  describe '#is_attendance_available?' do
+    let(:office) { FactoryBot.create(:portland_office) }
+    let(:course) { FactoryBot.create(:course, :with_ft_class_times, office: office) }
+    let(:student) { FactoryBot.create(:student, courses: [course]) }
+
+    it 'returns true if during class time' do
+      travel_to course.start_date + 8.hours do
+        expect(student.is_attendance_available?).to eq true
+      end
+    end
+
+    it 'returns true if before class time but within sign in window' do
+      travel_to course.start_date + 8.hours - 25.minutes do
+        expect(student.is_attendance_available?).to eq true
+      end      
+    end
+
+    it 'returns false if before class sign in window' do
+      travel_to course.start_date + 7.hours do
+        expect(student.is_attendance_available?).to eq false
+      end      
+    end
+
+    it 'returns false if after class end time' do
+      travel_to course.start_date + 17.hours + 15.minutes do
+        expect(student.is_attendance_available?).to eq false
+      end      
     end
   end
-end
 
   describe '#completed_internship_course?' do
     let(:internship_course) { FactoryBot.create(:internship_course) }
@@ -1879,6 +1909,23 @@ end
       expect(student.courses.last.description).to_not eq 'Internship Exempt'
       expect(student.cohort.description).to eq cohort.description
       expect(Devise.mailer.deliveries.count).to eq(emails_sent)
+    end
+  end
+
+  describe '#online?' do
+    it 'returns true if student current course is online' do
+      student = FactoryBot.create(:student, courses: [FactoryBot.create(:online_course)])
+      expect(student.online?).to eq true
+    end
+
+    it 'returns false if student current course is not online' do
+      student = FactoryBot.create(:student, courses: [FactoryBot.create(:portland_course)])
+      expect(student.online?).to eq false
+    end
+
+    it 'returns false if student is not enrolled in a course' do
+      student = FactoryBot.create(:student)
+      expect(student.online?).to eq false
     end
   end
 end

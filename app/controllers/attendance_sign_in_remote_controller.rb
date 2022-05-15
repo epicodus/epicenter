@@ -1,5 +1,5 @@
 class AttendanceSignInRemoteController < ApplicationController
-  before_action :authenticate_student!
+  before_action :check_authorization
 
   def new
     @button_text = current_student.signed_in_today? ? 'Change pair' : 'Sign in'
@@ -16,5 +16,10 @@ class AttendanceSignInRemoteController < ApplicationController
     else
       redirect_to root_path, alert: record.errors.full_messages.join(', ')
     end
+  end
+
+private
+  def check_authorization
+    raise 'Unauthorized' unless current_student.try(:online?)
   end
 end

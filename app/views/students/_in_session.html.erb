@@ -1,34 +1,55 @@
 <div class="row">
   <div class="col-md-12 panel panel-info">
     <h3>Attendance today</h3>
+    <p><%= current_user.name %></p>
     <p id='today-attendance-info'>
-      <% if current_student.signed_in_today? %>
+      <% if current_student.signed_out_today? %> <!-- signed in and out -->
         Signed in: <%= current_student.attendance_records.today.first.created_at.strftime('%l:%M %p') %><br>
-        <% if current_student.signed_out_today? %>
-          Signed out: <%= current_student.attendance_records.today.first.signed_out_time.strftime('%l:%M %p') %><br>
-        <% else %>
+        Signed out: <%= current_student.attendance_records.today.first.signed_out_time.strftime('%l:%M %p') %>
+        <% if current_student.pairs_without_feedback_today.any? && !current_student.online? %>
+          <p><%= link_to 'Pair feedback', pair_feedback_path %></p>
+        <% end %>
+      <% elsif current_student.signed_in_today? %> <!-- signed in but not out-->
+        Signed in: <%= current_student.attendance_records.today.first.created_at.strftime('%l:%M %p') %><br>
+        <% if current_student.online? || IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip) %>
           <%= link_to 'Sign out', sign_out_path, id: 'attendance-sign-out-link' %><br>
+        <% end %>
+        <p id='signed-in-with'>
           <% if current_student.pairs_today.any? %>
-            <span id='signed-in-with'>You are signed in with <%= current_student.pairs_today.map {|s| s.name}.join(' & ') %>. [<%= link_to 'change pair', sign_in_path, remote: true, id: 'attendance-change-pair-link' %>]</p>
+            You are signed in with <%= current_student.pairs_today.map {|s| s.name}.join(' & ') %>. 
           <% else %>
-            <strong class='text-primary'>You are signed in without a pair!</strong> Click <%= link_to 'here', sign_in_path, remote: true, id: 'attendance-change-pair-link' %> to log your pair.
+            <strong class='text-primary'>You are signed in without a pair!</strong> 
           <% end %>
-          <% if current_student.inverse_orphan_pairs_today.any? %>
-            <p class='alert alert-danger'>
-              <strong>Additional students have marked you as a pair today: <%= current_student.inverse_orphan_pairs_today.order(:name).pluck(:name).join(' & ') %></strong><br>
-              Make sure to add them to your pairs if that's right! If not, please ask them or your teacher to fix it.
-            </p>
+          <% if current_student.online? %>
+            [<%= link_to 'change pair', sign_in_remote_path, remote: true, id: 'attendance-change-pair-link' %>]
+          <% elsif IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip) %>
+            [<%= link_to 'change pair', sign_in_classroom_path, id: 'attendance-change-pair-link' %>]
+          <% end %>
+        </p>
+        <% if current_student.inverse_orphan_pairs_today.any? %>
+          <p class='alert alert-danger'>
+            <strong>Additional students have marked you as a pair today: <%= current_student.inverse_orphan_pairs_today.order(:name).pluck(:name).join(' & ') %></strong><br>
+            Make sure to add them to your pairs if that's right! If not, please ask them or your teacher to fix it.
+          </p>
+        <% end %>
+        <% if current_student.pairs_without_feedback_today.any? && !current_student.online? %>
+          <p><%= link_to 'Pair feedback', pair_feedback_path %></p>
+        <% end %>
+      <% else %> <!-- not signed in -->
+        <% if Time.zone.now < current_student.course.start_time_today - 30.minutes %>
+          Sign in will be available at <%= (current_student.course.start_time_today - 30.minutes).strftime('%l:%M %p') %>
+        <% elsif Time.zone.now > current_student.course.end_time_today %>
+          Sign in is not available after class end time.
+        <% else %> <!-- sign in available -->
+          <% if current_student.online? %>
+            <%= link_to 'Sign in', sign_in_remote_path, remote: true, id: 'attendance-sign-in-link' %>
+          <% elsif IpLocation.is_local?(request.env['HTTP_CF_CONNECTING_IP'] || request.remote_ip) %>
+            <%= link_to 'Sign in', sign_in_classroom_path, id: 'attendance-sign-in-link' %>
           <% end %>
         <% end %>
-      <% elsif Time.zone.now < current_student.course.start_time_today - 30.minutes %>
-        Sign in will be available at <%= (current_student.course.start_time_today - 30.minutes).strftime('%l:%M %p') %>
-      <% elsif Time.zone.now > current_student.course.end_time_today %>
-        Sign in is not available after class end time.
-      <% else %>
-        <%= link_to 'Sign in', sign_in_path, remote: true, id: 'attendance-sign-in-link' %>
       <% end %>
-    <div id="change-pair-form">
-    </div>
-  </p>
+      <div id="change-pair-form">
+      </div>
+    </p>
   </div>
 </div>

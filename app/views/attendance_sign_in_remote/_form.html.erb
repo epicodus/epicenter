@@ -1,6 +1,6 @@
 <p>Please select your pair(s) for today:</p>
 
-<%= form_tag sign_in_path do %>
+<%= form_tag sign_in_remote_path do %>
   <%= hidden_field_tag :signing_in, value: true %>
 
   <div class="form-group">

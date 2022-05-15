@@ -113,19 +113,19 @@ class Course < ApplicationRecord
   end
 
   def start_time(day = Time.zone.now.in_time_zone(office.time_zone).to_date)
-    class_times.find_by(wday: day.wday).start_time
+    class_times.find_by(wday: day.wday).try(:start_time)
   end
 
   def end_time(day = Time.zone.now.in_time_zone(office.time_zone).to_date)
-    class_times.find_by(wday: day.wday).end_time
+    class_times.find_by(wday: day.wday).try(:end_time)
   end
 
   def start_time_today
-    start_time.in_time_zone(office.time_zone)
+    start_time.try('in_time_zone', office.time_zone)
   end
 
   def end_time_today
-    end_time.in_time_zone(office.time_zone)
+    end_time.try('in_time_zone', office.time_zone)
   end
 
   def start_time_on_day(day)

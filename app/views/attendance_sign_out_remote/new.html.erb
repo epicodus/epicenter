@@ -1,0 +1,14 @@
+<% if Time.zone.now.in_time_zone(@student.course.office.time_zone) < @student.course.end_time_today - 15.minutes %>
+  <div class="row">
+    <div class="alert alert-danger col-md-6 col-md-offset-3 text-center">
+      You'll be leaving early if you sign out now since the time is <%= Time.zone.now.in_time_zone(@student.course.office.time_zone).strftime('%l:%M %p') %>.
+    </div>
+  </div>
+<% end %>
+
+<br>
+<%= form_with url: sign_out_remote_path do |f| %>
+<div class="form-group">
+  <p class='text-center'><%= f.submit 'Attendance sign out', id: 'attendance-sign-out-button', class: 'btn btn-primary' %></p>
+</div>
+<% end %>

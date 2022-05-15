@@ -149,7 +149,7 @@ describe AttendanceRecord do
 
   describe '#tardy', :dont_stub_class_times do
     context 'for full-time student' do
-      let(:course) { FactoryBot.create(:course_with_class_times) }
+      let(:course) { FactoryBot.create(:course, :with_ft_class_times) }
       let(:student) { FactoryBot.create(:student, courses: [course]) }
       let(:start_time) { course.start_date.in_time_zone(course.office.time_zone) + course.start_time(course.start_date).split(':').first.to_i.hours }
 
@@ -170,7 +170,7 @@ describe AttendanceRecord do
 
     context 'for part-time student' do
       context 'on a weekday' do
-        let(:course) { FactoryBot.create(:pt_course_with_class_times) }
+        let(:course) { FactoryBot.create(:part_time_course, :with_pt_class_times) }
         let(:student) { FactoryBot.create(:student, courses: [course]) }
         let(:start_time) { course.start_date.in_time_zone(course.office.time_zone) + course.start_time(course.start_date).split(':').first.to_i.hours }
 
@@ -190,7 +190,7 @@ describe AttendanceRecord do
       end
 
       context 'on a sunday' do
-        let(:course) { FactoryBot.create(:pt_course_with_class_times) }
+        let(:course) { FactoryBot.create(:part_time_course, :with_pt_class_times) }
         let(:student) { FactoryBot.create(:student, courses: [course]) }
         let(:start_time) { ActiveSupport::TimeZone[course.office.time_zone].parse(course.start_date.end_of_week.to_s + ' ' + course.start_time(course.start_date.end_of_week)) }
         it 'is true if checks in after the start of class' do
@@ -212,7 +212,7 @@ describe AttendanceRecord do
 
   describe '#left_early', :dont_stub_class_times do
     context 'for full-time students' do
-      let(:course) { FactoryBot.create(:course_with_class_times) }
+      let(:course) { FactoryBot.create(:course, :with_ft_class_times) }
       let(:student) { FactoryBot.create(:student, courses: [course]) }
       let(:end_time) { course.start_date.in_time_zone(course.office.time_zone) + course.end_time(course.start_date).split(':').first.to_i.hours }
 
@@ -258,7 +258,7 @@ describe AttendanceRecord do
 
     context 'for part-time student' do
       context 'on a weekday' do
-        let(:course) { FactoryBot.create(:pt_course_with_class_times) }
+        let(:course) { FactoryBot.create(:part_time_course, :with_pt_class_times) }
         let(:student) { FactoryBot.create(:student, courses: [course]) }
         let(:end_time) { course.start_date.in_time_zone(course.office.time_zone) + course.end_time(course.start_date).split(':').first.to_i.hours }
 
@@ -287,7 +287,7 @@ describe AttendanceRecord do
         end
       end
       context 'on a sunday' do
-        let(:course) { FactoryBot.create(:pt_course_with_class_times) }
+        let(:course) { FactoryBot.create(:part_time_course, :with_pt_class_times) }
         let(:student) { FactoryBot.create(:student, courses: [course]) }
         let(:end_time) { ActiveSupport::TimeZone[course.office.time_zone].parse(course.start_date.end_of_week.to_s + ' ' + course.end_time(course.start_date.end_of_week)) }
 

@@ -109,18 +109,13 @@ FactoryBot.define do
     admin
     cohort { association :cohort, office: office, track: track, admin: admin }
 
-    factory :course_with_class_times do
-      association :office, factory: :portland_office
+    trait :with_ft_class_times do
       before(:create) do |course|
         5.times { |i| course.class_times << build(:class_time, wday: i+1) }
       end
     end
 
-    factory :pt_course_with_class_times do
-      parttime { true }
-      class_days { (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 5.weeks).end_of_week-4.days).select { |day| day if day.sunday? || day.monday? || day.tuesday? || day.wednesday? } }
-      association :office, factory: :portland_office
-      association :language, factory: :intro_part_time_c_react_language
+    trait :with_pt_class_times do
       before(:create) do |course|
         course.class_times << build(:class_time_sunday)
         3.times { |i| course.class_times << build(:class_time_evening, wday: i+1) }
@@ -133,6 +128,10 @@ FactoryBot.define do
 
     factory :seattle_course do
       association :office, factory: :seattle_office
+    end
+
+    factory :online_course do
+      association :office, factory: :online_office
     end
 
     factory :past_course do
@@ -154,6 +153,7 @@ FactoryBot.define do
 
     factory :part_time_course do
       parttime { true }
+      class_days { (Time.zone.now.to_date.beginning_of_week..(Time.zone.now.to_date + 5.weeks).end_of_week-4.days).select { |day| day if day.sunday? || day.monday? || day.tuesday? || day.wednesday? } }
       association :language, factory: :intro_part_time_c_react_language
       association :track, factory: :part_time_track
     end
@@ -750,6 +750,10 @@ FactoryBot.define do
 
     factory :portland_student do
       association :course, factory: :portland_course
+    end
+
+    factory :online_student do
+      association :course, factory: :online_course
     end
 
     factory :user_with_score_of_10 do

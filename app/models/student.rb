@@ -314,6 +314,13 @@ class Student < User
     is_class_day?(date) && !Time.zone.now.to_date.friday?
   end
 
+  def is_attendance_available?(datetime = Time.zone.now)
+    is_classroom_day = is_classroom_day?(datetime.to_date)
+    is_too_early = course.try(:start_time_today) && (datetime < course.start_time_today - 30.minutes)
+    is_too_late = course.try(:end_time_today) && (datetime > course.end_time_today)
+    is_classroom_day && !is_too_early && !is_too_late
+  end
+
   def completed_internship_course?
     internship_course = courses.find_by(internship_course: true)
     internship_course && Time.zone.now.to_date > internship_course.end_date ? true : false
@@ -438,6 +445,10 @@ class Student < User
   def really_destroy
     crm_lead.update({ Rails.application.config.x.crm_fields['EPICENTER_ID'] => nil, Rails.application.config.x.crm_fields['INVITATION_TOKEN'] => nil })
     really_destroy!
+  end
+
+  def online?
+    course.try(:office).try(:name) == 'Online'
   end
 
 private
