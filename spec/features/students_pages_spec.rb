@@ -113,6 +113,41 @@ feature 'Student signs in with GitHub' do
   end
 end
 
+feature 'Student signs in with 2fa enabled' do
+  let(:student_with_2fa) { FactoryBot.create(:student, :with_2fa) }
+
+  scenario 'unsuccessfully from root sign-in page when 2fa required but not entered' do
+    visit root_path
+    fill_in 'user_email', with: student_with_2fa.email
+    fill_in 'user_password', with: 'password'
+    click_on 'Sign in'
+    expect(page).to_not have_content 'Signed in successfully'
+    click_on 'Sign in'
+    expect(page).to have_content 'Invalid'
+  end
+
+  scenario 'unsuccessfully from root sign-in page when incorrect 2fa code' do
+    visit root_path
+    fill_in 'user_email', with: student_with_2fa.email
+    fill_in 'user_password', with: 'password'
+    click_on 'Sign in'
+    expect(page).to_not have_content 'Signed in successfully'
+    fill_in 'user_otp_attempt', with: 'wrong'
+    click_on 'Sign in'
+    expect(page).to have_content 'Invalid'
+  end
+
+  scenario 'successfully from root sign-in page with 2fa code' do
+    visit root_path
+    fill_in 'user_email', with: student_with_2fa.email
+    fill_in 'user_password', with: 'password'
+    click_on 'Sign in'
+    fill_in 'user_otp_attempt', with: student_with_2fa.current_otp
+    click_on 'Sign in'
+    expect(page).to have_content 'Signed in successfully'
+  end
+end
+
 feature "Student signs in while class is not in session" do
 
   let(:future_course) { FactoryBot.create(:future_course) }

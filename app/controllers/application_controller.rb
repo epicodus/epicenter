@@ -29,6 +29,8 @@ protected
     end
   end
 
+  devise_group :user, contains: [:student, :company, :admin]
+
   def after_sign_in_path_for(user)
     if user.is_a? Admin
       user.otp_required_for_login ? course_path(user.current_course) : new_otp_path
@@ -65,10 +67,6 @@ protected
     else
       new_payment_method_path
     end
-  end
-
-  def current_user
-    current_student || current_admin || current_company
   end
 
   def current_course

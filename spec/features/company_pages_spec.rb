@@ -107,6 +107,7 @@ end
 feature 'signing in as a company' do
   let(:internship) { FactoryBot.create(:internship) }
   let(:company) { FactoryBot.create(:company, internships: [internship]) }
+  let(:company_with_2fa) { FactoryBot.create(:company, :with_2fa) }
 
   scenario 'successfully' do
     visit root_path
@@ -115,5 +116,36 @@ feature 'signing in as a company' do
     click_on 'Sign in'
     expect(page).to have_content 'Signed in successfully.'
     expect(page).to have_content 'Internships'
+  end
+
+  scenario 'unsuccessfully from root sign-in page when 2fa required but not entered' do
+    visit root_path
+    fill_in 'user_email', with: company_with_2fa.email
+    fill_in 'user_password', with: 'password'
+    click_on 'Sign in'
+    expect(page).to_not have_content 'Signed in successfully'
+    click_on 'Sign in'
+    expect(page).to have_content 'Invalid'
+  end
+
+  scenario 'unsuccessfully from root sign-in page when incorrect 2fa code' do
+    visit root_path
+    fill_in 'user_email', with: company_with_2fa.email
+    fill_in 'user_password', with: 'password'
+    click_on 'Sign in'
+    expect(page).to_not have_content 'Signed in successfully'
+    fill_in 'user_otp_attempt', with: 'wrong'
+    click_on 'Sign in'
+    expect(page).to have_content 'Invalid'
+  end
+
+  scenario 'successfully from root sign-in page with 2fa code' do
+    visit root_path
+    fill_in 'user_email', with: company_with_2fa.email
+    fill_in 'user_password', with: 'password'
+    click_on 'Sign in'
+    fill_in 'user_otp_attempt', with: company_with_2fa.current_otp
+    click_on 'Sign in'
+    expect(page).to have_content 'Signed in successfully'
   end
 end
