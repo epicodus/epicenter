@@ -88,7 +88,7 @@ feature 'Admin signs in' do
     expect(page).to have_content 'Signed in successfully'
   end
 
-  scenario 'Unsuccessfully from root sign-in page when 2fa required but not entered' do
+  scenario 'unsuccessfully from root sign-in page when 2fa required but not entered' do
     visit root_path
     fill_in 'user_email', with: admin_with_2fa.email
     fill_in 'user_password', with: 'password'
@@ -98,7 +98,7 @@ feature 'Admin signs in' do
     expect(page).to have_content 'Invalid'
   end
 
-  scenario 'Unsuccessfully from root sign-in page when incorrect 2fa code' do
+  scenario 'unsuccessfully from root sign-in page when incorrect 2fa code' do
     visit root_path
     fill_in 'user_email', with: admin_with_2fa.email
     fill_in 'user_password', with: 'password'
@@ -109,7 +109,7 @@ feature 'Admin signs in' do
     expect(page).to have_content 'Invalid'
   end
 
-  scenario 'Successfully from root sign-in page when 2fa code' do
+  scenario 'successfully from root sign-in page when 2fa code' do
     visit root_path
     fill_in 'user_email', with: admin_with_2fa.email
     fill_in 'user_password', with: 'password'

@@ -643,6 +643,13 @@ FactoryBot.define do
       student.save if student.changed?
     end
 
+    trait :with_2fa do
+      otp_required_for_login { true }
+      after(:build) do |user|
+        user.otp_secret = User.generate_otp_secret
+      end
+    end
+
     trait :with_course do
       course
     end
@@ -808,6 +815,13 @@ FactoryBot.define do
     sequence(:email) { |n| "employee#{n}@company.com" }
     password { "password" }
     password_confirmation { "password" }
+
+    trait :with_2fa do
+      otp_required_for_login { true }
+      after(:build) do |user|
+        user.otp_secret = User.generate_otp_secret
+      end
+    end
   end
 
   factory :internship do

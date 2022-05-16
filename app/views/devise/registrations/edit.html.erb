@@ -13,6 +13,10 @@
   <% end %>
 <% end %>
 
+<div id='profile-link-to-2fa'>
+  <%= link_to "#{current_user.otp_required_for_login ? 'Disable' : 'Enable'} two-factor authentication", new_otp_path, class: 'btn btn-default' %>
+</div>
+
 <div class='row'>
   <div class='col-md-6'>
     <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>

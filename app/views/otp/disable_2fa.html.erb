@@ -1,0 +1,19 @@
+<h1>Disable Two Factor Authentication</h1>
+<div class='row'>
+  <div class='col-md-5 panel panel-default panel-2fa'>
+    <div class='panel-heading'>
+      Disable Two Factor Authentication
+    </div>
+    <div class='panel-body'>
+      <p>Two-factor authentication is currently enabled on your account. Enter your password below to disable it.</p>
+      <%= form_with url: otp_index_path do |f| %>
+        <%= f.hidden_field 'two_fa[disable_2fa]', value: 'true' %>
+        <div class="form-group">
+          <%= f.label 'two_fa[password]', 'Enter your current password' %>
+          <%= f.password_field 'two_fa[password]', class: 'form-control', required: true, autocomplete: 'off', autofocus: true, id: 'password_field' %>
+        </div>
+        <%= f.submit 'Disable Two Factor', class: 'btn btn-primary' %>
+      <% end %>
+    </div>
+  </div>
+</div>
