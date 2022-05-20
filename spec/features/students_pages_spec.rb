@@ -29,41 +29,190 @@ feature 'Visiting students index page' do
 end
 
 feature 'Student signs up via invitation', :vcr do
-  let(:course) { FactoryBot.create(:course, class_days: [Date.today.beginning_of_week + 5.weeks]) }
-  let(:plan) { FactoryBot.create(:upfront_plan) }
-  let(:student) { FactoryBot.create(:student, :with_all_documents_signed, email: 'example@example.com', courses: [course], plan: plan) }
+  context 'for portland or online student' do
+    let(:course) { FactoryBot.create(:course, class_days: [Date.today.beginning_of_week + 5.weeks]) }
+    let(:plan) { FactoryBot.create(:upfront_plan) }
+    let(:student) { FactoryBot.create(:student, email: 'example@example.com', courses: [course], plan: plan) }
 
-  scenario 'with valid information' do
-    student.invite!
-    visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
-    fill_in 'Legal name', with: 'test legal name'
-    fill_in 'Password', with: 'password'
-    fill_in 'Password confirmation', with: 'password'
-    click_on 'Submit'
-    expect(page).to have_content 'Your password was set successfully. You are now signed in.'
-    expect(Student.first.legal_name).to eq 'test legal name'
+    scenario 'with valid information' do
+      student.invite!
+      visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
+      fill_in 'Legal name', with: 'test legal name'
+      fill_in 'Password', with: 'password'
+      fill_in 'Password confirmation', with: 'password'
+      click_on 'Submit'
+      expect(page).to have_content 'Your password was set successfully. You are now signed in.'
+      expect(Student.first.legal_name).to eq 'test legal name'
+    end
+
+    scenario 'saves legal name in Epicenter and CRM', :dont_stub_crm do
+      close_io_client = Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false)
+      lead_id = ENV['EXAMPLE_CRM_LEAD_ID']
+      allow(CrmUpdateJob).to receive(:perform_later).and_return({})
+      student.invite!
+      visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
+      fill_in 'Legal name', with: 'test legal name'
+      fill_in 'Password', with: 'password'
+      fill_in 'Password confirmation', with: 'password'
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['LEGAL_NAME'] => 'test legal name' })
+      click_on 'Submit'
+      expect(Student.first.legal_name).to eq 'test legal name'
+    end
+
+    scenario 'with missing information' do
+      student.invite!
+      visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
+      fill_in 'Password', with: ''
+      click_on 'Submit'
+      expect(page).to have_content 'error'
+    end
+
+    scenario 'without any documents signed goes to code of conduct' do
+      student.invite!
+      visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
+      fill_in 'Legal name', with: 'test legal name'
+      fill_in 'Password', with: 'password'
+      fill_in 'Password confirmation', with: 'password'
+      click_on 'Submit'
+      expect(current_path).to eq new_code_of_conduct_path
+    end
+
+    scenario 'with code of conduct signed goes to refund policy' do
+      FactoryBot.create(:completed_code_of_conduct, student: student)
+      student.invite!
+      visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
+      fill_in 'Legal name', with: 'test legal name'
+      fill_in 'Password', with: 'password'
+      fill_in 'Password confirmation', with: 'password'
+      click_on 'Submit'
+      expect(current_path).to eq new_refund_policy_path
+    end
+
+    scenario 'with refund policy signed goes to enrollment agreement' do
+      FactoryBot.create(:completed_code_of_conduct, student: student)
+      FactoryBot.create(:completed_refund_policy, student: student)
+      student.invite!
+      visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
+      fill_in 'Legal name', with: 'test legal name'
+      fill_in 'Password', with: 'password'
+      fill_in 'Password confirmation', with: 'password'
+      click_on 'Submit'
+      expect(current_path).to eq new_enrollment_agreement_path
+    end
+
+    scenario 'with enrollment agreement signed goes to demographics form' do
+      FactoryBot.create(:completed_code_of_conduct, student: student)
+      FactoryBot.create(:completed_refund_policy, student: student)
+      FactoryBot.create(:completed_enrollment_agreement, student: student)
+      student.invite!
+      visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
+      fill_in 'Legal name', with: 'test legal name'
+      fill_in 'Password', with: 'password'
+      fill_in 'Password confirmation', with: 'password'
+      click_on 'Submit'
+      expect(current_path).to eq new_demographic_path
+    end
+
+    context 'with demographics compmleted' do
+      before do
+        FactoryBot.create(:completed_code_of_conduct, student: student)
+        FactoryBot.create(:completed_refund_policy, student: student)
+        FactoryBot.create(:completed_enrollment_agreement, student: student)
+        student.demographics = true
+        student.save
+      end
+
+      scenario 'with payment due goes to payment page' do
+        student.invite!
+        visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
+        fill_in 'Legal name', with: 'test legal name'
+        fill_in 'Password', with: 'password'
+        fill_in 'Password confirmation', with: 'password'
+        click_on 'Submit'
+        expect(current_path).to eq new_payment_method_path
+      end
+
+      scenario 'without payment due goes to course page' do
+        allow_any_instance_of(Student).to receive(:upfront_amount_owed).and_return(0)
+        student.invite!
+        visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
+        fill_in 'Legal name', with: 'test legal name'
+        fill_in 'Password', with: 'password'
+        fill_in 'Password confirmation', with: 'password'
+        click_on 'Submit'
+        expect(current_path).to eq student_courses_path(student)
+      end
+
+      scenario 'when requested 2fa enrollment' do
+        student.invite!
+        visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
+        fill_in 'Legal name', with: 'test legal name'
+        fill_in 'Password', with: 'password'
+        fill_in 'Password confirmation', with: 'password'
+        find('#twofa-checkbox').set true
+        click_on 'Submit'
+        expect(current_path).to eq new_otp_path
+      end
+
+      scenario 'when requested 2fa enrollment does not show navbar' do
+        student.invite!
+        visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
+        fill_in 'Legal name', with: 'test legal name'
+        fill_in 'Password', with: 'password'
+        fill_in 'Password confirmation', with: 'password'
+        find('#twofa-checkbox').set true
+        click_on 'Submit'
+        expect(page).to_not have_content 'Courses'
+      end
+
+      scenario 'when requested 2fa enrollment can cancel out' do
+        student.invite!
+        visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
+        fill_in 'Legal name', with: 'test legal name'
+        fill_in 'Password', with: 'password'
+        fill_in 'Password confirmation', with: 'password'
+        find('#twofa-checkbox').set true
+        click_on 'Submit'
+        click_on "Nevermind, I'll set this up later."
+        expect(current_path).to eq new_payment_method_path
+      end
+    end
   end
 
-  scenario 'saves legal name in Epicenter and CRM', :dont_stub_crm do
-    close_io_client = Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false)
-    lead_id = ENV['EXAMPLE_CRM_LEAD_ID']
-    allow(CrmUpdateJob).to receive(:perform_later).and_return({})
-    student.invite!
-    visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
-    fill_in 'Legal name', with: 'test legal name'
-    fill_in 'Password', with: 'password'
-    fill_in 'Password confirmation', with: 'password'
-    expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['LEGAL_NAME'] => 'test legal name' })
-    click_on 'Submit'
-    expect(Student.first.legal_name).to eq 'test legal name'
+  context 'for seattle student' do
+    let(:seattle_course) { FactoryBot.create(:seattle_course, class_days: [Date.today.beginning_of_week + 5.weeks]) }
+    let(:plan) { FactoryBot.create(:upfront_plan) }
+    let(:student) { FactoryBot.create(:student, email: 'example@example.com', courses: [seattle_course], plan: plan) }
+
+    scenario 'with other docs signed goes to student complaint disclosure' do
+      FactoryBot.create(:completed_code_of_conduct, student: student)
+      FactoryBot.create(:completed_refund_policy, student: student)
+      FactoryBot.create(:completed_enrollment_agreement, student: student)
+      student.invite!
+      visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
+      fill_in 'Legal name', with: 'test legal name'
+      fill_in 'Password', with: 'password'
+      fill_in 'Password confirmation', with: 'password'
+      click_on 'Submit'
+      expect(current_path).to eq new_complaint_disclosure_path
+    end
   end
 
-  scenario 'with missing information' do
-    student.invite!
-    visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
-    fill_in 'Password', with: ''
-    click_on 'Submit'
-    expect(page).to have_content 'error'
+  context 'for Fidgetech student' do
+    let(:fidgetech_course) { FactoryBot.create(:course, description: 'Fidgetech', class_days: [Date.today.beginning_of_week + 5.weeks]) }
+    let(:plan) { FactoryBot.create(:upfront_plan) }
+    let(:student) { FactoryBot.create(:student, email: 'example@example.com', courses: [fidgetech_course], plan: plan) }
+
+    scenario 'with code of conduct signed goes to enrollment agreement' do
+      FactoryBot.create(:completed_code_of_conduct, student: student)
+      student.invite!
+      visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
+      fill_in 'Legal name', with: 'test legal name'
+      fill_in 'Password', with: 'password'
+      fill_in 'Password confirmation', with: 'password'
+      click_on 'Submit'
+      expect(current_path).to eq new_enrollment_agreement_path
+    end
   end
 end
 

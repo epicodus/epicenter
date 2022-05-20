@@ -8,7 +8,7 @@ class CodeOfConductController < SignaturesController
 
   def create
     update_signature_request
-    if current_student.course == Course.find_by(description: 'Fidgetech')
+    if current_student.course.try(:description) == 'Fidgetech'
       render js: "window.location.pathname ='#{new_enrollment_agreement_path}'"
     else
       render js: "window.location.pathname ='#{new_refund_policy_path}'"

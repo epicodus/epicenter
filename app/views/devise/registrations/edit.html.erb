@@ -1,59 +1,62 @@
 <h1>Your profile</h1>
 
 <% if can?(:manage, @student) && @student.courses.any? %>
-  <% if @student.courses.previous_courses.any? %>
-    <p><%= link_to "View transcript", transcript_path, target: '_blank' %></p>
-  <% else %>
-    <p>Transcript will be available after at least one course is completed.</p>
-  <% end %>
-  <% if @student.completed_internship_course? && @student.passed_all_fulltime_code_reviews? %>
-    <p><%= link_to "View certificate of completion", certificate_path, target: '_blank' %></p>
-  <% else %>
-    <p>Certificate will be available after internship is completed and all code and career reviews are passing.</p>
-  <% end %>
+  <div id='transcript-certificate-links'>
+    <% if @student.courses.previous_courses.any? %>
+      <p><%= link_to "View transcript", transcript_path, target: '_blank' %></p>
+    <% else %>
+      <p>Transcript will be available after at least one course is completed.</p>
+    <% end %>
+    <% if @student.completed_internship_course? && @student.passed_all_fulltime_code_reviews? %>
+      <p><%= link_to "View certificate of completion", certificate_path, target: '_blank' %></p>
+    <% else %>
+      <p>Certificate will be available after internship is completed and all code and career reviews are passing.</p>
+    <% end %>
+  </div>
 <% end %>
 
-<div id='profile-link-to-2fa'>
-  <%= link_to "#{current_user.otp_required_for_login ? 'Disable' : 'Enable'} two-factor authentication", new_otp_path, class: 'btn btn-default' %>
-</div>
+<p id='profile-twofa-box'><%= link_to "Set up two-factor authentication", new_otp_path, class: 'btn btn-default' %></p>
+<hr id='profile-divider'>
 
 <div class='row'>
-  <div class='col-md-6'>
-    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-      <% if resource.errors.any? %>
-        <div class="alert alert-danger">
-          <%= render "devise/shared/error_messages", resource: resource %>
+  <div class='col-md-6' id='profile-edit-box'>
+    <div class='panel panel-default panel-body'>
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+        <% if resource.errors.any? %>
+          <div class="alert alert-danger">
+            <%= render "devise/shared/error_messages", resource: resource %>
+          </div>
+        <% end %>
+
+        <div class="form-group">
+          <%= f.label :name %>
+            <%= f.text_field :name, autofocus: true, class: 'form-control' %>
         </div>
+
+        <div class="form-group">
+          <%= f.label :email %>
+            <%= f.email_field :email, autofocus: true, class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :password, 'New password' %>
+            <i>(leave blank if you don't want to change it)</i>
+            <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :password_confirmation, 'New password confirmation' %>
+            <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :current_password %>
+            <i>(we need your current password to confirm your changes)</i>
+            <%= f.password_field :current_password, autocomplete: "off", class: 'form-control' %>
+        </div>
+
+        <%= f.submit "Update", class: 'btn btn-info' %>
       <% end %>
-
-      <div class="form-group">
-        <%= f.label :name %>
-          <%= f.text_field :name, autofocus: true, class: 'form-control' %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :email %>
-          <%= f.email_field :email, autofocus: true, class: 'form-control' %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :password, 'New password' %>
-          <i>(leave blank if you don't want to change it)</i>
-          <%= f.password_field :password, autocomplete: "off", class: 'form-control' %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :password_confirmation, 'New password confirmation' %>
-          <%= f.password_field :password_confirmation, autocomplete: "off", class: 'form-control' %>
-      </div>
-
-      <div class="form-group">
-        <%= f.label :current_password %>
-          <i>(we need your current password to confirm your changes)</i>
-          <%= f.password_field :current_password, autocomplete: "off", class: 'form-control' %>
-      </div>
-
-      <%= f.submit "Update", class: 'btn btn-info' %>
-    <% end %>
+    </div>
   </div>
 </div>
