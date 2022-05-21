@@ -15,9 +15,20 @@
         <%= f.label :password %>
         <%= f.password_field :password, class: 'form-control' %>
       </div>
+      <br>
       <div class="form-group">
         <%= f.label :password_confirmation %>
         <%= f.password_field :password_confirmation, class: 'form-control' %>
+      </div>
+      <br>
+      <div class="form-group">
+        I want to set up <btn class="btn-link link-unstyled tooltip-trigger" data-toggle="tooltip" title="Two-factor authentication adds security to your account by prompting you for a one-time passcode during sign-in.">two-factor authentication</btn>.
+        <label class="switch">
+          <%= check_box_tag 'setup_2fa', 'true', false, id: 'twofa-checkbox' %>
+          <span class="slider round"></span>
+        </label>
+        <p id='twofa-note' class='small hide'>You'll be prompted to set up two-factor authentication later in this process.</p>
+        <p id='twofa-note-blank' class='small'>&nbsp;</p>
       </div>
       <br>
       <%= f.submit 'Submit', class: 'btn btn-epicodus' %>

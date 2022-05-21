@@ -12,11 +12,7 @@ class DemographicsController < ApplicationController
     @demographic_info = DemographicInfo.new(current_student, demographic_info_params)
     if @demographic_info.save
       current_student.update(demographics: true)
-      if current_student.upfront_payment_due?
-        redirect_to payment_methods_path
-      else
-        redirect_to student_courses_path(current_student)
-      end
+      redirect_to after_sign_in_path_for(current_student)
     else
       @birth_date = @demographic_info.birth_date
       @education = @demographic_info.education

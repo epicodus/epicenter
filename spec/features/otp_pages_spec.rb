@@ -75,6 +75,13 @@ feature '2fa enrollment' do
     expect(student.reload.otp_secret).to_not eq nil
   end
 
+  scenario 'student can cancel out from enrollment page' do
+    login_as(student, scope: :student)
+    visit new_otp_path
+    click_on "Nevermind, I'll set this up later."
+    expect(current_path).to_not eq new_otp_path
+  end
+
   scenario 'student can disable' do
     old_otp_secret = student_with_2fa.otp_secret
     login_as(student_with_2fa, scope: :student)
@@ -86,17 +93,25 @@ feature '2fa enrollment' do
     expect(student_with_2fa.reload.otp_secret).to_not eq old_otp_secret
   end
 
+  scenario 'student can cancel out from enrollment page' do
+    old_otp_secret = student_with_2fa.otp_secret
+    login_as(student_with_2fa, scope: :student)
+    visit new_otp_path
+    click_on "Nevermind"
+    expect(current_path).to_not eq new_otp_path
+  end
+
   scenario 'student can enroll from profile edit' do
     login_as(student, scope: :student)
     visit edit_student_registration_path
-    click_on 'Enable two-factor authentication'
+    click_on 'Set up two-factor authentication'
     expect(page).to have_content 'Two Factor Authentication Enrollment'
   end
 
   scenario 'student can disable from profile edit' do
     login_as(student_with_2fa, scope: :student)
     visit edit_student_registration_path
-    click_on 'Disable two-factor authentication'
+    click_on 'Set up two-factor authentication'
     expect(page).to have_content 'Disable Two Factor Authentication'
   end
 
@@ -125,14 +140,14 @@ feature '2fa enrollment' do
   scenario 'company can enroll from profile edit' do
     login_as(company, scope: :company)
     visit edit_company_registration_path
-    click_on 'Enable two-factor authentication'
+    click_on 'Set up two-factor authentication'
     expect(page).to have_content 'Two Factor Authentication Enrollment'
   end
 
   scenario 'company can disable from profile edit' do
     login_as(company_with_2fa, scope: :company)
     visit edit_company_registration_path
-    click_on 'Disable two-factor authentication'
+    click_on 'Set up two-factor authentication'
     expect(page).to have_content 'Disable Two Factor Authentication'
   end
 end

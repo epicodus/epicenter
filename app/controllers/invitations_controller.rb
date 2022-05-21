@@ -1,5 +1,5 @@
 class InvitationsController < Devise::InvitationsController
-
+  
   def create
     if params[:student_id]
       resend_invitation
@@ -12,6 +12,11 @@ class InvitationsController < Devise::InvitationsController
         redirect_to root_path, notice: "#{email} has been invited to Epicenter but NOT subscribed to welcome sequence (#{view_context.link_to('view', student_courses_path(student)).html_safe})"
       end
     end
+  end
+
+  def update
+    cookies[:setup_2fa] = {value: 'true', expires: 1.month} if params['setup_2fa'] == 'true'
+    super
   end
 
 private

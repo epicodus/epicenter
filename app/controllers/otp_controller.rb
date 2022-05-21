@@ -2,6 +2,7 @@ class OtpController < ApplicationController
   before_action :authenticate_user!
 
   def new
+    cookies.delete :setup_2fa
     if current_user.otp_required_for_login
       render :disable_2fa
     else
@@ -13,7 +14,7 @@ class OtpController < ApplicationController
   def create
     if current_user.valid_password?(enable_2fa_params[:password]) && enable_2fa_params[:disable_2fa]
       disable_two_factor!
-      return redirect_to new_otp_path, alert: 'Two Factor Authentication disabled. To re-enable it, scan the below QR code in your authenticator app.'
+      return redirect_to root_path, alert: 'Two Factor Authentication disabled.'
     elsif current_user.valid_password?(enable_2fa_params[:password]) && current_user.validate_and_consume_otp!(enable_2fa_params[:code])
       enable_two_factor!
       return redirect_to root_path, notice: 'Successfully enabled two factor authentication. Thanks!'

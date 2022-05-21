@@ -33,3 +33,11 @@
     </div>
   </div>
 </div>
+<% if current_student %>
+  <br>
+  <div class='row'>
+    <div class='col-md-10'>
+      <p class='text-center'><%= link_to "Nevermind, I'll set this up later.", root_path %></p>
+    </div>
+  </div>
+<% end %>
