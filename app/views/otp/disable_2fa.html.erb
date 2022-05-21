@@ -14,14 +14,9 @@
         </div>
         <%= f.submit 'Disable Two Factor', class: 'btn btn-primary' %>
       <% end %>
+      <% if current_student %>
+        <br><p><%= link_to "Nevermind", root_path %></p>
+      <% end %>
     </div>
   </div>
 </div>
-<% if current_student %>
-  <br>
-  <div class='row'>
-    <div class='col-md-10'>
-      <p class='text-center'><%= link_to "Nevermind", root_path %></p>
-    </div>
-  </div>
-<% end %>

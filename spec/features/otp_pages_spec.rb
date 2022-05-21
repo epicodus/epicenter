@@ -104,14 +104,14 @@ feature '2fa enrollment' do
   scenario 'student can enroll from profile edit' do
     login_as(student, scope: :student)
     visit edit_student_registration_path
-    click_on 'Set up two-factor authentication'
+    click_on 'Two-factor authentication settings'
     expect(page).to have_content 'Two Factor Authentication Enrollment'
   end
 
   scenario 'student can disable from profile edit' do
     login_as(student_with_2fa, scope: :student)
     visit edit_student_registration_path
-    click_on 'Set up two-factor authentication'
+    click_on 'Two-factor authentication settings'
     expect(page).to have_content 'Disable Two Factor Authentication'
   end
 
@@ -140,14 +140,14 @@ feature '2fa enrollment' do
   scenario 'company can enroll from profile edit' do
     login_as(company, scope: :company)
     visit edit_company_registration_path
-    click_on 'Set up two-factor authentication'
+    click_on 'Two-factor authentication settings'
     expect(page).to have_content 'Two Factor Authentication Enrollment'
   end
 
   scenario 'company can disable from profile edit' do
     login_as(company_with_2fa, scope: :company)
     visit edit_company_registration_path
-    click_on 'Set up two-factor authentication'
+    click_on 'Two-factor authentication settings'
     expect(page).to have_content 'Disable Two Factor Authentication'
   end
 end
