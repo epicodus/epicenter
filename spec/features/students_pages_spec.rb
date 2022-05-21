@@ -216,16 +216,6 @@ feature 'Student signs up via invitation', :vcr do
   end
 end
 
-feature 'Student cannot invite other students' do
-  let(:student) { FactoryBot.create(:student) }
-
-  scenario 'student visits new_student_invitation path' do
-    login_as(student)
-    visit new_student_invitation_path
-    expect(page).to have_content 'You need to sign in or sign up before continuing'
-  end
-end
-
 feature 'Student signs in with GitHub' do
   let(:student) { FactoryBot.create(:student, :with_all_documents_signed) }
 

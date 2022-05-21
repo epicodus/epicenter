@@ -1,17 +1,7 @@
 class InvitationsController < Devise::InvitationsController
   
   def create
-    if params[:student_id]
-      resend_invitation
-    else
-      email = params[:student][:email]
-      if User.find_by(email: email)
-        redirect_to new_student_invitation_path, alert: "Email already used in Epicenter"
-      else
-        student = Student.invite(email: email)
-        redirect_to root_path, notice: "#{email} has been invited to Epicenter but NOT subscribed to welcome sequence (#{view_context.link_to('view', student_courses_path(student)).html_safe})"
-      end
-    end
+    resend_invitation if params[:student_id]
   end
 
   def update

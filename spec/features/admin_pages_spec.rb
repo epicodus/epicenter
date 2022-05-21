@@ -54,7 +54,7 @@ feature 'Admin signs in' do
   scenario 'and sees navigation links' do
     login_as(admin, scope: :admin)
     visit root_path
-    expect(page).to have_link 'Invite'
+    expect(page).to have_link 'Cohorts'
   end
 
   scenario 'student sign-in page redirects to root sign-in page' do
@@ -127,23 +127,6 @@ feature 'Inviting new students', :vcr, :stub_mailgun, :dont_stub_crm do
     admin = cohort.admin
     admin.current_course = cohort.courses.first
     login_as(admin, scope: :admin)
-  end
-
-  scenario 'admin invites student' do
-    allow_any_instance_of(Closeio::Client).to receive(:create_task).and_return({})
-    allow_any_instance_of(CrmLead).to receive(:cohort_applied).and_return(cohort.description)
-    visit new_student_invitation_path
-    fill_in 'Email', with: 'example@example.com'
-    click_on 'Invite student'
-    expect(page).to have_content "example@example.com has been invited to Epicenter"
-  end
-
-  scenario 'does not allow inviting if email already taken' do
-    FactoryBot.create(:student, email: 'example@example.com')
-    visit new_student_invitation_path
-    fill_in 'Email', with: 'example@example.com'
-    click_on 'Invite student'
-    expect(page).to have_content "Email already used in Epicenter"
   end
 
   scenario 'admin resends invitation to a student' do
