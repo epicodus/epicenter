@@ -284,15 +284,19 @@ GEM
     oink (0.10.1)
       activerecord
       hodel_3000_compliant_logger
-    omniauth (1.9.1)
+    omniauth (2.1.0)
       hashie (>= 3.4.6)
-      rack (>= 1.6.2, < 3)
-    omniauth-github (1.4.0)
-      omniauth (~> 1.5)
-      omniauth-oauth2 (>= 1.4.0, < 2.0)
+      rack (>= 2.2.3)
+      rack-protection
+    omniauth-github (2.0.0)
+      omniauth (~> 2.0)
+      omniauth-oauth2 (~> 1.7.1)
     omniauth-oauth2 (1.7.2)
       oauth2 (~> 1.4)
       omniauth (>= 1.9, < 3)
+    omniauth-rails_csrf_protection (1.0.1)
+      actionpack (>= 4.2)
+      omniauth (~> 2.0)
     openssl (3.0.0)
     orm_adapter (0.5.0)
     paranoia (2.6.0)
@@ -516,7 +520,8 @@ DEPENDENCIES
   newrelic_rpm
   octokit
   oink
-  omniauth-github (~> 1.0)
+  omniauth-github
+  omniauth-rails_csrf_protection
   openssl
   paranoia
   pg

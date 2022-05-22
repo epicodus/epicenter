@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   devise :invitable, :registerable, :recoverable, :rememberable, :trackable, :validatable, :lockable,
          :two_factor_authenticatable, :otp_secret_encryption_key => ENV['OTP_SECRET_ENCRYPTION_KEY']
+  devise :omniauthable, omniauth_providers: %i[github]
 
   validates :name, presence: true
 
