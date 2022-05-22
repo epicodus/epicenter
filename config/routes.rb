@@ -13,12 +13,10 @@ Rails.application.routes.draw do
 
   resources :otp, only: [:new, :create]
 
-  get 'auth/:provider/callback', to: 'omniauth_callbacks#create'
-
-  devise_for :student, controllers: { invitations: 'invitations', registrations: 'registrations' }
-  devise_for :admins, skip: :registrations
-  devise_for :companies, controllers: { registrations: 'registrations' }, skip: :invitations
-  devise_for :users, controllers: { sessions: 'users/sessions' }, skip: [:invitations, :registrations]
+  devise_for :student, controllers: { invitations: 'invitations', registrations: 'registrations', omniauth_callbacks: 'omniauth_callbacks' }
+  devise_for :admins, controllers: { omniauth_callbacks: 'omniauth_callbacks' }, skip: :registrations
+  devise_for :companies, controllers: { registrations: 'registrations', omniauth_callbacks: 'omniauth_callbacks' }, skip: :invitations
+  devise_for :users, controllers: { sessions: 'users/sessions', omniauth_callbacks: 'omniauth_callbacks' }, skip: [:invitations, :registrations]
 
   resources :students, only: [:index, :edit, :update, :destroy] do
     resources :courses, only: [:index]
