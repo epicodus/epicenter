@@ -40,7 +40,7 @@ gem 'openssl'
 gem 'jwt'
 gem 'octokit'
 gem 'httparty'
-gem 'sprockets'
+gem 'sprockets-rails'
 gem 'devise-two-factor'
 gem 'rqrcode-rails3'
 
