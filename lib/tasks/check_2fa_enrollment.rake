@@ -17,7 +17,6 @@ task :check_2fa_enrollment => [:environment] do
                         }
       result = mg_client.send_message('epicodus.com', message_params)
       puts result.body.to_s
-      puts "Sent #{filename.to_s}"
     elsif unenrolled_admins.any?
       puts 'Not enrolled in 2fa: ' + recipients
     else
