@@ -310,6 +310,7 @@ FactoryBot.define do
       end
       after(:create) do |cohort|
         cohort.update(description: 'Fidgetech')
+        cohort.courses.first.update_columns(description: 'Fidgetech')
       end
     end
   end
