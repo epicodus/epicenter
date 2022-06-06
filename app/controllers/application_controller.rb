@@ -37,23 +37,27 @@ protected
     elsif user.is_a? Company
       company_path(user)
     elsif user.is_a? Student
-      if user.signed_main_documents? && cookies[:setup_2fa]
-        new_otp_path
-      elsif user.signed_main_documents? && user.upfront_payment_due?
-        if user.course && user.course.language.name == 'Intro' && Date.today >= user.course.end_date.beginning_of_week
-          flash[:alert] = '<strong>You have not yet completed your enrollment.</strong><br> Please make your remaining tuition payment as soon as possible.'
-        end
-        proper_payments_path(user)
-      elsif user.signed_main_documents?
-        student_courses_path(user)
-      else
-        signatures_check_path(user)
-      end
+      proper_students_path(user)
     end
   end
 
-  def signatures_check_path(user)
-    missing_document = user.documents_required.select { |doc| !user.signed?(doc) }.first
+  def proper_students_path(student)
+    if student.signed_main_documents? && cookies[:setup_2fa]
+      new_otp_path
+    elsif student.signed_main_documents? && student.upfront_payment_due?
+      if student.course && student.course.language.name == 'Intro' && Date.today >= student.course.end_date.beginning_of_week
+        flash[:alert] = '<strong>You have not yet completed your enrollment.</strong><br> Please make your remaining tuition payment as soon as possible.'
+      end
+      proper_payments_path(student)
+    elsif student.signed_main_documents?
+      student_courses_path(student)
+    else
+      signatures_check_path(student)
+    end
+  end
+
+  def signatures_check_path(student)
+    missing_document = student.documents_required.select { |doc| !student.signed?(doc) }.first
     if missing_document
       public_send('new_' + missing_document.name.underscore + '_path')
     else
@@ -61,10 +65,10 @@ protected
     end
   end
 
-  def proper_payments_path(user)
-    if user.primary_payment_method.present?
-      student_payments_path(user)
-    elsif user.bank_accounts.first.present?
+  def proper_payments_path(student)
+    if student.primary_payment_method.present?
+      student_payments_path(student)
+    elsif student.bank_accounts.first.present?
       payment_methods_path
     else
       new_payment_method_path
