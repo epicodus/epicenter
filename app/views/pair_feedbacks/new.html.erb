@@ -16,7 +16,7 @@
     <%= render 'layouts/errors', object: @pair_feedback %>
     <%= f.hidden_field :pair_id, value: @pairs_without_feedback.first.id %>
     <div class="form-group">
-      <%= f.label :q1_response, "1. My pair worked with me throughout the day:", class: 'lead' %><br>
+      <%= f.label :q1_response, "1. My pair was on time and worked with me throughout the day:", class: 'lead' %><br>
       <%= f.collection_radio_buttons :q1_response, PairFeedback::Q1_OPTIONS.map.with_index(1) {|opt, index| [opt, 6-index]}, :last, :first do |b| %>
         <div>
           <%= b.radio_button %>
