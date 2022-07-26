@@ -51,6 +51,26 @@ feature "viewing transcript & certificate" do
       expect(page).to have_content student.name
     end
 
+    it 'lists Web and Mobile Development for students not in data engineering cohort' do
+      course = FactoryBot.create(:past_course)
+      student = FactoryBot.create(:student, course: course)
+      login_as(student, scope: :student)
+      visit edit_student_registration_path
+      click_link "View transcript"
+      expect(page).to have_content "Web and Mobile Development"
+    end
+
+    it 'lists Data Engineering for students not in data engineering cohort' do
+      cohort = FactoryBot.create(:cohort, description: 'Data Engineering')
+      cohort.courses << FactoryBot.create(:past_course)
+      cohort.courses << FactoryBot.create(:internship_course)
+      student = FactoryBot.create(:student, courses: cohort.courses)
+      login_as(student, scope: :student)
+      visit edit_student_registration_path
+      click_link "View transcript"
+      expect(page).to have_content "Data Engineering"
+    end
+
     it "doesn't show certificate" do
       course = FactoryBot.create(:past_course)
       student = FactoryBot.create(:student, course: course)

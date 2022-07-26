@@ -313,6 +313,18 @@ FactoryBot.define do
         cohort.courses.first.update_columns(description: 'Fidgetech')
       end
     end
+
+    factory :data_engineering_cohort do
+      description { 'Data Engineering' }
+      before(:create) do |cohort|
+        cohort.courses << build(:level0_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages.first, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days], description: 'Fidgetech')
+        cohort.courses << build(:level4_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages[4], class_days: [cohort.start_date.beginning_of_week + 20.weeks, cohort.start_date.beginning_of_week + 26.weeks + 4.days])
+      end
+      after(:create) do |cohort|
+        cohort.update(description: 'Data Engineering')
+        cohort.courses.first.update_columns(description: 'Data Engineering')
+      end
+    end
   end
 
   factory :credit_card do
