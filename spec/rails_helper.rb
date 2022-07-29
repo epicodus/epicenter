@@ -11,6 +11,8 @@ require 'simplecov'
 require 'coveralls'
 require 'stripe_mock'
 
+Coveralls.wear!
+
 include Warden::Test::Helpers
 Warden.test_mode!
 
