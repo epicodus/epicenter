@@ -196,7 +196,7 @@ class Student < User
   end
 
   def pairs_without_feedback_today
-    pairs_on_day(Time.zone.now.to_date).where.not(id: evaluations_of_pairs.today.pluck(:pair_id))
+    pairs_today.where.not(id: evaluations_of_pairs.today.pluck(:pair_id))
   end
 
   def attendance_record_on_day(day)
@@ -311,7 +311,7 @@ class Student < User
   end
 
   def is_classroom_day?(date = Time.zone.now.to_date)
-    is_class_day?(date) && !Time.zone.now.to_date.friday?
+    (is_class_day?(date) && !Time.zone.now.to_date.friday?) || ENV['ATTENDANCE_TEST_MODE'] == 'true'
   end
 
   def completed_internship_course?

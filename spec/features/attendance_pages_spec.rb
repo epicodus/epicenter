@@ -1,4 +1,4 @@
-feature "remote attendance" do
+feature "attendance sign in and out", :stub_mailgun do
   let(:student) { FactoryBot.create(:portland_student, :with_all_documents_signed) }
 
   before { login_as(student, scope: :student) }
@@ -296,7 +296,7 @@ feature "remote attendance" do
     end
   end
 
-  describe 'when class not in session', :dont_stub_students_in_classroom do
+  describe 'when class not in session' do
     it 'shows attendance box when class day and time' do
       travel_to student.course.start_date.beginning_of_day + 10.hours do
         visit root_path
