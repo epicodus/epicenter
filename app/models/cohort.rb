@@ -43,7 +43,7 @@ private
   def build_courses_from_layout_file
     course_layout_files = Github.get_layout_params(layout_file_path)['course_layout_files']
     course_layout_files.each_with_index do |course_layout_filename, index|
-      next_course_start_date = self.courses.last.try(:end_date).try(:end_of_week) || start_date
+      next_course_start_date = self.courses.last.try(:end_date).try(:end_of_week) || start_date.beginning_of_week
       self.courses << Course.create({ track: track, office: office, admin: admin, language: track.languages.find_by(level: index), start_date: next_course_start_date, layout_file_path: course_layout_filename, active: false })
     end
   end

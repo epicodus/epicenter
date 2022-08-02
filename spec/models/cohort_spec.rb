@@ -59,6 +59,24 @@ describe Cohort do
       expect(cohort.courses.count).to eq 1
       expect(cohort.courses.first.language).to eq track.languages.first
     end
+
+    it 'creates a full-time intro cohort from layout file when starts on a tuesday due to holiday' do
+      allow(Github).to receive(:get_layout_params).with('example_cohort_layout_path').and_return cohort_layout_params_helper(track: 'Part-Time Intro to Programming', number_of_courses: 1)
+      allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(part_time: false, number_of_days: 15)
+      office = admin.current_course.office
+      cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2023-01-03'), layout_file_path: 'example_cohort_layout_path')
+      expect(cohort.description).to eq "2023-01-03 to 2023-01-20 #{office.short_name} Part-Time Intro to Programming"
+      expect(cohort.office).to eq office
+      expect(cohort.track).to eq track
+      expect(cohort.admin).to eq admin
+      expect(cohort.start_date).to eq Date.parse('2023-01-03')
+      expect(cohort.end_date).to eq Date.parse('2023-01-20')
+      expect(cohort.courses.first.start_date).to eq cohort.start_date
+      expect(cohort.courses.first.end_date).to eq cohort.end_date
+      expect(cohort.courses.count).to eq 1
+      expect(cohort.courses.first.language).to eq track.languages.first
+      expect(cohort.courses.first.class_days.count).to eq 13 # due to 2 holidays
+    end
   end
 
   describe 'creating a part-time full-stack cohort from layout file' do
