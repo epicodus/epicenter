@@ -20,7 +20,7 @@ class Course < ApplicationRecord
   before_validation :set_start_and_end_dates, on: :create, if: ->(course) { course.layout_file_path.blank? }
   before_update :set_start_and_end_dates
   before_update :set_description
-  before_validation :build_course, on: :create, if: ->(course) { course.layout_file_path.present? }
+  before_validation :build_course, on: :create, if: ->(course) { course.layout_file_path.present? && course.class_days.blank? }
   before_save :build_code_reviews, if: ->(course) { course.layout_file_path.present? && course.will_save_change_to_layout_file_path? } # relies on parttime being set correctly
 
   after_destroy :reassign_admin_current_courses
