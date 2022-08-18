@@ -74,7 +74,7 @@ group :test do
   gem 'vcr'
   gem 'simplecov', require: false
   gem 'coveralls', '~> 0.8', require: false
-  gem 'stripe-ruby-mock', :require => 'stripe_mock'
+  gem 'stripe-ruby-mock', '~> 3.0.1', :require => 'stripe_mock'
   gem 'faker'
 end
 
