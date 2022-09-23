@@ -5,7 +5,7 @@ feature "Bulk viewing journal submissions" do
   end
 
  context "as a student" do
-    let(:student) { FactoryBot.create(:student, :with_course) }
+    let(:student) { FactoryBot.create(:student, :with_all_documents_signed, :with_course) }
 
     before { login_as(student, scope: :student) }
 

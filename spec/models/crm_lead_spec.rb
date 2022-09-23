@@ -72,6 +72,12 @@ describe CrmLead, :dont_stub_crm, :vcr do
     end
   end
 
+  describe '#state' do
+    it 'returns state of first address of lead' do
+      expect(CrmLead.new('washington@example.com').state).to eq 'WA'
+    end
+  end
+
   describe '#contact_id' do
     it 'returns contact_id if present in CRM' do
       expect(CrmLead.new('example@example.com').contact_id).to include 'cont_'
