@@ -179,12 +179,47 @@ feature 'Student signs up via invitation', :vcr do
     end
   end
 
-  context 'for seattle student' do
-    let(:seattle_course) { FactoryBot.create(:seattle_course, class_days: [Date.today.beginning_of_week + 5.weeks]) }
-    let(:plan) { FactoryBot.create(:upfront_plan) }
-    let(:student) { FactoryBot.create(:student, email: 'example@example.com', courses: [seattle_course], plan: plan) }
+  context 'for non-washingtonian' do
+    let(:student) { FactoryBot.create(:student, :with_course, :with_plan, email: 'example@example.com') }
+
+    scenario 'with other docs signed goes to demographics form' do
+      allow_any_instance_of(Student).to receive(:washingtonian?).and_return false
+      FactoryBot.create(:completed_code_of_conduct, student: student)
+      FactoryBot.create(:completed_refund_policy, student: student)
+      FactoryBot.create(:completed_enrollment_agreement, student: student)
+      student.invite!
+      visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
+      fill_in 'Legal name', with: 'test legal name'
+      fill_in 'Password', with: 'password'
+      fill_in 'Password confirmation', with: 'password'
+      click_on 'Submit'
+      expect(current_path).to eq new_demographic_path
+    end
+  end
+
+  context 'for washingtonian in non-online cohort' do
+    let(:student) { FactoryBot.create(:student, :with_course, :with_plan, email: 'example@example.com') }
 
     scenario 'with other docs signed goes to student complaint disclosure' do
+      allow_any_instance_of(Student).to receive(:washingtonian?).and_return true
+      FactoryBot.create(:completed_code_of_conduct, student: student)
+      FactoryBot.create(:completed_refund_policy, student: student)
+      FactoryBot.create(:completed_enrollment_agreement, student: student)
+      student.invite!
+      visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
+      fill_in 'Legal name', with: 'test legal name'
+      fill_in 'Password', with: 'password'
+      fill_in 'Password confirmation', with: 'password'
+      click_on 'Submit'
+      expect(current_path).to eq new_demographic_path
+    end
+  end
+
+  context 'for washingtonian in online cohort' do
+    let(:student) { FactoryBot.create(:online_student, :with_ft_online_cohort, :with_plan, email: 'example@example.com') }
+
+    scenario 'with other docs signed goes to student complaint disclosure' do
+      allow_any_instance_of(Student).to receive(:washingtonian?).and_return true
       FactoryBot.create(:completed_code_of_conduct, student: student)
       FactoryBot.create(:completed_refund_policy, student: student)
       FactoryBot.create(:completed_enrollment_agreement, student: student)

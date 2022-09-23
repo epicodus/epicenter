@@ -135,6 +135,10 @@ FactoryBot.define do
       association :office, factory: :seattle_office
     end
 
+    factory :online_course do
+      association :office, factory: :online_office
+    end
+
     factory :past_course do
       class_days { ((Time.zone.now.to_date - 18.weeks).beginning_of_week..(Time.zone.now.to_date - 14.weeks).end_of_week - 2.days).select { |day| day if !day.saturday? && !day.sunday? } }
     end
@@ -263,6 +267,10 @@ FactoryBot.define do
       before(:create) do |cohort|
         cohort.courses << build(:level0_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages.first, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 4.weeks + 3.days])
         cohort.courses << build(:level4_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages.last, class_days: [cohort.start_date.beginning_of_week + 5.weeks, cohort.start_date.beginning_of_week + 8.weeks + 3.days])
+      end
+
+      factory :ft_online_cohort do
+        association :office, factory: :online_office
       end
     end
 
@@ -674,6 +682,13 @@ FactoryBot.define do
       end
     end
 
+    trait :with_ft_online_cohort do
+      association :cohort, factory: :ft_online_cohort
+      before(:create) do |student|
+        student.courses << student.cohort.courses
+      end
+    end
+
     trait :with_pt_c_react_cohort do
       association :cohort, factory: :part_time_c_react_cohort
       before(:create) do |student|
@@ -759,10 +774,23 @@ FactoryBot.define do
 
     factory :seattle_student do
       association :course, factory: :seattle_course
+      after(:create) do |student|
+        student.cohort.try(:save) # update cohort end_date
+      end
     end
 
     factory :portland_student do
       association :course, factory: :portland_course
+      after(:create) do |student|
+        student.cohort.try(:save) # update cohort end_date
+      end
+    end
+
+    factory :online_student do
+      association :course, factory: :online_course
+      after(:create) do |student|
+        student.cohort.try(:save) # update cohort end_date
+      end
     end
 
     factory :user_with_score_of_10 do

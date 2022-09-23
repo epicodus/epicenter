@@ -638,7 +638,7 @@ describe Student do
 
   describe "#signed_main_documents?" do
     let(:student) { FactoryBot.create(:student) }
-    let(:seattle_student) { FactoryBot.create(:seattle_student) }
+    let(:online_student) { FactoryBot.create(:online_student, :with_ft_online_cohort) }
 
     it "returns true if all 3 main documents have been signed and demographics form submitted" do
       FactoryBot.create(:completed_code_of_conduct, student: student)
@@ -662,29 +662,32 @@ describe Student do
       expect(student.signed_main_documents?).to eq false
     end
 
-    it "returns true if all 4 documents have been signed for a Seattle student and demographics form submitted" do
-      FactoryBot.create(:completed_code_of_conduct, student: seattle_student)
-      FactoryBot.create(:completed_refund_policy, student: seattle_student)
-      FactoryBot.create(:completed_complaint_disclosure, student: seattle_student)
-      FactoryBot.create(:completed_enrollment_agreement, student: seattle_student)
-      seattle_student.update(demographics: true)
-      expect(seattle_student.signed_main_documents?).to eq true
+    it "returns true if all 4 documents have been signed for an online student and demographics form submitted" do
+      allow(online_student).to receive(:washingtonian?).and_return true
+      FactoryBot.create(:completed_code_of_conduct, student: online_student)
+      FactoryBot.create(:completed_refund_policy, student: online_student)
+      FactoryBot.create(:completed_complaint_disclosure, student: online_student)
+      FactoryBot.create(:completed_enrollment_agreement, student: online_student)
+      online_student.update(demographics: true)
+      expect(online_student.signed_main_documents?).to eq true
     end
 
-    it "returns false if demographics form not submitted for a Seattle student" do
-      FactoryBot.create(:completed_code_of_conduct, student: seattle_student)
-      FactoryBot.create(:completed_refund_policy, student: seattle_student)
-      FactoryBot.create(:completed_complaint_disclosure, student: seattle_student)
-      FactoryBot.create(:completed_enrollment_agreement, student: seattle_student)
-      expect(seattle_student.signed_main_documents?).to eq false
+    it "returns false if demographics form not submitted for an online student" do
+      allow(online_student).to receive(:washingtonian?).and_return true
+      FactoryBot.create(:completed_code_of_conduct, student: online_student)
+      FactoryBot.create(:completed_refund_policy, student: online_student)
+      FactoryBot.create(:completed_complaint_disclosure, student: online_student)
+      FactoryBot.create(:completed_enrollment_agreement, student: online_student)
+      expect(online_student.signed_main_documents?).to eq false
     end
 
-    it "returns false if extra required Seattle document not signed" do
-      FactoryBot.create(:completed_code_of_conduct, student: seattle_student)
-      FactoryBot.create(:completed_refund_policy, student: seattle_student)
-      FactoryBot.create(:completed_enrollment_agreement, student: seattle_student)
-      seattle_student.update(demographics: true)
-      expect(seattle_student.signed_main_documents?).to eq false
+    it "returns false if extra required Seattle document not signed for online Washingtonian" do
+      allow(online_student).to receive(:washingtonian?).and_return true
+      FactoryBot.create(:completed_code_of_conduct, student: online_student)
+      FactoryBot.create(:completed_refund_policy, student: online_student)
+      FactoryBot.create(:completed_enrollment_agreement, student: online_student)
+      online_student.update(demographics: true)
+      expect(online_student.signed_main_documents?).to eq false
     end
 
     it "does not require refund policy for Fidgetech students" do
@@ -1862,6 +1865,26 @@ end
         student = FactoryBot.create(:student, courses: cohort.courses + future_cohort.courses)
         expect(student.latest_cohort).to eq future_cohort
       end
+    end
+  end
+
+  describe '#washingtonian?' do
+    it 'returns true if state is WA' do
+      student = FactoryBot.create(:student)
+      allow_any_instance_of(CrmLead).to receive(:state).and_return('WA')
+      expect(student.washingtonian?).to eq true
+    end
+
+    it 'returns true if state is Washington' do
+      student = FactoryBot.create(:student)
+      allow_any_instance_of(CrmLead).to receive(:state).and_return('Washington')
+      expect(student.washingtonian?).to eq true
+    end
+
+    it 'returns false if state is OR' do
+      student = FactoryBot.create(:student)
+      allow_any_instance_of(CrmLead).to receive(:state).and_return('OR')
+      expect(student.washingtonian?).to eq false
     end
   end
 

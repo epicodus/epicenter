@@ -66,6 +66,10 @@ class CrmLead
     lead.try('dig', 'contacts').try('first').try('dig', 'id')
   end
 
+  def state
+    lead.try('dig', 'addresses').try(:first).try('dig', 'state')
+  end
+
   def create_task(text)
     close_io_client.create_task(lead_id: lead.try('dig', 'id'), text: text, assigned_to: career_services_contact, date: Time.zone.now.to_date.to_s)
   end

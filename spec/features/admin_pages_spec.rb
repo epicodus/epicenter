@@ -335,7 +335,7 @@ feature 'manually changing current cohort' do
       student = FactoryBot.create(:student, courses: ft_cohort.courses + ft_cohort_2.courses)
       visit student_courses_path(student)
       click_on 'edit current cohort'
-      select ft_cohort_2.description, from: 'current_cohort_id'
+      select ft_cohort_2.reload.description, from: 'current_cohort_id'
       click_on 'Confirm current cohort'
       expect(student.reload.cohort).to eq ft_cohort_2
     end

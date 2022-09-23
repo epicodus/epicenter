@@ -234,7 +234,7 @@ class Student < User
     else
       documents = [CodeOfConduct, RefundPolicy, EnrollmentAgreement]
     end
-    documents << ComplaintDisclosure if course.try(:office).try(:name) == 'Seattle'
+    documents << ComplaintDisclosure if course.try(:office).try(:name) == 'Online' && washingtonian?
     documents
   end
 
@@ -393,6 +393,11 @@ class Student < User
 
   def crm_lead
     CrmLead.new(email)
+  end
+
+  def washingtonian?
+    state = crm_lead.state # split into two lines to prevent duplicate API call
+    state == 'WA' || state == 'Washington'
   end
 
   def calculate_starting_cohort
