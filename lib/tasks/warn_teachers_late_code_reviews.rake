@@ -3,7 +3,7 @@ task :warn_teachers_late_code_reviews => [:environment] do
   due_date = Date.today - 17.days
   CodeReview.where(due_date: due_date).each do |code_review|
     course = code_review.course
-    unless course.nil? || course.description.include? 'Evening'
+    unless course.nil? || course.description.include?('Evening')
       course.students.each do |student|
         unless student.submission_for(code_review).try(:review_status) == 'pass'
           if Rails.env.production?
