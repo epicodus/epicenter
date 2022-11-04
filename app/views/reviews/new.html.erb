@@ -49,13 +49,14 @@
     </div>
 
     <% if @submission.submission_notes.any? %>
-      <div class="well">
-        <p><strong>Student submission notes:</strong></p>
-        <ul>
-          <% @submission.submission_notes.reorder('CREATED_AT DESC').each do |note| %>
-            <li><em><%= note.created_at.strftime('%B %d') %>:</em> <%= note.content %></li>
-          <% end %>
-        </ul>
+      <div class="panel panel-default panel-body">
+        <h3>Student submission notes:</h3>
+        <br>
+        <% @submission.submission_notes.reorder('CREATED_AT DESC').each do |note| %>
+          <div class="panel panel-default panel-body">
+            <strong><u><%= note.created_at.strftime('%B %d') %>:</u></strong> <%= markdown(note.content) %>
+          </div>
+        <% end %>
       </div>
     <% end %>
 

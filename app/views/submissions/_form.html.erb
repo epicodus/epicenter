@@ -24,14 +24,17 @@
       <%= f.nested_fields_for :submission_notes, @submission.submission_notes.build do |ff| %>
         <%= ff.text_area :content, rows: 5, maxlength: 2000, class: 'form-control', id: 'submission-student-note', required: true %>
       <% end %>
+
+      <br>
       <% if @submission.submission_notes.where('id IS NOT NULL').any? %>
-        <div class="well">
-          <p class="text-center"><strong>notes previously submitted</strong></p>
-          <ul>
-            <% @submission.submission_notes.where('id IS NOT NULL').each do |note| %>
-              <li><strong><%= note.created_at.strftime('%B %d') %>:</strong> <%= note.content %></li>
-            <% end %>
-          </ul>
+        <div class="panel panel-default panel-body">
+          <p><strong>Notes previously submitted:</strong></p>
+          <br>
+          <% @submission.submission_notes.where('id IS NOT NULL').each do |note| %>
+            <div class="panel panel-default panel-body">
+              <strong><u><%= note.created_at.strftime('%B %d') %>:</u></strong> <%= markdown(note.content) %>
+            </div>
+          <% end %>
         </div>
       <% end %>
     </div>

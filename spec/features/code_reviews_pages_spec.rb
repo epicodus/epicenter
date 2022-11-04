@@ -261,6 +261,16 @@ feature 'visiting the code review show page' do
       it { is_expected.to have_content 'Meets expectations' }
     end
 
+    context 'before resubmitting' do
+      let(:submission) { FactoryBot.create(:submission, code_review: code_review, student: student) }
+
+      it 'renders markdown' do
+        submission.submission_notes.create(content: '- test student note')
+        visit course_code_review_path(code_review.course, code_review)
+        expect(page).to have_css('li', text: 'test student note')
+      end
+    end
+
     context 'after resubmitting', :stub_mailgun do
       let(:submission) { FactoryBot.create(:submission, code_review: code_review, student: student) }
 

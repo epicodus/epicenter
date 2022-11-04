@@ -171,6 +171,12 @@ feature 'Visiting the submissions index page' do
             expect(page).to have_content('first note')
             expect(page).to have_content('second note')
           end
+
+          it 'renders markdown' do
+            submission.submission_notes.create(content: '- note')
+            click_on 'Review'
+            expect(page).to have_css('li', text: 'note')
+          end
         end
 
         describe 'shows links to other reviews for same course' do
