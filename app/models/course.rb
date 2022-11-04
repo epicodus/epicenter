@@ -113,11 +113,19 @@ class Course < ApplicationRecord
   end
 
   def start_time(day = Time.zone.now.in_time_zone(office.time_zone).to_date)
-    class_times.find_by(wday: day.wday).start_time
+    if ENV['ATTENDANCE_TEST_MODE'] == 'true'
+      '00:00'
+    else
+      class_times.find_by(wday: day.wday).start_time
+    end
   end
 
   def end_time(day = Time.zone.now.in_time_zone(office.time_zone).to_date)
-    class_times.find_by(wday: day.wday).end_time
+    if ENV['ATTENDANCE_TEST_MODE'] == 'true'
+      '23:59'
+    else
+      class_times.find_by(wday: day.wday).end_time
+    end
   end
 
   def start_time_today
