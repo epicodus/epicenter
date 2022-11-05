@@ -1904,4 +1904,43 @@ end
       expect(Devise.mailer.deliveries.count).to eq(emails_sent)
     end
   end
+
+  describe '#enrolled_fulltime_cohorts' do
+    let(:pt_intro_cohort) { FactoryBot.create(:pt_intro_cohort) }
+    let(:pt_c_react_cohort) { FactoryBot.create(:pt_c_react_cohort) }
+    let(:ft_cohort) { FactoryBot.create(:ft_cohort) }
+
+    context 'with enrolled courses belongs to multiple cohorts' do
+      let(:student) { FactoryBot.create(:student, courses: ft_cohort.courses + pt_c_react_cohort.courses) }
+
+      it 'returns number of enrolled cohorts' do
+        expect(student.enrolled_fulltime_cohorts).to eq [ft_cohort, pt_c_react_cohort]
+      end
+    end
+
+    context 'with enrolled courses belongs to only a single cohort' do
+      let(:student) { FactoryBot.create(:student, courses: ft_cohort.courses) }
+
+      it 'returns number of enrolled cohorts' do
+        expect(student.enrolled_fulltime_cohorts).to eq [ft_cohort]
+      end
+    end
+
+    context 'excluding cohorts for withdrawn courses' do
+      let(:student) { FactoryBot.create(:student, courses: ft_cohort.courses + pt_c_react_cohort.courses) }
+
+      it 'returns number of enrolled cohorts' do
+        Enrollment.where(student: student, course: pt_c_react_cohort.courses).destroy_all
+        expect(student.reload.enrolled_fulltime_cohorts).to eq [ft_cohort]
+      end
+    end
+
+    context 'excluding pt intro cohorts' do
+      let(:student) { FactoryBot.create(:student, courses: pt_intro_cohort.courses + pt_c_react_cohort.courses) }
+
+      it 'returns number of enrolled cohorts' do
+        expect(student.reload.enrolled_fulltime_cohorts).to eq [pt_c_react_cohort]
+      end
+    end
+  end
 end
