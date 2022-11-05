@@ -108,6 +108,10 @@ class Student < User
     filtered_records.reject {|ar| ar.date.friday?}.count
   end
 
+  def enrolled_fulltime_cohorts
+    Cohort.where(id: courses.cirr_fulltime_courses.pluck(:cohort_id))
+  end
+
   def internship_course
     courses.find_by(internship_course: true)
   end
