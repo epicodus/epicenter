@@ -441,7 +441,7 @@ class Student < User
   end
 
   def latest_cohort
-    Cohort.where(id: [cohort, parttime_cohort]).last
+    Cohort.where(id: [cohort, parttime_cohort]).reorder(:end_date).last
   end
 
   def really_destroy

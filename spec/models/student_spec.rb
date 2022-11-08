@@ -1865,6 +1865,11 @@ end
         student = FactoryBot.create(:student, courses: cohort.courses + future_cohort.courses)
         expect(student.latest_cohort).to eq future_cohort
       end
+
+      it 'returns the cohort with latest end date, even when same start date' do
+        student = FactoryBot.create(:student, courses: part_time_cohort.courses + cohort.courses)
+        expect(student.latest_cohort).to eq [part_time_cohort, cohort].sort_by(&:end_date).last
+      end
     end
   end
 
