@@ -176,6 +176,7 @@ feature 'visiting the code review show page' do
         click_button 'Submit'
         is_expected.to have_content 'Thank you for submitting'
         is_expected.to have_content "I'd like to request a meeting with a teacher this week."
+        expect(current_path).to eq new_course_meeting_path(code_review.course)
       end
 
       scenario 'sets review status to pending on inital submission' do

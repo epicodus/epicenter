@@ -1,9 +1,14 @@
-<%= form_with url: course_meeting_path(@course), id: 'teacher-meeting-request-form' do |form| %>
-  <div class="form-group">
-    <%= form.label "I'd like to request a meeting with a teacher this week." %> &nbsp;
-    <%= form.check_box :meeting, id: 'teacher-meeting' %>
-    <%= form.text_area :meeting_explanation, rows: 5, class: 'form-control hide', id: 'teacher-meeting-explanation', placeholder: 'Explanation... (50 character minimum)' %>
-  </div>
-  <%= form.submit 'Submit', class: 'btn btn-success hide', id: 'teacher-meeting-submit-button' %>
-  <%= link_to 'No thanks', course_student_path(current_student.course, current_student), class: 'btn btn-default', id: 'teacher-meeting-skip-button' %>
+<% if @student.submissions.last.meeting_request_notes.empty? %>
+  <%= form_with url: course_meeting_path(@course), id: 'teacher-meeting-request-form' do |form| %>
+    <div class="form-group">
+      <%= form.label "I'd like to request a meeting with a teacher this week." %> &nbsp;
+      <%= form.check_box :meeting, id: 'teacher-meeting' %>
+      <%= form.text_area :meeting_explanation, rows: 5, class: 'form-control hide', id: 'teacher-meeting-explanation', placeholder: 'Explanation... (50 character minimum)' %>
+    </div>
+    <%= form.submit 'Submit', class: 'btn btn-success hide', id: 'teacher-meeting-submit-button' %>
+    <%= link_to 'No thanks', course_student_path(current_student.course, current_student), class: 'btn btn-default', id: 'teacher-meeting-skip-button' %>
+  <% end %>
+<% else %>
+  <h3>You have successfully requested a meeting with the following note:</h3>
+  <p><%= @student.submissions.last.meeting_request_notes.last.content %></p>
 <% end %>

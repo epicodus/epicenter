@@ -7,6 +7,7 @@ feature 'requesting a meeting' do
     before do
       login_as(student, scope: :student)
       visit new_course_meeting_path(course)
+      allow(EmailJob).to receive(:perform_later).and_return({})
     end
 
     it 'shows page to request a meeting' do
@@ -14,7 +15,6 @@ feature 'requesting a meeting' do
     end
 
     it 'sends email when explanation >= 50 characters' do
-      allow(EmailJob).to receive(:perform_later).and_return({})
       fill_in 'teacher-meeting-explanation', with: '12345678901234567890123456789012345678901234567890'
       click_on 'Submit'
       expect(EmailJob).to have_received(:perform_later).with(
@@ -27,14 +27,12 @@ feature 'requesting a meeting' do
     end
 
     it 'creates meeting_request note' do
-      allow(EmailJob).to receive(:perform_later).and_return({})
       fill_in 'teacher-meeting-explanation', with: '12345678901234567890123456789012345678901234567890'
       click_on 'Submit'
       expect(submission.meeting_request_notes.last.content).to eq '12345678901234567890123456789012345678901234567890'
     end
 
     it 'attaches meeting_request note to latest submission only' do
-      allow(EmailJob).to receive(:perform_later).and_return({})
       new_submission = FactoryBot.create(:submission, student: student)
       fill_in 'teacher-meeting-explanation', with: '12345678901234567890123456789012345678901234567890'
       click_on 'Submit'
@@ -43,10 +41,52 @@ feature 'requesting a meeting' do
     end
 
     it 'does not send email when not requested' do
-      allow(EmailJob).to receive(:perform_later).and_return({})
       expect(EmailJob).to_not receive(:perform_later)
       click_on 'No thanks'
       expect(page).to have_content("Attendance")
+    end
+
+    it 'shows existing meeting request note when meeting request already made for this submission' do
+      note = FactoryBot.create(:meeting_request_note, submission: submission)
+      visit new_course_meeting_path(course)
+      expect(page).to have_content note.content
+    end
+  end
+
+  context 'shows or hides link to make meeting request' do
+    let(:admin) { FactoryBot.create(:admin) }
+    let(:course) { FactoryBot.create(:course, admin: admin) }
+    let(:student) { FactoryBot.create(:student, course: course) }
+    before do
+      login_as(student, scope: :student)
+    end
+
+    context 'when any submission exists' do
+      it 'on student courses index page' do
+        submission = FactoryBot.create(:submission, student: student)
+        visit student_courses_path(student)
+        click_on 'Request teacher meeting'
+        expect(current_path).to eq new_course_meeting_path(course)
+      end
+
+      it 'on student course page' do
+        submission = FactoryBot.create(:submission, student: student)
+        visit course_student_path(course, student)
+        click_on 'Request teacher meeting'
+        expect(current_path).to eq new_course_meeting_path(course)
+      end
+    end
+
+    context 'when no submission exists' do
+      it 'on student courses index page' do
+        visit student_courses_path(student)
+        expect(page).to_not have_content 'Request teacher meeting'
+      end
+
+      it 'on student course page' do
+        visit course_student_path(course, student)
+        expect(page).to_not have_content 'Request teacher meeting'
+      end
     end
   end
 
