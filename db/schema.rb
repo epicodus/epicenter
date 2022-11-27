@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_25_223802) do
+ActiveRecord::Schema.define(version: 2022_11_23_090047) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -358,6 +358,7 @@ ActiveRecord::Schema.define(version: 2022_10_25_223802) do
     t.string "review_status"
     t.integer "admin_id"
     t.text "journal"
+    t.boolean "exempt"
     t.index ["code_review_id"], name: "index_submissions_on_code_review_id"
     t.index ["student_id"], name: "index_submissions_on_student_id"
   end

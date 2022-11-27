@@ -2,7 +2,9 @@
   <tr>
     <td><%= link_to code_review.title, course_code_review_path(@course, code_review), class: 'text-info' %></td>
     <td>
-      <% if code_review.expectations_met_by?(@student) %>
+      <% if @student.submission_for(code_review).try(:exempt?) %>
+        <span class="submission-success">exempt</span>
+      <% elsif code_review.expectations_met_by?(@student) %>
         <span class="glyphicon glyphicon-ok submission-success"></span>
       <% else %>
         <span class="glyphicon glyphicon-remove submission-fail"></span>
@@ -12,24 +14,26 @@
       <td><%= @student.submission_for(code_review).try(:times_submitted) %></td>
     <% end %>
     <% if @student.submission_for(code_review) %>
-      <% unless code_review.journal? %>
-        <td><%= link_to "Submission", @student.submission_for(code_review).link, target: '_blank' if @student.submission_for(code_review).link %></td>
-      <% end %>
-      <td>
-        <% if @student.submission_for(code_review).has_been_reviewed? %>
-          <% if can? :manage, CodeReview %>
-            <%= link_to code_review.journal? ? 'Submitted' : 'Reviewed', new_submission_review_path(@student.submission_for(code_review)) %>
-          <% else %>
-            <%= link_to code_review.journal? ? 'Submitted' : 'Reviewed', course_code_review_path(@course, code_review) %>
-          <% end %>
-        <% else %>
-          <% if can? :manage, CodeReview %>
-            <%= link_to 'Pending', new_submission_review_path(@student.submission_for(code_review)) %>
-          <% else %>
-            <%= link_to 'Pending', course_code_review_path(@course, code_review) %>
-          <% end %>
+      <% unless @student.submission_for(code_review).exempt? %>
+        <% unless code_review.journal? %>
+          <td><%= link_to "Submission", @student.submission_for(code_review).link, target: '_blank' if @student.submission_for(code_review).link %></td>
         <% end %>
-      </td>
+        <td>
+          <% if @student.submission_for(code_review).has_been_reviewed? %>
+            <% if can? :manage, CodeReview %>
+              <%= link_to code_review.journal? ? 'Submitted' : 'Reviewed', new_submission_review_path(@student.submission_for(code_review)) %>
+            <% else %>
+              <%= link_to code_review.journal? ? 'Submitted' : 'Reviewed', course_code_review_path(@course, code_review) %>
+            <% end %>
+          <% else %>
+            <% if can? :manage, CodeReview %>
+              <%= link_to 'Pending', new_submission_review_path(@student.submission_for(code_review)) %>
+            <% else %>
+              <%= link_to 'Pending', course_code_review_path(@course, code_review) %>
+            <% end %>
+          <% end %>
+        </td>
+      <% end %>
     <% else %>
       <% unless code_review.journal? %>
         <td></td>
@@ -41,6 +45,13 @@
           <%= link_to 'Pending', course_code_review_path(@course, code_review) %>
         <% else %>
           <%= link_to 'Submit', course_code_review_path(@course, code_review, anchor: "submission"), class: 'text-info' %>
+        <% end %>
+      </td>
+      <td>
+        <% if can? :manage, CodeReview %>
+          <%= link_to new_code_review_submission_path(code_review, student_id: @student.id), id: 'exempt-edit' do %>
+            <span class='glyphicon glyphicon-edit' aria-hidden='true'></span>
+          <% end %>
         <% end %>
       </td>
     <% end %>

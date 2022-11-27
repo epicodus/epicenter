@@ -18,6 +18,7 @@ class Submission < ApplicationRecord
 
   before_create :mark_as_needing_review
   before_save :update_times_submitted
+  after_create :handle_exempt, if: :exempt?
 
   def other_submissions_for_course
     student.submissions.for_course(code_review.course).where.not(id: id)
@@ -44,7 +45,7 @@ class Submission < ApplicationRecord
   end
 
   def meets_expectations?
-    latest_review.try(:meets_expectations?)
+    latest_review.try(:meets_expectations?) || exempt?
   end
 
 private
@@ -57,5 +58,11 @@ private
 
   def mark_as_needing_review
     self.needs_review = true
+  end
+
+  def handle_exempt
+    self.needs_review = false
+    self.review_status = 'pass'
+    save
   end
 end

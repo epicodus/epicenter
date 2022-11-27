@@ -10,6 +10,7 @@
             <th>Times submitted</th>
             <th>Submission link</th>
             <th>Status</th>
+            <th></th>
           </thead>
           <% @course.code_reviews.where(journal: nil).or(@course.code_reviews.where(journal: false)).each do |code_review| %>
             <%= render 'student_code_review', code_review: code_review  %>

@@ -203,6 +203,57 @@ feature 'Visiting the submissions index page' do
   end
 end
 
+feature 'creating a passing submission from a student page' do
+  let(:course) { FactoryBot.create(:course) }
+  let!(:code_review) { FactoryBot.create(:code_review, course: course) }
+  let(:student) { FactoryBot.create(:student, course: course) }
+  let(:admin) { course.admin }
+
+  context 'as an admin' do
+    before { login_as(admin, scope: :admin) }
+
+    it 'shows link to create CR exemption when no submission exists' do
+      visit course_student_path(course, student)
+      expect(page).to have_css('#exempt-edit')
+    end
+
+    it 'does not show link to create CR exemption when submission exists' do
+      submission = FactoryBot.create(:submission, code_review: code_review, student: student)
+      visit course_student_path(course, student)
+      expect(page).to_not have_css('#exempt-edit')
+    end
+
+    it 'links to CR exemption page' do
+      visit course_student_path(course, student)
+      find("[id='exempt-edit']").click
+      expect(page).to have_content 'Code Review Exemption'
+      expect(page).to have_content student.name
+      expect(page).to have_content code_review.title
+    end
+
+    it 'allows creation of exempt passing submission' do
+      visit course_student_path(course, student)
+      find("[id='exempt-edit']").click
+      click_on "Exempt #{student.name.upcase} from #{code_review.title.upcase}"
+      expect(page).to have_content "#{code_review.title} marked as passing for #{student.name}"
+      expect(current_path).to eq course_student_path(course, student)
+      expect(page).to_not have_css('#exempt-edit')
+      expect(page).to have_content 'exempt'
+      expect(code_review.submission_for(student).meets_expectations?).to eq true
+      expect(code_review.submission_for(student).needs_review).to eq false
+      expect(code_review.submission_for(student).review_status).to eq 'pass'
+    end
+  end
+
+  context 'as a student' do
+    it 'does not show link to create CR exemption' do
+      login_as(student, scope: :student)
+      visit course_student_path(course, student)
+      expect(page).to_not have_css('#exempt-edit')
+    end
+  end
+end
+
 feature 'Creating a student submission for an internship course code review' do
   let(:student) { FactoryBot.create(:student, :with_course, :with_all_documents_signed) }
   let(:admin) { FactoryBot.create(:admin, current_course: student.course) }

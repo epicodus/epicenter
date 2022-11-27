@@ -178,6 +178,12 @@ describe Submission do
       FactoryBot.create(:failing_review, submission: submission)
       expect(submission.meets_expectations?).to eq false
     end
+
+    it 'is true if the latest review does not meet expectations but is exempt' do
+      exempt_submission = FactoryBot.create(:submission, exempt: true)
+      FactoryBot.create(:failing_review, submission: submission)
+      expect(exempt_submission.meets_expectations?).to eq true
+    end
   end
 
   describe '#for_course' do
@@ -190,6 +196,15 @@ describe Submission do
       submission_1 = FactoryBot.create(:submission, code_review: code_review_1)
       submission_2 = FactoryBot.create(:submission, code_review: code_review_2)
       expect(Submission.for_course(course_2)).to eq [submission_2]
+    end
+  end
+
+  describe 'creating exempt submission' do
+    let(:submission) { FactoryBot.create(:submission, exempt: true) }
+
+    it 'flags as passing and not needing review' do
+      expect(submission.needs_review).to eq false
+      expect(submission.review_status).to eq 'pass'
     end
   end
 end
