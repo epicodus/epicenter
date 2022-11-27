@@ -1,0 +1,19 @@
+<div class='panel panel-body'>
+  <h1><%= @code_review.course.internship_course? ? 'Career' : 'Code' %> Review Exemption</h1>
+  <h2>Exempt <strong><%= @student.name %></strong> from <strong><%= @code_review.title %></strong>?</h2>
+  <br>
+  <div class='well'>
+    <strong><em><%= @student.name %></em> has not submitted &ldquo;<em><%= @code_review.title %></em>&rdquo;.<br>
+    This form should only be used to exempt early graduates from a code review.</strong>
+  </div>
+  <br>
+  <%= form_with model: [@code_review, @student.submissions.new] do |f| %>
+    <%= f.hidden_field :exempt, value: true %>
+    <%= f.hidden_field :link, value: 'http://exempt' %>
+    <%= f.hidden_field :review_status, value: 'pass' %>
+    <%= f.hidden_field :student_id, value: @student.id %>
+    <%= f.hidden_field :needs_review, value: false %>
+    <%= f.submit "Exempt #{@student.name.upcase} from #{@code_review.title.upcase}", class: 'btn btn-primary',  data: { confirm: "#{@student.name} has not submitted '#{@code_review.title}'. Are you sure you want to pass them anyway?" } %>
+  <% end %>
+  <br>
+</div>
