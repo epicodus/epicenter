@@ -1,8 +1,8 @@
-ruby '2.7.6'
+ruby '2.7.7'
 
 source 'https://rubygems.org'
 
-gem 'rails', '~> 6.1.6'
+gem 'rails', '~> 6.1.7'
 gem 'pg'
 gem 'uglifier'
 gem 'jquery-rails'
