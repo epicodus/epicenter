@@ -141,76 +141,97 @@ describe Student do
     end
   end
 
-  describe 'updates probation in Close', :dont_stub_crm, :vcr do
+  context 'on probation change' do
+    describe 'updates in Close', :dont_stub_crm, :vcr do
+      let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
+      let(:lead_id) { ENV['EXAMPLE_CRM_LEAD_ID'] }
 
-    let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
-    let(:lead_id) { ENV['EXAMPLE_CRM_LEAD_ID'] }
+      before { allow(CrmUpdateJob).to receive(:perform_later).and_return({}) }
 
-    before do
-      allow(CrmUpdateJob).to receive(:perform_later).and_return({})
+      it 'updates teacher probation in Close when set' do
+        student = FactoryBot.create(:student, email: 'example@example.com')
+        expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PROBATION_TEACHER'] => 'Yes' })
+        student.update(probation_teacher: true)
+      end
+
+      it 'clears teacher probation in Close when unset' do
+        student = FactoryBot.create(:student, email: 'example@example.com')
+        expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PROBATION_TEACHER'] => nil })
+        student.update(probation_teacher: false)
+      end
+
+      it 'updates advisor probation in Close when set' do
+        student = FactoryBot.create(:student, email: 'example@example.com')
+        expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PROBATION_ADVISOR'] => 'Yes' })
+        student.update(probation_advisor: true)
+      end
+
+      it 'clears advisor probation in Close when unset' do
+        student = FactoryBot.create(:student, email: 'example@example.com')
+        expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PROBATION_ADVISOR'] => nil })
+        student.update(probation_advisor: false)
+      end
+
+      it 'does not update in Close when probation not changed' do
+        student = FactoryBot.create(:student, email: 'example@example.com')
+        expect(CrmUpdateJob).to_not receive(:perform_later)
+        student.update(name: 'foo')
+      end
     end
 
-    it 'updates teacher probation in Close when set' do
-      student = FactoryBot.create(:student, email: 'example@example.com')
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PROBATION_ADVISOR'] => nil, Rails.application.config.x.crm_fields['PROBATION_TEACHER'] => 'Yes' })
-      student.update(probation_teacher: true)
+    describe 'updates count' do
+      it 'updates teacher probation count only when enabled' do
+        student = FactoryBot.create(:student)
+        student.update(probation_teacher: true)
+        expect(student.probation_teacher_count).to eq 1
+        expect(student.probation_advisor_count).to eq nil
+        student.update(probation_teacher: false)
+        expect(student.probation_teacher_count).to eq 1
+        expect(student.probation_advisor_count).to eq nil        
+      end
+
+      it 'updates advisor probation count only when enabled' do
+        student = FactoryBot.create(:student)
+        student.update(probation_advisor: true)
+        expect(student.probation_teacher_count).to eq nil
+        expect(student.probation_advisor_count).to eq 1
+        student.update(probation_advisor: false)
+        expect(student.probation_teacher_count).to eq nil
+        expect(student.probation_advisor_count).to eq 1
+      end
     end
 
-    it 'clears teacher probation in Close when unset' do
-      student = FactoryBot.create(:student, email: 'example@example.com')
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PROBATION_ADVISOR'] => nil, Rails.application.config.x.crm_fields['PROBATION_TEACHER'] => nil })
-      student.update(probation_teacher: false)
-    end
-
-    it 'updates advisor probation in Close when set' do
-      student = FactoryBot.create(:student, email: 'example@example.com')
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PROBATION_ADVISOR'] => 'Yes', Rails.application.config.x.crm_fields['PROBATION_TEACHER'] => nil })
-      student.update(probation_advisor: true)
-    end
-
-    it 'clears advisor probation in Close when unset' do
-      student = FactoryBot.create(:student, email: 'example@example.com')
-      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PROBATION_ADVISOR'] => nil, Rails.application.config.x.crm_fields['PROBATION_TEACHER'] => nil })
-      student.update(probation_advisor: false)
-    end
-
-    it 'does not update in Close when probation not changed' do
-      student = FactoryBot.create(:student, email: 'example@example.com')
-      expect(CrmUpdateJob).to_not receive(:perform_later)
-      student.update(name: 'foo')
-    end
+    describe 'notifies advisor and teacher lead when total probation count above 2' do
+      let(:student) { FactoryBot.create(:student) }
+      # let(:course) { FactoryBot.create(:course, admin: FactoryBot.create(:admin)) }
+      # let(:student) { FactoryBot.create(:student, courses: [course]) }
+  
+      before do
+        allow(WebhookEmail).to receive(:new).and_return({})
+        allow_any_instance_of(CrmLead).to receive(:create_task).and_return({})
+      end
+  
+      it 'emails teacher lead when total probation count >= 3' do
+        student.update(probation_teacher_count: 1, probation_advisor_count: 1)
+        student.update(probation_advisor: true)
+        expect(WebhookEmail).to have_received(:new)
+      end
+  
+      it 'creates CRM task when total probation count >= 3' do
+        student.update(probation_teacher_count: 1, probation_advisor_count: 1)
+        expect_any_instance_of(CrmLead).to receive(:create_task)
+        student.update(probation_advisor: true)
+      end
+  
+      it 'does not email teacher or create CRM task when total probation count < 3' do
+        student.update(probation_teacher_count: 1, probation_advisor_count: 0)
+        expect_any_instance_of(CrmLead).to_not receive(:create_task)
+        student.update(probation_advisor: true)
+        expect(WebhookEmail).to_not have_received(:new)
+      end
+    end  
   end
 
-  describe 'notifies teacher and advisor on probation count' do
-    let(:course) { FactoryBot.create(:course, admin: FactoryBot.create(:admin)) }
-    let(:student) { FactoryBot.create(:student, courses: [course]) }
-
-    before do
-      allow(EmailJob).to receive(:perform_later).and_return({})
-      allow(CrmUpdateJob).to receive(:perform_later).and_return({})
-    end
-
-    it 'emails teacher when total probation count >= 3' do
-      student.update(probation_teacher_count: 3, probation_advisor_count: 1)
-      expect(EmailJob).to have_received(:perform_later).with(
-        { :from => ENV['FROM_EMAIL_REVIEW'],
-          :to => student.course.admin.email,
-          :subject => "#{student.name} Academic Warning count total: 4",
-          :text => "#{student.name} Academic Warning counts: 1 (advisor), 3 (teacher)"
-        })
-    end
-
-    it 'creates CRM task when total probation count >= 3' do
-      expect_any_instance_of(Closeio::Client).to receive(:create_task)
-      student.update(probation_teacher_count: 1, probation_advisor_count: 2)
-    end
-
-    it 'does not email teacher or create CRM task when total probation count < 3' do
-      expect_any_instance_of(Closeio::Client).to_not receive(:create_task)
-      student.update(probation_teacher_count: 2, probation_advisor_count: 0)
-      expect(EmailJob).to_not have_received(:perform_later)
-    end
-  end
 
   describe '#with_activated_accounts' do
     it 'returns all students who have activated their accounts' do
