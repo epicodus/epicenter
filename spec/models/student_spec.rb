@@ -201,33 +201,19 @@ describe Student do
       end
     end
 
-    describe 'notifies advisor and teacher lead when total probation count above 2' do
+    describe 'calls webhook to handle probation count notifications' do
       let(:student) { FactoryBot.create(:student) }
-      # let(:course) { FactoryBot.create(:course, admin: FactoryBot.create(:admin)) }
-      # let(:student) { FactoryBot.create(:student, courses: [course]) }
+
+      before { allow(WebhookProbation).to receive(:new).and_return({}) }
   
-      before do
-        allow(WebhookEmail).to receive(:new).and_return({})
-        allow_any_instance_of(CrmLead).to receive(:create_task).and_return({})
+      it 'calls webhook when probation enabled' do
+        student.update(probation_advisor: true)
+        expect(WebhookProbation).to have_received(:new)
       end
   
-      it 'emails teacher lead when total probation count >= 3' do
-        student.update(probation_teacher_count: 1, probation_advisor_count: 1)
-        student.update(probation_advisor: true)
-        expect(WebhookEmail).to have_received(:new)
-      end
-  
-      it 'creates CRM task when total probation count >= 3' do
-        student.update(probation_teacher_count: 1, probation_advisor_count: 1)
-        expect_any_instance_of(CrmLead).to receive(:create_task)
-        student.update(probation_advisor: true)
-      end
-  
-      it 'does not email teacher or create CRM task when total probation count < 3' do
-        student.update(probation_teacher_count: 1, probation_advisor_count: 0)
-        expect_any_instance_of(CrmLead).to_not receive(:create_task)
-        student.update(probation_advisor: true)
-        expect(WebhookEmail).to_not have_received(:new)
+      it 'does not call webhook probation disabled' do
+        student.update(probation_advisor: false)
+        expect(WebhookProbation).to_not have_received(:new)
       end
     end  
   end

@@ -533,29 +533,32 @@ private
     saved_change_to_probation_advisor? || saved_change_to_probation_teacher?
   end
 
-  def probation_count_above_2?
-    probation_enabled = saved_change_to_probation_advisor_count? || saved_change_to_probation_teacher_count?
-    probation_count_total = probation_advisor_count.to_i + probation_teacher_count.to_i
-    probation_enabled && probation_count_total >= 3
-  end
-
   def handle_probation
-    if saved_change_to_probation_advisor?
-      self.probation_advisor_count = probation_advisor_count.to_i + 1 if probation_advisor # only when enabled
-      crm_lead.update({ Rails.application.config.x.crm_fields['PROBATION_ADVISOR'] => probation_advisor ? 'Yes' : nil })
+    if saved_change_to_probation_advisor? && probation_advisor == true
+      set_probation_in_crm('advisor', true)
+      update(probation_advisor_count: probation_advisor_count.to_i + 1)
+      send_probation_count_webhook
+    elsif saved_change_to_probation_advisor
+      set_probation_in_crm('advisor', false)
+    elsif saved_change_to_probation_teacher? && probation_teacher == true
+      set_probation_in_crm('teacher', true)
+      update(probation_teacher_count: probation_teacher_count.to_i + 1)
+      send_probation_count_webhook
     elsif saved_change_to_probation_teacher?
-      self.probation_teacher_count = probation_teacher_count.to_i + 1 if probation_teacher # only when enabled
-      crm_lead.update({ Rails.application.config.x.crm_fields['PROBATION_TEACHER'] => probation_teacher ? 'Yes' : nil })
+      set_probation_in_crm('teacher', false)
     end
-    save
-    send_probation_count_notifications if probation_count_above_2?
   end
 
-  def send_probation_count_notifications # notify advisor & teacher lead if probation count is above 2
-    crm_lead.create_task("Academic Warning count: #{probation_advisor_count.to_i + probation_teacher_count.to_i}") # notify advisor
-    subject = "#{name} Academic Warning count total: #{probation_advisor_count.to_i + probation_teacher_count.to_i}"
-    body = "#{name} Academic Warning counts: #{probation_advisor_count.to_i} (advisor), #{probation_teacher_count.to_i} (teacher)"
-    WebhookEmail.new(email: ENV['TEACHER_LEAD_EMAIL'], subject: subject, body: body) # notify teacher lead
+  def set_probation_in_crm(team, enabled)
+    advisor_probation_field = Rails.application.config.x.crm_fields['PROBATION_ADVISOR']
+    teacher_probation_field = Rails.application.config.x.crm_fields['PROBATION_TEACHER']
+    field = team == 'advisor' ? advisor_probation_field : teacher_probation_field
+    value = enabled == true ? 'Yes' : nil
+    crm_lead.update({ field => value })
+  end
+
+  def send_probation_count_webhook
+    WebhookProbation.new(email: email, advisor: probation_advisor_count.to_i, teacher: probation_teacher_count.to_i) # notify about probation count
   end
 
   def cohorts_updated?
