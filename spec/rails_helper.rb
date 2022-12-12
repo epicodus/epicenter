@@ -67,9 +67,6 @@ VCR.configure do |config|
   config.filter_sensitive_data('<COMPLAINT_DISCLOSURE_WA_TEMPLATE_ID>') { ENV['COMPLAINT_DISCLOSURE_WA_TEMPLATE_ID'] }
   config.filter_sensitive_data('<ENROLLMENT_AGREEMENT_TEMPLATE_ID>') { ENV['ENROLLMENT_AGREEMENT_TEMPLATE_ID'] }
   config.filter_sensitive_data('<CLOSE_IO_API_KEY>') { ENV['CLOSE_IO_API_KEY'] }
-  config.filter_sensitive_data('<ZAPIER_PAYMENT_WEBHOOK_URL>') { ENV['ZAPIER_PAYMENT_WEBHOOK_URL'] }
-  config.filter_sensitive_data('<ZAPIER_INVITE_WEBHOOK_URL>') { ENV['ZAPIER_INVITE_WEBHOOK_URL'] }
-  config.filter_sensitive_data('<ZAPIER_CREATE_TASK_WEBHOOK_URL>') { ENV['ZAPIER_CREATE_TASK_WEBHOOK_URL'] }
   config.filter_sensitive_data('<PLAID_PUBLIC_KEY>') { ENV['PLAID_PUBLIC_KEY'] }
   config.filter_sensitive_data('<PLAID_SECRET>') { ENV['PLAID_SECRET'] }
   config.filter_sensitive_data('<PLAID_CLIENT_ID>') { ENV['PLAID_CLIENT_ID'] }
@@ -88,6 +85,10 @@ VCR.configure do |config|
   config.filter_sensitive_data('<PUBLIC_KEY>') { ENV['PUBLIC_KEY'] }
   config.filter_sensitive_data('<ZAPIER_SECRET_TOKEN>') { ENV['ZAPIER_SECRET_TOKEN'] }
   config.filter_sensitive_data('<OTP_SECRET_ENCRYPTION_KEY>') { ENV['OTP_SECRET_ENCRYPTION_KEY'] }
+  config.filter_sensitive_data('<ZAPIER_PAYMENT_WEBHOOK_URL>') { ENV['ZAPIER_PAYMENT_WEBHOOK_URL'] }
+  config.filter_sensitive_data('<ZAPIER_INVITE_WEBHOOK_URL>') { ENV['ZAPIER_INVITE_WEBHOOK_URL'] }
+  config.filter_sensitive_data('<ZAPIER_EMAIL_WEBHOOK_URL>') { ENV['ZAPIER_EMAIL_WEBHOOK_URL'] }
+  config.filter_sensitive_data('<ZAPIER_PROBATION_WEBHOOK_URL>') { ENV['ZAPIER_PROBATION_WEBHOOK_URL'] }
 end
 
 Shoulda::Matchers.configure do |config|
