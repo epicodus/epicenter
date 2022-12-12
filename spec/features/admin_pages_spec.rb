@@ -468,6 +468,38 @@ feature 'setting academic probation', :js, :stub_mailgun do
     expect(page).to have_content 'Teacher warnings: (1 time)'
     expect(page).to have_content 'Advisor warnings: (1 time)'
   end
+
+  describe 'notification' do
+    before do
+      allow(WebhookEmail).to receive(:new).and_return({})
+      allow_any_instance_of(CrmLead).to receive(:create_task).and_return({})
+    end
+
+    it 'is sent to advisor and teacher when teacher probation enabled' do
+      visit student_courses_path(student)
+      find(:css, "#student_probation_teacher").set(true)
+      expect_any_instance_of(CrmLead).to receive(:create_task).with("Student placed on teacher probation by #{admin.name}")
+      expect(WebhookEmail).to receive(:new)
+      accept_js_alert
+    end
+
+    it 'is sent to advisor only when teacher probation disabled' do
+      student.update_columns(probation_teacher: true)
+      visit student_courses_path(student)
+      find(:css, "#student_probation_teacher").set(false)
+      expect_any_instance_of(CrmLead).to receive(:create_task).with("Student removed from teacher probation by #{admin.name}")
+      expect(WebhookEmail).to_not receive(:new)
+      accept_js_alert
+    end
+
+    it 'is not sent when advisor probation enabled' do
+      visit student_courses_path(student)
+      find(:css, "#student_probation_advisor").set(true)
+      expect_any_instance_of(CrmLead).to_not receive(:create_task)
+      expect(WebhookEmail).to_not receive(:new)
+      accept_js_alert
+    end
+  end
 end
 
 feature 'student roster page' do

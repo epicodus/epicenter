@@ -87,17 +87,18 @@ private
         redirect_to student_payments_path(@student), notice: "Upfront tuition total for #{@student.name} has been updated to $#{@student.upfront_amount / 100}. Remaining upfront amount owed is $#{@student.upfront_amount_owed / 100}."
       end
       if student_params[:probation_teacher]
-        if @student.probation_teacher
-          @student.probation_teacher_count = (@student.probation_teacher_count || 0) + 1
-          @student.save
+        if @student.probation_teacher # only when enabled
+          @student.crm_lead.create_task("Student placed on teacher probation by #{current_admin.name}") # notify advisor
+          subject = "Teacher probation enabled for #{@student.name}"
+          body = "Teacher probation enabled for #{@student.name} by #{current_admin.name}.<br>Reminder: send academic probation email and copy advisor"
+          WebhookEmail.new(email: @student.course.admin.email, subject: subject, body: body) # notify teacher
           redirect_back(fallback_location: student_courses_path(@student), alert: "#{@student.name} has been placed on teacher warning!")
         else
+          @student.crm_lead.create_task("Student removed from teacher probation by #{current_admin.name}") # notify advisor
           redirect_back(fallback_location: student_courses_path(@student), notice: "#{@student.name} has been removed from teacher warning! :)")
         end
       elsif student_params[:probation_advisor]
         if @student.probation_advisor
-          @student.probation_advisor_count = (@student.probation_advisor_count || 0) + 1
-          @student.save
           redirect_back(fallback_location: student_courses_path(@student), alert: "#{@student.name} has been placed on advisor warning!")
         else
           redirect_back(fallback_location: student_courses_path(@student), notice: "#{@student.name} has been removed from advisor warning! :)")
