@@ -66,19 +66,32 @@ class Student < User
     student
   end
 
-  def total_attendance_score
-    absences_penalty = attendance_records_for(:absent, courses.previous_courses.non_internship_courses.first, courses.previous_courses.non_internship_courses.last)
-    tardies_penalty = attendance_records_for(:tardy, courses.previous_courses.non_internship_courses.first, courses.previous_courses.non_internship_courses.last) * TARDY_WEIGHT
-    left_earlies_penalty = attendance_records_for(:left_early, courses.previous_courses.non_internship_courses.first, courses.previous_courses.non_internship_courses.last) * TARDY_WEIGHT
-    number_of_days = courses.previous_courses.non_internship_courses.map(&:class_days).flatten.count
-    100 - (((absences_penalty + tardies_penalty + left_earlies_penalty) / number_of_days) * 100)
+  def attendance_records_for(status, start_course=nil, end_course=nil)
+    attributes = { tardy: { tardy: true },
+                   left_early: { left_early: true },
+                   on_time: { tardy: false, left_early: false },
+                   all: {}
+                 }[status]
+    if status == :all
+      results = attendance_records.where(attributes)
+    else
+      results = attendance_records.all_before_2021_and_paired_only_starting_2021.where(attributes)
+    end
+    if start_course
+      results = results.where("date between ? and ?", start_course.start_date, end_course.try(:end_date) || start_course.end_date)
+    end
+    if status == :absent
+      past_class_days = start_course ? days_so_far(start_course, end_course || start_course) : days_since_start_of_program
+      absences = past_class_days - results.map {|ar| ar.date}
+      absences_count = absences.count + absences.select {|date| date.sunday?}.count
+      [0, absences_count].max
+    else
+      results.count
+    end
   end
 
-  def attendance_score(filtered_course)
-    absences_penalty = attendance_records_for(:absent, filtered_course)
-    tardies_penalty = attendance_records_for(:tardy, filtered_course) * TARDY_WEIGHT
-    left_earlies_penalty = attendance_records_for(:left_early, filtered_course) * TARDY_WEIGHT
-    100 - (((absences_penalty + tardies_penalty + left_earlies_penalty) / filtered_course.number_of_days_since_start) * 100)
+  def total_attendance_score
+    100 - ((absences_cohort / days_since_start_of_program.count) * 100)
   end
 
   def absences(filtered_course)
@@ -89,11 +102,11 @@ class Student < User
   end
 
   def absences_cohort
-    cohort_courses = Course.where(id: course.cohort.courses & courses).order(:start_date)
-    absences_penalty = attendance_records_for(:absent, cohort_courses.first, cohort_courses.last)
-    tardies_penalty = attendance_records_for(:tardy, cohort_courses.first, cohort_courses.last) * TARDY_WEIGHT
-    left_earlies_penalty = attendance_records_for(:left_early, cohort_courses.first, cohort_courses.last) * TARDY_WEIGHT
-    absences_penalty + tardies_penalty + left_earlies_penalty
+    (latest_cohort.try(:courses) || courses).current_and_previous_courses.non_internship_courses.sum { |c| absences(c) }
+  end
+
+  def allowed_absences
+    course.parttime? ? 20 : 10 # for this purpose PT is intro & full-stack
   end
 
   def solos(filtered_course = nil)
@@ -105,6 +118,10 @@ class Student < User
       filtered_records = solo_records.where("date between ? and ?", cohort_courses.first.start_date, cohort_courses.last.end_date)
     end
     filtered_records.reject {|ar| ar.date.friday?}.count
+  end
+
+  def days_since_start_of_program
+    (latest_cohort.try(:courses) || courses).non_internship_courses.map(&:class_days).flatten.select {|day| day <= Time.zone.now.to_date}
   end
 
   def enrolled_fulltime_cohorts
@@ -334,30 +351,6 @@ class Student < User
     passed
   end
 
-  def attendance_records_for(status, start_course=nil, end_course=nil)
-    attributes = { tardy: { tardy: true },
-                   left_early: { left_early: true },
-                   on_time: { tardy: false, left_early: false },
-                   all: {}
-                 }[status]
-    if status == :all
-      results = attendance_records.where(attributes)
-    else
-      results = attendance_records.all_before_2021_and_paired_only_starting_2021.where(attributes)
-    end
-    if start_course
-      results = results.where("date between ? and ?", start_course.start_date, end_course.try(:end_date) || start_course.end_date)
-    end
-    if status == :absent
-      past_class_days = start_course ? days_so_far(start_course, end_course || start_course) : days_since_start_of_program
-      absences = past_class_days - results.map {|ar| ar.date}
-      absences_count = absences.count + absences.select {|date| date.sunday?}.count
-      [0, absences_count].max
-    else
-      results.count
-    end
-  end
-
   def find_rating(internship)
     ratings.where(internship_id: internship.id).first
   end
@@ -453,10 +446,6 @@ private
   def days_so_far(start_course=nil, end_course=nil)
     filtered_courses = start_course.nil? ? courses : courses.where('start_date >= ? AND end_date <= ?', start_course.start_date, end_course.end_date)
     filtered_courses.non_internship_courses.map(&:class_days).flatten.select {|day| day <= Time.zone.now.to_date}
-  end
-
-  def days_since_start_of_program
-    courses.non_internship_courses.map(&:class_days).flatten.select {|day| day <= Time.zone.now.to_date}
   end
 
   def next_course

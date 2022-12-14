@@ -4,44 +4,18 @@
   <% unless @course.internship_course? %>
     <% if params[:attendance] == "true" %>
       <td>
-        <p class=<%= student.attendance_score(@course) <= 92 ? "text-danger" : "" %>>
-        <% if student.attendance_score(@course).nan? %>
-          No records yet
-        <% else %>
-          <%= number_to_percentage(student.attendance_score(@course), precision: 0) %>
-        <% end %>
-        </p>
-      </td>
-      <td>
-        <p class=<%= student.attendance_score(@course) <= 92 ? "text-danger" : "" %>>
-        <% if student.attendance_score(@course).nan? %>
-          No records yet
-        <% else %>
-          <%= student.absences(@course) %>
-        <% end %>
-        </p>
-      </td>
-      <td>
-        <p class=<%= student.attendance_score(@course) <= 92 ? "text-danger" : "" %>>
-        <% if student.course.try(:cohorts).try(:any?) %>
+        <p class=<%= student.total_attendance_score <= 92 ? "text-danger" : "" %>>
           <%= student.absences_cohort %>
-        <% else %>
-          No records yet
-        <% end %>
         </p>
       </td>
     <% end %>
 
     <% if params[:probation] == "true" %>
-      <td>
-        <%= student.probation_advisor_count.to_i + student.probation_teacher_count.to_i %>
-      </td>
+      <td><%= student.probation_advisor_count.to_i + student.probation_teacher_count.to_i %></td>
     <% end %>
 
     <% if params[:payment_plans] == "true" %>
-      <td>
-        <%= student.plan.try(:name) %>
-      </td>
+      <td><%= student.plan.try(:name) %></td>
     <% end %>
   <% end %>
 

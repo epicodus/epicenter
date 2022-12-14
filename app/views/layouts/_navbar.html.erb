@@ -106,6 +106,9 @@
           <li><%= link_to 'Sign out', destroy_company_session_path, data: { method: :delete } %></li>
         </ul>
       <% end %>
+      <% if request.base_url.try('include?', 'staging') %>
+        <p class='text-danger'><strong>STAGING SERVER &mdash; FOR TESTING ONLY</strong></p>
+      <% end %>
     </div>
   </div>
 </nav>

@@ -16,14 +16,14 @@ task :send_solo_notifications => [:environment] do
         if solo_students.any?
           output("#{'Solo'.pluralize(solo_students.count)} today:", 'h3')
           solo_students.reorder(:name).each do |student|
-            output(student.name, 'br')
+            output(student.name, 'br') unless student.email.include?('example.com') || student.email.include?('epicodus.com')
           end
         end
         if students_who_claimed_extra_pairs.any?
           output("#{students_who_claimed_extra_pairs.count} #{'student'.pluralize(students_who_claimed_extra_pairs.count)} claimed extra pair(s) today:", 'h3')
           students_who_claimed_extra_pairs.reorder(:name).each do |student|
             orphan_pairs = student.orphan_pairs_today.where.not(name: '* ATTENDANCE CORRECTION *')
-            output(student.name + ' claimed ' + orphan_pairs.map {|s| s.name}.join(' & '), 'br')
+            output(student.name + ' claimed ' + orphan_pairs.map {|s| s.name}.join(' & '), 'br') unless student.email.include?('example.com') || student.email.include?('epicodus.com')
             end
         end
         output "<a href='#{Rails.application.routes.url_helpers.root_url.delete_suffix('/')}#{Rails.application.routes.url_helpers.course_day_attendance_records_path(course, day: today.to_s)}'>View in Epicenter</a>"

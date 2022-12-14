@@ -28,7 +28,7 @@ feature 'viewing cohort on course list page' do
     student = FactoryBot.create(:student, :with_pt_intro_cohort)
     login_as(student, scope: :student)
     visit student_courses_path(student)
-    expect(page).to have_content "Cohort: #{student.parttime_cohort.description}"
+    expect(page).to have_content student.parttime_cohort.description
   end
 
   scenario 'as an admin' do

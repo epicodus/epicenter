@@ -17,9 +17,7 @@
             <th>Student</th>
             <% unless @course.internship_course? %>
               <% if params[:attendance] == "true" %>
-                <th>Attendance</th>
-                <th>Course absences</th>
-                <th>Cohort absences</th>
+                <th>Program absences</th>
               <% end %>
               <% if params[:probation] == "true" %>
                 <th>Academic Warnings</th>

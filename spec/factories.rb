@@ -164,28 +164,34 @@ FactoryBot.define do
 
     factory :intro_part_time_c_react_course do
       association :language, factory: :intro_part_time_c_react_language
+      parttime { true }
     end
 
     factory :js_part_time_c_react_course do
       association :language, factory: :js_part_time_c_react_language
+      parttime { true }
     end
 
     factory :c_part_time_c_react_course do
       association :language, factory: :c_part_time_c_react_language
+      parttime { true }
     end
 
     factory :react_part_time_c_react_course do
       association :language, factory: :react_part_time_c_react_language
+      parttime { true }
     end
 
     factory :seattle_part_time_course do
       association :language, factory: :intro_part_time_c_react_language
       association :office, factory: :seattle_office
+      parttime { true }
     end
 
     factory :portland_part_time_course do
       association :language, factory: :intro_part_time_c_react_language
       association :office, factory: :portland_office
+      parttime { true }
     end
 
     factory :internship_course do
@@ -690,7 +696,7 @@ FactoryBot.define do
     end
 
     trait :with_pt_c_react_cohort do
-      association :cohort, factory: :part_time_c_react_cohort
+      association :cohort, factory: :pt_c_react_cohort
       before(:create) do |student|
         student.courses << student.cohort.courses
       end

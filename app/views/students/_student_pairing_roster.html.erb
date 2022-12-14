@@ -1,0 +1,24 @@
+    <div class="row">
+    <div class="col-md-6">
+      <h3>Pairing Roster</h3>
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <p class="alert">Number of times signed in solo in this course: &nbsp;<%= student.solos(course) %></p>
+          <table class="table table-hover">
+            <thead>
+              <th>Name</th>
+              <th># of times paired</th>
+            </thead>
+            <tbody>
+              <% Student.where(id: student.pair_ids(course)).where.not(name: '* ATTENDANCE CORRECTION *').sort { |a,b| a.pair_ids(course).count(student.id) <=> b.pair_ids(course).count(student.id) }.each do |s| %>
+                <tr id="pairing-roster-row" data-content="<%= s.pair_ids(@course).count(student.id) %>">
+                  <td class="col-md-4"><%= s.name %></td>
+                  <td class="col-md-2"><%= s.pair_ids(@course).count(student.id) %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
