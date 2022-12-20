@@ -7,7 +7,6 @@ class Plan < ApplicationRecord
   scope :parttime, -> { where(parttime: true) }
   scope :fulltime, -> { where(parttime: nil) }
   scope :intro, -> { where(short_name: 'intro') }
-  scope :fulltime_upfront, -> { where(short_name: 'fulltime-upfront') }
 
   has_many :students
   validates :name, presence: true
