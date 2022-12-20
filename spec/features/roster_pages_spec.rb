@@ -5,7 +5,7 @@ feature "Viewing roster page" do
   end
 
   scenario "as a student" do
-    student = FactoryBot.create(:student)
+    student = FactoryBot.create(:student, :with_all_documents_signed)
     login_as(student, scope: :student)
     visit roster_path
     expect(page).to have_content "need to sign in"

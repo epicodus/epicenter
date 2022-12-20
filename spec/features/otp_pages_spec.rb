@@ -1,8 +1,8 @@
 feature '2fa enrollment' do
-  let(:student) { FactoryBot.create(:student) }
+  let(:student) { FactoryBot.create(:student, :with_all_documents_signed) }
   let(:company) { FactoryBot.create(:company) }
   let(:admin) { FactoryBot.create(:admin, :with_course) }
-  let(:student_with_2fa) { FactoryBot.create(:student, :with_2fa) }
+  let(:student_with_2fa) { FactoryBot.create(:student, :with_2fa, :with_all_documents_signed) }
   let(:company_with_2fa) { FactoryBot.create(:company, :with_2fa) }
   let(:admin_with_2fa) { FactoryBot.create(:admin, :with_course, :with_2fa) }
 

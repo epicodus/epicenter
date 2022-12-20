@@ -1900,7 +1900,7 @@ end
     end
   end
 
-  describe '.invite', :dont_stub_crm do
+  describe '.invite', :dont_stub_crm, :vcr do
     let(:cohort) { FactoryBot.create(:ft_full_cohort) }
 
     before { allow_any_instance_of(CrmLead).to receive(:cohort).and_return(cohort) }

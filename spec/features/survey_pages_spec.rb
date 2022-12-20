@@ -8,7 +8,7 @@ feature 'Adding survey to code reviews' do
   end
 
   scenario 'as a student cannot view form' do
-    student = FactoryBot.create(:student)
+    student = FactoryBot.create(:student, :with_all_documents_signed)
     login_as(student, scope: :student)
     visit new_survey_path
     expect(page).to have_content 'need to sign in'

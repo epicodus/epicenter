@@ -395,7 +395,7 @@ feature 'manually changing starting cohort' do
   end
 end
 
-feature 'setting academic probation', :js, :stub_mailgun do
+feature 'setting academic probation', :js, :stub_mailgun, :vcr do
   let(:student) { FactoryBot.create(:student, :with_course) }
   let(:admin) { student.course.admin }
 
@@ -630,7 +630,7 @@ feature 'student roster page' do
 end
 
 feature 'exporting course students emails to a file' do
-  let(:student) { FactoryBot.create(:student, :with_course) }
+  let(:student) { FactoryBot.create(:student, :with_all_documents_signed, :with_course) }
   let(:admin) { student.course.admin }
 
   context 'as an admin' do

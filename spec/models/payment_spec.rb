@@ -23,7 +23,7 @@ describe Payment do
     end
   end
 
-  describe 'checks refund date' do
+  describe 'checks refund date', :stripe_mock do
     let(:student) { FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card) }
 
     it 'should not check refund date on stripe payment', :stripe_mock do
@@ -177,7 +177,7 @@ describe Payment do
     end
   end
 
-  describe 'sets payment category', :stub_mailgun do
+  describe 'sets payment category', :stripe_mock, :stub_mailgun do
     let(:student) { FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com') }
 
     it 'calculates category on payment' do
@@ -415,7 +415,7 @@ describe Payment do
       expect(WebhookJob).to have_received(:perform_later).with({ method: nil, endpoint: ENV['ZAPIER_PAYMENT_WEBHOOK_URL'], payload: PaymentSerializer.new(payment).as_json.merge({ event_name: 'payment' }) })
     end
 
-    it 'posts webhook after refund issued', :stub_mailgun do
+    it 'posts webhook after refund issued', :stub_mailgun, :stripe_mock do
       student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com')
       payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 600_00)
       expect(WebhookJob).to receive(:perform_later).with({ method: nil, endpoint: ENV['ZAPIER_PAYMENT_WEBHOOK_URL'], payload: PaymentSerializer.new(payment).as_json.merge({ event_name: 'refund', refund_amount: 500, start_date: student.course.start_date.to_s, created_at: payment.created_at.to_date.to_s, updated_at: payment.updated_at.to_date.to_s }) })

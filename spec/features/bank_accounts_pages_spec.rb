@@ -14,14 +14,14 @@ feature 'Creating a bank account manually' do
       select 'Individual'
     end
 
-    scenario 'with valid information', :vcr, :js, :stripe_mock do
+    scenario 'with valid information', :stripe_mock do
       fill_in 'Routing number', with: '110000000'
       fill_in 'Bank account number', with: '000123456789'
       click_on 'Verify bank account'
       expect(page).to have_content '2-3 business days'
     end
 
-    scenario 'with missing account number', :vcr, :js do
+    scenario 'with missing account number' do
       fill_in 'Routing number', with: '110000000'
       fill_in 'Bank account number', with: ' '
       click_on 'Verify bank account'

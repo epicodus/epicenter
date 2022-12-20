@@ -288,7 +288,7 @@ feature 'Student signs in with GitHub' do
 end
 
 feature 'Student signs in with 2fa enabled' do
-  let(:student_with_2fa) { FactoryBot.create(:student, :with_2fa) }
+  let(:student_with_2fa) { FactoryBot.create(:student, :with_2fa, :with_all_documents_signed) }
 
   scenario 'unsuccessfully from root sign-in page when 2fa required but not entered' do
     visit root_path
@@ -417,7 +417,7 @@ feature "Student visits homepage after logged in" do
   end
 
   it "show cohort name and cohort absences when cohort listed" do
-    student = FactoryBot.create(:student, :with_pt_intro_cohort)
+    student = FactoryBot.create(:student, :with_all_documents_signed, :with_pt_intro_cohort)
     sign_in_as(student)
     visit student_courses_path(student)
     expect(page).to have_content "Cohort:"
@@ -491,7 +491,7 @@ feature 'Guest not signed in' do
 end
 
 feature 'unenrolled student signs in' do
-  let(:student) { FactoryBot.create(:student, courses: []) }
+  let(:student) { FactoryBot.create(:student, :with_all_documents_signed, courses: []) }
 
   before { login_as(student, scope: :student) }
 

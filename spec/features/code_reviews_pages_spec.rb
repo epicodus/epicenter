@@ -356,7 +356,7 @@ feature 'creating a code review' do
   end
 
   scenario 'as a student' do
-    student = FactoryBot.create(:student)
+    student = FactoryBot.create(:student, :with_all_documents_signed)
     login_as(student, scope: :student)
     visit new_course_code_review_path(course)
     expect(page).to have_content 'You are not authorized to access this page.'
@@ -454,7 +454,7 @@ feature 'editing a code review' do
   end
 
   scenario 'as a student' do
-    student = FactoryBot.create(:student, courses: [code_review.course])
+    student = FactoryBot.create(:student, :with_all_documents_signed, courses: [code_review.course])
     login_as(student, scope: :student)
     visit edit_course_code_review_path(code_review.course, code_review)
     expect(page).to have_content 'You are not authorized to access this page.'

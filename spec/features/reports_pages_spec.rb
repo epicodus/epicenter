@@ -107,7 +107,7 @@ feature 'teacher code_review report' do
   end
 
   context 'visiting as a student' do
-    let(:student) { FactoryBot.create(:student) }
+    let(:student) { FactoryBot.create(:student, :with_all_documents_signed) }
     before { login_as(student, scope: :student) }
 
     it 'is not authorized to view reports index' do

@@ -8,7 +8,7 @@ feature 'visiting the day attendance records index page' do
   end
 
   context 'as a student' do
-    let(:student) { FactoryBot.create(:student) }
+    let(:student) { FactoryBot.create(:student, :with_all_documents_signed) }
     before { login_as(student, scope: :student) }
 
     scenario 'can not visit the page' do
