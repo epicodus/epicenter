@@ -54,7 +54,7 @@
             <h4>Attendance: <%= number_to_percentage(@student.attendance_score(@course), precision: 0) %></h4>
           <% end %>
           <h4><%= @course.start_date.strftime('%B %d') %> to <%= @course.end_date.strftime('%B %d') %></h4>
-          <% if @student.submissions.any? %>
+          <% if current_student && @student.submissions.any? %>
             <p><%= link_to 'Request teacher meeting', new_course_meeting_path(@student.course) %></p>
           <% end %>  
         </div>

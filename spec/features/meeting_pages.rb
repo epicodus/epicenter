@@ -110,6 +110,11 @@ feature 'requesting a meeting' do
       accept_js_alert
       expect(page).to_not have_content 'Student meeting request notes'
     end
+
+    it 'does not show meeting request link' do
+      visit course_student_path(course, student)
+      expect(page).to_not have_content 'Request teacher meeting'
+    end
   end
 
   context 'visiting as a company' do
