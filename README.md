@@ -22,7 +22,7 @@ Contributions from students, alumni, and other schools are welcome! If you'd lik
 1. `cp .env.example .env`
 1. Update the example values in `.env` as needed
 1. `bundle`
-1. `rake db:create && rake db:schema:load && rake db:seed`
+1. `rails db:create && rails db:schema:load && rails db:seed`
 1. `rails s` and visit [localhost:3000](http://localhost:3000)
   1. to sign in as an admin, use: `admin1@example.com` and `password`
   1. to sign in as a student, use: `student1@example.com` and `password`
