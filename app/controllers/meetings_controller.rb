@@ -2,6 +2,7 @@ class MeetingsController < ApplicationController
   before_action { redirect_to root_path, alert: 'You are not authorized to access this page.' unless current_student }
 
   def new
+    @student = current_student
     @course = Course.find(params[:course_id])
   end
 
