@@ -501,7 +501,7 @@ FactoryBot.define do
     end
 
     factory :upfront_plan do
-      short_name { 'fulltime-upfront' }
+      short_name { 'upfront' }
       name { 'Up-Front Discount ($8,700 up-front)' }
       close_io_description { '2021 - Up-Front Discount ($8,700 up-front)' }
       upfront { true }

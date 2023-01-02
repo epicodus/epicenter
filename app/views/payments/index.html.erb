@@ -93,10 +93,12 @@
         <div class="col-md-6">
           <div class="panel panel-default">
             <div class="panel-body payment-plan-details">
-              <%= form_for @student do |f| %>
-                <%= f.hidden_field :plan_id, value: Plan.active.upfront.where(upfront_amount: 870000).first.try(:id) %>
-                <%= f.submit 'Up-Front Discount', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the up-front discount?" } %>
-                <p><br><strong>Up-Front Discount: $8,700</strong><br>Pay $8,700 to reserve your seat in class.</p>
+              <% if Plan.active.upfront.any? %>
+                <%= form_for @student do |f| %>
+                  <%= f.hidden_field :plan_id, value: Plan.active.upfront.first.id %>
+                  <%= f.submit 'Up-Front Discount', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the up-front discount?" } %>
+                  <p><br><strong>Up-Front Discount: <%= number_to_currency(Plan.active.upfront.first.upfront_amount/100, precision: 0) %></strong><br>Pay <%= number_to_currency(Plan.active.upfront.first.upfront_amount/100, precision: 0) %> to reserve your seat in class.</p>
+                <% end %>
               <% end %>
             </div>
           </div>
@@ -104,10 +106,12 @@
         <div class="col-md-6">
           <div class="panel panel-default">
             <div class="panel-body payment-plan-details">
-              <%= form_for @student do |f| %>
-                <%= f.hidden_field :plan_id, value: Plan.active.standard.first.try(:id) %>
-                <%= f.submit 'Standard Tuition', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the standard plan? This cannot be changed later, and you will not be able to receive the up-front discount." } %>
-                <p><br><strong>Standard Tuition: $11,700</strong><br>Pay $100 to reserve your seat in class. Pay the remaining $11,600 before class starts.</p>
+              <% if Plan.active.standard.any? %>
+                <%= form_for @student do |f| %>
+                  <%= f.hidden_field :plan_id, value: Plan.active.standard.first.id %>
+                  <%= f.submit 'Standard Tuition', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the standard plan? This cannot be changed later, and you will not be able to receive the up-front discount." } %>
+                  <p><br><strong>Standard Tuition: <%= number_to_currency(Plan.active.standard.first.student_portion/100, precision: 0) %></strong><br>Pay $100 to reserve your seat in class. Pay the remaining <%= number_to_currency(Plan.active.standard.first.student_portion/100 - 100, precision: 0) %> before class starts.</p>
+                <% end %>
               <% end %>
             </div>
           </div>
@@ -117,10 +121,12 @@
         <div class="col-md-6">
           <div class="panel panel-default">
             <div class="panel-body payment-plan-details">
-              <%= form_for @student do |f| %>
-                <%= f.hidden_field :plan_id, value: Plan.active.loan.first.try(:id) %>
-                <%= f.submit 'Loan/Payment Plan', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the loan plan? You need to be approved for your loan within one week of paying your deposit to fully reserve your seat." } %>
-                <p><br><strong>Loan/Payment Plan:</strong><br>Pay $100 to reserve your seat in class. Before class starts, get approved with one of our financing partners, <a href="https://partner.ascentfunding.com/epicodus" target=_blank>Ascent</a> and <a href="https://www.climbcredit.com/apply/epicodus" target=_blank>Climb</a>. Pay as little as $0/month during class and as little as $176.33/month after graduating. See our <a href='https://www.epicodus.com/financial-aid' target='_blank'>financial aid</a> information for details.</p>
+              <% if Plan.active.loan.any? %>
+                <%= form_for @student do |f| %>
+                  <%= f.hidden_field :plan_id, value: Plan.active.loan.first.id %>
+                  <%= f.submit 'Loan/Payment Plan', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the loan plan? You need to be approved for your loan within one week of paying your deposit to fully reserve your seat." } %>
+                  <p><br><strong>Loan/Payment Plan:</strong><br>Pay $100 to reserve your seat in class. Before class starts, get approved with one of our financing partners, <a href="https://partner.ascentfunding.com/epicodus" target=_blank>Ascent</a> and <a href="https://www.climbcredit.com/apply/epicodus" target=_blank>Climb</a>. Pay as little as $0/month during class and as little as $176.33/month after graduating. See our <a href='https://www.epicodus.com/financial-aid' target='_blank'>financial aid</a> information for details.</p>
+                <% end %>
               <% end %>
             </div>
           </div>
@@ -128,10 +134,12 @@
         <div class="col-md-6">
           <div class="panel panel-default">
             <div class="panel-body payment-plan-details">
-              <%= form_for @student do |f| %>
-                <%= f.hidden_field :plan_id, value: Plan.active.isa.first.try(:id) %>
-                <%= f.submit 'Income Share Agreement', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the income share agreement?" } %>
-                <p><br><strong>Income Share Agreement:</strong><br>Pay $100 to reserve your seat in class. Let your advisor know you’d like to apply for the ISA. Before class starts, get approved with our financing partner, <a href='https://epicodus.mia-share.com/isa-flyer' target='_blank'>Mia Share</a>. Pay nothing until you find your first job after graduation and then 9.8% of your salary for four years. See our <a href='https://www.epicodus.com/financial-aid' target='_blank'>financial aid</a> information for details.</p>
+              <% if Plan.active.isa.any? %>
+                <%= form_for @student do |f| %>
+                  <%= f.hidden_field :plan_id, value: Plan.active.isa.first.id %>
+                  <%= f.submit 'Income Share Agreement', class: 'btn btn-default', data: { confirm: "Are you sure you want to choose the income share agreement?" } %>
+                  <p><br><strong>Income Share Agreement:</strong><br>Pay $100 to reserve your seat in class. Let your advisor know you’d like to apply for the ISA. Before class starts, get approved with our financing partner, <a href='https://epicodus.mia-share.com/isa-flyer' target='_blank'>Mia Share</a>. Pay nothing until you find your first job after graduation and then 9.8% of your salary for four years. See our <a href='https://www.epicodus.com/financial-aid' target='_blank'>financial aid</a> information for details.</p>
+                <% end %>
               <% end %>
             </div>
           </div>
