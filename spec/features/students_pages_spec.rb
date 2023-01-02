@@ -405,25 +405,37 @@ feature "Student visits homepage after logged in" do
     expect(page).to have_content "Your courses"
   end
 
-  it "does not show cohort name or cohort absences if not cohort" do
-    student = FactoryBot.create(:student, :with_all_documents_signed, plan: FactoryBot.create(:special_plan))
-    sign_in_as(student)
-    visit root_path
-    expect(current_path).to eq student_courses_path(student)
-    expect(page).to_not have_content "Cohort:"
-    expect(page).to_not have_content "Absences since the start of the current cohort"
-    expect(page).to have_content "Absences ever at Epicodus"
-    expect(page).to have_content "Number of Academic Warnings"
-  end
-
-  it "show cohort name and cohort absences when cohort listed" do
-    student = FactoryBot.create(:student, :with_all_documents_signed, :with_pt_intro_cohort)
+  it "does not show absences when class not begun" do
+    course = FactoryBot.create(:future_course)
+    count = course.class_days.count
+    student = FactoryBot.create(:student, courses: [course])
     sign_in_as(student)
     visit student_courses_path(student)
-    expect(page).to have_content "Cohort:"
-    expect(page).to have_content "Absences since the start of the current cohort"
-    expect(page).to have_content "Absences ever at Epicodus"
-    expect(page).to have_content "Number of Academic Warnings"
+    expect(page).to_not have_content "Absent #{count} of #{count} days in the program"
+    expect(page).to_not have_content "No absences"
+  end
+
+  it "show absences when class begun" do
+    course = FactoryBot.create(:past_course)
+    count = course.class_days.count
+    student = FactoryBot.create(:student, courses: [course])
+    sign_in_as(student)
+    visit student_courses_path(student)
+    expect(page).to have_content "Absent #{count} out of #{student.allowed_absences} allowed absences in the program"
+  end
+
+  it "does not show number of academic warnings when none" do
+    student = FactoryBot.create(:student, :with_course)
+    sign_in_as(student)
+    visit student_courses_path(student)
+    expect(page).to_not have_content "academic warnings"
+  end
+
+  it "show number of academic warnings when they exist" do
+    student = FactoryBot.create(:student, :with_course, probation_advisor_count: 1)
+    sign_in_as(student)
+    visit student_courses_path(student)
+    expect(page).to have_content "1 academic warning"
   end
 end
 

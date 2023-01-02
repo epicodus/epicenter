@@ -1,0 +1,5 @@
+<% if student.absences_cohort > 0 %>
+  Absent <%= number_with_precision(student.absences_cohort, precision: 1, strip_insignificant_zeros: true) %> out of <%= student.allowed_absences %> allowed absences in the program
+<% else %>
+  No absences in the program!
+<% end %>

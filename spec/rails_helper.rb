@@ -89,6 +89,7 @@ VCR.configure do |config|
   config.filter_sensitive_data('<ZAPIER_INVITE_WEBHOOK_URL>') { ENV['ZAPIER_INVITE_WEBHOOK_URL'] }
   config.filter_sensitive_data('<ZAPIER_EMAIL_WEBHOOK_URL>') { ENV['ZAPIER_EMAIL_WEBHOOK_URL'] }
   config.filter_sensitive_data('<ZAPIER_PROBATION_WEBHOOK_URL>') { ENV['ZAPIER_PROBATION_WEBHOOK_URL'] }
+  config.filter_sensitive_data('<ZAPIER_ATTENDANCE_WARNINGS_WEBHOOK_URL>') { ENV['ZAPIER_ATTENDANCE_WARNINGS_WEBHOOK_URL'] }
 end
 
 Shoulda::Matchers.configure do |config|

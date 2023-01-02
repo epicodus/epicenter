@@ -524,11 +524,8 @@ feature 'student roster page' do
     student = FactoryBot.create(:student, course: course)
     visit course_path(course)
     click_link 'View attendance'
-    expect(page).to have_content '0%'
+    expect(page).to have_content 'Program absences'
     expect(page).to have_content '0'
-    expect(page).to have_content 'Attendance'
-    expect(page).to have_content 'Course absences'
-    expect(page).to have_content 'Cohort absences'
   end
 
   scenario 'allows viewing probation count' do
@@ -558,7 +555,7 @@ feature 'student roster page' do
     visit course_path(course)
     click_link 'View attendance'
     click_link 'View payment plans'
-    expect(page).to have_content '0%'
+    expect(page).to have_content 'Program absences'
     expect(page).to have_content student.plan.name
   end
 
@@ -567,7 +564,7 @@ feature 'student roster page' do
     visit course_path(course)
     click_link 'View payment plans'
     click_link 'View attendance'
-    expect(page).to have_content '0%'
+    expect(page).to have_content 'Program absences'
     expect(page).to have_content student.plan.name
   end
 
@@ -577,7 +574,7 @@ feature 'student roster page' do
     visit course_path(course)
     click_link 'View attendance'
     click_link 'View feedback'
-    expect(page).to have_content '0%'
+    expect(page).to have_content 'Program absences'
     expect(page).to have_content 6
   end
 
@@ -587,7 +584,7 @@ feature 'student roster page' do
     visit course_path(course)
     click_link 'View feedback'
     click_link 'View attendance'
-    expect(page).to have_content '0%'
+    expect(page).to have_content 'Program absences'
     expect(page).to have_content 6
   end
 

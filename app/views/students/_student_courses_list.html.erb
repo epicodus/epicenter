@@ -9,7 +9,6 @@
           <th>Office</th>
         <% end %>
         <th>Teacher</th>
-        <th>Attendance</th>
         <th>Code reviews</th>
         <% if can? :manage, Enrollment %>
           <th class="text-center"><%= link_to 'Drop All', student_path(id: @student.id, drop_all: true), data: { method: :delete, confirm: 'Are you sure you want to withdraw from all courses?' }, class: 'btn btn-primary' %></th>
@@ -29,7 +28,6 @@
             <td><%= course.office.name %></td>
           <% end %>
           <td><%= course.teacher %></td>
-          <td><%= number_to_percentage(@student.attendance_score(course), precision: 0) unless course.internship_course? %></td>
           <td>
             <% if @student.submissions.for_course(course).empty? %>
               No submissions made yet
