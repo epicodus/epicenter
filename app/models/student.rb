@@ -331,7 +331,7 @@ class Student < User
   end
 
   def is_classroom_day?(date = Time.zone.now.to_date)
-    (is_class_day?(date) && !Time.zone.now.to_date.friday?) || ENV['ATTENDANCE_TEST_MODE'] == 'true'
+    (is_class_day?(date) && !date.friday?) || ENV['ATTENDANCE_TEST_MODE'] == 'true'
   end
 
   def completed_internship_course?
