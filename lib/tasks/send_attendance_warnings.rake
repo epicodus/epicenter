@@ -1,14 +1,11 @@
 desc "send attendance warnings"
 task :send_attendance_warnings => [:environment] do
-  today = Time.zone.now.to_date
   courses = Course.current_courses.non_internship_courses.where.not(track_id: nil)
   students = Student.where(id: courses.map {|c| c.students}.flatten)
   students.each do |student|
     unless student.email.include?('example.com') || student.email.include?('epicodus.com')
       if student.crm_lead.status == 'Enrolled'
-        if today.friday? && student.course.class_days.include?(today)
-          create_attendance_record_for(student)
-        else
+        if student.is_classroom_day?
           email_triggers = student.course.parttime? ? [4, 10, 15] : [2, 5, 8] # PT is intro & full-stack
           absences = student.absences_cohort.floor # rounded down so triggers not skipped
           if email_triggers.include?(absences) && !already_sent?(student, absences)
@@ -19,6 +16,8 @@ task :send_attendance_warnings => [:environment] do
             end
             student.update(attendance_warnings_sent: absences)
           end
+        elsif student.is_class_day?
+          create_attendance_record_for(student)
         end
       end
     end
