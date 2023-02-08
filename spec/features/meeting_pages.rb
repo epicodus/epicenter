@@ -64,7 +64,7 @@ feature 'requesting a meeting' do
     context 'when any submission exists' do
       it 'on student courses index page' do
         submission = FactoryBot.create(:submission, student: student)
-        visit student_courses_path(student)
+        visit course_student_path(course, student)
         click_on 'Request teacher meeting'
         expect(current_path).to eq new_course_meeting_path(course)
       end
