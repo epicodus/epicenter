@@ -381,6 +381,7 @@ feature 'manually changing starting cohort' do
       click_on 'edit starting cohort'
       select ft_cohort.description, from: 'starting_cohort_id'
       click_on 'Confirm starting cohort'
+      expect(page).to have_content "Starting cohort for #{student.name} has been set to #{ft_cohort.description}"
       expect(student.reload.starting_cohort).to eq ft_cohort
     end
   end
