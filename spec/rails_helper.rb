@@ -7,11 +7,30 @@ require 'shoulda/matchers'
 require 'capybara/rails'
 require 'selenium/webdriver'
 require 'cancan/matchers'
-require 'simplecov'
-require 'coveralls'
 require 'stripe_mock'
+require 'simplecov'
 
+# require 'coveralls'
 # Coveralls.wear!
+# SimpleCov.formatters = [
+#   SimpleCov::Formatter::HTMLFormatter,
+#   Coveralls::SimpleCov::Formatter,
+# ]
+# SimpleCov.start
+SimpleCov.start 'rails' do
+  if ENV['CI']
+    require 'simplecov-lcov'
+
+    SimpleCov::Formatter::LcovFormatter.config do |c|
+      c.report_with_single_file = true
+      c.single_report_path = 'coverage/lcov.info'
+    end
+
+    formatter SimpleCov::Formatter::LcovFormatter
+  end
+
+  add_filter %w[version.rb initializer.rb]
+end
 
 include Warden::Test::Helpers
 Warden.test_mode!
@@ -98,11 +117,5 @@ Shoulda::Matchers.configure do |config|
     with.library :rails
   end
 end
-
-SimpleCov.formatters = [
-  SimpleCov::Formatter::HTMLFormatter,
-  Coveralls::SimpleCov::Formatter,
-]
-SimpleCov.start
 
 OmniAuth.config.test_mode = true
