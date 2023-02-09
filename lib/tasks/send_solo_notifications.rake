@@ -11,7 +11,7 @@ task :send_solo_notifications => [:environment] do
       if solo_students.any? || students_who_claimed_extra_pairs.any?
 
         # generate report
-        output("#{today.to_s(:long_ordinal)} Pairing Report", 'h2')
+        output("#{today.to_formatted_s(:long_ordinal)} Pairing Report", 'h2')
         output(course.description, 'h2')
         if solo_students.any?
           output("#{'Solo'.pluralize(solo_students.count)} today:", 'h3')
