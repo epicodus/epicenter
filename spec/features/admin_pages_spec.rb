@@ -337,6 +337,7 @@ feature 'manually changing current cohort' do
       click_on 'edit current cohort'
       select ft_cohort_2.reload.description, from: 'current_cohort_id'
       click_on 'Confirm current cohort'
+      expect(page).to have_content "Current cohort for #{student.name} has been set to #{ft_cohort_2.description}"
       expect(student.reload.cohort).to eq ft_cohort_2
     end
   end

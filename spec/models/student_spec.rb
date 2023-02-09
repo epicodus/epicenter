@@ -1101,30 +1101,28 @@ end
     let(:course) { FactoryBot.create(:course) }
     let(:student) { FactoryBot.create(:student, course: course) }
     let(:pair) { FactoryBot.create(:student, course: course) }
+    let(:course_start) { course.start_time_on_day(course.start_date) }
 
     it "calculates the number of absences" do
-      day_one = student.course.start_date
-      student.course.update(class_days: [day_one])
+      student.course.update(class_days: [course.start_date])
 
-      travel_to day_one.beginning_of_day do
+      travel_to course_start do
         FactoryBot.create(:attendance_record, student: student, pairings_attributes: [pair_id: pair.id])
       end
 
-      travel_to day_one.end_of_day do
+      travel_to course_start + 9.hours do
         expect(student.absences(course)).to eq 0.5
       end
     end
 
     it "calculates the number of absences before start of class on the next day" do
-      day_one = student.course.start_date
-      day_two = day_one + 1.day
-      student.course.update(class_days: [day_one, day_two])
+      student.course.update(class_days: [course.start_date, course.start_date + 1.day])
 
-      travel_to day_one.beginning_of_day do
+      travel_to course_start do
         FactoryBot.create(:attendance_record, student: student, pairings_attributes: [pair_id: pair.id])
       end
 
-      travel_to day_two.beginning_of_day do
+      travel_to course_start + 24.hours do
         expect(student.absences(course)).to eq 1.5
       end
     end

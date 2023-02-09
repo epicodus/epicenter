@@ -1,5 +1,6 @@
 feature "attendance sign in and out", :stub_mailgun do
   let(:student) { FactoryBot.create(:portland_student, :with_all_documents_signed) }
+  let(:course_start) { student.course.start_time_on_day(student.course.start_date) }
 
   before { login_as(student, scope: :student) }
 
@@ -7,7 +8,7 @@ feature "attendance sign in and out", :stub_mailgun do
     let!(:pair) { FactoryBot.create(:portland_student, :with_all_documents_signed, courses: [student.course]) }
 
     it 'allows sign in solo' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         visit root_path
         click_link 'attendance-sign-in-link'
         select '-', from: 'pair-select-1'
@@ -17,7 +18,7 @@ feature "attendance sign in and out", :stub_mailgun do
     end
 
     it 'allows sign in with a pair' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         visit root_path
         click_link 'attendance-sign-in-link'
         select pair.name, from: 'pair-select-1'
@@ -28,7 +29,7 @@ feature "attendance sign in and out", :stub_mailgun do
 
     it 'allows sign in with group of 3' do
       pair2 = FactoryBot.create(:student, courses: [student.course])
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         visit root_path
         click_link 'attendance-sign-in-link'
         select pair.name, from: 'pair-select-1'
@@ -43,7 +44,7 @@ feature "attendance sign in and out", :stub_mailgun do
     it 'allows sign in with group of 4' do
       pair2 = FactoryBot.create(:student, courses: [student.course])
       pair3 = FactoryBot.create(:student, courses: [student.course])
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         visit root_path
         click_link 'attendance-sign-in-link'
         select pair.name, from: 'pair-select-1'
@@ -61,7 +62,7 @@ feature "attendance sign in and out", :stub_mailgun do
       pair2 = FactoryBot.create(:student, courses: [student.course])
       pair3 = FactoryBot.create(:student, courses: [student.course])
       pair4 = FactoryBot.create(:student, courses: [student.course])
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         visit root_path
         click_link 'attendance-sign-in-link'
         select pair.name, from: 'pair-select-1'
@@ -78,7 +79,7 @@ feature "attendance sign in and out", :stub_mailgun do
     end
 
     it 'removes 2nd pair if same as 1st pair' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         visit root_path
         click_link 'attendance-sign-in-link'
         select pair.name, from: 'pair-select-1'
@@ -90,7 +91,7 @@ feature "attendance sign in and out", :stub_mailgun do
     end
 
     it 'assigns 2nd pair if 1st pair field blank' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         visit root_path
         click_link 'attendance-sign-in-link'
         select '-', from: 'pair-select-1'
@@ -101,7 +102,7 @@ feature "attendance sign in and out", :stub_mailgun do
     end
 
     it "creates an attendance record with no pair id when signing in solo" do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         visit root_path
         click_link 'attendance-sign-in-link'
         select '-', from: 'pair-select-1'
@@ -113,7 +114,7 @@ feature "attendance sign in and out", :stub_mailgun do
     end
 
     it 'creates an attendance record with a pair id when signing in with a pair' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         visit root_path
         click_link 'attendance-sign-in-link'
         select pair.name, from: 'pair-select-1'
@@ -126,7 +127,7 @@ feature "attendance sign in and out", :stub_mailgun do
 
     it 'creates an attendance record with both pair ids when signing in as group of 3' do
       pair2 = FactoryBot.create(:student, courses: [student.course])
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         visit root_path
         click_link 'attendance-sign-in-link'
         select pair.name, from: 'pair-select-1'
@@ -158,7 +159,7 @@ feature "attendance sign in and out", :stub_mailgun do
     let!(:pair) { FactoryBot.create(:portland_student, :with_all_documents_signed, courses: [student.course], password: 'password2', password_confirmation: 'password2') }
 
     it 'allows changing from solo to a pair' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         FactoryBot.create(:attendance_record, student: student)
         visit root_path
         click_link 'attendance-change-pair-link'
@@ -170,7 +171,7 @@ feature "attendance sign in and out", :stub_mailgun do
 
     it 'does not allow changing from to stub attendance correction account' do
       stub_account = FactoryBot.create(:student, name: "* ATTENDANCE CORRECTION *")
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         FactoryBot.create(:attendance_record, student: student)
         visit root_path
         click_link 'attendance-change-pair-link'
@@ -179,7 +180,7 @@ feature "attendance sign in and out", :stub_mailgun do
     end
 
     it 'allows changing from one pair to another' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         attendance_record = FactoryBot.create(:attendance_record, student: student, pairings_attributes: [pair_id: FactoryBot.create(:student).id])
         visit root_path
         click_link 'attendance-change-pair-link'
@@ -191,7 +192,7 @@ feature "attendance sign in and out", :stub_mailgun do
 
     it 'allows changing from one pair to group of 3' do
       pair2 = FactoryBot.create(:student, courses: [student.course])
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         attendance_record = FactoryBot.create(:attendance_record, student: student, pairings_attributes: [pair_id: FactoryBot.create(:student).id])
         visit root_path
         click_link 'attendance-change-pair-link'
@@ -205,7 +206,7 @@ feature "attendance sign in and out", :stub_mailgun do
     end
 
     it 'does not show sign in link when student already signed in' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         FactoryBot.create(:attendance_record, student: student)
         visit root_path
         expect(page).to_not have_content 'Sign in'
@@ -218,7 +219,7 @@ feature "attendance sign in and out", :stub_mailgun do
     let(:other_student) { FactoryBot.create(:student, :with_course) }
 
     it 'does not show when not signed in' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         FactoryBot.create(:attendance_record, student: other_student, pairings_attributes: [pair_id: student.id])
         visit root_path
         expect(page).to_not have_content "Additional students have marked you as a pair today"
@@ -226,7 +227,7 @@ feature "attendance sign in and out", :stub_mailgun do
     end
 
     it 'shows when signed in' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         FactoryBot.create(:attendance_record, student: other_student, pairings_attributes: [pair_id: student.id])
         FactoryBot.create(:attendance_record, student: student)
         visit root_path
@@ -235,7 +236,7 @@ feature "attendance sign in and out", :stub_mailgun do
     end
 
     it 'does not show when no nonreciprocated pairs' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         FactoryBot.create(:attendance_record, student: student)
         visit root_path
         expect(page).to_not have_content "Additional students have marked you as a pair today"
@@ -245,7 +246,7 @@ feature "attendance sign in and out", :stub_mailgun do
 
   describe 'signing out' do
     it 'allows signing out from link in attendance box' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         FactoryBot.create(:attendance_record, student: student)
         visit root_path
         click_link 'attendance-sign-out-link'
@@ -254,7 +255,7 @@ feature "attendance sign in and out", :stub_mailgun do
     end
 
     it 'allows signing out of attendance from navbar' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         FactoryBot.create(:attendance_record, student: student)
         visit root_path
         click_link 'Attendance'
@@ -263,7 +264,7 @@ feature "attendance sign in and out", :stub_mailgun do
     end
 
     it 'allows signing out of Epicenter from navbar' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         FactoryBot.create(:attendance_record, student: student)
         visit root_path
         click_link 'Epicenter'
@@ -272,7 +273,7 @@ feature "attendance sign in and out", :stub_mailgun do
     end
 
     it 'does not show sign out link when student already signed out' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         FactoryBot.create(:attendance_record, student: student, signed_out_time: Time.zone.now)
         visit root_path
         expect(page).to_not have_content 'attendance-sign-out-link'
@@ -281,7 +282,7 @@ feature "attendance sign in and out", :stub_mailgun do
     end
 
     it 'does not show navbar sign out link when student already signed out' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         FactoryBot.create(:attendance_record, student: student, signed_out_time: Time.zone.now)
         visit root_path
         expect(page).to_not have_content 'Epicenter'
@@ -289,7 +290,7 @@ feature "attendance sign in and out", :stub_mailgun do
     end
 
     it 'does not allow sign out if not signed in yet' do
-      travel_to student.course.start_date.beginning_of_day + 8.hours do
+      travel_to course_start do
         visit '/sign_out'
         expect(page).to have_content "You haven't signed in yet today"
       end
@@ -312,14 +313,14 @@ feature "attendance sign in and out", :stub_mailgun do
     end
 
     it 'does not show sign in link before class time' do
-      travel_to student.course.start_date.beginning_of_day do
+      travel_to course_start - 1.hour do
         visit root_path
         expect(page).to have_content 'Sign in will be available at'
       end
     end
 
     it 'does not show sign in link after class time' do
-      travel_to student.course.start_date.beginning_of_day + 20.hours do
+      travel_to course_start + 12.hours do
         visit root_path
         expect(page).to have_content 'Sign in is not available after class end time'
       end
