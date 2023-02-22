@@ -6,7 +6,7 @@ task :find_leads_missing_cohorts_2 => [:environment] do
   leads = close_io_client.list_leads('email: *', 5000)[:data]
   File.open(filename, 'w') do |file|
     leads.each do |lead|
-      email = lead['contacts'].first['emails'].first['email']
+      email = lead['contacts'].first['emails'].first.try('dig', 'email')
       student = Student.with_deleted.find_by(email: email)
       if student && !student.email.include?('mortalwombat.net') && !student.email.include?('example.com') && !student.email.include?('epicodus.com')
         starting_cohort_crm = lead.try('dig', Rails.application.config.x.crm_fields['COHORT_STARTING'])
