@@ -18,9 +18,9 @@
             <td class="col-md-3"><%= link_to student.name, course_student_path(@course, student) %></td>
             <td class="col-md-2">
               <% if @code_review.expectations_met_by?(student) %>
-              <span class="glyphicon glyphicon-ok submission-success"><span class="code-review-hidden-score">1</span></span>
+                <i class="fa-solid fa-check submission-success"><span class="code-review-hidden-score">1</span></i>
               <% else %>
-              <span class="glyphicon glyphicon-remove submission-fail"><span class="code-review-hidden-score">0</span></span>
+                <i class="fa-solid fa-xmark submission-fail"><span class="code-review-hidden-score">0</span></i>
               <% end %>
             </td>
             <td><%= @code_review.submission_for(student).try(:reviews).try(:last).try(:note) %></td>
