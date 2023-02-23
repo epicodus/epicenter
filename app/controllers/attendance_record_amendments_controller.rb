@@ -3,7 +3,7 @@ class AttendanceRecordAmendmentsController < ApplicationController
 
   def new
     @course = params[:course] ? Course.find(params[:course]) : current_course
-    day = params[:day]
+    day = Date.parse(params[:day]) if params[:day]
     status = params[:status] || "Absent"
     if params[:student]
       student = Student.find(params[:student])
