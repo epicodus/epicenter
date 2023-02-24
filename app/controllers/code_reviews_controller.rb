@@ -31,6 +31,7 @@ class CodeReviewsController < ApplicationController
   def show
     @code_review = CodeReview.find(params[:id])
     @submission = @code_review.submission_for(current_student) || Submission.new(code_review: @code_review)
+    authorize! :read, @code_review
   end
 
   def edit
