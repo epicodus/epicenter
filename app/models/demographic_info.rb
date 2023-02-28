@@ -60,7 +60,6 @@ class DemographicInfo
 
   def save
     if valid?
-      @pronouns.delete('Other') && @pronouns.push(@pronouns_blank) if @pronouns.present? && @pronouns_blank.present? && @pronouns.include?('Other')
       fields = {}
       fields['addresses'] = ["label": "mailing", "address_1": @address, "city": @city, "state": @state, "zipcode": @zip, "country": @country]
       fields[Rails.application.config.x.crm_fields['DEMOGRAPHICS_BIRTH_DATE']] = @birth_date
@@ -75,7 +74,11 @@ class DemographicInfo
       fields[Rails.application.config.x.crm_fields['DEMOGRAPHICS_RACE']] = @races.join(", ") if @races
       fields[Rails.application.config.x.crm_fields['DEMOGRAPHICS_AFTER_GRADUATION']] = @after_graduation
       fields[Rails.application.config.x.crm_fields['DEMOGRAPHICS_TIME_OFF']] = @time_off
-      fields[Rails.application.config.x.crm_fields['DEMOGRAPHICS_PRONOUNS']] = @pronouns.join(", ") if @pronouns
+      if @pronouns.present?
+        @pronouns.delete('Other') && @pronouns.push(@pronouns_blank) if @pronouns_blank.present? && @pronouns.include?('Other')
+        fields[Rails.application.config.x.crm_fields['DEMOGRAPHICS_PRONOUNS']] = @pronouns.join(", ")
+        @student.update_columns(pronouns: @pronouns.join(", "))
+      end
       fields = fields.compact
       @student.crm_lead.update(fields)
       @student.crm_lead.update({ Rails.application.config.x.crm_fields['SSN'] => encrypted_ssn }) if ssn

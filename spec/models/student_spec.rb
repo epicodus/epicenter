@@ -141,6 +141,21 @@ describe Student do
     end
   end
 
+  describe 'updates pronouns in database and Close', :dont_stub_crm, :vcr do
+    let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }
+    let(:lead_id) { ENV['EXAMPLE_CRM_LEAD_ID'] }
+
+    before { allow(CrmUpdateJob).to receive(:perform_later).and_return({}) }
+
+    it 'updates in database and Close when pronouns changed' do
+      student = FactoryBot.create(:student, email: 'example@example.com')
+      student.pronouns = 'test pronouns'
+      expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, { Rails.application.config.x.crm_fields['PRONOUNS'] => 'test pronouns' })
+      student.save
+      expect(student.pronouns).to eq 'test pronouns'
+    end
+  end
+
   context 'on probation change' do
     describe 'updates in Close', :dont_stub_crm, :vcr do
       let(:close_io_client) { Closeio::Client.new(ENV['CLOSE_IO_API_KEY'], false) }

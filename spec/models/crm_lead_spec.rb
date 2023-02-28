@@ -34,6 +34,12 @@ describe CrmLead, :dont_stub_crm, :vcr do
     end
   end
 
+  describe '#pronouns' do
+    it 'returns lead pronouns' do
+      expect(CrmLead.new('example@example.com').pronouns).to eq "they / them"
+    end
+  end
+
   describe '#cohort' do
     it 'returns cohort for full-time student' do
       cohort = FactoryBot.create(:ft_cohort, start_date: Date.parse('2000-01-03'))

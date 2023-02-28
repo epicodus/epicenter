@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_09_011037) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_28_223144) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
   create_table "attendance_records", id: :serial, force: :cascade do |t|
@@ -421,6 +422,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_09_011037) do
     t.integer "consumed_timestep"
     t.boolean "otp_required_for_login"
     t.string "otp_secret"
+    t.string "pronouns"
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true

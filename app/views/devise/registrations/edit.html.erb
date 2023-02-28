@@ -30,12 +30,19 @@
 
         <div class="form-group">
           <%= f.label :name %>
-            <%= f.text_field :name, autofocus: true, class: 'form-control' %>
+            <%= f.text_field :name, class: 'form-control' %>
         </div>
+
+        <% if @student %>
+          <div class="form-group">
+            <%= f.label :pronouns %>
+              <%= f.text_field :pronouns, class: 'form-control' %>
+          </div>
+        <% end %>
 
         <div class="form-group">
           <%= f.label :email %>
-            <%= f.email_field :email, autofocus: true, class: 'form-control' %>
+            <%= f.email_field :email, class: 'form-control' %>
         </div>
 
         <div class="form-group">

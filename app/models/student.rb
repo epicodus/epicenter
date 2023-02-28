@@ -8,6 +8,7 @@ class Student < User
   after_create :update_plan_in_crm, if: ->(student) { student.plan.present? }
   after_update :update_plan_in_crm, if: :saved_change_to_plan_id
   after_update :update_legal_name_in_crm, if: :saved_change_to_legal_name
+  after_update :update_pronouns_in_crm, if: :saved_change_to_pronouns
   after_update :handle_probation, if: :probation_updated?
   after_update :update_cohorts_in_crm, if: :cohorts_updated?
   before_destroy :archive_enrollments
@@ -516,6 +517,10 @@ private
 
   def update_legal_name_in_crm
     crm_lead.update({ Rails.application.config.x.crm_fields['LEGAL_NAME'] => legal_name })
+  end
+
+  def update_pronouns_in_crm
+    crm_lead.update({ Rails.application.config.x.crm_fields['PRONOUNS'] => pronouns })
   end
 
   def probation_updated?
