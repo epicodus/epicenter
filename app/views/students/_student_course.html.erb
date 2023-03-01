@@ -3,6 +3,9 @@
     <%= link_to student_courses_path(@student), class: 'h1 text-primary' do %>
       <%= @student.name %>
     <% end %>
+    <% if current_admin && @student.pronouns %>
+      <small>(<%= @student.pronouns %>)</small>
+    <% end %>
   </h1>
   <% if current_admin %>
     <%= render 'students/probation', student: @student %>
