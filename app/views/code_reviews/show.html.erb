@@ -52,7 +52,7 @@
           </thead>
           <tbody>
             <% if @submission.has_been_reviewed? %>
-              <%= render @submission.latest_review.grades %>
+              <%= render @submission.latest_review.grades unless @submission.exempt? %>
             <% else %>
               <%= render @code_review.objectives %>
             <% end %>
