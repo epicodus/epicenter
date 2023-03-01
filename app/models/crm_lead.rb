@@ -23,6 +23,10 @@ class CrmLead
     lead.try('dig', 'contacts').try('first').try('dig', 'name') || CrmLead.raise_error("Name not found in CRM")
   end
 
+  def pronouns
+    lead.try('dig', Rails.application.config.x.crm_fields['PRONOUNS'])
+  end
+
   def cohort
     if fidgetech?
       Cohort.find_by(description: 'Fidgetech')

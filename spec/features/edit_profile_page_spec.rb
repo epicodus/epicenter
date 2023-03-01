@@ -7,8 +7,15 @@ feature 'Student edits their profile' do
   end
 
   context 'with the correct password' do
-    it "successfully updates information" do
+    it "successfully updates name" do
       fill_in 'Name', with: 'New Name'
+      fill_in 'Current password', with: student.password
+      click_on 'Update'
+      expect(page).to have_content "You updated your account successfully."
+    end
+
+    it "successfully updates pronouns" do
+      fill_in 'Pronouns', with: 'test pronouns'
       fill_in 'Current password', with: student.password
       click_on 'Update'
       expect(page).to have_content "You updated your account successfully."

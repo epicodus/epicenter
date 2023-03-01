@@ -93,6 +93,13 @@ describe DemographicInfo do
       demographic_info.save
     end
 
+    it 'saves pronouns to database' do
+      allow(CrmUpdateJob).to receive(:perform_later).and_return({})
+      demographic_info = FactoryBot.build(:demographic_info, :genders=>["Female"], :pronouns=>["they / them / their"], :job=>"test occupation", :salary=>15000, :races=>["Asian or Asian American"], student: student)
+      demographic_info.save
+      expect(student.reload.pronouns).to eq 'they / them / their'
+    end
+
     it 'sends ssn encrypted' do
       demographic_info = FactoryBot.build(:demographic_info, student: student, ssn: 111111111)
       expect(CrmUpdateJob).to receive(:perform_later).with(lead_id, hash_including(Rails.application.config.x.crm_fields['SSN']))
