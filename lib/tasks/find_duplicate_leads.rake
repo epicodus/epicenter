@@ -7,12 +7,16 @@ task :find_duplicate_leads => [:environment] do
     Student.all.each do |student|
       unless student.email.include?('@example.com') || student.email.include?('@epicodus.com')
         leads = close_io_client.list_leads('email: "' + student.email + '"')
-        if leads['total_results'] == 0
-          file.puts("NOT FOUND: #{student.email}")
-          counter += 1
-        elsif leads['total_results'] > 1
-          file.puts("DUPLICATES FOUND: #{student.email}")
-          counter += 1
+        begin
+          if leads['total_results'] == 0
+            file.puts("NOT FOUND: #{student.email}")
+            counter += 1
+          elsif leads['total_results'] > 1
+            file.puts("DUPLICATES FOUND: #{student.email}")
+            counter += 1
+          end
+        rescue => e
+          file.puts 'error: ' + e.to_s
         end
       end
     end
