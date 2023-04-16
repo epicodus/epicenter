@@ -51,7 +51,7 @@ describe Cohort do
       allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(part_time: true, number_of_days: 23)
       office = admin.current_course.office
       cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2021-01-04'), layout_file_path: 'example_cohort_layout_path')
-      expect(cohort.description).to eq "2021-01-04 to 2021-02-10 #{office.short_name} Part-Time Intro to Programming"
+      expect(cohort.description).to eq "2021-01-04 to 2021-02-10 Part-Time Intro to Programming"
       expect(cohort.office).to eq office
       expect(cohort.track).to eq track
       expect(cohort.admin).to eq admin
@@ -65,7 +65,7 @@ describe Cohort do
       allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(part_time: false, number_of_days: 15)
       office = admin.current_course.office
       cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2023-01-03'), layout_file_path: 'example_cohort_layout_path')
-      expect(cohort.description).to eq "2023-01-03 to 2023-01-20 #{office.short_name} Part-Time Intro to Programming"
+      expect(cohort.description).to eq "2023-01-03 to 2023-01-20 Part-Time Intro to Programming"
       expect(cohort.office).to eq office
       expect(cohort.track).to eq track
       expect(cohort.admin).to eq admin
@@ -91,7 +91,7 @@ describe Cohort do
       allow(Github).to receive(:get_layout_params).with('example_course_layout_path_4').and_return course_layout_params_helper(part_time: true, number_of_days: 53)
       office = admin.current_course.office
       cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2021-01-04'), layout_file_path: 'example_cohort_layout_path')
-      expect(cohort.description).to eq "2021-01-04 to 2021-10-10 #{office.short_name} Part-Time C#/React"
+      expect(cohort.description).to eq "2021-01-04 to 2021-10-10 Part-Time C#/React"
       expect(cohort.office).to eq office
       expect(cohort.track).to eq track
       expect(cohort.admin).to eq admin
@@ -114,7 +114,7 @@ describe Cohort do
       allow(Github).to receive(:get_layout_params).with('example_course_layout_path_5').and_return course_layout_params_helper(number_of_days: 35, internship: true)
       office = admin.current_course.office
       cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2021-01-04'), layout_file_path: 'example_cohort_layout_path')
-      expect(cohort.description).to eq "2021-01-04 to 2021-07-09 #{office.short_name} #{track.description}"
+      expect(cohort.description).to eq "2021-01-04 to 2021-07-09 #{track.description}"
       expect(cohort.office).to eq office
       expect(cohort.track).to eq track
       expect(cohort.admin).to eq admin
