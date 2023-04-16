@@ -493,8 +493,8 @@ describe Course do
         it '#start_time_today' do
           allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(part_time: false)
           course = FactoryBot.create(:course, start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path', class_days: [])
-          travel_to Date.today + 12.hours do
-            expect(course.start_time_today).to eq Time.zone.now.in_time_zone(course.office.time_zone).beginning_of_day + 8.hours
+          travel_to course.start_date do
+            expect(course.start_time_today).to eq course.start_date.in_time_zone(course.office.time_zone).beginning_of_day + 8.hours
           end
         end
 

@@ -685,7 +685,7 @@ describe Student do
     end
 
     it "returns true if all 4 documents have been signed for an online student and demographics form submitted" do
-      allow(online_student).to receive(:washingtonian?).and_return true
+      allow(online_student).to receive(:location).and_return 'SEA'
       FactoryBot.create(:completed_code_of_conduct, student: online_student)
       FactoryBot.create(:completed_refund_policy, student: online_student)
       FactoryBot.create(:completed_complaint_disclosure, student: online_student)
@@ -695,7 +695,7 @@ describe Student do
     end
 
     it "returns false if demographics form not submitted for an online student" do
-      allow(online_student).to receive(:washingtonian?).and_return true
+      allow(online_student).to receive(:location).and_return 'SEA'
       FactoryBot.create(:completed_code_of_conduct, student: online_student)
       FactoryBot.create(:completed_refund_policy, student: online_student)
       FactoryBot.create(:completed_complaint_disclosure, student: online_student)
@@ -704,7 +704,7 @@ describe Student do
     end
 
     it "returns false if extra required Seattle document not signed for online Washingtonian" do
-      allow(online_student).to receive(:washingtonian?).and_return true
+      allow(online_student).to receive(:location).and_return 'SEA'
       FactoryBot.create(:completed_code_of_conduct, student: online_student)
       FactoryBot.create(:completed_refund_policy, student: online_student)
       FactoryBot.create(:completed_enrollment_agreement, student: online_student)
@@ -1911,23 +1911,32 @@ end
     end
   end
 
-  describe '#washingtonian?' do
-    it 'returns true if state is WA' do
-      student = FactoryBot.create(:student)
+  describe '#location' do
+    let(:student) { FactoryBot.create(:student) }
+
+    it 'returns SEA if state is WA' do
       allow_any_instance_of(CrmLead).to receive(:state).and_return('WA')
-      expect(student.washingtonian?).to eq true
+      expect(student.location).to eq 'SEA'
     end
 
-    it 'returns true if state is Washington' do
-      student = FactoryBot.create(:student)
+    it 'returns SEA if state is Washington' do
       allow_any_instance_of(CrmLead).to receive(:state).and_return('Washington')
-      expect(student.washingtonian?).to eq true
+      expect(student.location).to eq 'SEA'
     end
 
-    it 'returns false if state is OR' do
-      student = FactoryBot.create(:student)
+    it 'returns PDX if state is OR' do
       allow_any_instance_of(CrmLead).to receive(:state).and_return('OR')
-      expect(student.washingtonian?).to eq false
+      expect(student.location).to eq 'PDX'
+    end
+
+    it 'returns PDX if state is Oregon' do
+      allow_any_instance_of(CrmLead).to receive(:state).and_return('Oregon')
+      expect(student.location).to eq 'PDX'
+    end
+
+    it 'returns WEB if state is not else' do
+      allow_any_instance_of(CrmLead).to receive(:state).and_return('CA')
+      expect(student.location).to eq 'WEB'
     end
   end
 

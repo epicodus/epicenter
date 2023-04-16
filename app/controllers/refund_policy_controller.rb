@@ -8,10 +8,7 @@ class RefundPolicyController < SignaturesController
 
   def create
     update_signature_request
-    if current_student.course.try(:office).try(:name) == 'Online' && current_student.washingtonian?
-      render js: "window.location.pathname ='#{new_complaint_disclosure_path}'"
-    else
-      render js: "window.location.pathname ='#{new_enrollment_agreement_path}'"
-    end
+    path = current_student.location == 'SEA' ? new_complaint_disclosure_path : new_enrollment_agreement_path
+    render js: "window.location.pathname ='#{path}'"
   end
 end

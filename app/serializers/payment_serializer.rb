@@ -9,19 +9,15 @@ class PaymentSerializer < ActiveModel::Serializer
     hash[:updated_at] = payment.updated_at.to_date.to_s unless payment.updated_at == payment.created_at
     hash[:email] = student.email
     hash[:office] = office_for_accounting
+    # hash[:office] = student.location # WHEN ADVISORS READY: REPLACE ABOVE WITH THIS & UNCOMMENT TESTS
     hash[:start_date] = payment.refund_date.try(:to_s) || payment.description[0..9]
     hash[:end_date] = payment.cohort.end_date.to_s
     hash[:cohort] = payment.cohort.description
     hash
   end
+end
 
 private
-  def office_for_accounting
-    payment = object
-    if payment.cohort.office.short_name == 'WEB' && payment.student.washingtonian?
-      'SEA'
-    else
-      payment.cohort.office.short_name
-    end
-  end
+def office_for_accounting
+  object.cohort.office.short_name == 'WEB' && object.student.location == 'SEA' ? 'SEA' : object.cohort.office.short_name
 end
