@@ -53,6 +53,6 @@ private
   end
 
   def set_description
-    update(description: "#{start_date.to_s} to #{end_date.to_s} #{office.short_name} #{track.description}")
+    update(description: "#{start_date.to_s} to #{end_date.to_s} #{track.description}")
   end
 end
