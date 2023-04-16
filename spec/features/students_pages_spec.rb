@@ -183,7 +183,7 @@ feature 'Student signs up via invitation', :vcr do
     let(:student) { FactoryBot.create(:student, :with_course, :with_plan, email: 'example@example.com') }
 
     scenario 'with other docs signed goes to demographics form' do
-      allow_any_instance_of(Student).to receive(:washingtonian?).and_return false
+      allow_any_instance_of(Student).to receive(:location).and_return 'WEB'
       FactoryBot.create(:completed_code_of_conduct, student: student)
       FactoryBot.create(:completed_refund_policy, student: student)
       FactoryBot.create(:completed_enrollment_agreement, student: student)
@@ -197,29 +197,11 @@ feature 'Student signs up via invitation', :vcr do
     end
   end
 
-  context 'for washingtonian in non-online cohort' do
+  context 'for washingtonian' do
     let(:student) { FactoryBot.create(:student, :with_course, :with_plan, email: 'example@example.com') }
 
     scenario 'with other docs signed goes to student complaint disclosure' do
-      allow_any_instance_of(Student).to receive(:washingtonian?).and_return true
-      FactoryBot.create(:completed_code_of_conduct, student: student)
-      FactoryBot.create(:completed_refund_policy, student: student)
-      FactoryBot.create(:completed_enrollment_agreement, student: student)
-      student.invite!
-      visit accept_student_invitation_path(student, invitation_token: student.raw_invitation_token)
-      fill_in 'Legal name', with: 'test legal name'
-      fill_in 'Password', with: 'password'
-      fill_in 'Password confirmation', with: 'password'
-      click_on 'Submit'
-      expect(current_path).to eq new_demographic_path
-    end
-  end
-
-  context 'for washingtonian in online cohort' do
-    let(:student) { FactoryBot.create(:online_student, :with_ft_online_cohort, :with_plan, email: 'example@example.com') }
-
-    scenario 'with other docs signed goes to student complaint disclosure' do
-      allow_any_instance_of(Student).to receive(:washingtonian?).and_return true
+      allow_any_instance_of(Student).to receive(:location).and_return 'SEA'
       FactoryBot.create(:completed_code_of_conduct, student: student)
       FactoryBot.create(:completed_refund_policy, student: student)
       FactoryBot.create(:completed_enrollment_agreement, student: student)
