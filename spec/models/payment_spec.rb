@@ -5,7 +5,6 @@ describe Payment do
   it { should belong_to(:cohort).optional }
   it { should belong_to(:linked_payment).class_name('Payment').optional }
   it { should validate_presence_of :amount }
-  it { should validate_presence_of :category }
 
   before do
     allow_any_instance_of(CrmLead).to receive(:status)
@@ -230,12 +229,6 @@ describe Payment do
       expect(second_payment.description).to eq "#{full_time_cohort.courses.first.start_date.to_s}-#{full_time_cohort.courses.last.end_date.to_s} | #{full_time_cohort.description}"
     end
 
-    it 'sets payment description to keycard when category set that way', :vcr, :stripe_mock, :stub_mailgun do
-      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card)
-      FactoryBot.create(:payment_with_credit_card, student: student, amount: 25_00, category: 'keycard')
-      expect(student.payments.first.description).to eq "keycard"
-    end
-
     it 'sets payment description for refund with cohort' do
       student = FactoryBot.create(:student, :with_pt_intro_cohort)
       payment = FactoryBot.create(:refund, student: student, refund_date: student.latest_cohort.start_date, offline: true)
@@ -402,12 +395,6 @@ describe Payment do
 
   describe "sends webhook after successful payment creation", :dont_stub_webhook do
     before { allow(WebhookJob).to receive(:perform_later).and_return({}) }
-
-    it 'does not post webhook for keycard payment', :stripe_mock, :stub_mailgun do
-      student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com')
-      payment = FactoryBot.create(:payment_with_credit_card, student: student, amount: 25_00, category: 'keycard')
-      expect(WebhookJob).not_to have_received(:perform_later)
-    end
 
     it 'posts webhook for a successful stripe payment', :stripe_mock, :stub_mailgun do
       student = FactoryBot.create(:student, :with_pt_intro_cohort, :with_credit_card, email: 'example@example.com')
