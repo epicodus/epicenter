@@ -252,10 +252,11 @@ class Student < User
   def documents_required
     if course == Course.find_by(description: 'Fidgetech')
       documents = [CodeOfConduct, EnrollmentAgreement]
+    elsif location == 'SEA'
+      documents = [CodeOfConduct, RefundPolicy, EnrollmentAgreement, ComplaintDisclosure]
     else
       documents = [CodeOfConduct, RefundPolicy, EnrollmentAgreement]
     end
-    documents << ComplaintDisclosure if location == 'SEA'
     documents
   end
 
