@@ -8,19 +8,18 @@ class Payment < ApplicationRecord
 
   validates :amount, presence: true
   validates :payment_method, presence: true, unless: ->(payment) { payment.offline? }
-  validates :category, presence: true, on: :create
 
   before_save :set_cohort, if: ->(payment) { payment.refund_amount? }
   before_save :check_refund_date, if: ->(payment) { payment.refund_date? && payment.cohort_id? }
   before_create :check_amount
-  before_create :set_category, if: ->(payment) { payment.category == 'tuition' }
+  before_create :set_category
   before_create :set_description
   before_create :make_payment, unless: ->(payment) { payment.offline? }
   before_create :set_offline_status, if: ->(payment) { payment.offline? }
   before_update :issue_refund, if: ->(payment) { payment.refund_amount? && !payment.offline? && !payment.refund_issued? }
 
   after_save :update_crm
-  after_create :send_webhook, if: ->(payment) { payment.category != 'keycard' && (payment.status == 'succeeded' || payment.status == 'offline') }
+  after_create :send_webhook, if: ->(payment) { payment.status == 'succeeded' || payment.status == 'offline' }
 
   scope :order_by_latest, -> { order('created_at DESC') }
   scope :without_failed, -> { where.not(status: 'failed') }
@@ -75,12 +74,8 @@ private
   end
 
   def set_description
-    if category == 'keycard'
-      self.description = 'keycard'
-    else
-      start_date = refund_date || (student.courses & cohort.courses).first.start_date
-      self.description = "#{start_date.to_s}-#{cohort.end_date.to_s} | #{cohort.description}"
-    end
+    start_date = refund_date || (student.courses & cohort.courses).first.start_date
+    self.description = "#{start_date.to_s}-#{cohort.end_date.to_s} | #{cohort.description}"
   end
 
   def make_payment
