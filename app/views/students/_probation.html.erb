@@ -1,9 +1,24 @@
 <div class="<%= student.probation_teacher || student.probation_advisor ? 'alert alert-danger' : 'panel panel-body panel-default' %>">
-  <%= form_for student do |f| %>
-    Teacher warnings: (<%= pluralize(student.probation_teacher_count || 0, 'time') %>) &nbsp;<%= f.check_box :probation_teacher %><br>
-  <% end %>
-  <%= form_for student do |f| %>
-    Advisor warnings: (<%= pluralize(student.probation_advisor_count || 0, 'time') %>) &nbsp;<%= f.check_box :probation_advisor %><br>
-  <% end %>
-  <small><em><%= link_to 'edit count', edit_student_probation_path(student) %></em></small>
+  <p>
+    <%= form_for student do |f| %>
+      Teacher warnings: (<%= pluralize(student.probation_teacher_count || 0, 'time') %>) &nbsp;<%= f.check_box :probation_teacher %><br>
+    <% end %>
+    <%= form_for student do |f| %>
+      Advisor warnings: (<%= pluralize(student.probation_advisor_count || 0, 'time') %>) &nbsp;<%= f.check_box :probation_advisor %><br>
+    <% end %>
+    <small><em><%= link_to 'edit warnings counts', edit_student_probation_path(student) %></em></small><br>
+  </p>
+  <hr>
+  <p>
+    Check-ins this week: <%= student.checkins %><br>
+    <%= form_for student, html: { id: 'complete-checkin-form' } do |f| %>
+      <%= f.hidden_field :checkins, value: student.checkins + 1 %>
+      <%= f.submit 'check-in completed', class: 'btn btn-sm btn-info', data: { confirm: "Mark check-in completed for #{student.name}?" } %>
+      <btn class='btn btn-link' id='edit-checkins-count'><em>edit check-ins count</em></btn><br>
+    <% end %>
+    <%= form_for student, html: { id: 'modify-checkin-form', class: 'hidden' } do |f| %>
+      <%= f.number_field :checkins, value: student.checkins, value: student.checkins %>
+      <%= f.submit 'update check-in count', class: 'btn btn-sm btn-danger', data: { confirm: "Modify check-in count for #{student.name}?" } %>
+    <% end %>
+  </p>
 </div>
