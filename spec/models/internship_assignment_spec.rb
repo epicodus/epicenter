@@ -29,5 +29,16 @@ describe InternshipAssignment do
       expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['INTERNSHIP_COMPANY'] => internship.name })
       FactoryBot.create(:internship_assignment, student: student, internship: internship)
     end
+
+    it 'updates the crm on create' do
+      expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['INTERNSHIP_COMPANY'] => internship.name })
+      FactoryBot.create(:internship_assignment, student: student, internship: internship)
+    end
+
+    it 'updates the crm on delete' do
+      ia = FactoryBot.create(:internship_assignment, student: student, internship: internship)
+      expect_any_instance_of(CrmLead).to receive(:update).with({ Rails.application.config.x.crm_fields['INTERNSHIP_COMPANY'] => '' })
+      ia.destroy
+    end
   end
 end
