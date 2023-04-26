@@ -16,7 +16,7 @@ class InternshipAssignment < ApplicationRecord
   private
 
   def update_crm(action)
-    updated_value = action == :create ? internship.name : ''
+    updated_value = action == :create ? internship.name : nil
     student.crm_lead.update({ Rails.application.config.x.crm_fields['INTERNSHIP_COMPANY'] => updated_value })
   end
 end
