@@ -2,6 +2,9 @@
   <td><%= link_to student.name, course_student_path(@course, student), class: "unstyled-link" %></td>
 
   <% unless @course.internship_course? %>
+    <td>
+      <%= student.checkins %>
+    </td>
     <% if params[:attendance] == "true" %>
       <td>
         <p class=<%= student.total_attendance_score <= 92 ? "text-danger" : "" %>>

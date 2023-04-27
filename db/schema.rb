@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_28_223144) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_16_210013) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -423,6 +423,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_28_223144) do
     t.boolean "otp_required_for_login"
     t.string "otp_secret"
     t.string "pronouns"
+    t.integer "checkins", default: 0
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true

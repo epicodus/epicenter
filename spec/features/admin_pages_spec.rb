@@ -397,6 +397,30 @@ feature 'manually changing starting cohort' do
   end
 end
 
+feature 'setting checkins' do
+  let(:student) { FactoryBot.create(:student, :with_course) }
+  let(:admin) { student.course.admin }
+
+  before { login_as(admin, scope: :admin) }
+
+  it 'increments checkin count when button clicked' do
+    visit student_courses_path(student)
+    expect(page).to have_content 'Check-ins this week: 0'
+    click_on 'check-in completed'
+    expect(page).to have_content 'Check-ins this week: 1'
+  end
+
+  it 'allows editing of checkin count', :js do
+    visit student_courses_path(student)
+    expect(page).to have_content 'Check-ins this week: 0'
+    find(:css, "#edit-checkins-count").click
+    fill_in 'student_checkins', with: 3
+    click_on 'update check-in count'
+    accept_js_alert
+    expect(page).to have_content 'Check-ins this week: 3'
+  end
+end
+
 feature 'setting academic probation', :js, :stub_mailgun, :vcr do
   let(:student) { FactoryBot.create(:student, :with_course) }
   let(:admin) { student.course.admin }
@@ -463,7 +487,7 @@ feature 'setting academic probation', :js, :stub_mailgun, :vcr do
     visit student_courses_path(student)
     expect(page).to have_content 'Teacher warnings: (0 times)'
     expect(page).to have_content 'Advisor warnings: (0 times)'
-    click_link 'edit count'
+    click_link 'edit warnings counts'
     fill_in 'probation-teacher-count-input', with: '1'
     fill_in 'probation-advisor-count-input', with: '1'
     click_button 'Update'
@@ -520,6 +544,13 @@ feature 'student roster page' do
     student = FactoryBot.create(:student, course: course)
     visit course_path(course)
     expect(page).to have_content student.name
+  end
+
+  scenario 'shows checkins count' do
+    student = FactoryBot.create(:student, course: course, checkins: 31)
+    visit course_path(course)
+    expect(page).to have_content 'Checkins'
+    expect(page).to have_content '31'
   end
 
   scenario 'allows viewing attendance' do

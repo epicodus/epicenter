@@ -16,6 +16,7 @@
           <tr>
             <th>Student</th>
             <% unless @course.internship_course? %>
+              <th>Checkins</th>
               <% if params[:attendance] == "true" %>
                 <th>Program absences</th>
               <% end %>

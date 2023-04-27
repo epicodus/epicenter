@@ -18,4 +18,9 @@ $(function() {
       $(this).prop("checked", !$(this).prop("checked"));
     }
   });
+
+  $('#edit-checkins-count').click(function() {
+    $('#complete-checkin-form').hide();
+    $('#modify-checkin-form').removeClass('hidden');
+  });
 });
