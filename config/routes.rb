@@ -3,6 +3,10 @@ Rails.application.routes.draw do
     root 'users/sessions#new'
   end
 
+  authenticate :admin do
+    mount Resque::Server.new, at: "/resque"
+  end
+
   get 'sign_in', to: 'attendance_sign_in#new'
   get 'sign_out', to: 'attendance_sign_out#new'
   get 'pair_feedback', to: 'pair_feedbacks#new'

@@ -721,3 +721,52 @@ feature 'receiving callback to archive student', :js do
     end
   end
 end
+
+describe "resque web interface" do
+  context "when an admin is logged in" do
+    let(:admin) { FactoryBot.create(:admin) }
+
+    before do
+      sign_in admin
+      visit "/resque"
+    end
+
+    it "displays the Resque dashboard" do
+      expect(page).to have_content "Queues"
+    end
+  end
+
+  context "when a student is logged in" do
+    let(:student) { FactoryBot.create(:student, :with_plan) }
+
+    before do
+      sign_in student
+      visit "/resque"
+    end
+
+    it "redirects to the login page" do
+      expect(page).to have_content 'You need to sign in'
+    end
+  end
+
+  context "when a company is logged in" do
+    let(:company) { FactoryBot.create(:company) }
+
+    before do
+      sign_in company
+      visit "/resque"
+    end
+
+    it "redirects to the login page" do
+      expect(page).to have_content 'You need to sign in'
+    end
+  end
+
+  context "when no user is logged in" do
+    before { visit "/resque" }
+
+    it "redirects to the login page" do
+      expect(page).to have_content 'You need to sign in'
+    end
+  end
+end

@@ -67,6 +67,7 @@ RSpec.configure do |config|
     StripeMock.stop if example.metadata[:stripe_mock]
   end
   config.infer_spec_type_from_file_location!
+  config.include Devise::Test::IntegrationHelpers
 end
 
 VCR.configure do |config|
