@@ -2,6 +2,7 @@ desc "reset checkins and email teachers names of students with no checkins this 
 task :reset_checkins => [:environment] do
   if Date.today.saturday?
 
+    recipients = ''
     filename = File.join(Rails.root.join('tmp'), 'no-checkins.txt')
     File.open(filename, 'w') do |file|
       courses = Course.current_courses.non_internship_courses.where.not(description: 'Fidgetech')
@@ -15,7 +16,8 @@ task :reset_checkins => [:environment] do
           file.puts ''
         end
       end
-      Student.where(id: courses.map(&:students).flatten.map(&:id)).update_all(checkins: 0)
+      students = Student.where(id: courses.map(&:students).flatten.map(&:id))
+      students.update_all(checkins: 0)
       recipients = courses.map(&:admin).map(&:email).uniq.join(', ')
     end
 
