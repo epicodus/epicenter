@@ -64,6 +64,11 @@ describe Course do
       it '#cirr_fulltime_courses' do
         expect(Course.cirr_fulltime_courses).to eq [ft_course, pt_full_stack_course]
       end
+
+      it '#non_fidgetech_courses' do
+        fidgetech_course = FactoryBot.create(:course, description: 'Fidgetech')
+        expect(Course.non_fidgetech_courses).to eq [ft_course, pt_intro_course, pt_full_stack_course, pt_js_react_course]
+      end
     end
 
     describe '#internship_courses' do

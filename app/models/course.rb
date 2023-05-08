@@ -9,6 +9,7 @@ class Course < ApplicationRecord
   scope :parttime_full_stack_courses, -> { joins(:track).where("tracks.description = 'Part-Time C#/React'") }
   scope :internship_courses, -> { where(internship_course: true) }
   scope :non_internship_courses, -> { where.not(id: internship_courses) }
+  scope :non_fidgetech_courses, -> { where.not(description: 'Fidgetech') }
   scope :active_courses, -> { where(active: true).order(:description) }
   scope :inactive_courses, -> { where(active: false).order(:description) }
   scope :full_internship_courses, -> { where(full: true).order(:description) }

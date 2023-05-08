@@ -5,7 +5,9 @@ task :reset_checkins => [:environment] do
     recipients = ''
     filename = File.join(Rails.root.join('tmp'), 'no-checkins.txt')
     File.open(filename, 'w') do |file|
-      courses = Course.current_courses.non_internship_courses.where.not(description: 'Fidgetech')
+      current_courses = Course.current_courses.non_internship_courses.non_fidgetech_courses
+      recently_ended_courses = Course.non_internship_courses.where('end_date > ?', Date.today-6.days).where('end_date < ?', Date.today)
+      courses = current_courses + recently_ended_courses
       file.puts 'No check-ins this week:'
       file.puts ''
       courses.each do |course|
@@ -18,7 +20,7 @@ task :reset_checkins => [:environment] do
       end
       students = Student.where(id: courses.map(&:students).flatten.map(&:id))
       students.update_all(checkins: 0)
-      recipients = courses.map(&:admin).map(&:email).uniq.join(', ')
+      recipients = courses.map(&:admin).map(&:email).uniq.join(', ').concat(', teacher-lead@epicodus.com')
     end
 
     if Rails.env.production?
