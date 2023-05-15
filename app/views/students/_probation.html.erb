@@ -17,7 +17,7 @@
       <btn class='btn btn-link' id='edit-checkins-count'><em>edit check-ins count</em></btn><br>
     <% end %>
     <%= form_for student, html: { id: 'modify-checkin-form', class: 'hidden' } do |f| %>
-      <%= f.number_field :checkins, value: student.checkins, value: student.checkins %>
+      <%= f.number_field :checkins, value: student.checkins %>
       <%= f.submit 'update check-in count', class: 'btn btn-sm btn-danger', data: { confirm: "Modify check-in count for #{student.name}?" } %>
     <% end %>
   </p>
