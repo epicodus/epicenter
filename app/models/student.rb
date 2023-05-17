@@ -36,10 +36,12 @@ class Student < User
   has_many :evaluations_by_peers, class_name: :PeerEvaluation, foreign_key: :evaluatee
   has_many :evaluations_of_pairs, class_name: :PairFeedback, foreign_key: :student
   has_many :evaluations_by_pairs, class_name: :PairFeedback, foreign_key: :pair
+  has_one :sticky, class_name: :StudentNote
 
   acts_as_paranoid
 
   accepts_nested_attributes_for :ratings
+  accepts_nested_attributes_for :sticky
 
   NUMBER_OF_RANDOM_PAIRS = 5
   TARDY_WEIGHT = 0.5

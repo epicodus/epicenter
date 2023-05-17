@@ -33,6 +33,8 @@
 
   <%= render 'students/probation', student: @student %>
 
+  <%= render 'students/sticky', student: @student %>
+  
   <% if @student.starting_cohort && @student.cohort && @student.starting_cohort == @student.cohort %>
     <p>Cohort: <%= link_to @student.cohort.description, cohort_path(@student.cohort) %></p>
   <% elsif @student.starting_cohort || @student.cohort %>
