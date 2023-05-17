@@ -839,17 +839,24 @@ FactoryBot.define do
   end
 
   factory :note do
-    content { 'this is a note'}
-    submission
+    content { 'this is a note' }
 
     factory :submission_note do
       type { SubmissionNote }
+      submission
     end
 
     factory :meeting_request_note do
       type { MeetingRequestNote }
+      submission
     end
+
+    factory :student_sticky_note do
+      type { StudentNote }
+      student
+    end  
   end
+
 
   factory :daily_submission do
     link { 'http://github.com' }

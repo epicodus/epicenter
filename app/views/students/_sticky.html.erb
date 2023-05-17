@@ -1,0 +1,17 @@
+<div id='sticky-note-content' class='sticky-note-content' data-toggle="tooltip" title="Click to edit">
+  <div class='panel panel-body'>
+    <%= @student.sticky.try(:content) || 'Click to create a staff-only sticky note for this student.' %>
+  </div>
+</div>
+
+<div id='sticky-note-form' class='sticky-note-form hidden'>
+  <div class='panel panel-body'>
+    <%= form_with(model: @student) do |form| %>
+      <%= form.fields_for :sticky, (@student.sticky || @student.build_sticky) do |sticky_form| %>
+        <%= sticky_form.text_area :content %>
+      <% end %>
+      <br>
+      <%= form.submit 'Update sticky', class: 'btn btn-danger' %>
+    <% end %>
+  </div>
+</div>

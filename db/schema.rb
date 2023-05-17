@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_16_210013) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_16_230321) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -193,6 +193,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_16_210013) do
     t.datetime "created_at", precision: nil
     t.datetime "updated_at", precision: nil
     t.string "type"
+    t.integer "student_id"
     t.index ["submission_id"], name: "index_notes_on_submission_id"
   end
 
