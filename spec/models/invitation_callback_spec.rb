@@ -14,6 +14,7 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
     it 'expunges existing user if no payments or attendance records' do
       cohort = FactoryBot.create(:ft_cohort, start_date: Date.parse('2000-01-03'))
       FactoryBot.create(:student, email: 'example@example.com')
+      allow_any_instance_of(CrmLead).to receive(:cohort_applied).and_return(cohort.description)
       expect_any_instance_of(Student).to receive(:really_destroy)
       InvitationCallback.new(email: 'example@example.com')
     end
@@ -27,12 +28,14 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
 
     it 'creates task on CRM lead if email already found in Epicenter and student has payment' do
       student = FactoryBot.create(:student, :with_ft_cohort, :with_upfront_payment, email: 'example@example.com')
+      allow_any_instance_of(CrmLead).to receive(:cohort_applied).and_return(student.cohort.description)
       expect_any_instance_of(CrmLead).to receive(:create_task).with('Unable to invite due to existing Epicenter account')
       InvitationCallback.new(email: 'example@example.com')
     end
 
     it 'raises error if cohort not found in Epicenter' do
-      FactoryBot.create(:track, description: 'Ruby/Rails')
+      FactoryBot.create(:track, description: 'C#/React')
+      allow_any_instance_of(CrmLead).to receive(:cohort_applied).and_return('2000-01-03 to 2000-02-13 C#/React')
       expect { InvitationCallback.new(email: 'example-invalid-cohort@example.com') }.to raise_error(CrmError, "Cohort not found in Epicenter")
     end
   end
@@ -43,6 +46,7 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
 
     describe 'creates epicenter account' do
       before do
+        allow_any_instance_of(CrmLead).to receive(:cohort_applied).and_return(part_time_cohort.description)
         InvitationCallback.new(email: 'example-part-time@example.com')
       end
 
@@ -84,6 +88,7 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
 
     describe 'creates epicenter account' do
       before do
+        allow_any_instance_of(CrmLead).to receive(:cohort_applied).and_return(cohort.description)
         InvitationCallback.new(email: 'example@example.com')
       end
 
@@ -120,6 +125,7 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
 
     describe 'creates epicenter account' do
       before do
+        allow_any_instance_of(CrmLead).to receive(:cohort_applied).and_return(cohort.description)
         InvitationCallback.new(email: 'example-part-time-full-stack@example.com')
       end
 
@@ -191,6 +197,7 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
   it 'does not enroll international students in internship course' do
     cohort = FactoryBot.create(:ft_full_cohort, start_date: Date.parse('2000-01-03'))
     internship_exempt_course = FactoryBot.create(:internship_course, description: 'Internship Exempt', track: cohort.track)
+    allow_any_instance_of(CrmLead).to receive(:cohort_applied).and_return(cohort.description)
     InvitationCallback.new(email: 'example-international@example.com')
     student = Student.find_by(email: 'example-international@example.com')
     expect(student.courses.count).to eq 5
@@ -201,6 +208,7 @@ describe InvitationCallback, :dont_stub_crm, :vcr do
     part_time_cohort = FactoryBot.create(:pt_intro_cohort, start_date: Date.parse('2000-01-03'))
     allow_any_instance_of(Enrollment).to receive(:update_cohort).and_return({})
     expect_any_instance_of(CrmLead).to receive(:update_now).with(hash_including(Rails.application.config.x.crm_fields['INVITATION_TOKEN'], Rails.application.config.x.crm_fields['EPICENTER_ID']))
+    allow_any_instance_of(CrmLead).to receive(:cohort_applied).and_return(part_time_cohort.description)
     InvitationCallback.new(email: 'example-part-time@example.com')
   end
 end

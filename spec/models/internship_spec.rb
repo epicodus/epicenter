@@ -5,7 +5,6 @@ describe Internship do
   it { should have_many :internship_assignments }
   it { should have_many(:courses).through(:course_internships) }
   it { should have_many(:students).through(:ratings) }
-  it { should have_many(:tracks).through(:internship_tracks) }
   it { should validate_presence_of :courses }
   it { should validate_presence_of :description }
   it { should validate_presence_of :ideal_intern }
@@ -16,8 +15,7 @@ describe Internship do
   describe 'validations' do
     it 'returns false if an internship is saved with number_of_students not equal to 2, 4, or 6' do
       course = FactoryBot.create(:internship_course)
-      track = FactoryBot.create(:track)
-      internship = FactoryBot.build(:internship, courses: [course], tracks: [track], number_of_students: 5)
+      internship = FactoryBot.build(:internship, courses: [course], number_of_students: 5)
       expect(internship.save).to eq false
     end
   end
@@ -75,14 +73,6 @@ describe Internship do
       internship = FactoryBot.create(:internship)
       other_internship_course = FactoryBot.create(:internship_course)
       expect(internship.other_internship_courses).to eq [other_internship_course]
-    end
-  end
-
-  describe '#tracks_ordered_by_description' do
-    it 'returns the track descriptions for an internship ordered by description' do
-      php_track = FactoryBot.create(:track, description: 'PHP/Drupal')
-      internship = FactoryBot.create(:internship, tracks: [php_track])
-      expect(internship.tracks_ordered_by_description).to eq 'PHP/Drupal, Ruby/Rails'
     end
   end
 

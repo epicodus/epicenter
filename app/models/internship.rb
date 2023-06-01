@@ -5,9 +5,7 @@ class Internship < ApplicationRecord
   has_many :course_internships
   has_many :courses, through: :course_internships
   has_many :students, through: :ratings
-  has_many :internship_tracks
   has_many :interview_assignments
-  has_many :tracks, through: :internship_tracks
   has_many :internship_assignments
 
   validates :name, presence: true
@@ -31,10 +29,6 @@ class Internship < ApplicationRecord
 
   def other_internship_courses
     Course.internship_courses.where(active: true).where.not(id: courses.map(&:id))
-  end
-
-  def tracks_ordered_by_description
-    tracks.order(:description).map(&:description).join(', ')
   end
 
   def formatted_number_of_students

@@ -265,7 +265,7 @@ FactoryBot.define do
     after(:create) do |cohort|
       if cohort.courses.any?
         cohort.update(end_date: cohort.courses.last.end_date)
-        cohort.update(description: "#{cohort.start_date.to_s} to #{cohort.end_date.to_s} #{cohort.office.short_name} #{cohort.track.description}")
+        cohort.update(description: "#{cohort.start_date.to_s} to #{cohort.end_date.to_s} #{cohort.track.description}")
       end
     end
 
@@ -394,6 +394,11 @@ FactoryBot.define do
       level { 1 }
     end
 
+    factory :c_language do
+      name { 'C#' }
+      level { 1 }
+    end
+
     factory :js_language do
       name { 'JavaScript' }
       level { 2 }
@@ -401,6 +406,11 @@ FactoryBot.define do
 
     factory :rails_language do
       name { 'Rails' }
+      level { 3 }
+    end
+
+    factory :net_language do
+      name { '.NET' }
       level { 3 }
     end
 
@@ -897,7 +907,6 @@ FactoryBot.define do
     contract { 'no contract' }
     before(:create) do |internship|
       internship.courses << create(:internship_course)
-      internship.tracks << create(:track)
     end
   end
 
@@ -908,12 +917,12 @@ FactoryBot.define do
   end
 
   factory :track do
-    description { 'Ruby/Rails' }
+    description { 'C#/React' }
     before(:create) do |track|
       track.languages << build(:intro_language)
-      track.languages << build(:ruby_language)
+      track.languages << build(:c_language)
       track.languages << build(:js_language)
-      track.languages << build(:rails_language)
+      track.languages << build(:net_language)
       track.languages << build(:internship_language)
     end
 
