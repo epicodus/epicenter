@@ -30,8 +30,10 @@ class CrmLead
   def cohort
     if fidgetech?
       Cohort.find_by(description: 'Fidgetech')
-    else
+    elsif office # legacy
       Cohort.find_by(office: office, start_date: start_date, track: track) || CrmLead.raise_error("Cohort not found in Epicenter")
+    else
+      Cohort.find_by(start_date: start_date, track: track) || CrmLead.raise_error("Cohort not found in Epicenter")
     end
   end
 
@@ -104,7 +106,13 @@ private
   end
 
   def track
-    Track.find_by(description: cohort_applied.split(/PDX|SEA|WEB/).last.strip) || CrmLead.raise_error("Track not found in Epicenter")
+    if cohort_applied.include?('WEB') # legacy - remove after July 2023
+      Track.find_by(description: cohort_applied.split(/PDX|SEA|WEB/).last.strip) || CrmLead.raise_error("Track not found in Epicenter")
+    elsif cohort_applied.include?(' to ')
+      Track.find_by(description: cohort_applied[25..-1]) || CrmLead.raise_error("Track not found in Epicenter")
+    else
+      Track.find_by(description: cohort_applied) || CrmLead.raise_error("Track not found in Epicenter")
+    end
   end
 
   def parttime?

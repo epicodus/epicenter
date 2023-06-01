@@ -593,13 +593,6 @@ describe Course do
           course = FactoryBot.create(:course, start_date: Date.parse('2021-01-04'), layout_file_path: 'example_course_layout_path', class_days: [])
           expect(course.description).to eq "#{course.start_date.strftime('%Y-%m')} #{course.language.name}"
         end
-
-        it 'sets description for internship course to date and language and track' do
-          track = FactoryBot.create(:track)
-          allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(internship: true)
-          course = FactoryBot.create(:course, track: track, start_date: Date.parse('2021-01-04'), layout_file_path: 'example_course_layout_path', class_days: [])
-          expect(course.description).to eq "#{course.start_date.strftime('%Y-%m')} #{course.language.name} (#{track.description})"
-        end
       end
 
       describe 'builds code reviews' do

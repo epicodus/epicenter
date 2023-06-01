@@ -248,7 +248,6 @@ private
 
   def set_description
     self.description = "#{start_date.try('strftime', '%Y-%m')} #{language.try(:name)}"
-    self.description += " (#{track.try(:description)})" if internship_course?
   end
 
   def set_class_times(class_times:)
