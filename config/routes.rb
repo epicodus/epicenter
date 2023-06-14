@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     resources :peer_evaluations, only: [:index, :new, :create, :show]
     resources :pair_feedbacks, only: [:index]
     resource :probation, only: [:edit, :update]
+    resources :checkins, only: [:create]
   end
   resources :admins, only: [:update]
   resources :payment_methods, only: [:index, :new]
@@ -58,6 +59,7 @@ Rails.application.routes.draw do
     resources :peer_evaluations, only: [:index]
     resource :daily_submissions, only: [:show]
     resource :meeting, only: [:new, :create]
+    resources :checkins, only: [:index]
   end
   resources :ratings, only: [:create]
   resources :companies, only: [:show]

@@ -1,0 +1,27 @@
+<h1>Check-ins this week for <%= @course.description %></h1><br>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="table-responsive">
+      <table class="datatable table table-hover">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Admin</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% Checkin.this_week.where(student: @course.students).each do |checkin| %>
+          <tr>
+            <td class="col-md-4"><%= link_to checkin.student.name, course_student_path(@course, checkin.student) %></td>
+            <td class="col-md-4"><%= checkin.admin.name %></td>
+            <td><%= checkin.created_at.strftime("%A %B %d") %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

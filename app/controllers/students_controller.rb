@@ -71,7 +71,7 @@ private
   def student_params
     params[:student][:upfront_amount] = params[:student][:upfront_amount].to_i * 100 if params[:student][:upfront_amount]
     params.require(:student).permit(:primary_payment_method_id, :course_id, :cohort_id, :starting_cohort_id, :plan_id, :probation_teacher,
-                                    :probation_advisor, :upfront_amount, :staff_sticky, :checkins, 
+                                    :probation_advisor, :upfront_amount, :staff_sticky,
                                     ratings_attributes: [:id, :internship_id, :number],
                                     sticky_attributes: [:id, :content])
   end
@@ -87,8 +87,6 @@ private
         redirect_to student_payments_path(@student), notice: "Payment plan for #{@student.name} has been updated. Upfront amount total has been reset."
       elsif student_params[:upfront_amount]
         redirect_to student_payments_path(@student), notice: "Upfront tuition total for #{@student.name} has been updated to $#{@student.upfront_amount / 100}. Remaining upfront amount owed is $#{@student.upfront_amount_owed / 100}."
-      elsif student_params[:checkins]
-        redirect_back(fallback_location: student_courses_path(@student), notice: "Check-in count updated for #{@student.name}.")
       elsif student_params[:sticky_attributes]
         redirect_back(fallback_location: student_courses_path(@student), notice: "Sticky note updated for #{@student.name}.")
       end

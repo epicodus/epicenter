@@ -406,18 +406,36 @@ feature 'setting checkins' do
   it 'increments checkin count when button clicked' do
     visit student_courses_path(student)
     expect(page).to have_content 'Check-ins this week: 0'
-    click_on 'check-in completed'
+    click_on 'Check-in completed'
     expect(page).to have_content 'Check-ins this week: 1'
   end
+end
 
-  it 'allows editing of checkin count', :js do
-    visit student_courses_path(student)
-    expect(page).to have_content 'Check-ins this week: 0'
-    find(:css, "#edit-checkins-count").click
-    fill_in 'student_checkins', with: 3
-    click_on 'update check-in count'
-    accept_js_alert
-    expect(page).to have_content 'Check-ins this week: 3'
+feature 'viewing checkins for this week' do
+  let(:course) { FactoryBot.create(:course) }
+  let(:admin) { FactoryBot.create(:admin, current_course: course) }
+  let(:student) { FactoryBot.create(:student, courses: [course]) }
+  let!(:checkin) { FactoryBot.create(:checkin, student: student, admin: admin) }
+
+  context 'admin is signed in' do
+    before do
+      login_as(admin, scope: :admin)
+    end
+
+    scenario "can see checkins for a course" do
+      visit course_path(course)
+      click_link 'Check-ins'
+      expect(page).to have_content(student.name)
+      expect(page).to have_content(admin.name)
+      expect(page).to have_content(checkin.created_at.to_date.strftime("%A %B %-d"))
+    end
+  end
+
+  context 'admin is not signed in' do
+    scenario "is redirected to sign in page" do
+      visit course_checkins_path(course)
+      expect(page).to have_content('You need to sign in')
+    end
   end
 end
 
@@ -546,11 +564,13 @@ feature 'student roster page' do
     expect(page).to have_content student.name
   end
 
-  scenario 'shows checkins count' do
-    student = FactoryBot.create(:student, course: course, checkins: 31)
+  scenario 'shows checkins count for this week' do
+    student = FactoryBot.create(:student, course: course)
+    2.times { FactoryBot.create(:checkin, student: student, admin: admin, created_at: 1.week.ago) }
+    7.times { FactoryBot.create(:checkin, student: student, admin: admin, created_at: Date.today) }
     visit course_path(course)
     expect(page).to have_content 'Checkins'
-    expect(page).to have_content '31'
+    expect(page).to have_content '7'
   end
 
   scenario 'allows viewing attendance' do

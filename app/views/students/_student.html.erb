@@ -3,7 +3,7 @@
 
   <% unless @course.internship_course? %>
     <td>
-      <%= student.checkins %>
+      <%= student.checkins.this_week.count %>
     </td>
     <% if params[:attendance] == "true" %>
       <td>
