@@ -1,6 +1,19 @@
 <h1>Check-ins this week for <%= @course.description %></h1><br>
 
 <div class="panel panel-default">
+  <div class="panel-heading">
+    <div class="row">
+      <div class="col-xs-4 text-left">
+        <%= link_to 'Previous Week', course_checkins_path(@course, day: @day - 7), class: 'btn btn-default' %>
+      </div>
+      <div class="col-xs-4 text-center">
+        <%= link_to 'This Week', course_checkins_path(@course), class: 'btn btn-default' %>
+      </div>
+      <div class="col-xs-4 text-right">
+        <%= link_to 'Next Week', course_checkins_path(@course, day: @day + 7), class: 'btn btn-default' %>
+      </div>
+    </div>
+  </div>
   <div class="panel-body">
     <div class="table-responsive">
       <table class="datatable table table-hover">
@@ -13,7 +26,7 @@
         </thead>
 
         <tbody>
-          <% Checkin.this_week.where(student: @course.students).each do |checkin| %>
+          <% Checkin.week(@day).where(student: @course.students).each do |checkin| %>
           <tr>
             <td class="col-md-4"><%= link_to checkin.student.name, course_student_path(@course, checkin.student) %></td>
             <td class="col-md-4"><%= checkin.admin.name %></td>

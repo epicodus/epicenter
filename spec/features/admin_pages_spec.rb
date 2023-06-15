@@ -416,6 +416,8 @@ feature 'viewing checkins for this week' do
   let(:admin) { FactoryBot.create(:admin, current_course: course) }
   let(:student) { FactoryBot.create(:student, courses: [course]) }
   let!(:checkin) { FactoryBot.create(:checkin, student: student, admin: admin) }
+  let!(:checkin_old1) { FactoryBot.create(:checkin, student: student, admin: admin, created_at: 1.week.ago) }
+  let!(:checkin_old2) { FactoryBot.create(:checkin, student: student, admin: admin, created_at: 1.week.ago) }
 
   context 'admin is signed in' do
     before do
@@ -428,6 +430,16 @@ feature 'viewing checkins for this week' do
       expect(page).to have_content(student.name)
       expect(page).to have_content(admin.name)
       expect(page).to have_content(checkin.created_at.to_date.strftime("%A %B %-d"))
+    end
+
+    scenario 'can see checkins for a previous week' do
+      visit course_checkins_path(course)
+      click_link 'This Week'
+      expect(page).to have_content(student.name, count: 1)
+      click_link 'Previous Week'
+      expect(page).to have_content(student.name, count: 2)
+      click_link 'Next Week'
+      expect(page).to have_content(student.name, count: 1)
     end
   end
 

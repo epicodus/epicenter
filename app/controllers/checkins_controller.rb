@@ -3,6 +3,7 @@ class CheckinsController < ApplicationController
 
   def index
     @course = Course.find(params[:course_id])
+    @day = params[:day] ? Date.parse(params[:day]) : Date.today
   end
 
   def create

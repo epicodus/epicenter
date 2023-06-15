@@ -10,7 +10,7 @@
   </p>
   <hr>
   <p>
-    Check-ins this week: <%= student.checkins.this_week.count %>
+    Check-ins this week: <%= student.checkins.week.count %>
     <%= form_for [student, Checkin.new] do |f| %>
       <%= f.submit 'Check-in completed', class: 'btn btn-sm btn-info', data: { confirm: "Mark check-in completed for #{student.name}?" } %>
     <% end %>
