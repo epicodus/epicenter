@@ -24,6 +24,11 @@ FactoryBot.define do
     end
   end
 
+  factory :checkin do
+    student
+    admin
+  end
+
   factory :attendance_record do
     student
 

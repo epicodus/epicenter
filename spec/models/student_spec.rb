@@ -18,6 +18,7 @@ describe Student do
   it { should have_many(:evaluations_of_pairs).class_name('PairFeedback').with_foreign_key(:student) }
   it { should have_many(:evaluations_by_pairs).class_name('PairFeedback').with_foreign_key(:pair) }
   it { should have_one(:sticky).class_name('StudentNote') }
+  it { should have_many(:checkins) }
 
   describe 'validations' do
     context 'does not validate plan_id when a student has not accepted the epicenter invitation' do

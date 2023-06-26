@@ -3,6 +3,7 @@ describe Admin do
   it { should have_many :courses }
   it { should have_many :cohorts }
   it { should have_many :submissions }
+  it { should have_many :checkins}
 
   describe "default scope" do
     it "alphabetizes the admins by name" do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_16_230321) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_13_204641) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -29,6 +29,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_16_230321) do
     t.index ["created_at"], name: "index_attendance_records_on_created_at"
     t.index ["student_id"], name: "index_attendance_records_on_student_id"
     t.index ["tardy"], name: "index_attendance_records_on_tardy"
+  end
+
+  create_table "checkins", force: :cascade do |t|
+    t.bigint "student_id", null: false
+    t.bigint "admin_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["admin_id"], name: "index_checkins_on_admin_id"
+    t.index ["student_id"], name: "index_checkins_on_student_id"
   end
 
   create_table "class_times", force: :cascade do |t|
@@ -424,7 +433,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_16_230321) do
     t.boolean "otp_required_for_login"
     t.string "otp_secret"
     t.string "pronouns"
-    t.integer "checkins", default: 0
+    t.integer "checkins_legacy", default: 0
     t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token", unique: true
@@ -436,6 +445,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_16_230321) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  add_foreign_key "checkins", "users", column: "admin_id"
+  add_foreign_key "checkins", "users", column: "student_id"
   add_foreign_key "cohorts", "offices"
   add_foreign_key "cohorts", "tracks"
   add_foreign_key "courses", "cohorts"
