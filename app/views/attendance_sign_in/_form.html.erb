@@ -4,19 +4,19 @@
   <%= hidden_field_tag :signing_in, value: true %>
 
   <div class="form-group">
-    <%= select_tag 'pair_ids[]', options_for_select(current_student.course.students_all_locations.where.not(id: current_student.id).order(:name).map {|s| [s.name, s.id]}.prepend(['-', '']), selected: current_student.pairs_today.try(:first).try(:id)), { class: 'form-control', id: 'pair-select-1' } %>
+    <%= select_tag 'pair_ids[]', options_for_select(@other_students.order(:name).map {|s| [s.name, s.id]}.prepend(['-', '']), selected: @pairs_today.try(:first).try(:id)), { class: 'form-control', id: 'pair-select-1' } %>
   </div>
 
   <div class="form-group">
-    <%= select_tag 'pair_ids[]', options_for_select(current_student.course.students_all_locations.where.not(id: current_student.id).order(:name).map {|s| [s.name, s.id]}.prepend(['-', '']), selected: current_student.pairs_today.try(:second).try(:id)), { class: 'form-control', id: 'pair-select-2' } %>
+    <%= select_tag 'pair_ids[]', options_for_select(@other_students.order(:name).map {|s| [s.name, s.id]}.prepend(['-', '']), selected: @pairs_today.try(:second).try(:id)), { class: 'form-control', id: 'pair-select-2' } %>
   </div>
 
   <div class="form-group">
-    <%= select_tag 'pair_ids[]', options_for_select(current_student.course.students_all_locations.where.not(id: current_student.id).order(:name).map {|s| [s.name, s.id]}.prepend(['-', '']), selected: current_student.pairs_today.try(:third).try(:id)), { class: 'form-control', id: 'pair-select-3' } %>
+    <%= select_tag 'pair_ids[]', options_for_select(@other_students.order(:name).map {|s| [s.name, s.id]}.prepend(['-', '']), selected: @pairs_today.try(:third).try(:id)), { class: 'form-control', id: 'pair-select-3' } %>
   </div>
 
   <div class="form-group">
-    <%= select_tag 'pair_ids[]', options_for_select(current_student.course.students_all_locations.where.not(id: current_student.id).order(:name).map {|s| [s.name, s.id]}.prepend(['-', '']), selected: current_student.pairs_today.try(:fourth).try(:id)), { class: 'form-control', id: 'pair-select-4' } %>
+    <%= select_tag 'pair_ids[]', options_for_select(@other_students.order(:name).map {|s| [s.name, s.id]}.prepend(['-', '']), selected: @pairs_today.try(:fourth).try(:id)), { class: 'form-control', id: 'pair-select-4' } %>
   </div>
 
   <%= submit_tag button_text, class: "btn btn-epicodus btn-block" %>

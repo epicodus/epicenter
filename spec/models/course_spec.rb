@@ -243,14 +243,6 @@ describe Course do
     end
   end
 
-  describe '#courses_all_locations' do
-    it 'returns all courses with same description' do
-      course = FactoryBot.create(:course)
-      course2 = FactoryBot.create(:course, start_date: course.start_date, end_date: course.end_date)
-      expect(course.courses_all_locations).to include(course, course2)
-    end
-  end
-
   describe '#students_all_locations' do
     it 'returns all students in courses with same description' do
       course = FactoryBot.create(:course)
