@@ -1,0 +1,16 @@
+<div class="well">
+
+  <p><%= student.name %></p>
+  <p><%= student.course.cohort.description %></p>
+
+  <hr>
+
+  <% if student.days_since_start_of_program.any? %>
+    <%= render 'students/absences', student: student, course: nil %>
+  <% end %>
+
+  <% if student.probation_advisor_count || student.probation_teacher_count %>
+    <p><%= student.probation_advisor_count.to_i + student.probation_teacher_count.to_i %> academic <%= 'warning'.pluralize(student.probation_advisor_count.to_i + student.probation_teacher_count.to_i) %></p>
+  <% end %>
+
+</div>

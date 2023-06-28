@@ -3,6 +3,8 @@ class AttendanceSignInController < ApplicationController
 
   def new
     @button_text = current_student.signed_in_today? ? 'Change pair' : 'Sign in'
+    @other_students = current_student.course.students_all_locations.where.not(id: current_student.id)
+    @pairs_today = current_student.pairs_today
     respond_to do |format|
       format.js { render 'new' }
       format.html { redirect_to root_path, alert: 'Be sure Javascript is enabled in your browser.' }

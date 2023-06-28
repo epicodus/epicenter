@@ -6,15 +6,7 @@
   <% end %>
   <h4>
     <% if @student.course %>
-      <div class="well">
-        <p><%= @student.course.cohort.description %></p>
-        <% if @student.days_since_start_of_program.any? %>
-          <p><%= render 'students/absences', student: @student, course: nil %></p>
-        <% end %>
-        <% if @student.probation_advisor_count || @student.probation_teacher_count %>
-          <p><%= @student.probation_advisor_count.to_i + @student.probation_teacher_count.to_i %> academic <%= 'warning'.pluralize(@student.probation_advisor_count.to_i + @student.probation_teacher_count.to_i) %></p>
-        <% end %>
-      </div>
+      <%= render 'students/student_highlights_box', student: @student %>
     <% end %>
   </h4>
   <h1>Your courses</h1>

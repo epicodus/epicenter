@@ -161,16 +161,12 @@ class Course < ApplicationRecord
     Student.where.not(id: students.map(&:id)).order(:name)
   end
 
-  def courses_all_locations
-    Course.where(start_date: start_date).where(end_date: end_date)
-  end
-
   def students_all_locations
-    Student.where(id: courses_all_locations.map {|c| c.students}.flatten)
+    Student.joins(:courses).where(courses: {start_date: start_date, end_date: end_date})
   end
 
   def students_all_locations_including_attendance_correction_account
-    Student.where(id: courses_all_locations.map {|c| c.students}.flatten).or(Student.where(name: '* ATTENDANCE CORRECTION *'))
+    Student.where(id: students_all_locations.select(:id)).or(Student.where(name: '* ATTENDANCE CORRECTION *'))
   end
 
   def number_of_days_since_start
