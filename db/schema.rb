@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_13_204641) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_28_042816) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -357,6 +357,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_13_204641) do
     t.string "signature_request_id"
   end
 
+  create_table "special_permissions", force: :cascade do |t|
+    t.bigint "student_id", null: false
+    t.bigint "code_review_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code_review_id"], name: "index_special_permissions_on_code_review_id"
+    t.index ["student_id"], name: "index_special_permissions_on_student_id"
+  end
+
   create_table "submissions", id: :serial, force: :cascade do |t|
     t.integer "student_id"
     t.text "link"
@@ -460,4 +469,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_13_204641) do
   add_foreign_key "payments", "payments", column: "linked_payment_id"
   add_foreign_key "peer_evaluations", "users", column: "evaluatee_id"
   add_foreign_key "peer_evaluations", "users", column: "evaluator_id"
+  add_foreign_key "special_permissions", "code_reviews"
+  add_foreign_key "special_permissions", "users", column: "student_id"
 end

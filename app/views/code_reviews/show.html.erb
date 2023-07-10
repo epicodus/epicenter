@@ -32,6 +32,8 @@
         <%= markdown @code_review.content %>
       <% elsif @code_review.expectations_met_by?(current_student) %>
         <h4>Completed successfully!</h4>
+      <% elsif @code_review.past_due?(current_student) %>
+        <h4>The submission window has closed. Please contact your instructor.</h4>
       <% else %>
         <h4>Not yet available.</h4>
       <% end %>

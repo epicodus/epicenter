@@ -38,6 +38,7 @@ class Student < User
   has_many :evaluations_by_pairs, class_name: :PairFeedback, foreign_key: :pair
   has_one :sticky, class_name: :StudentNote
   has_many :checkins, foreign_key: 'student_id', class_name: 'Checkin'
+  has_many :special_permissions
 
   acts_as_paranoid
 

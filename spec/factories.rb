@@ -1,4 +1,8 @@
 FactoryBot.define do
+  factory :special_permission do
+    student { nil }
+    code_review { nil }
+  end
   factory :admin do
     sequence(:name) { |n| "Admin Brown #{n}" }
     sequence(:email) { |n| "admin#{n}@example.com" }
