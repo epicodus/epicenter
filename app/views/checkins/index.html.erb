@@ -30,7 +30,7 @@
           <tr>
             <td class="col-md-4"><%= link_to checkin.student.name, course_student_path(@course, checkin.student) %></td>
             <td class="col-md-4"><%= checkin.admin.name %></td>
-            <td><%= checkin.created_at.strftime("%A %B %d") %></td>
+            <td><%= checkin.created_at.strftime("%A %B %-d") %></td>
           </tr>
           <% end %>
         </tbody>
