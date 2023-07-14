@@ -98,9 +98,13 @@ class CodeReview < ApplicationRecord
   end
 
   def past_due?(student)
-    zone = ActiveSupport::TimeZone[course.office.time_zone]
-    current_time = Time.now.in_time_zone(zone)
-    current_time > next_past_due_date(student)
+    if !visible_date || special_permissions.where(student: student).exists?
+      false
+    else
+      zone = ActiveSupport::TimeZone[course.office.time_zone]
+      current_time = Time.now.in_time_zone(zone)
+      current_time > next_past_due_date(student)
+    end
   end
 
 private
