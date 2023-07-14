@@ -47,13 +47,13 @@
           <%= link_to 'Submit', course_code_review_path(@course, code_review, anchor: "submission"), class: 'text-info' %>
         <% end %>
       </td>
-      <td>
-        <% if can? :manage, CodeReview %>
-          <%= link_to new_code_review_submission_path(code_review, student_id: @student.id), id: 'exempt-edit' do %>
-            <span class='glyphicon glyphicon-edit' aria-hidden='true'></span>
-          <% end %>
-        <% end %>
-      </td>
     <% end %>
+    <td>
+      <% if can? :manage, CodeReview %>
+        <%= link_to new_code_review_submission_path(code_review, student_id: @student.id), id: 'exempt-edit' do %>
+          <span class='glyphicon glyphicon-edit' aria-hidden='true'></span>
+        <% end %>
+      <% end %>
+    </td>
   </tr>
 </tbody>

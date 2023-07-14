@@ -110,6 +110,8 @@ Rails.application.routes.draw do
   end
   resources :internship_assignments, only: [:create, :destroy]
 
+  resources :special_permissions, only: [:create, :destroy]
+
   resources :demographics, only: [:new, :create]
 
   resources :github_callbacks, only: [:create]

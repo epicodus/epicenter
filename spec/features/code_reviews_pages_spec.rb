@@ -119,8 +119,30 @@ feature 'visiting the code review show page' do
       end
     end
 
+    it 'displays message after code review is past due' do
+      travel_to code_review.visible_date + 9.days do
+        visit course_code_review_path(code_review.course, code_review)
+        expect(page).to have_content "The submission window has closed. Please contact your instructor."
+      end
+    end
+
     it 'displays code review content when code review is visible' do
       travel_to code_review.visible_date + 1.day do
+        visit course_code_review_path(code_review.course, code_review)
+        expect(page).to have_content "test content"
+      end
+    end
+
+    it 'does not display code review content when code review is past due' do
+      travel_to code_review.due_date + 9.days do
+        visit course_code_review_path(code_review.course, code_review)
+        expect(page).to_not have_content "test content"
+      end
+    end
+
+    it 'displays code review content if special permission is given' do
+      code_review.special_permissions.create(student: student)
+      travel_to code_review.due_date + 9.days do
         visit course_code_review_path(code_review.course, code_review)
         expect(page).to have_content "test content"
       end
@@ -671,6 +693,90 @@ feature 'exporting code review submissions info to a file' do
       FactoryBot.create(:submission, code_review: code_review)
       visit code_review_export_path(code_review)
       expect(page).to have_content "You are not authorized to access this page."
+    end
+  end
+end
+
+feature 'manually making a cr visible for a student' do
+  let(:course) { FactoryBot.create(:course) }
+  let!(:code_review) { FactoryBot.create(:code_review, course: course) }
+  let(:student) { FactoryBot.create(:student, course: course) }
+  let(:admin) { course.admin }
+
+  context 'as an admin' do
+    before { login_as(admin, scope: :admin) }
+
+    it 'allows creation of special permission' do
+      visit course_student_path(course, student)
+      find("[id='exempt-edit']").click
+      find('#special-permission-create').click
+      travel_to code_review.due_date + 9.days do
+        expect(code_review.visible?(student)).to be true
+      end
+    end
+
+    it 'allows removal of special permission' do
+      FactoryBot.create(:special_permission, code_review: code_review, student: student)
+      visit course_student_path(course, student)
+      find("[id='exempt-edit']").click
+      find('#special-permission-delete').click
+      travel_to code_review.due_date + 9.days do
+        expect(code_review.visible?(student)).to be false
+      end
+    end
+  end
+
+  context 'as a student' do
+    it 'does not show link to create special permission' do
+      login_as(student, scope: :student)
+      visit course_code_review_path(course, code_review)
+      expect(page).to_not have_css('#exempt-edit')
+    end
+  end
+end
+
+feature 'creating a CR exemption from a student page' do
+  let(:course) { FactoryBot.create(:course) }
+  let!(:code_review) { FactoryBot.create(:code_review, course: course) }
+  let(:student) { FactoryBot.create(:student, course: course) }
+  let(:admin) { course.admin }
+
+  context 'as an admin' do
+    before { login_as(admin, scope: :admin) }
+
+    it 'links to CR exemption page' do
+      visit course_student_path(course, student)
+      find("[id='exempt-edit']").click
+      expect(page).to have_content 'Code Review Exemption'
+      expect(page).to have_content student.name
+      expect(page).to have_content code_review.title
+    end
+
+    it 'does not show CR exemption section when submission exists' do
+      submission = FactoryBot.create(:submission, code_review: code_review, student: student)
+      visit course_student_path(course, student)
+      find("[id='exempt-edit']").click
+      expect(page).to_not have_content 'Code Review Exemption'
+    end
+
+    it 'allows creation of exempt passing submission' do
+      visit course_student_path(course, student)
+      find("[id='exempt-edit']").click
+      click_on "Exempt #{student.name.upcase} from #{code_review.title.upcase}"
+      expect(page).to have_content "#{code_review.title} marked as passing for #{student.name}"
+      expect(current_path).to eq course_student_path(course, student)
+      expect(page).to have_content 'exempt'
+      expect(code_review.submission_for(student).meets_expectations?).to eq true
+      expect(code_review.submission_for(student).needs_review).to eq false
+      expect(code_review.submission_for(student).review_status).to eq 'pass'
+    end
+  end
+
+  context 'as a student' do
+    it 'does not show link to create CR exemption' do
+      login_as(student, scope: :student)
+      visit course_student_path(course, student)
+      expect(page).to_not have_css('#exempt-edit')
     end
   end
 end

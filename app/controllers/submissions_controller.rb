@@ -9,6 +9,7 @@ class SubmissionsController < ApplicationController
   def new
     @code_review = CodeReview.find(params[:code_review_id])
     @student = Student.find(params[:student_id])
+    @special_permission = @student.special_permissions.find_by(code_review: @code_review)
   end
 
   def create

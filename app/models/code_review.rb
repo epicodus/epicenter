@@ -7,6 +7,7 @@ class CodeReview < ApplicationRecord
 
   has_many :objectives
   has_many :submissions
+  has_many :special_permissions
   belongs_to :course
 
   accepts_nested_attributes_for :objectives, reject_if: :attributes_blank?, allow_destroy: true
@@ -76,14 +77,37 @@ class CodeReview < ApplicationRecord
       true
     elsif expectations_met_by?(student)
       false
+    elsif special_permissions.where(student: student).exists?
+      true
     else
       zone = ActiveSupport::TimeZone[course.office.time_zone]
       current_time = Time.now.in_time_zone(zone)
-      current_time >= visible_date
+      current_time >= visible_date && current_time <= next_past_due_date(student)
     end
   end
 
+  def next_past_due_date(student)
+    beginning_of_week = base_date_for_next_past_due_date(student).beginning_of_week(:sunday)
+    next_due_date = course.parttime? ? beginning_of_week + 7.days + 9.hours : beginning_of_week + 8.days + 8.hours
+    next_due_date <= base_date_for_next_past_due_date(student) ? next_due_date + 1.week : next_due_date
+  end
+
+  # hacky way of handling code climate method complexity fail
+  def base_date_for_next_past_due_date(student)
+    failing_submission?(student) ? submission_for(student).latest_review.created_at : visible_date
+  end
+
+  def past_due?(student)
+    zone = ActiveSupport::TimeZone[course.office.time_zone]
+    current_time = Time.now.in_time_zone(zone)
+    current_time > next_past_due_date(student)
+  end
+
 private
+
+  def failing_submission?(student)
+    submission_for(student).try(:review_status) == 'fail'
+  end
 
   def check_for_submissions
     if submissions.any?

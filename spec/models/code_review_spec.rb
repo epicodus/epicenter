@@ -189,7 +189,8 @@ describe CodeReview do
 
   describe '#visible?' do
     let(:student) { FactoryBot.create(:student, :with_course) }
-    let(:code_review) { FactoryBot.create(:code_review, course: student.course) }
+    let(:visible_date) { DateTime.current.beginning_of_week + 4.days + 8.hours }
+    let(:code_review) { FactoryBot.create(:code_review, course: student.course, visible_date: visible_date) }
 
     it 'returns true if code review has no visible_date', :stub_mailgun do
       code_review.visible_date = nil
@@ -212,6 +213,103 @@ describe CodeReview do
     it 'returns true if on code review date at class start time for full-time course' do
       travel_to code_review.visible_date.beginning_of_day + 8.hours do
         expect(code_review.visible?(student)).to eq true
+      end
+    end
+
+    it 'returns false if after past_due_date' do
+      travel_to code_review.visible_date + 3.days + 1.hour do
+        expect(code_review.visible?(student)).to eq false
+      end
+    end
+
+    it 'returns true if has failing submission and before next_past_due_date' do
+      submission = FactoryBot.create(:submission, code_review: code_review, student: student)
+      travel_to code_review.visible_date + 4.days do
+        expect(code_review.visible?(student)).to eq false
+        FactoryBot.create(:failing_review, submission: submission)
+        expect(code_review.visible?(student)).to eq true
+      end
+      travel_to code_review.visible_date + 11.days do
+        expect(code_review.visible?(student)).to eq false
+      end
+    end
+
+    it 'returns true if student has special_permission' do
+      FactoryBot.create(:special_permission, code_review: code_review, student: student)
+      travel_to code_review.visible_date + 3.days + 1.hour do
+        expect(code_review.visible?(student)).to eq true
+      end
+    end
+  end
+
+  describe '#next_past_due_date' do
+    let(:course) { FactoryBot.create(:course, parttime: parttime) }
+    let(:pt_visible_date) { DateTime.current.beginning_of_week(:sunday) + 4.days + 17.hours }
+    let(:ft_visible_date) { DateTime.current.beginning_of_week(:sunday) + 5.days + 8.hours }
+    let(:code_review) { FactoryBot.create(:code_review, course: course, visible_date: visible_date) }
+    let(:student) { FactoryBot.create(:student, courses: [course]) }
+    let!(:submission) { FactoryBot.create(:submission, student: student, code_review: code_review) }
+
+  context 'when the latest review failed' do
+      let(:failing_review) { FactoryBot.create(:failing_review, submission: submission) }
+
+      before { allow(submission).to receive(:latest_review).and_return(failing_review) }
+
+      context 'when course is part time' do
+        let(:parttime) { true }
+        let(:visible_date) { pt_visible_date }
+        it 'sets the next due date to the next Sunday 9am' do
+          expect(code_review.next_past_due_date(student)).to eq((submission.latest_review.created_at.beginning_of_week(:sunday) + 7.days).change(hour: 9))
+        end
+      end
+
+      context 'when course is full time' do
+        let(:parttime) { false }
+        let(:visible_date) { ft_visible_date }
+        it 'sets the next due date to the next Monday 8am' do
+          expect(code_review.next_past_due_date(student)).to eq((submission.latest_review.created_at.beginning_of_week(:sunday) + 8.days).change(hour: 8))
+        end
+      end
+    end
+
+    context 'when the latest review did not fail' do
+      let(:passing_review) { FactoryBot.create(:passing_review, submission: submission) }
+
+      before { allow(submission).to receive(:latest_review).and_return(passing_review) }
+
+      context 'when course is part time' do
+        let(:parttime) { true }
+        let(:visible_date) { pt_visible_date }
+        it 'sets the next due date to the next Sunday 9am' do
+          expect(code_review.next_past_due_date(student)).to eq(code_review.visible_date + 3.days - 8.hours)
+        end
+      end
+
+      context 'when course is full time' do
+        let(:parttime) { false }
+        let(:visible_date) { ft_visible_date }
+        it 'sets the next due date to the next Monday 8am' do
+          expect(code_review.next_past_due_date(student)).to eq(code_review.visible_date + 3.days)
+        end
+      end
+    end
+  end
+
+  describe '#past_due?' do
+    let(:code_review) { FactoryBot.create(:code_review) }
+    let(:student) { FactoryBot.create(:student) }
+
+    context 'when past due' do
+      it 'returns true' do
+        allow(code_review).to receive(:next_past_due_date).and_return(DateTime.current - 1.day)
+        expect(code_review.past_due?(student)).to eq true
+      end
+    end
+
+    context 'when not past due' do
+      it 'returns false' do
+        allow(code_review).to receive(:next_past_due_date).and_return(DateTime.current + 1.day)
+        expect(code_review.past_due?(student)).to eq false
       end
     end
   end
