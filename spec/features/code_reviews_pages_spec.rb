@@ -133,6 +133,13 @@ feature 'visiting the code review show page' do
       end
     end
 
+    it 'displays submission form when code review is visible' do
+      travel_to code_review.visible_date + 1.day do
+        visit course_code_review_path(code_review.course, code_review)
+        expect(page).to have_content "Submission link"
+      end
+    end
+
     it 'does not display code review content when code review is past due' do
       travel_to code_review.due_date + 9.days do
         visit course_code_review_path(code_review.course, code_review)
@@ -145,6 +152,13 @@ feature 'visiting the code review show page' do
       travel_to code_review.due_date + 9.days do
         visit course_code_review_path(code_review.course, code_review)
         expect(page).to have_content "test content"
+      end
+    end
+    
+    it 'does not show submission form when code review is past due' do
+      travel_to code_review.visible_date + 9.days do
+        visit course_code_review_path(code_review.course, code_review)
+        expect(page).to_not have_content "Submission link"
       end
     end
 
@@ -298,7 +312,7 @@ feature 'visiting the code review show page' do
       let(:submission) { FactoryBot.create(:submission, code_review: code_review, student: student) }
 
       before do
-        FactoryBot.create(:passing_review, submission: submission)
+        FactoryBot.create(:failing_review, submission: submission)
         visit course_code_review_path(code_review.course, code_review)
       end
 

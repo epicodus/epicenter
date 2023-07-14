@@ -43,6 +43,8 @@
           Not submitted
         <% elsif code_review.submissions_not_required? %>
           <%= link_to 'Pending', course_code_review_path(@course, code_review) %>
+        <% elsif code_review.past_due?(@student) %>
+          Late
         <% else %>
           <%= link_to 'Submit', course_code_review_path(@course, code_review, anchor: "submission"), class: 'text-info' %>
         <% end %>
