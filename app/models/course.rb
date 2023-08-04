@@ -4,7 +4,7 @@ class Course < ApplicationRecord
   default_scope { order(:start_date) }
 
   scope :fulltime_courses, -> { where(parttime: false) }
-  scope :parttime_intro_courses, -> { joins(:track).where("tracks.description = 'Part-Time Intro to Programming'") }
+  scope :parttime_intro_courses, -> { joins(:track).where("tracks.description IN (?)", ['Part-Time Intro to Programming', 'Part-Time Evening Intro to Programming']) }
   scope :parttime_js_react_courses, -> { joins(:track).where("tracks.description = 'Part-Time JS/React'") }
   scope :parttime_full_stack_courses, -> { joins(:track).where("tracks.description = 'Part-Time C#/React'") }
   scope :internship_courses, -> { where(internship_course: true) }
