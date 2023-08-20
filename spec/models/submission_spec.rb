@@ -167,7 +167,9 @@ describe Submission do
   end
 
   describe '#meets_expectations?', :stub_mailgun do
-    let(:submission) { FactoryBot.create(:submission) }
+    let(:student) { FactoryBot.create(:student, :with_course) }
+    let(:code_review) { FactoryBot.create(:code_review, course: student.course) }
+    let(:submission) { FactoryBot.create(:submission, code_review: code_review, student: student) }
 
     it 'is true if the latest review meets expectations' do
       review = FactoryBot.create(:passing_review, submission: submission)

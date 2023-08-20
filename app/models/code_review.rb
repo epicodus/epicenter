@@ -1,5 +1,6 @@
 class CodeReview < ApplicationRecord
   default_scope { order(:number) }
+  scope :current_cohort_code_reviews, -> { where(course: Course.current_cohort_courses) }
 
   validates :title, presence: true
   validates :course, presence: true
@@ -8,6 +9,7 @@ class CodeReview < ApplicationRecord
   has_many :objectives
   has_many :submissions
   has_many :special_permissions
+  has_many :code_review_visibilities, dependent: :destroy
   belongs_to :course
 
   accepts_nested_attributes_for :objectives, reject_if: :attributes_blank?, allow_destroy: true
@@ -16,6 +18,7 @@ class CodeReview < ApplicationRecord
   before_create :normalize_title
   before_create :set_number, if: ->(cr) { cr.number.nil? }
   before_destroy :check_for_submissions
+  after_create :create_code_review_visibilities
 
   def total_points_available
     objectives.length * 3
@@ -72,39 +75,16 @@ class CodeReview < ApplicationRecord
     copy_code_review
   end
 
+  def code_review_visibility_for(student)
+    code_review_visibilities.find_by(student: student)
+  end
+
   def visible?(student)
-    if visible_date.blank?
-      true
-    elsif expectations_met_by?(student)
-      false
-    elsif special_permissions.where(student: student).exists?
-      true
-    else
-      zone = ActiveSupport::TimeZone[course.office.time_zone]
-      current_time = Time.now.in_time_zone(zone)
-      current_time >= visible_date && current_time <= next_past_due_date(student)
-    end
-  end
-
-  def next_past_due_date(student)
-    beginning_of_week = base_date_for_next_past_due_date(student).beginning_of_week(:sunday)
-    next_due_date = course.parttime? ? beginning_of_week + 7.days + 9.hours : beginning_of_week + 8.days + 8.hours
-    next_due_date <= base_date_for_next_past_due_date(student) ? next_due_date + 1.week : next_due_date
-  end
-
-  # hacky way of handling code climate method complexity fail
-  def base_date_for_next_past_due_date(student)
-    failing_submission?(student) ? submission_for(student).latest_review.created_at : visible_date
+    code_review_visibility_for(student).try(:visible?)
   end
 
   def past_due?(student)
-    if !visible_date || special_permissions.where(student: student).exists?
-      false
-    else
-      zone = ActiveSupport::TimeZone[course.office.time_zone]
-      current_time = Time.now.in_time_zone(zone)
-      current_time > next_past_due_date(student)
-    end
+    code_review_visibility_for(student).try(:past_due?)
   end
 
 private
@@ -146,5 +126,11 @@ private
 
   def normalize_title
     self.title = title.strip
+  end
+
+  def create_code_review_visibilities
+    course.students.find_each do |student|
+      code_review_visibilities.create(student: student)
+    end
   end
 end

@@ -110,8 +110,6 @@ Rails.application.routes.draw do
   end
   resources :internship_assignments, only: [:create, :destroy]
 
-  resources :special_permissions, only: [:create, :destroy]
-
   resources :demographics, only: [:new, :create]
 
   resources :github_callbacks, only: [:create]
@@ -126,6 +124,8 @@ Rails.application.routes.draw do
   resource :reports, only: [:index] do
     resources :teachers, only: [:index, :show]
   end
+
+  patch '/courses/:course_id/code_reviews/:code_review_id/students/:student_id/code_review_visibility', to: 'code_review_visibilities#update', as: 'code_review_visibility'
 
   post :create_plaid_link_token, to: 'bank_accounts#create_plaid_link_token'
 end

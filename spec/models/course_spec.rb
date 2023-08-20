@@ -69,6 +69,16 @@ describe Course do
         fidgetech_course = FactoryBot.create(:course, description: 'Fidgetech')
         expect(Course.non_fidgetech_courses).to eq [ft_course, pt_intro_course, pt_full_stack_course, pt_js_react_course]
       end
+
+      it '#current_cohort_courses' do
+        past_cohort = FactoryBot.create(:cohort, start_date: 1.year.ago, end_date: 1.month.ago)
+        current_cohort = FactoryBot.create(:cohort, start_date: 1.month.ago, end_date: 1.month.from_now)
+        future_cohort = FactoryBot.create(:cohort, start_date: 1.month.from_now, end_date: 1.year.from_now)
+        past_course = FactoryBot.create(:course, cohort: past_cohort)
+        current_course = FactoryBot.create(:course, cohort: current_cohort)
+        future_course = FactoryBot.create(:course, cohort: future_cohort)
+        expect(Course.current_cohort_courses).to eq [current_course]
+      end
     end
 
     describe '#internship_courses' do

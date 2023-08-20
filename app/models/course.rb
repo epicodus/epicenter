@@ -15,6 +15,7 @@ class Course < ApplicationRecord
   scope :full_internship_courses, -> { where(full: true).order(:description) }
   scope :available_internship_courses, -> { where(full: nil).or(where(full: false)).order(:description) }
   scope :level, -> (level) { joins(:language).where('level = ?', level) }
+  scope :current_cohort_courses, -> { joins(:cohort).where('cohorts.start_date <= ? AND cohorts.end_date >= ?', Time.zone.now.to_date, Time.zone.now.to_date) }
 
   validates :language_id, :start_date, :end_date, :office_id, presence: true
 

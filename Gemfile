@@ -52,6 +52,7 @@ group :development do
   gem 'bullet'
   gem 'rack-mini-profiler'
   gem 'listen'
+  gem 'timecop'
 end
 
 group :test, :development do
