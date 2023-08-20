@@ -39,6 +39,7 @@ class Student < User
   has_one :sticky, class_name: :StudentNote
   has_many :checkins, foreign_key: 'student_id', class_name: 'Checkin'
   has_many :special_permissions
+  has_many :code_review_visibilities, dependent: :destroy
 
   acts_as_paranoid
 

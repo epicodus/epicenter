@@ -1,17 +1,16 @@
 <div class='panel panel-body'>
   <h1><%= @code_review.course.internship_course? ? 'Career' : 'Code' %> Review Accomodation</h1>
-  <% if @special_permission %>
-    <h2>Remove <strong><%= @code_review.title %></strong> visibility marker for <strong><%= @student.name %></strong>?</h2>
-    <%= link_to "Remove #{@code_review.title.upcase} visibility marker for #{@student.name.upcase}", special_permission_path(@special_permission), method: :delete, class: 'btn btn-danger', id: 'special-permission-delete', data: { confirm: "Remove '#{@code_review.title}' visibility marker for #{@student.name}?" } %>
-  <% elsif @code_review.visible_date %>
-    <h2>Make <strong><%= @code_review.title %></strong> visible for <strong><%= @student.name %></strong>?</h2>
-    <%= form_with model: SpecialPermission.new, url: special_permissions_path do |f| %>
-      <%= f.hidden_field :code_review_id, value: @code_review.id %>
-      <%= f.hidden_field :student_id, value: @student.id %>
+
+  <%= form_with model: @code_review_visibility, url: code_review_visibility_path(course_id: @code_review.course_id, code_review_id: @code_review.id, student_id: @student.id), method: :patch do |f| %>
+    <%= f.hidden_field :special_permission, value: !@code_review_visibility.special_permission %>
+    <% if @code_review_visibility.special_permission %>
+      <h2>Remove <strong><%= @code_review.title %></strong> visibility marker for <strong><%= @student.name %></strong>?</h2>
+      <%= f.submit "Remove #{@code_review.title.upcase} visibility marker for #{@student.name.upcase}", class: 'btn btn-danger', id: 'special-permission-delete', data: { confirm: "Remove '#{@code_review.title}' visibility marker for #{@student.name}?" } %>
+    <% else %>
+      <h2>Make <strong><%= @code_review.title %></strong> visible for <strong><%= @student.name %></strong>?</h2>
       <%= f.submit "Make #{@code_review.title.upcase} visible for #{@student.name.upcase}", class: 'btn btn-info', id: 'special-permission-create', data: { confirm: "Make '#{@code_review.title}' visible for #{@student.name}?" } %>
     <% end %>
   <% end %>
-</div>
 
 <% unless @student.submission_for(@code_review) %>
   <br><hr>

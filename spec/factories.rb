@@ -1,8 +1,4 @@
 FactoryBot.define do
-  factory :special_permission do
-    student { nil }
-    code_review { nil }
-  end
   factory :admin do
     sequence(:name) { |n| "Admin Brown #{n}" }
     sequence(:email) { |n| "admin#{n}@example.com" }
@@ -1029,5 +1025,13 @@ FactoryBot.define do
     q1_response { 1 }
     q2_response { 2 }
     q3_response { 3 }
+  end
+
+  factory :code_review_visibility do
+    student { nil }
+    code_review { nil }
+    visible_start { "2023-07-16 15:21:56" }
+    visible_end { "2023-07-16 15:21:56" }
+    always_visible { false }
   end
 end

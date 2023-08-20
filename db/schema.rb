@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_28_042816) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_01_232713) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
@@ -51,6 +51,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_28_042816) do
     t.bigint "course_id"
     t.index ["class_time_id"], name: "index_class_times_courses_on_class_time_id"
     t.index ["course_id"], name: "index_class_times_courses_on_course_id"
+  end
+
+  create_table "code_review_visibilities", force: :cascade do |t|
+    t.bigint "student_id", null: false
+    t.bigint "code_review_id", null: false
+    t.datetime "visible_start"
+    t.datetime "visible_end"
+    t.boolean "always_visible"
+    t.boolean "special_permission"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code_review_id"], name: "index_code_review_visibilities_on_code_review_id"
+    t.index ["student_id"], name: "index_code_review_visibilities_on_student_id"
   end
 
   create_table "code_reviews", id: :serial, force: :cascade do |t|
@@ -456,6 +469,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_28_042816) do
 
   add_foreign_key "checkins", "users", column: "admin_id"
   add_foreign_key "checkins", "users", column: "student_id"
+  add_foreign_key "code_review_visibilities", "code_reviews"
+  add_foreign_key "code_review_visibilities", "users", column: "student_id"
   add_foreign_key "cohorts", "offices"
   add_foreign_key "cohorts", "tracks"
   add_foreign_key "courses", "cohorts"

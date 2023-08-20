@@ -24,7 +24,7 @@ feature "print completion certificate" do
   context "after class ends" do
     let(:course) { FactoryBot.create(:course) }
     let(:internship_course) { FactoryBot.create(:internship_course) }
-    let(:student) { FactoryBot.create(:student, courses: [course, internship_course]) }
+    let!(:student) { FactoryBot.create(:student, courses: [course, internship_course]) }
     let(:code_review) { FactoryBot.create(:code_review, course: course) }
     let(:submission) { FactoryBot.create(:submission, code_review: code_review, student: student) }
 
