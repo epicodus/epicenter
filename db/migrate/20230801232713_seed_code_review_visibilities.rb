@@ -27,11 +27,11 @@ class SeedCodeReviewVisibilities < ActiveRecord::Migration[7.0]
       end
     end
 
-    puts 'Updating special permissions...'
-    SpecialPermission.find_each do |sp|
-      sp.code_review.code_review_visibility_for(sp.student).update(special_permission: true)
-    end
-    puts 'Done updating special permissions.'
+    # puts 'Updating special permissions...'
+    # SpecialPermission.find_each do |sp|
+    #   sp.code_review.code_review_visibility_for(sp.student).update(special_permission: true)
+    # end
+    # puts 'Done updating special permissions.'
   end
 
   def down
