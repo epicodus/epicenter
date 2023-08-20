@@ -65,7 +65,7 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', '~> 4.10.0'
   gem 'shoulda-matchers', '4.0.0.rc1'
   gem 'launchy'
   gem 'poltergeist'

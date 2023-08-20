@@ -7,16 +7,22 @@ describe Checkin do
     let(:admin) { FactoryBot.create(:admin) }
 
     before do
-      2.times { FactoryBot.create(:checkin, student: student, admin: admin, created_at: 1.week.ago) }
-      3.times { FactoryBot.create(:checkin, student: student, admin: admin, created_at: Date.today) }
+      travel_to Date.today.beginning_of_week do
+        2.times { FactoryBot.create(:checkin, student: student, admin: admin, created_at: 1.week.ago) }
+        3.times { FactoryBot.create(:checkin, student: student, admin: admin, created_at: Date.today) }
+      end
     end
 
     it 'returns the count of check-ins from this week' do
-      expect(Checkin.week.count).to eq(3)
+      travel_to Date.today.beginning_of_week do
+        expect(Checkin.week.count).to eq(3)
+      end
     end
 
     it 'returns the count of check-ins from last week' do
-      expect(Checkin.week(1.week.ago).count).to eq(2)
+      travel_to Date.today.beginning_of_week do
+        expect(Checkin.week(1.week.ago).count).to eq(2)
+      end
     end
   end
 end
