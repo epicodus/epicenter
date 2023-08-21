@@ -5,6 +5,10 @@ class User < ApplicationRecord
 
   validates :name, presence: true
 
+  def active_for_authentication?
+    super && !deleted_at
+  end
+
   def authenticate_with_github(uid)
     if github_uid?
       github_uid == uid

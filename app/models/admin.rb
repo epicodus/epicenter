@@ -9,6 +9,8 @@ class Admin < User
   has_many :reviews
   has_many :checkins, foreign_key: 'admin_id', class_name: 'Checkin'
 
+  acts_as_paranoid
+
   before_validation :assign_current_course, on: :create
   include DeviseInvitable::Inviter
 

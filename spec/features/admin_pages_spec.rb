@@ -12,6 +12,15 @@ feature 'Admin signs in' do
     expect(page).to have_content 'Signed in'
   end
 
+  scenario 'when soft deleted' do
+    admin.destroy
+    visit root_path
+    fill_in 'user_email', with: admin.email
+    fill_in 'user_password', with: 'password'
+    click_on 'Sign in'
+    expect(page).to_not have_content 'Signed in'
+  end
+
   scenario 'with an uppercase email' do
     visit root_path
     fill_in 'user_email', with: admin.email.upcase
