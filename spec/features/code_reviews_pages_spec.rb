@@ -334,12 +334,13 @@ describe 'CodeReviewsPages' do
       end
 
       context 'after resubmitting reflection', :stub_mailgun do
-        let(:journal) { true }
-        let(:submission) { FactoryBot.create(:submission, code_review: code_review, student: student, journal: 'test entry', link: nil) }
+        let(:journal) { FactoryBot.create(:journal, course: student.course) }
+        let(:submission) { FactoryBot.create(:submission, code_review: journal, student: student, journal: 'test entry', link: nil) }
 
         before do
+          code_review.update(journal: true, visible_date: nil, due_date: nil)
           FactoryBot.create(:passing_review, submission: submission)
-          visit course_code_review_path(code_review.course, code_review)
+          visit course_code_review_path(journal.course, journal)
         end
 
         scenario 'successfully' do
