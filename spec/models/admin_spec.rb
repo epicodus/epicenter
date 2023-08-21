@@ -5,6 +5,22 @@ describe Admin do
   it { should have_many :submissions }
   it { should have_many :checkins}
 
+  describe 'paranoia' do
+    let(:admin) { FactoryBot.create(:admin) }
+
+    it 'archives destroyed user' do
+      admin.destroy
+      expect(Admin.count).to eq 0
+      expect(Admin.with_deleted.count).to eq 1
+    end
+
+    it 'restores archived user' do
+      admin.destroy
+      admin.restore
+      expect(Admin.count).to eq 1
+    end
+  end
+
   describe "default scope" do
     it "alphabetizes the admins by name" do
       admin1 = FactoryBot.create(:admin, name: "Bob Test")
