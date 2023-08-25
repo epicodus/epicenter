@@ -12,8 +12,8 @@ class Enrollment < ApplicationRecord
   before_destroy :clear_submissions
   before_destroy :remove_internship_class_in_crm, if: ->(enrollment) { enrollment.course.internship_course? && !enrollment.deleted? }
   after_destroy :really_destroy_if_withdrawn_before_attending, if: ->(enrollment) { Enrollment.with_deleted.exists?(enrollment.id) }
-  after_create :update_cohort
-  after_destroy :update_cohort
+  after_create :update_cohort, :update_transfers_count_in_crm
+  after_destroy :update_cohort, :update_transfers_count_in_crm
 
   attr_reader :cohort_id
 
@@ -24,6 +24,10 @@ private
     student.starting_cohort = student.calculate_starting_cohort
     student.cohort = student.calculate_current_cohort
     student.save if student.changed?
+  end
+
+  def update_transfers_count_in_crm
+    student.crm_lead.update({ Rails.application.config.x.crm_fields['TRANSFERS'] => [student.enrolled_fulltime_cohorts.count - 1, 0].max })
   end
 
   def update_internship_class_in_crm

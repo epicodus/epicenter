@@ -642,6 +642,11 @@ describe Student do
     it 'returns the CrmLead for the student' do
       expect(student.crm_lead).to be_instance_of(CrmLead)
     end
+
+    it 'returns the same CrmLead instance if already exists' do
+      crm_lead_instance = student.crm_lead
+      expect(student.crm_lead).to eq crm_lead_instance
+    end
   end
 
   describe "#signed?" do
@@ -1978,6 +1983,14 @@ end
 
       it 'returns number of enrolled cohorts' do
         expect(student.enrolled_fulltime_cohorts).to eq [ft_cohort]
+      end
+
+      it 'includes withdrawn courses' do
+        FactoryBot.create(:attendance_record, student: student, date: ft_cohort.start_date)
+        travel_to ft_cohort.end_date do
+          Enrollment.where(student: student, course: ft_cohort.courses).destroy_all
+        end
+        expect(student.reload.enrolled_fulltime_cohorts).to eq [ft_cohort]
       end
     end
 

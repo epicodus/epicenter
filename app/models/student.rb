@@ -131,7 +131,9 @@ class Student < User
   end
 
   def enrolled_fulltime_cohorts
-    Cohort.where(id: courses.cirr_fulltime_courses.pluck(:cohort_id))
+    course_ids = enrollments.with_deleted.pluck(:course_id)
+    fulltime_course_ids = Course.cirr_fulltime_courses.where(id: course_ids).pluck(:cohort_id)
+    Cohort.where(id: fulltime_course_ids)
   end
 
   def internship_course
@@ -143,11 +145,12 @@ class Student < User
   end
 
   def courses_withdrawn
-    enrollments.only_deleted.select { |enrollment| !courses.include? enrollment.course }.map {|enrollment| enrollment.course }.compact.sort
+    course_ids = enrollments.only_deleted.pluck(:course_id)
+    Course.where(id: course_ids).order(:start_date)
   end
 
   def courses_with_withdrawn
-    course_ids = enrollments.with_deleted.map {|enrollment| enrollment.course.try(:id) }
+    course_ids = enrollments.with_deleted.pluck(:course_id)
     Course.where(id: course_ids).order(:start_date)
   end
 
@@ -395,7 +398,7 @@ class Student < User
   end
 
   def crm_lead
-    CrmLead.new(email)
+    @crm_lead ||= CrmLead.new(email)
   end
 
   def location
