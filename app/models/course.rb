@@ -216,11 +216,12 @@ private
     self.parttime = course_params['part_time']
     self.internship_course = course_params['internship']
     set_class_times(class_times: course_params['class_times'])
-    set_class_days(number_of_days: course_params['number_of_days'], days_of_week: course_params['class_times'].keys)
+    set_class_days(number_of_weeks: course_params['number_of_weeks'], days_of_week: course_params['class_times'].keys)
     set_description
   end
 
-  def set_class_days(number_of_days:, days_of_week:)
+  def set_class_days(number_of_weeks:, days_of_week:)
+    number_of_days = number_of_weeks * days_of_week.count
     class_days = []
     day = start_date
     number_of_days.times do
