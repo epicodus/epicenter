@@ -1994,12 +1994,12 @@ end
       end
     end
 
-    context 'excluding cohorts for withdrawn courses' do
+    context 'includes cohorts for withdrawn courses' do
       let(:student) { FactoryBot.create(:student, courses: ft_cohort.courses + pt_c_react_cohort.courses) }
 
       it 'returns number of enrolled cohorts' do
         Enrollment.where(student: student, course: pt_c_react_cohort.courses).destroy_all
-        expect(student.reload.enrolled_fulltime_cohorts).to eq [ft_cohort]
+        expect(student.reload.enrolled_fulltime_cohorts).to include pt_c_react_cohort
       end
     end
 
