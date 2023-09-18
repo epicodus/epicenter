@@ -1998,8 +1998,10 @@ end
       let(:student) { FactoryBot.create(:student, courses: ft_cohort.courses + pt_c_react_cohort.courses) }
 
       it 'returns number of enrolled cohorts' do
-        Enrollment.where(student: student, course: pt_c_react_cohort.courses).destroy_all
-        expect(student.reload.enrolled_fulltime_cohorts).to include pt_c_react_cohort
+        travel_to pt_c_react_cohort.end_date do
+          Enrollment.where(student: student, course: pt_c_react_cohort.courses).destroy_all
+          expect(student.reload.enrolled_fulltime_cohorts).to include pt_c_react_cohort
+        end
       end
     end
 
