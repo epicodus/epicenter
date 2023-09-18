@@ -75,11 +75,13 @@ describe CodeReview do
     end
   end
 
-  describe 'creates a code review visibility for each student in the course' do
-    it 'when a code review is created' do
+  describe 'creates a code review visibility on demand' do
+    it 'when a student tries to access it' do
       course = FactoryBot.create(:course)
       student = FactoryBot.create(:student, course: course)
       code_review = FactoryBot.create(:code_review, course: course)
+      expect(code_review.code_review_visibilities.empty?).to eq true
+      code_review.visible?(student)
       expect(code_review.code_review_visibilities.count).to eq 1
       expect(code_review.code_review_visibilities.first.student).to eq student
     end

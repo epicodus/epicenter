@@ -18,7 +18,6 @@ class CodeReview < ApplicationRecord
   before_create :normalize_title
   before_create :set_number, if: ->(cr) { cr.number.nil? }
   before_destroy :check_for_submissions
-  after_create :create_code_review_visibilities
 
   def total_points_available
     objectives.length * 3
@@ -76,7 +75,7 @@ class CodeReview < ApplicationRecord
   end
 
   def code_review_visibility_for(student)
-    code_review_visibilities.find_by(student: student)
+    code_review_visibilities.find_or_create_by(student: student)
   end
 
   def visible?(student)
@@ -126,11 +125,5 @@ private
 
   def normalize_title
     self.title = title.strip
-  end
-
-  def create_code_review_visibilities
-    course.students.find_each do |student|
-      code_review_visibilities.create(student: student)
-    end
   end
 end
