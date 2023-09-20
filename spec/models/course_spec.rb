@@ -39,7 +39,6 @@ describe Course do
       let!(:ft_course) { FactoryBot.create(:course) }
       let!(:pt_intro_course) { FactoryBot.create(:part_time_course, track: FactoryBot.create(:part_time_track)) }
       let!(:pt_full_stack_course) { FactoryBot.create(:part_time_course, track: FactoryBot.create(:part_time_c_react_track)) }
-      let!(:pt_js_react_course) { FactoryBot.create(:part_time_course, track: FactoryBot.create(:track, description: 'Part-Time JS/React')) }
 
       it '#fulltime_courses' do
         expect(Course.fulltime_courses).to eq [ft_course]
@@ -53,12 +52,8 @@ describe Course do
         expect(Course.parttime_full_stack_courses).to eq [pt_full_stack_course]
       end
 
-      it '#parttime_intro_courses' do
-        expect(Course.parttime_js_react_courses).to eq [pt_js_react_course]
-      end
-
       it '#cirr_parttime_courses' do
-        expect(Course.cirr_parttime_courses).to eq [pt_intro_course, pt_js_react_course]
+        expect(Course.cirr_parttime_courses).to eq [pt_intro_course]
       end
 
       it '#cirr_fulltime_courses' do
@@ -67,7 +62,7 @@ describe Course do
 
       it '#non_fidgetech_courses' do
         fidgetech_course = FactoryBot.create(:course, description: 'Fidgetech')
-        expect(Course.non_fidgetech_courses).to eq [ft_course, pt_intro_course, pt_full_stack_course, pt_js_react_course]
+        expect(Course.non_fidgetech_courses).to eq [ft_course, pt_intro_course, pt_full_stack_course]
       end
 
       it '#current_cohort_courses' do
@@ -239,6 +234,25 @@ describe Course do
       admin = FactoryBot.create(:admin)
       course = FactoryBot.create(:course, admin: admin)
       expect(course.description_and_office).to eq "#{course.description} (#{course.office.name})"
+    end
+  end
+
+  describe '#evening' do
+    let(:course) { FactoryBot.create(:part_time_course) }
+    let(:cohort) { FactoryBot.create(:cohort, courses: [course], track: track) }
+
+    describe 'for evening course' do
+      let(:track) { FactoryBot.create(:evening_track) }
+      it 'returns true if the course is an evening course' do
+        expect(cohort.courses.first.evening?).to eq true
+      end
+    end
+
+    describe 'for daytime part-time course' do
+      let(:track) { FactoryBot.create(:part_time_track) }
+      it 'returns false if the course is not an evening course' do
+        expect(cohort.courses.first.evening?).to eq false
+      end
     end
   end
 

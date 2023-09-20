@@ -77,7 +77,7 @@ task :find_leads_missing_cohorts => [:environment] do
     # ********************* #
     # PARTTIME COHORT CHECK #
     # ********************* #
-    parttime_students = students.select {|s| has_pertinent_courses?(s.courses.parttime_intro_courses) || has_pertinent_courses?(s.courses.parttime_js_react_courses) }
+    parttime_students = students.select {|s| has_pertinent_courses?(s.courses.parttime_intro_courses) }
     parttime_students.each do |student|
       calculated_parttime_cohort = student.calculate_parttime_cohort
 

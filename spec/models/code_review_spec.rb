@@ -295,14 +295,6 @@ describe CodeReview do
 
       before { allow(submission).to receive(:latest_review).and_return(failing_review) }
 
-      context 'when course is part time' do
-        let(:parttime) { true }
-        let(:visible_date) { pt_visible_date }
-        it 'sets the next due date to the next Sunday 9am' do
-          expect(code_review.code_review_visibility_for(student).visible_end).to eq((submission.latest_review.created_at.beginning_of_week(:sunday) + 7.days).change(hour: 9))
-        end
-      end
-
       context 'when course is full time' do
         let(:parttime) { false }
         let(:visible_date) { ft_visible_date }
@@ -316,14 +308,6 @@ describe CodeReview do
       let(:passing_review) { FactoryBot.create(:passing_review, submission: submission) }
 
       before { allow(submission).to receive(:latest_review).and_return(passing_review) }
-
-      context 'when course is part time' do
-        let(:parttime) { true }
-        let(:visible_date) { pt_visible_date }
-        it 'sets the next due date to the next Sunday 9am' do
-          expect(code_review.code_review_visibility_for(student).visible_end).to eq(code_review.visible_date + 3.days - 8.hours)
-        end
-      end
 
       context 'when course is full time' do
         let(:parttime) { false }

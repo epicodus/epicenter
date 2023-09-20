@@ -2,7 +2,7 @@ describe CodeReviewVisibility, :stub_mailgun do
   it { should belong_to :student }
   it { should belong_to :code_review }
 
-  let(:pt_visible_date) { DateTime.current.beginning_of_week(:sunday) + 4.days + 17.hours }
+  let(:evening_visible_date) { DateTime.current.beginning_of_week(:sunday) + 4.days + 17.hours }
   let(:ft_visible_date) { DateTime.current.beginning_of_week(:sunday) + 5.days + 8.hours }
   let(:visible_date) { nil }
   let(:parttime) { false }
@@ -43,12 +43,22 @@ describe CodeReviewVisibility, :stub_mailgun do
     end
 
     context 'when visible_start has been set' do
-      context 'when course is parttime' do
+      context 'when course is evening' do
         let(:parttime) { true }
-        let(:visible_date) { pt_visible_date }
+        let(:visible_date) { evening_visible_date }
+        it 'sets visible_end' do
+          allow_any_instance_of(Course).to receive(:evening?).and_return(true)
+          crv = code_review.code_review_visibility_for(student)
+          expect(crv.visible_end).to eq evening_visible_date.beginning_of_week(:sunday) + 7.days + 9.hours
+        end
+      end
+
+      context 'when course is parttime daytime' do
+        let(:parttime) { true }
+        let(:visible_date) { ft_visible_date }
         it 'sets visible_end' do
           crv = code_review.code_review_visibility_for(student)
-          expect(crv.visible_end).to eq pt_visible_date.beginning_of_week(:sunday) + 7.days + 9.hours
+          expect(crv.visible_end).to eq ft_visible_date.beginning_of_week(:sunday) + 8.days + 8.hours
         end
       end
 

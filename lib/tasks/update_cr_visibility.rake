@@ -1,7 +1,7 @@
 desc "set crs to be visible again if never submitted"
 # on Tuesdays, if no submission awaiting review, set visible_start to Wed/Thu and visible_end to the following Sun/Mon morning
-# PT: make visible Wed 9pm
-# FT: make visible Thu 5pm
+# EVENING: make visible Wed 9pm
+# FT & PT: make visible Thu 5pm
 # don't do anything if always_visible
 task :update_cr_visibility => [:environment] do
   if Date.today.tuesday?
@@ -15,7 +15,7 @@ task :update_cr_visibility => [:environment] do
 end
 
 def make_code_review_visible(crv)
-  is_parttime = crv.code_review.course.parttime?
-  visible_start = Date.today.beginning_of_week(:sunday) + (is_parttime ? 3.days + 21.hours : 4.days + 17.hours)
+  is_evening = crv.code_review.course.parttime? && crv.code_review.course.evening?
+  visible_start = Date.today.beginning_of_week(:sunday) + (is_evening ? 3.days + 21.hours : 4.days + 17.hours)
   crv.update(visible_start: visible_start)
 end

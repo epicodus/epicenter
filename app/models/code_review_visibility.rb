@@ -39,10 +39,10 @@ private
   end
 
   def calculate_end_date
-    # PT: 9am the next Sunday
-    # FT: 8am the next Monday
-    is_parttime = code_review.course.parttime?
-    visible_start.beginning_of_week(:sunday) + (is_parttime ? 7.days + 9.hours : 8.days + 8.hours)
+    # Evening: 9am the next Sunday
+    # FT & PT: 8am the next Monday
+    is_evening = code_review.course.parttime? && code_review.course.evening?
+    visible_start.beginning_of_week(:sunday) + (is_evening ? 7.days + 9.hours : 8.days + 8.hours)
   end
 
   def current_time

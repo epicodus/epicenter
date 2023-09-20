@@ -167,6 +167,11 @@ FactoryBot.define do
       association :track, factory: :part_time_track
     end
 
+    factory :evening_course do
+      parttime { true }
+      association :cohort, factory: :evening_cohort
+    end
+
     factory :intro_part_time_c_react_course do
       association :language, factory: :intro_part_time_c_react_language
       parttime { true }
@@ -295,6 +300,13 @@ FactoryBot.define do
       end
     end
 
+    factory :evening_cohort do
+      association :track, factory: :evening_track
+      before(:create) do |cohort|
+        cohort.courses << build(:part_time_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages.first, class_days: [cohort.start_date.beginning_of_week, cohort.start_date.beginning_of_week + 14.weeks + 2.days])
+      end
+    end
+
     factory :pt_intro_cohort do
       association :track, factory: :part_time_track
       before(:create) do |cohort|
@@ -311,14 +323,6 @@ FactoryBot.define do
         cohort.courses << build(:c_part_time_c_react_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages[2], class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
         cohort.courses << build(:react_part_time_c_react_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages[3], class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
         cohort.courses << build(:internship_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages[4], class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
-      end
-    end
-
-    factory :pt_js_react_cohort do
-      description { '2021-01-04 to 2021-10-10 PDX Part-Time JS/React' }
-      association :track, factory: :part_time_js_react_track
-      before(:create) do |cohort|
-        cohort.courses << build(:intro_part_time_c_react_course, cohort: cohort, office: cohort.office, admin: cohort.admin, track: cohort.track, language: cohort.track.languages.first, class_days: [cohort.start_date, cohort.start_date + 1.days, cohort.start_date + 2.days, cohort.start_date + 6.days, cohort.start_date + 6.weeks - 1.day])
       end
     end
 
@@ -939,6 +943,14 @@ FactoryBot.define do
       end
     end
 
+    factory :evening_track do
+      description { 'Evening Part-Time Intro to Programming' }
+      before(:create) do |track|
+        track.languages = []
+        track.languages << build(:intro_part_time_c_react_language)
+      end
+    end
+
     factory :part_time_c_react_track do
       description { 'Part-Time C#/React' }
       before(:create) do |track|
@@ -948,16 +960,6 @@ FactoryBot.define do
         track.languages << build(:c_part_time_c_react_language)
         track.languages << build(:react_part_time_c_react_language)
         track.languages << build(:internship_language)
-      end
-    end
-
-    factory :part_time_js_react_track do
-      description { 'Part-Time JS/React' }
-      before(:create) do |track|
-        track.languages = []
-        track.languages << build(:intro_part_time_c_react_language)
-        track.languages << build(:js_part_time_c_react_language)
-        track.languages << build(:react_part_time_c_react_language)
       end
     end
   end
