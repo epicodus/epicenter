@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="en-US">
+<html lang="en" xml:lang="en" xmlns= "http://www.w3.org/1999/xhtml">
 <head>
   <title><%= current_admin && content_for?(:title) ? yield(:title) : 'Epicenter' %></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Language" content="en">
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= favicon_link_tag 'favicon.png' %>
   <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700" rel="stylesheet" type="text/css">
