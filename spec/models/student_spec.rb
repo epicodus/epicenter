@@ -1821,7 +1821,6 @@ end
     let!(:future_cohort) { FactoryBot.create(:ft_cohort, start_date: Date.today.beginning_of_week + 1.year) }
     let!(:part_time_cohort) { FactoryBot.create(:pt_intro_cohort, start_date: Date.today.beginning_of_week) }
     let!(:part_time_full_stack_cohort) { FactoryBot.create(:pt_c_react_cohort, start_date: Date.today.beginning_of_week) }
-    let!(:part_time_js_react_cohort) { FactoryBot.create(:pt_js_react_cohort, start_date: Date.today.beginning_of_week) }
 
     describe '#calculate_parttime_cohort' do
       it 'returns part-time cohort when only part-time intro courses' do
@@ -1829,12 +1828,7 @@ end
         expect(student.calculate_parttime_cohort).to eq part_time_cohort
       end
 
-      it 'returns part-time cohort when only part-time js/react courses' do
-        student = FactoryBot.create(:student, courses: [part_time_js_react_cohort.courses.first])
-        expect(student.calculate_parttime_cohort).to eq part_time_js_react_cohort
-      end
-
-      it 'returns nil when when no part-time intro or js/reacat course' do
+      it 'returns nil when when no part-time intro course' do
         student = FactoryBot.create(:student, courses: [cohort.courses.first, part_time_full_stack_cohort.courses.first])
         expect(student.calculate_parttime_cohort).to eq nil
       end
@@ -1848,7 +1842,7 @@ end
 
     describe '#calculate_starting_cohort' do
       it 'returns nil when only part-time courses' do
-        student = FactoryBot.create(:student, courses: [part_time_cohort.courses.first, part_time_js_react_cohort.courses.first])
+        student = FactoryBot.create(:student, courses: [part_time_cohort.courses.first])
         expect(student.calculate_starting_cohort).to eq nil
       end
 

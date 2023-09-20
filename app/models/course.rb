@@ -1,11 +1,8 @@
-require 'csv'
-
 class Course < ApplicationRecord
   default_scope { order(:start_date) }
 
   scope :fulltime_courses, -> { where(parttime: false) }
   scope :parttime_intro_courses, -> { joins(:track).where("tracks.description IN (?)", ['Part-Time Intro to Programming', 'Part-Time Evening Intro to Programming']) }
-  scope :parttime_js_react_courses, -> { joins(:track).where("tracks.description = 'Part-Time JS/React'") }
   scope :parttime_full_stack_courses, -> { joins(:track).where("tracks.description = 'Part-Time C#/React'") }
   scope :internship_courses, -> { where(internship_course: true) }
   scope :non_internship_courses, -> { where.not(id: internship_courses) }
@@ -44,14 +41,19 @@ class Course < ApplicationRecord
 
   serialize :class_days, Array
 
+  def evening?
+    cohort.description.include?('Evening')
+  end
+
   def self.cirr_parttime_courses
-    # PT intro cohorts, PT JS/React cohorts, 2018-01 Online, and Fidgetech
+    # PT intro cohorts, Fidgetech, and some legacy cohorts
+    parttime_js_react_courses = joins(:track).where("tracks.description = 'Part-Time JS/React'")
     legacy_misc_courses = where(description: ['2018-01 Online', 'Fidgetech'])
     where(id: parttime_intro_courses + parttime_js_react_courses + legacy_misc_courses)
   end
 
   def self.cirr_fulltime_courses
-    # FT and PT full-stack cohorts; exclude PT intro and PT JS/React cohorts
+    # FT and PT full-stack cohorts; exclude PT intro cohorts
     where.not(id: cirr_parttime_courses)
   end
 
@@ -115,19 +117,11 @@ class Course < ApplicationRecord
   end
 
   def start_time(day = Time.zone.now.in_time_zone(office.time_zone).to_date)
-    if ENV['ATTENDANCE_TEST_MODE'] == 'true'
-      '00:00'
-    else
-      class_times.find_by(wday: day.wday).start_time
-    end
+    ENV['ATTENDANCE_TEST_MODE'] == 'true' ? '00:00' : class_times.find_by(wday: day.wday).start_time
   end
 
   def end_time(day = Time.zone.now.in_time_zone(office.time_zone).to_date)
-    if ENV['ATTENDANCE_TEST_MODE'] == 'true'
-      '23:59'
-    else
-      class_times.find_by(wday: day.wday).end_time
-    end
+    ENV['ATTENDANCE_TEST_MODE'] == 'true' ? '23:59' : class_times.find_by(wday: day.wday).end_time
   end
 
   def start_time_today
@@ -193,9 +187,7 @@ class Course < ApplicationRecord
 
   def export_students_emails(filename)
     File.open(filename, 'w') do |file|
-      students.each do |student|
-        file.puts student.email
-      end
+      file.puts students.pluck(:email).join("\n")
     end
   end
 
@@ -226,11 +218,7 @@ private
     day = start_date
     number_of_days.times do
       until days_of_week.include?(day.strftime('%A')) && !holiday_week?(day)
-        if holiday_week?(day)
-          day = day.next_week
-        else
-          day = day.next
-        end
+        day = holiday_week?(day) ? day.next_week : day.next
       end
       class_days << day unless Rails.configuration.holidays.include?(day.strftime('%Y-%m-%d'))
       day = day.next

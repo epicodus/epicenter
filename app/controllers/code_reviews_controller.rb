@@ -4,14 +4,9 @@ class CodeReviewsController < ApplicationController
   def new
     @code_review = CodeReview.new
     @course = Course.find(params[:course_id])
+    @code_review.visible_date = DateTime.current.beginning_of_week + 4.days + 8.hours
+    @code_review.due_date = DateTime.current.beginning_of_week + 4.days + 17.hours
     3.times { @code_review.objectives.build }
-    if @course.parttime?
-      @code_review.visible_date = DateTime.current.beginning_of_week + 3.days + 17.hours
-      @code_review.due_date = DateTime.current.beginning_of_week + 10.days + 17.hours
-    else
-      @code_review.visible_date = DateTime.current.beginning_of_week + 4.days + 8.hours
-      @code_review.due_date = DateTime.current.beginning_of_week + 4.days + 17.hours
-    end
   end
 
   def create
@@ -37,15 +32,6 @@ class CodeReviewsController < ApplicationController
   def edit
     @code_review = CodeReview.find(params[:id])
     @course = @code_review.course
-    if @code_review.due_date.nil?
-      if @course.parttime?
-        @code_review.visible_date = DateTime.current.beginning_of_week + 3.days + 17.hours
-        @code_review.due_date = DateTime.current.beginning_of_week + 10.days + 17.hours
-      else
-        @code_review.visible_date = DateTime.current.beginning_of_week + 4.days + 8.hours
-        @code_review.due_date = DateTime.current.beginning_of_week + 4.days + 17.hours
-      end
-    end
   end
 
   def update
