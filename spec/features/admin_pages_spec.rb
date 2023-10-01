@@ -435,9 +435,7 @@ feature 'viewing checkins for this week' do
       login_as(admin, scope: :admin)
       travel_to course.start_date + 1.week
     end
-    after do
-      travel_back
-    end
+    after { travel_back }
 
     scenario "can see checkins for a course" do
       visit course_path(course)

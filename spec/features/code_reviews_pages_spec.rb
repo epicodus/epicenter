@@ -104,9 +104,15 @@ describe 'CodeReviewsPages' do
           click_link 'Submit'
         end
 
-        it { is_expected.to have_button 'Submit' }
         it { is_expected.to_not have_content 'pending review' }
         it { is_expected.to_not have_link 'has been reviewed' }
+      end
+
+      it 'has submit button' do
+        travel_to code_review.visible_date + 1.day do
+          visit course_code_review_path(code_review.course, code_review)
+          expect(page).to have_button 'Submit'
+        end
       end
 
       it 'displays message before code review is visible' do
@@ -188,8 +194,10 @@ describe 'CodeReviewsPages' do
       scenario 'shows survey if present and student has not yet passed expectations' do
         code_review.survey = 'foo.js'
         code_review.save
-        visit course_code_review_path(code_review.course, code_review)
-        expect(page).to have_content "survey"
+        travel_to code_review.visible_date + 1.day do
+          visit course_code_review_path(code_review.course, code_review)
+          expect(page).to have_content "survey"
+        end
       end
 
       scenario 'does not show survey if student already passed expectations' do
@@ -200,7 +208,11 @@ describe 'CodeReviewsPages' do
       end
 
       context 'when submitting' do
-        before { visit course_code_review_path(code_review.course, code_review) }
+        before do
+          travel_to code_review.visible_date + 1.day
+          visit course_code_review_path(code_review.course, code_review)
+        end
+        after { travel_back}
 
         scenario 'with valid input' do
           fill_in 'submission_link', with: 'http://github.com'
@@ -237,7 +249,11 @@ describe 'CodeReviewsPages' do
 
       context 'when submitting reflection' do
         let(:journal) { true }
-        before { visit course_code_review_path(code_review.course, code_review) }
+        before do
+          travel_to code_review.visible_date + 1.day
+          visit course_code_review_path(code_review.course, code_review)
+        end
+        after { travel_back }
 
         it { is_expected.to_not have_content 'Objectives' }
         it { is_expected.to_not have_content 'Submission link' }
@@ -266,8 +282,10 @@ describe 'CodeReviewsPages' do
       context 'after having submitted' do
         before do
           FactoryBot.create(:submission, code_review: code_review, student: student, times_submitted: 1)
+          travel_to code_review.visible_date + 1.day
           visit course_code_review_path(code_review.course, code_review)
         end
+        after { travel_back }
 
         it { is_expected.to have_button 'Resubmit' }
         it { is_expected.to have_content 'pending review' }
@@ -300,8 +318,10 @@ describe 'CodeReviewsPages' do
 
         it 'renders markdown' do
           submission.submission_notes.create(content: '- test student note')
-          visit course_code_review_path(code_review.course, code_review)
-          expect(page).to have_css('li', text: 'test student note')
+          travel_to code_review.visible_date + 1.day do
+            visit course_code_review_path(code_review.course, code_review)
+            expect(page).to have_css('li', text: 'test student note')
+          end
         end
       end
 
