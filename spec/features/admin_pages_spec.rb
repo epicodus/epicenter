@@ -413,10 +413,12 @@ feature 'setting checkins' do
   before { login_as(admin, scope: :admin) }
 
   it 'increments checkin count when button clicked' do
-    visit student_courses_path(student)
-    expect(page).to have_content 'Check-ins this week: 0'
-    click_on 'Check-in completed'
-    expect(page).to have_content 'Check-ins this week: 1'
+    travel_to student.course.start_date do
+      visit student_courses_path(student)
+      expect(page).to have_content 'Check-ins this week: 0'
+      click_on 'Check-in completed'
+      expect(page).to have_content 'Check-ins this week: 1'
+    end
   end
 end
 
@@ -424,13 +426,17 @@ feature 'viewing checkins for this week' do
   let(:course) { FactoryBot.create(:course) }
   let(:admin) { FactoryBot.create(:admin, current_course: course) }
   let(:student) { FactoryBot.create(:student, courses: [course]) }
-  let!(:checkin) { FactoryBot.create(:checkin, student: student, admin: admin) }
-  let!(:checkin_old1) { FactoryBot.create(:checkin, student: student, admin: admin, created_at: 1.week.ago) }
-  let!(:checkin_old2) { FactoryBot.create(:checkin, student: student, admin: admin, created_at: 1.week.ago) }
+  let!(:checkin) { FactoryBot.create(:checkin, student: student, admin: admin, created_at: course.start_date + 1.week) }
+  let!(:checkin_old1) { FactoryBot.create(:checkin, student: student, admin: admin, created_at: course.start_date) }
+  let!(:checkin_old2) { FactoryBot.create(:checkin, student: student, admin: admin, created_at: course.start_date) }
 
   context 'admin is signed in' do
     before do
       login_as(admin, scope: :admin)
+      travel_to course.start_date + 1.week
+    end
+    after do
+      travel_back
     end
 
     scenario "can see checkins for a course" do
