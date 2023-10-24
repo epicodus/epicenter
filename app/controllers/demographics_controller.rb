@@ -5,6 +5,11 @@ class DemographicsController < ApplicationController
 
   def new
     update_signature_request
+    @address = current_student.crm_lead.address
+    @city = current_student.crm_lead.city
+    @state = current_student.crm_lead.state
+    @zip = current_student.crm_lead.zip
+    @country = current_student.crm_lead.country
     @demographic_info = DemographicInfo.new
   end
 
@@ -18,6 +23,10 @@ class DemographicsController < ApplicationController
       @education = @demographic_info.education
       @shirt = @demographic_info.shirt
       @after_graduation = @demographic_info.after_graduation
+      @address = @demographic_info.address
+      @city = @demographic_info.city
+      @state = @demographic_info.state
+      @zip = @demographic_info.zip
       @country = @demographic_info.country
       render :new
     end

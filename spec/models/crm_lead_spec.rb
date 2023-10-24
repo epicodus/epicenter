@@ -82,9 +82,39 @@ describe CrmLead, :dont_stub_crm, :vcr do
     end
   end
 
+  describe '#address' do
+    it 'returns single line address of lead' do
+      expect(CrmLead.new('example@example.com').address).to eq '400 SW 6th Ave'
+    end
+  end
+
+  describe '#address' do
+    it 'returns combined address lines of lead' do
+      expect(CrmLead.new('washington@example.com').address).to eq '1402 3rd Ave Suite 505'
+    end
+  end
+
+  describe '#city' do
+    it 'returns city of first address of lead' do
+      expect(CrmLead.new('example@example.com').city).to eq 'Portland'
+    end
+  end
+
   describe '#state' do
     it 'returns state of first address of lead' do
-      expect(CrmLead.new('washington@example.com').state).to eq 'WA'
+      expect(CrmLead.new('example@example.com').state).to eq 'OR'
+    end
+  end
+
+  describe '#zip' do
+    it 'returns zip of first address of lead' do
+      expect(CrmLead.new('example@example.com').zip).to eq '97204'
+    end
+  end
+
+  describe '#country' do
+    it 'returns country of first address of lead' do
+      expect(CrmLead.new('example@example.com').country).to eq 'US'
     end
   end
 
