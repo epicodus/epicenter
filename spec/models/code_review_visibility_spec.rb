@@ -49,7 +49,7 @@ describe CodeReviewVisibility, :stub_mailgun do
         it 'sets visible_end' do
           allow_any_instance_of(Course).to receive(:evening?).and_return(true)
           crv = code_review.code_review_visibility_for(student)
-          expect(crv.visible_end).to eq evening_visible_date.beginning_of_week(:sunday) + 7.days + 9.hours
+          expect(crv.visible_end).to eq evening_visible_date.in_time_zone.beginning_of_week(:sunday) + 7.days + 9.hours
         end
       end
 
@@ -58,7 +58,7 @@ describe CodeReviewVisibility, :stub_mailgun do
         let(:visible_date) { ft_visible_date }
         it 'sets visible_end' do
           crv = code_review.code_review_visibility_for(student)
-          expect(crv.visible_end).to eq ft_visible_date.beginning_of_week(:sunday) + 8.days + 8.hours
+          expect(crv.visible_end).to eq ft_visible_date.in_time_zone.beginning_of_week(:sunday) + 8.days + 8.hours
         end
       end
 
@@ -67,7 +67,7 @@ describe CodeReviewVisibility, :stub_mailgun do
         let(:visible_date) { ft_visible_date }
         it 'sets visible_end' do
           crv = code_review.code_review_visibility_for(student)
-          expect(crv.visible_end).to eq ft_visible_date.beginning_of_week(:sunday) + 8.days + 8.hours
+          expect(crv.visible_end).to eq ft_visible_date.in_time_zone.beginning_of_week(:sunday) + 8.days + 8.hours
         end
       end
     end
@@ -77,7 +77,7 @@ describe CodeReviewVisibility, :stub_mailgun do
       it 'sets visible_end' do
         crv = code_review.code_review_visibility_for(student)
         crv.update(visible_start: ft_visible_date + 1.week)
-        expect(crv.visible_end).to eq ft_visible_date.beginning_of_week(:sunday) + 15.days + 8.hours
+        expect(crv.visible_end).to eq (ft_visible_date.in_time_zone.beginning_of_week(:sunday) + 15.days).change(hour: 8)
       end
     end
   end
