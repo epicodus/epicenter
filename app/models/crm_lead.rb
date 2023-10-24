@@ -70,8 +70,30 @@ class CrmLead
     lead.try('dig', 'contacts').try('first').try('dig', 'id')
   end
 
+  def address
+    line1 = lead.try('dig', 'addresses').try(:first).try('dig', 'address_1')
+    line2 = lead.try('dig', 'addresses').try(:first).try('dig', 'address_2')
+    if line1.present? && line2.present?
+      line1 + ' ' + line2
+    else
+      line1 || line2
+    end
+  end
+
+  def city
+    lead.try('dig', 'addresses').try(:first).try('dig', 'city')
+  end
+
   def state
     lead.try('dig', 'addresses').try(:first).try('dig', 'state')
+  end
+
+  def zip
+    lead.try('dig', 'addresses').try(:first).try('dig', 'zipcode')
+  end
+
+  def country
+    lead.try('dig', 'addresses').try(:first).try('dig', 'country')
   end
 
   def create_task(text)

@@ -62,6 +62,20 @@ feature 'Submitting demographics info' do
       expect(page).to have_content "How would you like to make payments for the class?"
     end
 
+    scenario 'loads address from CRM if available' do
+      allow_any_instance_of(CrmLead).to receive(:address).and_return('400 SW 6th Ave')
+      allow_any_instance_of(CrmLead).to receive(:city).and_return('Portland')
+      allow_any_instance_of(CrmLead).to receive(:state).and_return('OR')
+      allow_any_instance_of(CrmLead).to receive(:zip).and_return('97204')
+      allow_any_instance_of(CrmLead).to receive(:country).and_return('US')
+      visit new_demographic_path
+      expect(page).to have_field('demographic_info_address', with: '400 SW 6th Ave')
+      expect(page).to have_field('demographic_info_city', with: 'Portland')
+      expect(page).to have_field('demographic_info_state', with: 'OR')
+      expect(page).to have_field('demographic_info_zip', with: '97204')
+      expect(page).to have_select('demographic_info_country', selected: 'United States of America')
+    end
+
     scenario "sees errors if enters invalid info" do
       fill_in 'demographic_info_birth_date', with: '01-01-99'
       click_on 'Submit'
@@ -69,7 +83,7 @@ feature 'Submitting demographics info' do
     end
 
     # brittle spec intermittently fails
-    xscenario 'can not see pronouns blank until selected', js: true do
+    scenario 'can not see pronouns blank until selected', js: true do
       expect(page).to_not have_content 'Pronouns'
       check 'demographic_info_pronouns_other'
       expect(page).to have_content 'Pronouns'
