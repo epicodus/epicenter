@@ -46,13 +46,12 @@ describe Cohort do
     let(:admin) { FactoryBot.create(:admin, :with_course) }
     let(:track) { FactoryBot.create(:part_time_track) }
 
-    # UPDATE THIS AFTER MAKE URGENT UPDATE
-    xit 'creates a part-time intro cohort and course from layout file' do
+    it 'creates a part-time intro cohort and course from layout file' do
       allow(Github).to receive(:get_layout_params).with('example_cohort_layout_path').and_return cohort_layout_params_helper(track: 'Part-Time Intro to Programming', number_of_courses: 1)
       allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(part_time: true, number_of_weeks: 6)
       office = admin.current_course.office
       cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2021-01-04'), layout_file_path: 'example_cohort_layout_path')
-      expect(cohort.description).to eq "2021-01-04 to 2021-02-10 Part-Time Intro to Programming"
+      expect(cohort.description).to eq "2021-01-04 to 2021-02-11 Part-Time Intro to Programming"
       expect(cohort.office).to eq office
       expect(cohort.track).to eq track
       expect(cohort.admin).to eq admin
@@ -80,8 +79,7 @@ describe Cohort do
     end
   end
 
-  # UPDATE THIS AFTER MAKE URGENT UPDATE
-  xdescribe 'creating a part-time full-stack cohort from layout file' do
+  describe 'creating a part-time full-stack cohort from layout file' do
     let(:admin) { FactoryBot.create(:admin, :with_course) }
     let(:track) { FactoryBot.create(:part_time_c_react_track) }
 
@@ -93,7 +91,7 @@ describe Cohort do
       allow(Github).to receive(:get_layout_params).with('example_course_layout_path_4').and_return course_layout_params_helper(part_time: true, number_of_weeks: 13)
       office = admin.current_course.office
       cohort = Cohort.create(track: track, admin: admin, office: office, start_date: Date.parse('2021-01-04'), layout_file_path: 'example_cohort_layout_path')
-      expect(cohort.description).to eq "2021-01-04 to 2021-10-10 Part-Time C#/React"
+      expect(cohort.description).to eq "2021-01-04 to 2021-10-07 Part-Time C#/React"
       expect(cohort.office).to eq office
       expect(cohort.track).to eq track
       expect(cohort.admin).to eq admin
@@ -103,8 +101,7 @@ describe Cohort do
     end
   end
 
-  # UPDATE THIS AFTER MAKE URGENT UPDATE
-  xdescribe 'creating a full-time cohort from layout file' do
+  describe 'creating a full-time cohort from layout file' do # UPDATE THIS
     let(:admin) { FactoryBot.create(:admin, :with_course) }
     let(:track) { FactoryBot.create(:track) }
 
@@ -188,7 +185,7 @@ def course_layout_params_helper(attributes = {})
 end
 
 def class_times_pt
-  { 'Sunday' => '9:00-17:00', 'Monday' => '18:00-21:00', 'Tuesday' => '18:00-21:00', 'Wednesday' => '18:00-21:00' }
+  { 'Monday' => '8:00-12:00', 'Tuesday' => '8:00-12:00', 'Wednesday' => '8:00-12:00', 'Thursday' => '8:00-12:00' }
 end
 
 def class_times_ft

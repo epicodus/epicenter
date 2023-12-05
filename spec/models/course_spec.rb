@@ -501,12 +501,12 @@ describe Course do
           allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(part_time: true)
           course = FactoryBot.create(:course, start_date: Date.parse('2017-03-13'), layout_file_path: 'example_course_layout_path', class_days: [])
           expect(course.class_times.count).to eq 4
-          expect(course.class_times.first.wday).to eq 0
-          expect(course.class_times.first.start_time).to eq '9:00'
-          expect(course.class_times.first.end_time).to eq '17:00'
-          expect(course.class_times.last.wday).to eq 3
-          expect(course.class_times.last.start_time).to eq '18:00'
-          expect(course.class_times.last.end_time).to eq '21:00'
+          expect(course.class_times.first.wday).to eq 1
+          expect(course.class_times.first.start_time).to eq '8:00'
+          expect(course.class_times.first.end_time).to eq '12:00'
+          expect(course.class_times.last.wday).to eq 4
+          expect(course.class_times.last.start_time).to eq '8:00'
+          expect(course.class_times.last.end_time).to eq '12:00'
         end
       end
 
@@ -585,14 +585,13 @@ describe Course do
           expect(course.class_days.count).to eq 34
         end
 
-        # fix this (and update all these tests for new program schedule) after urgent update
-        xit 'for part-time full-track course with holiday' do
+        it 'for part-time full-track course with holiday' do
           allow(Github).to receive(:get_layout_params).with('example_course_layout_path').and_return course_layout_params_helper(number_of_weeks: 6, part_time: true)
           course = FactoryBot.create(:intro_part_time_c_react_course, start_date: Date.parse('2021-01-04'), layout_file_path: 'example_course_layout_path', class_days: [])
           expect(course.start_date).to eq Date.parse('2021-01-04')
-          expect(course.end_date).to eq Date.parse('2021-02-10')
-          expect(course.class_days.count).to eq 22 # 22 due to time period including 1 holiday
-          expect(course.class_days.last.wednesday?).to eq true
+          expect(course.end_date).to eq Date.parse('2021-02-11')
+          expect(course.class_days.count).to eq 23 # 23 due to time period including 1 holiday
+          expect(course.class_days.last.thursday?).to eq true
         end
 
         it 'for course starting on a tuesday due to holiday' do
@@ -812,7 +811,7 @@ def code_review_params_helper(attributes)
 end
 
 def class_times_pt
-  { 'Sunday' => '9:00-17:00', 'Monday' => '18:00-21:00', 'Tuesday' => '18:00-21:00', 'Wednesday' => '18:00-21:00' }
+  { 'Monday' => '8:00-12:00', 'Tuesday' => '8:00-12:00', 'Wednesday' => '8:00-12:00', 'Thursday' => '8:00-12:00' }
 end
 
 def class_times_ft
