@@ -8,15 +8,9 @@ class CodeReviewVisibility < ApplicationRecord
   after_update :set_visible_end, if: :saved_change_to_visible_start?
 
   def visible?
-    if always_visible
-      true
-    elsif code_review.expectations_met_by?(student)
-      false
-    elsif special_permission
-      true
-    else
-      current_time >= visible_start && current_time <= visible_end
-    end
+    return true if always_visible
+    return false if code_review.expectations_met_by?(student)
+    special_permission || (current_time >= visible_start && (current_time <= visible_end || current_time <= code_review.due_date))
   end
 
   def past_due?
