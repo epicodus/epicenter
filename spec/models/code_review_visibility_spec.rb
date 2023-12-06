@@ -5,10 +5,11 @@ describe CodeReviewVisibility, :stub_mailgun do
   let(:evening_visible_date) { DateTime.current.beginning_of_week(:sunday) + 4.days + 17.hours }
   let(:ft_visible_date) { DateTime.current.beginning_of_week(:sunday) + 5.days + 8.hours }
   let(:visible_date) { nil }
+  let(:due_date) { nil }
   let(:parttime) { false }
   let(:course) { FactoryBot.create(:course, parttime: parttime) }
   let(:student) { FactoryBot.create(:student, course: course) }
-  let(:code_review) { FactoryBot.create(:code_review, course: student.course, visible_date: visible_date) }
+  let(:code_review) { FactoryBot.create(:code_review, course: student.course, visible_date: visible_date, due_date: due_date) }
 
   it 'validates uniqueness of student_id scoped to code_review_id' do
     expect(code_review.code_review_visibility_for(student)).to be_valid
@@ -95,10 +96,22 @@ describe CodeReviewVisibility, :stub_mailgun do
 
     context 'after visible_end' do
       let(:visible_date) { ft_visible_date }
+      let(:due_date) { ft_visible_date + 1.day }
       it 'returns false' do
         travel_to ft_visible_date + 9.days do
           crv = code_review.code_review_visibility_for(student)
           expect(crv.visible?).to eq false
+        end
+      end
+    end
+
+    context 'after visible_end but before due_date for some reason' do
+      let(:visible_date) { ft_visible_date }
+      let(:due_date) { ft_visible_date + 10.days }
+      it 'returns false' do
+        travel_to ft_visible_date + 9.days do
+          crv = code_review.code_review_visibility_for(student)
+          expect(crv.visible?).to eq true
         end
       end
     end
