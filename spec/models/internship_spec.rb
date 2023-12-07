@@ -93,6 +93,8 @@ describe Internship do
       expect(internship.formatted_location).to eq 'on-site'
       internship = FactoryBot.create(:internship, location: 'remote')
       expect(internship.formatted_location).to eq 'remote'
+      internship = FactoryBot.create(:internship, location: 'hybrid')
+      expect(internship.formatted_location).to eq 'hybrid'
       internship = FactoryBot.create(:internship, location: 'either')
       expect(internship.formatted_location).to eq 'on-site or remote'
     end

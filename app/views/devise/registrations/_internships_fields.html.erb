@@ -1,88 +1,89 @@
 <%= f.fields_for 'internships_attributes[]', resource.internships.first_or_initialize do |ff| %>
-  <div class='form-group'>
-    <%= ff.label :name, '* Company name' %>
+  <div class='form-group required'>
+    <%= ff.label :name, 'Company name' %>
     <%= ff.text_field :name, autofocus: true, required: true, class: 'form-control' %>
   </div>
 
-  <div class='form-group'>
-    <%= ff.label :description, '* Describe your company and internship. Get students excited about what you do!' %>
+  <div class='form-group required'>
+    <%= ff.label :description, 'Describe your company and internship. Get students excited about what you do!' %>
     <%= ff.text_area :description, rows: 8, required: true, class: 'form-control' %>
   </div>
 
-  <div class='form-group'>
-    <%= ff.label :website, '* Website' %>
+  <div class='form-group required'>
+    <%= ff.label :website, 'Website' %>
     <%= ff.text_field :website, required: true, class: 'form-control' %>
   </div>
 
-  <div class="form-group" id="course-multiselect">
-    <%= ff.label :course_ids, "* Choose which internship period(s) you'd like to participate in." %>
+  <div class='form-group required' id='course-multiselect'>
+    <%= ff.label :course_ids, "Choose which internship period(s) you'd like to participate in." %>
     <br>
     <%= ff.collection_select :course_ids, Course.active_internship_courses.available_internship_courses.current_and_future_courses, :id, :description_and_office, {}, { class: 'multiselect-dropdown', multiple: true, include_hidden: false, required: true } %>
   </div>
 
-  <div class='form-group'>
-    <%= ff.label :number_of_students, "* Number of students that you'd like to work with." %>
+  <div class='form-group required'>
+    <%= ff.label :number_of_students, "How many students would you like to work with?" %>
+
     <div class="radio">
-      <%= ff.label :number_of_students do %>
-        <%= ff.radio_button :number_of_students, 2, required: true %> 2-3
-      <% end %>
+      <%= ff.radio_button :number_of_students, 2, required: true %>
+      <%= ff.label 'number_of_students_2', '2-3' %>
     </div>
 
     <div class="radio">
-      <%= ff.label :number_of_students do %>
-        <%= ff.radio_button :number_of_students, 4 %> 4-5
-      <% end %>
+      <%= ff.radio_button :number_of_students, 4 %>
+      <%= ff.label 'number_of_students_4', '4-5' %>
     </div>
 
     <div class="radio">
-      <%= ff.label :number_of_students do %>
-        <%= ff.radio_button :number_of_students, 6 %> 6+
-      <% end %>
+      <%= ff.radio_button :number_of_students, 6 %>
+      <%= ff.label 'number_of_students_6', '6+' %>
     </div>
   </div>
 
-  <div class='form-group'>
-    <%= ff.label :location, "* Will the students be working on-site or remotely?" %>
+  <div class='form-group required'>
+    <%= ff.label :location, "Will the students be working on-site, remotely, or hybrid?" %>
+
     <div class="radio">
-      <%= ff.label :location do %>
-        <%= ff.radio_button :location, 'onsite' %> on-site
-      <% end %>
+      <%= ff.radio_button :location, 'onsite', required: true %>
+      <%= ff.label 'location_onsite', 'on-site' %>
     </div>
 
     <div class="radio">
-      <%= ff.label :location do %>
-        <%= ff.radio_button :location, 'remote' %> remote
-      <% end %>
+      <%= ff.radio_button :location, 'remote' %>
+      <%= ff.label 'location_remote', 'remote' %>
     </div>
 
     <div class="radio">
-      <%= ff.label :location do %>
-        <%= ff.radio_button :location, 'either' %> open to on-site and remote
-      <% end %>
+      <%= ff.radio_button :location, 'hybrid' %>
+      <%= ff.label 'location_hybrid', 'hybrid' %>
+    </div>
+
+    <div class="radio">
+      <%= ff.radio_button :location, 'either' %>
+      <%= ff.label 'location_either', 'open to on-site and remote' %>
     </div>
   </div>
 
-  <div class='form-group'>
-    <%= ff.label :hiring, "* Do you intend to hire after the internship ends?" %>
+  <div class='form-group required'>
+    <%= ff.label :hiring, "Do you intend to hire after the internship ends?" %>
+
     <div class="radio">
-      <%= ff.label :hiring do %>
-        <%= ff.radio_button :hiring, 'yes' %> yes
-      <% end %>
+      <%= ff.radio_button :hiring, 'yes', required: true %>
+      <%= ff.label 'hiring_yes', 'yes' %>
     </div>
+
     <div class="radio">
-      <%= ff.label :hiring do %>
-        <%= ff.radio_button :hiring, 'no' %> no
-      <% end %>
+      <%= ff.radio_button :hiring, 'no' %>
+      <%= ff.label 'hiring_no', 'no' %>
     </div>
+
     <div class="radio">
-      <%= ff.label :hiring do %>
-        <%= ff.radio_button :hiring, 'maybe' %> maybe
-      <% end %>
+      <%= ff.radio_button :hiring, 'maybe' %>
+      <%= ff.label 'hiring_maybe', 'maybe' %>
     </div>
   </div>
 
-  <div class='form-group'>
-    <%= ff.label :ideal_intern, '* Describe your ideal intern.' %>
+  <div class='form-group required'>
+    <%= ff.label :ideal_intern, 'Describe your ideal intern.' %>
     <%= ff.text_area :ideal_intern, rows: 8, required: true, class: 'form-control' %>
   </div>
 
@@ -91,18 +92,18 @@
     <%= ff.text_field :mentor_name, class: 'form-control' %>
   </div>
 
-  <div class='form-group'>
-    <%= ff.label :mentor_years, '* How many years has the mentor been a developer? (min: 1 year)' %>
+  <div class='form-group required'>
+    <%= ff.label :mentor_years, 'How many years has the mentor been a developer? (min: 1 year)' %>
     <%= ff.text_field :mentor_years, class: 'form-control', required: true %>
   </div>
 
-  <div class='form-group'>
-    <%= ff.label :work_schedule, '* What is the internship work schedule? Please provide days and hours (e.g. Monday - Thursday, 8am - 5pm)' %>
+  <div class='form-group required'>
+    <%= ff.label :work_schedule, 'What is the internship work schedule? Please provide days and hours (e.g. Monday - Thursday, 8am - 5pm)' %>
     <%= ff.text_field :work_schedule, class: 'form-control', required: true %>
   </div>
 
-  <div class='form-group'>
-    <%= ff.label :projects, '* Please describe what project(s) students will be working on during their internship.' %>
+  <div class='form-group required'>
+    <%= ff.label :projects, 'Please describe what project(s) students will be working on during their internship.' %>
     <%= ff.text_area :projects, rows: 8, class: 'form-control', required: true %>
   </div>
 

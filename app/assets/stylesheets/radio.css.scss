@@ -1,0 +1,17 @@
+.form-group.required label:not(.radio label):after {
+  content:" *";
+  color:red;
+}
+
+.radio {
+  padding-left: 20px;
+  label {
+    padding-left: 0px !important;
+  }
+}
+
+.large-checkbox {
+  margin-left: 3px !important;
+  margin-right: 10px !important;
+  transform: scale(1.5);
+}
