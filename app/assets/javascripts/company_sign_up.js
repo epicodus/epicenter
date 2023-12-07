@@ -3,7 +3,7 @@ $(function() {
     buttonClass: 'btn btn-info',
     maxHeight: 500,
     includeSelectAllOption: true,
-    buttonWidth: '150px'
+    buttonWidth: '300px'
   });
 
   $('#company-sign-up-button').click(function() {

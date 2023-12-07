@@ -32,13 +32,11 @@ class Internship < ApplicationRecord
   end
 
   def formatted_number_of_students
-    number_of_students_mapping = { 2 => '2-3', 4 => '4-5', 6 => '6+'}
-    number_of_students_mapping[number_of_students]
+    { 2 => '2-3', 4 => '4-5', 6 => '6+'}[number_of_students]
   end
 
   def formatted_location
-    location_mapping = { 'onsite' => 'on-site', 'remote' => 'remote', 'either' => 'on-site or remote' }
-    location_mapping[location]
+    { 'onsite' => 'on-site', 'either' => 'on-site or remote' }[location] || location
   end
 
 private

@@ -3,17 +3,17 @@
     <%= form_for @internship do |f| %>
       <%= render 'layouts/errors', object: @internship %>
 
-      <div class='form-group'>
+      <div class='form-group required'>
         <%= f.label :name, 'Company name' %>
         <%= f.text_field :name, autofocus: true, required: true, class: 'form-control' %>
       </div>
 
-      <div class='form-group'>
+      <div class='form-group required'>
         <%= f.label :description, 'Describe your company and internship. Get students excited about what you do!' %>
         <%= f.text_area :description, rows: 8, required: true, class: 'form-control' %>
       </div>
 
-      <div class='form-group'>
+      <div class='form-group required'>
         <%= f.label :website, 'Website' %>
         <%= f.text_field :website, required: true, class: 'form-control' %>
       </div>
@@ -28,68 +28,69 @@
         <% end %>
       </div>
 
-      <div class='form-group'>
-        <%= f.label :number_of_students, "* Number of students that you'd like to work with." %>
+      <div class='form-group required'>
+        <%= f.label :number_of_students, "How many students would you like to work with?" %>
+
         <div class="radio">
-          <%= f.label :number_of_students do %>
-            <%= f.radio_button :number_of_students, 2, required: true %> 2-3
-          <% end %>
+          <%= f.radio_button :number_of_students, 2, required: true %>
+          <%= f.label 'number_of_students_2', '2-3' %>
         </div>
 
         <div class="radio">
-          <%= f.label :number_of_students do %>
-            <%= f.radio_button :number_of_students, 4 %> 4-5
-          <% end %>
+          <%= f.radio_button :number_of_students, 4 %>
+          <%= f.label 'number_of_students_4', '4-5' %>
         </div>
 
         <div class="radio">
-          <%= f.label :number_of_students do %>
-            <%= f.radio_button :number_of_students, 6 %> 6+
-          <% end %>
+          <%= f.radio_button :number_of_students, 6 %>
+          <%= f.label 'number_of_students_6', '6+' %>
         </div>
       </div>
 
-      <div class='form-group'>
-        <%= f.label :location, "* Will the students be working on-site or remotely?" %>
+      <div class='form-group required'>
+        <%= f.label :location, "Will the students be working on-site, remotely, or hybrid?" %>
+
         <div class="radio">
-          <%= f.label :location do %>
-            <%= f.radio_button :location, 'onsite', required: true %> on-site
-          <% end %>
+          <%= f.radio_button :location, 'onsite' %>
+          <%= f.label 'location_onsite', 'on-site' %>
         </div>
 
         <div class="radio">
-          <%= f.label :location do %>
-            <%= f.radio_button :location, 'remote' %> remote
-          <% end %>
+          <%= f.radio_button :location, 'remote' %>
+          <%= f.label 'location_remote', 'remote' %>
         </div>
 
         <div class="radio">
-          <%= f.label :location do %>
-            <%= f.radio_button :location, 'either' %> open to on-site and remote
-          <% end %>
+          <%= f.radio_button :location, 'hybrid' %>
+          <%= f.label 'location_hybrid', 'hybrid' %>
+        </div>
+
+        <div class="radio">
+          <%= f.radio_button :location, 'either' %>
+          <%= f.label 'location_either', 'open to on-site and remote' %>
         </div>
       </div>
 
-      <div class='form-group'>
-        <%= f.label :hiring, "* Do you intend to hire after the internship ends?" %>
+      <div class='form-group required'>
+        <%= f.label :hiring, "Do you intend to hire after the internship ends?" %>
+
         <div class="radio">
-          <%= f.label :hiring do %>
-            <%= f.radio_button :hiring, 'yes' %> yes
-          <% end %>
+          <%= f.radio_button :hiring, 'yes' %>
+          <%= f.label 'hiring_yes', 'yes' %>
         </div>
+
         <div class="radio">
-          <%= f.label :hiring do %>
-            <%= f.radio_button :hiring, 'no' %> no
-          <% end %>
+          <%= f.radio_button :hiring, 'no' %>
+          <%= f.label 'hiring_no', 'no' %>
         </div>
+
         <div class="radio">
-          <%= f.label :hiring do %>
-            <%= f.radio_button :hiring, 'maybe' %> maybe
-          <% end %>
+          <%= f.radio_button :hiring, 'maybe' %>
+          <%= f.label 'hiring_maybe', 'maybe' %>
         </div>
       </div>
 
-      <div class='form-group'>
+      <div class='form-group required'>
         <%= f.label :ideal_intern, 'Describe your ideal intern.' %>
         <%= f.text_area :ideal_intern, rows: 8, required: true, class: 'form-control' %>
       </div>
@@ -99,18 +100,18 @@
         <%= f.text_field :mentor_name, class: 'form-control' %>
       </div>
 
-      <div class='form-group'>
-        <%= f.label :mentor_years, '* How many years has the mentor been a developer? (min: 1 year)' %>
+      <div class='form-group required'>
+        <%= f.label :mentor_years, 'How many years has the mentor been a developer? (min: 1 year)' %>
         <%= f.text_field :mentor_years, class: 'form-control', required: true %>
       </div>
 
-      <div class='form-group'>
-        <%= f.label :work_schedule, '* What is the internship work schedule? Please provide days and hours (e.g. Monday - Thursday, 8am - 5pm)' %>
+      <div class='form-group required'>
+        <%= f.label :work_schedule, 'What is the internship work schedule? Please provide days and hours (e.g. Monday - Thursday, 8am - 5pm)' %>
         <%= f.text_field :work_schedule, class: 'form-control', required: true %>
       </div>
 
-      <div class='form-group'>
-        <%= f.label :projects, '* Please describe what project(s) students will be working on during their internship.' %>
+      <div class='form-group required'>
+        <%= f.label :projects, 'Please describe what project(s) students will be working on during their internship.' %>
         <%= f.text_area :projects, rows: 8, class: 'form-control', required: true %>
       </div>
 

@@ -5,20 +5,20 @@ feature 'signing up as a company' do
   scenario 'successfully' do
     visit new_company_registration_path
     fill_in 'Company name', with: 'Awesome company'
-    fill_in '* Describe your company and internship. Get students excited about what you do!', with: 'You will write awesome software here!'
+    fill_in 'Describe your company and internship. Get students excited about what you do!', with: 'You will write awesome software here!'
     fill_in 'Website', with: 'http://www.testcompany.com'
     fill_in 'Address', with: '123 N Main st. Portland, OR 97200'
     select course.description
     choose '2-3'
     choose 'remote'
     choose 'maybe'
-    fill_in '* Describe your ideal intern.', with: 'Somebody who writes awesome software!'
+    fill_in 'Describe your ideal intern.', with: 'Somebody who writes awesome software!'
     find('#clearance-checkbox').set true
     fill_in 'Clearance description', with: 'Security clearance needed.'
     fill_in 'Name', with: 'Company employee 1'
     fill_in 'Email', with: 'employee1@company.com'
-    fill_in '* Password', with: 'password'
-    fill_in '* Password confirmation', with: 'password'
+    fill_in 'Password', with: 'password'
+    fill_in 'Password confirmation', with: 'password'
     check 'internship-agreement-checkbox'
     click_on 'Sign up'
     expect(page).to have_content 'Welcome! You have signed up successfully.'
@@ -27,20 +27,20 @@ feature 'signing up as a company' do
   scenario 'unsuccessfully with invalid internship fields' do
     visit new_company_registration_path
     fill_in 'Company name', with: 'Awesome company'
-    fill_in '* Describe your company and internship. Get students excited about what you do!', with: 'You will write awesome software here!'
+    fill_in 'Describe your company and internship. Get students excited about what you do!', with: 'You will write awesome software here!'
     fill_in 'Website', with: "8789u2ljrlkj;'l;'l;"
     fill_in 'Address', with: '123 N Main st. Portland, OR 97200'
     select course.description
     choose '2-3'
     choose 'remote'
     choose 'maybe'
-    fill_in '* Describe your ideal intern.', with: 'Somebody who writes awesome software!'
+    fill_in 'Describe your ideal intern.', with: 'Somebody who writes awesome software!'
     find('#clearance-checkbox').set true
     fill_in 'Clearance description', with: 'Security clearance needed.'
     fill_in 'Name', with: 'Company employee 1'
     fill_in 'Email', with: 'employee1@company.com'
-    fill_in '* Password', with: 'password'
-    fill_in '* Password confirmation', with: 'password'
+    fill_in 'Password', with: 'password'
+    fill_in 'Password confirmation', with: 'password'
     check 'internship-agreement-checkbox'
     click_on 'Sign up'
     expect(page).to have_content 'prohibited this company from being saved:'
@@ -49,37 +49,37 @@ feature 'signing up as a company' do
   scenario 'unsuccessfully with invalid internship fields first, then successfully' do
     visit new_company_registration_path
     fill_in 'Company name', with: 'Awesome company'
-    fill_in '* Describe your company and internship. Get students excited about what you do!', with: 'You will write awesome software here!'
+    fill_in 'Describe your company and internship. Get students excited about what you do!', with: 'You will write awesome software here!'
     fill_in 'Website', with: "8789u2ljrlkj;'l;'l;"
     fill_in 'Address', with: '123 N Main st. Portland, OR 97200'
     select course.description
     choose '2-3'
     choose 'remote'
     choose 'maybe'
-    fill_in '* Describe your ideal intern.', with: 'Somebody who writes awesome software!'
+    fill_in 'Describe your ideal intern.', with: 'Somebody who writes awesome software!'
     find('#clearance-checkbox').set true
     fill_in 'Clearance description', with: 'Security clearance needed.'
     fill_in 'Name', with: 'Company employee 1'
     fill_in 'Email', with: 'employee1@company.com'
-    fill_in '* Password', with: 'password'
-    fill_in '* Password confirmation', with: 'password'
+    fill_in 'Password', with: 'password'
+    fill_in 'Password confirmation', with: 'password'
     check 'internship-agreement-checkbox'
     click_on 'Sign up'
     fill_in 'Company name', with: 'Awesome company'
-    fill_in '* Describe your company and internship. Get students excited about what you do!', with: 'You will write awesome software here!'
+    fill_in 'Describe your company and internship. Get students excited about what you do!', with: 'You will write awesome software here!'
     fill_in 'Website', with: 'http://www.testcompany.com'
     fill_in 'Address', with: '123 N Main st. Portland, OR 97200'
     select course.description
     choose '2-3'
     choose 'remote'
     choose 'maybe'
-    fill_in '* Describe your ideal intern.', with: 'Somebody who writes awesome software!'
+    fill_in 'Describe your ideal intern.', with: 'Somebody who writes awesome software!'
     find('#clearance-checkbox').set true
     fill_in 'Clearance description', with: 'Security clearance needed.'
     fill_in 'Name', with: 'Company employee 1'
     fill_in 'Email', with: 'employee1@company.com'
-    fill_in '* Password', with: 'password'
-    fill_in '* Password confirmation', with: 'password'
+    fill_in 'Password', with: 'password'
+    fill_in 'Password confirmation', with: 'password'
     check 'internship-agreement-checkbox'
     click_on 'Sign up'
     expect(page).to have_content 'Welcome! You have signed up successfully.'
