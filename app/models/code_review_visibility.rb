@@ -10,7 +10,8 @@ class CodeReviewVisibility < ApplicationRecord
   def visible?
     return true if always_visible
     return false if code_review.expectations_met_by?(student)
-    special_permission || (current_time >= visible_start && (current_time <= visible_end || current_time <= code_review.due_date))
+    latest_visible_end = [code_review.due_date || visible_end, visible_end].max
+    special_permission || (visible_start..latest_visible_end).cover?(current_time)
   end
 
   def past_due?
