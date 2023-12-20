@@ -4,6 +4,9 @@ describe DemographicInfo do
   it { should validate_presence_of :state }
   it { should validate_presence_of :zip }
   it { should validate_presence_of :country }
+  it { should validate_presence_of :birth_date }
+  it { should validate_presence_of :education }
+  it { should validate_presence_of :shirt }
   it { should validate_length_of(:address).is_at_most(200) }
   it { should validate_length_of(:city).is_at_most(100) }
   it { should validate_length_of(:state).is_at_most(100) }
