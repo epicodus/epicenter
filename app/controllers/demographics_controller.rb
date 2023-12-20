@@ -35,7 +35,7 @@ class DemographicsController < ApplicationController
 private
   def demographic_info_params
     params.require(:demographic_info).permit(:birth_date, :disability, :veteran, :education, :cs_degree,
-                    :address, :city, :state, :zip, :country, :shirt, :job, :salary, :after_graduation,
+                    :address, :apartment, :city, :state, :zip, :country, :shirt, :job, :salary, :after_graduation,
                     :time_off, :ssn, :pronouns_blank, :genders => [], :races => [], :pronouns => [])
   end
 end
