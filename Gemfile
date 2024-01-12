@@ -53,6 +53,7 @@ group :development do
   gem 'rack-mini-profiler'
   gem 'listen'
   gem 'timecop'
+  gem 'wicked_pdf'
 end
 
 group :test, :development do
