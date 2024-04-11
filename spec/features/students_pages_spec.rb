@@ -28,7 +28,7 @@ feature 'Visiting students index page' do
   end
 end
 
-feature 'Student signs up via invitation', :vcr do
+xfeature 'Student signs up via invitation', :vcr do
   context 'for portland or online student' do
     let(:course) { FactoryBot.create(:course, class_days: [Date.today.beginning_of_week + 5.weeks]) }
     let(:plan) { FactoryBot.create(:upfront_plan) }

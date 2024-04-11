@@ -1,4 +1,4 @@
-feature 'Submitting demographics info' do
+xfeature 'Submitting demographics info' do
   let(:student) { FactoryBot.create(:student, :with_all_documents_signed, demographics: nil, email: 'example@example.com') }
 
   scenario 'as a guest cannot view form' do

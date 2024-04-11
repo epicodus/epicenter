@@ -44,10 +44,8 @@ protected
           flash[:alert] = '<strong>You have not yet completed your enrollment.</strong><br> Please make your remaining tuition payment as soon as possible.'
         end
         proper_payments_path(user)
-      elsif user.signed_main_documents?
-        student_courses_path(user)
       else
-        signatures_check_path(user)
+        student_courses_path(user)
       end
     end
   end
