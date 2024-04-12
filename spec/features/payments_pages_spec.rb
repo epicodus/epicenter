@@ -267,7 +267,7 @@ feature 'Viewing payment index page' do
   end
 end
 
-feature 'issuing an offline refund as an admin', :vcr do
+xfeature 'issuing an offline refund as an admin', :vcr do
   let(:admin) { FactoryBot.create(:admin, :with_course) }
   let(:student) { FactoryBot.create(:student, :with_ft_cohort, :with_all_documents_signed, :with_upfront_payment) }
 

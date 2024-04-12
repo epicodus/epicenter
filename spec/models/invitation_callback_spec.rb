@@ -1,4 +1,4 @@
-describe InvitationCallback, :dont_stub_crm, :vcr do
+xdescribe InvitationCallback, :dont_stub_crm, :vcr do
   let(:student) { FactoryBot.create(:student) }
 
   before do

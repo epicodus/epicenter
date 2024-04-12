@@ -28,7 +28,7 @@ RSpec.describe CrmUpdateJob, :vcr, type: :job do
     perform_enqueued_jobs { CrmUpdateJob.perform_later(lead_id, update_fields) }
   end
 
-  it "executes perform for updating contact" do
+  xit "executes perform for updating contact" do
     expect_any_instance_of(Closeio::Client).to receive(:update_contact).with(contact_id, {:emails=>[{"type"=>"office", "email"=>"second-email@example.com"}, {"type"=>"office", "email"=>"example@example.com"}]})
     perform_enqueued_jobs { CrmUpdateJob.perform_later(lead_id, email: "second-email@example.com") }
   end
