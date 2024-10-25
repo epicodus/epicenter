@@ -8,7 +8,8 @@ class CrmLead
   end
 
   def update(update_fields)
-    CrmUpdateJob.perform_later(lead['id'], update_fields)
+    # CrmUpdateJob.perform_later(lead['id'], update_fields)
+    update_now(update_fields) # skip queue entirely on this legacy app, due to redis issues
   end
 
   def update_now(update_fields)
